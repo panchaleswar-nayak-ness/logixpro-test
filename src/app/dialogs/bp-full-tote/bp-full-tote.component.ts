@@ -49,6 +49,7 @@ export class BpFullToteComponent implements OnInit {
       data: {
         completedQuantity: this.data.PutNewToteQty,
         toteQuantity:this.data.PutFullToteQty,
+        IsFullTote:true,
         from: "qunatity put in new tote"
       }
     });

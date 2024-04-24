@@ -291,8 +291,11 @@ export class VerifyBulkComponent implements OnInit {
           this.taskCompleted = true;
           
           let order = this.orderLines.filteredData.filter(x=> (x.transactionQuantity < x.completedQuantity));
-          if(this.Prefernces.systemPreferences.shortPickFindNewLocation) {
-            if(order.length > 0){
+         
+          if(order.length > 0){
+            debugger
+             if(this.Prefernces.systemPreferences.shortPickFindNewLocation) {
+           
               let apiCalled = false;
                   for (let i = 0; i < 10 && !apiCalled; i++) { 
                         setTimeout(() => {
@@ -305,8 +308,8 @@ export class VerifyBulkComponent implements OnInit {
                             }
                         }, 2000 * i);
                     }
-          }
-           if(this.Prefernces.systemPreferences.shortPickFindNewLocation || this.Prefernces.systemPreferences.displayEob){ 
+          } 
+          if(this.Prefernces.systemPreferences.shortPickFindNewLocation || this.Prefernces.systemPreferences.displayEob){ 
             setTimeout(() => {
               const orderNumbers: string[] = Array.from(new Set(order.map(item => item.orderNumber)));
               this.iAdminApiService.endofbatch({orderNumbers:orderNumbers}).subscribe((res: any) => {
@@ -326,6 +329,7 @@ export class VerifyBulkComponent implements OnInit {
 
           }
           }
+         
           else {
             this.back.emit(this.taskCompleted);
             this.spinnerService.IsLoader = false}
@@ -359,7 +363,7 @@ export class VerifyBulkComponent implements OnInit {
           message2: `Touch 'Yes' to to leave the transactions open.
           Touch 'No' to complete with zero qunatities.
           Touch Cancel to continue varification.`,
-          heading: 'Zero Completed Qunatity - Leave Open?',
+          heading: 'Zero Completed Quantity - Leave Open?',
           buttonFields: true,
           threeButtons: true
         },

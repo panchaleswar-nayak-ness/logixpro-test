@@ -18,6 +18,7 @@ import { GlobalService } from 'src/app/common/services/global.service';
 export class BpNumberSelectionComponent implements OnInit {
   toteQuantity:number;
   newQuantity: number;
+  IsFullTote:boolean = false;
   Prefernces: BulkPreferences;
   public iBulkProcessApiService: IBulkProcessApiService;
   from: string = "completed quantity";
@@ -33,6 +34,7 @@ export class BpNumberSelectionComponent implements OnInit {
     this.iBulkProcessApiService = bulkProcessApiService;
     this.from = this.data.from;
     this.toteQuantity = this.data?.toteQuantity;
+    this.IsFullTote = this.data?.IsFullTote;
   }
 
   ngOnInit(): void {
@@ -60,18 +62,18 @@ export class BpNumberSelectionComponent implements OnInit {
     else{
         newQuantity = parseFloat(string); 
     }
-    if(!this.toteQuantity || newQuantity <= this.toteQuantity) this.newQuantity = newQuantity;
+    if(!this.IsFullTote || newQuantity <= this.toteQuantity) this.newQuantity = newQuantity;
     else  this.global.ShowToastr(ToasterType.Error, "This tote only needs a quantity of " + this.toteQuantity, ToasterTitle.Error);
   }
   numberOnly(event): boolean { 
-    if(!this.toteQuantity || event.target.value > this.toteQuantity){
+    if(this.IsFullTote && event.target.value > this.toteQuantity){
       this.global.ShowToastr(ToasterType.Error, "This tote only needs a quantity of " +this.toteQuantity, ToasterTitle.Error);
     }
 
     return this.cusValidator.numberOnly(event);
   }
   done() { 
-    if(this.newQuantity <= this.toteQuantity){
+    if(!this.IsFullTote || this.newQuantity <= this.toteQuantity){
     if (this.from == "completed quantity") {
       //if (this.Prefernces.systemPreferences.zeroLocationQuantityCheck) {
         const dialogRef1: any = this.global.OpenDialog(ConfirmationDialogComponent, {
