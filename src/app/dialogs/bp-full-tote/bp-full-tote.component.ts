@@ -32,6 +32,7 @@ export class BpFullToteComponent implements OnInit {
     this.data.NewToteID = "";
     this.data.PutNewToteQty = 0;
     this.data.PutFullToteQty = this.data.transactionQuantity; 
+    this.data.OldPutFullToteQty = this.data.transactionQuantity; 
   }
 
   async BatchNextTote() {
@@ -48,7 +49,7 @@ export class BpFullToteComponent implements OnInit {
       disableClose: true,
       data: {
         completedQuantity: this.data.PutNewToteQty,
-        toteQuantity:this.data.PutFullToteQty,
+        toteQuantity:this.data.OldPutFullToteQty,
         IsFullTote:true,
         from: "qunatity put in new tote"
       }
