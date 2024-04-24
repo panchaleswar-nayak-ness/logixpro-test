@@ -5,7 +5,7 @@ import {AuthService} from 'src/app/common/init/auth.service';
 import {IAdminApiService} from 'src/app/common/services/admin-api/admin-api-interface';
 import {AdminApiService} from 'src/app/common/services/admin-api/admin-api.service';
 import {GlobalService} from 'src/app/common/services/global.service';
-import {DialogConstants, Style, ToasterTitle, ToasterType} from 'src/app/common/constants/strings.constants';
+import {DialogConstants, Style, ToasterMessages, ToasterTitle, ToasterType} from 'src/app/common/constants/strings.constants';
 import {IBulkProcessApiService} from 'src/app/common/services/bulk-process-api/bulk-process-api-interface';
 import {BulkProcessApiService} from 'src/app/common/services/bulk-process-api/bulk-process-api.service';
 import {HttpStatusCode} from '@angular/common/http';
@@ -144,10 +144,10 @@ export class BmToteidEntryComponent implements OnInit {
           if (this.preferences.autoPrintTote) {
             // print list and labels.
           }
-          this.global.ShowToastr(ToasterType.Success, res.responseMessage, ToasterTitle.Success);
+          this.global.ShowToastr(ToasterType.Success, ToasterMessages.RecordUpdatedSuccessful, ToasterTitle.Success);
           this.dialogRef.close(this.selectedList);
         } else {
-          this.global.ShowToastr(ToasterType.Error, res.responseMessage, ToasterTitle.Error);
+          this.global.ShowToastr(ToasterType.Error, ToasterMessages.SomethingWentWrong, ToasterTitle.Error);
         }
       });
   }

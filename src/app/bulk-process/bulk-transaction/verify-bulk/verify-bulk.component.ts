@@ -7,7 +7,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { ConfirmationDialogComponent } from 'src/app/admin/dialogs/confirmation-dialog/confirmation-dialog.component';
 import { BulkPreferences, OrderLineResource, TaskCompleteRequest, UpdateLocationQuantityRequest, WorkStationSetupResponse } from 'src/app/common/Model/bulk-transactions';
 import { SetTimeout } from 'src/app/common/constants/numbers.constants';
-import { DialogConstants, ResponseStrings, Style, ToasterTitle, ToasterType } from 'src/app/common/constants/strings.constants';
+import { DialogConstants, ResponseStrings, Style, ToasterMessages, ToasterTitle, ToasterType } from 'src/app/common/constants/strings.constants';
 import { IAdminApiService } from 'src/app/common/services/admin-api/admin-api-interface';
 import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.service';
 import { IBulkProcessApiService } from 'src/app/common/services/bulk-process-api/bulk-process-api-interface';
@@ -193,7 +193,7 @@ export class VerifyBulkComponent implements OnInit {
         payload.locationQty = 0;
         let res: any = await this.iBulkProcessApiService.updateLocationQuantity(payload);
         if (res?.status == HttpStatusCode.Ok) {
-          this.global.ShowToastr(ToasterType.Success, "Record Updated Successfully", ToasterTitle.Success);
+          this.global.ShowToastr(ToasterType.Success, ToasterMessages.RecordUpdatedSuccessful, ToasterTitle.Success);
         }
         element.completedQuantity = resp.newQuantity;
       }
@@ -214,7 +214,7 @@ export class VerifyBulkComponent implements OnInit {
           payload.locationQty = parseInt(result.SelectedItem);
           let res: any = await this.iBulkProcessApiService.updateLocationQuantity(payload);
           if (res?.status == HttpStatusCode.Ok) {
-            this.global.ShowToastr(ToasterType.Success, "Record Updated Successfully", ToasterTitle.Success);
+            this.global.ShowToastr(ToasterType.Success, ToasterMessages.RecordUpdatedSuccessful, ToasterTitle.Success);
           }
         });
         element.completedQuantity = resp.newQuantity;
@@ -287,7 +287,7 @@ export class VerifyBulkComponent implements OnInit {
         if (res?.status == HttpStatusCode.Ok) {
             // if(this.workstationPreferences)
          
-          this.global.ShowToastr(ToasterType.Success, "Record Updated Successfully", ToasterTitle.Success);
+          this.global.ShowToastr(ToasterType.Success, ToasterMessages.RecordUpdatedSuccessful, ToasterTitle.Success);
           await this.TaskCompleteEOB();
           }
           

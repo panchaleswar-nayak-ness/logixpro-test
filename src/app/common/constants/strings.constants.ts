@@ -171,7 +171,8 @@ export const ToasterMessages = {
     ToteIdAlreadyInBatch:'This tote id is already in this batch. Enter a new one',
     MissingDataFromPrint:'Missing data from the desired print row',
     DeletePendingTransaction: 'You can only delete pending transactions.',
-    ItemNumberExists:'Item Number Already Exists.'
+    ItemNumberExists:'Item Number Already Exists.',
+    RecordUpdatedSuccessful: 'Record Updated Successfully'
 }
 
 
