@@ -72,16 +72,19 @@ export class BmToteidEntryComponent implements OnInit {
   }
 
   createNextTote() {
-    if (this.view != 'batch' && this.view != 'tote') {
-      this.selectedList.forEach((element, i) => {
-        this.bulkProcessApiService.BatchNextTote(this.selectedList.length).then((res) => {
-          this.nextToteID = res.body?.nextId;
-          this.selectedList[i].IsTote = false;
-          this.selectedList[i].IsError = false;
-          this.selectedList[i]['toteId'] = parseInt(this.nextToteID);
-        });
-      });
+    if (this.view == 'batch' || this.view == 'tote') {
+      return;
     }
+
+    this.bulkProcessApiService.BatchNextTote(this.selectedList.length).then((res) => {
+      this.nextToteID = res.body?.nextId;
+      this.selectedList.forEach((element, i) => {
+        this.selectedList[i].IsTote = false;
+        this.selectedList[i].IsError = false;
+        this.selectedList[i]['toteId'] =
+          parseInt(this.nextToteID) + i + 1;
+      });
+    });
   }
 
   submitOrder() {
@@ -97,7 +100,9 @@ export class BmToteidEntryComponent implements OnInit {
         disableClose: true,
       });
       dialogRef.afterClosed().subscribe((result) => {
-        this.selectedList.filter(x => x.IsTote == true).forEach(obj => { obj.IsError = true; });
+        this.selectedList.filter(x => x.IsTote == true).forEach(obj => {
+          obj.IsError = true;
+        });
       });
     } else if (this.selectedList.find((o) => o.toteId === undefined)) {
       const dialogRef: any = this.global.OpenDialog(AlertConfirmationComponent, {
@@ -110,7 +115,10 @@ export class BmToteidEntryComponent implements OnInit {
         autoFocus: DialogConstants.autoFocus,
         disableClose: true,
       });
-      dialogRef.afterClosed().subscribe((result) => { });
+      dialogRef.afterClosed().subscribe((result) => {
+      });
+    } else if (this.view == 'batch' || this.view == 'tote') {
+      this.dialogRef.close(this.selectedList);
     } else {
       this.updateToteID();
     }
@@ -139,10 +147,7 @@ export class BmToteidEntryComponent implements OnInit {
           this.global.ShowToastr(ToasterType.Success, res.responseMessage, ToasterTitle.Success);
           this.dialogRef.close(this.selectedList);
         } else {
-
           this.global.ShowToastr(ToasterType.Error, res.responseMessage, ToasterTitle.Error);
-
-          console.log("PickToteIDUpdate", res.responseMessage);
         }
       });
   }
