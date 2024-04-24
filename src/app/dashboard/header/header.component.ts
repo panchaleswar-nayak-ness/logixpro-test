@@ -75,6 +75,9 @@ export class HeaderComponent {
       
     this.isConfigUser=  this.authService.isConfigUser()
       router.events.subscribe((val: any) => {
+        if((this.router.url == "/BulkTransactions/BulkPick" || this.router.url == "/BulkTransactions/BulkPutAway" || this.router.url == "/BulkTransactions/BulkCount") && localStorage.getItem("verifyBulks") == "true"){
+          return;
+        }
         this.breadcrumbList = [];
         if(!this.global.changesConfirmation){
           if(!this.authService.isConfigUser()){
@@ -202,11 +205,15 @@ export class HeaderComponent {
   }
 
   breadCrumbClick(menu,index:any = null) { 
-     if(index != null) { 
+    if(index != null) { 
       let Url = "";  
       for (let i = 0; i <= index; i++) {
         if(this.breadcrumbList[i].menu!='') Url += this.breadcrumbList[i].value; 
-      }   
+      }
+      if((this.router.url == "/BulkTransactions/BulkPick" || this.router.url == "/BulkTransactions/BulkPutAway" || this.router.url == "/BulkTransactions/BulkCount") && localStorage.getItem("verifyBulks") == "true"){
+        this.sharedService.verifyBulkTransBack();
+        return;
+      }
       this.router.navigate([Url]); 
       this.sharedService.BroadCastMenuUpdate(Url.toString());
     }  
