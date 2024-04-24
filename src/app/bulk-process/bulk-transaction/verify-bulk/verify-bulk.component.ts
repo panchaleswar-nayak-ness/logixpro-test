@@ -293,7 +293,6 @@ export class VerifyBulkComponent implements OnInit {
           let order = this.orderLines.filteredData.filter(x=> (x.transactionQuantity > x.completedQuantity));
          
           if(order.length > 0){
-            debugger
              if(this.Prefernces.systemPreferences.shortPickFindNewLocation) {
            
               let apiCalled = false;
