@@ -290,7 +290,7 @@ export class VerifyBulkComponent implements OnInit {
           this.global.ShowToastr(ToasterType.Success, "Record Updated Successfully", ToasterTitle.Success);
           this.taskCompleted = true;
           
-          let order = this.orderLines.filteredData.filter(x=> (x.transactionQuantity < x.completedQuantity));
+          let order = this.orderLines.filteredData.filter(x=> (x.transactionQuantity > x.completedQuantity));
          
           if(order.length > 0){
             debugger
