@@ -207,11 +207,11 @@ export class PickComponent implements OnInit {
   }
 
   getOrderStatus(orderNumber: any) {
-    if(this.shortList.includes(orderNumber) && this.allShortList.includes(orderNumber)){
-      return 'All Short';
-    }
     if(this.shortList.includes(orderNumber)){
       return 'Short Lines';
+    }
+    if(this.allShortList.includes(orderNumber)){
+      return 'All Short';
     }
     if(this.fpzList.includes(orderNumber)){
       return 'All in FPZ';
