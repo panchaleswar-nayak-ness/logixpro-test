@@ -286,55 +286,12 @@ export class VerifyBulkComponent implements OnInit {
         let res = await this.iBulkProcessApiService.bulkPickTaskComplete(orders);
         if (res?.status == HttpStatusCode.Ok) {
             // if(this.workstationPreferences)
-              this.spinnerService.IsLoader = true;
+         
           this.global.ShowToastr(ToasterType.Success, "Record Updated Successfully", ToasterTitle.Success);
-          this.taskCompleted = true;
-          
-          let order = this.orderLines.filteredData.filter(x=> (x.transactionQuantity > x.completedQuantity));
-         
-          if(order.length > 0){
-            debugger
-             if(this.Prefernces.systemPreferences.shortPickFindNewLocation) {
-           
-              let apiCalled = false;
-                  for (let i = 0; i < 10 && !apiCalled; i++) { 
-                        setTimeout(() => {
-                            if (!apiCalled) {
-                                this.iAdminApiService.orderline(order[0].id).subscribe((res: any) => {
-                                    if (res.zone != "" && res.zone) {
-                                        apiCalled = true;
-                                    }
-                                });
-                            }
-                        }, 2000 * i);
-                    }
-          } 
-          if(this.Prefernces.systemPreferences.shortPickFindNewLocation || this.Prefernces.systemPreferences.displayEob){ 
-            setTimeout(() => {
-              const orderNumbers: string[] = Array.from(new Set(order.map(item => item.orderNumber)));
-              this.iAdminApiService.endofbatch({orderNumbers:orderNumbers}).subscribe((res: any) => {
-                this.spinnerService.IsLoader = false;
-                const dialogRef1: any = this.global.OpenDialog(PickRemainingComponent, {
-                  height: 'auto',
-                  width: Style.w786px,
-                  autoFocus: DialogConstants.autoFocus,
-                  disableClose: true,
-                  data: res
-                });
-                dialogRef1.afterClosed().subscribe(async (resp: any) => { 
-                    this.back.emit(this.taskCompleted); 
-                });
-              });
-            }, this.Prefernces?.systemPreferences?.shortPickFindNewLocation ? 5000:0);
-
+          await this.TaskCompleteEOB();
           }
-          }
-         
-          else {
-            this.back.emit(this.taskCompleted);
-            this.spinnerService.IsLoader = false}
           
-        }
+         
       }
     });
   }
@@ -359,7 +316,7 @@ export class VerifyBulkComponent implements OnInit {
         autoFocus: DialogConstants.autoFocus,
         disableClose: true,
         data: {
-          message: `There is a completed quantity of ZERO for one or more lineitems!`,
+          message: `There is a completed quantity of ZERO for one or more line items!`,
           message2: `Touch 'Yes' to to leave the transactions open.
           Touch 'No' to complete with zero qunatities.
           Touch Cancel to continue varification.`,
@@ -370,8 +327,8 @@ export class VerifyBulkComponent implements OnInit {
       });
       dialogRef1.afterClosed().subscribe(async (res: string) => {
         if (res == ResponseStrings.Yes) {
-          this.taskCompleted = true;
-          this.back.emit(this.taskCompleted);
+      
+      await  this.TaskCompleteEOB();
         }
         else if (res == ResponseStrings.No) {
           await this.taskComplete();
@@ -382,7 +339,51 @@ export class VerifyBulkComponent implements OnInit {
       await this.taskComplete();
     }
   }
+TaskCompleteEOB(){
+  let order = this.orderLines.filteredData.filter(x=> (x.transactionQuantity > x.completedQuantity));
+         
+  if(order.length > 0){ 
+    this.spinnerService.IsLoader = true; 
+     if(this.Prefernces.systemPreferences.shortPickFindNewLocation) {
+   
+      let apiCalled = false;
+          for (let i = 0; i < 10 && !apiCalled; i++) { 
+                setTimeout(() => {
+                    if (!apiCalled) {
+                        this.iAdminApiService.orderline(order[0].id).subscribe((res: any) => {
+                            if (res.zone != "" && res.zone) {
+                                apiCalled = true;
+                            }
+                        });
+                    }
+                }, 2000 * i);
+            }
+  } 
+  if(this.Prefernces.systemPreferences.shortPickFindNewLocation || this.Prefernces.systemPreferences.displayEob){ 
+    setTimeout(() => {
+      const orderNumbers: string[] = Array.from(new Set(order.map(item => item.orderNumber)));
+      this.iAdminApiService.endofbatch({orderNumbers:orderNumbers}).subscribe((res: any) => {
+        this.spinnerService.IsLoader = false;
+        const dialogRef1: any = this.global.OpenDialog(PickRemainingComponent, {
+          height: 'auto',
+          width: Style.w786px,
+          autoFocus: DialogConstants.autoFocus,
+          disableClose: true,
+          data: res
+        });
+        dialogRef1.afterClosed().subscribe(async (resp: any) => { 
+            this.back.emit(this.taskCompleted); 
+        });
+      });
+    }, this.Prefernces?.systemPreferences?.shortPickFindNewLocation ? 5000:0);
 
+  } 
+  this.spinnerService.IsLoader = false;
+  }else{ 
+    this.taskCompleted = true;
+    this.back.emit(this.taskCompleted);
+  }
+}
   showNoRemainings() {
     const dialogRef1: any = this.global.OpenDialog(ConfirmationDialogComponent, {
       height: 'auto',
