@@ -485,7 +485,7 @@ export class AddInvMapLocationComponent implements OnInit {
           if (this.data.detailData) {
             this.clickSubmit = false;
             if(!this.zoneChecker(form.value.zone, form.value.location)){
-              this.global.ShowToastr(ToasterType.Error,"Zone and Location need be set via the dropdown in order to save.", ToasterTitle.Warning);
+              this.global.ShowToastr(ToasterType.Error,"Zone and Location need to be set via the dropdown in order to save.", ToasterTitle.Warning);
               return
             }
             if(this.warehouseSensitive && form.value.warehouse == ''){
@@ -510,7 +510,7 @@ export class AddInvMapLocationComponent implements OnInit {
           } else {
             this.clickSubmit = false;
             if(!this.zoneChecker(form.value.zone, form.value.location)){
-              this.global.ShowToastr(ToasterType.Error,"Zone and Location need be set via the dropdown in order to save.", ToasterTitle.Warning);
+              this.global.ShowToastr(ToasterType.Error,"Zone and Location need to be set via the dropdown in order to save.", ToasterTitle.Warning);
               return
             }
             if(this.warehouseSensitive && form.value.warehouse == ''){
