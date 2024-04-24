@@ -73,7 +73,7 @@ export class BpNumberSelectionComponent implements OnInit {
     return this.cusValidator.numberOnly(event);
   }
   done() { 
-    if(!this.IsFullTote || this.newQuantity <= this.toteQuantity){
+    if (!this.IsFullTote || (this.newQuantity <= this.toteQuantity && this.newQuantity >= 0)){
     if (this.from == "completed quantity") {
       //if (this.Prefernces.systemPreferences.zeroLocationQuantityCheck) {
         const dialogRef1: any = this.global.OpenDialog(ConfirmationDialogComponent, {
