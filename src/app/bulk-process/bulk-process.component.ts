@@ -17,6 +17,7 @@ export class BulkProcessComponent implements OnInit {
     public authService: AuthService
     ) { }
   ngOnInit(): void {
+    localStorage.removeItem("verifyBulks");
   }
   
   updateMenu(menu = '', route = ''){   

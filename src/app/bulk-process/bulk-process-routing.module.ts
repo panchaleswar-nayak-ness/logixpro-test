@@ -3,10 +3,9 @@ import { RouterModule, Routes } from '@angular/router';
 import { BulkProcessComponent } from './bulk-process.component';
 import { BulkPickComponent } from './bulk-pick/bulk-pick.component';
 import { AuthGuardGuard } from '../common/guard/auth-guard.guard';
-import { BulkPutAwayComponent } from './bulk-put-away/bulk-put-away.component';
 import { PreferencesComponent } from './preferences/preferences.component';
-import { BulkCountComponent } from './bulk-count/bulk-count.component';
 import { ConfirmationGuard } from '../common/guard/confirmation-guard.guard';
+import { BulkVerificationGuard } from '../common/guard/bulk-verification.guard';
 
 const routes: Routes = [
 { 
@@ -44,6 +43,7 @@ const routes: Routes = [
   path: 'BulkCount',
   loadChildren: () =>
     import('./bulk-transaction/bulk-transaction.module').then((m) => m.BulkTransactionModule),
+    canDeactivate: [BulkVerificationGuard],
   canActivate: [AuthGuardGuard], 
   data: {title: 'Bulk Count'}
 },  
@@ -51,6 +51,7 @@ const routes: Routes = [
   path: 'BulkPick',
   loadChildren: () =>
     import('./bulk-transaction/bulk-transaction.module').then((m) => m.BulkTransactionModule),
+    canDeactivate: [BulkVerificationGuard],
   canActivate: [AuthGuardGuard], 
   data: {title: 'Bulk Pick'}
 },  
@@ -58,6 +59,7 @@ const routes: Routes = [
   path: 'BulkPutAway',
   loadChildren: () =>
     import('./bulk-transaction/bulk-transaction.module').then((m) => m.BulkTransactionModule),
+    canDeactivate: [BulkVerificationGuard],
   canActivate: [AuthGuardGuard], 
   data: {title: 'Bulk Put Away'}
 },  
