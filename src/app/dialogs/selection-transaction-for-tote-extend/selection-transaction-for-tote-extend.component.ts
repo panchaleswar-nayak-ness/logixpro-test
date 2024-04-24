@@ -596,11 +596,6 @@ export class SelectionTransactionForToteExtendComponent implements OnInit {
       return false;
     }
 
-    if (val.toteQty <= 0) {
-      this.global.ShowToastr(ToasterType.Error,'Quantity should be greater 0', ToasterTitle.Error);
-      return false;
-    }
-
     return true;
   }
 
