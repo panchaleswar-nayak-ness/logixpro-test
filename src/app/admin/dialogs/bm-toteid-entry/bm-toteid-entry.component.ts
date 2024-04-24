@@ -72,13 +72,14 @@ export class BmToteidEntryComponent implements OnInit {
   }
 
   createNextTote() {
-    if (this.view != 'batch' && this.view != 'tote') {
-      this.selectedList.forEach((element, i) => {
-        this.bulkProcessApiService.BatchNextTote(this.selectedList.length).then((res) => {
-          this.nextToteID = res.body?.nextId;
+    if(this.view != 'batch' && this.view != 'tote'){
+      this.bulkProcessApiService.BatchNextTote(this.selectedList.length).then((res) => {
+        this.nextToteID = res.body?.nextId;
+        this.selectedList.forEach((element, i) => {
           this.selectedList[i].IsTote = false;
           this.selectedList[i].IsError = false;
-          this.selectedList[i]['toteId'] = parseInt(this.nextToteID);
+          this.selectedList[i]['toteId'] =
+            parseInt(this.nextToteID) + i + 1;
         });
       });
     }
