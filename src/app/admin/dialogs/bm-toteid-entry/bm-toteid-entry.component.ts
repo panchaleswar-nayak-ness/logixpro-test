@@ -76,7 +76,7 @@ export class BmToteidEntryComponent implements OnInit {
       return;
     }
 
-    this.bulkProcessApiService.BatchNextTote(this.selectedList.length).then((res) => {
+    this.bulkProcessApiService.BatchNextTote(this.selectedList.length + 1).then((res) => {
       this.nextToteID = res.body?.nextId;
       this.selectedList.forEach((element, i) => {
         this.selectedList[i].IsTote = false;

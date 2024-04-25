@@ -39,7 +39,7 @@
         <div class="col-xl-6">
             <mat-form-field class="custom-form-field w-100 mb-2" appearance="outline">
                 <mat-label>New Tote ID</mat-label>
-                <input matInput type="text" [(ngModel)]="data.NewToteID" (change)="validtote($event)" >
+                <input matInput type="text" [(ngModel)]="data.NewToteID"> <!-- (change)="validtote($event)" -->
                 <button matSuffix class="clear-btn" (click)="data.NewToteID = ''" matTooltip="Cancel Full Tote process and close this screen."
                  matTooltipPosition="above" *ngIf="data.NewToteID != ''"><mat-icon class="text-22 text-chrome-600  d-flex align-items-center">cancel</mat-icon></button>
             </mat-form-field>
