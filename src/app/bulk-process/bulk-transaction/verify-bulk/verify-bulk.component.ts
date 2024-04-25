@@ -292,9 +292,7 @@ export class VerifyBulkComponent implements OnInit {
             await this.TaskCompleteEOB();
           }
           else {
-            this.taskCompleted = true;
-            this.back.emit(this.taskCompleted);
-            this.global.ShowToastr(ToasterType.Success, ToasterMessages.RecordUpdatedSuccessful, ToasterTitle.Success);
+            this.taskCompleteFinished();
           }
         }
       }
@@ -342,46 +340,53 @@ export class VerifyBulkComponent implements OnInit {
     let order = this.orderLines.filteredData.filter(x => (x.transactionQuantity > x.completedQuantity));
     if (order.length > 0) {
       this.spinnerService.IsLoader = true;
-      if (this.Prefernces.systemPreferences.shortPickFindNewLocation) {
+      if (this.Prefernces.systemPreferences.shortPickFindNewLocation && this.Prefernces.systemPreferences.displayEob) {
         let apiCalled = false;
         for (let i = 0; i < 10 && !apiCalled; i++) {
           setTimeout(() => {
             if (!apiCalled) {
               this.iAdminApiService.orderline(order[0].id).subscribe((res: any) => {
-                if (res.zone != "" && res.zone) {
-                  apiCalled = true;
-                }
+                if (res.zone != "" && res.zone) apiCalled = true;
               });
             }
           }, 2000 * i);
         }
       }
-      if (this.Prefernces.systemPreferences.shortPickFindNewLocation || this.Prefernces.systemPreferences.displayEob) {
-        setTimeout(() => {
-          const orderNumbers: string[] = Array.from(new Set(order.map(item => item.orderNumber)));
-          this.iAdminApiService.endofbatch({ orderNumbers: orderNumbers }).subscribe((res: any) => {
-            this.spinnerService.IsLoader = false;
-            if (res.length > 0) {
-              const dialogRef1: any = this.global.OpenDialog(PickRemainingComponent, {
-                height: 'auto',
-                width: Style.w786px,
-                autoFocus: DialogConstants.autoFocus,
-                disableClose: true,
-                data: res
-              });
-              dialogRef1.afterClosed().subscribe(async (resp: any) => {
-                this.back.emit(this.taskCompleted);
-              }); 
-            }
-          });
-        }, this.Prefernces?.systemPreferences?.shortPickFindNewLocation ? 5000 : 0);
-
-      }
+      
       this.spinnerService.IsLoader = false;
+    }
+
+    if (this.Prefernces.systemPreferences.displayEob) {
+      setTimeout(() => {
+        const orderNumbers: string[] = Array.from(new Set(order.map(item => item.orderNumber)));
+        this.iAdminApiService.endofbatch({ orderNumbers: orderNumbers }).subscribe((res: any) => {
+          this.spinnerService.IsLoader = false;
+          if (res.length > 0) {
+            const dialogRef1: any = this.global.OpenDialog(PickRemainingComponent, {
+              height: 'auto',
+              width: Style.w786px,
+              autoFocus: DialogConstants.autoFocus,
+              disableClose: true,
+              data: res
+            });
+            dialogRef1.afterClosed().subscribe(async (resp: any) => {
+              this.taskCompleteFinished();
+            }); 
+          } else {
+            this.taskCompleteFinished();
+          }
+        });
+      }, this.Prefernces?.systemPreferences?.shortPickFindNewLocation ? 5000 : 0);
+
     } else {
+      this.taskCompleteFinished();
+    }
+  }
+
+  taskCompleteFinished() {
       this.taskCompleted = true;
       this.back.emit(this.taskCompleted);
-    }
+      this.global.ShowToastr(ToasterType.Success, ToasterMessages.RecordUpdatedSuccessful, ToasterTitle.Success);
   }
 
   showNoRemainings() {
