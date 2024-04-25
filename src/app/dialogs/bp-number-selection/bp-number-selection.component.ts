@@ -23,6 +23,7 @@ export class BpNumberSelectionComponent implements OnInit {
   public iBulkProcessApiService: IBulkProcessApiService;
   from: string = "completed quantity";
   @ViewChild('autoFocusField') searchBoxField: ElementRef;
+  url : string;
 
   constructor(
     public dialogRef: MatDialogRef<BpNumberSelectionComponent>,
@@ -35,6 +36,7 @@ export class BpNumberSelectionComponent implements OnInit {
     this.from = this.data.from;
     this.toteQuantity = this.data?.toteQuantity;
     this.IsFullTote = this.data?.IsFullTote;
+    this.url = this.data.url;
   }
 
   ngOnInit(): void {
@@ -75,7 +77,7 @@ export class BpNumberSelectionComponent implements OnInit {
   done() { 
     if (!this.IsFullTote || (this.newQuantity <= this.toteQuantity && this.newQuantity >= 0)){
     if (this.from == "completed quantity") {
-      //if (this.Prefernces.systemPreferences.zeroLocationQuantityCheck) {
+      if (this.Prefernces.systemPreferences.zeroLocationQuantityCheck && this.url == "Pick") {
         const dialogRef1: any = this.global.OpenDialog(ConfirmationDialogComponent, {
           height: 'auto',
           width: Style.w560px,
@@ -102,7 +104,9 @@ export class BpNumberSelectionComponent implements OnInit {
             this.dialogRef.close({ newQuantity: this.newQuantity.toString(), type: ResponseStrings.Cancel });
           }
         });
-    //  }
+      } else {
+        this.dialogRef.close({ newQuantity:this.newQuantity.toString()});
+      }
     }
     else if (this.from == "qunatity put in new tote") {
       this.dialogRef.close(this.newQuantity.toString());

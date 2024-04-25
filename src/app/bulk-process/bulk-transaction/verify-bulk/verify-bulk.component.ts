@@ -182,6 +182,7 @@ export class VerifyBulkComponent implements OnInit {
       autoFocus: DialogConstants.autoFocus,
       disableClose: true,
       data: {
+        url: this.url,
         completedQuantity: element.completedQuantity,
         from: "completed quantity"
       }
@@ -217,6 +218,8 @@ export class VerifyBulkComponent implements OnInit {
             this.global.ShowToastr(ToasterType.Success, ToasterMessages.RecordUpdatedSuccessful, ToasterTitle.Success);
           }
         });
+        element.completedQuantity = resp.newQuantity;
+      } else {
         element.completedQuantity = resp.newQuantity;
       }
     });
@@ -358,16 +361,18 @@ export class VerifyBulkComponent implements OnInit {
           const orderNumbers: string[] = Array.from(new Set(order.map(item => item.orderNumber)));
           this.iAdminApiService.endofbatch({ orderNumbers: orderNumbers }).subscribe((res: any) => {
             this.spinnerService.IsLoader = false;
-            const dialogRef1: any = this.global.OpenDialog(PickRemainingComponent, {
-              height: 'auto',
-              width: Style.w786px,
-              autoFocus: DialogConstants.autoFocus,
-              disableClose: true,
-              data: res
-            });
-            dialogRef1.afterClosed().subscribe(async (resp: any) => {
-              this.back.emit(this.taskCompleted);
-            });
+            if (res.length > 0) {
+              const dialogRef1: any = this.global.OpenDialog(PickRemainingComponent, {
+                height: 'auto',
+                width: Style.w786px,
+                autoFocus: DialogConstants.autoFocus,
+                disableClose: true,
+                data: res
+              });
+              dialogRef1.afterClosed().subscribe(async (resp: any) => {
+                this.back.emit(this.taskCompleted);
+              }); 
+            }
           });
         }, this.Prefernces?.systemPreferences?.shortPickFindNewLocation ? 5000 : 0);
 
