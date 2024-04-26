@@ -165,7 +165,7 @@
                             <td *matCellDef="let element"
                                 (contextmenu)="onContextMenu($event, element[col.colHeader], col.colDef)" mat-cell class="table-cell-style"
                                  #tooltip="matTooltip" matTooltipPosition="above"
-                                [matTooltip]="element[col.colHeader]" [matTooltipDisabled]="element[col.colHeader] && element[col.colHeader].length >= 20 ? false : true">
+                                [matTooltip]="element[col.colHeader]" [matTooltipDisabled]="element[col.colHeader] && element[col.colHeader].length > 19 ? false : true">
                                 {{ element[col.colHeader] }}</td>
                         </ng-container>
 
