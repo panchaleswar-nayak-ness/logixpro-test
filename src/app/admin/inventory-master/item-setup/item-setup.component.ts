@@ -1,4 +1,4 @@
-import { Component, Input, SimpleChanges} from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, SimpleChanges} from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { CellSizeComponent } from '../../dialogs/cell-size/cell-size.component';
 import { VelocityCodeComponent } from '../../dialogs/velocity-code/velocity-code.component';
@@ -6,22 +6,30 @@ import { SharedService } from 'src/app/common/services/shared.service';
 import { MatCheckboxChange } from '@angular/material/checkbox';
 import { GlobalService } from 'src/app/common/services/global.service';
 import {  DialogConstants ,UniqueConstants} from 'src/app/common/constants/strings.constants';
+import { TableContextMenuService } from 'src/app/common/globalComponents/table-context-menu-component/table-context-menu.service';
+import { ContextMenuFiltersService } from 'src/app/common/init/context-menu-filters.service';
 @Component({
   selector: 'app-item-setup',
   templateUrl: './item-setup.component.html',
   styleUrls: ['./item-setup.component.scss']
 })
-export class ItemSetupComponent {
+export class ItemSetupComponent implements OnInit {
 
   disableSecondaryZone=true;
   @Input() itemSetup: FormGroup;
   
   public userData: any;
-  
+  @Output() notifyContextMenu: EventEmitter<any> = new EventEmitter(); 
+  filterString : string = UniqueConstants.OneEqualsOne;
+  @Input() isActiveTrigger:boolean =false;
   constructor(
     private global: GlobalService, 
-    private sharedService: SharedService) {}
-
+    private sharedService: SharedService,
+    private filterService:ContextMenuFiltersService,
+    private contextMenuService : TableContextMenuService) {}
+    ngOnInit(){
+      this.filterService.filterString="";
+    }
   ngOnChanges(changes: SimpleChanges) {
     this.itemSetup.controls['secondaryPickZone'].disable();
     if (changes['itemSetup'])
@@ -63,7 +71,19 @@ export class ItemSetupComponent {
        }
     });
   } 
-
+  optionSelected(filter : string) {
+    this.filterString = filter;
+    this.notifyContextMenu.emit(this.filterString);  
+    this.isActiveTrigger = false;
+  }
+  onContextMenu(event: any,   FilterColumnName?: any, FilterConditon?: any, FilterItemType?: any) { 
+    debugger
+    event.preventDefault()
+    this.isActiveTrigger = true;
+    setTimeout(() => {
+      this.contextMenuService.updateContextMenuState(event, event.target.value ?event.target.value :event.target.textContent, FilterColumnName, FilterConditon, FilterItemType);
+    }, 100);
+  }
   public openVelocityCodeDialog(param) {
     let currentValue="";
     if(param == UniqueConstants.goldenZone) currentValue = this.itemSetup.controls[UniqueConstants.goldenZone].value;

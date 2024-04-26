@@ -18,6 +18,7 @@
                         <td mat-cell *matCellDef="let element; let i = index">
                             <mat-form-field class="custom-form-field w-100" class="padding-15" appearance="outline">
                                 <input (input)="scanCodesList[i].isDisabled=false;handleInputChangeInput($event)"
+                                (contextmenu)="onContextMenu($event, 'Scan Code')"
                                     (keydown.shift.enter)="$event.preventDefault()" matInput type="text" #scanCode
                                     name="{{element.scanCode}}" [(ngModel)]="element.scanCode" maxlength="50" required>
                             </mat-form-field>
@@ -32,7 +33,7 @@
                                         <mat-icon
                                         class="text-tertiary-900 rotate-45">unfold_more</mat-icon>
                                     </span>
-                                    <input (input)="scanCodesList[i].isDisabled=false" readonly
+                                    <input (input)="scanCodesList[i].isDisabled=false" readonly  (contextmenu)="onContextMenu($event, 'Scan Type')"
                                         class="__grab_cursor readonly" matInput type="text" name="{{element.scanType}}"
                                         [(ngModel)]="element.scanType"  maxlength="50" #scanType />
                                 </mat-form-field>
@@ -42,7 +43,7 @@
                         <th mat-header-cell *matHeaderCellDef> Scan Range </th>
                         <td mat-cell *matCellDef="let element; let i = index">
                             <mat-form-field class="custom-form-field w-100" class="padding-15" appearance="outline">
-                                <mat-select [(ngModel)]="element.scanRange"  #scanRange  
+                                <mat-select [(ngModel)]="element.scanRange"  #scanRange  (contextmenu)="onContextMenu($event, 'Scan Range')"
                                     (selectionChange)="scanCodesList[i].isDisabled=false;changeScanRange(element)">
                                     <mat-option *ngFor="let val of scanRangeList" [value]="val">{{val}}</mat-option>
                                 </mat-select>
@@ -54,7 +55,7 @@
                         <td mat-cell *matCellDef="let element; let i = index">
                             <mat-form-field class="custom-form-field w-100" class="padding-15" appearance="outline">
                                 <input (keypress)="numberOnly($event)"
-                                    (input)="scanCodesList[i].isDisabled=false;handleInputChange($event)"
+                                    (input)="scanCodesList[i].isDisabled=false;handleInputChange($event)" (contextmenu)="onContextMenu($event, 'Start Position')"
                                     (keydown.shift.enter)="$event.preventDefault()" matInput type="number"
                                     name="{{element.startPosition}}" [(ngModel)]="element.startPosition" #startPosition
                                     pattern="^[0-9]*$" maxlength="9">
@@ -66,7 +67,7 @@
                         <td mat-cell *matCellDef="let element; let i = index">
                             <mat-form-field class="custom-form-field w-100" class="padding-15" appearance="outline">
                                 <input (keypress)="numberOnly($event)"
-                                    (input)="scanCodesList[i].isDisabled=false;handleInputChange($event)"
+                                    (input)="scanCodesList[i].isDisabled=false;handleInputChange($event)"(contextmenu)="onContextMenu($event, 'Code Length')"
                                     (keydown.shift.enter)="$event.preventDefault()" matInput type="number"
                                     name="{{element.codeLength}}" 
                                     [(ngModel)]="element.codeLength" #codeLength
@@ -106,3 +107,5 @@
         </div>
     </mat-card-content>
 </mat-card>
+
+<app-table-context-menu-component *ngIf="isActiveTrigger" (optionSelected)="optionSelected($event)" [componentName]="'InvMap'"></app-table-context-menu-component>

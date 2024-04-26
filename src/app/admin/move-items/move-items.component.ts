@@ -15,6 +15,7 @@ import { CommonApiService } from 'src/app/common/services/common-api/common-api.
 import { GlobalService } from 'src/app/common/services/global.service';
 import { TableContextMenuService } from 'src/app/common/globalComponents/table-context-menu-component/table-context-menu.service';
 import { DialogConstants, ToasterTitle, ToasterType ,ResponseStrings,Column,zoneType,ColumnDef,TableConstant,Style,UniqueConstants,FilterColumnName,StringConditions} from 'src/app/common/constants/strings.constants';
+import { ContextMenuFiltersService } from 'src/app/common/init/context-menu-filters.service';
 
 const TRNSC_DATA = [
   { colHeader: TableConstant.WareHouse, colDef: ColumnDef.Warehouse },
@@ -151,11 +152,13 @@ export class MoveItemsComponent implements OnInit {
     private authService : AuthService,
     private global : GlobalService,
     public adminApiService : AdminApiService,
+    private filterService:ContextMenuFiltersService,
     private renderer: Renderer2,
     private contextMenuService : TableContextMenuService
   ) {
     this.userData = this.authService.userData();
     this.iAdminApiService = adminApiService;
+    this.filterService.filterString = "";
     this.iCommonAPI = commonAPI;
   }
 

@@ -72,12 +72,13 @@ export class EventLogComponent implements OnInit {
     private global: GlobalService,
     private authService: AuthService,
     private contextMenuService : TableContextMenuService,
-    private dialog: MatDialog,
-    public filterService: ContextMenuFiltersService,
+    private dialog: MatDialog, 
     public adminApiService: AdminApiService,
     private datepipe: DatePipe,
-    private router: Router
+    private router: Router,
+    private filterService: ContextMenuFiltersService, 
   ) {
+    this.filterService.filterString= "";
     this.iAdminApiService = adminApiService;
   }
 

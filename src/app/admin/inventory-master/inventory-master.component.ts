@@ -24,7 +24,8 @@ import { GlobalService } from 'src/app/common/services/global.service';
 import { QuarantineDialogComponent } from '../dialogs/quarantine-dialog/quarantine-dialog.component';
 import { UnquarantineDialogComponent } from '../dialogs/unquarantine-dialog/unquarantine-dialog.component';
 import { ToasterTitle,ResponseStrings,ToasterType,KeyboardKeys,StringConditions,Column,DialogConstants,Style,UniqueConstants} from 'src/app/common/constants/strings.constants';
-import { AppNames } from 'src/app/common/constants/menu.constants';
+import { AppNames } from 'src/app/common/constants/menu.constants'; 
+import { ContextMenuFiltersService } from 'src/app/common/init/context-menu-filters.service';
 
 @Component({
   selector: 'app-inventory-master',
@@ -70,6 +71,7 @@ export class InventoryMasterComponent implements OnInit {
   public totalPicks: any;
   public totalPuts: any;
   public wipCount: any;
+  filterString : string = UniqueConstants.OneEqualsOne;
   public append: any;
   itemNumberParam$: Observable<any>;
   addItemNumberParam$: Observable<any>;
@@ -88,9 +90,11 @@ export class InventoryMasterComponent implements OnInit {
     private fb: FormBuilder,
     private router: Router,
     private spinnerService: SpinnerService,
+    private filterService:ContextMenuFiltersService,
     private route: ActivatedRoute,
     private sharedService: SharedService,
-    private currentTabDataService: CurrentTabDataService
+    private currentTabDataService: CurrentTabDataService,
+    
   ) {
     this.iAdminApiService = adminApiService;
   }
@@ -106,6 +110,8 @@ export class InventoryMasterComponent implements OnInit {
 
   @HostListener('window:scroll', [UniqueConstants.event]) // for window scroll events
   @HostListener('document:keydown', [UniqueConstants.event])
+
+  
 
   //  SHORTCUT KEYS
   @HostListener('document:keydown', [UniqueConstants.event])
@@ -210,7 +216,10 @@ export class InventoryMasterComponent implements OnInit {
   @ViewChild('autoFocusField') searchBoxField: ElementRef;
 
   public setVal: boolean = false;
-
+ContextMenu($event:any){
+  this.filterString = $event;
+  this.getInventory();
+}
   async ngOnInit() {
     if(localStorage.getItem("prevTab")){
       localStorage.setItem("newTabNavigated","true");
@@ -364,6 +373,7 @@ export class InventoryMasterComponent implements OnInit {
   public getInventory(init: boolean= false,param?) {
     let payLoad = {
       "itemNumber": param ?? this.currentPageItemNo,
+      "filter": this.filterString
     }
 
     this.iAdminApiService.GetInventoryItemNumber(payLoad).subscribe((res:any) => {
@@ -395,7 +405,8 @@ export class InventoryMasterComponent implements OnInit {
     let payLoad = {
       "itemNumber": currentPageItemNumber,
       "app": "",
-      "newItem": false
+      "newItem": false,
+      "filter": this.filterString
     }
     this.iAdminApiService.GetInventory(payLoad).subscribe((res: any) => {
       if(res.isExecuted)
@@ -498,7 +509,7 @@ export class InventoryMasterComponent implements OnInit {
     if (this.paginationData.position >= 1 && this.paginationData.position <= this.paginationData.total) {
       let payLoad = {
         "itemNumber": this.currentPageItemNo,
-        "filter": "1=1",
+        "filter": this.filterString,
         "firstItem": 1
       }
       this.iAdminApiService.NextItemNumber(payLoad).subscribe((res: any) => {
@@ -916,7 +927,7 @@ export class InventoryMasterComponent implements OnInit {
       this.isTabChange = true;
       this.spinnerService.show();
       let IsCheck = this.getChangesCheck();
-
+      this.filterService.filterString = "";
       if (IsCheck) { 
         this.ConfirmationDialog(tab.index);
         this.tabIndex = this.prevTabIndex;
@@ -937,6 +948,7 @@ export class InventoryMasterComponent implements OnInit {
         this.spinnerService.hide();
       }, 500);
     }
+    
   }
 
   async ConfirmationDialog(tabIndex) { 

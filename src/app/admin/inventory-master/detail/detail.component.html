@@ -10,13 +10,13 @@
               <span matSuffix>
                 <mat-icon class="unfold_more">unfold_more</mat-icon>
               </span>
-              <input matInput readonly class="__grab_cursor readonly" type="text" formControlName="itemNumber"  maxlength="50">
+              <input matInput readonly class="__grab_cursor readonly" type="text" formControlName="itemNumber"  (contextmenu)=" onContextMenu($event, 'Item Number')" maxlength="50">
             </mat-form-field>
           </div>
           <div class="col-xl-6">
             <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline">
               <mat-label>Supplier Item ID</mat-label>
-              <input (keyup)="handleInputChange($event)" matInput type="text" formControlName="supplierItemID" maxlength="50">
+              <input (keyup)="handleInputChange($event)" (contextmenu)=" onContextMenu($event, 'Supplier Item ID')"  matInput type="text" formControlName="supplierItemID" maxlength="50">
             </mat-form-field>
           </div>
 
@@ -28,7 +28,7 @@
             <span matSuffix>
               <mat-icon class="unfold_more">unfold_more</mat-icon>
             </span>
-            <input readonly class="__grab_cursor readonly" matInput type="text" formControlName="description"  maxlength="255"/>
+            <input readonly class="__grab_cursor readonly" matInput type="text" formControlName="description"   (contextmenu)=" onContextMenu($event, 'Description')"  maxlength="255"/>
           </mat-form-field>
         </div>
 
@@ -37,7 +37,7 @@
             <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline">
               <mat-label>Reorder Point</mat-label>
    
-              <input (keyup)="handleInputChange($event)" [NumbersOnly]="true"  matInput type="text" formControlName="reorderPoint" maxlength="9">
+              <input (keyup)="handleInputChange($event)" [NumbersOnly]="true"   (contextmenu)=" onContextMenu($event, 'Reorder Point')"  matInput type="text" formControlName="reorderPoint" maxlength="9">
    
             </mat-form-field>
           </div>
@@ -45,7 +45,7 @@
           <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline">
             <mat-label>Replenishment Point</mat-label>
  
-            <input  (input)="handleInputChange($event)" [NumbersOnly]="true"  matInput type="text" formControlName="replenishmentPoint" maxlength="9">
+            <input  (input)="handleInputChange($event)" [NumbersOnly]="true"  matInput type="text"(contextmenu)=" onContextMenu($event, 'Replenishment Point')"  formControlName="replenishmentPoint" maxlength="9">
  
           </mat-form-field>
           </div>
@@ -55,7 +55,7 @@
             <span matSuffix>
               <mat-icon class="unfold_more">unfold_more</mat-icon>
             </span>
-            <input matInput type="text" formControlName="category" maxlength="50" readonly>
+            <input matInput type="text"  (contextmenu)=" onContextMenu($event, 'Category')" formControlName="category" maxlength="50" readonly>
           </mat-form-field>
           </div>
         </div>
@@ -64,7 +64,7 @@
           <div class="col-xl-4">
             <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline">
               <mat-label>Reorder Quantity</mat-label> 
-              <input (input)="handleInputChange($event)" [NumbersOnly]="true" matInput type="text" formControlName="reorderQuantity" maxlength="9">
+              <input (input)="handleInputChange($event)" [NumbersOnly]="true" matInput type="text" (contextmenu)=" onContextMenu($event, 'Reorder Quantity')"  formControlName="reorderQuantity" maxlength="9">
    
             </mat-form-field>
           </div>
@@ -72,7 +72,7 @@
             <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline">
               <mat-label>Replenishment Level</mat-label>
    
-              <input (input)="handleInputChange($event)" [NumbersOnly]="true"  matInput type="text" formControlName="replenishmentLevel" maxlength="9" >
+              <input (input)="handleInputChange($event)" [NumbersOnly]="true"  (contextmenu)=" onContextMenu($event, 'Replenishment Level')"   matInput type="text" formControlName="replenishmentLevel" maxlength="9" >
    
             </mat-form-field>
           </div>
@@ -82,7 +82,7 @@
               <span matSuffix>
                 <mat-icon class="unfold_more">unfold_more</mat-icon>
               </span>
-              <input matInput type="text" formControlName="subCategory" maxlength="50" readonly >
+              <input matInput type="text"  (contextmenu)=" onContextMenu($event, 'Sub Category')" formControlName="subCategory" maxlength="50" readonly >
             </mat-form-field>
           </div>
         </div>
@@ -94,19 +94,20 @@
               <span matSuffix>
                 <mat-icon class="unfold_more">unfold_more</mat-icon>
               </span>
-              <input matInput type="text" formControlName="unitOfMeasure" maxlength="50" readonly >
+              <input matInput type="text" formControlName="unitOfMeasure"  (contextmenu)=" onContextMenu($event, 'Unit Of Measure')" maxlength="50" readonly >
             </mat-form-field>
           </div>
           <div class="col-xl-4">
             <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline">
               <mat-label>KanBan Replenishment Point </mat-label> 
-              <input [NumbersOnly]="true" (input)="handleInputChange($event)" matInput type="text" formControlName="kanbanReplenishmentPoint"  maxlength="9">
+              <input [NumbersOnly]="true" (input)="handleInputChange($event)" matInput type="text" (contextmenu)=" onContextMenu($event, 'Kanban Replenishment Point')"  formControlName="kanbanReplenishmentPoint"  maxlength="9">
             </mat-form-field>
           </div>
           <div class="col-xl-4">
             <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline">
               <mat-label>KanBan Replenishment Level</mat-label>                            
-              <input [NumbersOnly]="true" (input)="handleInputChange($event)" matInput type="text" formControlName="kanbanReplenishmentLevel" maxlength="9" >
+              <input [NumbersOnly]="true" (input)="handleInputChange($event)"  (contextmenu)=" onContextMenu($event, 'Kanban Replenishment Level')"  
+              matInput type="text" formControlName="kanbanReplenishmentLevel" maxlength="9" >
             </mat-form-field>
           </div>
         </div>
@@ -175,3 +176,5 @@
     </div>
     
 </div>
+
+<app-table-context-menu-component *ngIf="isActiveTrigger" (optionSelected)="optionSelected($event)" [componentName]="'InvMap'"></app-table-context-menu-component>

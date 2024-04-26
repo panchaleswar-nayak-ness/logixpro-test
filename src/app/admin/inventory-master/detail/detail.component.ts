@@ -14,6 +14,8 @@ import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.ser
 import { GlobalService } from 'src/app/common/services/global.service';
 import { DialogConstants, StringConditions, ToasterMessages, ToasterTitle, ToasterType, Style,UniqueConstants } from 'src/app/common/constants/strings.constants';
 import { AppNames } from 'src/app/common/constants/menu.constants';
+import { TableContextMenuService } from 'src/app/common/globalComponents/table-context-menu-component/table-context-menu.service';
+import { ContextMenuFiltersService } from 'src/app/common/init/context-menu-filters.service';
 
 
 @Component({
@@ -28,8 +30,11 @@ export class DetailComponent implements OnInit {
   public iAdminApiService: IAdminApiService;
   @Input() details: FormGroup;
   public userData: any;
-  @Output() notifyParent: EventEmitter<any> = new EventEmitter();
 
+  @Output() notifyParent: EventEmitter<any> = new EventEmitter(); 
+  @Output() notifyContextMenu: EventEmitter<any> = new EventEmitter(); 
+  filterString : string = UniqueConstants.OneEqualsOne;
+  @Input() isActiveTrigger:boolean =false;
   sendNotification(notification) {
     this.notifyParent.emit(notification);
   }
@@ -43,6 +48,8 @@ export class DetailComponent implements OnInit {
     private authService: AuthService,
     public adminApiService: AdminApiService,
     private global:GlobalService,
+    private contextMenuService : TableContextMenuService,
+    private filterService:ContextMenuFiltersService,
     private currentTabDataService: CurrentTabDataService,
   ) {
     this.iAdminApiService = adminApiService;
@@ -54,6 +61,7 @@ export class DetailComponent implements OnInit {
 
   ngOnInit(): void {
     this.userData = this.authService.userData();
+    this.filterService.filterString = "";
     this.setVal = localStorage.getItem('routeFromOrderStatus') === StringConditions.True;
     this.spliUrl=this.router.url.split('/');
     this.eventsSubscription = this.events.subscribe((val) => {
@@ -143,7 +151,18 @@ export class DetailComponent implements OnInit {
       this.sharedService.updateInvMasterState(result, true)
     })
   }
-
+  optionSelected(filter : string) {
+    this.filterString = filter;
+    this.notifyContextMenu.emit(this.filterString);  
+    this.isActiveTrigger = false;
+  }
+  onContextMenu(event: any,   FilterColumnName?: any, FilterConditon?: any, FilterItemType?: any) { 
+    event.preventDefault()
+    this.isActiveTrigger = true;
+    setTimeout(() => {
+      this.contextMenuService.updateContextMenuState(event, event.target.value, FilterColumnName, FilterConditon, FilterItemType);
+    }, 100);
+  }
   public openUmDialog() {
     let dialogRef:any = this.global.OpenDialog(UnitMeasureComponent, {
       height: DialogConstants.auto,

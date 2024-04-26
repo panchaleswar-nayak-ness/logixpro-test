@@ -339,48 +339,55 @@ export class VerifyBulkComponent implements OnInit {
   async TaskCompleteEOB() {
     let order = this.orderLines.filteredData.filter(x => (x.transactionQuantity > x.completedQuantity));
     if (order.length > 0) {
-      this.spinnerService.IsLoader = true;
-      if (this.Prefernces.systemPreferences.shortPickFindNewLocation && this.Prefernces.systemPreferences.displayEob) {
-        let apiCalled = false;
-        for (let i = 0; i < 10 && !apiCalled; i++) {
-          setTimeout(() => {
-            if (!apiCalled) {
-              this.iAdminApiService.orderline(order[0].id).subscribe((res: any) => {
-                if (res.zone != "" && res.zone) apiCalled = true;
-              });
-            }
-          }, 2000 * i);
-        }
-      }
-      
-      this.spinnerService.IsLoader = false;
+      this.showLoader(); // Spinner ko dikhao
+      await this.checkForZone(order[0].id); // Check karo ki zone mil gaya hai ya nahi
+      this.hideLoader(); // Spinner ko chhupao
     }
-
+  
     if (this.Prefernces.systemPreferences.displayEob) {
-      setTimeout(() => {
-        const orderNumbers: string[] = Array.from(new Set(order.map(item => item.orderNumber)));
-        this.iAdminApiService.endofbatch({ orderNumbers: orderNumbers }).subscribe((res: any) => {
-          this.spinnerService.IsLoader = false;
-          if (res.length > 0) {
-            const dialogRef1: any = this.global.OpenDialog(PickRemainingComponent, {
-              height: 'auto',
-              width: Style.w786px,
-              autoFocus: DialogConstants.autoFocus,
-              disableClose: true,
-              data: res
-            });
-            dialogRef1.afterClosed().subscribe(async (resp: any) => {
-              this.taskCompleteFinished();
-            }); 
-          } else {
-            this.taskCompleteFinished();
-          }
-        });
-      }, this.Prefernces?.systemPreferences?.shortPickFindNewLocation ? 5000 : 0);
-
+      this.showLoader(); // Spinner ko dikhao
+      await this.callEndOfBatch(order); // End of batch API call karo
+      this.hideLoader(); // Spinner ko chhupao
     } else {
       this.taskCompleteFinished();
     }
+  }
+  
+  async checkForZone(orderId: any) {
+    if (this.Prefernces.systemPreferences.shortPickFindNewLocation && this.Prefernces.systemPreferences.displayEob) {
+      for (let i = 0; i < 10; i++) {
+        await new Promise(resolve => setTimeout(resolve, 2000)); // Wait for 2 seconds
+        const res: any = await this.iAdminApiService.orderline(orderId).toPromise();
+        if (res.zone != "" && res.zone) return;
+      }
+    }
+  }
+  
+  async callEndOfBatch(order: any[]) {
+    const orderNumbers: string[] = Array.from(new Set(order.map(item => item.orderNumber)));
+    const res: any = await this.iAdminApiService.endofbatch({ orderNumbers: orderNumbers }).toPromise();
+    if (res.length > 0) {
+      const dialogRef1: any = this.global.OpenDialog(PickRemainingComponent, {
+        height: 'auto',
+        width: Style.w786px,
+        autoFocus: DialogConstants.autoFocus,
+        disableClose: true,
+        data: res
+      });
+      dialogRef1.afterClosed().subscribe(async (resp: any) => {
+        this.taskCompleteFinished();
+      }); 
+    } else {
+      this.taskCompleteFinished();
+    }
+  }
+  
+  showLoader() {
+    this.spinnerService.IsLoader = true;
+  }
+  
+  hideLoader() {
+    this.spinnerService.IsLoader = false;
   }
 
   taskCompleteFinished() {

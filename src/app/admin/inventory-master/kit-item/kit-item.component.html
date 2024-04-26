@@ -27,6 +27,7 @@
                                     <mat-icon class="text-tertiary-900 rotate-45">unfold_more</mat-icon>
                                 </span>
                                 <input (keydown.shift.enter)="$event.preventDefault()" matInput type="text" readonly
+                                (contextmenu)="onContextMenu($event, 'Item Number')"
                                     #itemNum name="{{element.itemNumber}}" [(ngModel)]="element.itemNumber" required>
                             </mat-form-field>
                         </td>
@@ -40,7 +41,7 @@
                                     <mat-icon class="text-tertiary-900 rotate-45">unfold_more</mat-icon>
                                 </span>
                                 <input (keydown.shift.enter)="$event.preventDefault()" matInput type="text"
-                                    name="{{element.description}}" [(ngModel)]="element.description"
+                                    name="{{element.description}}" [(ngModel)]="element.description" (contextmenu)="onContextMenu($event, 'Description')"
                                     (ngModelChange)="checkIfFilled($event)" readonly #itemDesc>
                             </mat-form-field>
                         </td>
@@ -50,7 +51,7 @@
                         <td mat-cell *matCellDef="let element; let i = index">
                             <mat-form-field class="custom-form-field w-100" class="padding-right-15" appearance="outline">
                                 <input (keydown.shift.enter)="$event.preventDefault()" matInput type="text"
-                                    name="{{element.specialFeatures}}"
+                                    name="{{element.specialFeatures}}"  (contextmenu)="onContextMenu($event, 'Special Features')"
                                     (ngModelChange)="onRowUpdate(element.specialFeatures,$event,i)"
                                     [(ngModel)]="element.specialFeatures" #specialFeature maxlength="255">
                             </mat-form-field>
@@ -61,7 +62,7 @@
                         <td mat-cell *matCellDef="let element; let i = index">
                             <mat-form-field class="custom-form-field w-100" class="padding-right-15" appearance="outline">
                                 <input (keydown.shift.enter)="$event.preventDefault()" matInput type="text"
-                                    (ngModelChange)="onRowUpdate(element.kitQuantity, $event,i)"
+                                    (ngModelChange)="onRowUpdate(element.kitQuantity, $event,i)"  (contextmenu)="onContextMenu($event, 'Kit Quantity')"
                                     name="{{element.kitQuantity}}" [(ngModel)]="element.kitQuantity" #kitQuantity
                                     maxlength="9" required>
                             </mat-form-field>
@@ -171,3 +172,5 @@
     </div>
 
 </ng-template>
+
+<app-table-context-menu-component *ngIf="isActiveTrigger" (optionSelected)="optionSelected($event)" [componentName]="'InvMap'"></app-table-context-menu-component>

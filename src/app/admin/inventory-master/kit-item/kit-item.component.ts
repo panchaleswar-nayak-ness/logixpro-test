@@ -13,6 +13,8 @@ import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.ser
 import { ICommonApi } from 'src/app/common/services/common-api/common-api-interface';
 import { CommonApiService } from 'src/app/common/services/common-api/common-api.service';
 import {  ToasterTitle ,ResponseStrings,ToasterType,DialogConstants,Style,UniqueConstants,Column} from 'src/app/common/constants/strings.constants';
+import { TableContextMenuService } from 'src/app/common/globalComponents/table-context-menu-component/table-context-menu.service';
+import { ContextMenuFiltersService } from 'src/app/common/init/context-menu-filters.service';
 
 @Component({
   selector: 'app-kit-item',
@@ -30,10 +32,24 @@ export class KitItemComponent implements OnInit, OnChanges {
   dialogDescription: any = '';
   dialogItemNumberDisplay: any = '';
   isFormFilled:any;
+  @Output() notifyContextMenu: EventEmitter<any> = new EventEmitter(); 
+  filterString : string = UniqueConstants.OneEqualsOne;
+  @Input() isActiveTrigger:boolean =false;
   Ikey:any;
   oldNumber="";
   @ViewChild('namebutton', { read: ElementRef, static:false }) nameButton: ElementRef;
-
+  optionSelected(filter : string) {
+    this.filterString = filter;
+    this.notifyContextMenu.emit(this.filterString);  
+    this.isActiveTrigger = false;
+  }
+  onContextMenu(event: any,   FilterColumnName?: any, FilterConditon?: any, FilterItemType?: any) { 
+    event.preventDefault()
+    this.isActiveTrigger = true;
+    setTimeout(() => {
+      this.contextMenuService.updateContextMenuState(event, event.target.value ?event.target.value :event.target.textContent, FilterColumnName, FilterConditon, FilterItemType);
+    }, 100);
+  }
  public iAdminApiService: IAdminApiService;
 
   searchValue: any = '';
@@ -53,9 +69,10 @@ export class KitItemComponent implements OnInit, OnChanges {
   constructor(
     public commonAPI : CommonApiService,
     private adminApiService: AdminApiService,
-    
+    private contextMenuService : TableContextMenuService,
     private authService: AuthService,
     private global:GlobalService,
+    private filterService:ContextMenuFiltersService,
     private el: ElementRef, 
     private sharedService:SharedService,
     private dialog:MatDialog,
@@ -66,6 +83,7 @@ export class KitItemComponent implements OnInit, OnChanges {
 
   ngOnInit(): void {
     this.userData = this.authService.userData();
+    this.filterService.filterString = "";
   }
 
   ngOnChanges(changes: SimpleChanges) {

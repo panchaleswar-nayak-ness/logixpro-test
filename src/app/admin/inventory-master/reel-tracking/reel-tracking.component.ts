@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, TemplateRef, ViewChild } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, TemplateRef, ViewChild } from '@angular/core';
 import { FormGroup} from '@angular/forms'; 
 import { AuthService } from 'src/app/common/init/auth.service';
 
@@ -8,7 +8,9 @@ import { Observable, Subscription } from 'rxjs';
 import { IAdminApiService } from 'src/app/common/services/admin-api/admin-api-interface';
 import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.service';
 import { GlobalService } from 'src/app/common/services/global.service';
-import {  ToasterTitle ,ToasterType,DialogConstants,Style} from 'src/app/common/constants/strings.constants';
+import {  ToasterTitle ,ToasterType,DialogConstants,Style, UniqueConstants} from 'src/app/common/constants/strings.constants';
+import { TableContextMenuService } from 'src/app/common/globalComponents/table-context-menu-component/table-context-menu.service';
+import { ContextMenuFiltersService } from 'src/app/common/init/context-menu-filters.service';
 
 
 @Component({
@@ -20,15 +22,20 @@ export class ReelTrackingComponent implements OnInit {
   isChecked = false;
   btnDisabled : boolean = false;
   public iAdminApiService: IAdminApiService;
-
+  @Output() notifyContextMenu: EventEmitter<any> = new EventEmitter(); 
+  filterString : string = UniqueConstants.OneEqualsOne;
+  @Input() isActiveTrigger:boolean =false;
   constructor(private global:GlobalService,
     private authService: AuthService,
     private sharedService:SharedService,
     private adminApiService: AdminApiService,
+    private contextMenuService : TableContextMenuService,
+    private filterService:ContextMenuFiltersService
     ) { 
       this.iAdminApiService = adminApiService;
     }
-
+  
+    
   @ViewChild('addItemAction') addItemTemp: TemplateRef<any>;
   @Input() reelTracking: FormGroup;
   public userData: any;
@@ -42,6 +49,7 @@ export class ReelTrackingComponent implements OnInit {
       }
  
     })
+    this.filterService.filterString="";
   }
 
   onFocusOutEvent(event: any){
@@ -50,7 +58,18 @@ export class ReelTrackingComponent implements OnInit {
       'minimumRTSReelQuantity' : 0
     }); 
  }
-
+ optionSelected(filter : string) {
+  this.filterString = filter;
+  this.notifyContextMenu.emit(this.filterString);  
+  this.isActiveTrigger = false;
+}
+onContextMenu(event: any,   FilterColumnName?: any, FilterConditon?: any, FilterItemType?: any) { 
+  event.preventDefault()
+  this.isActiveTrigger = true;
+  setTimeout(() => {
+    this.contextMenuService.updateContextMenuState(event, event.target.value ?event.target.value :event.target.textContent, FilterColumnName, FilterConditon, FilterItemType);
+  }, 100);
+}
  onChangeRTSUpdate(event: any){
   this.btnDisabled = true;
   

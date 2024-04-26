@@ -28,6 +28,7 @@ import { TableContextMenuService } from 'src/app/common/globalComponents/table-c
 import { DialogConstants, StringConditions, ToasterMessages, ToasterTitle, ToasterType, ColumnDef, Style, UniqueConstants } from 'src/app/common/constants/strings.constants';
 import { RouteUpdateMenu } from 'src/app/common/constants/menu.constants';
 import { AppNames, AppRoutes, } from 'src/app/common/constants/menu.constants';
+import { ContextMenuFiltersService } from 'src/app/common/init/context-menu-filters.service';
 
 @Component({
   selector: 'app-inventory-map',
@@ -125,6 +126,7 @@ export class InventoryMapComponent implements OnInit {
   //---------------------for mat menu start ----------------------------
 
   onContextMenu(event: MouseEvent, SelectedItem: any, FilterColumnName?: any, FilterConditon?: any, FilterItemType?: any) {
+    debugger
     event.preventDefault()
     this.isActiveTrigger = true;
     setTimeout(() => {
@@ -151,6 +153,7 @@ export class InventoryMapComponent implements OnInit {
     private router: Router,
     private routeHistoryService: RouteHistoryService,
     private currentTabDataService: CurrentTabDataService,
+    private filterService : ContextMenuFiltersService,
     private contextMenuService : TableContextMenuService
   ) {
     this.previousUrl = this.routeHistoryService.getPreviousUrl();
@@ -180,7 +183,7 @@ export class InventoryMapComponent implements OnInit {
 
   ngOnInit(): void {
     this.userData = this.authService.userData();
- 
+    this.filterService.filterString = "";
     this.customPagination = {
       total : '',
       recordsPerPage : 20,

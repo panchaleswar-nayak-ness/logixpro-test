@@ -15,6 +15,7 @@ import { GlobalService } from 'src/app/common/services/global.service';
 import { TableContextMenuService } from 'src/app/common/globalComponents/table-context-menu-component/table-context-menu.service';
 import {ToasterTitle, ToasterType ,ResponseStrings,Column,DialogConstants,StringConditions,UniqueConstants,Style,TableConstant,ColumnDef} from 'src/app/common/constants/strings.constants';
 import { Toast } from 'ngx-toastr';
+import { ContextMenuFiltersService } from 'src/app/common/init/context-menu-filters.service';
 
 @Component({
   selector: 'app-de-allocate-orders',
@@ -88,6 +89,7 @@ export class DeAllocateOrdersComponent implements OnInit {
     public authService: AuthService,
     public adminApiService: AdminApiService,
     private global:GlobalService,
+    private filterService : ContextMenuFiltersService,
     private contextMenuService : TableContextMenuService
     ) { 
       this.iAdminApiService = adminApiService;
@@ -101,7 +103,8 @@ export class DeAllocateOrdersComponent implements OnInit {
       this.getAllOrder()
       this.autoCompleteSearchColumnItem()
     });
-    this.getAllOrder()
+    this.getAllOrder();
+    this.filterService.filterString = "";
   } 
   
   async autoCompleteSearchColumnItem() {

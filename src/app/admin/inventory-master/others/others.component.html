@@ -6,7 +6,8 @@
         <mat-form-field class="filter w-100 stats-filters" appearance="outline">
           <mat-label>Unit Cost</mat-label>
             <mat-icon class="margin-right" matPrefix >attach_money</mat-icon>
-            <input (input)="handleInputChange($event)" matInput type="number" class="custom-input-number" formControlName="unitCost"
+            <input (input)="handleInputChange($event)" matInput type="number" (contextmenu)="onContextMenu($event, 'Unit Cost')" class="custom-input-number"
+             formControlName="unitCost"
             oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" type = "number" maxlength = "11">
         </mat-form-field>
       </div>
@@ -14,14 +15,15 @@
         <div class="col-lg-4 mb-3">
             <mat-form-field class="filter w-100 stats-filters" appearance="outline">
               <mat-label>Supplier ID</mat-label>
-              <input (input)="handleInputChange($event)" matInput type="text" class="custom-input-number" formControlName="supplierItemID"  maxlength="50">
+              <input (input)="handleInputChange($event)" matInput type="text"  (contextmenu)="onContextMenu($event, 'Supplier ItemID')" class="custom-input-number" formControlName="supplierItemID"  maxlength="50">
             </mat-form-field>
           </div>
 
           <div class="col-lg-4 mb-3">
             <mat-form-field class="filter w-100 stats-filters" appearance="outline">
               <mat-label>Manufacturer ID</mat-label>
-              <input (input)="handleInputChange($event)" matInput type="text" class="custom-input-number" formControlName="manufacturer"  maxlength="50">
+              <input (input)="handleInputChange($event)" matInput type="text" class="custom-input-number"
+              (contextmenu)="onContextMenu($event, 'Manu Facturer')" formControlName="manufacturer"  maxlength="50">
             </mat-form-field>
           </div>
     </div>
@@ -29,10 +31,13 @@
         <div class="col-lg-12 mb-3">
             <mat-form-field class="filter w-100 stats-filters" appearance="outline">
               <mat-label>Special Features</mat-label>
-              <textarea (input)="handleInputChange($event)" matInput type="text" class="custom-input-number" formControlName="specialFeatures"  maxlength="255">
+              <textarea (input)="handleInputChange($event)" matInput type="text" class="custom-input-number" 
+              (contextmenu)="onContextMenu($event, 'Special Features')" formControlName="specialFeatures"  maxlength="255">
                 </textarea>
             </mat-form-field>
           </div>
     </div>
   
   </div>
+  
+<app-table-context-menu-component *ngIf="isActiveTrigger" (optionSelected)="optionSelected($event)" [componentName]="'InvMap'"></app-table-context-menu-component>

@@ -5,7 +5,7 @@
         <div class="col-md-4 mb-3">
           <mat-form-field class="custom-form-field w-100 __grab_cursor" appearance="outline" >
             <mat-label>Primary Zone</mat-label>
-            <mat-select (selectionChange)="handleInputChange($event)" formControlName="primaryPickZone" (selectionChange)="getSelected($event)">
+            <mat-select (selectionChange)="handleInputChange($event)" (contextmenu)=" onContextMenu($event, 'Primary Pick Zone')"   formControlName="primaryPickZone" (selectionChange)="getSelected($event)">
               <mat-option value=""></mat-option>
               <mat-option value="carousel">Carousel</mat-option>
               <mat-option value="bulk">Bulk</mat-option>
@@ -19,7 +19,7 @@
         <div class="col-md-4 mb-3">
           <mat-form-field class="custom-form-field w-100" appearance="outline">
             <mat-label>Secondary Zone</mat-label>
-            <mat-select (selectionChange)="handleInputChange($event)"  formControlName="secondaryPickZone"  >
+            <mat-select (selectionChange)="handleInputChange($event)" (contextmenu)=" onContextMenu($event, 'Secondary Pick Zone')"   formControlName="secondaryPickZone"  >
               <mat-option value=""></mat-option>
               <mat-option value="carousel">Carousel</mat-option>
               <mat-option value="bulk">Bulk</mat-option>
@@ -33,26 +33,30 @@
         <div class="col-md-4 mb-3">
           <mat-form-field class="filter w-100 stats-filters" appearance="outline">
             <mat-label>Case Quantity</mat-label>
-            <input  (input)="handleInputChange($event)" (focusout)="defaultVal($event,'caseQuantity')" matInput type="number" class="custom-input-number" formControlName="caseQuantity" maxlength="9">
+            <input  (input)="handleInputChange($event)" (focusout)="defaultVal($event,'caseQuantity')" (contextmenu)=" onContextMenu($event, 'Case Quantity')"  matInput type="number" class="custom-input-number" formControlName="caseQuantity" maxlength="9">
           </mat-form-field>
         </div>
         <div class="col-md-4 mb-3">
           <mat-form-field class="filter w-100 stats-filters" appearance="outline">
             <mat-label>Pick Fence Qty</mat-label>
-            <input  [NumbersOnly]="true"  (input)="limitInputLength($event);handleInputChange($event)" (focusout)="defaultVal($event,'pickFenceQuantity')"  matInput type="number" class="custom-input-number" formControlName="pickFenceQuantity"  >
+            <input  [NumbersOnly]="true"  (input)="limitInputLength($event);handleInputChange($event)" (contextmenu)=" onContextMenu($event, 'Pick Fence Quantity')"  (focusout)="defaultVal($event,'pickFenceQuantity')"  matInput type="number" class="custom-input-number" formControlName="pickFenceQuantity"  >
           </mat-form-field>
         </div>
         <div class="col-md-4 mb-3">
           <mat-form-field class="filter w-100 stats-filters" appearance="outline">
             <mat-label>Pick Sequence</mat-label>
-            <input (input)="handleInputChange($event)" (focusout)="defaultVal($event,'pickSequence')" matInput type="number" class="custom-input-number" formControlName="pickSequence" maxlength="9">
+            <input (input)="handleInputChange($event)" (focusout)="defaultVal($event,'pickSequence')"
+            (contextmenu)=" onContextMenu($event, 'Pick Sequence')"  
+            matInput type="number" class="custom-input-number" formControlName="pickSequence" maxlength="9">
           </mat-form-field>
         </div>
       </div>
       <div class="row">
         <div class="d-flex mb-3 gap-20 flex-wrap align-items-center">
           <div class="pe-3">
-            <mat-checkbox  (change)="handleInputChangeCheckbox($event)" class="example-margin custom-checkbox" color="primary" formControlName="dateSensitive">Date Sensitive</mat-checkbox>
+            <mat-checkbox  (change)="handleInputChangeCheckbox($event)" class="example-margin custom-checkbox"
+            (contextmenu)=" onContextMenu($event, 'Date Sensitive')"
+            color="primary" formControlName="dateSensitive">Date Sensitive</mat-checkbox>
           </div>
           <div class="pe-3">
             <mat-checkbox   (change)="handleInputChangeCheckbox($event)"class="example-margin custom-checkbox" color="primary" formControlName="warehouseSensitive">Warehouse Sensitive</mat-checkbox>
@@ -85,9 +89,9 @@
           <div class="text-tertiary-900 bold">Cell Size</div>
         </div>
         <div class="col-3">
-          <mat-form-field class="custom-form-field w-100 __grab_cursor" appearance="outline" (click)="openCellSizeDialog('cellSize')">
+          <mat-form-field class="custom-form-field w-100 __grab_cursor" appearance="outline" (click)="openCellSizeDialog('CellSize')">
             <mat-label>Carousel</mat-label>
-            <input matInput type="text" formControlName="cellSize" maxlength="50" readonly="true">
+            <input matInput type="text" (contextmenu)="onContextMenu($event, 'Cell Size')" formControlName="cellSize" maxlength="50" readonly="true">
             <span matSuffix>
               <mat-icon class="text-tertiary-900 rotate-45">unfold_more</mat-icon>
             </span>
@@ -96,7 +100,9 @@
         <div class="col-3">
           <mat-form-field class="custom-form-field w-100 __grab_cursor" appearance="outline" (click)="openCellSizeDialog('bulkCellSize')">
             <mat-label>Bulk</mat-label>
-            <input matInput type="text" formControlName="bulkCellSize"  maxlength="50" readonly="true">
+            <input matInput type="text" formControlName="bulkCellSize" 
+            (contextmenu)=" onContextMenu($event, 'Bulk Cell Size')"
+            maxlength="50" readonly="true">
             <span matSuffix>
               <mat-icon class="text-tertiary-900 rotate-45">unfold_more</mat-icon>
             </span>
@@ -105,7 +111,9 @@
         <div class="col-3">
           <mat-form-field class="custom-form-field w-100 __grab_cursor" appearance="outline" (click)="openCellSizeDialog('cfCellSize')">
             <mat-label>Carton Flow</mat-label>
-            <input matInput type="text" formControlName="cfCellSize"  maxlength="50">
+            <input matInput type="text" formControlName="cfCellSize"  maxlength="50"
+            (contextmenu)=" onContextMenu($event, 'Cf Cell Size')"
+            >
             <span matSuffix>
               <mat-icon class="text-tertiary-900 rotate-45">unfold_more</mat-icon>
             </span>
@@ -119,7 +127,7 @@
         <div class="col-3">
           <mat-form-field class="custom-form-field w-100 __grab_cursor" appearance="outline" (click)="openVelocityCodeDialog('goldenZone')">
             <mat-label>Carousel</mat-label>
-            <input matInput type="text" formControlName="goldenZone" readonly="true">
+            <input matInput type="text" formControlName="goldenZone" readonly="true" (contextmenu)=" onContextMenu($event, 'Golden Zone')">
             <span matSuffix>
               <mat-icon class="text-tertiary-900 rotate-45">unfold_more</mat-icon>
             </span>
@@ -128,7 +136,7 @@
         <div class="col-3">
           <mat-form-field class="custom-form-field w-100 __grab_cursor" appearance="outline" (click)="openVelocityCodeDialog('bulkVelocity')">
             <mat-label>Bulk</mat-label>
-            <input matInput type="text" formControlName="bulkVelocity" readonly="true">
+            <input matInput type="text" formControlName="bulkVelocity" (contextmenu)="onContextMenu($event, 'Bulk Velocity')" readonly="true">
             <span matSuffix>
               <mat-icon class="text-tertiary-900 rotate-45">unfold_more</mat-icon>
             </span>
@@ -137,7 +145,7 @@
         <div class="col-3">
           <mat-form-field class="custom-form-field w-100 __grab_cursor" appearance="outline" (click)="openVelocityCodeDialog('cfVelocity')">
             <mat-label>Carton Flow</mat-label>
-            <input matInput type="text" formControlName="cfVelocity" readonly="true">
+            <input matInput type="text" formControlName="cfVelocity" (contextmenu)="onContextMenu($event, 'Cf Velocity')"  readonly="true">
             <span matSuffix>
               <mat-icon class="text-tertiary-900 rotate-45">unfold_more</mat-icon>
             </span>
@@ -152,19 +160,23 @@
         <div class="col-3">
           <mat-form-field class="custom-form-field w-100 __grab_cursor" appearance="outline">
             <mat-label>Carousel</mat-label>
-            <input (input)="handleInputChange($event)" (focusout)="defaultVal($event,'minimumQuantity')"  matInput type="text" formControlName="minimumQuantity"  maxlength="9" (change)="cellQuantityChange()">
+            <input (input)="handleInputChange($event)" (focusout)="defaultVal($event,'minimumQuantity')" (contextmenu)="onContextMenu($event, 'Minimum Quantity')"  matInput type="text" formControlName="minimumQuantity"  maxlength="9" (change)="cellQuantityChange()">
           </mat-form-field>
         </div>
         <div class="col-3">
           <mat-form-field class="custom-form-field w-100 __grab_cursor" appearance="outline">
             <mat-label>Bulk</mat-label>
-            <input (input)="handleInputChange($event)"  matInput type="text" formControlName="bulkMinimumQuantity" (focusout)="defaultVal($event,'bulkMinimumQuantity')"  maxlength="9" (change)="cellQuantityChange()">
+            <input (input)="handleInputChange($event)"  matInput type="text" formControlName="bulkMinimumQuantity" 
+            (contextmenu)="onContextMenu($event, 'Bulk Minimum Quantity')"
+            (focusout)="defaultVal($event,'bulkMinimumQuantity')"  maxlength="9" (change)="cellQuantityChange()">
           </mat-form-field>
         </div>
         <div class="col-3">
           <mat-form-field class="custom-form-field w-100 __grab_cursor" appearance="outline">
             <mat-label>Carton Flow</mat-label>
-            <input (input)="handleInputChange($event)"  matInput type="text" formControlName="cfMinimumQuantity"  (focusout)="defaultVal($event,'cfMinimumQuantity')" maxlength="9" (change)="cellQuantityChange()">
+            <input (input)="handleInputChange($event)"  matInput type="text" formControlName="cfMinimumQuantity"
+            (contextmenu)="onContextMenu($event, 'Cf Minimum Quantity')"
+            (focusout)="defaultVal($event,'cfMinimumQuantity')" maxlength="9" (change)="cellQuantityChange()">
           </mat-form-field>
         </div>
       </div>
@@ -176,19 +188,19 @@
         <div class="col-3">
           <mat-form-field class="custom-form-field w-100 __grab_cursor" appearance="outline" >
             <mat-label>Carousel</mat-label>
-            <input  (input)="handleInputChange($event)" matInput type="text" (focusout)="defaultVal($event,'maximumQuantity')" formControlName="maximumQuantity" maxlength="9" (change)="cellQuantityChange()">
+            <input  (input)="handleInputChange($event)" matInput type="text" (focusout)="defaultVal($event,'maximumQuantity')"  (contextmenu)="onContextMenu($event, 'Maximum Quantity')" formControlName="maximumQuantity" maxlength="9" (change)="cellQuantityChange()">
           </mat-form-field>
         </div>
         <div class="col-3">
           <mat-form-field class="custom-form-field w-100 __grab_cursor" appearance="outline">
             <mat-label>Bulk</mat-label>
-            <input matInput type="text"  (input)="handleInputChange($event)" (focusout)="defaultVal($event,'bulkMaximumQuantity')"  formControlName="bulkMaximumQuantity" maxlength="9" (change)="cellQuantityChange()">
+            <input matInput type="text"  (input)="handleInputChange($event)" (focusout)="defaultVal($event,'bulkMaximumQuantity')" (contextmenu)="onContextMenu($event, 'Bulk Maximum Quantity')"  formControlName="bulkMaximumQuantity" maxlength="9" (change)="cellQuantityChange()">
           </mat-form-field>
         </div>
         <div class="col-3">
           <mat-form-field class="custom-form-field w-100 __grab_cursor" appearance="outline">
             <mat-label>Carton Flow</mat-label>
-            <input matInput type="text"  (input)="handleInputChange($event)"  (focusout)="defaultVal($event,'cfMaximumQuantity')"  formControlName="cfMaximumQuantity" maxlength="9" (change)="cellQuantityChange()">
+            <input matInput type="text"  (input)="handleInputChange($event)"  (focusout)="defaultVal($event,'cfMaximumQuantity')" (contextmenu)="onContextMenu($event, 'Cf Maximum Quantity')"  formControlName="cfMaximumQuantity" maxlength="9" (change)="cellQuantityChange()">
           </mat-form-field>
         </div>
       </div>
@@ -198,3 +210,5 @@
     </div>
   </div>
 </div>
+
+<app-table-context-menu-component *ngIf="isActiveTrigger" (optionSelected)="optionSelected($event)" [componentName]="'InvMap'"></app-table-context-menu-component>

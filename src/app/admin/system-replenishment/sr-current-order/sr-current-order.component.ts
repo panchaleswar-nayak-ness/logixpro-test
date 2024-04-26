@@ -22,6 +22,7 @@ import { IAdminApiService } from 'src/app/common/services/admin-api/admin-api-in
 import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.service';
 import { TableContextMenuService } from 'src/app/common/globalComponents/table-context-menu-component/table-context-menu.service';
 import { ToasterTitle, ToasterType ,TableConstant,ResponseStrings,TransactionType,Column,zoneType,DialogConstants,Style,UniqueConstants,FilterColumnName,ColumnDef} from 'src/app/common/constants/strings.constants';
+import { ContextMenuFiltersService } from 'src/app/common/init/context-menu-filters.service';
 
 @Component({
   selector: 'app-sr-current-order',
@@ -189,9 +190,11 @@ export class SrCurrentOrderComponent implements OnInit {
     public adminApiService: AdminApiService,
     private contextMenuService : TableContextMenuService,
     private authService: AuthService,
+    private filterService:ContextMenuFiltersService,
     private global:GlobalService,
   ) {
     this.iAdminApiService = adminApiService;
+    this.filterService.filterString = "";
   }
   getUniqueColumnDef(column: string): string {
     return `column_${column}`;

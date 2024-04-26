@@ -21,6 +21,7 @@ import { IAdminApiService } from 'src/app/common/services/admin-api/admin-api-in
 import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.service';
 import { TableContextMenuService } from 'src/app/common/globalComponents/table-context-menu-component/table-context-menu.service';
 import {  ToasterTitle ,LiveAnnouncerMessage,ResponseStrings,Column,ToasterType,DialogConstants,TableConstant,ColumnDef,Style,UniqueConstants,FilterColumnName,StringConditions} from 'src/app/common/constants/strings.constants';
+import { ContextMenuFiltersService } from 'src/app/common/init/context-menu-filters.service';
 
 @Component({
   selector: 'app-om-create-orders',
@@ -104,8 +105,10 @@ export class OmCreateOrdersComponent implements OnInit {
     public dialogRef: MatDialogRef<OmCreateOrdersComponent>,
     public adminApiService: AdminApiService,
     public orderManagerApi: OrderManagerApiService,
-    private _liveAnnouncer: LiveAnnouncer
+    private _liveAnnouncer: LiveAnnouncer,
+    private filterService: ContextMenuFiltersService, 
   ) {
+    this.filterService.filterString= "";
     this.iOrderManagerApi = orderManagerApi;
     this.iAdminApiService = adminApiService;
   }

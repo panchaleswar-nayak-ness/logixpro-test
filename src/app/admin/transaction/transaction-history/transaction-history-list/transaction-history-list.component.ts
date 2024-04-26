@@ -174,8 +174,9 @@ export class TransactionHistoryListComponent implements OnInit, AfterViewInit {
     public adminApiService: AdminApiService,
     private global: GlobalService,
     private sharedService: SharedService,
-    private filterService: ContextMenuFiltersService
+    private filterService: ContextMenuFiltersService, 
   ) {
+    this.filterService.filterString= "";
     this.userData = this.authService.userData();
     this.iAdminApiService = adminApiService;
   }

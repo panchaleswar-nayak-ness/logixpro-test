@@ -10,7 +10,9 @@ import { catchError, of } from 'rxjs';
 import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.service';
 import { IAdminApiService } from 'src/app/common/services/admin-api/admin-api-interface';
 import { GlobalService } from 'src/app/common/services/global.service';
-import {  ToasterTitle ,ResponseStrings,ToasterType,DialogConstants,Style} from 'src/app/common/constants/strings.constants';
+import {  ToasterTitle ,ResponseStrings,ToasterType,DialogConstants,Style, UniqueConstants} from 'src/app/common/constants/strings.constants';
+import { TableContextMenuService } from 'src/app/common/globalComponents/table-context-menu-component/table-context-menu.service';
+import { ContextMenuFiltersService } from 'src/app/common/init/context-menu-filters.service';
 
 @Component({
   selector: 'app-scan-codes',
@@ -30,7 +32,9 @@ export class ScanCodesComponent{
   scanTypeList: any = [];
   scanRangeList: any =[ResponseStrings.Yes, 'No'];
   isAddRow=false;
-  
+  @Output() notifyContextMenu: EventEmitter<any> = new EventEmitter(); 
+  filterString : string = UniqueConstants.OneEqualsOne;
+  @Input() isActiveTrigger:boolean =false;
   @Output() notifyParent: EventEmitter<any> = new EventEmitter();
   sendNotification(e?) {
     this.notifyParent.emit(e);
@@ -43,10 +47,13 @@ export class ScanCodesComponent{
     private authService: AuthService,   
     public adminApiService: AdminApiService,
     private global:GlobalService,
+    private contextMenuService : TableContextMenuService,
+    private filterService:ContextMenuFiltersService,
     private cusValidator: CustomValidatorService
   ) {  
     this.iAdminApiService = adminApiService;
     this.userData = this.authService.userData();
+    this.filterService.filterString = "";
   }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -239,7 +246,18 @@ export class ScanCodesComponent{
       }
     });
   }
-
+  optionSelected(filter : string) {
+    this.filterString = filter;
+    this.notifyContextMenu.emit(this.filterString);  
+    this.isActiveTrigger = false;
+  }
+  onContextMenu(event: any,   FilterColumnName?: any, FilterConditon?: any, FilterItemType?: any) { 
+    event.preventDefault()
+    this.isActiveTrigger = true;
+    setTimeout(() => {
+      this.contextMenuService.updateContextMenuState(event, event.target.value ?event.target.value :event.target.textContent, FilterColumnName, FilterConditon, FilterItemType);
+    }, 100);
+  }
   handleInputChangeInput(event: any) {
     this.sharedService.updateInvMasterState(event,true)
   }

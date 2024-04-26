@@ -85,6 +85,7 @@ public iinductionManagerApi:IInductionManagerApiService;
     public inductionManagerApi: InductionManagerApiService,
     private filterService: ContextMenuFiltersService, 
   ) {
+    this.filterService.filterString= "";
     this.userData = this.authService.userData();
     this.iinductionManagerApi = inductionManagerApi;
   }

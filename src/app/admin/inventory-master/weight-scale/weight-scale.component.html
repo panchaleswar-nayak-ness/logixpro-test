@@ -6,6 +6,7 @@
           <mat-form-field class="filter w-100 stats-filters" appearance="outline">
             <mat-label>Average Piece Weight</mat-label>
             <input  (input)="handleInputChange($event)"  matInput type="number" class="custom-input-number" formControlName="avgPieceWeight" 
+            (contextmenu)="onContextMenu($event, 'Avg Piece Weight')"
             oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" type = "number" maxlength = "11">
           </mat-form-field>
         </div>
@@ -14,6 +15,7 @@
             <mat-form-field class="filter w-100 stats-filters" appearance="outline">
               <mat-label>Sample Quantity</mat-label>
               <input  (input)="handleInputChange($event)"  matInput type="number" class="custom-input-number" formControlName="sampleQuantity"
+              (contextmenu)="onContextMenu($event, 'Sample Quantity')"
               oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" type = "number" maxlength = "9">
             </mat-form-field>
           </div>
@@ -21,7 +23,7 @@
           <div class="col-lg-4 mb-3">
             <mat-form-field class="filter w-100 stats-filters" appearance="outline">
               <mat-label>Min. Use Scale Trans. Quantity</mat-label>
-              <input  (input)="handleInputChange($event)"  matInput type="number" class="custom-input-number" formControlName="minimumUseScaleQuantity"
+              <input  (input)="handleInputChange($event)"  matInput type="number" class="custom-input-number" (contextmenu)="onContextMenu($event, 'Minimum Use Scale Quantity')" formControlName="minimumUseScaleQuantity"
               oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" type = "number" maxlength = "9">
             </mat-form-field>
           </div>
@@ -33,3 +35,5 @@
     </div>
   
   </div>
+  <app-table-context-menu-component *ngIf="isActiveTrigger" (optionSelected)="optionSelected($event)" [componentName]="'InvMap'"></app-table-context-menu-component>
+  

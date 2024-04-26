@@ -24,6 +24,7 @@ import { Column, DialogConstants, Mode, StringConditions, TableName, ToasterMess
 import { RouteUpdateMenu } from 'src/app/common/constants/menu.constants';
 import { AppNames, AppRoutes, RouteNames} from 'src/app/common/constants/menu.constants';
 import { DatePipe } from '@angular/common';
+import { ContextMenuFiltersService } from 'src/app/common/init/context-menu-filters.service';
 
 @Component({
   selector: 'app-open-transaction-on-hold',
@@ -234,8 +235,10 @@ export class OpenTransactionOnHoldComponent implements OnInit, AfterViewInit {
     private global: GlobalService,
     private contextMenuService: TableContextMenuService,
     private sharedService: SharedService,
-    private currentTabDataService: CurrentTabDataService
+    private currentTabDataService: CurrentTabDataService,
+    private filterService:ContextMenuFiltersService
   ) {
+    this.filterService.filterString= "";
     this.iAdminApiService = adminApiService;
     if (this.router.getCurrentNavigation()?.extras?.state?.[UniqueConstants.searchValue]) {
       this.columnSearch.searchValue = this.router.getCurrentNavigation()?.extras?.state?.[UniqueConstants.searchValue];

@@ -22,6 +22,7 @@ import { TableContextMenuService } from 'src/app/common/globalComponents/table-c
 import { Case, Column, KeyboardKeys, StringConditions, ToasterMessages, ToasterTitle, ToasterType,DialogConstants,TableConstant,ColumnDef,Style,UniqueConstants,FilterColumnName} from 'src/app/common/constants/strings.constants';
 import { RouteNames, AppPermissions } from 'src/app/common/constants/menu.constants';
 import { DatePipe } from '@angular/common';
+import { ContextMenuFiltersService } from 'src/app/common/init/context-menu-filters.service';
 
 @Component({
   selector: 'app-om-order-manager',
@@ -134,8 +135,10 @@ export class OmOrderManagerComponent implements OnInit {
     private currentTabDataService: CurrentTabDataService,
     private global:GlobalService,
     private contextMenuService : TableContextMenuService,
-    private router: Router
+    private router: Router,
+    private filterService: ContextMenuFiltersService, 
   ) {
+    this.filterService.filterString= "";
     this.iOrderManagerApi = orderManagerApi; 
     this.iAdminApiService = adminApiService; 
   }

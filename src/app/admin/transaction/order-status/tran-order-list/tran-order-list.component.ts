@@ -225,10 +225,11 @@ export class TranOrderListComponent implements OnInit, AfterViewInit {
     private sharedService: SharedService,
     public adminApiService: AdminApiService,
     private global:GlobalService,
-    public router: Router,
-    public filterService: ContextMenuFiltersService,
-    private contextMenuService : TableContextMenuService
+    public router: Router, 
+    private contextMenuService : TableContextMenuService,
+    private filterService:ContextMenuFiltersService
   ) {
+    this.filterService.filterString= "";
     this.iAdminApiService = adminApiService;
     this.setVal = localStorage.getItem('routeFromOrderStatus');
     if(router.url == AppRoutes.OrderManagerOrderStatus || router.url == `${AppRoutes.OrderManagerOrderStatus}?type=TransactionHistory`|| this.setVal == StringConditions.True) this.priority = true;

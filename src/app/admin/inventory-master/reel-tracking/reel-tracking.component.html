@@ -5,7 +5,7 @@
       <mat-form-field class="filter w-100 stats-filters" appearance="outline">
         <mat-label>Minimum RTS Reel Quantity</mat-label>
         <input (input)="handleInputChange($event)" matInput placeholder="Minimum RTS Reel Qty" type="number" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength); this.value = 
-          !!this.value && Math.abs(this.value) >= 0 ? Math.abs(this.value) : null" maxlength="9"
+          !!this.value && Math.abs(this.value) >= 0 ? Math.abs(this.value) : null" maxlength="9"  (contextmenu)="onContextMenu($event, 'Minimum RTS Reel Quantity')"
           class="custom-input-number" formControlName="minimumRTSReelQuantity" (focusout)="onFocusOutEvent($event)">
       </mat-form-field>
     </div>
@@ -31,3 +31,5 @@
   </div>
 
 </div>
+
+<app-table-context-menu-component *ngIf="isActiveTrigger" (optionSelected)="optionSelected($event)" [componentName]="'InvMap'"></app-table-context-menu-component>

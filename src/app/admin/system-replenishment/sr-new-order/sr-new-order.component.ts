@@ -17,6 +17,7 @@ import { IAdminApiService } from 'src/app/common/services/admin-api/admin-api-in
 import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.service';
 import { TableContextMenuService } from 'src/app/common/globalComponents/table-context-menu-component/table-context-menu.service';
 import { ToasterTitle, ToasterType ,ResponseStrings,Column,DialogConstants,Style,UniqueConstants,StringConditions,ColumnDef,TableConstant} from 'src/app/common/constants/strings.constants';
+import { ContextMenuFiltersService } from 'src/app/common/init/context-menu-filters.service';
 
 @Component({
   selector: 'app-sr-new-order',
@@ -72,9 +73,12 @@ export class SrNewOrderComponent implements OnInit {
     private global:GlobalService,
     private contextMenuService : TableContextMenuService,
     private authService: AuthService,
+    
+    private filterService:ContextMenuFiltersService,
     public adminApiService: AdminApiService
   ) { 
     this.iAdminApiService = adminApiService;
+    this.filterService.filterString= "";
   }
 
   @Input('refreshNewOrders') refreshNewOrders:Subject<any>;
