@@ -67,13 +67,14 @@ export class CustomReportsAndLabelsComponent implements OnInit {
   ngOnInit(): void {
     this.Getcustomreports();
   }
+
   ChangeReport(IsSysBolean: boolean) {
     this.detail = {};
     this.isSystemReport = IsSysBolean;
     if (this.isSystemReport) this.listReports = this.sysTitles;
     else this.listReports = this.reportTitles;
-    console.log(this.listReports);
   }
+
   Getcustomreports() {
     let payload = {
       app: this.currentApp,
@@ -85,35 +86,24 @@ export class CustomReportsAndLabelsComponent implements OnInit {
         this.reportTitles = res?.data?.reportTitles?.reportTitles;
         this.sysTitles.forEach((object) => {
           object.isSelected = false;
+          object.userCreated = 0;
         });
         this.reportTitles.forEach((object) => {
           object.isSelected = false;
+          object.userCreated = 1;
         });
-  
-        console.log(this.sysTitles);
-        console.log(this.reportTitles);
-  
-        if (this.isSystemReport || this.isSystemReport == undefined)
-        {
-          this.listReports = this.sysTitles;
-        }
-        else {
-          this.listReports = this.reportTitles;
-        }
+
+        if (this.isSystemReport || this.isSystemReport == undefined) this.listReports = this.sysTitles;
+        else this.listReports = this.reportTitles;
 
       }
-      else {
-        this.global.ShowToastr(ToasterType.Error, this.global.globalErrorMsg(), ToasterTitle.Error);
-        console.log("Getcustomreports",res.responseMessage);
-
-      }
-      
-     
+      else this.global.ShowToastr(ToasterType.Error, this.global.globalErrorMsg(), ToasterTitle.Error);
     });
   }
+  
   OpenListAndLabel(route) {
     window.open(
-      `/#/${route}?file=${this.detail.fileName.replace('.', '-')}`,
+      `/#/${route}?file=${this.detail.fileName.replace('.', '-')}&user=${this.detail.userCreated}`,
       UniqueConstants._blank,
       'width=' +
         screen.width +
@@ -126,51 +116,42 @@ export class CustomReportsAndLabelsComponent implements OnInit {
   clearMatSelectList() {
     this.matRef.options.forEach((data: MatOption) => data.deselect());
   }
+
   openAction(event: any) {
     this.clearMatSelectList();
   }
+
   SelectedFile: any;
 
-  Getreportdetails(file, index?) {
-    
+  Getreportdetails(file, index?, details?) {  
     this.listReports.forEach((item, i) => {
-      if (i === index) {
-        if (item.isSelected) {
-          item.isSelected = false;
-        } else {
-          item.isSelected = true;
-        }
-      } else {
-        item.isSelected = false;
-      }
+      if (i === index)
+        if (item.isSelected) item.isSelected = false;
+        else item.isSelected = true;
+      else item.isSelected = false;
     });
 
     this.olddetail = file;
+
     if (this.SelectedFile == file) {
       this.detail = {};
       this.SelectedFile = null;
       return 1;
     }
+
     this.SelectedFile = file;
 
     let obj: any = {
       FileName: file,
     };
+
     this.iAdminApiService.Getreportdetails(obj).subscribe((res: any) => {
-      if(res.isExecuted && res.data)
-      {
+      if(res.isExecuted && res.data) {
         this.detail = res.data[0];
-
-      }
-      else {
-        this.global.ShowToastr(ToasterType.Error, this.global.globalErrorMsg(), ToasterTitle.Error);
-        console.log("Getreportdetails",res.responseMessage);
-
-      }
-
-      
+        this.detail.userCreated = details.userCreated;
+      } else this.global.ShowToastr(ToasterType.Error, this.global.globalErrorMsg(), ToasterTitle.Error);
     });
-
+    
     return 1;
   }
 
@@ -191,6 +172,7 @@ export class CustomReportsAndLabelsComponent implements OnInit {
       this.saveInput();
     });
   }
+
   CrAddNewCustomReportDialogue() {
     const dialogRef: any = this.global.OpenDialog(
       CrAddNewCustomReportComponent,
@@ -207,15 +189,12 @@ export class CustomReportsAndLabelsComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe((result) => {
       if (!result) {
-        console.log(result, 'obj');
-        console.log(this.isSystemReport);
-        console.log(this.listReports);
-
         this.Getcustomreports();
         this.Getreportdetails(result.filename);
       }
     });
   }
+
   openDeleteDialogue() {
     const dialogRef: any = this.global.OpenDialog(
       CrDeleteConfirmationComponent,
@@ -321,7 +300,6 @@ export class CustomReportsAndLabelsComponent implements OnInit {
               `Error has occured while pushing changes to the other worksations`,
               ToasterTitle.Error
             );
-            console.log("pushReportChanges",res.responseMessage);
           }
         });
       } else {
@@ -349,7 +327,6 @@ export class CustomReportsAndLabelsComponent implements OnInit {
           'Unexpected error occurred. Changes Not Saved',
           ToasterTitle.Error
         );
-        console.log("updatereportDetails",res.responseMessage);
       }
     });
   }

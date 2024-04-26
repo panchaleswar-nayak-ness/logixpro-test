@@ -15,7 +15,9 @@ import { BaseService } from 'src/app/common/services/base-service.service';
 export class WrdFrontendComponent implements OnInit {
 
   @ViewChild('ListAndLabel', { static: true }) ListAndLabel: ElementRef;
-  fileName:any = "BMCountList";
+
+  fileName: string | null = "BMCountList";
+  userCreated: string | null = "1";
 
   constructor(
     private sharedService:SharedService,
@@ -34,8 +36,24 @@ export class WrdFrontendComponent implements OnInit {
 
   ngOnInit(): void {
     this.sharedService.updateLoadMenuFunction({route:'/admin/reports'});
-    let filename = this.route.queryParamMap.pipe(map((params: ParamMap) => params.get('file')));
-    filename.subscribe((param) => { if (param!=null &&param != undefined) this.fileName = param; });
+
+     // Subscribe to the queryParamMap observable
+     this.route.queryParamMap.pipe(
+      map((params: ParamMap) => {
+        // Extract individual parameters from the paramMap
+        return {
+          file: params.get('file'),
+          userCreated: params.get('user'),
+          // Add more parameters here if needed
+        };
+      })
+    ).subscribe((params) => {
+      // Assign the file parameter to fileName
+      this.fileName = params.file;
+      this.userCreated = params.userCreated
+      // You can access other parameters in a similar way, e.g., params.parameterName
+    });
+
     setTimeout(() => this.generateHTMLAndAppend(), 600);
   }
 
@@ -50,8 +68,8 @@ export class WrdFrontendComponent implements OnInit {
     apiUrlObservable.subscribe((url: any) => {
       let backendUrl = url.split("/api")[0];
       const dynamicHtml = `<ll-webreportdesigner backendUrl="${backendUrl}/LLWebReportDesigner"
-      defaultProject="${this.fileName.split('-')[1] == UniqueConstants.Ibl? 'BCAEC8B2-9D16-4ACD-94EC-74932157BF82':'072A40E4-6D25-47E5-A71F-C491BC758BC9'}" 
-      customData="${this.authService.userData().wsid+','+this.fileName}" ></ll-webreportdesigner>`; 
+      defaultProject="${this.fileName?.split('-')[1] == UniqueConstants.Ibl ? 'BCAEC8B2-9D16-4ACD-94EC-74932157BF82':'072A40E4-6D25-47E5-A71F-C491BC758BC9'}" 
+      customData="${ ((this.userCreated == "1") ? this.authService.userData().wsid : '') + ',' + this.fileName}" ></ll-webreportdesigner>`; 
       this.ListAndLabel.nativeElement.insertAdjacentHTML('beforeend', dynamicHtml);
     });
   }
