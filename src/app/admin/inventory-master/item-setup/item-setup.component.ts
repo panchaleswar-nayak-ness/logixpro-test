@@ -77,7 +77,6 @@ export class ItemSetupComponent implements OnInit {
     this.isActiveTrigger = false;
   }
   onContextMenu(event: any,   FilterColumnName?: any, FilterConditon?: any, FilterItemType?: any) { 
-    debugger
     event.preventDefault()
     this.isActiveTrigger = true;
     setTimeout(() => {

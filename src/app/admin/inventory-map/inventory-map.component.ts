@@ -126,7 +126,6 @@ export class InventoryMapComponent implements OnInit {
   //---------------------for mat menu start ----------------------------
 
   onContextMenu(event: MouseEvent, SelectedItem: any, FilterColumnName?: any, FilterConditon?: any, FilterItemType?: any) {
-    debugger
     event.preventDefault()
     this.isActiveTrigger = true;
     setTimeout(() => {
