@@ -194,6 +194,8 @@ export class VerifyBulkComponent implements OnInit {
         payload.locationQty = 0;
         let res: any = await this.iBulkProcessApiService.updateLocationQuantity(payload);
         if (res?.status == HttpStatusCode.Ok) {
+            element.originalQty = res.body;
+            element.respType = resp.type;  
           this.global.ShowToastr(ToasterType.Success, ToasterMessages.RecordUpdatedSuccessful, ToasterTitle.Success);
         }
         element.completedQuantity = resp.newQuantity;
@@ -215,11 +217,14 @@ export class VerifyBulkComponent implements OnInit {
           payload.locationQty = parseInt(result.SelectedItem);
           let res: any = await this.iBulkProcessApiService.updateLocationQuantity(payload);
           if (res?.status == HttpStatusCode.Ok) {
+            element.originalQty = res.body;
+            element.respType = resp.type;  
             this.global.ShowToastr(ToasterType.Success, ToasterMessages.RecordUpdatedSuccessful, ToasterTitle.Success);
           }
         });
         element.completedQuantity = resp.newQuantity;
       } else {
+        element.respType = resp.type;
         element.completedQuantity = resp.newQuantity;
       }
     });
@@ -282,7 +287,9 @@ export class VerifyBulkComponent implements OnInit {
           orders.push(
             {
               "id": x.id,
-              "completedQty": x.completedQuantity
+              "completedQty": x.completedQuantity,
+              "originalLocationQty": x.originalQty ? x.originalQty : 0,
+              "respTypeSelected": x.respType ? x.respType : "Yes"
             }
           );
         });

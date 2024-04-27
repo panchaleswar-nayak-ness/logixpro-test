@@ -74,6 +74,7 @@ export class BpNumberSelectionComponent implements OnInit {
 
     return this.cusValidator.numberOnly(event);
   }
+  respYesNo : boolean | null = null;
   done() { 
     if (!this.IsFullTote || (this.newQuantity <= this.toteQuantity && this.newQuantity >= 0)){
     if (this.from == "completed quantity") {
@@ -95,12 +96,15 @@ export class BpNumberSelectionComponent implements OnInit {
         });
         dialogRef1.afterClosed().subscribe(async (resp: any) => {
           if (resp == ResponseStrings.Yes) {
+            this.respYesNo = true;
             this.dialogRef.close({ newQuantity: this.newQuantity.toString(), type: ResponseStrings.Yes });
           }
           else if (resp == ResponseStrings.No) {
+            this.respYesNo = false;
             this.dialogRef.close({ newQuantity: this.newQuantity.toString(), type: ResponseStrings.No });
           }
           else if (resp == ResponseStrings.Cancel) {
+            this.respYesNo = null;
             this.dialogRef.close({ newQuantity: this.newQuantity.toString(), type: ResponseStrings.Cancel });
           }
         });
@@ -109,6 +113,7 @@ export class BpNumberSelectionComponent implements OnInit {
       }
     }
     else if (this.from == "qunatity put in new tote") {
+      this.respYesNo = null;
       this.dialogRef.close(this.newQuantity.toString());
     }
     

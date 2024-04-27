@@ -309,6 +309,8 @@ export class NextToteId {
 export class TaskCompleteRequest {
     id: number;
     completedQty: number;
+    originalLocationQty?: number;
+    respTypeSelected?: string
 }
 
 export class ValidateToteRequest {
