@@ -136,7 +136,6 @@ export class VerifyBulkCountComponent implements OnInit {
   }
 
   numberSelection(element) {
-    debugger;
     // element.NextToteID = this.NextToteID;
     // const dialogRef1: any = this.global.OpenDialog(BpNumberSelectionComponent, {
     //   height: 'auto',
