@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { BulkProcessComponent } from './bulk-process.component';
-import { BulkPickComponent } from './bulk-pick/bulk-pick.component';
+import { BulkProcessComponent } from './bulk-process.component'; 
 import { AuthGuardGuard } from '../common/guard/auth-guard.guard';
 import { PreferencesComponent } from './preferences/preferences.component';
 import { ConfirmationGuard } from '../common/guard/confirmation-guard.guard';
@@ -13,27 +12,7 @@ const routes: Routes = [
   component: BulkProcessComponent, 
   canActivate: [AuthGuardGuard],
 
-},
-{
-  path: 'BulkPick12',
-  component: BulkPickComponent,
-  canActivate: [AuthGuardGuard], 
-  canDeactivate: [ConfirmationGuard],
-  data: {title: 'Bulk Pick'}
-},
-{
-  path: 'BulkPutAway12',
-  loadChildren: () =>
-    import('./bulk-put-away/bulk-put-away.module').then((m) => m.BulkPutAwayModule),
-  canActivate: [AuthGuardGuard],
-
-},
-{
-  path: 'BulkCount12',
-  loadChildren: () =>
-    import('./bulk-count/bulk-count.module').then((m) => m.BulkCountModule),
-  canActivate: [AuthGuardGuard], 
-},  
+}  ,
 {
   path: 'Preferences',
   component: PreferencesComponent,
