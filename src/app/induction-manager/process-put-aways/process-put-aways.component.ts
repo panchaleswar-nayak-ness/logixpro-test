@@ -29,9 +29,19 @@ import { InductionManagerApiService } from 'src/app/common/services/induction-ma
 import { SharedService } from 'src/app/common/services/shared.service';
 import { Router } from '@angular/router';
 import { ToasterTitle, ToasterType ,LiveAnnouncerMessage,ResponseStrings,KeyboardKeys, ToasterMessages,DialogConstants,Style,UniqueConstants,StringConditions,ColumnDef } from 'src/app/common/constants/strings.constants';
+import { ApiResponse, ColumnAlias } from 'src/app/common/types/CommonTypes';
 
 export interface PeriodicElement {
   position: string;
+}
+
+interface BatchTotesResponse {
+  cells: string;
+  toteID: string;
+  locked: string;
+  zoneLabel: string;
+  totePosition: string;
+  wsid: string;
 }
 
 @Component({
@@ -45,28 +55,28 @@ export class ProcessPutAwaysComponent implements OnInit {
   dataSource: any;
   selection = new SelectionModel<PeriodicElement>(true, []);
   licAppData;
-  rowSelected = false;
-  isViewTote = true;
-  public ifAllowed: boolean = false
-  public userData: any;
-  public cellSize = '0';
-  public batchId = '';
-  public status = 'Not Processed';
-  public assignedZones = '';
-  public autoPutToteIDS = false;
-  public pickBatchQuantity = 0;
-  public currentToteID = 0;
-  public toteID = '';
-  public cell = '';
-  public toteNumber = '';
-  public toteQuantity: any
-  public actionDropDown: any;
-  fieldNames:any;
-  imPreferences:any;
-  public assignedZonesArray = [{ zone: '' }];
+  rowSelected: boolean = false;
+  isViewTote: boolean = true;
+  ifAllowed: boolean = false
+  userData: any;
+  cellSize: string = '0';
+  batchId: string = '';
+  status: string = 'Not Processed';
+  assignedZones: string = '';
+  autoPutToteIDS: boolean = false;
+  pickBatchQuantity: number = 0;
+  currentToteID: number = 0;
+  toteID: string = '';
+  cell: string = '';
+  toteNumber: string = '';
+  toteQuantity: any
+  actionDropDown: any;
+  fieldNames: ColumnAlias;
+  imPreferences: any;
+  assignedZonesArray: { zone: string }[] = [{ zone: '' }];
   searchAutocompleteItemNum: any = [];
   searchByItem2: any = new Subject<string>();
-  floatLabelControlItem2: any = new FormControl('item2' as FloatLabelType);
+  floatLabelControlItem2: FormControl = new FormControl('item2' as FloatLabelType);
   hideRequiredControlItem2 = new FormControl(false);
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -93,8 +103,8 @@ export class ProcessPutAwaysComponent implements OnInit {
   searchAutocompleteItemNum2: any = [];
   dataSource2: any= new MatTableDataSource<any>([]);
 
-  inputType = "Any";
-  inputValue = "";
+  inputType: string = "Any";
+  inputValue: string = "";
 
   nextPos: any;
   nextPutLoc: any;
@@ -126,8 +136,8 @@ export class ProcessPutAwaysComponent implements OnInit {
   posOptions:any
   selectedToteID:any
   openCell:any
-  upperBound = 5
-  lowerBound = 1
+  upperBound : number = 5
+  lowerBound : number = 1
   
   public iInductionManagerApi: IInductionManagerApiService;
   public iAdminApiService: IAdminApiService;
@@ -146,46 +156,33 @@ export class ProcessPutAwaysComponent implements OnInit {
   }
 
   ngAfterViewInit() {
-    setTimeout(() => {
-      this.inputVal.nativeElement.focus();
-      }, 2000);
-    this.imPreferences=this.global.getImPreferences();
+    setTimeout(() => this.inputVal.nativeElement.focus(), 2000);
+    this.imPreferences = this.global.getImPreferences();
   }
 
   
   onTabChange(event: MatTabChangeEvent) {
     // This method will be called whenever the user changes the selected tab
     const newIndex = event.index;
-    if(newIndex===1){
-      setTimeout(() => {
-      this.inputVal.nativeElement.focus();
-      }, 2000);
-   
+    if(newIndex === 1) {
+      setTimeout(() => this.inputVal.nativeElement.focus(), 2000);
       this.autocompleteSearchColumnItem2();
-    }else if(newIndex===0){
-      setTimeout(() => {
-      this.batchFocus?.nativeElement.focus();
-          
-        }, 100);
+    } else if(newIndex === 0) {
+      setTimeout(() => this.batchFocus?.nativeElement.focus(), 100);
     }
-
   }
+
   ngOnInit(): void {
     this.ELEMENT_DATA.length = 0;
     this.userData = this.authService.userData();
     this.pickToteSetupIndex();
     this.getCurrentToteID();
-    
     this.OSFieldFilterNames();
     this.imPreferences=this.global.getImPreferences();
     this.searchByItem2
       .pipe(debounceTime(400), distinctUntilChanged())
-      .subscribe((value) => {
-        this.autocompleteSearchColumnItem2();
-      });
-    setTimeout(()=>{
-      this.getProcessPutAwayIndex();
-    },300)
+      .subscribe((value) => this.autocompleteSearchColumnItem2());
+    setTimeout(()=> this.getProcessPutAwayIndex(), 300)
   }
 
   callFunBatchSetup(event:any){
@@ -253,24 +250,21 @@ export class ProcessPutAwaysComponent implements OnInit {
   }
 
   @HostListener('click')
-  documentClick(event: MouseEvent) {
+  documentClick() {
     this.global.changesConfirmation = true;
     this.ifAllowed = true
   }
+
   public OSFieldFilterNames() { 
-    this.iAdminApiService.ColumnAlias().subscribe((res: any) => {
-      if (res.isExecuted && res.data)
-      {
-        this.fieldNames = res.data;
-      }
+    this.iAdminApiService.ColumnAlias().subscribe((res: ApiResponse<ColumnAlias>) => {
+      if (res.isExecuted && res.data) this.fieldNames = res.data
       else {
         this.global.ShowToastr(ToasterType.Error, this.global.globalErrorMsg(), ToasterTitle.Error);
-        console.log("ColumnAlias",res.responseMessage);
-
+        console.log("ColumnAlias", res.responseMessage);
       }
-      
     })
   }
+
   clearFormAndTable() {
     this.batchId = '';
     this.status = 'Not Processed';
@@ -302,19 +296,20 @@ export class ProcessPutAwaysComponent implements OnInit {
 
     }    
   }
+
   printTotePut(){
     this.clearMatSelectList();
-      this.global.Print(`FileName:PrintOffCarList|BatchID:${this.batchId}`)
-     this.global.Print(`FileName:PrintOffCarList|BatchID:${this.batchId}`);
+    this.global.Print(`FileName:PrintOffCarList|BatchID:${this.batchId}`);
+    this.global.Print(`FileName:PrintOffCarList|BatchID:${this.batchId}`);
   }
+
   getCurrentToteID() {
     this.iInductionManagerApi.NextTote().subscribe(
-      (res: any) => {
-        if (res.data && res.isExecuted) {
-          this.currentToteID = res.data;
-        } else {
-          this.global.ShowToastr(ToasterType.Error,ToasterMessages.SomethingWentWrong, ToasterTitle.Error);
-          console.log("NextTote",res.responseMessage);
+      (res: ApiResponse<number>) => {
+        if (res.data && res.isExecuted) this.currentToteID = res.data
+        else {
+          this.global.ShowToastr(ToasterType.Error, ToasterMessages.SomethingWentWrong, ToasterTitle.Error);
+          console.log("NextTote", res.responseMessage);
         }
       },
       (error) => { }
@@ -344,7 +339,7 @@ export class ProcessPutAwaysComponent implements OnInit {
     let payLoad = { batchID: this.batchId2 };    
     this.batchId = this.batchId2;
     this.iInductionManagerApi.BatchTotes(payLoad).subscribe(
-      (res: any) => {
+      (res: ApiResponse<BatchTotesResponse[]>) => {
         if (res.data && res.isExecuted) {
           
           if (res.data.length > 0) this.status = "Processed";
