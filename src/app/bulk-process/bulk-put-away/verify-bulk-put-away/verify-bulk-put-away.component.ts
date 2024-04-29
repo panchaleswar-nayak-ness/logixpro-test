@@ -5,7 +5,7 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSelect } from '@angular/material/select';
 import { MatTableDataSource } from '@angular/material/table';
 import { ConfirmationDialogComponent } from 'src/app/admin/dialogs/confirmation-dialog/confirmation-dialog.component';
-import { TaskCompleteRequest, UpdateLocationQuantityRequest, WorkStationSetupResponse } from 'src/app/common/Model/bulk-transactions';
+import {  UpdateLocationQuantityRequest, WorkStationSetupResponse } from 'src/app/common/Model/bulk-transactions';
 import { SetTimeout } from 'src/app/common/constants/numbers.constants';
 import { DialogConstants, ResponseStrings, Style, ToasterTitle, ToasterType } from 'src/app/common/constants/strings.constants';
 import { IAdminApiService } from 'src/app/common/services/admin-api/admin-api-interface';
@@ -50,7 +50,7 @@ export class VerifyBulkPutAwayComponent implements OnInit {
   }
 
   ngOnInit(): void {
-  
+
   }
 
   addItem($event: any = null) {
@@ -208,67 +208,67 @@ export class VerifyBulkPutAwayComponent implements OnInit {
       }
     });
   }
-  
+
   async taskComplete() {
-    const dialogRef1: any = this.global.OpenDialog(ConfirmationDialogComponent, {
-      height: 'auto',
-      width: Style.w560px,
-      autoFocus: DialogConstants.autoFocus,
-      disableClose: true,
-      data: {
-        message: `You will now confirm the actual Completed Quantities entered are correct!`,
-        message2: `
-        ‘No’ changes may be made after posting!
-        Touch ‘Yes’ to continue.`,
-        heading: 'Post Completed Quantity?',
-        buttonFields: true,
-      },
-    });
-    dialogRef1.afterClosed().subscribe(async (resp: any) => {
-      if (resp == ResponseStrings.Yes) {
-        let orders: TaskCompleteRequest[] = new Array();
-        this.orderLines.filteredData.forEach((x: any) => {
-          orders.push(
-            {
-              "id": x.id,
-               "completedQty": x.completedQuantity
-            }
-          );
-        });
-        let res = await this.iBulkProcessApiService.bulkPickTaskComplete(orders);
-        if (res?.status == HttpStatusCode.Created) {
-          this.taskCompleted = true;
-          let offCarouselPutAwayToteManifest: boolean = this.workstationPreferences.pfSettingsII.filter((x: any) => x.pfName == "Off Carousel Manifest")[0].pfSetting === "1" ? true : false;
-          let autoPrintOffCarouselPutAwayToteManifest: boolean = this.workstationPreferences.pfSettingsII.filter((x: any) => x.pfName == "Auto Tote Manifest")[0].pfSetting === "1" ? true : false;
-          if (offCarouselPutAwayToteManifest && autoPrintOffCarouselPutAwayToteManifest) {
-            // print report
-            this.showNoRemainingPutAways();
-          }
-          else if (offCarouselPutAwayToteManifest) {
-            const dialogRef1: any = this.global.OpenDialog(ConfirmationDialogComponent, {
-              height: 'auto',
-              width: Style.w560px,
-              autoFocus: DialogConstants.autoFocus,
-              disableClose: true,
-              data: {
-                message: `Touch Yes to print a Tote Manifest.`,
-                heading: 'Would you like to print a Tote Manifest?',
-                buttonFields: true
-              },
-            });
-            dialogRef1.afterClosed().subscribe(async (resp: any) => {
-              if (resp == ResponseStrings.Yes) {
-                // print report
-              }
-              this.showNoRemainingPutAways();
-            });
-          }
-          else {
-            this.showNoRemainingPutAways();
-          }
-        }
-      }
-    });
+    // const dialogRef1: any = this.global.OpenDialog(ConfirmationDialogComponent, {
+    //   height: 'auto',
+    //   width: Style.w560px,
+    //   autoFocus: DialogConstants.autoFocus,
+    //   disableClose: true,
+    //   data: {
+    //     message: `You will now confirm the actual Completed Quantities entered are correct!`,
+    //     message2: `
+    //     ‘No’ changes may be made after posting!
+    //     Touch ‘Yes’ to continue.`,
+    //     heading: 'Post Completed Quantity?',
+    //     buttonFields: true,
+    //   },
+    // });
+    // dialogRef1.afterClosed().subscribe(async (resp: any) => {
+    //   if (resp == ResponseStrings.Yes) {
+    //     let orders: TaskCompleteRequest[] = new Array();
+    //     this.orderLines.filteredData.forEach((x: any) => {
+    //       orders.push(
+    //         {
+    //           "id": x.id,
+    //            "completedQty": x.completedQuantity
+    //         }
+    //       );
+    //     });
+    //     let res = await this.iBulkProcessApiService.bulkPickTaskComplete(orders);
+    //     if (res?.status == HttpStatusCode.Created) {
+    //       this.taskCompleted = true;
+    //       let offCarouselPutAwayToteManifest: boolean = this.workstationPreferences.pfSettingsII.filter((x: any) => x.pfName == "Off Carousel Manifest")[0].pfSetting === "1" ? true : false;
+    //       let autoPrintOffCarouselPutAwayToteManifest: boolean = this.workstationPreferences.pfSettingsII.filter((x: any) => x.pfName == "Auto Tote Manifest")[0].pfSetting === "1" ? true : false;
+    //       if (offCarouselPutAwayToteManifest && autoPrintOffCarouselPutAwayToteManifest) {
+    //         // print report
+    //         this.showNoRemainingPutAways();
+    //       }
+    //       else if (offCarouselPutAwayToteManifest) {
+    //         const dialogRef1: any = this.global.OpenDialog(ConfirmationDialogComponent, {
+    //           height: 'auto',
+    //           width: Style.w560px,
+    //           autoFocus: DialogConstants.autoFocus,
+    //           disableClose: true,
+    //           data: {
+    //             message: `Touch Yes to print a Tote Manifest.`,
+    //             heading: 'Would you like to print a Tote Manifest?',
+    //             buttonFields: true
+    //           },
+    //         });
+    //         dialogRef1.afterClosed().subscribe(async (resp: any) => {
+    //           if (resp == ResponseStrings.Yes) {
+    //             // print report
+    //           }
+    //           this.showNoRemainingPutAways();
+    //         });
+    //       }
+    //       else {
+    //         this.showNoRemainingPutAways();
+    //       }
+    //     }
+    //   }
+    // });
   }
 
   showNoRemainingPutAways() {

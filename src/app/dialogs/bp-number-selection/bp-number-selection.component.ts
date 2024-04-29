@@ -28,7 +28,7 @@ export class BpNumberSelectionComponent implements OnInit {
   constructor(
     public dialogRef: MatDialogRef<BpNumberSelectionComponent>,
     public bulkProcessApiService: BulkProcessApiService,
-    private global: GlobalService, 
+    private global: GlobalService,
     private cusValidator: CustomValidatorService,
     @Inject(MAT_DIALOG_DATA) public data: any,
   ) {
@@ -54,20 +54,20 @@ export class BpNumberSelectionComponent implements OnInit {
       this.Prefernces = res;
     })
   }
-  
+
 
   add(string: string) {
     let newQuantity:number;
     if(this.newQuantity){
-      newQuantity = parseFloat(this.newQuantity.toString() + string); 
+      newQuantity = parseFloat(this.newQuantity.toString() + string);
       }
     else{
-        newQuantity = parseFloat(string); 
+        newQuantity = parseFloat(string);
     }
     if(!this.IsFullTote || newQuantity <= this.toteQuantity) this.newQuantity = newQuantity;
     else  this.global.ShowToastr(ToasterType.Error, "This tote only needs a quantity of " + this.toteQuantity, ToasterTitle.Error);
   }
-  numberOnly(event): boolean { 
+  numberOnly(event): boolean {
     if(this.IsFullTote && event.target.value > this.toteQuantity){
       this.global.ShowToastr(ToasterType.Error, "This tote only needs a quantity of " +this.toteQuantity, ToasterTitle.Error);
     }
@@ -75,7 +75,7 @@ export class BpNumberSelectionComponent implements OnInit {
     return this.cusValidator.numberOnly(event);
   }
   respYesNo : boolean | null = null;
-  done() { 
+  done() {
     if (!this.IsFullTote || (this.newQuantity <= this.toteQuantity && this.newQuantity >= 0)){
     if (this.from == "completed quantity") {
       if (this.Prefernces.systemPreferences.zeroLocationQuantityCheck && this.url == "Pick") {
@@ -97,7 +97,7 @@ export class BpNumberSelectionComponent implements OnInit {
         dialogRef1.afterClosed().subscribe(async (resp: any) => {
           if (resp == ResponseStrings.Yes) {
             this.respYesNo = true;
-            this.dialogRef.close({ newQuantity: this.newQuantity.toString(), type: ResponseStrings.Yes });
+            this.dialogRef.close({ newQuantity: 0, type: ResponseStrings.Yes });
           }
           else if (resp == ResponseStrings.No) {
             this.respYesNo = false;
@@ -116,7 +116,7 @@ export class BpNumberSelectionComponent implements OnInit {
       this.respYesNo = null;
       this.dialogRef.close(this.newQuantity.toString());
     }
-    
+
   }
   }
 }

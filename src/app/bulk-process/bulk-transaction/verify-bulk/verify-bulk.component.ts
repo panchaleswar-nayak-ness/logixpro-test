@@ -5,7 +5,12 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSelect } from '@angular/material/select';
 import { MatTableDataSource } from '@angular/material/table';
 import { ConfirmationDialogComponent } from 'src/app/admin/dialogs/confirmation-dialog/confirmation-dialog.component';
-import { BulkPreferences, OrderLineResource, TaskCompleteRequest, UpdateLocationQuantityRequest, WorkStationSetupResponse } from 'src/app/common/Model/bulk-transactions';
+import {
+  BulkPreferences,
+  OrderLineResource,
+  TaskCompleteNewRequest,
+  WorkStationSetupResponse
+} from 'src/app/common/Model/bulk-transactions';
 import { SetTimeout } from 'src/app/common/constants/numbers.constants';
 import { DialogConstants, ResponseStrings, Style, ToasterMessages, ToasterTitle, ToasterType } from 'src/app/common/constants/strings.constants';
 import { IAdminApiService } from 'src/app/common/services/admin-api/admin-api-interface';
@@ -32,6 +37,7 @@ export class VerifyBulkComponent implements OnInit {
   @Input() url: any;
   IsLoading: boolean = true;
   OldSelectedList: any = [];
+  taskCompleteNewRequest: TaskCompleteNewRequest [] = [];
   filteredData: any = [];
   @Input() NextToteID: any;
   @ViewChild('paginator') paginator: MatPaginator;
@@ -61,6 +67,11 @@ export class VerifyBulkComponent implements OnInit {
 
   ngOnInit(): void {
     this.orderLines.forEach(element => {
+      this.taskCompleteNewRequest.push({
+        id: element.id,
+        completedQty: 0,
+        newLocationQty: -1
+      });
       element.completedQuantity = 0;
     });
     this.backSubscription = this.sharedService.verifyBulkTransBackObserver.subscribe((data: any) => {
@@ -130,7 +141,7 @@ export class VerifyBulkComponent implements OnInit {
 
   Search($event: any) {
     if ($event.length > 0) {
-      //this.filteredData = this.OldSelectedList.filter(function (str) { return str.itemNumber.toLowerCase().startsWith($event.toLowerCase()); });      
+      //this.filteredData = this.OldSelectedList.filter(function (str) { return str.itemNumber.toLowerCase().startsWith($event.toLowerCase()); });
       this.filteredData = this.OldSelectedList.filter((function () {
         const seen = new Set();
         return function (str) {
@@ -176,6 +187,8 @@ export class VerifyBulkComponent implements OnInit {
 
   numberSelection(element) {
     element.NextToteID = this.NextToteID;
+    let record = this.taskCompleteNewRequest.find((x: TaskCompleteNewRequest) => x.id == element.id);
+
     const dialogRef1: any = this.global.OpenDialog(BpNumberSelectionComponent, {
       height: 'auto',
       width: Style.w402px,
@@ -188,16 +201,12 @@ export class VerifyBulkComponent implements OnInit {
       }
     });
     dialogRef1.afterClosed().subscribe(async (resp: any) => {
+      if (record == undefined) {
+        return;
+      }
+
       if (resp.type == ResponseStrings.Yes) {
-        let payload: UpdateLocationQuantityRequest = new UpdateLocationQuantityRequest();
-        payload.invMapId = element.invMapId;
-        payload.locationQty = 0;
-        let res: any = await this.iBulkProcessApiService.updateLocationQuantity(payload);
-        if (res?.status == HttpStatusCode.Ok) {
-            element.originalQty = res.body;
-            element.respType = resp.type;  
-          this.global.ShowToastr(ToasterType.Success, ToasterMessages.RecordUpdatedSuccessful, ToasterTitle.Success);
-        }
+        record.newLocationQty = resp.newQuantity;
         element.completedQuantity = resp.newQuantity;
       }
       else if (resp.type == ResponseStrings.No) {
@@ -212,21 +221,17 @@ export class VerifyBulkComponent implements OnInit {
           disableClose: true,
         });
         dialogRef.afterClosed().subscribe(async (result: any) => {
-          let payload: UpdateLocationQuantityRequest = new UpdateLocationQuantityRequest();
-          payload.invMapId = element.invMapId;
-          payload.locationQty = parseInt(result.SelectedItem);
-          let res: any = await this.iBulkProcessApiService.updateLocationQuantity(payload);
-          if (res?.status == HttpStatusCode.Ok) {
-            element.originalQty = res.body;
-            element.respType = resp.type;  
-            this.global.ShowToastr(ToasterType.Success, ToasterMessages.RecordUpdatedSuccessful, ToasterTitle.Success);
+          if (record == undefined) {
+            return;
           }
+            record.newLocationQty = parseInt(result.SelectedItem);
+            element.completedQuantity = resp.newQuantity;
         });
+      } else if (resp.type == ResponseStrings.Cancel) {
         element.completedQuantity = resp.newQuantity;
       } else {
-        element.respType = resp.type;
-        element.completedQuantity = resp.newQuantity;
-      }
+        record.newLocationQty = resp.newQuantity;
+        element.completedQuantity = resp.newQuantity;      }
     });
   }
 
@@ -282,18 +287,17 @@ export class VerifyBulkComponent implements OnInit {
     });
     dialogRef1.afterClosed().subscribe(async (resp: any) => {
       if (resp == ResponseStrings.Yes) {
-        let orders: TaskCompleteRequest[] = new Array();
+        let ordersNew: TaskCompleteNewRequest[] = new Array();
         orderLines.forEach((x: any) => {
-          orders.push(
-            {
-              "id": x.id,
-              "completedQty": x.completedQuantity,
-              "originalLocationQty": x.originalQty ? x.originalQty : 0,
-              "respTypeSelected": x.respType ? x.respType : "Yes"
-            }
-          );
+
+          let record = this.taskCompleteNewRequest.find((r: TaskCompleteNewRequest) => r.id == x.id);
+          if (record != undefined) {
+            record.completedQty = parseInt(x.completedQuantity);
+            ordersNew.push(record);
+          }
         });
-        let res = await this.iBulkProcessApiService.bulkPickTaskComplete(orders);
+
+        let res = await this.iBulkProcessApiService.bulkPickTaskComplete(ordersNew);
         if (res?.status == HttpStatusCode.Ok) {
           if (this.url == "Pick") {
             await this.TaskCompleteEOB();
@@ -350,7 +354,7 @@ export class VerifyBulkComponent implements OnInit {
       await this.checkForZone(order[0].id); // Check karo ki zone mil gaya hai ya nahi
       this.hideLoader(); // Spinner ko chhupao
     }
-  
+
     if (this.Prefernces.systemPreferences.displayEob) {
       this.showLoader(); // Spinner ko dikhao
       await this.callEndOfBatch(order); // End of batch API call karo
@@ -359,7 +363,7 @@ export class VerifyBulkComponent implements OnInit {
       this.taskCompleteFinished();
     }
   }
-  
+
   async checkForZone(orderId: any) {
     if (this.Prefernces.systemPreferences.shortPickFindNewLocation && this.Prefernces.systemPreferences.displayEob) {
       for (let i = 0; i < 10; i++) {
@@ -369,7 +373,7 @@ export class VerifyBulkComponent implements OnInit {
       }
     }
   }
-  
+
   async callEndOfBatch(order: any[]) {
     const orderNumbers: string[] = Array.from(new Set(order.map(item => item.orderNumber)));
     const res: any = await this.iAdminApiService.endofbatch({ orderNumbers: orderNumbers }).toPromise();
@@ -383,16 +387,16 @@ export class VerifyBulkComponent implements OnInit {
       });
       dialogRef1.afterClosed().subscribe(async (resp: any) => {
         this.taskCompleteFinished();
-      }); 
+      });
     } else {
       this.taskCompleteFinished();
     }
   }
-  
+
   showLoader() {
     this.spinnerService.IsLoader = true;
   }
-  
+
   hideLoader() {
     this.spinnerService.IsLoader = false;
   }

@@ -5,7 +5,7 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSelect } from '@angular/material/select';
 import { MatTableDataSource } from '@angular/material/table';
 import { ConfirmationDialogComponent } from 'src/app/admin/dialogs/confirmation-dialog/confirmation-dialog.component';
-import { TaskCompleteRequest, UpdateLocationQuantityRequest, WorkStationSetupResponse } from 'src/app/common/Model/bulk-transactions';
+import { WorkStationSetupResponse } from 'src/app/common/Model/bulk-transactions';
 import { SetTimeout } from 'src/app/common/constants/numbers.constants';
 import { DialogConstants, ResponseStrings, Style, ToasterTitle, ToasterType } from 'src/app/common/constants/strings.constants';
 import { IAdminApiService } from 'src/app/common/services/admin-api/admin-api-interface';
@@ -28,7 +28,7 @@ export class BpVerifyBulkPickComponent implements OnInit  {
   OldSelectedList: any = [];
   filteredData: any = [];
   @Input() NextToteID: any;
-  
+
   @ViewChild('paginator') paginator: MatPaginator;
   @Input() ordersDisplayedColumns: string[] = ["ItemNo", "Description", "LineNo", "Whse", "Location", "LotNo", "SerialNo", "OrderNo", "OrderQty", "CompletedQty", "ToteID", "Action"];
   suggestion: string = "";
@@ -51,9 +51,9 @@ export class BpVerifyBulkPickComponent implements OnInit  {
   }
 
   ngOnInit(): void {
-  
+
   }
-  
+
   addItem($event: any = null) {
     this.SearchString = this.suggestion;
     if (!$event) this.Search(this.SearchString);
@@ -135,51 +135,51 @@ export class BpVerifyBulkPickComponent implements OnInit  {
   }
 
   numberSelection(element) {
-    element.NextToteID = this.NextToteID;
-    const dialogRef1: any = this.global.OpenDialog(BpNumberSelectionComponent, {
-      height: 'auto',
-      width: Style.w402px,
-      autoFocus: DialogConstants.autoFocus,
-      disableClose: true,
-      data: {
-        completedQuantity: element.completedQuantity,
-        from: "completed quantity"
-      }
-    });
-    dialogRef1.afterClosed().subscribe(async (resp: any) => {
-      if (resp.type == ResponseStrings.Yes) {
-        let payload: UpdateLocationQuantityRequest = new UpdateLocationQuantityRequest();
-        payload.invMapId = element.invMapId;
-        payload.locationQty = 0;
-        let res: any = await this.iBulkProcessApiService.updateLocationQuantity(payload);
-        if (res?.status == HttpStatusCode.Ok) {
-          this.global.ShowToastr(ToasterType.Success, "Record Updated Successfully", ToasterTitle.Success);
-        }
-        element.completedQuantity = resp.newQuantity;
-      }
-      else if (resp.type == ResponseStrings.No) {
-        const dialogRef: any = this.global.OpenDialog(InputFilterComponent, {
-          height: DialogConstants.auto,
-          width: '480px',
-          data: {
-            FilterColumnName: 'Enter the Location Quantity after this Pick',
-            dynamicText: 'Enter Location Quantity'
-          },
-          autoFocus: DialogConstants.autoFocus,
-          disableClose: true,
-        });
-        dialogRef.afterClosed().subscribe(async (result: any) => {
-          let payload: UpdateLocationQuantityRequest = new UpdateLocationQuantityRequest();
-          payload.invMapId = element.invMapId;
-          payload.locationQty = parseInt(result.SelectedItem);
-          let res: any = await this.iBulkProcessApiService.updateLocationQuantity(payload);
-          if (res?.status == HttpStatusCode.Ok) {
-            this.global.ShowToastr(ToasterType.Success, "Record Updated Successfully", ToasterTitle.Success);
-          }
-        });
-        element.completedQuantity = resp.newQuantity;
-      }
-    });
+    // element.NextToteID = this.NextToteID;
+    // const dialogRef1: any = this.global.OpenDialog(BpNumberSelectionComponent, {
+    //   height: 'auto',
+    //   width: Style.w402px,
+    //   autoFocus: DialogConstants.autoFocus,
+    //   disableClose: true,
+    //   data: {
+    //     completedQuantity: element.completedQuantity,
+    //     from: "completed quantity"
+    //   }
+    // });
+    // dialogRef1.afterClosed().subscribe(async (resp: any) => {
+    //   if (resp.type == ResponseStrings.Yes) {
+    //     let payload: UpdateLocationQuantityRequest = new UpdateLocationQuantityRequest();
+    //     payload.invMapId = element.invMapId;
+    //     payload.locationQty = 0;
+    //     let res: any = await this.iBulkProcessApiService.updateLocationQuantity(payload);
+    //     if (res?.status == HttpStatusCode.Ok) {
+    //       this.global.ShowToastr(ToasterType.Success, "Record Updated Successfully", ToasterTitle.Success);
+    //     }
+    //     element.completedQuantity = resp.newQuantity;
+    //   }
+    //   else if (resp.type == ResponseStrings.No) {
+    //     const dialogRef: any = this.global.OpenDialog(InputFilterComponent, {
+    //       height: DialogConstants.auto,
+    //       width: '480px',
+    //       data: {
+    //         FilterColumnName: 'Enter the Location Quantity after this Pick',
+    //         dynamicText: 'Enter Location Quantity'
+    //       },
+    //       autoFocus: DialogConstants.autoFocus,
+    //       disableClose: true,
+    //     });
+    //     dialogRef.afterClosed().subscribe(async (result: any) => {
+    //       let payload: UpdateLocationQuantityRequest = new UpdateLocationQuantityRequest();
+    //       payload.invMapId = element.invMapId;
+    //       payload.locationQty = parseInt(result.SelectedItem);
+    //       let res: any = await this.iBulkProcessApiService.updateLocationQuantity(payload);
+    //       if (res?.status == HttpStatusCode.Ok) {
+    //         this.global.ShowToastr(ToasterType.Success, "Record Updated Successfully", ToasterTitle.Success);
+    //       }
+    //     });
+    //     element.completedQuantity = resp.newQuantity;
+    //   }
+    // });
   }
 
   ResetAllCompletedQty() {
@@ -209,67 +209,67 @@ export class BpVerifyBulkPickComponent implements OnInit  {
       }
     });
   }
-  
+
   async taskComplete() {
-    const dialogRef1: any = this.global.OpenDialog(ConfirmationDialogComponent, {
-      height: 'auto',
-      width: Style.w560px,
-      autoFocus: DialogConstants.autoFocus,
-      disableClose: true,
-      data: {
-        message: `You will now confirm the actual Completed Quantities entered are correct!`,
-        message2: `
-        ‘No’ changes may be made after posting!
-        Touch ‘Yes’ to continue.`,
-        heading: 'Post Completed Quantity?',
-        buttonFields: true,
-      },
-    });
-    dialogRef1.afterClosed().subscribe(async (resp: any) => {
-      if (resp == ResponseStrings.Yes) {
-        let orders: TaskCompleteRequest[] = new Array();
-        this.orderLines.filteredData.forEach((x: any) => {
-          orders.push(
-            {
-              "id": x.id,
-               "completedQty": x.completedQuantity
-            }
-          );
-        });
-        let res = await this.iBulkProcessApiService.bulkPickTaskComplete(orders);
-        if (res?.status == HttpStatusCode.Created) {
-          this.taskCompleted = true;
-          let offCarouselPickToteManifest: boolean = this.workstationPreferences.pfSettingsII.filter((x: any) => x.pfName == "Off Carousel Manifest")[0].pfSetting === "1" ? true : false;
-          let autoPrintOffCarouselPickToteManifest: boolean = this.workstationPreferences.pfSettingsII.filter((x: any) => x.pfName == "Auto Tote Manifest")[0].pfSetting === "1" ? true : false;
-          if (offCarouselPickToteManifest && autoPrintOffCarouselPickToteManifest) {
-            // print report
-            this.showNoRemainingPicks();
-          }
-          else if (offCarouselPickToteManifest) {
-            const dialogRef1: any = this.global.OpenDialog(ConfirmationDialogComponent, {
-              height: 'auto',
-              width: Style.w560px,
-              autoFocus: DialogConstants.autoFocus,
-              disableClose: true,
-              data: {
-                message: `Touch Yes to print a Tote Manifest.`,
-                heading: 'Would you like to print a Tote Manifest?',
-                buttonFields: true
-              },
-            });
-            dialogRef1.afterClosed().subscribe(async (resp: any) => {
-              if (resp == ResponseStrings.Yes) {
-                // print report
-              }
-              this.showNoRemainingPicks();
-            });
-          }
-          else {
-            this.showNoRemainingPicks();
-          }
-        }
-      }
-    });
+  //   const dialogRef1: any = this.global.OpenDialog(ConfirmationDialogComponent, {
+  //     height: 'auto',
+  //     width: Style.w560px,
+  //     autoFocus: DialogConstants.autoFocus,
+  //     disableClose: true,
+  //     data: {
+  //       message: `You will now confirm the actual Completed Quantities entered are correct!`,
+  //       message2: `
+  //       ‘No’ changes may be made after posting!
+  //       Touch ‘Yes’ to continue.`,
+  //       heading: 'Post Completed Quantity?',
+  //       buttonFields: true,
+  //     },
+  //   });
+  //   dialogRef1.afterClosed().subscribe(async (resp: any) => {
+  //     if (resp == ResponseStrings.Yes) {
+  //       let orders: TaskCompleteRequest[] = new Array();
+  //       this.orderLines.filteredData.forEach((x: any) => {
+  //         orders.push(
+  //           {
+  //             "id": x.id,
+  //              "completedQty": x.completedQuantity
+  //           }
+  //         );
+  //       });
+  //       let res = await this.iBulkProcessApiService.bulkPickTaskComplete(orders);
+  //       if (res?.status == HttpStatusCode.Created) {
+  //         this.taskCompleted = true;
+  //         let offCarouselPickToteManifest: boolean = this.workstationPreferences.pfSettingsII.filter((x: any) => x.pfName == "Off Carousel Manifest")[0].pfSetting === "1" ? true : false;
+  //         let autoPrintOffCarouselPickToteManifest: boolean = this.workstationPreferences.pfSettingsII.filter((x: any) => x.pfName == "Auto Tote Manifest")[0].pfSetting === "1" ? true : false;
+  //         if (offCarouselPickToteManifest && autoPrintOffCarouselPickToteManifest) {
+  //           // print report
+  //           this.showNoRemainingPicks();
+  //         }
+  //         else if (offCarouselPickToteManifest) {
+  //           const dialogRef1: any = this.global.OpenDialog(ConfirmationDialogComponent, {
+  //             height: 'auto',
+  //             width: Style.w560px,
+  //             autoFocus: DialogConstants.autoFocus,
+  //             disableClose: true,
+  //             data: {
+  //               message: `Touch Yes to print a Tote Manifest.`,
+  //               heading: 'Would you like to print a Tote Manifest?',
+  //               buttonFields: true
+  //             },
+  //           });
+  //           dialogRef1.afterClosed().subscribe(async (resp: any) => {
+  //             if (resp == ResponseStrings.Yes) {
+  //               // print report
+  //             }
+  //             this.showNoRemainingPicks();
+  //           });
+  //         }
+  //         else {
+  //           this.showNoRemainingPicks();
+  //         }
+  //       }
+  //     }
+  //   });
   }
 
   showNoRemainingPicks() {

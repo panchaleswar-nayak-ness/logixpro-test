@@ -305,12 +305,10 @@ export class NextToteId {
     numberOfIds?: number;
     nextId?: number;
 }
-
-export class TaskCompleteRequest {
-    id: number;
-    completedQty: number;
-    originalLocationQty?: number;
-    respTypeSelected?: string
+export class TaskCompleteNewRequest {
+  id: number;
+  completedQty: number;
+  newLocationQty?: number;
 }
 
 export class ValidateToteRequest {
