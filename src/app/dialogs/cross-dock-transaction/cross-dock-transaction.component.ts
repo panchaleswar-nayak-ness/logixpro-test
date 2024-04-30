@@ -80,10 +80,9 @@ export class CrossDockTransactionComponent implements OnInit {
   ngAfterViewInit(): void {
     this.completefocus.nativeElement.focus();
   }
-  selectTote(i: any) {
-    if(this.imPreferences.validateTotes){
+  selectTote(i: any) { 
     this.openTotesDialogue(i);
-  }
+  
   }
 
   clearMatSelectList() {
