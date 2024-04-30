@@ -291,8 +291,8 @@ export class CrossDockTransactionComponent implements OnInit {
 
         if (result == ResponseStrings.Yes) {
           let payLoad = {
-            pick: this.data.values.transactionQuantity,
-            put: this.data.values.toteQty,
+            pick: this.transactions[this.selectedRow].completedQuantity,
+            put: this.transactions[this.selectedRow].completedQuantity,
             reel: this.data.values.subCategory == 'reel tracking',
             ser: this.data.values.serialNumber,
             htid: this.transactions[this.selectedRow].hostTransactionID,
