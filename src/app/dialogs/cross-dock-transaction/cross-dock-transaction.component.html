@@ -113,7 +113,7 @@
                 <div class="col-xl-3" (click)="selectTote(i)">
                     <mat-form-field class="custom-form-field w-100 mb-2" appearance="outline" >
                         <mat-label>Tote ID</mat-label>
-                        <input  matInput type="text" readonly value="{{t.toteID}}">
+                        <input  matInput type="text" [readonly]="imPreferences.validateTotes" value="{{t.toteID}}">
                         <span matSuffix>
                             <mat-icon class="mat-icon-set" >unfold_more</mat-icon>
                         </span>
