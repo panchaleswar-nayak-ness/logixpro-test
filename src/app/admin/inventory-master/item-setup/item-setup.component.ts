@@ -17,13 +17,13 @@ export class ItemSetupComponent implements OnInit {
 
   disableSecondaryZone=true;
   @Input() itemSetup: FormGroup;
-  
+
   public userData: any;
-  @Output() notifyContextMenu: EventEmitter<any> = new EventEmitter(); 
+  @Output() notifyContextMenu: EventEmitter<any> = new EventEmitter();
   filterString : string = UniqueConstants.OneEqualsOne;
   @Input() isActiveTrigger:boolean =false;
   constructor(
-    private global: GlobalService, 
+    private global: GlobalService,
     private sharedService: SharedService,
     private filterService:ContextMenuFiltersService,
     private contextMenuService : TableContextMenuService) {}
@@ -33,7 +33,7 @@ export class ItemSetupComponent implements OnInit {
   ngOnChanges(changes: SimpleChanges) {
    if(!this.itemSetup.controls['primaryPickZone'].value) this.itemSetup.controls['secondaryPickZone'].disable();
     if (changes['itemSetup'])
-      if(changes['itemSetup'].currentValue.value.primaryPickZone==='') this.itemSetup.controls['secondaryPickZone'].disable();  
+      if(changes['itemSetup'].currentValue.value.primaryPickZone==='') this.itemSetup.controls['secondaryPickZone'].disable();
       else this.itemSetup.controls['secondaryPickZone'].enable();
   }
 
@@ -47,7 +47,6 @@ export class ItemSetupComponent implements OnInit {
 
   public openCellSizeDialog(param) {
     let currentValue="";
-    debugger
     if(param == UniqueConstants.cellSize) currentValue  = this.itemSetup.controls[UniqueConstants.cellSize].value;
     else if(param == 'bulkCellSize') currentValue  = this.itemSetup.controls['bulkCellSize'].value;
     else if(param == 'cfCellSize') currentValue  = this.itemSetup.controls['cfCellSize'].value;
@@ -63,7 +62,7 @@ export class ItemSetupComponent implements OnInit {
       }
     });
 
-    dialogRef.afterClosed().subscribe(result => { 
+    dialogRef.afterClosed().subscribe(result => {
         if(result != DialogConstants.close){
         if(param == UniqueConstants.cellSize) this.itemSetup.patchValue({ "cellSize" : result });
         else if(param == 'bulkCellSize') this.itemSetup.patchValue({ 'bulkCellSize' : result });
@@ -71,13 +70,13 @@ export class ItemSetupComponent implements OnInit {
         this.sharedService.updateInvMasterState(result,true)
        }
     });
-  } 
+  }
   optionSelected(filter : string) {
     this.filterString = filter;
-    this.notifyContextMenu.emit(this.filterString);  
+    this.notifyContextMenu.emit(this.filterString);
     this.isActiveTrigger = false;
   }
-  onContextMenu(event: any,   FilterColumnName?: any, FilterConditon?: any, FilterItemType?: any) { 
+  onContextMenu(event: any,   FilterColumnName?: any, FilterConditon?: any, FilterItemType?: any) {
     event.preventDefault()
     this.isActiveTrigger = true;
     setTimeout(() => {
@@ -89,7 +88,7 @@ export class ItemSetupComponent implements OnInit {
     if(param == UniqueConstants.goldenZone) currentValue = this.itemSetup.controls[UniqueConstants.goldenZone].value;
     else if(param == 'bulkVelocity') currentValue = this.itemSetup.controls['bulkVelocity'].value;
     else if(param == 'cfVelocity') currentValue = this.itemSetup.controls['cfVelocity'].value;
-    
+
     let dialogRef:any = this.global.OpenDialog(VelocityCodeComponent, {
       height: 'auto',
       width: '750px',
@@ -120,7 +119,7 @@ export class ItemSetupComponent implements OnInit {
   handleInputChange(event: any) {
     this.sharedService.updateInvMasterState(event,true)
   }
-  
+
   handleInputChangeCheckbox(event: MatCheckboxChange) {
     this.sharedService.updateInvMasterState(event,true)
   }
