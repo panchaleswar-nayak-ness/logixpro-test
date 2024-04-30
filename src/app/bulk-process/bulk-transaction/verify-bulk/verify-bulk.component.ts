@@ -201,7 +201,7 @@ export class VerifyBulkComponent implements OnInit {
       }
     });
     dialogRef1.afterClosed().subscribe(async (resp: any) => {
-      if (record == undefined) {
+      if (record == undefined || resp.type == undefined) {
         return;
       }
       // ResponseString is the users response to Location Empty dialog
@@ -222,7 +222,7 @@ export class VerifyBulkComponent implements OnInit {
           disableClose: true,
         });
         dialogRef.afterClosed().subscribe(async (result: any) => {
-          if (record == undefined) {
+          if (record == undefined || resp.type == undefined) {
             return;
           }
             record.newLocationQty = parseInt(result.SelectedItem);
@@ -232,7 +232,8 @@ export class VerifyBulkComponent implements OnInit {
         element.completedQuantity = resp.newQuantity;
       } else {
         record.newLocationQty = resp.newQuantity;
-        element.completedQuantity = resp.newQuantity;      }
+        element.completedQuantity = resp.newQuantity;
+      }
     });
   }
 

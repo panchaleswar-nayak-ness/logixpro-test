@@ -1,14 +1,20 @@
-import { Component, ElementRef, Inject, OnInit, ViewChild } from '@angular/core';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { ToastrService } from 'ngx-toastr';
-import { ConfirmationDialogComponent } from 'src/app/admin/dialogs/confirmation-dialog/confirmation-dialog.component';
-import { BulkPreferences } from 'src/app/common/Model/bulk-transactions';
-import { SetTimeout } from 'src/app/common/constants/numbers.constants';
-import { DialogConstants, ResponseStrings, Style, ToasterTitle, ToasterType } from 'src/app/common/constants/strings.constants';
-import { CustomValidatorService } from 'src/app/common/init/custom-validator.service';
-import { IBulkProcessApiService } from 'src/app/common/services/bulk-process-api/bulk-process-api-interface';
-import { BulkProcessApiService } from 'src/app/common/services/bulk-process-api/bulk-process-api.service';
-import { GlobalService } from 'src/app/common/services/global.service';
+import {Component, ElementRef, Inject, OnInit, ViewChild} from '@angular/core';
+import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
+import {ToastrService} from 'ngx-toastr';
+import {ConfirmationDialogComponent} from 'src/app/admin/dialogs/confirmation-dialog/confirmation-dialog.component';
+import {BulkPreferences} from 'src/app/common/Model/bulk-transactions';
+import {SetTimeout} from 'src/app/common/constants/numbers.constants';
+import {
+  DialogConstants,
+  ResponseStrings,
+  Style,
+  ToasterTitle,
+  ToasterType
+} from 'src/app/common/constants/strings.constants';
+import {CustomValidatorService} from 'src/app/common/init/custom-validator.service';
+import {IBulkProcessApiService} from 'src/app/common/services/bulk-process-api/bulk-process-api-interface';
+import {BulkProcessApiService} from 'src/app/common/services/bulk-process-api/bulk-process-api.service';
+import {GlobalService} from 'src/app/common/services/global.service';
 
 @Component({
   selector: 'app-bp-number-selection',
@@ -16,14 +22,14 @@ import { GlobalService } from 'src/app/common/services/global.service';
   styleUrls: ['./bp-number-selection.component.scss']
 })
 export class BpNumberSelectionComponent implements OnInit {
-  toteQuantity:number;
+  toteQuantity: number;
   newQuantity: number;
-  IsFullTote:boolean = false;
+  IsFullTote: boolean = false;
   Prefernces: BulkPreferences;
   public iBulkProcessApiService: IBulkProcessApiService;
   from: string = "completed quantity";
   @ViewChild('autoFocusField') searchBoxField: ElementRef;
-  url : string;
+  url: string;
 
   constructor(
     public dialogRef: MatDialogRef<BpNumberSelectionComponent>,
@@ -57,66 +63,65 @@ export class BpNumberSelectionComponent implements OnInit {
 
 
   add(string: string) {
-    let newQuantity:number;
-    if(this.newQuantity){
+    let newQuantity: number;
+    if (this.newQuantity) {
       newQuantity = parseFloat(this.newQuantity.toString() + string);
-      }
-    else{
-        newQuantity = parseFloat(string);
+    } else {
+      newQuantity = parseFloat(string);
     }
-    if(!this.IsFullTote || newQuantity <= this.toteQuantity) this.newQuantity = newQuantity;
-    else  this.global.ShowToastr(ToasterType.Error, "This tote only needs a quantity of " + this.toteQuantity, ToasterTitle.Error);
+    if (!this.IsFullTote || newQuantity <= this.toteQuantity) this.newQuantity = newQuantity;
+    else this.global.ShowToastr(ToasterType.Error, "This tote only needs a quantity of " + this.toteQuantity, ToasterTitle.Error);
   }
+
   numberOnly(event): boolean {
-    if(this.IsFullTote && event.target.value > this.toteQuantity){
-      this.global.ShowToastr(ToasterType.Error, "This tote only needs a quantity of " +this.toteQuantity, ToasterTitle.Error);
+    if (this.IsFullTote && event.target.value > this.toteQuantity) {
+      this.global.ShowToastr(ToasterType.Error, "This tote only needs a quantity of " + this.toteQuantity, ToasterTitle.Error);
     }
 
     return this.cusValidator.numberOnly(event);
   }
-  respYesNo : boolean | null = null;
+
+  respYesNo: boolean | null = null;
+
   done() {
-    if (!this.IsFullTote || (this.newQuantity <= this.toteQuantity && this.newQuantity >= 0)){
-    if (this.from == "completed quantity") {
-      if (this.Prefernces.systemPreferences.zeroLocationQuantityCheck && this.url == "Pick") {
-        const dialogRef1: any = this.global.OpenDialog(ConfirmationDialogComponent, {
-          height: 'auto',
-          width: Style.w560px,
-          autoFocus: DialogConstants.autoFocus,
-          disableClose: true,
-          data: {
-            message: `Is this location empty after this Pick?`,
-            message2: `Touch ‘Yes’ to update the location quantity to zero.
+    if (!this.IsFullTote || (this.newQuantity <= this.toteQuantity && this.newQuantity >= 0)) {
+      if (this.from == "completed quantity") {
+        if (this.Prefernces.systemPreferences.zeroLocationQuantityCheck && this.url == "Pick") {
+          const dialogRef1: any = this.global.OpenDialog(ConfirmationDialogComponent, {
+            height: 'auto',
+            width: Style.w560px,
+            autoFocus: DialogConstants.autoFocus,
+            disableClose: true,
+            data: {
+              message: `Is this location empty after this Pick?`,
+              message2: `Touch ‘Yes’ to update the location quantity to zero.
             Touch ‘No’ to type in the actual location quantity after this Pick.
             Touch ‘Cancel’ to re-enter quantity picked.`,
-            heading: 'Location Empty?',
-            buttonFields: true,
-            threeButtons: true
-          },
-        });
-        dialogRef1.afterClosed().subscribe(async (resp: any) => {
-          if (resp == ResponseStrings.Yes) {
-            this.respYesNo = true;
-            this.dialogRef.close({ newQuantity: this.newQuantity.toString(), type: ResponseStrings.Yes });
-          }
-          else if (resp == ResponseStrings.No) {
-            this.respYesNo = false;
-            this.dialogRef.close({ newQuantity: this.newQuantity.toString(), type: ResponseStrings.No });
-          }
-          else if (resp == ResponseStrings.Cancel) {
-            this.respYesNo = null;
-            this.dialogRef.close({ newQuantity: this.newQuantity.toString(), type: ResponseStrings.Cancel });
-          }
-        });
-      } else {
-        this.dialogRef.close({ newQuantity:this.newQuantity.toString()});
+              heading: 'Location Empty?',
+              buttonFields: true,
+              threeButtons: true
+            },
+          });
+          dialogRef1.afterClosed().subscribe(async (resp: any) => {
+            if (resp == ResponseStrings.Yes) {
+              this.respYesNo = true;
+              this.dialogRef.close({newQuantity: this.newQuantity.toString(), type: ResponseStrings.Yes});
+            } else if (resp == ResponseStrings.No) {
+              this.respYesNo = false;
+              this.dialogRef.close({newQuantity: this.newQuantity.toString(), type: ResponseStrings.No});
+            } else if (resp == ResponseStrings.Cancel) {
+              this.respYesNo = null;
+              this.dialogRef.close({newQuantity: this.newQuantity.toString(), type: ResponseStrings.Cancel});
+            }
+          });
+        } else {
+          this.dialogRef.close({newQuantity: this.newQuantity.toString()});
+        }
+      } else if (this.from == "qunatity put in new tote") {
+        this.respYesNo = null;
+        this.dialogRef.close(this.newQuantity.toString());
       }
-    }
-    else if (this.from == "qunatity put in new tote") {
-      this.respYesNo = null;
-      this.dialogRef.close(this.newQuantity.toString());
-    }
 
-  }
+    }
   }
 }
