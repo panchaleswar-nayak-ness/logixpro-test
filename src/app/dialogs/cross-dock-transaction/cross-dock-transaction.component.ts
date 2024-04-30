@@ -71,7 +71,7 @@ export class CrossDockTransactionComponent implements OnInit {
 
     this.batchID = this.data.batchID;
     this.zone = this.data.zone;
-    this.description = this.data.description;
+    this.description = this.data.description; 
     this.imPreferences = this.global.getImPreferences();
 
     this.getCrossDock();
@@ -81,7 +81,9 @@ export class CrossDockTransactionComponent implements OnInit {
     this.completefocus.nativeElement.focus();
   }
   selectTote(i: any) {
+    if(this.imPreferences.validateTotes){
     this.openTotesDialogue(i);
+  }
   }
 
   clearMatSelectList() {
@@ -200,7 +202,7 @@ export class CrossDockTransactionComponent implements OnInit {
     if (this.loopIndex >= 0) {
       this.iInductionManagerApi.NextTote().subscribe((res) => {
         if (res.isExecuted && res.data) {
-          this.transactions[this.loopIndex].toteID = res.data + '-RT';
+          this.transactions[this.loopIndex].toteID = res.data //+ '-RT';
           this.nxtToteID = ++res.data;
           this.updateNxtTote();
           this.clearMatSelectList();
