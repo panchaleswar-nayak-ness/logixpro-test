@@ -6,6 +6,20 @@ import { IInductionManagerApiService } from 'src/app/common/services/induction-m
 import { InductionManagerApiService } from 'src/app/common/services/induction-manager-api/induction-manager-api.service';
 import { GlobalService } from 'src/app/common/services/global.service';
 import {  ResponseStrings ,ToasterMessages,ToasterTitle,ToasterType,DialogConstants,Style,ColumnDef} from 'src/app/common/constants/strings.constants';
+import { ApiResponse, ColumnAlias, OpenTransactions } from 'src/app/common/types/CommonTypes';
+
+interface TransactionForToteResponse {
+  inputType: string;
+  success: string;
+  failureReason: string;
+  itemNumber: string;
+  subCategory: string;
+  description: string;
+  warehouseSensitive: boolean;
+  transactionTable: OpenTransactions[];
+  numberOfRecords: number;
+  recordsFiltered: number;
+}
 
 @Component({
   selector: 'app-selection-transaction-for-tote',
@@ -13,20 +27,20 @@ import {  ResponseStrings ,ToasterMessages,ToasterTitle,ToasterType,DialogConsta
   styleUrls: ['./selection-transaction-for-tote.component.scss']
 })
 export class SelectionTransactionForToteComponent implements OnInit {
-  public userData;
-  public apiResponse;
-  public transactionTable;
-  public inputType;
-  public inputValue;
-  public userName;
-  public wsid;
-  public zone;
-  public batchID;
-  public itemNumber;
-  public description;
-  public fieldNames; 
-  public lowerBound=1;
-  public upperBound=2; 
+
+  apiResponse : TransactionForToteResponse;
+  transactionTable :  OpenTransactions[];
+  inputType : string;
+  inputValue : string;
+  userName : string;
+  wsid : string;
+  zone : string;
+  batchID : string;
+  itemNumber : string;
+  description : string;
+  fieldNames : ColumnAlias; 
+  lowerBound : number = 1;
+  upperBound : number = 5; 
 
   showBtnNewPutAwayForSameSKU : boolean = true;
   
@@ -37,26 +51,30 @@ export class SelectionTransactionForToteComponent implements OnInit {
     public inductionManagerApi: InductionManagerApiService,
     public dialogRef: MatDialogRef<SelectionTransactionForToteComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any
-    ) { 
-      this.iInductionManagerApi = inductionManagerApi;
-    }
+  ) { 
+    this.iInductionManagerApi = inductionManagerApi;
+  }
 
   ngOnInit(): void {
-    this.inputType  =  this.data.inputType;
-    this.inputValue =  this.data.inputValue; 
-    this.userName   =  this.data.userName;
-    this.wsid       =  this.data.wsid;
-    this.zone       =  this.data.zones;
-    this.batchID    =  this.data.batchID;
-    this.fieldNames    =  this.data.propFields;
+    this.setData();
     this.getTransactions();
+  }
+
+  setData(){
+    this.inputType = this.data.inputType;
+    this.inputValue = this.data.inputValue; 
+    this.userName = this.data.userName;
+    this.wsid = this.data.wsid;
+    this.zone = this.data.zones;
+    this.batchID = this.data.batchID;
+    this.fieldNames = this.data.propFields;
   }
 
   refresh() {
     this.getTransactions();
   }
 
-  selectOrder(id:any,itemNumber:any, val : any = []) {
+  selectOrder(id:number, itemNumber : string, val : OpenTransactions) {
     if (val.zone) {
       let payload = { zone: val.zone };
       this.iInductionManagerApi.BatchByZone(payload).subscribe(
@@ -76,7 +94,7 @@ export class SelectionTransactionForToteComponent implements OnInit {
               dialogRef.afterClosed().subscribe((res) => { if (res == ResponseStrings.Yes) this.dialogRef.close("New Batch"); });
             } else {
               const dialogRef:any = this.global.OpenDialog(SelectionTransactionForToteExtendComponent, {
-                height: 'auto',
+                height: DialogConstants.auto,
                 width: Style.w100vw,
                 autoFocus: DialogConstants.autoFocus,
                 disableClose:true,
@@ -104,7 +122,7 @@ export class SelectionTransactionForToteComponent implements OnInit {
       );    
     } else {
       const dialogRef:any = this.global.OpenDialog(SelectionTransactionForToteExtendComponent, {
-        height: 'auto',
+        height: DialogConstants.auto,
         width: Style.w100vw,
         autoFocus: DialogConstants.autoFocus,
         disableClose:true,
@@ -133,7 +151,7 @@ export class SelectionTransactionForToteComponent implements OnInit {
 
   leftClick() {
     this.lowerBound = (this.lowerBound - 5) <= 0 ? 1 : this.lowerBound - 5;
-    this.upperBound =  this.upperBound - 5;
+    this.upperBound =  this.upperBound == this.apiResponse.numberOfRecords ? this.upperBound - (this.upperBound % 10) : this.upperBound - 5;
     if(this.upperBound < 5) this.upperBound = 5;
     this.getTransactions();
   }
@@ -149,7 +167,7 @@ export class SelectionTransactionForToteComponent implements OnInit {
       ],
     };
     this.iInductionManagerApi.TransactionForTote(getTransaction).subscribe(
-      (res: any) => {
+      (res: ApiResponse<TransactionForToteResponse>) => {
         if (res.data && res.isExecuted) {
           if(res.data.subCategory == 'Reel Tracking' && res.data.inputType != ColumnDef.SerialNumber){
             this.dialogRef.close({category:'isReel',item:res.data});
@@ -167,7 +185,7 @@ export class SelectionTransactionForToteComponent implements OnInit {
             this.showBtnNewPutAwayForSameSKU = false;
           } else if(this.data.imPreference.purchaseOrderRequired && this.transactionTable.length == 0) {
             this.global.ShowToastr(ToasterType.Error,`No open Put Aways available for this ${this.inputType != 'Any' ? this.inputType : ''}`, ToasterTitle.Error);
-            this.dialogRef.close()
+            this.dialogRef.close();
           }
 
           if (this.data.selectIfOne && res.data.transactionTable.length == 1) this.selectOrder(this.transactionTable[0].id, res.data.itemNumber, this.transactionTable[0]);
@@ -176,8 +194,8 @@ export class SelectionTransactionForToteComponent implements OnInit {
           this.itemNumber = this.apiResponse.itemNumber;
           this.description = this.apiResponse.description;
         } else {
-          this.global.ShowToastr(ToasterType.Error,ToasterMessages.SomethingWentWrong, ToasterTitle.Error);
-          console.log("TransactionForTote",res.ResponseMessage);
+          this.global.ShowToastr(ToasterType.Error, ToasterMessages.SomethingWentWrong, ToasterTitle.Error);
+          console.log("TransactionForTote", res.responseMessage);
         }
       },
       (error) => {
@@ -187,8 +205,8 @@ export class SelectionTransactionForToteComponent implements OnInit {
   }
 
   openSelectionExtendDialogue() {
-    const dialogRef:any = this.global.OpenDialog(SelectionTransactionForToteExtendComponent, {
-      height: 'auto',
+    const dialogRef : any = this.global.OpenDialog(SelectionTransactionForToteExtendComponent, {
+      height: DialogConstants.auto,
       width: Style.w100vw,
       autoFocus: DialogConstants.autoFocus,
       disableClose:true,
