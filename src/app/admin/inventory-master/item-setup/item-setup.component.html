@@ -19,7 +19,8 @@
         <div class="col-md-4 mb-3">
           <mat-form-field class="custom-form-field w-100" appearance="outline">
             <mat-label>Secondary Zone</mat-label>
-            <mat-select (selectionChange)="handleInputChange($event)" (contextmenu)=" onContextMenu($event, 'Secondary Pick Zone')"   formControlName="secondaryPickZone"  >
+            <mat-select (selectionChange)="handleInputChange($event)" (contextmenu)=" onContextMenu($event, 'Secondary Pick Zone')"   
+            formControlName="secondaryPickZone"  >
               <mat-option value=""></mat-option>
               <mat-option value="carousel">Carousel</mat-option>
               <mat-option value="bulk">Bulk</mat-option>
@@ -89,7 +90,7 @@
           <div class="text-tertiary-900 bold">Cell Size</div>
         </div>
         <div class="col-3">
-          <mat-form-field class="custom-form-field w-100 __grab_cursor" appearance="outline" (click)="openCellSizeDialog('CellSize')">
+          <mat-form-field class="custom-form-field w-100 __grab_cursor" appearance="outline" (click)="openCellSizeDialog('cellSize')">
             <mat-label>Carousel</mat-label>
             <input matInput type="text" (contextmenu)="onContextMenu($event, 'Cell Size')" formControlName="cellSize" maxlength="50" readonly="true">
             <span matSuffix>

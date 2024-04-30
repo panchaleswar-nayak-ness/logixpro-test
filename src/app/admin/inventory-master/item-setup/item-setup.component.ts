@@ -31,7 +31,7 @@ export class ItemSetupComponent implements OnInit {
       this.filterService.filterString="";
     }
   ngOnChanges(changes: SimpleChanges) {
-    this.itemSetup.controls['secondaryPickZone'].disable();
+   if(!this.itemSetup.controls['primaryPickZone'].value) this.itemSetup.controls['secondaryPickZone'].disable();
     if (changes['itemSetup'])
       if(changes['itemSetup'].currentValue.value.primaryPickZone==='') this.itemSetup.controls['secondaryPickZone'].disable();  
       else this.itemSetup.controls['secondaryPickZone'].enable();
@@ -47,6 +47,7 @@ export class ItemSetupComponent implements OnInit {
 
   public openCellSizeDialog(param) {
     let currentValue="";
+    debugger
     if(param == UniqueConstants.cellSize) currentValue  = this.itemSetup.controls[UniqueConstants.cellSize].value;
     else if(param == 'bulkCellSize') currentValue  = this.itemSetup.controls['bulkCellSize'].value;
     else if(param == 'cfCellSize') currentValue  = this.itemSetup.controls['cfCellSize'].value;
