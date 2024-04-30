@@ -204,9 +204,10 @@ export class VerifyBulkComponent implements OnInit {
       if (record == undefined) {
         return;
       }
-
+      // ResponseString is the users response to Location Empty dialog
+      // Dialog is only shown is Zero Location Qty Check is turned on and the url is Pick
       if (resp.type == ResponseStrings.Yes) {
-        record.newLocationQty = resp.newQuantity;
+        record.newLocationQty = 0;
         element.completedQuantity = resp.newQuantity;
       }
       else if (resp.type == ResponseStrings.No) {

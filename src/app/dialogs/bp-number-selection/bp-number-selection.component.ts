@@ -97,7 +97,7 @@ export class BpNumberSelectionComponent implements OnInit {
         dialogRef1.afterClosed().subscribe(async (resp: any) => {
           if (resp == ResponseStrings.Yes) {
             this.respYesNo = true;
-            this.dialogRef.close({ newQuantity: 0, type: ResponseStrings.Yes });
+            this.dialogRef.close({ newQuantity: this.newQuantity.toString(), type: ResponseStrings.Yes });
           }
           else if (resp == ResponseStrings.No) {
             this.respYesNo = false;
