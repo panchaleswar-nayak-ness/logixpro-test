@@ -110,13 +110,10 @@
                         <input (keydown.shift.enter)="$event.preventDefault()" matInput type="text" value="{{t.priority}}" disabled>
                       </mat-form-field>
                 </div>
-                <div class="col-xl-3" (click)="selectTote(i)">
+                <div class="col-xl-3">
                     <mat-form-field class="custom-form-field w-100 mb-2" appearance="outline" >
                         <mat-label>Tote ID</mat-label>
                         <input  matInput type="text" readonly value="{{t.toteID}}">
-                        <span matSuffix>
-                            <mat-icon class="mat-icon-set" >unfold_more</mat-icon>
-                        </span>
                       </mat-form-field>
                 </div>
             </div>

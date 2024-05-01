@@ -201,7 +201,7 @@ export class CrossDockTransactionComponent implements OnInit {
     if (this.loopIndex >= 0) {
       this.iInductionManagerApi.NextTote().subscribe((res) => {
         if (res.isExecuted && res.data) {
-          this.transactions[this.loopIndex].toteID = res.data //+ '-RT';
+          this.transactions[this.loopIndex].toteID = res.data;
           this.nxtToteID = ++res.data;
           this.updateNxtTote();
           this.clearMatSelectList();
