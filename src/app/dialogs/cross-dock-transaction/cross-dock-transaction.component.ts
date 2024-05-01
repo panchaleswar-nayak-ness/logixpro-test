@@ -80,38 +80,14 @@ export class CrossDockTransactionComponent implements OnInit {
   ngAfterViewInit(): void {
     this.completefocus.nativeElement.focus();
   }
-  selectTote(i: any) { 
-    this.openTotesDialogue(i);
-  
-  }
 
   clearMatSelectList() {
     this.openAction?.options.forEach((data: MatOption) => data.deselect());
   }
 
-  openTotesDialogue(position: any) {
-    const dialogRef: any = this.global.OpenDialog(TotesAddEditComponent, {
-      height: 'auto',
-      width: Style.w50vw,
-      autoFocus: DialogConstants.autoFocus,
-      disableClose: true,
-      data: {
-        position: position,
-      },
-    });
-    dialogRef.afterClosed().subscribe((result) => {
-      if (result) {
-        if (result.toteID != '') {
-          this.transactions[position].toteID = result.toteID.toString();
-        }
-      }
-    });
-  }
-
   compQtyChange(val: any) {
     if (parseInt(val.compQty) > 0) {
       this.selectedRowObj.completedQuantity = val.compQty;
-      this.openTotesDialogue(val.i);
     }
   }
 

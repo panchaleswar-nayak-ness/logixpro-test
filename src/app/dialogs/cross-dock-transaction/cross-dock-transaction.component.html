@@ -86,7 +86,7 @@
                 <div class="col-xl-3">
                     <mat-form-field class="custom-form-field w-100 mb-2" appearance="outline">
                         <mat-label>Completed Qty</mat-label>
-                        <input [NumbersOnly]="true" #completefocus [(ngModel)]="t.completedQuantity" (keydown.shift.enter)="$event.preventDefault()" matInput type="text" value="{{t.completedQuantity}}" #compQty (focusout)="compQtyChange({ i, compQty : compQty.value })">
+                        <input [NumbersOnly]="true" #completefocus  (keydown.shift.enter)="$event.preventDefault()" matInput type="text" value="{{t.completedQuantity}}" #compQty (focusout)="compQtyChange({ i, compQty : compQty.value })">
 
                       </mat-form-field>
                 </div>
@@ -113,7 +113,7 @@
                 <div class="col-xl-3">
                     <mat-form-field class="custom-form-field w-100 mb-2" appearance="outline" >
                         <mat-label>Tote ID</mat-label>
-                        <input  matInput type="text" readonly value="{{t.toteID}}">
+                        <input  matInput type="text" value="{{t.toteID}}">
                       </mat-form-field>
                 </div>
             </div>
@@ -132,6 +132,6 @@
         Refresh
     </button>
     <button mat-flat-button color="primary" class="btn-lg flex-grow-1" (click)="submit()">
-        Send Transaction To Tote Batch
+        Cancel Crossdock
     </button>
 </div>
