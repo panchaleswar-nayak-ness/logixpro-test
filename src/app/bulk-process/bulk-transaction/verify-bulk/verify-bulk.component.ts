@@ -201,7 +201,7 @@ export class VerifyBulkComponent implements OnInit {
       }
     });
     dialogRef1.afterClosed().subscribe(async (resp: any) => {
-      if (record == undefined || resp.type == undefined) {
+      if (record == undefined) {
         return;
       }
       // ResponseString is the users response to Location Empty dialog

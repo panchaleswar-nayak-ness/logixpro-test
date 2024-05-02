@@ -1,4 +1,4 @@
-import {Component, Inject, OnInit} from '@angular/core';
+import {Component, Inject, Input, OnInit} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
 import {AlertConfirmationComponent} from 'src/app/dialogs/alert-confirmation/alert-confirmation.component';
 import {AuthService} from 'src/app/common/init/auth.service';
@@ -23,6 +23,7 @@ export class BmToteidEntryComponent implements OnInit {
   userData: any;
   BulkProcess: any = false;
   view: any;
+  @Input() url: any;
   public iAdminApiService: IAdminApiService;
   public iBulkProcessApiService: IBulkProcessApiService;
   constructor(
@@ -134,6 +135,7 @@ export class BmToteidEntryComponent implements OnInit {
       let order: AssignToteToOrderDto = {
         orderNumber: element.orderNumber,
         toteId: element.toteId,
+        type: this.url
       };
       orders.push(order);
     });
