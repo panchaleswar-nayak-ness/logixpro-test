@@ -217,7 +217,8 @@ export class BulkTransactionComponent implements OnInit {
         selectedOrderList: this.selectedOrders,
         nextToteID: this.NextToteID,
         BulkProcess: true,
-        view: this.view
+        view: this.view,
+        type: this.url
       }
     });
     dialogRefTote.afterClosed().subscribe((result) => {

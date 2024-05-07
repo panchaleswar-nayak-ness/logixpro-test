@@ -251,7 +251,7 @@ export class VerifyBulkComponent implements OnInit {
 
   fullTote(element: any, i: any = null) {
     const dialogRef1: any = this.global.OpenDialog(BpFullToteComponent, {
-      height: 'auto',
+      height: DialogConstants.auto,
       width: Style.w786px,
       autoFocus: DialogConstants.autoFocus,
       disableClose: true,
@@ -268,6 +268,11 @@ export class VerifyBulkComponent implements OnInit {
         this.orderLines.filteredData[i].transactionQuantity = resp.NewToteQTY;
         this.orderLines.filteredData[i].completedQuantity = resp.NewToteQTY;
         this.orderLines.filteredData[i].id = resp.Id;
+        this.taskCompleteNewRequest.push({
+          id: resp.Id,
+          completedQty: 0,
+          newLocationQty: -1
+        });
       }
     });
   }

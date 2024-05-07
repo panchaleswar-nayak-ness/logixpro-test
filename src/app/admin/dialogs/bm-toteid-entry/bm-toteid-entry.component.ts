@@ -22,7 +22,7 @@ export class BmToteidEntryComponent implements OnInit {
   preferences: any;
   userData: any;
   BulkProcess: any = false;
-  view: any;
+  view: string;
   public iAdminApiService: IAdminApiService;
   public iBulkProcessApiService: IBulkProcessApiService;
   constructor(
@@ -133,7 +133,8 @@ export class BmToteidEntryComponent implements OnInit {
     this.selectedList.forEach((element, i) => {
       let order: AssignToteToOrderDto = {
         orderNumber: element.orderNumber,
-        toteId: element.toteId
+        toteId: element.toteId,
+        type: this.data.type
       };
       orders.push(order);
     });
