@@ -151,7 +151,8 @@
           
                         <mat-menu #appMenu="matMenu">
                           <button mat-menu-item matTooltip="Press to Print a Off-Carousel {{url}} Item Label for the currently selected record." >Print Single Label</button>
-                          <button mat-menu-item matTooltip="Press to split this transaction into more than one tote." *ngIf="['Put Away','Count'].indexOf(url) < 0" (click)="fullTote(element,i)">Blossom Tote</button>
+                          <button mat-menu-item matTooltip="Press to split this transaction into more than one tote." *ngIf="['Put Away','Count'].indexOf(url) < 0" (click)="fullTote(element,i)" 
+                          [disabled]="url == 'Pick' && !Prefernces.workstationPreferences.pickToTotes">Blossom Tote</button>
                         </mat-menu>
                       </td>
           
