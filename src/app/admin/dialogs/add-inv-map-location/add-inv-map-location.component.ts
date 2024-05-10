@@ -248,10 +248,8 @@ export class AddInvMapLocationComponent implements OnInit {
       this.quantity = this.getDetailInventoryMapData.itemQuantity;
       this.unitOFMeasure = this.getDetailInventoryMapData.unitOfMeasure;
       this.updateItemNumber();
-      this.initializeDataSet();
-    } else {
-      this.initializeDataSet();
     }
+    this.initializeDataSet();
     this.searchItemNumbers = this.getDetailInventoryMapData.itemNumber;
 
 
@@ -546,9 +544,15 @@ export class AddInvMapLocationComponent implements OnInit {
       this.warehouseSensitive =  this.itemNumberList[0].warehouseSensitive;
       this.dateSensitive =  this.itemNumberList[0].dateSensitive;
       this.addInvMapLocation.controls[UniqueConstants.Description].setValue(this.itemNumberList[0].description ?? '');
+      if ((this.data.mode == "addInvMapLocation") || this.data.detailData.itemQuantity == 0) { // By this point we know there is a valid item number, and quantity is 0, so force it to be dedicated.
+        this.addInvMapLocation.controls['dedicated'].setValue(true);
+      }
     }
     else{
       this.searchItemNumbers = "";
+      if (!this.getDetailInventoryMapData.dedicated) { // If it wasn't dedicated before and the item number is now blank, we don't care what the current forms value is, always set it false.
+        this.addInvMapLocation.controls['dedicated'].setValue(false);
+      }
     }
   }
 

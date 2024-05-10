@@ -27,7 +27,9 @@ export interface  AdjustQuantityDataStructure   {
   currentMinQty:  any; //notExist
   currentLocationQty:  any; //notExist
   locationZone:  any; //notExist
- 
+
+  dedicated: boolean;
+
 }
 
 @Component({
@@ -53,7 +55,7 @@ export class AdjustQuantityComponent implements OnInit {
   currentMinQty: '', //notExist
   currentLocationQty: '' , //notExist
   itemQuantity: '' , //notExist
-
+  dedicated: false,
 } ;
 
  getAdjustReasonsList: any ;
@@ -104,7 +106,8 @@ export class AdjustQuantityComponent implements OnInit {
     this.adjustInventoryMapForm = this.fb.group({
       mapID: [ this.data.id, [Validators.required]],
       quantity: [  0, [Validators.required]],
-      description: [  '', [Validators.required]],
+      description: ['', [Validators.required]],
+      dedicated: [this.getAdjustQuantityData.dedicated]
     });
   }
 
