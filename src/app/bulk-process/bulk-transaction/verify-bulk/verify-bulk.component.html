@@ -26,7 +26,7 @@
                                       <mat-option value="add_new_transaction"  matTooltip="Press to view line items sorted by Location." (click)="ViewByLocation()">View By Location</mat-option>
                                       <mat-option value="add_new_transaction" matTooltip="Press to view line items sorted by Order than Item Number/Location." (click)="ViewByOrderItem()">View By Order / Item</mat-option>
                                       <mat-option value="add_new_transaction"  matTooltip="Press to Print a traveler - off Carousel list for this Batch.">Print List</mat-option>
-                                      <mat-option value="add_new_transaction" matTooltip="Press to Print a Off-Carousel {{url}} Item Label for all of this Batch.">Print All Labels</mat-option>
+                                      <mat-option value="add_new_transaction" matTooltip="Press to Print a Off-Carousel {{url}} Item Label for all of this Batch." (click)="printAllToteLabels()">Print All Labels</mat-option>
                                   </mat-select>
                                   <span class="material-symbols-outlined icon-expand-more">expand_more</span>
                               </mat-form-field>

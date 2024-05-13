@@ -64,7 +64,14 @@ export class BmToteidEntryComponent implements OnInit {
       });
     }
   }
-
+  printAllToteLabels() {
+    let toteIds = this.selectedList.map(o => o['toteId']);
+    this.iAdminApiService.PrintTotes(toteIds,this.data.type);
+  }
+  printTote(index) {
+    let toteId = [this.selectedList[index]['toteId']];
+    this.iAdminApiService.PrintTotes(toteId, this.data.type, index);
+  }
   removeToteID(index) {
     if(this.view != 'batch' && this.view != 'tote'){
       this.selectedList[index]['toteId'] = undefined;

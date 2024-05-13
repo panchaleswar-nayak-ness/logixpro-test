@@ -223,7 +223,8 @@ export interface IAdminApiService
     pushReportChanges(payload : any);  
     updatereportDetails(payload : any) 
     CommonExport(payload : any);    
-    CommonPrint(payload : any) 
+    CommonPrint(payload : any);
+    PrintTotes(toteIds: string[], type : string, position? : number);
     SetReprocessIds(payload : any)
     ToteSetupInsert(payload : any)
     ToteSetupDelete(payload : any)

@@ -1716,6 +1716,16 @@ public async CommonPrint(body)  {
   }
    return  await this.Api.CommonPrint(payload);
 } 
+public async PrintTotes(toteIds : string[], type : string, position = 0) {
+  const payload = {
+    username: this.userData.userName,
+    wsid: this.userData.wsid,
+    toteIds: toteIds,
+    Type: type,
+    Position: position
+  }
+    return  await this.Api.PrintTotes(payload);
+}
 public SetReprocessIds(body: any ) {
   const payload = {
     username: this.userData.userName,

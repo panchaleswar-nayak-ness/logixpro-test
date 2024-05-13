@@ -449,5 +449,10 @@ export class VerifyBulkComponent implements OnInit {
       selectedRow.selected = !selectedRow.selected;
     }
   }
-
+  printAllToteLabels() {
+    if (this.url != 'Count'){
+      let toteIds = this.orderLines.filteredData.map(o => o['toteId']);
+      this.iAdminApiService.PrintTotes(toteIds,this.url);
+    }
+  }
 }

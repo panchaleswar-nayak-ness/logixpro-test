@@ -19,7 +19,7 @@
                     Clear All
                 </button>
                 
-                <button mat-stroked-button color="primary"
+                <button mat-stroked-button color="primary" (click)="printAllToteLabels()"
                     class="button-add-all bg-white button custom-button-width">
                     Print All
                 </button>
@@ -88,7 +88,7 @@
                                                 <mat-icon class="material-symbols-outlined">close</mat-icon>
                                             </button>
 
-                                            <button mat-flat-button color="primary" class="xsm-icon-button">
+                                            <button (click)="printTote(i)" mat-flat-button color="primary" class="xsm-icon-button">
                                                 <mat-icon class="material-symbols-outlined">print</mat-icon>
                                             </button>
 
