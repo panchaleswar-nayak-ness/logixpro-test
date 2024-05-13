@@ -1,0 +1,97 @@
+.count-table-scrollbar{
+    height: calc(40vh - 60px);
+}
+.verify-table-height{
+    height: calc(60vh - 60px);
+}
+.round{
+    border-radius: 999px !important;
+}
+.container-table-header
+{
+    width:auto; padding: 5px 12px;
+
+}
+.border{
+
+    border: 0;
+}
+.container-table-data{
+
+    padding: 10px 12px; text-overflow: ellipsis; overflow: hidden; max-width: 20ch; white-space: nowrap;
+}
+.filter
+{
+    gap:12px
+}
+.actionContainer-Header{
+
+    border: 0;height: 66px; padding-left:65px;width: 88px;
+}
+.actionContainerdata{
+    border: 0; padding-left: 24px; background: var(--clr-pure-white);
+}
+.quarantineColor{
+    background-color: #FCEAEE;
+    min-height: 40px;
+}
+mat-row, mat-footer-row{
+    min-height: 40px;
+}
+
+.scroll-bar{
+    height: 49vh;
+}
+.dialogButton{
+    flex: 1;
+}
+table{
+    tr{
+        display: table-row!important;
+        white-space: nowrap;
+        th, td{
+            vertical-align: middle;
+            border-bottom: 1px solid var(--clr-pure-white);
+            padding: 0px 12px;
+            &:first-child{
+                padding-left: 12px !important;
+            }
+            &:last-child{
+                width: 100px !important;
+            }
+        }
+    }
+}
+
+.view-all-loacation-heading {
+    width:48px
+}
+
+.mat-column-CompletedQty,.mat-column-ToteID 
+{
+ width: 100px ;
+  mat-form-field{
+    width: 100px;
+  }
+}
+.mat-column-OrderQty{ 
+cursor: pointer;
+}
+.suggest {
+    position: absolute;
+    left: 30px;
+    top: 4px;
+    z-index: 7;
+    border: none;
+    width: 96%;
+    // font-size: 20px;
+    background-color: transparent;
+  }
+  .autocomplete {
+    color: silver;
+    z-index: 1;
+  }
+
+  .table-cell-style{
+    padding: 10px 12px; border: 0; text-overflow: ellipsis; overflow: hidden; max-width: 22ch; white-space: nowrap;
+  }
