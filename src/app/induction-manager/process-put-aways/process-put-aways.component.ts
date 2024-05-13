@@ -256,6 +256,7 @@ export class ProcessPutAwaysComponent implements OnInit {
   }
 
   public OSFieldFilterNames() { 
+    this.clearFieldNames();
     this.iAdminApiService.ColumnAlias().subscribe((res: ApiResponse<ColumnAlias>) => {
       if (res.isExecuted && res.data) this.fieldNames = res.data
       else {
@@ -1485,6 +1486,23 @@ async clearBatchData(){
       }
     });
   });
+  }
+
+  clearFieldNames() {
+    this.fieldNames = {
+      itemNumber: '',
+      unitOfMeasure: '',
+      userField1: '',
+      userField2: '',
+      userField3: '',
+      userField4: '',
+      userField5: '',
+      userField6: '',
+      userField7: '',
+      userField8: '',
+      userField9: '',
+      userField10: ''
+    }
   }
 
 

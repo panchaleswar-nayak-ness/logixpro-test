@@ -117,6 +117,7 @@ import { IeMdExportInvertoryComponent } from './import-export/ie-manage-data/ie-
 import { WorkstationLoginComponent } from './dialogs/workstation-login/workstation-login.component';
 import { BpFullToteComponent } from './dialogs/bp-full-tote/bp-full-tote.component';
 import { BpNumberSelectionComponent } from './dialogs/bp-number-selection/bp-number-selection.component';
+import { OrderDetailsComponent } from './dialogs/order-details/order-details.component';
 
 @NgModule({
   declarations: [
@@ -223,7 +224,8 @@ import { BpNumberSelectionComponent } from './dialogs/bp-number-selection/bp-num
     IeMdExportInvertoryComponent,
     WorkstationLoginComponent,
     BpFullToteComponent,
-    BpNumberSelectionComponent
+    BpNumberSelectionComponent,
+    OrderDetailsComponent
   ],
   imports: [
     BrowserModule,

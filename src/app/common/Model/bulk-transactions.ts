@@ -328,3 +328,48 @@ export class AssignToteToOrderDto {
   toteId: string;
   type?: string;
 }
+export interface Order {
+    priority: number;
+    importDate: string;
+    importFilename: string;
+    requiredDate: string;
+    toteId: string | null;
+    orderNumber: string;
+    toteNumber: number;
+    lineCount: number;
+    exportBatchId: string | null;
+    batchId: string | null;
+    lineNumber: number;
+    statusCode: string | null;
+    completedQuantity: number;
+    serialNumber: string | null;
+    orderLines: OrderLine[];
+}
+export interface OrderLine {
+    id: number;
+    orderNumber: string;
+    itemNumber: string;
+    description: string;
+    lineNumber: number;
+    batchId: string | null;
+    toteId: string | null;
+    toteNumber: string;
+    transactionQuantity: number;
+    zone: string;
+    completedBy: string | null;
+    completedDate: string | null;
+    completedQuantity: number;
+    transactionType: string;
+    unitOfMeasure: string;
+    lotNumber: string;
+    expirationDate: string | null;
+    serialNumber: string;
+    statusCode: string;
+    warehouse: string | null;
+    location: string;
+    assignedUser: string | null;
+    invMapId: string;
+    userField1: string | null;
+    userField2: string | null;
+    priority: number;
+}

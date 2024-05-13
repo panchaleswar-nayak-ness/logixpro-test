@@ -47,6 +47,15 @@
               <th mat-header-cell mat-sort-header *matHeaderCellDef> Required Date </th>
               <td mat-cell *matCellDef="let element"> {{element.requiredDate | date :'MM/dd/yyyy'}} </td>
             </ng-container>
+
+            <ng-container matColumnDef="details">
+              <th mat-header-cell mat-sort-header *matHeaderCellDef> Details </th>
+              <td mat-cell *matCellDef="let element">
+                <div (click)="viewDetails(element)" class="__pointer_cursor custom-add-button-color br-14">
+                  View
+                </div>
+              </td>
+            </ng-container>
   
             <ng-container matColumnDef="actions" stickyEnd>
               <th width="10%" class="text-center px-2" mat-header-cell *matHeaderCellDef>Action</th>

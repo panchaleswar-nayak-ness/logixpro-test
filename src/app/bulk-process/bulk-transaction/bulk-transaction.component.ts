@@ -75,14 +75,14 @@ export class BulkTransactionComponent implements OnInit {
           this.orders = totesResult;
           this.originalOrders = totesResult;
           this.view = "tote";
-          this.ordersDisplayedColumns = ['toteId', 'lineCount', 'priority', 'requiredDate', 'actions'];
-          this.selectedOrdersDisplayedColumns = ['toteId', 'toteNumber', 'actions'];
+          this.ordersDisplayedColumns = ['toteId', 'lineCount', 'priority', 'requiredDate', 'details', 'actions'];
+          this.selectedOrdersDisplayedColumns = ['toteId', 'toteNumber','actions'];
         }
         else {
           this.orders = ordersResult;
           this.originalOrders = ordersResult;
           this.view = "order";
-          this.ordersDisplayedColumns = ['orderNumber', 'lineCount', 'priority', 'requiredDate', 'actions'];
+          this.ordersDisplayedColumns = ['orderNumber', 'lineCount', 'priority', 'requiredDate', 'details', 'actions'];
           this.selectedOrdersDisplayedColumns = ['orderNumber', 'toteNumber', 'actions'];
         }
       },
@@ -151,14 +151,14 @@ export class BulkTransactionComponent implements OnInit {
       this.bulkTotesObservable().subscribe((res) => {
         this.orders = res;
       })
-      this.ordersDisplayedColumns = ['toteId', 'lineCount', 'priority', 'requiredDate', 'actions'];
+      this.ordersDisplayedColumns = ['toteId', 'lineCount', 'priority', 'requiredDate', 'details', 'actions'];
       this.selectedOrdersDisplayedColumns = ['toteId', 'toteNumber', 'actions'];
     }
     else if (event == "order") {
       this.bulkOrdersObservable().subscribe((res) => {
         this.orders = res;
       })
-      this.ordersDisplayedColumns = ['orderNumber', 'lineCount', 'priority', 'requiredDate', 'actions'];
+      this.ordersDisplayedColumns = ['orderNumber', 'lineCount', 'priority', 'requiredDate', 'details', 'actions'];
       this.selectedOrdersDisplayedColumns = ['orderNumber', 'toteNumber', 'actions'];
     }
     this.batchSeleted = false;
@@ -190,26 +190,22 @@ export class BulkTransactionComponent implements OnInit {
     this.selectedOrders.forEach((element) => { this.orderLines = this.orderLines.concat(element.orderLines) });
     this.orderLines = this.sortByLocation(this.orderLines);
   }
+
   sortByLocation(data) {
     // Sorts the array in ascending order based on the 'location' property
     return data.sort((a, b) => {
         // Normalize the location strings to ensure accurate sorting
         let locA = a.location.toUpperCase(); // to handle case-insensitivity
         let locB = b.location.toUpperCase(); // to handle case-insensitivity
-
-        if (locA < locB) {
-            return -1;
-        }
-        if (locA > locB) {
-            return 1;
-        }
+        if (locA < locB) return -1;
+        if (locA > locB) return 1;
         return 0; // if the locations are equal
     });
 }
 
   OpenNextToteId() {
     let dialogRefTote = this.global.OpenDialog(BmToteidEntryComponent, {
-      height: 'auto',
+      height: DialogConstants.auto,
       width: '990px',
       autoFocus: DialogConstants.autoFocus,
       disableClose: true,
@@ -319,7 +315,7 @@ export class BulkTransactionComponent implements OnInit {
     if (res?.status == HttpStatusCode.Ok) {
       this.nextBatchId = res.body;
       const dialogRef1 = this.global.OpenDialog(ConfirmationDialogComponent, {
-        height: 'auto',
+        height: DialogConstants.auto,
         width: Style.w560px,
         autoFocus: DialogConstants.autoFocus,
         disableClose: true,

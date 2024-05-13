@@ -77,30 +77,36 @@
 
 
     <form [formGroup]="adjustInventoryMapForm" (ngSubmit)="onSubmit(adjustInventoryMapForm)">
-    <div class="row mb-3">
-        <div class="col-6">
-            <mat-form-field class="custom-form-field w-100" appearance="outline">
-                <mat-label>Enter New Quantity</mat-label>
-                <input matInput #newQty  [NumbersOnly]="true" type="number" formControlName="quantity" maxlength="9"  name="quantity">
-            </mat-form-field>
-            <div class="error" *ngIf="hasError('quantity', 'required')">This field is required.</div>
+      <div class="row mb-3">
+
+        <div class="col-4">
+          <mat-form-field class="custom-form-field w-100" appearance="outline">
+            <mat-label>Enter New Quantity</mat-label>
+            <input matInput #newQty [NumbersOnly]="true" type="number" formControlName="quantity" maxlength="9" name="quantity">
+          </mat-form-field>
+          <div class="error" *ngIf="hasError('quantity', 'required')">This field is required.</div>
         </div>
+
         <div class="col-6">
-            <mat-form-field class="custom-form-field w-100" appearance="outline">
-                <mat-label>Reason For Adjustment</mat-label>
-                <input placeholder="Reason For Adjustment" aria-label="Reason For Adjustment" matInput
-                    formControlName="description" [(ngModel)]='searchReasonValue' [matAutocomplete]="auto"
-                    (ngModelChange)="this.searchReasonByInput.next($event)">
-                <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete">
-                    <mat-option *ngFor="let option of getAdjustReasonsList"
-                        [value]="option">
-                        {{option}}
-                    </mat-option>
-                </mat-autocomplete>
-            </mat-form-field>
-            <div class="error" *ngIf="hasError('description', 'required')">This field is required.</div>
+          <mat-form-field class="custom-form-field w-100" appearance="outline">
+            <mat-label>Reason For Adjustment</mat-label>
+            <input placeholder="Reason For Adjustment" aria-label="Reason For Adjustment" matInput
+                   formControlName="description" [(ngModel)]='searchReasonValue' [matAutocomplete]="auto"
+                   (ngModelChange)="this.searchReasonByInput.next($event)">
+            <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete">
+              <mat-option *ngFor="let option of getAdjustReasonsList"
+                          [value]="option">
+                {{option}}
+              </mat-option>
+            </mat-autocomplete>
+          </mat-form-field>
+          <div class="error" *ngIf="hasError('description', 'required')">This field is required.</div>
         </div>
-    </div>
+
+        <mat-checkbox formControlName="dedicated" class="ld_checkbox col-1 cb-center" color="primary" [checked]="this.getAdjustQuantityData.dedicated">
+          Dedicated
+        </mat-checkbox>
+      </div>
 
     <mat-dialog-actions>
         <button type="submit" mat-flat-button class="btn-lg flex-grow-1" color="primary" [disabled]="!isValid()">Save Changes</button>

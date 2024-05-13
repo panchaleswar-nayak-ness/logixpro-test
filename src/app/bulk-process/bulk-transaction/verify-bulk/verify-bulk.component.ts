@@ -279,7 +279,7 @@ export class VerifyBulkComponent implements OnInit {
 
   async taskComplete(orderLines: OrderLineResource[]) {
     const dialogRef1: any = this.global.OpenDialog(ConfirmationDialogComponent, {
-      height: 'auto',
+      height: DialogConstants.auto,
       width: Style.w560px,
       autoFocus: DialogConstants.autoFocus,
       disableClose: true,
@@ -296,7 +296,6 @@ export class VerifyBulkComponent implements OnInit {
       if (resp == ResponseStrings.Yes) {
         let ordersNew: TaskCompleteNewRequest[] = new Array();
         orderLines.forEach((x: any) => {
-
           let record = this.taskCompleteNewRequest.find((r: TaskCompleteNewRequest) => r.id == x.id);
           if (record != undefined) {
             record.completedQty = parseInt(x.completedQuantity);
@@ -305,14 +304,9 @@ export class VerifyBulkComponent implements OnInit {
         });
 
         let res = await this.iBulkProcessApiService.bulkPickTaskComplete(ordersNew);
-        if (res?.status == HttpStatusCode.Ok) {
-          if (this.url == "Pick") {
-            await this.TaskCompleteEOB();
-          }
-          else {
-            this.taskCompleteFinished();
-          }
-        }
+        if (res?.status == HttpStatusCode.Ok) 
+          if (this.url == "Pick") await this.TaskCompleteEOB(res?.body);
+          else this.taskCompleteFinished();
       }
     });
   }
@@ -320,13 +314,11 @@ export class VerifyBulkComponent implements OnInit {
   async validateTaskComplete() {
     let isZeroCompletedQuantity: boolean = false;
     this.orderLines.filteredData.forEach((x: OrderLineResource) => {
-      if (x.completedQuantity == 0) {
-        isZeroCompletedQuantity = true;
-      }
+      if (x.completedQuantity == 0) isZeroCompletedQuantity = true;
     });
     if (isZeroCompletedQuantity) {
       const dialogRef1 = this.global.OpenDialog(ConfirmationDialogComponent, {
-        height: 'auto',
+        height: DialogConstants.auto,
         width: Style.w560px,
         autoFocus: DialogConstants.autoFocus,
         disableClose: true,
@@ -341,42 +333,37 @@ export class VerifyBulkComponent implements OnInit {
         },
       });
       dialogRef1.afterClosed().subscribe(async (res: string) => {
-        if (res == ResponseStrings.Yes) {
-          await this.taskComplete(this.orderLines.filteredData.filter((x: OrderLineResource) => x.completedQuantity > 0));
-        }
-        else if (res == ResponseStrings.No) {
-          await this.taskComplete(this.orderLines.filteredData);
-        }
+        if (res == ResponseStrings.Yes) await this.taskComplete(this.orderLines.filteredData.filter((x: OrderLineResource) => x.completedQuantity > 0));
+        else if (res == ResponseStrings.No) await this.taskComplete(this.orderLines.filteredData);
       });
     }
-    else {
-      await this.taskComplete(this.orderLines.filteredData);
-    }
+    else await this.taskComplete(this.orderLines.filteredData);
   }
 
-  async TaskCompleteEOB() {
+  async TaskCompleteEOB(orderId : number[]) {
     let order = this.orderLines.filteredData.filter(x => (x.transactionQuantity > x.completedQuantity));
     if (order.length > 0) {
-      this.showLoader(); // Spinner ko dikhao
-      await this.checkForZone(order[0].id); // Check karo ki zone mil gaya hai ya nahi
-      this.hideLoader(); // Spinner ko chhupao
+      this.showLoader();
+      await this.checkForZone(orderId[0]);
+      this.hideLoader();
     }
 
     if (this.Prefernces.systemPreferences.displayEob) {
-      this.showLoader(); // Spinner ko dikhao
-      await this.callEndOfBatch(order); // End of batch API call karo
-      this.hideLoader(); // Spinner ko chhupao
-    } else {
-      this.taskCompleteFinished();
-    }
+      this.showLoader();
+      await this.callEndOfBatch(order);
+      this.hideLoader();
+    } 
+    else this.taskCompleteFinished();
   }
 
-  async checkForZone(orderId: any) {
+  async checkForZone(orderId: number | undefined) {
     if (this.Prefernces.systemPreferences.shortPickFindNewLocation && this.Prefernces.systemPreferences.displayEob) {
       for (let i = 0; i < 10; i++) {
         await new Promise(resolve => setTimeout(resolve, 2000)); // Wait for 2 seconds
         const res: any = await this.iAdminApiService.orderline(orderId).toPromise();
-        if (res.zone != "" && res.zone) return;
+        if (res?.status == HttpStatusCode.Ok) {
+          if (res.zone != "" && res.zone) return; 
+        } else if (res?.status == HttpStatusCode.NoContent) return;
       }
     }
   }
@@ -392,12 +379,8 @@ export class VerifyBulkComponent implements OnInit {
         disableClose: true,
         data: res
       });
-      dialogRef1.afterClosed().subscribe(async (resp: any) => {
-        this.taskCompleteFinished();
-      });
-    } else {
-      this.taskCompleteFinished();
-    }
+      dialogRef1.afterClosed().subscribe(async (resp: any) => this.taskCompleteFinished());
+    } else this.taskCompleteFinished();
   }
 
   showLoader() {
@@ -409,9 +392,9 @@ export class VerifyBulkComponent implements OnInit {
   }
 
   taskCompleteFinished() {
-      this.taskCompleted = true;
-      this.back.emit(this.taskCompleted);
-      this.global.ShowToastr(ToasterType.Success, ToasterMessages.RecordUpdatedSuccessful, ToasterTitle.Success);
+    this.taskCompleted = true;
+    this.back.emit(this.taskCompleted);
+    this.global.ShowToastr(ToasterType.Success, ToasterMessages.RecordUpdatedSuccessful, ToasterTitle.Success);
   }
 
   showNoRemainings() {
@@ -428,9 +411,7 @@ export class VerifyBulkComponent implements OnInit {
       },
     });
     dialogRef1.afterClosed().subscribe(async (resp: any) => {
-      if (resp == ResponseStrings.Yes) {
-        this.back.emit(this.taskCompleted);
-      }
+      if (resp == ResponseStrings.Yes) this.back.emit(this.taskCompleted);
     });
   }
 
