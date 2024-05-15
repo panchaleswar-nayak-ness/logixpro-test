@@ -6,7 +6,6 @@ import { MatTableDataSource } from '@angular/material/table';
 import { Order } from 'src/app/common/Model/bulk-transactions';
 import { DialogConstants, LiveAnnouncerMessage } from 'src/app/common/constants/strings.constants';
 import { GlobalService } from 'src/app/common/services/global.service';
-import { PickRemainingComponent } from '../pick-remaining/pick-remaining.component';
 import { OrderDetailsComponent } from 'src/app/dialogs/order-details/order-details.component';
 
 @Component({
@@ -15,16 +14,16 @@ import { OrderDetailsComponent } from 'src/app/dialogs/order-details/order-detai
   styleUrls: ['./order-selection-list.component.scss']
 })
 export class OrderSelectionListComponent implements OnInit {
-  @Input() url: any;
+  @Input() url: string;
   @Input() ordersDisplayedColumns: string[];
-  @Input() orders: any = [];
-  @Input() view : string;
+  @Input() orders: Order[];
+  @Input() view: string;
   @Input() batchSeleted: boolean;
-  datasource: any = [];
+  datasource: MatTableDataSource<Order>;
   @ViewChild(MatSort) sort: MatSort;
-  @Output() selectOrderEmitter = new EventEmitter<any>();
+  @Output() selectOrderEmitter = new EventEmitter<Order>();
   @Output() appendAllEmitter = new EventEmitter<any>(); 
-  tableHeading : string = "Batch Selection List";
+  tableHeading: string = "Batch Selection List";
   @ViewChild('paginator1') paginator1: MatPaginator;
 
   constructor(
@@ -63,10 +62,9 @@ export class OrderSelectionListComponent implements OnInit {
   }
 
   viewDetails(element : Order) {
-    console.log(element);
     const dialogRefTote = this.global.OpenDialog(OrderDetailsComponent, {
       height: DialogConstants.auto,
-      width: '990px',
+      width: '100%',
       autoFocus: DialogConstants.autoFocus,
       disableClose: true,
       data: {

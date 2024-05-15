@@ -79,8 +79,8 @@
               <ng-container matColumnDef="action" stickyEnd>
                 <th mat-header-cell *matHeaderCellDef> </th>
                 <td mat-cell *matCellDef="let element" class="text-end">
-                  <button mat-icon-button aria-label="Delete Function" matTooltip="Add" matTooltipPosition="above" (click)="add(element)">
-                    <mat-icon class="icon-circle-edit">add</mat-icon>
+                  <button mat-flat-button aria-label="Delete Function" matTooltip="Add" color="primary" class="mx-auto xsm-icon-button" matTooltipPosition="above" (click)="add(element)">
+                    <mat-icon>add</mat-icon>
                   </button>
                 </td>
               </ng-container>

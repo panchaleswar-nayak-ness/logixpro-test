@@ -141,33 +141,28 @@ export class BulkTransactionComponent implements OnInit {
     this.selectedOrders = [];
     this.status.orderLinesCount = 0;
     if (event == "batch") {
-      this.bulkBatchesObservable().subscribe((res) => {
-        this.orders = res;
-      })
+      this.bulkBatchesObservable().subscribe((res) => this.orders = res);
       this.ordersDisplayedColumns = ['batchId', 'lineCount', 'priority', 'actions'];
       this.selectedOrdersDisplayedColumns = ['orderNumber', 'toteNumber'];
     }
     else if (event == "tote") {
-      this.bulkTotesObservable().subscribe((res) => {
-        this.orders = res;
-      })
+      this.bulkTotesObservable().subscribe((res) => this.orders = res);
       this.ordersDisplayedColumns = ['toteId', 'lineCount', 'priority', 'requiredDate', 'details', 'actions'];
       this.selectedOrdersDisplayedColumns = ['toteId', 'toteNumber', 'actions'];
     }
     else if (event == "order") {
-      this.bulkOrdersObservable().subscribe((res) => {
-        this.orders = res;
-      })
+      this.bulkOrdersObservable().subscribe((res) => this.orders = res);
       this.ordersDisplayedColumns = ['orderNumber', 'lineCount', 'priority', 'requiredDate', 'details', 'actions'];
       this.selectedOrdersDisplayedColumns = ['orderNumber', 'toteNumber', 'actions'];
     }
     this.batchSeleted = false;
   }
 
-  capitalizeWords(inputString) {
+  capitalizeWords(inputString: string) {
     // Use regular expression to insert space before each capital letter
     return inputString.replace(/([a-z])([A-Z])/g, '$1 $2');
   }
+
   selectOrder(event: any) {
     event.toteNumber = this.selectedOrders.length + 1;
     this.orderLines = [];
@@ -204,7 +199,7 @@ export class BulkTransactionComponent implements OnInit {
 }
 
   OpenNextToteId() {
-    let dialogRefTote = this.global.OpenDialog(BmToteidEntryComponent, {
+    const dialogRefTote = this.global.OpenDialog(BmToteidEntryComponent, {
       height: DialogConstants.auto,
       width: '990px',
       autoFocus: DialogConstants.autoFocus,
@@ -261,9 +256,7 @@ export class BulkTransactionComponent implements OnInit {
   }
 
   getworkstationbulkzone() {
-    this.iBulkProcessApiService.bulkPreferences().subscribe((res: BulkPreferences) => {
-      this.Prefernces = res;
-    })
+    this.iBulkProcessApiService.bulkPreferences().subscribe((res: BulkPreferences) => this.Prefernces = res)
   }
 
   removeAll() {
@@ -284,7 +277,7 @@ export class BulkTransactionComponent implements OnInit {
 
   async printDetailList() {
     const dialogRef1: any = this.global.OpenDialog(ConfirmationDialogComponent, {
-      height: 'auto',
+      height: DialogConstants.auto,
       width: Style.w560px,
       autoFocus: DialogConstants.autoFocus,
       disableClose: true,
@@ -297,15 +290,10 @@ export class BulkTransactionComponent implements OnInit {
       },
     });
     dialogRef1.afterClosed().subscribe(async (res: any) => {
-      if (res == ResponseStrings.Yes) {
-
-      }
-      else if (res == ResponseStrings.No) {
-
-      }
-      else if (res == ResponseStrings.Cancel) {
+      if (res == ResponseStrings.Yes) {}
+      else if (res == ResponseStrings.No) {}
+      else if (res == ResponseStrings.Cancel)
         if (this.view != "batch") await this.createBatchNow();
-      }
     });
   }
 
@@ -346,7 +334,7 @@ export class BulkTransactionComponent implements OnInit {
 
   printItemLabelsNow() {
     const dialogRef1: any = this.global.OpenDialog(ConfirmationDialogComponent, {
-      height: 'auto',
+      height: DialogConstants.auto,
       width: Style.w560px,
       autoFocus: DialogConstants.autoFocus,
       disableClose: true,
@@ -357,8 +345,7 @@ export class BulkTransactionComponent implements OnInit {
       },
     });
     dialogRef1.afterClosed().subscribe(async (resp: any) => {
-      if (resp == ResponseStrings.Yes) {
-      }
+      if (resp == ResponseStrings.Yes) {}
       this.selectedOrders = [];
       this.bulkOrderBatchToteQty();
     });
