@@ -1716,10 +1716,11 @@ public async CommonPrint(body)  {
   }
    return  await this.Api.CommonPrint(payload);
 } 
-public async PrintTotes(toteIds : string[], type : string, position = 0) {
+public async PrintTotes(orderNumbers : string[], toteIds : string[], type : string, position = 0) {
   const payload = {
     username: this.userData.userName,
     wsid: this.userData.wsid,
+    orderNumbers: orderNumbers,
     toteIds: toteIds,
     Type: type,
     Position: position
