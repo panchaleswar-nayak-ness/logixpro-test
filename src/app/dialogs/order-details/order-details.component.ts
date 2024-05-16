@@ -18,9 +18,11 @@ interface MatDialogData {
 })
 export class OrderDetailsComponent implements OnInit, AfterViewInit {
 
-  ordersDisplayedColumns: string[] = ["orderNumber", "location", "itemNumber", "description", "userField1", 
-    "transactionQuantity", "priority", "transactionType", "unitOfMeasure", "expirationDate", "lotNumber", 
-    "serialNumber", "notes", "warehouse", "userField2", "toteId"];
+  ordNum: string;
+  transType: string;
+  ordersDisplayedColumns: string[] = ["location", "itemNumber", "description", "transactionQuantity", 
+     "priority", "unitOfMeasure", "warehouse", "toteId", "userField1", "userField2", "expirationDate", "lotNumber", 
+    "serialNumber", "notes"];
   orderLines: MatTableDataSource<OrderLine>;
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild('paginator') paginator: MatPaginator;
@@ -43,6 +45,8 @@ export class OrderDetailsComponent implements OnInit, AfterViewInit {
     this.orderLines = new MatTableDataSource(orderLines);
     this.updatedPaginator();
     this.updateSorting();
+    this.ordNum = orderLines[0].orderNumber ?? "";
+    this.transType = orderLines[0].transactionType ?? "";
   }
 
   updatedPaginator(){

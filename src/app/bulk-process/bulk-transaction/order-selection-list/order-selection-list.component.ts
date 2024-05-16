@@ -64,7 +64,7 @@ export class OrderSelectionListComponent implements OnInit {
   viewDetails(element : Order) {
     const dialogRefTote = this.global.OpenDialog(OrderDetailsComponent, {
       height: DialogConstants.auto,
-      width: '100%',
+      width: '96vw',
       autoFocus: DialogConstants.autoFocus,
       disableClose: true,
       data: {
