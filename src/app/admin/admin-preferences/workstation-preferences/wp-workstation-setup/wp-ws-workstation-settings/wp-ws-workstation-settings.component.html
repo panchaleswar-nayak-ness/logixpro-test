@@ -31,10 +31,8 @@
 
         <mat-form-field class="action-dropdown custom-form-field-bg-white w-100 mb-3" appearance="outline">
           <mat-label>Print Report Location</mat-label>
-          <mat-select class="employees-action" value="pick">
-            <mat-option value="123456">123456</mat-option>
-            <mat-option value="987654">987654</mat-option>
-            <mat-option value="147852">147852</mat-option>
+          <mat-select class="employees-action" [(ngModel)]="companyObj.printReportLocation"  (ngModelChange)="payload()" >
+            <mat-option *ngFor="let item of listReportPrinter" [value]="item.printer">{{item.printer}}</mat-option> 
           </mat-select>
           <span class="material-symbols-outlined icon-expand-more">
             expand_more
@@ -43,10 +41,8 @@
 
         <mat-form-field class="action-dropdown custom-form-field-bg-white w-100 mb-3" appearance="outline">
           <mat-label>Print Label Location</mat-label>
-          <mat-select class="employees-action" value="pick">
-            <mat-option value="123456">123456</mat-option>
-            <mat-option value="987654">987654</mat-option>
-            <mat-option value="147852">147852</mat-option>
+          <mat-select class="employees-action" [(ngModel)]="companyObj.printLabelLocation"  (ngModelChange)="payload()" >
+            <mat-option *ngFor="let item of listLabelPrinter" [value]="item.printer">{{item.printer}}</mat-option> 
           </mat-select>
           <span class="material-symbols-outlined icon-expand-more">
             expand_more
