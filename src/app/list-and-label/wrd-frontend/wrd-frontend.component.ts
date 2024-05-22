@@ -69,7 +69,7 @@ export class WrdFrontendComponent implements OnInit {
       let backendUrl = url.split("/api")[0];
       const dynamicHtml = `<ll-webreportdesigner backendUrl="${backendUrl}/LLWebReportDesigner"
       defaultProject="${this.fileName?.split('-')[1] == UniqueConstants.Ibl ? 'BCAEC8B2-9D16-4ACD-94EC-74932157BF82':'072A40E4-6D25-47E5-A71F-C491BC758BC9'}" 
-      customData="${ ((this.userCreated == "1") ? this.authService.userData().wsid : '') + ',' + this.fileName}" ></ll-webreportdesigner>`; 
+      customData="${this.authService.userData().wsid + ',' + this.fileName}" ></ll-webreportdesigner>`; 
       this.ListAndLabel.nativeElement.insertAdjacentHTML('beforeend', dynamicHtml);
     });
   }
