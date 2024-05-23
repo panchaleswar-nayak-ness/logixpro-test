@@ -1479,7 +1479,7 @@ public CommonExport(body): Observable<any> {
   return this.ApiBase.Get(`/Admin/reports/export`,body);
 }
 public async PrintTotes(body){
-  return  await this.ApiBase.PostAsync(`/totes/print`,body);
+  return  await this.ApiBase.PostAsync(`/print/totes`,body);
 }
 public async CommonPrint(body)  {
    return  await this.ApiBase.GetAsync(`/Admin/reports/print`,body);
@@ -1577,4 +1577,13 @@ public endofbatch(body:any){
 public async AssignToteToOrder(body: AssignToteToOrderDto[]) {
     return await this.ApiBase.PostAsync<AssignToteToOrderDto[]>("/orders/assign-tote", body);
   }
+
+  public async PrintCrossDockTote(body) {
+    return await this.ApiBase.PostAsync(`/print/crossdocktote`, body);
+  }
+
+  public async PrintCrossDockItem(body) {
+    return await this.ApiBase.PostAsync(`/print/crossdockitem`, body);
+  }
+
 }

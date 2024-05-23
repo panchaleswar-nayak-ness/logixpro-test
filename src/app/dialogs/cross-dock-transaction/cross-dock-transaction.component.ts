@@ -426,37 +426,35 @@ export class CrossDockTransactionComponent implements OnInit {
     } catch (error) {}
   }
 
-  print(type: any) {
+  print(type: string) {
     if (type == 'printtotelabel') {
       if (this.imPreferences.printDirectly) {
-        this.global.Print(
-          `FileName:PrintCrossDock|RPID:${this.selectedRowObj.id}|ZoneLabel:${this.zone}|ToteID:${this.selectedRowObj.toteID}`
-        );
+        this.iInductionManagerApi.PrintCrossDockTote(this.selectedRowObj.id, this.zone, this.selectedRowObj.toteID);
       } else {
         window.open(
           `/#/report-view?file=FileName:PrintCrossDock|RPID:${this.selectedRowObj.id}|ZoneLabel:${this.zone}|ToteID:${this.selectedRowObj.toteID}`,
           UniqueConstants._blank,
           'width=' +
-            screen.width +
-            ',height=' +
-            screen.height +
-            ',toolbar=0,menubar=0,location=0,status=1,scrollbars=1,resizable=1,left=0,top=0'
-        );
-      }
-    } else if (this.imPreferences.printDirectly) {
-      this.global.Print(
-        `FileName:PrintCrossDock|RPID:${this.selectedRowObj.id}|ZoneLabel:${this.zone}|ToteID:`
-      );
-    } else {
-      window.open(
-        `/#/report-view?file=FileName:PrintCrossDock|RPID:${this.selectedRowObj.id}|ZoneLabel:${this.zone}|ToteID:`,
-        UniqueConstants._blank,
-        'width=' +
           screen.width +
           ',height=' +
           screen.height +
           ',toolbar=0,menubar=0,location=0,status=1,scrollbars=1,resizable=1,left=0,top=0'
-      );
+        );
+      }
+    } else {
+      if (this.imPreferences.printDirectly) {
+        this.iInductionManagerApi.PrintCrossDockItem(this.selectedRowObj.id, this.zone);
+      } else {
+        window.open(
+          `/#/report-view?file=FileName:PrintCrossDock|RPID:${this.selectedRowObj.id}|ZoneLabel:${this.zone}|ToteID:`,
+          UniqueConstants._blank,
+          'width=' +
+          screen.width +
+          ',height=' +
+          screen.height +
+          ',toolbar=0,menubar=0,location=0,status=1,scrollbars=1,resizable=1,left=0,top=0'
+        );
+      }
     }
   }
 }

@@ -635,4 +635,25 @@ public DeleteSerialNumber(payloadParams:any) {
     return this.Api.DynamicMethod(payload, url);
   }
 
+  public PrintCrossDockTote(reprocessId, zone: string, toteId: string) {
+    const payload = {
+      username: this.userData.username,
+      wsid: this.userData.wsid,
+      reprocessId: reprocessId,
+      zone: zone,
+      toteId: toteId
+    }
+    return this.Api.PrintCrossDockTote(payload);
+  }
+
+  public PrintCrossDockItem(reprocessId, zone: string) {
+    const payload = {
+      username: this.userData.username,
+      wsid: this.userData.wsid,
+      reprocessId: reprocessId,
+      zone: zone
+    }
+    return this.Api.PrintCrossDockItem(payload);
+  }
+
 }
