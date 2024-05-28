@@ -75,3 +75,12 @@
     </p>
   </div>
 </div>
+<div class="overlay z-index-999999 dark" *ngIf="spinnerService.assigningLocations">
+  <div class="center d-flex flex-column align-items-center">
+    <mat-spinner [diameter]="50"></mat-spinner>
+    <p style="text-align:center">
+      Now Assigning Locations <br>
+      Press the Escape key to Stop Processing
+    </p>
+  </div>
+</div>

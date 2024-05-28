@@ -1,16 +1,19 @@
 import { HttpStatusCode } from '@angular/common/http';
-import { Component, OnInit } from '@angular/core';
+import { Component, HostListener, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { BmToteidEntryComponent } from 'src/app/admin/dialogs/bm-toteid-entry/bm-toteid-entry.component';
 import { ConfirmationDialogComponent } from 'src/app/admin/dialogs/confirmation-dialog/confirmation-dialog.component';
-import { BatchesRequest, BatchesResponse, BulkPreferences, CreateBatchRequest, OrderBatchToteQtyRequest, OrderBatchToteQtyResponse, OrderLineResource, OrderResponse, OrdersRequest, TotesRequest, TotesResponse } from 'src/app/common/Model/bulk-transactions';
-import { DialogConstants, ResponseStrings, Style } from 'src/app/common/constants/strings.constants';
+import { BatchesRequest, BatchesResponse, BulkPreferences, BulkZone, CreateBatchRequest, OrderBatchToteQtyRequest, OrderBatchToteQtyResponse, OrderLineResource, OrderResponse, OrdersRequest, QuickPickOrdersRequest, TotesRequest, TotesResponse } from 'src/app/common/Model/bulk-transactions';
+import { DialogConstants, ResponseStrings, Style, ToasterTitle, ToasterType } from 'src/app/common/constants/strings.constants';
 import { IBulkProcessApiService } from 'src/app/common/services/bulk-process-api/bulk-process-api-interface';
 import { BulkProcessApiService } from 'src/app/common/services/bulk-process-api/bulk-process-api.service';
 import { GlobalService } from 'src/app/common/services/global.service';
 import { SharedService } from 'src/app/common/services/shared.service';
 import {forkJoin} from "rxjs";
 import {Observable} from "rxjs/internal/Observable";
+import { IAdminApiService } from 'src/app/common/services/admin-api/admin-api-interface';
+import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.service';
+import { SpinnerService } from 'src/app/common/init/spinner.service';
 
 @Component({
   selector: 'app-bulk-transaction',
@@ -23,7 +26,7 @@ export class BulkTransactionComponent implements OnInit {
   status: OrderBatchToteQtyResponse = new OrderBatchToteQtyResponse();
   view: string = "";
   NextToteID: number;
-  ordersDisplayedColumns: string[] = ['batchId', 'lineCount', 'priority', 'actions'];
+  ordersDisplayedColumns: string[] = [];
   selectedOrdersDisplayedColumns: string[] = ['orderNumber', 'toteNumber'];
   orders: any = [];
   originalOrders: any = [];
@@ -35,21 +38,139 @@ export class BulkTransactionComponent implements OnInit {
   url:string;
   IsBatch:any = false;
   public iBulkProcessApiService: IBulkProcessApiService;
+  public iAdminApiService: IAdminApiService;
+  allowQuickPick: boolean = false;
+  defaultQuickPick: boolean = false;
+  isQuickPick:boolean = false;
+  bulkZones: BulkZone[] = [];
+  isZoneSelected:boolean = false;
+  stopAssigningLocations = false;
 
   constructor(
     public bulkProcessApiService: BulkProcessApiService,
     private global: GlobalService,
     private route:Router,
     private sharedService: SharedService,
+    private spinnerService: SpinnerService,
+    public adminApiService: AdminApiService
   ) {
     this.iBulkProcessApiService = bulkProcessApiService;
+    this.iAdminApiService = adminApiService;
     this.url = route.url.split("/")[2].replace("Bulk","");
   }
-
+  
   ngOnInit(): void {
-    this.bulkOrderBatchToteQty();
+    if(this.url == "Pick"){
+      this.WorkstationSetupInfo();
+    }
+    else{
+      this.bulkOrderBatchToteQty();
+    }
     this.getworkstationbulkzone();
     localStorage.removeItem("verifyBulks");
+  }
+
+  public WorkstationSetupInfo() {
+    this.iAdminApiService.WorkstationSetupInfo().subscribe((res) => {
+      if (res.isExecuted && res.data) {
+        // this.allowQuickPick = res.data.pfSettings.filter((x) => x.pfName == "Quick Pick")[0].pfSetting == 1 ? true : false;
+        this.defaultQuickPick = res.data.pfSettings.filter((x) => x.pfName == "Default Quick Pick")[0].pfSetting == 1 ? true : false;
+        if(!this.allowQuickPick) this.defaultQuickPick = false;
+        this.isQuickPick = this.defaultQuickPick;
+        this.quickPickViewChange();
+      }
+    })
+  }
+
+  quickPickViewChange(){
+    if(this.isQuickPick){
+      this.quickPickOrders();
+    }
+    else{
+      this.bulkOrderBatchToteQty();
+    }
+  }
+
+  quickPickOrders(){
+    let payload: QuickPickOrdersRequest = new QuickPickOrdersRequest();
+    payload.start = 0;
+    payload.size = 5000;
+    this.iBulkProcessApiService.bulkPickOrdersQuickpick(payload).subscribe((res) => {
+      this.selectedOrders = [];
+      this.status.batchCount = 0;
+      this.status.toteCount = 0;
+      this.status.orderCount = 0;
+      this.status.orderLinesCount = 0;
+      this.orders = res;
+      this.originalOrders = res;
+      this.status.orderCount = res.length;
+      this.view = "order";
+      this.ordersDisplayedColumns = ['orderNumber', 'lineCount', 'priority', 'requiredDate', 'details', 'actions'];
+      this.selectedOrdersDisplayedColumns = ['orderNumber', 'toteNumber', 'actions'];
+    })
+  }
+
+  async ProcessQuickPick(){
+    let OTIDs:number[] = [];
+    this.selectedOrders.forEach((x) => {
+      x.orderLines.forEach((orderLine:OrderLineResource) => {
+        OTIDs.push(orderLine.id);
+      });
+    });
+    this.iBulkProcessApiService.bulkPickOrdersLocationAssignment(OTIDs).subscribe(async (res: BulkPreferences) => {
+      this.showLoader();
+      await this.bulkPickBulkZone();
+      await this.checkForZone(OTIDs[0]);
+      if(!this.stopAssigningLocations){
+        if(this.isZoneSelected){
+          this.Process();
+        }
+        else{
+          this.WorkstationSetupInfo();
+          this.global.ShowToastr(ToasterType.Error, "Zone not selected", ToasterTitle.Error);
+        }
+      }
+      this.hideLoader();
+    })
+  }
+
+  async bulkPickBulkZone() {
+    let res = await this.iBulkProcessApiService.bulkPickBulkZone();
+    if (res?.status == HttpStatusCode.Ok) {
+      this.bulkZones = res.body;
+    }
+  }
+
+  async checkForZone(orderId: number | undefined) {
+    if (this.Prefernces.systemPreferences.shortPickFindNewLocation && this.Prefernces.systemPreferences.displayEob) {
+      for (let i = 0; i < 10; i++) {
+        if(!this.stopAssigningLocations){
+          await new Promise(resolve => setTimeout(resolve, 2000));
+          const res = await this.iAdminApiService.orderline(orderId).toPromise();
+          if (res?.status == HttpStatusCode.Ok) {
+            if (res.zone && res.zone != ""){
+              let zonesSelected = this.bulkZones.map((element) => element.zone);
+              if(zonesSelected.includes(res.zone)) this.isZoneSelected = true;
+            }
+          } else if (res?.status == HttpStatusCode.NoContent){
+            return;
+          }
+        }
+      }
+    }
+  }
+
+  @HostListener('document:keydown.escape', ['$event'])
+  handleEscapeKey(event: KeyboardEvent) {
+    this.stopAssigningLocations = true;
+  }
+
+  showLoader() {
+    this.spinnerService.assigningLocations = true;
+  }
+
+  hideLoader() {
+    this.spinnerService.assigningLocations = false;
   }
 
   bulkOrderBatchToteQty() {
@@ -129,7 +250,12 @@ export class BulkTransactionComponent implements OnInit {
 
   changeVisibiltyVerifyBulk(event: boolean) {
     if (event) {
-      this.bulkOrderBatchToteQty();
+      if(this.url == "Pick"){
+        this.WorkstationSetupInfo();
+      }
+      else{
+        this.bulkOrderBatchToteQty();
+      }
       localStorage.removeItem("verifyBulks");
     }
     this.verifyBulks = !this.verifyBulks;

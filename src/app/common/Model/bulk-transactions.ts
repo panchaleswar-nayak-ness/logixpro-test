@@ -19,6 +19,11 @@ export class BatchesRequest {
     includeChildren: string
 }
 
+export class QuickPickOrdersRequest {
+    start: number;
+    size: number;
+}
+
 export class BatchesResponse {
     batchId: string;
     priority: number;
@@ -372,4 +377,9 @@ export interface OrderLine {
     userField1: string | null;
     userField2: string | null;
     priority: number;
+}
+
+export class BulkZone {
+    wsid: string;
+    zone: string;
 }

@@ -304,9 +304,14 @@ export class VerifyBulkComponent implements OnInit {
         });
 
         let res = await this.iBulkProcessApiService.bulkPickTaskComplete(ordersNew);
-        if (res?.status == HttpStatusCode.Ok) 
-          if (this.url == "Pick") await this.TaskCompleteEOB(res?.body);
-          else this.taskCompleteFinished();
+        if (res?.status == HttpStatusCode.Ok) {
+          if (this.url == "Pick" && res?.body.length > 0) {
+            await this.TaskCompleteEOB(res?.body);
+          }
+          else{
+            this.taskCompleteFinished();
+          } 
+        }
       }
     });
   }

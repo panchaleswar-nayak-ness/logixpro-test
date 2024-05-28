@@ -1507,6 +1507,12 @@ public bulkPickOrders(body:any): Observable<any> {
 public bulkPickTotes(body:any): Observable<any> {
   return this.ApiBase.Get("/totes",body);
 }
+public bulkPickOrdersQuickpick(body:any): Observable<any> {
+  return this.ApiBase.Get("/orders/quickpick",body);
+}
+public bulkPickOrdersLocationAssignment(body:any): Observable<any> {
+  return this.ApiBase.Put("/orders/locationassignment",body);
+}
 public async bulkPickZones() {
   return await this.ApiBase.GetAsync("/zones");
 }

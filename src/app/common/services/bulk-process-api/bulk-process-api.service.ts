@@ -32,6 +32,12 @@ export class BulkProcessApiService implements IBulkProcessApiService {
   public bulkPickTotes(body: any) {
     return this.Api.bulkPickTotes(body);
   }
+  public bulkPickOrdersQuickpick(body: any) {
+    return this.Api.bulkPickOrdersQuickpick(body);
+  }
+  public bulkPickOrdersLocationAssignment(body: any) {
+    return this.Api.bulkPickOrdersLocationAssignment(body);
+  }
   public bulkPickZones() {
     return this.Api.bulkPickZones();
   }

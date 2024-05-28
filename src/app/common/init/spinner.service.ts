@@ -8,6 +8,7 @@ export class SpinnerService {
 
   visibility: BehaviorSubject<boolean>;
   IsLoader:boolean =false;
+  assigningLocations:boolean = false;
   constructor() {
     this.visibility = new BehaviorSubject(false);
   }

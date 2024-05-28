@@ -2,8 +2,8 @@
     <div class="row">
         <div class="col-xxl-7 mb-3">
             <app-search-bar (changeViewEmitter)="changeView($event)" [url]="capitalizeWords(url)" [status]="status" [view]="view" [orders]="orders" [batchSeleted]="batchSeleted"
-             [selectedOrders]="selectedOrders" (addItemEmitter)="selectOrder($event)" (printDetailList)="printDetailList()"
-             (createBatchEmit)="createBatchNow($event)"></app-search-bar>
+             [selectedOrders]="selectedOrders" [allowQuickPick]="allowQuickPick" [defaultQuickPick]="defaultQuickPick" (addItemEmitter)="selectOrder($event)" (printDetailList)="printDetailList()"
+             (createBatchEmit)="createBatchNow($event)" (isQuickPickChange)="this.isQuickPick = $event;quickPickViewChange()"></app-search-bar>
         </div>
         <div class="col-xxl-5 mb-3">
             <app-status [status]="status"></app-status>
@@ -18,8 +18,11 @@
         </div>
     </div>
     <div>
-        <button mat-flat-button color="primary" class="btn-lg w-100" (click)="Process()" [disabled]="!(selectedOrders.length > 0)">
+        <button mat-flat-button color="primary" class="btn-lg w-100" *ngIf="!isQuickPick" (click)="Process()" [disabled]="!(selectedOrders.length > 0)">
             Verify Bulk {{capitalizeWords(url)}}
+        </button>
+        <button mat-flat-button color="primary" class="btn-lg w-100" *ngIf="isQuickPick" (click)="ProcessQuickPick()" [disabled]="!(selectedOrders.length > 0)">
+            Process Quick Pick
         </button>
     </div>
 </div>

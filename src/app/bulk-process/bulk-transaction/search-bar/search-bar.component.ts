@@ -1,4 +1,4 @@
-import { Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
+import { Component, ElementRef, EventEmitter, Input, OnInit, Output, SimpleChanges, ViewChild } from '@angular/core';
 import { MatOption } from '@angular/material/core';
 import { MatSelect } from '@angular/material/select';
 
@@ -14,9 +14,13 @@ export class SearchBarComponent implements OnInit {
   @Input() selectedOrders;
   @Input() status;
   @Input() batchSeleted: boolean;
+  @Input() allowQuickPick: boolean;
+  @Input() defaultQuickPick: boolean;
+  isQuickPick:boolean = false;
   @Output() changeViewEmitter = new EventEmitter<any>();
   @Output() addItemEmitter = new EventEmitter<any>();
   @Output() printDetailList = new EventEmitter<any>();
+  @Output() isQuickPickChange = new EventEmitter<any>();
   searchText: string = "";
   suggestion: string = "";
   @Input() url:any;
@@ -24,25 +28,38 @@ export class SearchBarComponent implements OnInit {
   @ViewChild('openAction') openAction: MatSelect;
   @ViewChild('autoFocusField') searchBoxField: ElementRef;
   @Output() createBatchEmit = new EventEmitter<any>();
+
   constructor() { }
 
   ngOnInit(): void {
   }
-  CreateBatch(){
-    if (this.selectedOrders.length != 0) {
-    this.createBatchEmit.emit(true);
+  
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes['defaultQuickPick']) {
+      this.isQuickPick = changes['defaultQuickPick'].currentValue;
+    }
   }
-}
+
+  changeQuickPick(event){
+    this.isQuickPick = event.checked;
+    this.isQuickPickChange.emit(this.isQuickPick);
+  }
+
+  CreateBatch() {
+    if (this.selectedOrders.length != 0) {
+      this.createBatchEmit.emit(true);
+    }
+  }
   ngAfterViewInit() {
     setTimeout(() => {
       this.searchBoxField?.nativeElement.focus();
     }, 500);
   }
-  ClearSearch(){
+  ClearSearch() {
     this.suggestion = "";
     this.searchText = ""
-    this.filteredOrders = []; 
-    } 
+    this.filteredOrders = [];
+  }
   changeView(event: any) {
     this.changeViewEmitter.emit(event.value);
   }

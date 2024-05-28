@@ -6,6 +6,8 @@ export interface IBulkProcessApiService {
   bulkPickBatchId(paylaod:any);
   bulkPickOrders(paylaod:any);
   bulkPickTotes(paylaod:any);
+  bulkPickOrdersQuickpick(paylaod:any);
+  bulkPickOrdersLocationAssignment(paylaod:any);
   bulkPickZones();
   bulkPickBulkZone();
   addBulkPickBulkZone(paylaod:any);
