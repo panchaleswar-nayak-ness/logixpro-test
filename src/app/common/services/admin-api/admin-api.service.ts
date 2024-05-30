@@ -1726,7 +1726,18 @@ public async PrintTotes(orderNumbers : string[], toteIds : string[], type : stri
     Position: position
   }
     return  await this.Api.PrintTotes(payload);
-}
+  }
+  public async PrintInvMap(invMapId: number, groupLikeLoc: boolean, beginLoc: string, endLoc: string) {
+    const payload = {
+      username: this.userData.userName,
+      wsid: this.userData.wsid,
+      invMapId: invMapId,
+      groupLikeLoc: groupLikeLoc,
+      beginLoc: beginLoc,
+      endLoc: endLoc
+    }
+    return await this.Api.PrintInvMap(payload);
+  }
 public SetReprocessIds(body: any ) {
   const payload = {
     username: this.userData.userName,
@@ -1800,5 +1811,13 @@ public LocationAssignmentFunctionsUpdate(body: any) {
     ...body
   }
   return this.Api.LocationAssignmentFunctionsUpdate(payload);
-}
+  }
+
+  public PrintPutAwayItemLabels(otid: number) {
+    const payload = {
+      wsid: this.userData.wsid,
+      oitd: otid
+    }
+    return this.Api.PrintPutAwayItem(payload);
+  }
 }

@@ -1592,4 +1592,12 @@ public async AssignToteToOrder(body: AssignToteToOrderDto[]) {
     return await this.ApiBase.PostAsync(`/print/crossdockitem`, body);
   }
 
+  public async PrintInvMap(body) {
+    return await this.ApiBase.PostAsync(`/print/invmap`, body);
+  }
+
+  public async PrintPutAwayItem(body) {
+    return await this.ApiBase.PostAsync(`/print/putawayitem`, body);
+  }
+
 }

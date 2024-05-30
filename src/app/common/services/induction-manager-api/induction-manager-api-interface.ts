@@ -83,6 +83,7 @@ export interface IInductionManagerApiService
    ValidateSerialNumber(payload : any);
    DeleteSerialNumber(payload : any);
    DynamicMethod(payload: any, url: string);
-   PrintCrossDockTote(reprocessId, zone: string,  toteId: string);
-   PrintCrossDockItem(reprocessId, zone: string);
+   PrintCrossDockTote(reprocessId: number, zone: string,  toteId: string);
+   PrintCrossDockItem(reprocessId: number, zone: string);
+  PrintPutAwayItem(otid: number);
 }

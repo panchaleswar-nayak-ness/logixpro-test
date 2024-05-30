@@ -637,7 +637,6 @@ public DeleteSerialNumber(payloadParams:any) {
 
   public PrintCrossDockTote(reprocessId, zone: string, toteId: string) {
     const payload = {
-      username: this.userData.username,
       wsid: this.userData.wsid,
       reprocessId: reprocessId,
       zone: zone,
@@ -646,14 +645,21 @@ public DeleteSerialNumber(payloadParams:any) {
     return this.Api.PrintCrossDockTote(payload);
   }
 
-  public PrintCrossDockItem(reprocessId, zone: string) {
+  public PrintCrossDockItem(reprocessId: number, zone: string) {
     const payload = {
-      username: this.userData.username,
       wsid: this.userData.wsid,
       reprocessId: reprocessId,
       zone: zone
     }
     return this.Api.PrintCrossDockItem(payload);
+  }
+
+  public PrintPutAwayItem(otid: number) {
+    const payload = {
+      wsid: this.userData.wsid,
+      otid: otid
+    }
+    return this.Api.PrintPutAwayItem(payload);
   }
 
 }
