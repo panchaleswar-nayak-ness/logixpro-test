@@ -427,7 +427,7 @@ export class ConsolidationComponent implements OnInit {
 
   getFilterValue(event) {
     if (event.keyCode == KeyboardCodes.ENTER) {
-      this.checkDuplicatesForVerify(this.filterValue);
+      this.autoCompleteSearchColumnItem(this.filterValue, event);
     }
     this.recordSavedItem();
   }
@@ -451,26 +451,26 @@ export class ConsolidationComponent implements OnInit {
     return { index: index, valueCount: valueCount }
   }
 
-  checkDuplicatesForVerify(val) {
+  /**
+ * Checks for duplicate items in the unverified items list and performs verification or opens a dialog for user selection.
+ * @param val - The value to check for duplicates.
+ */
+checkDuplicatesForVerify(val) {
     let columnIndex = this.startSelectFilter;
-    let result: any;
-    console.log(this.consolidationIndex.cmPreferences);
-    if (columnIndex == 0) {
-      this.filterOption.forEach((e: any) => {
-        result = this.checkVerifyType(val);
-      });
-    }
-    else
-      result = this.checkVerifyType(val);
-    // desturcturing
+    let result;
     const { verifyItems, blindVerifyItems } = this.consolidationIndex.cmPreferences;
-    //blind verify condition removed.
+
+    // If the selected column is 'Item Number', iterate through the filter options to find the result.
+    if (columnIndex == 0) this.filterOption.forEach((e: any) => result = this.checkVerifyType(val));
+    else result = this.checkVerifyType(val);
+    
+    // If the value count is greater than or equal to 1 and verifyItems is set to 'No', open a dialog for user selection.
     if (result.valueCount >= 1 && verifyItems == StringConditions.No) {
-      const dialogRef:any = this.global.OpenDialog(CmItemSelectedComponent, {
-        height: 'auto',
+      const dialogRef = this.global.OpenDialog(CmItemSelectedComponent, {
+        height: DialogConstants.auto,
         width: '899px',
         autoFocus: DialogConstants.autoFocus,
-      disableClose:true,
+        disableClose: true,
         data: {
           identModal: this.typeValue,
           colLabel: this.startSelectFilterLabel,
@@ -479,18 +479,12 @@ export class ConsolidationComponent implements OnInit {
           verifiedItems: this.verifiedItems.data,
         }
       });
-      dialogRef.afterClosed().subscribe(result => {
-        if (result?.isExecuted) {
-          this.getTableData(this.typeValue);
-        }
-      })
+      dialogRef.afterClosed().subscribe(result => { if (result?.isExecuted) this.getTableData(this.typeValue) });
     }
-    else if (result.valueCount >= 1) {
-      this.verifyLine(val, result.index)
-    }
-    else {
-      this.global.ShowToastr(ToasterType.Error,ToasterMessages.ItemNotInOrder, ToasterTitle.Error);
-    }
+    // If the value count is greater than or equal to 1, verify the line.
+    else if (result.valueCount >= 1) this.verifyLine(val, result.index);
+    // If no duplicates are found, show an error message.
+    else this.global.ShowToastr(ToasterType.Error,ToasterMessages.ItemNotInOrder, ToasterTitle.Error);
   }
 
   getSelected(event: MatSelectChange): void {
@@ -557,7 +551,7 @@ export class ConsolidationComponent implements OnInit {
     this.stagePaginator.pageIndex = 0;
   }
 
-  async autoCompleteSearchColumnItem(val:any = null) {
+  async autoCompleteSearchColumnItem(val:any = null, event:any= null) {
     if(val) this.filterValue = val;
     let payload = {
       "column": this.startSelectFilter,
@@ -574,6 +568,9 @@ export class ConsolidationComponent implements OnInit {
       })
     ).subscribe((res: any) => {
       this.searchAutoCompleteItemNum = res.data;
+      if (event.keyCode == KeyboardCodes.ENTER) {
+        this.checkDuplicatesForVerify(this.filterValue);
+      }
     });
   }
 

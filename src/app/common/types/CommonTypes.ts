@@ -22,6 +22,15 @@ export interface ApiResponse<T> {
     isExecuted: boolean;
 }
 
+export interface UserSession {
+    _token: string;
+    userName: string;
+    accessLevel: string;
+    wsid: string;
+    loginTime: string;
+}
+
+
 export interface OpenTransactions {
     id: number,
     orderNumber: string,
@@ -51,3 +60,23 @@ export interface ColumnAlias {
     userField9: string;
     userField10: string;
 }
+
+export interface OSFieldFilterNames {
+    UserField1: string;
+    UserField2: string;
+    UserField3: string;
+    UserField4: string;
+    UserField5: string;
+    UserField6: string;
+    UserField7: string;
+    UserField8: string;
+    UserField9: string;
+    UserField10: string;
+}
+
+export interface CustomPagination {
+    total: number;
+    recordsPerPage: number;
+    startIndex: number;
+    endIndex: number;
+  }

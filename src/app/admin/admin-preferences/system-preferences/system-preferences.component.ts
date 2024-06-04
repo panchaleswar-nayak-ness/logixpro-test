@@ -5,7 +5,4 @@ import { Component} from '@angular/core';
   templateUrl: './system-preferences.component.html',
   styleUrls: []
 })
-export class SystemPreferencesComponent {
-
-
-}
+export class SystemPreferencesComponent {}
