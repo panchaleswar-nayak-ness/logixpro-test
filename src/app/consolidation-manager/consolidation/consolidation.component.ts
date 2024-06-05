@@ -568,7 +568,7 @@ checkDuplicatesForVerify(val) {
       })
     ).subscribe((res: any) => {
       this.searchAutoCompleteItemNum = res.data;
-      if (event.keyCode == KeyboardCodes.ENTER) {
+      if (event?.keyCode == KeyboardCodes.ENTER) {
         this.checkDuplicatesForVerify(this.filterValue);
       }
     });
