@@ -660,8 +660,8 @@ export class InventoryMapComponent implements OnInit {
   });
  }
 
- printSelected(event: any){
-  this.global.Print(`FileName:printIMReport|invMapID:${event.invMapID}|groupLikeLoc:false|beginLoc:|endLoc:|User:${this.userData.userName}`)
+  printSelected(event: any) {
+    this.adminApiService.PrintInvMap(event.invMapID, false, "", "");
 
 }
 

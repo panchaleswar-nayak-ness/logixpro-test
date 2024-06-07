@@ -730,14 +730,14 @@ export class SelectionTransactionForToteExtendComponent implements OnInit {
               });
 
               dialogRef.afterClosed().subscribe((result) => {
-                if(result > 0)
-                  if(!this.imPreferences.printDirectly) window.open(`/#/report-view?file=FileName:PrintPutAwayItemLabels|OTID:${OTID}`, UniqueConstants._blank, 'width=' + screen.width + ',height=' + screen.height + ',toolbar=0,menubar=0,location=0,status=1,scrollbars=1,resizable=1,left=0,top=0');
-                  else for (let i = 0; i < result; i++) this.global.Print(`FileName:PrintPutAwayItemLabels|OTID:${OTID}`);
+                if (result > 0)
+                  if (!this.imPreferences.printDirectly) window.open(`/#/report-view?file=FileName:PrintPutAwayItemLabels|OTID:${OTID}`, UniqueConstants._blank, 'width=' + screen.width + ',height=' + screen.height + ',toolbar=0,menubar=0,location=0,status=1,scrollbars=1,resizable=1,left=0,top=0');
+                  else for (let i = 0; i < result; i++) this.iAdminApiService.PrintPutAwayItemLabels(OTID);
               });
             }
             else if (numLabel > 0)
               if(!this.imPreferences.printDirectly) window.open(`/#/report-view?file=FileName:PrintPutAwayItemLabels|OTID:${OTID}`, UniqueConstants._blank, 'width=' + screen.width + ',height=' + screen.height + ',toolbar=0,menubar=0,location=0,status=1,scrollbars=1,resizable=1,left=0,top=0');
-              else for (let i = 0; i < numLabel; i++) this.global.Print(`FileName:PrintPutAwayItemLabels|OTID:${OTID}`);
+              else for (let i = 0; i < numLabel; i++) this.iAdminApiService.PrintPutAwayItemLabels(OTID);
           }
           this.dialogRef.close("Task Completed");
           this.global.ShowToastr(ToasterType.Success,labels.alert.update, ToasterTitle.Success );

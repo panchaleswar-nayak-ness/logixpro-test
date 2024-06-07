@@ -1611,4 +1611,12 @@ public async AssignToteToOrder(body: AssignToteToOrderDto[]) {
     return   this.ApiBase.Post(`/markout/blossomtote`, body);
   }
 
+  public async PrintInvMap(body) {
+    return await this.ApiBase.PostAsync(`/print/invmap`, body);
+  }
+
+  public async PrintPutAwayItem(body) {
+    return await this.ApiBase.PostAsync(`/print/putawayitem`, body);
+  }
+
 }
