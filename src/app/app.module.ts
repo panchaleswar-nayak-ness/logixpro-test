@@ -118,6 +118,10 @@ import { WorkstationLoginComponent } from './dialogs/workstation-login/workstati
 import { BpFullToteComponent } from './dialogs/bp-full-tote/bp-full-tote.component';
 import { BpNumberSelectionComponent } from './dialogs/bp-number-selection/bp-number-selection.component';
 import { OrderDetailsComponent } from './dialogs/order-details/order-details.component';
+import { MarkoutComponent } from './markout/markout.component';
+import { MarkoutSearchComponent } from './markout/markout-search/markout-search.component';
+import { MarkoutStatusComponent } from './markout/markout-status/markout-status.component';
+import { MarkoutListComponent } from './markout/markout-list/markout-list.component';
 
 @NgModule({
   declarations: [
@@ -225,7 +229,11 @@ import { OrderDetailsComponent } from './dialogs/order-details/order-details.com
     WorkstationLoginComponent,
     BpFullToteComponent,
     BpNumberSelectionComponent,
-    OrderDetailsComponent
+    OrderDetailsComponent,
+    MarkoutComponent,
+    MarkoutSearchComponent,
+    MarkoutStatusComponent,
+    MarkoutListComponent
   ],
   imports: [
     BrowserModule,

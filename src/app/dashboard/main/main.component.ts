@@ -196,10 +196,10 @@ export class MainComponent implements OnInit {
       },
       {
         appName: AppNames.Markout,
-        route: '#',
+        route: '/Markout',
         iconName: 'manage_accounts',
         name: RouteNames.Markout,
-        updateMenu: RouteUpdateMenu.Empty,
+        updateMenu: RouteUpdateMenu.Markout,
         permission: AppPermissions.Markout,
       },
       {

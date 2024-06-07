@@ -21,6 +21,9 @@ export class InputFilterComponent implements OnInit {
   SendData: any;
   condition: any;
   columnName: any;
+  butttonText : string = "Submit";
+  inputType : string = "text";
+  
   dynamicText: string = 'Dynamic Text';
   constructor(
     public dialogRef: MatDialogRef<any>,
@@ -31,6 +34,8 @@ export class InputFilterComponent implements OnInit {
     this.condition = this.data.Condition;
     this.columnName = this.data.FilterColumnName;
     this.dynamicText = this.data.dynamicText;
+    this.butttonText = this.data.butttonText;
+    this.inputType= this.data.inputType;
   }
   onSend(form?: any) {
     if (

@@ -1,0 +1,16 @@
+<div class="container-fluid p-0 pt-2 h-auto">
+    <div class="row g-3">
+        <div class="col-xl-6">
+            <app-markout-search (toteIdEmitter)="toteId = $event; getToteData()"
+                [toteDataResponse]="toteDataResponse"></app-markout-search>
+        </div>
+        <div class="col-xl-6">
+            <app-markout-status [toteDataResponse]="toteDataResponse"></app-markout-status>
+        </div>
+        <div class="col-xl-12">
+            <app-markout-list 
+            (updateTableEmitter)="getToteData()"
+            [toteDataResponse]="toteDataResponse"></app-markout-list>
+        </div>
+    </div>
+</div>

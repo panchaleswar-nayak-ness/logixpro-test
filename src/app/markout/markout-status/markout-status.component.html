@@ -1,0 +1,26 @@
+<mat-card class="mat-elevation-z g-card h-100">
+    <mat-card-content>
+        <div class="row d-block d-xl-flex justify-content-between align-items-center mb-2 flex-wrap">
+            <h2 class="col card-header-title d-flex align-items-center mb-3">
+                <div class="mat-icon-wrap me-3">
+                    <span class="material-symbols-outlined">
+                        browse_activity
+                    </span>
+                </div>
+                <span>Tote Status</span>
+                <span *ngIf="isBlossomed" class="label label-gray px-2 f-14 mx-3">Blossomed</span>
+
+            </h2>
+        </div>
+        <div class="">
+            <div class="">
+                <div class="row d-lg-flex justify-content-between align-items-center gap-12 d-block g-0">
+                    <div *ngFor="let info of info" class="w-100 col">
+                        <app-info-card-component title={{info.title}} value={{info.value}}
+                            colorClass={{info.colorClass}}></app-info-card-component>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </mat-card-content>
+</mat-card>

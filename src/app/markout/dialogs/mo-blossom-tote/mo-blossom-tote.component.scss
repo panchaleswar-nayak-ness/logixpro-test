@@ -1,0 +1,44 @@
+.btn-custom-color-blue{
+    color:var(--clr-primary-500)
+}
+
+.paginator-left-align{
+    float: left, !important;
+}
+
+
+table{
+  tr{
+      display: table-row!important;
+      white-space: nowrap;
+      th, td{
+          vertical-align: middle;
+          padding: 0px 24px;
+          &:last-child{
+              width: 100px !important;
+          }
+      }
+  }
+}
+
+.custom-scrollbar {
+  height: 300px !important; // Adjust as needed
+}
+
+.custom-header-cell {
+  border: 0;
+  height: 67px;
+  padding-left: 65px;
+  border-bottom: 1px solid var(--clr-tertiary-50); // Adjust the color as needed
+}
+.min-h-150px{
+  min-height: 150px !important;
+}
+.table-row:focus{
+  background: transparent;
+}
+.custom-cell {
+  border: 0;
+  padding-left: 24px;
+  background: var(--clr-pure-white);
+}

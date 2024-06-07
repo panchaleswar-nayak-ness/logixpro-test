@@ -16,42 +16,58 @@ import { SteServicesComponent } from './global-config/ste-services/ste-services.
 import { ImportExportComponent } from './import-export/import-export.component';
 import { WrdComponent } from './list-and-label/wrd/wrd.component';
 import { WrvComponent } from './list-and-label/wrv/wrv.component';
-import {  AppNames } from 'src/app/common/constants/menu.constants';
-
+import { AppNames } from 'src/app/common/constants/menu.constants';
+import { MarkoutComponent } from './markout/markout.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
   { path: 'login', component: LoginComponent, canActivate: [AuthGuardGuard] },
-  { path: 'globalconfig', component: GlobalConfigComponent, canActivate: [AuthGuardGuard], children: [] },
-  { path: 'globalconfig/home', component: GlobalDashboardComponent, canActivate:[AuthGuardGuard] },
+  {
+    path: 'globalconfig',
+    component: GlobalConfigComponent,
+    canActivate: [AuthGuardGuard],
+    children: [],
+  },
+  {
+    path: 'globalconfig/home',
+    component: GlobalDashboardComponent,
+    canActivate: [AuthGuardGuard],
+  },
   {
     path: 'globalconfig/printers',
     component: PrintersComponent,
-    canActivate:[AuthGuardGuard]
+    canActivate: [AuthGuardGuard],
   },
   {
     path: 'globalconfig/workstation',
     component: WorkstationComponent,
-    canActivate:[AuthGuardGuard]
-    
+    canActivate: [AuthGuardGuard],
   },
   {
     path: 'globalconfig/database-connections',
     component: DatabaseConnectionsComponent,
-    canActivate:[AuthGuardGuard]
+    canActivate: [AuthGuardGuard],
   },
   {
     path: 'globalconfig/licensing',
     component: LicensingComponent,
-    canActivate:[AuthGuardGuard]
+    canActivate: [AuthGuardGuard],
   },
   {
     path: 'globalconfig/ccsif',
     component: CcsifComponent,
-    canActivate:[AuthGuardGuard]
+    canActivate: [AuthGuardGuard],
   },
-  { path: 'globalconfig/ste', component: SteComponent, canActivate:[AuthGuardGuard] },
-  { path: 'globalconfig/steServices', component: SteServicesComponent, canActivate:[AuthGuardGuard] },
+  {
+    path: 'globalconfig/ste',
+    component: SteComponent,
+    canActivate: [AuthGuardGuard],
+  },
+  {
+    path: 'globalconfig/steServices',
+    component: SteServicesComponent,
+    canActivate: [AuthGuardGuard],
+  },
   { path: 'report-view-iframe', component: WrvComponent },
   { path: 'report-iframe', component: WrdComponent },
   {
@@ -66,7 +82,12 @@ const routes: Routes = [
       {
         path: 'ImportExport',
         component: ImportExportComponent,
-        canActivate: [AuthGuardGuard] 
+        canActivate: [AuthGuardGuard],
+      },
+      {
+        path: 'Markout',
+        component: MarkoutComponent,
+        canActivate: [],
       },
       {
         path: 'admin',
@@ -74,37 +95,55 @@ const routes: Routes = [
           import('./admin/admin.module').then((m) => m.AdminModule),
         canActivate: [],
       },
-      { 
-        path: AppNames.InductionManager, 
-        loadChildren: () => import('./induction-manager/induction-manager.module').then(m => m.InductionManagerModule),
-        canActivate:[]
+      {
+        path: AppNames.InductionManager,
+        loadChildren: () =>
+          import('./induction-manager/induction-manager.module').then(
+            (m) => m.InductionManagerModule
+          ),
+        canActivate: [],
       },
-      { 
-        path: 'ConsolidationManager', 
-        loadChildren: () => import('./consolidation-manager/consolidation-manager.module').then(m => m.ConsolidationManagerModule),
-        canActivate:[]
+      {
+        path: 'ConsolidationManager',
+        loadChildren: () =>
+          import('./consolidation-manager/consolidation-manager.module').then(
+            (m) => m.ConsolidationManagerModule
+          ),
+        canActivate: [],
       },
-      { 
-        path: AppNames.OrderManager, 
-        loadChildren: () => import('./order-manager/order-manager.module').then(m => m.OrderManagerModule),
-        canActivate:[]
+      {
+        path: AppNames.OrderManager,
+        loadChildren: () =>
+          import('./order-manager/order-manager.module').then(
+            (m) => m.OrderManagerModule
+          ),
+        canActivate: [],
       },
-      { 
-        path: 'FlowrackReplenish', 
-        loadChildren: () => import('./flowrack-replenishment/flowrack-replenishment.module').then(m => m.FlowrackReplenishmentModule),
-        canActivate:[]
+      {
+        path: 'FlowrackReplenish',
+        loadChildren: () =>
+          import('./flowrack-replenishment/flowrack-replenishment.module').then(
+            (m) => m.FlowrackReplenishmentModule
+          ),
+        canActivate: [],
       },
-      { 
-        path: 'BulkTransactions', 
-        loadChildren: () => import('./bulk-process/bulk-process.module').then(m => m.BulkProcessModule),
-        canActivate:[]
+      {
+        path: 'BulkTransactions',
+        loadChildren: () =>
+          import('./bulk-process/bulk-process.module').then(
+            (m) => m.BulkProcessModule
+          ),
+        canActivate: [],
       },
-      { 
-        path: '', 
-        loadChildren: () => import('./list-and-label/list-and-label.module').then(m => m.ListAndLabelModule),
-      },
-    ]
-  },  
+      {
+        path: '',
+        loadChildren: () =>
+          import('./list-and-label/list-and-label.module').then(
+            (m) => m.ListAndLabelModule
+          ),
+      }
+    ],
+  },
 ];
 
 @NgModule({

@@ -1,0 +1,96 @@
+<mat-card class="mat-elevation-z g-card h-100">
+  <mat-card-content>
+
+    <h2 class="card-header-title mb-0 d-flex align-items-center mb-3">
+      <div class="mat-icon-wrap me-1 me-lg-3">
+        <span class="material-symbols-outlined">
+          dvr
+        </span>
+      </div>
+      <span>Transactions</span>
+    </h2>
+
+    <div class="row align-items-center">
+      <div class="col-12">
+        <div class="card br-14 table-responsive">
+          <ng-scrollbar track="all" class="custom-scrollbar mat-table-scrollbar">
+
+            <table mat-table [dataSource]="markoutlistdataSource" matSort
+              class="custom-table g-card-table employee-location-table w-100 min-h-150px"
+              (matSortChange)="announceSortChange($event)">
+              <ng-container matColumnDef="status">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>Status</th>
+                <td mat-cell *matCellDef="let element">
+                  <div class="d-flex align-items-center ">
+                    <span [ngClass]="{
+                      'label-yellow' : element.status == 'Short' ,
+                      'label-blue2' : element.status == 'Ship Short',
+                      'label-red' : element.status == 'Missed',
+                      'label-green' : element.status == 'Complete' }" 
+                     class="br-14  label px-3 f-16">{{element?.status}}</span>
+                  </div>
+                </td>
+              </ng-container>
+
+              <ng-container matColumnDef="itemNumber">
+                <th mat-header-cell mat-sort-header *matHeaderCellDef>Item No.</th>
+                <td mat-cell *matCellDef="let element">{{element?.itemNumber}} </td>
+              </ng-container>
+
+              <ng-container matColumnDef="location">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>Location</th>
+                <td mat-cell *matCellDef="let element">{{element?.location}} </td>
+              </ng-container>
+
+              <ng-container matColumnDef="compQty">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>Picked Qty</th>
+                <td mat-cell *matCellDef="let element">{{element?.compQty}} </td>
+              </ng-container>
+
+              <ng-container matColumnDef="transQty">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>Trans Qty</th>
+                <td mat-cell *matCellDef="let element">{{element?.transQty}} </td>
+              </ng-container>
+
+              <ng-container matColumnDef="shortQty">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>Short Qty</th>
+                <td mat-cell *matCellDef="let element">{{element?.shortQty}} </td>
+              </ng-container>
+
+              <ng-container matColumnDef="actions" stickyEnd>
+                <th mat-header-cell *matHeaderCellDef class="custom-header-cell"></th>
+                <td mat-cell *matCellDef="let element" class="custom-cell">
+                  <button mat-icon-button [matMenuTriggerFor]="appMenu" aria-label=""
+                    [ngClass]="{'active-btn':element.selected}" class="circle-icon-o active-btn" appearance="outline">
+                    <mat-icon>more_horiz</mat-icon>
+                  </button>
+                  <mat-menu #appMenu="matMenu">
+                    <button [disabled]="element.status == 'Complete' ||element.status == 'Ship Short'"  mat-menu-item (click)="completeTrans(element)">Complete</button>
+                    <button [disabled]="element.status == 'Complete' || element.status == 'Ship Short'" mat-menu-item (click)="shipShort(element)">Ship Short</button>
+                    <button [disabled]="element.status == 'Complete' || element.status == 'Ship Short'" mat-menu-item (click)="showUpdateQTY(element)">Update Quantity</button>
+                  </mat-menu>
+                </td>
+              </ng-container>
+
+              <tr class="mat-row " *matNoDataRow>
+                <td class="mat-cell text-center" [attr.colspan]="displayedColumns.length">
+                  No data matching the filter.
+                </td>
+              </tr>
+              <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky:true"></tr>
+              <tr mat-row class="table-row" tabindex="1" *matRowDef="let row; columns: displayedColumns;"></tr>
+
+            </table>
+          </ng-scrollbar>
+
+        </div>
+        <div class="table-pagination d-flex justify-content-start" *ngIf="displayedColumns && markoutlistdataSource">
+          <mat-paginator [pageSize]="10" #paginator [length]="markoutlistdataSource.filteredData.length"
+          [pageSizeOptions]="[10, 20, 100]" showFirstLastButtons [pageSizeOptions]="[10, 20, 100]">
+        </mat-paginator>
+        </div>
+      </div>
+    </div>
+
+  </mat-card-content>
+</mat-card>

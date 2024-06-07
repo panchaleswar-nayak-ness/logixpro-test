@@ -179,6 +179,7 @@ import { GtTransactionDetailsComponent } from './manual-transactions/generate-tr
 import { WpWsWorkstationSettingsComponent } from './admin-preferences/workstation-preferences/wp-workstation-setup/wp-ws-workstation-settings/wp-ws-workstation-settings.component';
 import { WpWsToteManagementComponent } from './admin-preferences/workstation-preferences/wp-workstation-setup/wp-ws-tote-management/wp-ws-tote-management.component';
 import { WpWsLocationAssignmentFunctionsComponent } from './admin-preferences/workstation-preferences/wp-workstation-setup/wp-ws-location-assignment-functions/wp-ws-location-assignment-functions.component';
+import { MoBlossomToteComponent } from '../markout/dialogs/mo-blossom-tote/mo-blossom-tote.component';
 
 @NgModule({
     declarations: [
@@ -356,6 +357,7 @@ import { WpWsLocationAssignmentFunctionsComponent } from './admin-preferences/wo
         WpWsWorkstationSettingsComponent,
         WpWsToteManagementComponent,
         WpWsLocationAssignmentFunctionsComponent,
+        MoBlossomToteComponent,
     ],
     imports: [
         CommonModule,

@@ -30,7 +30,8 @@ export class SideNavComponent implements OnInit {
     { icon: 'insert_chart', title: AppPermissions.ConsolidationManager, route: '/ConsolidationManager', permission: AppPermissions.ConsolidationManager },
     { icon: 'pending_actions', title: AppPermissions.OrderManager, route: '/OrderManager', permission: AppPermissions.OrderManager },
     { icon: 'schema', title: 'FlowRack Replenishment', route: '/FlowrackReplenish', permission: 'FlowRack Replenish' },
-    { icon: 'process_chart', title: 'Bulk Transactions', route: '/BulkTransactions', permission: 'FlowRack Replenish' }
+    { icon: 'process_chart', title: 'Bulk Transactions', route: '/BulkTransactions', permission: 'FlowRack Replenish' },
+    { icon: 'home', title: 'Markout', route: AppRoutes.Markout, permission: 'Markout' },
   ];
   globalMenus: any = [
     { icon: 'door_front', title: 'Home', route: '/globalconfig/home', permission: true },

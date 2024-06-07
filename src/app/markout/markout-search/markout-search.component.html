@@ -1,0 +1,64 @@
+<mat-card class="mat-elevation-z g-card h-100">
+  <mat-card-content>
+    <div class=" d-block d-xl-flex justify-content-between align-items-center mb-2 flex-wrap">
+      <h2 class=" card-header-title d-flex align-items-center mb-2">
+        <div class="mat-icon-wrap me-3">
+          <span class="material-symbols-outlined">
+            rule
+          </span>
+        </div>
+        <span>Markout</span>
+      </h2>
+      <div class="">
+        <mat-form-field class="action-dropdown mb-2 flex-1 w-100" appearance="outline">
+          <mat-label>Actions</mat-label>
+          <mat-select class="employees-action">
+            <!-- <mat-option>
+              Blossom
+            </mat-option> -->
+            <mat-option  (click)="blossomtotedialog()">
+              Blossom Tote
+            </mat-option>
+          </mat-select>
+          <span class="material-symbols-outlined icon-expand-more">
+            expand_more
+          </span>
+        </mat-form-field>
+      </div>
+    </div>
+    <div class="p-3 br-14 bg-light-blue">
+      <div class="row g-md-3 g-0">
+        <div class="col">
+          <div class="d-xl-flex gap-12 align-items-center">
+            <div class="d-flex  flex-grow-1 min-width-40px">
+
+              <mat-form-field c class="custom-form-field-bg-white w-100 __grab_cursor mb-2 mb-xl-0" appearance="outline"
+                [floatLabel]="getFloatLabelValue()" >
+                <mat-label>Tote ID</mat-label>
+                <input type="text"  aria-label="Number" matInput [(ngModel)]='toteId'
+                  (keyup.enter)="emitToteId()">
+                <button matSuffix *ngIf="toteId" class="clear-btn" (click)="toteId = ''"><mat-icon
+                    class="text-20 text-chrome-600">cancel</mat-icon></button>
+              </mat-form-field>
+
+            </div>
+          </div>
+        </div>
+        <div class="col">
+          <div class="d-xl-flex gap-12 align-items-center">
+            <div class="d-flex  flex-grow-1 min-width-40px">
+
+              <mat-form-field c class="custom-form-field w-100 __grab_cursor" appearance="outline"
+                [floatLabel]="getFloatLabelValue()">
+                <mat-label>Order No.</mat-label>
+                <input type="text"  aria-label="Number" matInput [(ngModel)]='orderNumber' disabled>
+              </mat-form-field>
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </mat-card-content>
+</mat-card>

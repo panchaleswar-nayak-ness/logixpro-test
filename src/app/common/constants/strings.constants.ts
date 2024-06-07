@@ -380,6 +380,7 @@ export const TableConstant = {
     WareHouse:'warehouse',
     SerialNumber:'serialNumber',
     LotNumber: 'lotNumber',
+    
 }
 export const UniqueConstants = {
     backClass:'back-class',
@@ -421,5 +422,15 @@ export const Style = {
 export const FilterColumnName = {
     unitOfMeasure:'Unit of Measure'
 }
+export const markoutdisplayedColumns = {
+    Status:'status',
+    ItemNumber:'itemNumber',
+    Location:'location',
+    TransQty:'transQty',
+    CompQty:'compQty',
+    ShortQty:'shortQty',
+    actions:'actions'
+    }
+
 
 
