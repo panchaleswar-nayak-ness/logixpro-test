@@ -6,8 +6,7 @@ import { SharedService } from '../common/services/shared.service';
 
 @Component({
   selector: 'app-markout',
-  templateUrl: './markout.component.html',
-  styleUrls: ['./markout.component.scss'],
+  templateUrl: './markout.component.html'
 })
 export class MarkoutComponent implements OnInit {
   public iMarkoutApiService: IMarkoutApiService;
