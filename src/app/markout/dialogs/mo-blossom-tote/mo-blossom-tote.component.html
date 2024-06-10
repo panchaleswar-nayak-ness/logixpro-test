@@ -6,6 +6,7 @@
     </button>
 </div>
 
+<!-- (keyup.enter)="newToteIdValidation()" -->
 <div class="p-3 br-14 card mb-3">
     <div class="row g-md-3 g-0">
         <div class="col">
@@ -15,8 +16,10 @@
                         appearance="outline">
                         <mat-label>New Tote ID</mat-label>
                         <input type="text" aria-label="Number" matInput [(ngModel)]='toteId'
-                        (keyup.enter)="newToteIdValidation()" (change)="newToteIdValidation()">
-                        <button matSuffix *ngIf="toteId" class="clear-btn" (click)="toteId = ''; isBlossom= false; isBlossomComplete= false; "><mat-icon
+                         (change)="newToteIdValidation()">
+                        <button 
+                        matSuffix *ngIf="toteId" 
+                        class="clear-btn" (click)="toteId = ''; isBlossom= false; isBlossomComplete= false; "><mat-icon
                                 class="text-20 text-chrome-600">cancel</mat-icon></button>
                     </mat-form-field>
 

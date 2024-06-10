@@ -33,7 +33,7 @@ export class MarkoutStatusComponent implements OnInit {
       changes['toteDataResponse'] &&
       changes['toteDataResponse']['currentValue']
     ) {
-      this.info[0].value = this.toteDataResponse.toteStatus;
+      this.info[0].value = this.toteDataResponse.toteStatus == ""? "-" : this.toteDataResponse.toteStatus; 
       this.info[3].value = this.toteDataResponse.data
         .filter((element) => (element.status == 'Ship Short'))
         .length.toString();

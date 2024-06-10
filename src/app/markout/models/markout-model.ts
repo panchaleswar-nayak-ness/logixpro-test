@@ -13,16 +13,14 @@ export class MarkoutCompleteTransactionRequest
 }
 export class MarkoutBlossomTotenRequest
 {
-    BlossomToteList :BlossomToteRecords[]
+    BlossomTotes :BlossomToteRecords[]
     NewTote :string
     IsBlossComp : boolean
-  blosomtoterequest: BlossomToteRecords;
-
 }
 
 export class BlossomToteRecords{
     OTID: number
-    QTY : number
+    Quantity : number
 }
 
 export class ToteDataResponse

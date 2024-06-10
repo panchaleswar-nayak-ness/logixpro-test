@@ -79,11 +79,11 @@ export class MoBlossomToteComponent implements OnInit {
         .filter((x) => x.oldToteQty && x.oldToteQty > 0)
         .forEach((element) => {
           BlossomToteArray.push({
-            QTY: element.oldToteQty || 0,
+            Quantity: element.oldToteQty || 0,
             OTID: element.id,
           });
         });
-      blosomtoterequest.BlossomToteList = BlossomToteArray;
+      blosomtoterequest.BlossomTotes = BlossomToteArray;
       console.log(blosomtoterequest);
 
       // // open dialog and api call
@@ -111,6 +111,11 @@ export class MoBlossomToteComponent implements OnInit {
             .subscribe((res: boolean) => {
               if (res) {
                 //success
+                this.global.ShowToastr(
+                  ToasterType.Success,
+                  'Blossom tote completed',
+                  ToasterTitle.Success
+                );
                 this.dialogRef.close(true);
               } else {
                 this.global.ShowToastr(
