@@ -35,6 +35,7 @@ import { MarkoutCompleteTransactionRequest, ToteData, ToteDataResponse, UpdateQu
 export class MarkoutListComponent implements OnInit {
   displayedColumns: string[] = [
     markoutdisplayedColumns.Status,
+    markoutdisplayedColumns.ToteID,
     markoutdisplayedColumns.ItemNumber,
     markoutdisplayedColumns.Location,
     markoutdisplayedColumns.TransQty,

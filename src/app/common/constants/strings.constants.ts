@@ -424,11 +424,13 @@ export const FilterColumnName = {
 }
 export const markoutdisplayedColumns = {
     Status:'status',
+    ToteID:'toteId',
     ItemNumber:'itemNumber',
     Location:'location',
     TransQty:'transQty',
     CompQty:'compQty',
     ShortQty:'shortQty',
+    ToteQty:'toteQty',
     actions:'actions'
     }
 

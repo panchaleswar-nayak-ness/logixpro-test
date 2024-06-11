@@ -34,7 +34,7 @@ export class MoBlossomToteComponent implements OnInit {
     markoutdisplayedColumns.ItemNumber,
     markoutdisplayedColumns.TransQty,
     markoutdisplayedColumns.CompQty,
-    markoutdisplayedColumns.ShortQty,
+    markoutdisplayedColumns.ToteQty,
   ];
   constructor(
     public dialogRef: MatDialogRef<MoBlossomToteComponent>,

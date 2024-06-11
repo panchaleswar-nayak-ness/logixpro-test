@@ -51,18 +51,18 @@
                 <td mat-cell *matCellDef="let element">{{element?.itemNumber}} </td>
             </ng-container>
 
+            <ng-container matColumnDef="transQty">
+                <th mat-header-cell *matHeaderCellDef>Transaction Qty</th>
+                <td mat-cell *matCellDef="let element">{{element?.transQty}} </td>
+            </ng-container>
+
             <ng-container matColumnDef="compQty">
                 <th mat-header-cell *matHeaderCellDef>Picked Qty</th>
                 <td mat-cell *matCellDef="let element">{{element?.compQty}} </td>
             </ng-container>
 
-            <ng-container matColumnDef="transQty">
-                <th mat-header-cell *matHeaderCellDef>Trans Qty</th>
-                <td mat-cell *matCellDef="let element">{{element?.transQty}} </td>
-            </ng-container>
-
-            <ng-container matColumnDef="shortQty">
-                <th mat-header-cell *matHeaderCellDef>Short Qty</th>
+            <ng-container matColumnDef="toteQty">
+                <th mat-header-cell *matHeaderCellDef>Tote Qty</th>
                 <td mat-cell *matCellDef="let element">
                     <mat-form-field c class="custom-form-field-bg-white w-100 __grab_cursor mb-2 mb-xl-0"
                         appearance="outline">
