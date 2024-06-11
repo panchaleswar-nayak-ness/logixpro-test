@@ -86,7 +86,7 @@
                 </td>
               </tr>
               <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky:true"></tr>
-              <tr mat-row class="table-row" tabindex="1" *matRowDef="let row; columns: displayedColumns;"></tr>
+              <tr mat-row class="table-row" tabindex="1" (click)="selectRow(row)" *matRowDef="let row; columns: displayedColumns;"></tr>
 
             </table>
           </ng-scrollbar>

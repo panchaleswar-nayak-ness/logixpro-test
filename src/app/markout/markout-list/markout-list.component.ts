@@ -61,6 +61,12 @@ export class MarkoutListComponent implements OnInit {
 
   ngOnInit(): void {}
 
+  selectRow(row: any) {
+    this.markoutlistdataSource.filteredData.forEach(element => { if(row != element) element.selected = false; });
+    const selectedRow = this.markoutlistdataSource.filteredData.find((x: any) => x === row);
+    if(selectedRow) selectedRow.selected = !selectedRow.selected;
+  }
+
   announceSortChange(sortState: Sort) {
     if (sortState.direction)
       this._liveAnnouncer.announce(`Sorted ${sortState.direction}ending`);

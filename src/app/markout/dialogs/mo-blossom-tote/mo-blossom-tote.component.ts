@@ -113,7 +113,7 @@ export class MoBlossomToteComponent implements OnInit {
                 //success
                 this.global.ShowToastr(
                   ToasterType.Success,
-                  'Blossom tote completed',
+                  'Record Updated Successfully',
                   ToasterTitle.Success
                 );
                 this.dialogRef.close(true);

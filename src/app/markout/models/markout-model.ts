@@ -47,4 +47,5 @@ export class ToteData
     orderNumber: string;
     completedDate: Date;
     oldToteQty: number | undefined;
+    selected:boolean;
 }
