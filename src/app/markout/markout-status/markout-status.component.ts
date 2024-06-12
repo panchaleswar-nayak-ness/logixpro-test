@@ -9,7 +9,7 @@ class info {
 @Component({
   selector: 'app-markout-status',
   templateUrl: './markout-status.component.html',
-  styleUrls: ['./markout-status.component.scss'],
+  styleUrls: [],
 })
 export class MarkoutStatusComponent implements OnInit {
   info: info[] = [
