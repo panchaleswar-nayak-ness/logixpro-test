@@ -39,6 +39,7 @@ export class MarkoutSearchComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.toteDataResponse = new ToteDataResponse();
   }
 
   ngOnChanges(changes: SimpleChanges) {

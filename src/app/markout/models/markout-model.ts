@@ -25,7 +25,7 @@ export class BlossomToteRecords{
 
 export class ToteDataResponse
 {
-    data: ToteData[];
+    data: ToteData[] = [];
     consolZone: string;
     hospital: string;
     weightStatus: string;
