@@ -131,6 +131,7 @@ export class MoBlossomToteComponent implements OnInit {
   }
 
   newToteIdValidation() {
+    if(this.toteId){
     this.iMarkoutApiService
       .MarkoutValidTote(this.toteId)
       .subscribe((res: boolean) => {
@@ -146,6 +147,9 @@ export class MoBlossomToteComponent implements OnInit {
           this.isBlossom = true;
         }
       });
+    }else{
+      this.isBlossom = false;
+    }
   }
 
   ClosePopup() {
