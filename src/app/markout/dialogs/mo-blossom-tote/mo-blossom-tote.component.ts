@@ -141,6 +141,7 @@ export class MoBlossomToteComponent implements OnInit {
             ToasterTitle.Error
           );
           this.isBlossom = false;
+          this.toteId = '';
         } else {
           this.isBlossom = true;
         }
