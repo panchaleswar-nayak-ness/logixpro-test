@@ -71,7 +71,7 @@ export class CrossDockTransactionComponent implements OnInit {
 
     this.batchID = this.data.batchID;
     this.zone = this.data.zone;
-    this.description = this.data.description; 
+    this.description = this.data.description;
     this.imPreferences = this.global.getImPreferences();
 
     this.getCrossDock();
@@ -298,7 +298,8 @@ export class CrossDockTransactionComponent implements OnInit {
 
                 if (this.imPreferences.autoPrintCrossDockLabel) {
                   if (this.imPreferences.printDirectly) {
-                    this.PrintCrossDock();
+                    this.iInductionManagerApi.PrintCrossDockTote(this.selectedRowObj.id, this.zone, this.selectedRowObj.toteID);
+                    this.iInductionManagerApi.PrintCrossDockItem(this.selectedRowObj.id, this.zone);
                   } else {
                     window.open(
                       `/#/report-view?file=FileName:autoPrintCrossDock|tote:true|otid:${this.OTRecID}|ZoneLabel:${this.zone}`,
@@ -328,7 +329,6 @@ export class CrossDockTransactionComponent implements OnInit {
                   ToasterMessages.SomethingWentWrong,
                   ToasterTitle.Error
                 );
-                console.log('CompletePick', res.responseMessage);
               }
             },
             (error) => {}
