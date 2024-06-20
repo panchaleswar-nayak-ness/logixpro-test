@@ -251,10 +251,10 @@ export class TotesAddEditComponent implements OnInit {
     };
     try {
       let res: any = await this.iAdminApiService.ToteSetupInsert(searchPayload);
-      if (res.data && res.isExecuted) {
+      if (res.body.data && res.body.isExecuted) {
         this.global.ShowToastr(
           ToasterType.Success,
-          isInserted == '1' ? updateMessage : res.responseMessage,
+          isInserted == '1' ? updateMessage : res.body.responseMessage,
           ToasterTitle.Success
         );
         this.dataSourceManagedTotes.data[index]['isDuplicate'] = false;
