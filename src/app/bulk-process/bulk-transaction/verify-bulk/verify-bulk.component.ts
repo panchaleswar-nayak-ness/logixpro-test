@@ -1,5 +1,5 @@
 import { HttpStatusCode } from '@angular/common/http';
-import { Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
+import { Component, ElementRef, EventEmitter, HostListener, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { MatOption } from '@angular/material/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSelect } from '@angular/material/select';
@@ -440,6 +440,15 @@ export class VerifyBulkComponent implements OnInit {
       let orderNumbers = this.orderLines.filteredData.map(o => o['orderNumber']);
       let toteIds = this.orderLines.filteredData.map(o => o['toteId']);
       this.iAdminApiService.PrintTotes(orderNumbers, toteIds, this.url);
+    }
+  }
+
+
+  @HostListener('window:keydown', ['$event'])
+  handleKeyboardEvent(event: KeyboardEvent) {
+    if ( event.altKey && event.key === 't') {
+      event.preventDefault();
+      this.validateTaskComplete();
     }
   }
 }
