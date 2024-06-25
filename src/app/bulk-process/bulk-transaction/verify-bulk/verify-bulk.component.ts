@@ -33,6 +33,7 @@ import { SharedService } from 'src/app/common/services/shared.service';
 export class VerifyBulkComponent implements OnInit {
   @Output() back = new EventEmitter<any>();
   @Input() orderLines: any = [];
+  // TODO: BulkPreferences contains workstationPreferences which we are already getting below
   @Input() Prefernces: BulkPreferences;
   @Input() url: any;
   IsLoading: boolean = true;
@@ -310,7 +311,7 @@ export class VerifyBulkComponent implements OnInit {
           }
           else{
             this.taskCompleteFinished();
-          } 
+          }
         }
       }
     });
@@ -357,7 +358,7 @@ export class VerifyBulkComponent implements OnInit {
       this.showLoader();
       await this.callEndOfBatch(order);
       this.hideLoader();
-    } 
+    }
     else this.taskCompleteFinished();
   }
 
@@ -367,7 +368,7 @@ export class VerifyBulkComponent implements OnInit {
         await new Promise(resolve => setTimeout(resolve, 2000)); // Wait for 2 seconds
         const res: any = await this.iAdminApiService.orderline(orderId).toPromise();
         if (res?.status == HttpStatusCode.Ok) {
-          if (res.zone != "" && res.zone) return; 
+          if (res.zone != "" && res.zone) return;
         } else if (res?.status == HttpStatusCode.NoContent) return;
       }
     }

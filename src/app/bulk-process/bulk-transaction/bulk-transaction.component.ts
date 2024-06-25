@@ -58,7 +58,7 @@ export class BulkTransactionComponent implements OnInit {
     this.iAdminApiService = adminApiService;
     this.url = route.url.split("/")[2].replace("Bulk","");
   }
-  
+
   ngOnInit(): void {
     if(this.url == "Pick"){
       this.WorkstationSetupInfo();
@@ -334,6 +334,7 @@ export class BulkTransactionComponent implements OnInit {
         selectedOrderList: this.selectedOrders,
         nextToteID: this.NextToteID,
         BulkProcess: true,
+        autoPrintPickToteLabels: this.Prefernces?.workstationPreferences?.autoPrintPickToteLabels,
         view: this.view,
         type: this.url
       }

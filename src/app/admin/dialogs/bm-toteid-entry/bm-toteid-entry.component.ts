@@ -23,6 +23,7 @@ export class BmToteidEntryComponent implements OnInit {
   userData: any;
   BulkProcess: any = false;
   view: string;
+  autoPrintPickToteLabels: boolean;
   public iAdminApiService: IAdminApiService;
   public iBulkProcessApiService: IBulkProcessApiService;
   constructor(
@@ -39,6 +40,7 @@ export class BmToteidEntryComponent implements OnInit {
     this.nextToteID = data.nextToteID;
     this.BulkProcess = data.BulkProcess;
     this.view = data.view;
+    this.autoPrintPickToteLabels = data.autoPrintPickToteLabels;
   }
 
   ngOnInit(): void {
@@ -49,6 +51,7 @@ export class BmToteidEntryComponent implements OnInit {
     this.companyInfo();
   }
 
+  // TODO: No need to get workstation preferences again.  We can pass them from the parent component.
   companyInfo() {
     this.iAdminApiService.WorkstationSetupInfo().subscribe((res: any) => {
       if (res.isExecuted && res.data) {
@@ -124,6 +127,7 @@ export class BmToteidEntryComponent implements OnInit {
         autoFocus: DialogConstants.autoFocus,
         disableClose: true,
       });
+      // TODO: No need to subscribe to afterClosed if we are not doing anything with the result.
       dialogRef.afterClosed().subscribe((result) => {
       });
     } else if (this.view == 'batch' || this.view == 'tote') {
@@ -151,8 +155,8 @@ export class BmToteidEntryComponent implements OnInit {
     this.iBulkProcessApiService.AssignToteToOrder(orders)
       .then((res: any) => {
         if (res.status == HttpStatusCode.NoContent) {
-          if (this.preferences.autoPrintTote) {
-            // print list and labels.
+          if (this.autoPrintPickToteLabels) {
+            this.printAllToteLabels();
           }
           this.global.ShowToastr(ToasterType.Success, ToasterMessages.RecordUpdatedSuccessful, ToasterTitle.Success);
           this.dialogRef.close(this.selectedList);
