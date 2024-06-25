@@ -167,7 +167,12 @@ export class OmOrderManagerComponent implements OnInit {
       (res: any) => {
         if (res.data && res.isExecuted) {
           this.OMIndex = res.data;
-          if ( res.data?.preferences) this.maxOrders = res.data.preferences[0].maxOrders;
+          if ( res.data?.preferences)
+            {
+              this.maxOrders = res.data.preferences[0].maxOrders;
+              this.viewType = res.data.preferences[0].viewType
+            } 
+              
         } else {
           this.global.ShowToastr(ToasterType.Error, ToasterMessages.SomethingWentWrong, ToasterTitle.Error);
           console.log("OrderManagerPreferenceIndex",res.responseMessage);

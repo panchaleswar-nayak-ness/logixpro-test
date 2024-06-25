@@ -30,6 +30,7 @@ export class OmPreferencesComponent implements OnInit {
       custReportsApp: new FormControl(''),
       custReportsMenuApp: new FormControl(''),
       custReportsMenuText: new FormControl(''),
+      viewType: new FormControl(''),
       allowInProcOrders: new FormControl(false),
       allowIndivdOrders: new FormControl(false),
       defUserFields: new FormControl(false),
@@ -94,6 +95,9 @@ export class OmPreferencesComponent implements OnInit {
           this.filtersForm.controls['printDirect'].setValue(
             pref.printDirectly ? pref.printDirectly : false
           );
+          this.filtersForm.controls['viewType'].setValue(
+            pref.viewType ? pref.viewType : ''
+          );
           this.filtersForm.controls['custReportsApp'].setValue(
             response.data.customReport ? response.data.customReport : ''
           );
@@ -131,6 +135,7 @@ export class OmPreferencesComponent implements OnInit {
       customAdmin: this.filtersForm.controls['custReportsMenuApp']?.value,
       customAdminText: this.filtersForm.controls['custReportsMenuText'].value,
       printDirectly: this.filtersForm.controls['printDirect'].value,
+      viewType:this.filtersForm.controls['viewType'].value,
     };
     this.iOrderManagerApi
       .OrderManagerPreferenceUpdate(payload)
