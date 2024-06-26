@@ -24,6 +24,7 @@ import { InputFilterComponent } from 'src/app/dialogs/input-filter/input-filter.
 import { PickRemainingComponent } from '../pick-remaining/pick-remaining.component';
 import { SpinnerService } from 'src/app/common/init/spinner.service';
 import { SharedService } from 'src/app/common/services/shared.service';
+import { MatTooltip } from '@angular/material/tooltip';
 
 @Component({
   selector: 'app-verify-bulk',
@@ -445,11 +446,26 @@ export class VerifyBulkComponent implements OnInit {
   }
 
 
+  @ViewChild('tooltip') tooltip: MatTooltip;
+
   @HostListener('window:keydown', ['$event'])
   handleKeyboardEvent(event: KeyboardEvent) {
-    if ( event.altKey && event.key === 't') {
+    if (event.altKey && event.key === 't') {
       event.preventDefault();
       this.validateTaskComplete();
+    }
+
+    if (event.key === 'Alt') {
+      event.preventDefault();
+      this.tooltip.show();
+    }
+  }
+
+  @HostListener('window:keyup', ['$event'])
+  handleKeyupEvent(event: KeyboardEvent) {
+    if (event.key === 'Alt') {
+      event.preventDefault();
+      this.tooltip.hide();
     }
   }
 }
