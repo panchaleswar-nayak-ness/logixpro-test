@@ -498,7 +498,6 @@ export class TranOrderListComponent implements OnInit, AfterViewInit {
     // orderstatus table generation api .
     this.subscription.add(
       this.sharedService.orderStatusObjObserver.subscribe((obj) => {
-        if (obj.type === StringConditions.ToteID) {
           this.sharedService.updateOrderStatusOrderNo(this.getOrderForTote);
           this.orderNo = this.getOrderForTote;
           this.toteId = '';
@@ -537,7 +536,6 @@ export class TranOrderListComponent implements OnInit, AfterViewInit {
                 }
               }
             });
-        }
       })
     );
 

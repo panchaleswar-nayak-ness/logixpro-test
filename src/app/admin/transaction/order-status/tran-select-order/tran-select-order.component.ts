@@ -133,8 +133,7 @@ export class TranSelectOrderComponent implements OnInit {
   }
 
   selectOrderByTote() {
-    if (this.columnSelect === Column.ToteID && this.totalLinesOrder > 0) {
-      // if data populate and tote id selected then filter only
+    if (this.totalLinesOrder > 0) {
 
       this.sharedService.updateFilterByTote({
         filterCheck: this.filterByTote,

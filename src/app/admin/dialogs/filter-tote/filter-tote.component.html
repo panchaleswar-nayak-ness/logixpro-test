@@ -1,56 +1,24 @@
-<div class="d-flex justify-content-between mb-4 align-items-center">
-    <div class="w-48px"></div>
-<h1 class="m-0" mat-dialog-title>Select a date for Order {{orderName}}</h1>
-<button mat-icon-button class="close-button dialog-close-button-fix" mat-dialog-close>
-    <mat-icon class="close-icon">close</mat-icon>
-</button>
-</div>
-
-
-<div class="card w-100">
-    <div class="card-header">
-        <div class="row">
-            <div class="col-12 pl-64px">
-               Date
-            </div>
-        </div>
+<div class="d-flex flex-column align-items-center justify-content-center text-center py-4">
+    <div color="warn" class="circle-icon circle-66 circle-primary mb-4 text-primary-900">
+        <mat-icon class="material-symbols-outlined" color="primary">edit_calendar</mat-icon>
     </div>
-
-
-
-    <ng-scrollbar class="h-250px">
-    <div class="card-body">
-        <div class="container">
-
-        <div class="row">
-            <mat-radio-group aria-label="Select an option" color="primary" class="w-100">
-
-                <div *ngFor="let item of dateList;let i=index" class="d-flex align-items-center mb-2">
-
-                    <mat-radio-button  [value]="item" class="custom-radio-btn" (change)="selectDate(item)">
-                    </mat-radio-button>
-
-                    <div class="container w-100">
-                        <div class="row">
-                            <div class="">
-                                <div class="d-flex gap-12 align-items-center">
-                                    <mat-form-field class="custom-form-field w-100" appearance="outline" >
-                                        <input #input_focus readonly matInput type="text"  [value]="item" >
-                                    </mat-form-field>
-
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                </div>
-
-            </mat-radio-group>
-        </div>
+    <div>
+        <h1 class="mat-card-title text-primary-900">
+            Select a date for Order {{orderName}}
+        </h1>
+        <p class="bold text-tritary-900 mb-4">
+            Select Date filter
+        </p>
     </div>
+    <div class="w-100">
+        <ng-container *ngFor="let item of dateList;let i=index">
+            <button (click)="selectDate(item)" mat-stroked-button [color]="i == 0 ? 'primary' : 'basic'"
+                class="w-100 btn-lg mb-2" [ngClass]="i == 0 ? 'prompt-action-accent-button' : 'custom-btn bg-white'">
+                {{item}}
+            </button>
+        </ng-container>
+        <button mat-stroked-button color="basic" class="custom-btn bg-white w-100 btn-lg" mat-dialog-close>
+            Cancel
+        </button>
     </div>
-</ng-scrollbar>
-</div>
-<div class="container">
-
 </div>
