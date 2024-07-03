@@ -171,6 +171,7 @@ export class OmOrderManagerComponent implements OnInit {
             {
               this.maxOrders = res.data.preferences[0].maxOrders;
               this.viewType = res.data.preferences[0].viewType
+              this.orderType = res.data.preferences[0].orderType
             } 
               
         } else {
