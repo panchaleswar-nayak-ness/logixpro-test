@@ -425,9 +425,14 @@ export class ConsolidationComponent implements OnInit {
     }
   }
 
-  getFilterValue(event) {
-    if (event.keyCode == KeyboardCodes.ENTER) {
-      this.autoCompleteSearchColumnItem(this.filterValue, event);
+  /**
+   * Handles the filter value and performs necessary actions.
+   * @param data - The data object containing the event and filter value.
+   */
+  getFilterValue(data) {
+    if (data.event.keyCode == KeyboardCodes.ENTER && data.filterValue) {
+      // this.autoCompleteSearchColumnItem(this.filterValue, event);
+      this.checkDuplicatesForVerify(data.filterValue);
     }
     this.recordSavedItem();
   }
@@ -484,7 +489,7 @@ checkDuplicatesForVerify(val) {
     // If the value count is greater than or equal to 1, verify the line.
     else if (result.valueCount >= 1) this.verifyLine(val, result.index);
     // If no duplicates are found, show an error message.
-    else this.global.ShowToastr(ToasterType.Error,ToasterMessages.ItemNotInOrder, ToasterTitle.Error);
+    else this.global.ShowToastr(ToasterType.Error,ToasterMessages.ItemNotInOrder, ToasterTitle.Error, 10000);
   }
 
   getSelected(event: MatSelectChange): void {

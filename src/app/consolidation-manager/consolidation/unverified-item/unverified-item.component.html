@@ -24,7 +24,8 @@
                             <span class="material-symbols-outlined icon-search">
                                 Search
                             </span>
-                            <input type="text" placeholder="Search" aria-label="Search" matInput (keydown)="filtervalue($event)" [(ngModel)]="filterValue"[matAutocomplete]="item" (ngModelChange)="this.searchByItem.next($event)">
+                            <!-- <input type="text" placeholder="Search" aria-label="Search" matInput (keydown)="filtervalue($event)" [(ngModel)]="filterValue"[matAutocomplete]="item" (ngModelChange)="this.searchByItem.next($event)"> -->
+                            <input type="text" placeholder="Enter {{startSelectFilterLabel}}" aria-label="Search" matInput (keydown)="filtervalue($event)" [(ngModel)]="filterValue" [matAutocomplete]="item">
                             <button matSuffix *ngIf="filterValue" class="clear-btn"  (click)="filterValue = '';this.autocompleteSearchColumnItem()"><mat-icon class="text-20 text-chrome-600">cancel</mat-icon></button>
                             <mat-autocomplete  class="card custom-scroll"  #item="matAutocomplete"  panelWidth="auto" > 
                                 <h6 class ="card-header matAutoCompHeader autocomplete-table">

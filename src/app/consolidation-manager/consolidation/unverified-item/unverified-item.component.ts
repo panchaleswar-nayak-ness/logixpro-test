@@ -25,7 +25,7 @@ export class UnverifiedItemComponent implements OnInit {
   @Input() unverifiedItemsColumns: any;
 
   @Output() selected = new EventEmitter<any>();
-  @Output() filterVal = new EventEmitter<any>();
+  @Output() filterVal = new EventEmitter<{ event: KeyboardEvent, filterValue: string }>();
   @Output() verify = new EventEmitter<any>();
   @Output() verifyAllEmit = new EventEmitter<any>();
   @Output() autoComplete = new EventEmitter<any>();
@@ -54,7 +54,7 @@ export class UnverifiedItemComponent implements OnInit {
   }
 
   filtervalue($event: any) {
-    this.filterVal.emit($event);
+    this.filterVal.emit({ event : $event, filterValue : this.filterValue});
   }
 
   verifyLine(element: any) {
