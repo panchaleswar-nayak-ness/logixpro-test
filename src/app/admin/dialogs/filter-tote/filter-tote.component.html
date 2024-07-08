@@ -12,8 +12,8 @@
     </div>
     <div class="w-100">
         <ng-container *ngFor="let item of dateList;let i=index">
-            <button (click)="selectDate(item)" mat-stroked-button [color]="i == 0 ? 'primary' : 'basic'"
-                class="w-100 btn-lg mb-2" [ngClass]="i == 0 ? 'prompt-action-accent-button' : 'custom-btn bg-white'">
+            <button (click)="selectDate(item)" mat-stroked-button [color]="item == 'Entire Order' ? 'primary' : 'basic'"
+                class="w-100 btn-lg mb-2" [ngClass]="item == 'Entire Order' ? 'prompt-action-accent-button' : 'custom-btn bg-white'">
                 {{item}}
             </button>
         </ng-container>
