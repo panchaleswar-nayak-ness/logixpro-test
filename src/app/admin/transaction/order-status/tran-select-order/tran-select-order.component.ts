@@ -242,10 +242,12 @@ export class TranSelectOrderComponent implements OnInit {
     return this.floatLabelControl.value ?? 'auto';
   }
 
-  onOrderNoChange() {
+  onOrderNoChange(option?) {
     let obj = {
       searchField: this.searchField,
       columnFIeld: this.columnSelect,
+      completedDate: option?.completedDate ? option?.completedDate : "",
+      optionSelect: option ? true : false
     };
     this.orderNo.emit(obj);
     this.currentTabDataService.savedItem[this.currentTabDataService.TRANSACTIONS_ORDER_SELECT] = {
@@ -260,8 +262,8 @@ export class TranSelectOrderComponent implements OnInit {
     this.toteId.emit(event);
   }
 
-  searchData() {
-    this.onOrderNoChange();
+  searchData(option) {
+    this.onOrderNoChange(option);
   }
 
   selectFieldsReset() {

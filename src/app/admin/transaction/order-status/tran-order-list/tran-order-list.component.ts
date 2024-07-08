@@ -156,6 +156,7 @@ export class TranOrderListComponent implements OnInit, AfterViewInit {
     if (event) {
       this.toteId = event.columnFIeld != Column.OrderNumber ? event.searchField : '';
       this.orderNo = event.columnFIeld === Column.OrderNumber ? event.searchField : '';
+      this.compDate = event.columnFIeld === Column.OrderNumber && event.optionSelect ? event.completedDate : this.compDate;
       this.searchCol = '';
       this.searchString = '';
       this.getContentData();
@@ -507,7 +508,10 @@ export class TranOrderListComponent implements OnInit, AfterViewInit {
             next: (res: any) => {
                 if(res.isExecuted) {
                   if (res.data.length > 0 && res.data.length >= 2) {
-                    res.data[0] = 'Entire Order';
+                    if(res.data.filter((x)=> x == "").length > 0){
+                      res.data = res.data.filter((x)=> x != "");
+                      res.data.unshift('Entire Order');
+                    }
                     // add default check for tote id
                     this.sharedService.updateToteFilterCheck(true);
 

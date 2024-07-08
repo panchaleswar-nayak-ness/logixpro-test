@@ -43,14 +43,14 @@
               </span>
               <input  (keyup.enter)="selectOrderByTote()" (keyup)="getNextItemNo($event)" type="text" placeholder="Search" aria-label="Number" matInput [disabled]="!columnSelect" [(ngModel)]='searchField' [matAutocomplete]="auto">
                 <button matSuffix *ngIf="searchField" class="clear-btn"  (click)="searchField = ''; clear()"><mat-icon class="text-20 text-chrome-600">cancel</mat-icon></button>
-              <mat-autocomplete class="card custom-scroll panel-custom-scroll d-table" #auto="matAutocomplete" (optionSelected)="searchData()">
+              <mat-autocomplete class="card custom-scroll panel-custom-scroll d-table" #auto="matAutocomplete">
 
                 <ng-container *ngIf="columnSelect == 'Order Number'">
                   <h6 class="card-header matAutoCompHeader stickyHeader"> 
                     <span class="order-no-col px-2">Order Number</span> 
                     <span class="com-date-col px-2">Completed Date</span>
                   </h6>
-                  <mat-option *ngFor="let option of searchAutocompleteList" [value]="option.orderNumber" class="matAutoCompTableContent">
+                  <mat-option *ngFor="let option of searchAutocompleteList" [value]="option.orderNumber" (click)="searchData(option)" class="matAutoCompTableContent">
                     <div class="loc_option">
                       <span class="order-no-col px-2">{{option.orderNumber}}</span>
                       <span class="com-date-col px-2">{{option.completedDate}}</span>
