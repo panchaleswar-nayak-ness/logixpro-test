@@ -36,6 +36,7 @@ export class ScanCodesComponent{
   filterString : string = UniqueConstants.OneEqualsOne;
   @Input() isActiveTrigger:boolean =false;
   @Output() notifyParent: EventEmitter<any> = new EventEmitter();
+  @Output() saveScanCode: EventEmitter<any> = new EventEmitter();
   sendNotification(e?) {
     this.notifyParent.emit(e);
   }
@@ -189,6 +190,7 @@ export class ScanCodesComponent{
           this.isAddRow = false;
           this.global.ShowToastr(ToasterType.Success,labels.alert.success, ToasterTitle.Success);
           this.refreshScanCodeList();
+          this.sendNotification();
         } else {
           this.global.ShowToastr(ToasterType.Error,'Already Exists', ToasterTitle.Error);
           console.log("UpdateScanCodes",res.responseMessage);
@@ -221,6 +223,7 @@ export class ScanCodesComponent{
         res.data = res.data.map(item => { return { ...item, isDisabled: true, isAddedNew : false }; })
         this.scanCodesList = res.data;
         this.oldScanCodesList = JSON.parse(JSON.stringify(this.scanCodesList));
+        this.saveScanCode.emit(this.oldScanCodesList);
       } else {
         this.global.ShowToastr(ToasterType.Error, this.global.globalErrorMsg(), ToasterTitle.Error);
         console.log("RefreshScanCodes",res.responseMessage);

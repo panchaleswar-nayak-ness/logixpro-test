@@ -92,7 +92,7 @@
                 </mat-tab>
                 <mat-tab label="Kit Items" >
                   <div class="remaining"></div> 
-                  <app-kit-item [kitItem]="invMaster"  [isActiveTrigger]="tabIndex == 2" (notifyParent)="getNotification($event)" (notifyContextMenu)="ContextMenu($event)" ></app-kit-item>
+                  <app-kit-item [kitItem]="invMaster"  [isActiveTrigger]="tabIndex == 2" (notifyParent)="getNotification($event)" (saveKitItem)="saveKitItem()" (notifyContextMenu)="ContextMenu($event)" ></app-kit-item>
                 </mat-tab>
                 <mat-tab label="Location"  >
                   <div class="remaining"></div>
@@ -103,7 +103,7 @@
                 </mat-tab>
                 <mat-tab label="Scan Codes">
                   <div class="remaining"></div>
-                  <app-scan-codes [scanCodes]="invMaster"  [isActiveTrigger]="tabIndex == 5"  (notifyParent)="getNotification($event)" (notifyContextMenu)="ContextMenu($event)" ></app-scan-codes>
+                  <app-scan-codes [scanCodes]="invMaster"  [isActiveTrigger]="tabIndex == 5"  (notifyParent)="getNotification($event)" (saveScanCode)="saveScanCode()" (notifyContextMenu)="ContextMenu($event)" ></app-scan-codes>
                 </mat-tab>
                 <mat-tab label="Weigh Scale">
                   <div class="remaining"></div>

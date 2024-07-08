@@ -852,6 +852,14 @@ ContextMenu($event:any){
     this.searchValue = '';
   }
 
+  saveScanCode() {
+    this.OldInvMaster.scanCode = JSON.parse(JSON.stringify(this.ScanCodesCom.scanCodesList));
+  }
+
+  saveKitItem() {
+    // this.OldInvMaster.kitInventories = JSON.parse(JSON.stringify(this.kitItemCom.kitItemsList));
+  }
+
   getNotification(e: any) {
     if (e?.newItemNumber) {
       this.currentPageItemNo = e.newItemNumber;

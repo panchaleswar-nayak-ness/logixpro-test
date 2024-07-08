@@ -60,6 +60,7 @@ export class KitItemComponent implements OnInit, OnChanges {
   @ViewChild(UniqueConstants.Description) description: TemplateRef<any>;
 
   @Output() notifyParent: EventEmitter<any> = new EventEmitter();
+  @Output() saveKitItem: EventEmitter<any> = new EventEmitter();
   sendNotification(e?) {
     this.notifyParent.emit(e);
   }
@@ -195,6 +196,7 @@ export class KitItemComponent implements OnInit, OnChanges {
         if (res.isExecuted) {
           this.global.ShowToastr(ToasterType.Success,labels.alert.success, ToasterTitle.Success);
           this.sendNotification();
+          this.saveKitItem.emit();
         } else {
           this.global.ShowToastr(ToasterType.Error,"Invalid Input", ToasterTitle.Error);
           console.log("InsertKit",res.responseMessage);
@@ -216,6 +218,7 @@ export class KitItemComponent implements OnInit, OnChanges {
         if (res.isExecuted) {
           this.global.ShowToastr(ToasterType.Success,labels.alert.success, ToasterTitle.Success);
           this.sendNotification();
+          this.saveKitItem.emit();
         } else {
           this.global.ShowToastr(ToasterType.Error,"Invalid Input", ToasterTitle.Error);
           console.log("UpdateKit",res.responseMessage);
