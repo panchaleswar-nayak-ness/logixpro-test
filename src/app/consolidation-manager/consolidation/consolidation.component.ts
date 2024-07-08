@@ -470,7 +470,7 @@ checkDuplicatesForVerify(val) {
     else result = this.checkVerifyType(val);
     
     // If the value count is greater than or equal to 1 and verifyItems is set to 'No', open a dialog for user selection.
-    if (result.valueCount >= 1 && verifyItems == StringConditions.No) {
+    if (result.valueCount > 1 && verifyItems == StringConditions.No) {
       const dialogRef = this.global.OpenDialog(CmItemSelectedComponent, {
         height: DialogConstants.auto,
         width: '899px',
