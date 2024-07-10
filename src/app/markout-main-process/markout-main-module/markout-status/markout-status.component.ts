@@ -9,11 +9,11 @@ class info {
 @Component({
   selector: 'app-markout-status',
   templateUrl: './markout-status.component.html',
-  styleUrls: [],
+  styleUrls: ['./markout-status.component.scss'],
 })
 export class MarkoutStatusComponent implements OnInit {
   info: info[] = [
-    { title: 'Status', value: '-', colorClass: 'label-gray' },
+    { title: 'Current Status', value: '-', colorClass: 'label-gray' },
     { title: 'Missed', value: '0', colorClass: 'Reprocess-card' },
     { title: 'Short', value: '0', colorClass: 'Open-card' },
     { title: 'Ship Short', value: '0', colorClass: 'label-blue2' },

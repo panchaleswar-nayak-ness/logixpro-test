@@ -1,4 +1,4 @@
-<mat-card class="mat-elevation-z g-card h-100">
+<!-- <mat-card class="mat-elevation-z g-card h-100">
     <mat-card-content>
         <div class="row d-block d-xl-flex justify-content-between align-items-center mb-2 flex-wrap">
             <h2 class="col card-header-title d-flex align-items-center mb-3">
@@ -7,7 +7,7 @@
                         browse_activity
                     </span>
                 </div>
-                <span>Tote Status</span>
+                <span>Status</span>
                 <span *ngIf="isBlossomed" class="label label-gray px-2 f-14 mx-3">Blossomed</span>
 
             </h2>
@@ -22,5 +22,50 @@
                 </div>
             </div>
         </div>
+    </mat-card-content>
+</mat-card> -->
+
+
+<mat-card class="mat-elevation-z g-card h-100">
+    <mat-card-content>
+        <div class="row d-block d-xl-flex justify-content-between align-items-center mb-2 flex-wrap">
+            <h2 class="col card-header-title d-flex align-items-center mb-3">
+                <div class="mat-icon-wrap me-3">
+                    <span class="material-symbols-outlined">
+                        browse_activity
+                    </span>
+                </div>
+                <span>Status</span>
+
+            </h2>
+        </div>
+            <div class="d-flex gap-12">
+                <div class="d-flex">
+                <div class="d-md-flex gap-12 d-block card px-3 pt-3 pb-2">
+                    <div class="d-flex gap-12 align-items-center flex-wrap"><h6 class="text-tertiary-900 m-0"><b>Tote Status</b></h6><span *ngIf="isBlossomed" class="label label-gray px-2 f-14"><b>Blossomed</b></span></div>
+                    <div class="row g-2">
+                    <!-- <div *ngFor="let info of info" class="w-100 col pb-xl-0"> -->
+                        <app-info-card-component title={{this.info[0].title}} value={{this.info[0].value}}
+                            colorClass={{this.info[0].colorClass}}></app-info-card-component>
+                    <!-- </div> -->
+                </div>
+                </div>
+            </div>
+            <div class="d-flex w-100 flex-1">
+                <div class="d-md-flex gap-12 d-block card px-3 pt-3 pb-2 w-100">
+                    
+                    <div class="d-flex gap-12 align-items-center flex-wrap py-1"><h6 class="text-tertiary-900 m-0"><b>Transaction Status</b></h6></div>
+                    <div class="row g-2">
+                        <div *ngFor="let info of info | slice:1" class="w-100 col pb-xl-0">
+                            <app-info-card-component 
+                                [title]="info.title" 
+                                [value]="info.value"
+                                [colorClass]="info.colorClass">
+                            </app-info-card-component>
+                        </div>
+                </div>
+                </div>
+            </div>
+            </div>
     </mat-card-content>
 </mat-card>

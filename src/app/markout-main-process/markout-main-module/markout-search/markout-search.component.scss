@@ -1,0 +1,8 @@
+.markout-search{
+    min-height: 140px;
+}
+@media (max-height: 800px) {
+::ng-deep .action-dropdowncustom.mat-form-field-appearance-outline .mat-form-field-infix{
+    min-width: 120px!important;
+}
+}

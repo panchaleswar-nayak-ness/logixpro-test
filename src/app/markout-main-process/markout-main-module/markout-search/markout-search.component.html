@@ -12,7 +12,7 @@
       <div class="">
         <mat-form-field class="action-dropdown mb-2 flex-1 w-100" appearance="outline">
           <mat-label>Actions</mat-label>
-          <mat-select class="employees-action"  (selectionChange)="emitSelectedValue($event.value)">
+          <mat-select class="employees-action"  (selectionChange)="emitSelectedValue($event.value)" [(ngModel)]="selectedView"> 
             <mat-option  (click)="blossomtotedialog()" [disabled]="toteDataResponse && toteDataResponse.data && (toteDataResponse.data.length == 0 || toteDataResponse.toteStatus == 'Complete')">
               Blossom Tote
             </mat-option>
@@ -25,13 +25,14 @@
         </mat-form-field>
       </div>
     </div>
-    <div class="p-3 br-14 bg-light-blue">
+    <div class="p-3 br-14 bg-light-blue markout-search align-items-center">
+      <div class="w-100 px-0 py-3">
       <div class="row g-md-3 g-0">
         <div class="col">
           <div class="d-xl-flex gap-12 align-items-center">
             <div class="d-flex  flex-grow-1 min-width-40px">
 
-              <mat-form-field c class="custom-form-field-bg-white w-100 __grab_cursor mb-2 mb-xl-0" appearance="outline"
+              <mat-form-field  class="custom-form-field-bg-white w-100 __grab_cursor mb-2 mb-xl-0" appearance="outline"
                 [floatLabel]="getFloatLabelValue()" >
                 <mat-label>Tote ID</mat-label>
                 <input type="text"  aria-label="Number" matInput [(ngModel)]='toteId'
@@ -57,6 +58,7 @@
           </div>
         </div>
       </div>
+    </div>
     </div>
 
   </mat-card-content>

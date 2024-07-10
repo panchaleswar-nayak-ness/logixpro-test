@@ -15,7 +15,7 @@
             <div class="col-xl-3">
               <mat-form-field class="action-dropdown mb-2 flex-1 w-100" appearance="outline">
                 <mat-label>Default View Type</mat-label>
-                <mat-select class="employees-action"  (selectionChange)="emitSelectedValue($event.value)">
+                <mat-select class="employees-action"  (selectionChange)="emitSelectedValue($event.value)" [(ngModel)]="selectedView">
                   <mat-option [value]="'View by Order'">View by Order</mat-option>
                         <mat-option [value]="'View by Tote'">View by Tote</mat-option>
                 </mat-select>

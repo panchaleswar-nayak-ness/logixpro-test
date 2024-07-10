@@ -14,7 +14,7 @@ import { DialogConstants } from 'src/app/common/constants/strings.constants';
 import { GlobalService } from 'src/app/common/services/global.service';
 import { IMarkoutApiService } from 'src/app/common/services/markout-api/markout-api-interface';
 import { MarkoutApiService } from 'src/app/common/services/markout-api/markout-api-service';
-import { MarkoutToteRequest, ToteDataResponse } from '../models/markout-model';
+import { MarkoutToteRequest, MOPrefResponse, ToteDataResponse } from '../models/markout-model';
 
 @Component({
   selector: 'app-markout-search',
@@ -27,7 +27,7 @@ export class MarkoutSearchComponent implements OnInit {
   floatLabelControl = new FormControl('auto' as FloatLabelType);
   toteId: string = '';
   orderNumber: string = '';
-  selectedView: string = 'View by Order';
+  selectedView: string = '';
   
   public iMarkoutApiService: IMarkoutApiService;
   
@@ -40,6 +40,7 @@ export class MarkoutSearchComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.getMarkoutPreferences()
     this.toteDataResponse = new ToteDataResponse();
   }
 
@@ -55,6 +56,14 @@ export class MarkoutSearchComponent implements OnInit {
 
   emitSelectedValue(viewType: string) {
     this.selectedView = viewType;
+  }
+
+  getMarkoutPreferences() {
+    this.iMarkoutApiService
+      .GetMarkoutPreferences()
+      .subscribe((res: MOPrefResponse) => {
+        this.selectedView = res.defaultViewType
+      });
   }
 
   emitToteId() {

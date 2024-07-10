@@ -1,10 +1,10 @@
-<div class="container-fluid p-0 pt-2 h-auto">
+<div class="container-fluid p-0  h-auto">
     <div class="row g-3">
-        <div class="col-xl-6">
+        <div class="col-xl-5">
             <app-markout-search (toteIdEmitter)="handleToteId($event)"
                 [toteDataResponse]="toteDataResponse"></app-markout-search>
         </div>
-        <div class="col-xl-6">
+        <div class="col-xl-7">
             <app-markout-status [toteDataResponse]="toteDataResponse"></app-markout-status>
         </div>
         <div class="col-xl-12">
