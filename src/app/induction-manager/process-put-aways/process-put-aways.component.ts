@@ -138,19 +138,19 @@ export class ProcessPutAwaysComponent implements OnInit {
   openCell:any
   upperBound : number = 5
   lowerBound : number = 1
-  
+
   public iInductionManagerApi: IInductionManagerApiService;
   public iAdminApiService: IAdminApiService;
 
-  constructor( 
-    private global: GlobalService, 
+  constructor(
+    private global: GlobalService,
     private authService: AuthService,
     public inductionManagerApi: InductionManagerApiService,
     public adminApiService: AdminApiService,
     private _liveAnnouncer: LiveAnnouncer,
     private router: Router,
     private sharedService: SharedService
-  ) { 
+  ) {
     this.iAdminApiService = adminApiService;
     this.iInductionManagerApi = inductionManagerApi;
   }
@@ -160,7 +160,7 @@ export class ProcessPutAwaysComponent implements OnInit {
     this.imPreferences = this.global.getImPreferences();
   }
 
-  
+
   onTabChange(event: MatTabChangeEvent) {
     // This method will be called whenever the user changes the selected tab
     const newIndex = event.index;
@@ -186,13 +186,13 @@ export class ProcessPutAwaysComponent implements OnInit {
   }
 
   callFunBatchSetup(event:any){
-    if(event.funName == "batchIdKeyup"){ 
+    if(event.funName == "batchIdKeyup"){
       this.batchIdKeyup();
     }
     else if (event.funName == StringConditions.clear){
       this.clear();
     }
-    else if (event.funName == "getRow"){ 
+    else if (event.funName == "getRow"){
       this.batchId = event.funParam;
       this.getRow();
     }
@@ -255,7 +255,7 @@ export class ProcessPutAwaysComponent implements OnInit {
     this.ifAllowed = true
   }
 
-  public OSFieldFilterNames() { 
+  public OSFieldFilterNames() {
     this.clearFieldNames();
     this.iAdminApiService.ColumnAlias().subscribe((res: ApiResponse<ColumnAlias>) => {
       if (res.isExecuted && res.data) this.fieldNames = res.data
@@ -271,9 +271,9 @@ export class ProcessPutAwaysComponent implements OnInit {
     this.status = 'Not Processed';
     this.assignedZones = '';
     this.ELEMENT_DATA.length = 0;
-    
+
     this.dataSource = [];
-    this.assignedZonesArray.length=0;   // after deleting zones array reset to select zones 
+    this.assignedZonesArray.length=0;   // after deleting zones array reset to select zones
     this.batchId2 = "";
     this.dataSource2 = new MatTableDataSource<any>([]);
     this.inputValue = "";
@@ -284,7 +284,7 @@ export class ProcessPutAwaysComponent implements OnInit {
     this.tote = "";
   }
   print(tote){
-      this.global.Print(`FileName:PrintPrevToteContentsLabel|ToteID:${tote}|BatchID:${this.batchId}|ZoneLabel:''|TransType:TransactionType.PutAway|printDirect:true|ID:-1`,UniqueConstants.Ibl) 
+      this.global.Print(`FileName:PrintPrevToteContentsLabel|ToteID:${tote}|BatchID:${this.batchId}|ZoneLabel:''|TransType:TransactionType.PutAway|printDirect:true|ID:-1`,UniqueConstants.Ibl)
   }
   printToteLoc(){
     if(this.imPreferences.printDirectly){
@@ -295,7 +295,7 @@ export class ProcessPutAwaysComponent implements OnInit {
 
       window.open(`/#/report-view?file=FileName:PrintPrevToteContentsLabel|ToteID:${this.toteID}|BatchID:${this.batchId}|ZoneLabel:''|TransType:TransactionType.PutAway|printDirect:true|ID:-1`, UniqueConstants._blank, 'width=' + screen.width + ',height=' + screen.height + ',toolbar=0,menubar=0,location=0,status=1,scrollbars=1,resizable=1,left=0,top=0')
 
-    }    
+    }
   }
 
   printTotePut(){
@@ -337,12 +337,12 @@ export class ProcessPutAwaysComponent implements OnInit {
   }
 
   getRow() {
-    let payLoad = { batchID: this.batchId2 };    
+    let payLoad = { batchID: this.batchId2 };
     this.batchId = this.batchId2;
     this.iInductionManagerApi.BatchTotes(payLoad).subscribe(
       (res: ApiResponse<BatchTotesResponse[]>) => {
         if (res.data && res.isExecuted) {
-          
+
           if (res.data.length > 0) this.status = "Processed";
           else this.status = "Not Processed";
           this.ELEMENT_DATA.length = 0;
@@ -358,13 +358,13 @@ export class ProcessPutAwaysComponent implements OnInit {
               try {
                 this.assignedZones = res.data[ix].zoneLabel;
                 let zones = res.data[ix].zoneLabel.split(' ');
-                for (let i = 1; i < zones.length; i++) { 
+                for (let i = 1; i < zones.length; i++) {
                   this.assignedZonesArray.push({ zone: zones[i] });
                 }
               } catch (e) { }
             }
           }
-          
+
           this.dataSource = new MatTableDataSource<any>(this.ELEMENT_DATA);
         } else {
           this.global.ShowToastr(ToasterType.Error,ToasterMessages.SomethingWentWrong, ToasterTitle.Error);
@@ -433,9 +433,9 @@ export class ProcessPutAwaysComponent implements OnInit {
       }
     });
   }
-  
+
   onFocusOutBatchID(val) {
-    
+
     if (val) {
       try {
         setTimeout(() => {
@@ -558,14 +558,19 @@ export class ProcessPutAwaysComponent implements OnInit {
               let payLoad = {
                 batchID: this.batchId,
                 zoneLabel: this.assignedZones,
-                totes: [toteID, cells, position], 
+                totes: [toteID, cells, position],
               };
               this.iInductionManagerApi.ProcessBatch(payLoad).subscribe(
                 (res: any) => {
                   if (res.data && res.isExecuted) {
                     if(this.imPreferences.autoPrintPutAwayToteLabels){
-                      if(this.imPreferences.printDirectly) this.global.Print(`FileName:PrintPrevToteContentsLabel|ToteID:-1|ZoneLabel:|TransType:Put Away|ID:-1|BatchID:${this.batchId}`)
-                      else window.open(`/#/report-view?file=FileName:PrintPrevToteContentsLabel|ToteID:-1|ZoneLabel:|TransType:Put Away|ID:-1|BatchID:${this.batchId}`, UniqueConstants._blank, 'width=' + screen.width + ',height=' + screen.height + ',toolbar=0,menubar=0,location=0,status=1,scrollbars=1,resizable=1,left=0,top=0')
+                      if(this.imPreferences.printDirectly) {
+                        // TODO: Replace with print controller call
+                        this.global.Print(`FileName:PrintPrevToteContentsLabel|ToteID:-1|ZoneLabel:|TransType:Put Away|ID:-1|BatchID:${this.batchId}`)
+                      }
+                      else {
+                        window.open(`/#/report-view?file=FileName:PrintPrevToteContentsLabel|ToteID:-1|ZoneLabel:|TransType:Put Away|ID:-1|BatchID:${this.batchId}`, UniqueConstants._blank, 'width=' + screen.width + ',height=' + screen.height + ',toolbar=0,menubar=0,location=0,status=1,scrollbars=1,resizable=1,left=0,top=0')
+                      }
                     }
                     this.global.ShowToastr(ToasterType.Success,res.responseMessage, ToasterTitle.Success);
                     this.status = 'Processed';
@@ -625,7 +630,7 @@ export class ProcessPutAwaysComponent implements OnInit {
     );
   }
 
-  getNextBatchID() { 
+  getNextBatchID() {
     this.iInductionManagerApi.NextBatchID().subscribe(
       (res: any) => {
         if (res.data && res.isExecuted) {
@@ -722,7 +727,7 @@ export class ProcessPutAwaysComponent implements OnInit {
         this.currentToteID++;
       }
     }
-    
+
     this.dataSource = new MatTableDataSource<any>(this.ELEMENT_DATA);
     this.updateNxtTote();
   }
@@ -766,9 +771,9 @@ export class ProcessPutAwaysComponent implements OnInit {
         this.ELEMENT_DATA[position - 1].toteid = $event.target.value;
       }
     } else if (this.ELEMENT_DATA[position - 1].cells != $event.target.value) {
-       
+
         this.ELEMENT_DATA[position - 1].cells = $event.target.value;
-      
+
     }
   }
 
@@ -777,8 +782,8 @@ export class ProcessPutAwaysComponent implements OnInit {
     this.iInductionManagerApi.BatchIDTypeAhead(searchPayload).subscribe(
       (res: any) => {
         if (res.isExecuted &&  res.data){
-          this.searchAutocompleteItemNum = res.data; 
-        } 
+          this.searchAutocompleteItemNum = res.data;
+        }
         else {
           this.global.ShowToastr(ToasterType.Error,ToasterMessages.SomethingWentWrong, ToasterTitle.Error);
           console.log("BatchIDTypeAhead",res.responseMessage);
@@ -788,7 +793,7 @@ export class ProcessPutAwaysComponent implements OnInit {
     );
   }
 async clearBatchData(){
-  
+
   this.batchId2 = '';
   this.inputValue = '';
   this.inputType = 'Any';
@@ -801,7 +806,7 @@ async clearBatchData(){
 }
   async autocompleteSearchColumnItem2() {
     let searchPayload = {
-      batchID: this.batchId2, 
+      batchID: this.batchId2,
     };
     this.iInductionManagerApi.BatchIDTypeAhead(searchPayload).subscribe(
       (res: any) => {
@@ -908,7 +913,7 @@ async clearBatchData(){
         if (!result) return
         if (this.inputValue == "") {
           this.global.ShowToastr(ToasterType.Error,'Please enter input value', ToasterTitle.Error);
-          
+
         }
         else {
           const dialogRef:any = this.global.OpenDialog(SelectionTransactionForToteComponent, {
@@ -930,12 +935,12 @@ async clearBatchData(){
               imPreference: this.processPutAwayIndex.imPreference,
               propFields:this.fieldNames
             }
-          }); 
+          });
           dialogRef.afterClosed().subscribe((result) => {
             if (result == 'NO') {
               if(this.inputType !=ColumnDef.SerialNumber && this.processPutAwayIndex.imPreference.createItemMaster ){
                 this.ifAllowed=false;
-    
+
                 const dialogRef:any = this.global.OpenDialog(AlertConfirmationComponent, {
                   height: 'auto',
                   width: Style.w50vw,
@@ -950,10 +955,10 @@ async clearBatchData(){
                   if(result){
                     this.ifAllowed=false;
                     this.router.navigate([`/InductionManager/Admin/InventoryMaster`] ,{ queryParams: { addItemNumber:this.inputValue } });
-                    this.sharedService.updateLoadMenuFunction(`/InductionManager/Admin/InventoryMaster`.toString()); 
-    
+                    this.sharedService.updateLoadMenuFunction(`/InductionManager/Admin/InventoryMaster`.toString());
+
                   }
-                  
+
                 })
                 return
               }
@@ -962,11 +967,11 @@ async clearBatchData(){
               } else {
                 this.global.ShowToastr(ToasterType.Error,`The input code provided was not recognized as a ${this.inputType}.`, ToasterTitle.Error);
               }
-            } 
+            }
             else if (result == "Task Completed") {
               this.inputValue='';
               this.fillToteTable(this.batchId2);
-            } 
+            }
             else if (result == "New Batch") {
               this.inputValue='';
               this.clearFormAndTable();
@@ -988,9 +993,9 @@ async clearBatchData(){
                 numReels: 1,
                 totalParts: 0,
                 description: result.item.description,
-                whseRequired: result.item.warehouseSensitive 
-              }  
-              this.ReelTransactionsDialogue(hvObj,itemObj,this.fieldNames);              
+                whseRequired: result.item.warehouseSensitive
+              }
+              this.ReelTransactionsDialogue(hvObj,itemObj,this.fieldNames);
             }
           });
         }
@@ -1038,18 +1043,18 @@ async clearBatchData(){
               if(result){
                 this.ifAllowed=false;
                 this.router.navigate([`/InductionManager/Admin/InventoryMaster`] ,{ queryParams: { addItemNumber:this.inputValue } });
-                this.sharedService.updateLoadMenuFunction(`/InductionManager/Admin/InventoryMaster`.toString()); 
+                this.sharedService.updateLoadMenuFunction(`/InductionManager/Admin/InventoryMaster`.toString());
               }
             });
             return
           }
           if (this.inputType == 'Any') this.global.ShowToastr(ToasterType.Error,'The input code provided was not recognized as an Item Number, Lot Number, Serial Number, Host Transaction ID, Scan Code or Supplier Item ID.',ToasterTitle.Error);
           else this.global.ShowToastr(ToasterType.Error,`The input code provided was not recognized as a ${this.inputType}.`, ToasterTitle.Error);
-        } 
+        }
         else if (result == "Task Completed") {
           this.inputValue='';
           this.fillToteTable(this.batchId2);
-        } 
+        }
         else if (result == "New Batch") {
           this.inputValue='';
           this.selectedIndex = 0;
@@ -1105,7 +1110,7 @@ async clearBatchData(){
       let payLoad = {
         batchID: batchID || this.batchId2,
         sortOrder: UniqueConstants.Asc,
-        sortColumn: 0, 
+        sortColumn: 0,
       };
 
       this.iInductionManagerApi.TotesTable(payLoad).subscribe(
@@ -1135,7 +1140,7 @@ async clearBatchData(){
         },
         (error) => { }
       );
-    } catch (error) { 
+    } catch (error) {
     }
   }
 
@@ -1157,7 +1162,7 @@ async clearBatchData(){
         dialogRef.afterClosed().subscribe((result) => {
           if (result == ResponseStrings.Yes) {
             let payLoad = {
-              batchID: this.batchId2, 
+              batchID: this.batchId2,
             };
 
             this.iInductionManagerApi.CompleteBatch(payLoad).subscribe(
@@ -1185,10 +1190,10 @@ async clearBatchData(){
                         message: 'Click OK to print an Off-Carousel Put Away List.',
                       },
                     });
-            
+
                     dialogRef2.afterClosed().subscribe((result) => {
                       if (result == ResponseStrings.Yes) {
-  
+
                           if(this.imPreferences.printDirectly){
                             this.global.Print(`FileName:PrintOffCarList|batchID:${this.batchId2}`);
                           }
@@ -1205,10 +1210,10 @@ async clearBatchData(){
                         this.selectedIndex = 0;
                         setTimeout(() => {
                         this.batchFocus?.nativeElement.focus();
-                          
+
                         }, 100);
                       }
-                    });   
+                    });
                   }
                 } else {
                   this.global.ShowToastr(ToasterType.Error,ToasterMessages.SomethingWentWrong, ToasterTitle.Error);
@@ -1220,7 +1225,7 @@ async clearBatchData(){
           }
         });
       }
-    } catch (error) { 
+    } catch (error) {
     }
   }
 
@@ -1311,7 +1316,7 @@ async clearBatchData(){
           let payLoad = {
             toteNumber: this.postion,
             cell: this.toteQuantity,
-            batchID: this.batchId2, 
+            batchID: this.batchId2,
           };
 
           this.iInductionManagerApi.MarkToteFull(payLoad).subscribe(
@@ -1364,11 +1369,11 @@ async clearBatchData(){
         this.fillToteTable();
       });
     }
-  } 
+  }
 
   reelQty
   ReelDetailDialogue(hv,item) {
-    
+
     const dialogRef:any = this.global.OpenDialog(ReelDetailComponent, {
       height: 'auto',
       width: '932px',
@@ -1407,15 +1412,15 @@ async clearBatchData(){
         this.inputValue = result
         this.openSelectionTransactionDialogue();
       }
-    
-     
+
+
     })
 
   }
 
   clear(){
     this.batchId = ''
-    this.status = ''; 
+    this.status = '';
     this.assignedZones = '';
     this.dataSource = new MatTableDataSource<any>([]);
     this.autocompleteSearchColumnItem();
@@ -1433,8 +1438,8 @@ async clearBatchData(){
     this.iInductionManagerApi.AvailableZone(payLoad).subscribe(
       (res: any) => {
         if (res.data && res.isExecuted) {
-        this.zoneDetails = res.data.zoneDetails; 
-        this.AvailableZones=res.data; 
+        this.zoneDetails = res.data.zoneDetails;
+        this.AvailableZones=res.data;
         let result=res.data.zoneDetails;
         if (result) {
           let zones = 'Zones:';
