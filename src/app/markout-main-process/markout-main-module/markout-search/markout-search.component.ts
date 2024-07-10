@@ -9,12 +9,12 @@ import {
 import { FormControl } from '@angular/forms';
 
 import { FloatLabelType } from '@angular/material/form-field';
-import { MoBlossomToteComponent } from 'src/app/markout/dialogs/mo-blossom-tote/mo-blossom-tote.component';
+import { MoBlossomToteComponent } from 'src/app/markout-main-process/markout-main-module/dialogs/mo-blossom-tote/mo-blossom-tote.component';
 import { DialogConstants } from 'src/app/common/constants/strings.constants';
 import { GlobalService } from 'src/app/common/services/global.service';
 import { IMarkoutApiService } from 'src/app/common/services/markout-api/markout-api-interface';
 import { MarkoutApiService } from 'src/app/common/services/markout-api/markout-api-service';
-import { ToteDataResponse } from '../models/markout-model';
+import { MarkoutToteRequest, ToteDataResponse } from '../models/markout-model';
 
 @Component({
   selector: 'app-markout-search',
@@ -22,11 +22,12 @@ import { ToteDataResponse } from '../models/markout-model';
   styleUrls: ['./markout-search.component.scss'],
 })
 export class MarkoutSearchComponent implements OnInit {
-  @Output() toteIdEmitter = new EventEmitter<string>();
+  @Output() toteIdEmitter = new EventEmitter<MarkoutToteRequest>();
 
   floatLabelControl = new FormControl('auto' as FloatLabelType);
   toteId: string = '';
   orderNumber: string = '';
+  selectedView: string = 'View by Order';
   
   public iMarkoutApiService: IMarkoutApiService;
   
@@ -52,8 +53,12 @@ export class MarkoutSearchComponent implements OnInit {
     }
   }
 
+  emitSelectedValue(viewType: string) {
+    this.selectedView = viewType;
+  }
+
   emitToteId() {
-    this.toteIdEmitter.emit(this.toteId);
+    this.toteIdEmitter.emit({ toteId: this.toteId, viewType: this.selectedView });
   }
 
   getFloatLabelValue(): FloatLabelType {
@@ -76,7 +81,7 @@ export class MarkoutSearchComponent implements OnInit {
       });
       dialogRefTote.afterClosed().subscribe((result) => {
         if(result){
-          this.toteIdEmitter.emit("");
+          this.toteIdEmitter.emit( {toteId: '', viewType: '' });
         }
       });
     }

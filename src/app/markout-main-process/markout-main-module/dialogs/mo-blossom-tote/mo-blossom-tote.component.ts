@@ -13,7 +13,7 @@ import {
 import { GlobalService } from 'src/app/common/services/global.service';
 import { IMarkoutApiService } from 'src/app/common/services/markout-api/markout-api-interface';
 import { MarkoutApiService } from 'src/app/common/services/markout-api/markout-api-service';
-import { ConfirmationDialogComponent } from '../../../admin/dialogs/confirmation-dialog/confirmation-dialog.component';
+import { ConfirmationDialogComponent } from '../../../../admin/dialogs/confirmation-dialog/confirmation-dialog.component';
 import { BlossomToteRecords, MarkoutBlossomTotenRequest, ToteData } from '../../models/markout-model';
 
 @Component({

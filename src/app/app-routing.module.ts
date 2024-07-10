@@ -17,7 +17,7 @@ import { ImportExportComponent } from './import-export/import-export.component';
 import { WrdComponent } from './list-and-label/wrd/wrd.component';
 import { WrvComponent } from './list-and-label/wrv/wrv.component';
 import { AppNames } from 'src/app/common/constants/menu.constants';
-import { MarkoutComponent } from './markout/markout.component';
+// import { MarkoutComponent } from './markout/markout.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
@@ -84,9 +84,12 @@ const routes: Routes = [
         component: ImportExportComponent,
         canActivate: [AuthGuardGuard],
       },
-      {
-        path: 'Markout',
-        component: MarkoutComponent,
+     {
+        path: 'MarkoutProcess',
+        loadChildren: () =>
+          import('./markout-main-process/markout-main-process.module').then(
+            (m) => m.MarkoutMainProcessModule
+          ),
         canActivate: [],
       },
       {

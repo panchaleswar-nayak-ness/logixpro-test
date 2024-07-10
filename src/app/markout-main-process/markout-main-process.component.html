@@ -1,0 +1,38 @@
+<div class="main-section-options">
+    <div class="container-fluid">
+      <div class="row g-4">
+        <!-- Main Section Option (Import Export) -->
+    
+        <div class="col-xl-3 col-lg-6">
+          <div matRipple [matRippleColor]="tab_hover_color" class="main-section-option" 
+          routerLink="/MarkoutProcess/Markout"
+          (click)="updateMenu('Markout', '/MarkoutProcess/Markout')"
+          >
+            <a class="main-section-option-link" href="#"></a>
+            <div class="main-section-icon">
+              <span class="material-symbols-outlined">schema</span>
+            </div>
+            <h4 class="main-section-title main-section-style" >Markout</h4>
+          </div>
+        </div>
+  
+        <div class="col-xl-3 col-lg-6"  >
+          <div matRipple [matRippleColor]="tab_hover_color"  class="main-section-option" 
+          routerLink="/MarkoutProcess/Preferences"
+          (click)="updateMenu('Markout', '/MarkoutProcess/Preferences')"
+       >
+            <a class="main-section-option-link" href="#"></a>
+            <div class="main-section-icon">
+              <span class="material-symbols-outlined">
+                tune
+              </span>
+            </div>
+            <h4 class="main-section-title main-section-style" >Preferences</h4>
+          </div>
+        </div>
+  
+  
+  
+      </div>
+    </div>
+  </div>

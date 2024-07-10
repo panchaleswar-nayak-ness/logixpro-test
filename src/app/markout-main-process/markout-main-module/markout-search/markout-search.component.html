@@ -12,10 +12,12 @@
       <div class="">
         <mat-form-field class="action-dropdown mb-2 flex-1 w-100" appearance="outline">
           <mat-label>Actions</mat-label>
-          <mat-select class="employees-action">
+          <mat-select class="employees-action"  (selectionChange)="emitSelectedValue($event.value)">
             <mat-option  (click)="blossomtotedialog()" [disabled]="toteDataResponse && toteDataResponse.data && (toteDataResponse.data.length == 0 || toteDataResponse.toteStatus == 'Complete')">
               Blossom Tote
             </mat-option>
+            <mat-option [value]="'View by Order'">View by Order</mat-option>
+                  <mat-option [value]="'View by Tote'">View by Tote</mat-option>
           </mat-select>
           <span class="material-symbols-outlined icon-expand-more">
             expand_more

@@ -49,3 +49,18 @@ export class ToteData
     oldToteQty: number | undefined;
     selected:boolean;
 }
+
+export class MarkoutToteRequest
+{
+    toteId :string
+    viewType : string
+}
+
+export class UpdateMOPrefRequest{
+    defaultViewType: string
+}
+
+export class MOPrefResponse{
+    defaultViewType: string
+
+}

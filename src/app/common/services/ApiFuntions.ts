@@ -4,7 +4,7 @@ import { BaseService } from './base-service.service';
 import { AuthService } from '../init/auth.service';
 import { Links, Link } from './base-service.service';
 import {AssignToteToOrderDto, BatchesResponse,  NextToteId} from "../Model/bulk-transactions";
-import { MarkoutBlossomTotenRequest, MarkoutCompleteTransactionRequest, UpdateQuantityRequest } from 'src/app/markout/models/markout-model';
+import { MarkoutBlossomTotenRequest, MarkoutCompleteTransactionRequest, MarkoutToteRequest, UpdateQuantityRequest } from 'src/app/markout-main-process/markout-main-module/models/markout-model';
 
 @Injectable({
   providedIn: 'root'
@@ -1590,8 +1590,8 @@ public async AssignToteToOrder(body: AssignToteToOrderDto[]) {
     return await this.ApiBase.PostAsync(`/print/crossdockitem`, body);
   }
 //===========markout=============
-  public  GetMarkoutData(toteid : string) {
-    return this.ApiBase.Get(`/markout/totedata/${toteid}`);
+  public  GetMarkoutData(body : MarkoutToteRequest) {
+    return this.ApiBase.Get(`/markout/totedata/`,body);
   }
 
   public UpdateMarkoutQuantity(body:UpdateQuantityRequest){
@@ -1610,7 +1610,12 @@ public async AssignToteToOrder(body: AssignToteToOrderDto[]) {
   public MarkoutBlossomTote(body:MarkoutBlossomTotenRequest){
     return   this.ApiBase.Post(`/markout/blossomtote`, body);
   }
-
+  public GetMarkoutPreferences(): Observable<any> {
+    return this.ApiBase.Get("/markout/preferences");
+  }
+  public UpdateMarkoutPreferences(body:any):  Observable<any> {
+    return this.ApiBase.Put("/markout/preferences",body);
+  }
   public async PrintInvMap(body) {
     return await this.ApiBase.PostAsync(`/print/invmap`, body);
   }

@@ -224,6 +224,18 @@
         "Permission": "Preferences"
     },
     {
+        "path": "/MarkoutProcess",
+        "Permission": "Markout"
+    },
+    {
+        "path": "/MarkoutProcess/Preferences",
+        "Permission": "Markout"
+    },
+    {
+        "path": "/MarkoutProcess/Markout",
+        "Permission": "Markout"
+    },
+    {
         "path": "/FlowrackReplenish/Flowrack",
         "Permission": "Preferences"
     },

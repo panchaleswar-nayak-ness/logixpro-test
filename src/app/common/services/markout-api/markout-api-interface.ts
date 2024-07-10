@@ -1,8 +1,10 @@
 export interface IMarkoutApiService {
-  GetMarkoutData(toteid);
+  GetMarkoutData(request);
   UpdateMarkoutQuantity(request);
   MarkoutCompleteTransaction(request);
   GetParamByName(paramName);
   MarkoutValidTote(toteid);
   MarkoutBlossomTote(request);
+  GetMarkoutPreferences();
+  UpdateMarkoutPreferences(request)
 }

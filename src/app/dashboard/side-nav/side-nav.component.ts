@@ -115,6 +115,12 @@ export class SideNavComponent implements OnInit {
     { icon: 'tune', title: 'Preferences', route: '/BulkTransactions/Preferences', permission: 'FlowRack Replenish' },
   ];
 
+  markOutMenus: any = [
+    { icon: 'arrow_back', title: 'Markout', route: AppRoutes.Markout, class: UniqueConstants.backClass, permission: 'Markout' },
+    { icon: 'schema', title: 'Markout', route: '/MarkoutProcess/Markout', permission: 'Markout' },
+    { icon: 'tune', title: 'Preferences ', route: '/MarkoutProcess/Preferences', permission: 'Markout' },
+  ];
+
 
   isParentMenu: boolean = true;
   isChildMenu: boolean = false;
@@ -166,6 +172,14 @@ export class SideNavComponent implements OnInit {
         this.isChildMenu = true;
       }
     });
+
+    this.sharedService.updateMarkoutMenuObserver.subscribe(markout => {
+      if (markout) {
+        this.childMenus = this.markOutMenus;
+        this.isParentMenu = false;
+        this.isChildMenu = true;
+      }
+    });
     this.sharedService.updateBulkProcessMenuObserver.subscribe((res: any) => {
    var obj =  { 
         permission : "FlowRack Replenish",
@@ -198,6 +212,10 @@ export class SideNavComponent implements OnInit {
         let splittedRoute = InvadminMenu.route.split('/');
         if (splittedRoute[2] === undefined) this.flowrackReplenishmentMenus[0].route = AppRoutes.Dashboard;
         else this.flowrackReplenishmentMenus[0].route = AppRoutes.FlowrackReplenish;
+      }else if (InvadminMenu.menu === AppRoutes.Markout) {
+        let splittedRoute = InvadminMenu.route.split('/');
+        if (splittedRoute[2] === undefined) this.markOutMenus[0].route = AppRoutes.Dashboard;
+        else this.markOutMenus[0].route = AppRoutes.Markout;
       }
     });
 
@@ -281,6 +299,10 @@ export class SideNavComponent implements OnInit {
         this.isParentMenu = true;
         this.isChildMenu = false;
       }
+      if ([AppRoutes.Dashboard, '/MarkoutProcess'].indexOf(menu.route) > -1) {
+        this.isParentMenu = true;
+        this.isChildMenu = false;
+      }
 
       if (menu.route.includes('/globalconfig')) {
         this.childMenus = this.globalMenus;
@@ -338,6 +360,20 @@ export class SideNavComponent implements OnInit {
       else{
         this.flowrackReplenishmentMenus[0].route = '/FlowrackReplenish';
         this.childMenus = this.flowrackReplenishmentMenus;
+      } 
+      this.isParentMenu = false;
+      this.isChildMenu = true;
+    }
+
+    if (menu.route.includes('/MarkoutProcess')) {
+      let splittedRoute = menu.route.split('/');
+      if (splittedRoute[2] === undefined && this.router.url == menu.route){
+        this.markOutMenus[0].route = AppRoutes.Dashboard;
+        this.childMenus = this.dynamicMenu;
+      } 
+      else{
+        this.markOutMenus[0].route = '/MarkoutProcess';
+        this.childMenus = this.markOutMenus;
       } 
       this.isParentMenu = false;
       this.isChildMenu = true;

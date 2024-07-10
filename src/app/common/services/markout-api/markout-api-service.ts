@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { ApiFuntions } from '../ApiFuntions';
 import { AuthService } from 'src/app/common/init/auth.service';
 import { IMarkoutApiService } from './markout-api-interface';
-import { MarkoutBlossomTotenRequest, MarkoutCompleteTransactionRequest, UpdateQuantityRequest } from 'src/app/markout/models/markout-model';
+import { MarkoutBlossomTotenRequest, MarkoutCompleteTransactionRequest, MarkoutToteRequest, UpdateMOPrefRequest, UpdateQuantityRequest } from 'src/app/markout-main-process/markout-main-module/models/markout-model';
 @Injectable({
   providedIn: 'root',
 })
@@ -13,8 +13,8 @@ export class MarkoutApiService implements IMarkoutApiService {
     this.userData = this.authService.userData();
   }
 
-  GetMarkoutData(toteid: string) {
-    return this.Api.GetMarkoutData(toteid);
+  GetMarkoutData(request: MarkoutToteRequest) {
+    return this.Api.GetMarkoutData(request);
   }
   
   UpdateMarkoutQuantity(request: UpdateQuantityRequest) {
@@ -31,5 +31,12 @@ export class MarkoutApiService implements IMarkoutApiService {
   }
   MarkoutBlossomTote(request: MarkoutBlossomTotenRequest) {
     return this.Api.MarkoutBlossomTote(request);
+  }
+
+  GetMarkoutPreferences(){
+    return this.Api.GetMarkoutPreferences();
+  }
+  UpdateMarkoutPreferences(request: UpdateMOPrefRequest){
+    return this.Api.UpdateMarkoutPreferences(request);
   }
 }

@@ -57,7 +57,7 @@ export const AppRoutes = {
     InductionManagerAdminInventoryMap:'/InductionManager/Admin/InventoryMap',
     Dashboard: '/dashboard',
     InductionManagerAdmin:'/InductionManager/Admin',
-    Markout: '/Markout',
+    Markout: '/MarkoutProcess',
 }
 
 export const AppNames: {

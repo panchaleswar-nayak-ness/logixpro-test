@@ -27,6 +27,7 @@ export class SharedService {
   startMenu: Subject<any> = new Subject<any>(); 
   updateAdminMenuObserver: Subject<boolean> = new Subject<boolean>(); // observing that bool
   updateFlowrackMenuObserver: Subject<any> = new Subject<any>(); // observing that bool
+  updateMarkoutMenuObserver: Subject<any> = new Subject<any>(); // observing that bool
   updateInductionAdminObserver: Subject<any> = new Subject<any>();
   orderStatusObserver: Subject<any> = new Subject<any>();
   itemObserver: Subject<any> = new Subject<any>();
@@ -89,6 +90,12 @@ export class SharedService {
     menu // on side menu update induction menu
   ) {
     this.updateFlowrackMenuObserver.next(menu);
+  }
+
+  updateMarkoutMenu(
+    menu // on side menu update markout menu
+  ) {
+    this.updateMarkoutMenuObserver.next(menu);
   }
   updateOrderStatus(order) {
     // order status observer for selecting order number when passing toteid and set order fields
@@ -188,7 +195,7 @@ export class SharedService {
   updateLoggedInUser(userName: any, wsid: any, menu: any) {
     let appName: any;
     if (menu.includes('/FlowrackReplenish')) appName = 'FlowrackReplenish';
-    // if (menu.includes('/BulkTransactions')) appName = 'BulkTransactions';
+    if (menu.includes('/Markout')) appName = 'Markout';
     if (menu.includes('/admin')) appName = 'Admin';
     if (menu.includes('/InductionManager')) appName = 'Induction Manager';
     if (menu.includes('/ConsolidationManager')) appName = 'Consolidation Manager';
