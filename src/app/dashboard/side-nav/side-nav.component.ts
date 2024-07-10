@@ -296,6 +296,11 @@ export class SideNavComponent implements OnInit {
         return;
       }
 
+      if ([AppRoutes.Dashboard].indexOf(menu.route) > -1) {
+        this.isParentMenu = true;
+        this.isChildMenu = false;
+      }
+
       if (menu.route.includes('/globalconfig')) {
         this.childMenus = this.globalMenus;
         this.isParentMenu = false;
@@ -351,17 +356,6 @@ export class SideNavComponent implements OnInit {
       this.isParentMenu = false;
       this.isChildMenu = true; 
       return;
-      // let splittedRoute = menu.route.split('/');
-      // if (splittedRoute[2] === undefined && this.router.url == menu.route){
-      //   this.flowrackReplenishmentMenus[0].route = AppRoutes.Dashboard;
-      //   this.childMenus = this.dynamicMenu;
-      // } 
-      // else{
-      //   this.flowrackReplenishmentMenus[0].route = '/FlowrackReplenish';
-      //   this.childMenus = this.flowrackReplenishmentMenus;
-      // } 
-      // this.isParentMenu = false;
-      // this.isChildMenu = true;
     }
 
     if (menu.route.includes('/MarkoutProcess')) {
