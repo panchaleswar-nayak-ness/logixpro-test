@@ -1,6 +1,6 @@
 export type AppName = 'ICSAdmin' | 'Consolidation Manager' | 'Induction' | 'InductionManager' | 'FlowRackReplenish' | 'BulkTransactions' | 'ImportExport' | 'Markout' | 'OrderManager' | 'WorkManager'
 export type RouteName = 'Admin' | 'Consolidation Manager' | 'Induction Manager' | 'FlowRack Replenishment' | 'Bulk Transactions' | 'Import Export' | 'Markout' | 'Order Manager' | 'Work Manager'
-export type RouteMenu = 'admin' | 'consolidation' | 'induction' | '' | 'orderManager' | 'transaction-admin' | 'FlowReplenishment' | 'BulkTransactions' | 'routeFromInduction' | 'Markout'
+export type RouteMenu = 'admin' | 'consolidation' | 'induction' | '' | 'orderManager' | 'transaction-admin' | 'FlowReplenishment' | 'BulkTransactions' | 'routeFromInduction' | 'MarkoutProcess'
 export type AppPermission = 'Admin Menu' | 'Consolidation Manager' | 'Induction Manager' | 'FlowRack Replenish' | 'Bulk Transactions' | 'Import Export' | 'Markout' | 'Order Manager' | 'Work Manager' | 'Order Status' | 'Home' | 'Dashboard'
 
 export const RouteNames: {
@@ -98,7 +98,7 @@ export const RouteUpdateMenu: {
     FlowReplenishment: RouteMenu;
     BulkTransactions: RouteMenu;
     RouteFromInduction: RouteMenu;
-    Markout: RouteMenu;
+    MarkoutProcess: RouteMenu;
 } = {
     Admin: 'admin',
     Consolidation: 'consolidation',
@@ -109,7 +109,7 @@ export const RouteUpdateMenu: {
     FlowReplenishment: 'FlowReplenishment',
     BulkTransactions: 'BulkTransactions',
     RouteFromInduction:'routeFromInduction',
-    Markout: 'Markout'
+    MarkoutProcess: 'MarkoutProcess'
 }
 
 export const AppPermissions: {

@@ -199,7 +199,7 @@ export class MainComponent implements OnInit {
         route: '/MarkoutProcess',
         iconName: 'manage_accounts',
         name: RouteNames.Markout,
-        updateMenu: RouteUpdateMenu.Markout,
+        updateMenu: RouteUpdateMenu.MarkoutProcess,
         permission: AppPermissions.Markout,
       },
       {
@@ -241,7 +241,7 @@ export class MainComponent implements OnInit {
     else if (app.updateMenu == RouteUpdateMenu.OrderManager) this.sharedService.BroadCastMenuUpdate(app.route);
     else if (app.updateMenu == RouteUpdateMenu.Consolidation) this.sharedService.BroadCastMenuUpdate(app.route);
     else if (app.updateMenu === RouteUpdateMenu.FlowReplenishment) this.sharedService.updateFlowrackMenu(app.updateMenu);
-    else if (app.updateMenu === RouteUpdateMenu.Markout) this.sharedService.updateMarkoutMenu(app.updateMenu);
+    else if (app.updateMenu === RouteUpdateMenu.MarkoutProcess) this.sharedService.updateMarkoutMenu(app.updateMenu);
     else if (app.updateMenu === RouteUpdateMenu.BulkTransactions)this.sharedService.BroadCastMenuUpdate(app.route);
 
     this.sharedService.updateSidebar();

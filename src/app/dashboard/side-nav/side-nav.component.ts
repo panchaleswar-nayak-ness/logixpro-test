@@ -134,6 +134,7 @@ export class SideNavComponent implements OnInit {
     private currentTabDataService: CurrentTabDataService,
     public globalConfigApi: GlobalConfigApiService
   ) {
+    
     this.iGlobalConfigApi = globalConfigApi;
     this.sharedService?.sideMenuHideObserver?.subscribe(menu => this.isMenuHide = menu);
     this.sharedService?.SidebarMenupdate?.subscribe((data: any) => {
@@ -181,15 +182,15 @@ export class SideNavComponent implements OnInit {
       }
       this.loadMenus(obj);
     })
-    this.sharedService.updateMarkoutMenuObserver.subscribe((res: any) => {
-      var obj =  { 
-           permission : "Markout",
-           route:res.route,
-           title: res.menu
-         }
-         this.loadMenus(obj);
+    this.sharedService.updateMarkoutMenuObserver.subscribe((markout: any) => {
+      if (markout) {
+        this.childMenus = this.markOutMenus;
+        this.isParentMenu = false;
+        this.isChildMenu = true;
+      }
        })
     this.sharedService.updateInductionAdminObserver.subscribe(InvadminMenu => {
+      debugger
       if (InvadminMenu.menu === RouteUpdateMenu.TransactionAdmin) {
         if (InvadminMenu.route.includes(`${AppRoutes.InductionManagerAdmin}/`)) this.inductionAdminMenus[0].route = AppRoutes.InductionManagerAdmin;
         else this.inductionAdminMenus[0].route = AppRoutes.InductionManager;
@@ -214,6 +215,7 @@ export class SideNavComponent implements OnInit {
         if (splittedRoute[2] === undefined) this.flowrackReplenishmentMenus[0].route = AppRoutes.Dashboard;
         else this.flowrackReplenishmentMenus[0].route = AppRoutes.FlowrackReplenish;
       }else if (InvadminMenu.menu === AppRoutes.Markout) {
+        debugger
         let splittedRoute = InvadminMenu.route.split('/');
         if (splittedRoute[2] === undefined) this.markOutMenus[0].route = AppRoutes.Dashboard;
         else this.markOutMenus[0].route = AppRoutes.Markout;
@@ -256,7 +258,6 @@ export class SideNavComponent implements OnInit {
   }
  
   loadMenus(menu: any) {
- 
     if((this.router.url == "/BulkTransactions/BulkPick" || this.router.url == "/BulkTransactions/BulkPutAway" || this.router.url == "/BulkTransactions/BulkCount") && localStorage.getItem("verifyBulks") == "true"){
       this.sharedService.verifyBulkTransBack();
       return;

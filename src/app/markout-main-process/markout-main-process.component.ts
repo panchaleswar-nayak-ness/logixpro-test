@@ -18,7 +18,7 @@ export class MarkoutMainProcessComponent  {
 
 
     updateMenu(menu = '', route = '') {
-      this.sharedService.updateMarkoutMenu({menu , route});
+      this.sharedService.updateInductionAdminMenu({menu , route});
     }
   
     isAuthorized(controlName:any) {
