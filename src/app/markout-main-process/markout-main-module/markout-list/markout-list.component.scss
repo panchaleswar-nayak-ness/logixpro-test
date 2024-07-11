@@ -21,7 +21,13 @@
 }
 
 .custom-scrollbar {
-  height: 300px !important; // Adjust as needed
+  min-height: 275px !important; // Adjust as needed
+}
+@media (max-height: 800px) {
+  .custom-scrollbar {
+    
+    min-height: 175px !important; // Adjust as needed
+  }
 }
 
 .custom-header-cell {
