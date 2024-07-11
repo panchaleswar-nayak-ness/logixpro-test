@@ -190,7 +190,6 @@ export class SideNavComponent implements OnInit {
       }
        })
     this.sharedService.updateInductionAdminObserver.subscribe(InvadminMenu => {
-      debugger
       if (InvadminMenu.menu === RouteUpdateMenu.TransactionAdmin) {
         if (InvadminMenu.route.includes(`${AppRoutes.InductionManagerAdmin}/`)) this.inductionAdminMenus[0].route = AppRoutes.InductionManagerAdmin;
         else this.inductionAdminMenus[0].route = AppRoutes.InductionManager;
@@ -215,7 +214,6 @@ export class SideNavComponent implements OnInit {
         if (splittedRoute[2] === undefined) this.flowrackReplenishmentMenus[0].route = AppRoutes.Dashboard;
         else this.flowrackReplenishmentMenus[0].route = AppRoutes.FlowrackReplenish;
       }else if (InvadminMenu.menu === AppRoutes.Markout) {
-        debugger
         let splittedRoute = InvadminMenu.route.split('/');
         if (splittedRoute[2] === undefined) this.markOutMenus[0].route = AppRoutes.Dashboard;
         else this.markOutMenus[0].route = AppRoutes.Markout;
