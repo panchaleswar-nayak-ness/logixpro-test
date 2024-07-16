@@ -1816,7 +1816,7 @@ public LocationAssignmentFunctionsUpdate(body: any) {
   public PrintPutAwayItemLabels(otid: number) {
     const payload = {
       wsid: this.userData.wsid,
-      oitd: otid
+      otid: otid
     }
     return this.Api.PrintPutAwayItem(payload);
   }
