@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs'; 
 import { ICommonApi } from './common-api/common-api-interface';
 import { CommonApiService } from './common-api/common-api.service';
+import { GlobalService } from './global.service';
 
 @Injectable({
   providedIn: 'root',
@@ -10,7 +11,8 @@ export class SharedService {
   public iCommonAPI : ICommonApi;
 
   constructor(
-    public commonAPI : CommonApiService
+    public commonAPI : CommonApiService,
+    private global:GlobalService,
   ) { 
     this.iCommonAPI = commonAPI; 
   }
@@ -158,6 +160,7 @@ export class SharedService {
   
   updateInvMasterState(obj, type) {
     this.invMasterParentObserver.next({ event: obj, isEnable: type });
+    this.global.changesConfirmation = true;
   }
 
   updateMenuState(obj) {

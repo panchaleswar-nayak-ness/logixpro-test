@@ -613,6 +613,7 @@ ContextMenu($event:any){
 
   public updateInventoryMaster() {
     if (this.updateInventoryMasterValidate()) {
+      this.global.changesConfirmation = false;
       this.invMaster.patchValue({
         'bulkGoldZone': this.invMaster.value?.bulkVelocity,
         'CfGoldZone': this.invMaster.value?.cfVelocity,

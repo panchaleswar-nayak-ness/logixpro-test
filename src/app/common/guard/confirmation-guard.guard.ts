@@ -19,7 +19,9 @@ export class ConfirmationGuard implements CanDeactivate<any> {
       if(route.data['title'].indexOf('Bulk') > -1){
         return   this.backButton(route.data['title'])
       }else{
-        return this.OpenConfirmationDialog(route.data['title']);
+        if(this.global.changesConfirmation){
+          return this.OpenConfirmationDialog(route.data['title']);
+        }
       }
     } 
     return true;

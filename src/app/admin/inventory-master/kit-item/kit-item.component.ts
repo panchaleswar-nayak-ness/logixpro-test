@@ -97,6 +97,10 @@ export class KitItemComponent implements OnInit, OnChanges {
     }
   }
 
+  changesMade(){
+    this.global.changesConfirmation = true;
+  }
+
   openPrintRangeDialog() {
     this.global.Print(`FileName:printKitReport|ItemNumber:${this.kitItem.value.itemNumber}`)
 
@@ -197,6 +201,7 @@ export class KitItemComponent implements OnInit, OnChanges {
           this.global.ShowToastr(ToasterType.Success,labels.alert.success, ToasterTitle.Success);
           this.sendNotification();
           this.saveKitItem.emit();
+          this.global.changesConfirmation = false;
         } else {
           this.global.ShowToastr(ToasterType.Error,"Invalid Input", ToasterTitle.Error);
           console.log("InsertKit",res.responseMessage);
@@ -219,6 +224,7 @@ export class KitItemComponent implements OnInit, OnChanges {
           this.global.ShowToastr(ToasterType.Success,labels.alert.success, ToasterTitle.Success);
           this.sendNotification();
           this.saveKitItem.emit();
+          this.global.changesConfirmation = false;
         } else {
           this.global.ShowToastr(ToasterType.Error,"Invalid Input", ToasterTitle.Error);
           console.log("UpdateKit",res.responseMessage);

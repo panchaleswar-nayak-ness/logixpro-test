@@ -62,6 +62,10 @@ export class ScanCodesComponent{
     this.oldScanCodesList = JSON.parse(JSON.stringify(this.scanCodesList));
   }
 
+  changesMade(){
+    this.global.changesConfirmation = true;
+  }
+
   numberOnly(event): boolean {
     return this.cusValidator.numberOnly(event);
   }
@@ -224,6 +228,7 @@ export class ScanCodesComponent{
         this.scanCodesList = res.data;
         this.oldScanCodesList = JSON.parse(JSON.stringify(this.scanCodesList));
         this.saveScanCode.emit(this.oldScanCodesList);
+        this.global.changesConfirmation = false;
       } else {
         this.global.ShowToastr(ToasterType.Error, this.global.globalErrorMsg(), ToasterTitle.Error);
         console.log("RefreshScanCodes",res.responseMessage);
