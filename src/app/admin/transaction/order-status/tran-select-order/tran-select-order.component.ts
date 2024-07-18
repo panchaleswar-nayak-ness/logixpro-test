@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output, SimpleChanges } from '@angular/core';
 import { FormControl } from '@angular/forms';
+import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 import { FloatLabelType } from '@angular/material/form-field';
 import { Subject, Subscription } from 'rxjs';
 import { DeleteConfirmationComponent } from 'src/app/admin/dialogs/delete-confirmation/delete-confirmation.component';
@@ -51,6 +52,7 @@ export class TranSelectOrderComponent implements OnInit {
 
   @Input() orderStatNextData = []; // decorate the property with @Input()
 
+  searchControl = new FormControl();
   floatLabelControl = new FormControl('auto' as FloatLabelType);
   hideRequiredControl = new FormControl(false);
   searchAutocompleteList: any;
@@ -184,6 +186,16 @@ export class TranSelectOrderComponent implements OnInit {
   }
 
   ngOnInit(): void {
+
+      this.searchControl.valueChanges.pipe(
+        debounceTime(1500), // Wait for 1.5 seconds
+        distinctUntilChanged()
+      ).subscribe(value => {
+        this.searchField = value;
+        this.autoCompleteSearchColumn();
+        this.onOrderNoChange();
+      });
+
     this.userData = this.authService.userData();
 
     this.subscription.add(
@@ -211,13 +223,12 @@ export class TranSelectOrderComponent implements OnInit {
     );
   }
 
-  getNextItemNo(event : any){
+  getNextItemNo(event: any) {
+    this.searchControl.setValue(event.target.value); // Update the value of the FormControl
     if(event.target.value == ''){
       this.resetLines();
       this.columnSelect = '';
     }
-    this.autoCompleteSearchColumn();
-    this.onOrderNoChange();
   }
 
   resetLines() {
