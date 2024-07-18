@@ -1,18 +1,19 @@
-import { Injectable } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
-import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
-import { BrChooseReportTypeComponent } from 'src/app/dialogs/br-choose-report-type/br-choose-report-type.component';
-import { AuthService } from 'src/app/common/init/auth.service';
-import { environment } from 'src/environments/environment';
-import { OrderManagerApiService } from 'src/app/common/services/orderManager-api/order-manager-api.service';
-import { IOrderManagerAPIService } from 'src/app/common/services/orderManager-api/order-manager-api-interface';
-import { IAdminApiService } from 'src/app/common/services/admin-api/admin-api-interface';
-import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.service';
-import { IInductionManagerApiService } from 'src/app/common/services/induction-manager-api/induction-manager-api-interface';
-import { InductionManagerApiService } from 'src/app/common/services/induction-manager-api/induction-manager-api.service';
-import { ToastrService } from 'ngx-toastr';
-import { DialogConstants, ToasterTitle, ToasterType } from '../constants/strings.constants';
-import { BaseService } from 'src/app/common/services/base-service.service';
+import {Injectable} from '@angular/core';
+import {MatDialog} from '@angular/material/dialog';
+import {SafeUrl} from '@angular/platform-browser';
+import {BrChooseReportTypeComponent} from 'src/app/dialogs/br-choose-report-type/br-choose-report-type.component';
+import {AuthService} from 'src/app/common/init/auth.service';
+import {OrderManagerApiService} from 'src/app/common/services/orderManager-api/order-manager-api.service';
+import {IOrderManagerAPIService} from 'src/app/common/services/orderManager-api/order-manager-api-interface';
+import {IAdminApiService} from 'src/app/common/services/admin-api/admin-api-interface';
+import {AdminApiService} from 'src/app/common/services/admin-api/admin-api.service';
+import {
+  IInductionManagerApiService
+} from 'src/app/common/services/induction-manager-api/induction-manager-api-interface';
+import {InductionManagerApiService} from 'src/app/common/services/induction-manager-api/induction-manager-api.service';
+import {ToastrService} from 'ngx-toastr';
+import {DialogConstants, ToasterTitle, ToasterType} from '../constants/strings.constants';
+import {BaseService} from 'src/app/common/services/base-service.service';
 
 @Injectable({
   providedIn: 'root'
@@ -59,11 +60,11 @@ export class GlobalService {
 
   constructor(
     private apiBase: BaseService,
-    public orderManagerApi : OrderManagerApiService, 
+    public orderManagerApi: OrderManagerApiService,
     private dialog : MatDialog,
     private toastr : ToastrService,
     public inductionManagerApi : InductionManagerApiService,
-    public adminApiService : AdminApiService, 
+    public adminApiService: AdminApiService,
     private authService : AuthService
   ) {
     this.userData = this.authService.userData();
@@ -73,10 +74,10 @@ export class GlobalService {
   }
 
   ShowToastr(type? : any, msg? : any, title? : any, timeOut? : any, positionClass? : any){
-    this.toastr[type](msg, title || 'Success!', 
+    this.toastr[type](msg, title || 'Success!',
       {
         positionClass: positionClass || 'toast-bottom-right',
-        timeOut: timeOut || 2000,
+        timeOut: timeOut || 8000,
       }
     );
   }
@@ -109,13 +110,13 @@ export class GlobalService {
     return date.getMonth() + 1 + '/' + date.getDate() + '/' + date.getFullYear();
   }
 
-  capitalizeAndRemoveSpaces(inputString: string): string { 
-    const words: string[] = inputString.split(' '); 
+  capitalizeAndRemoveSpaces(inputString: string): string {
+    const words: string[] = inputString.split(' ');
     const capitalizedWords: string[] = words.map(word => {
       return word.charAt(0).toUpperCase() + word.slice(1).toLowerCase();
-    }); 
+    });
     const resultString: string = capitalizedWords.join('');
-  
+
     return resultString;
   }
 
@@ -146,7 +147,7 @@ export class GlobalService {
   Parameters:
       Optional 1:
           Usage: setNumericInRange(15, 0, 10);
-          
+
           value: value of input tag to set
           low: numeric, low value of the input
           high: numeric, high value of the input
@@ -161,7 +162,7 @@ export class GlobalService {
   setNumericInRange(value : any, low : any, high : any, allowEmpty : any = false) {
     if (!low.hasOwnProperty('min')) {
       while ((isNaN(Number(value)) && value.length > 0) || (parseInt(value) > high && high != null)) value = value.substring(0, value.length - 1);
-      if (low != null && value < low && value.trim() != '') value = low;            
+      if (low != null && value < low && value.trim() != '') value = low;
       return value;
     } else {
       let h = low.max;
@@ -214,14 +215,14 @@ export class GlobalService {
     else return true;
   }
 
-  async Print(ChooseReport, type = "lst") { 
+  async Print(ChooseReport, type = "lst") {
       let paylaod:any = {
         ClientCustomData:ChooseReport,
         repositoryIdOfProject:"BCAEC8B2-9D16-4ACD-94EC-74932157BF82",
         PrinterReportName:localStorage.getItem("SelectedReportPrinter"),
         PrinterLabelName:localStorage.getItem("SelectedLabelPrinter"),
       }
-      let res:any = await this.iAdminApiService.CommonPrint(paylaod); 
+    let res: any = await this.iAdminApiService.CommonPrint(paylaod);
       if(res.isExecuted) {
         this.ShowToastr(ToasterType.Success, "print successfully completed", ToasterTitle.Success);
         return true;
@@ -251,7 +252,7 @@ export class GlobalService {
       autoFocus: DialogConstants.autoFocus,
       disableClose: true,
       data:{ ReportName:reportName, Name:name }
-    }); 
+    });
 
     dialogRef.afterClosed().subscribe((result) => {
       if (result.FileName != null) this.Export(reportName, result.Type, result.FileName);
@@ -267,7 +268,7 @@ export class GlobalService {
     }
     this.iAdminApiService.CommonExport(paylaod).subscribe((res:any)=>{
       if(res.isExecuted){
-        this.ShowToastr(ToasterType.Success, "Export successfully completed", ToasterTitle.Success);  
+        this.ShowToastr(ToasterType.Success, "Export successfully completed", ToasterTitle.Success);
           if(res.data.fileName.indexOf("txt") > -1 || res.data.fileName.indexOf("csv") > -1) this.downloadTextFile(res.data.fileName, res.data.fileContent);
           else {
             this.apiBase.DownloadFile(res.data.url).subscribe((response) => {
@@ -286,22 +287,20 @@ export class GlobalService {
                 anchor.click();
                 document.body.removeChild(anchor);
                 URL.revokeObjectURL(blobUrl);
-      
+
               }
               else {
                 this.ShowToastr(ToasterType.Error, "Export unsuccessfully complete", ToasterTitle.Error);
               }
-              
-            },
+
+              },
             (error) => {
               this.ShowToastr(ToasterType.Error, "Export unsuccessfully complete", ToasterTitle.Error);
             }
             );
 
 
-            
-
-          }   
+          }
       } else this.ShowToastr(ToasterType.Error, "Export unsuccessfully complete", ToasterTitle.Error);
     })
   }
@@ -318,7 +317,7 @@ export class GlobalService {
     link.click();
     // Clean up the URL object
     URL.revokeObjectURL(link.href);
-  } 
+  }
 
   getOmPreferences(): any{
     const preferencesString = localStorage.getItem('OmPreference');
@@ -349,7 +348,7 @@ export class GlobalService {
       localStorage.setItem('InductionPreference', JSON.stringify(res.data.imPreference));
     });
   }
-  
+
   setImPreferences(response){
     const imPref = localStorage.getItem('InductionPreference');
     if (imPref) {

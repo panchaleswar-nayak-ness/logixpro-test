@@ -1,28 +1,47 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import { MatSelect, MatSelectChange } from '@angular/material/select';
-import { AuthService } from '../../common/init/auth.service';
-import { CmConfirmAndPackingSelectTransactionComponent } from 'src/app/dialogs/cm-confirm-and-packing-select-transaction/cm-confirm-and-packing-select-transaction.component';
-import { CmConfirmAndPackingComponent } from 'src/app/dialogs/cm-confirm-and-packing/cm-confirm-and-packing.component';
-import { CmItemSelectedComponent } from 'src/app/dialogs/cm-item-selected/cm-item-selected.component';
-import { CmOrderNumberComponent } from 'src/app/dialogs/cm-order-number/cm-order-number.component';
-import { CmPrintOptionsComponent } from 'src/app/dialogs/cm-print-options/cm-print-options.component';
-import { CmShippingTransactionComponent } from 'src/app/dialogs/cm-shipping-transaction/cm-shipping-transaction.component';
-import { CmShippingComponent } from 'src/app/dialogs/cm-shipping/cm-shipping.component';
-import { catchError, of } from 'rxjs';
-import { MatTableDataSource } from '@angular/material/table';
-import { MatSort, Sort } from '@angular/material/sort';
-import { MatPaginator } from '@angular/material/paginator';
-import { LiveAnnouncer } from '@angular/cdk/a11y';
-import { CmOrderToteConflictComponent } from 'src/app/dialogs/cm-order-tote-conflict/cm-order-tote-conflict.component';
-import { ConfirmationDialogComponent } from 'src/app/admin/dialogs/confirmation-dialog/confirmation-dialog.component';
-import { MatOption } from '@angular/material/core';
-import { GlobalService } from 'src/app/common/services/global.service';
-import { CurrentTabDataService } from 'src/app/admin/inventory-master/current-tab-data-service';
-import { IConsolidationApi } from 'src/app/common/services/consolidation-api/consolidation-api-interface';
-import { ConsolidationApiService } from 'src/app/common/services/consolidation-api/consolidation-api.service';
-import { ConfirmationMessages, LiveAnnouncerMessage, ResponseStrings, StringConditions, ToasterMessages, ToasterTitle, ToasterType ,Column,DialogConstants,ColumnDef,Style,UniqueConstants,TableConstant} from 'src/app/common/constants/strings.constants';
-import { AppRoutes, } from 'src/app/common/constants/menu.constants';
-import { KeyboardCodes } from 'src/app/common/enums/CommonEnums';
+import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
+import {MatSelect, MatSelectChange} from '@angular/material/select';
+import {AuthService} from '../../common/init/auth.service';
+import {
+  CmConfirmAndPackingSelectTransactionComponent
+} from 'src/app/dialogs/cm-confirm-and-packing-select-transaction/cm-confirm-and-packing-select-transaction.component';
+import {CmConfirmAndPackingComponent} from 'src/app/dialogs/cm-confirm-and-packing/cm-confirm-and-packing.component';
+import {CmItemSelectedComponent} from 'src/app/dialogs/cm-item-selected/cm-item-selected.component';
+import {CmOrderNumberComponent} from 'src/app/dialogs/cm-order-number/cm-order-number.component';
+import {CmPrintOptionsComponent} from 'src/app/dialogs/cm-print-options/cm-print-options.component';
+import {
+  CmShippingTransactionComponent
+} from 'src/app/dialogs/cm-shipping-transaction/cm-shipping-transaction.component';
+import {CmShippingComponent} from 'src/app/dialogs/cm-shipping/cm-shipping.component';
+import {catchError, of} from 'rxjs';
+import {MatTableDataSource} from '@angular/material/table';
+import {MatSort, Sort} from '@angular/material/sort';
+import {MatPaginator} from '@angular/material/paginator';
+import {LiveAnnouncer} from '@angular/cdk/a11y';
+import {CmOrderToteConflictComponent} from 'src/app/dialogs/cm-order-tote-conflict/cm-order-tote-conflict.component';
+import {ConfirmationDialogComponent} from 'src/app/admin/dialogs/confirmation-dialog/confirmation-dialog.component';
+import {ErrorDialogComponent} from 'src/app/dialogs/error-dialog/error-dialog.component';
+import {MatOption} from '@angular/material/core';
+import {GlobalService} from 'src/app/common/services/global.service';
+import {CurrentTabDataService} from 'src/app/admin/inventory-master/current-tab-data-service';
+import {IConsolidationApi} from 'src/app/common/services/consolidation-api/consolidation-api-interface';
+import {ConsolidationApiService} from 'src/app/common/services/consolidation-api/consolidation-api.service';
+import {
+  Column,
+  ColumnDef,
+  ConfirmationMessages,
+  DialogConstants,
+  LiveAnnouncerMessage,
+  ResponseStrings,
+  StringConditions,
+  Style,
+  TableConstant,
+  ToasterMessages,
+  ToasterTitle,
+  ToasterType,
+  UniqueConstants
+} from 'src/app/common/constants/strings.constants';
+import {AppRoutes,} from 'src/app/common/constants/menu.constants';
+import {KeyboardCodes} from 'src/app/common/enums/CommonEnums';
 
 @Component({
   selector: 'app-consolidation',
@@ -92,7 +111,7 @@ export class ConsolidationComponent implements OnInit {
 
   constructor(
     private global:GlobalService,
-    public consolidationAPI : ConsolidationApiService, 
+    public consolidationAPI: ConsolidationApiService,
     public authService: AuthService,
     private currentTabDataService: CurrentTabDataService,
     private liveAnnouncer: LiveAnnouncer) {
@@ -164,6 +183,7 @@ export class ConsolidationComponent implements OnInit {
   enterOrderID(event) {
     this.typeValue = event.target.value;
     if (event.keyCode == KeyboardCodes.ENTER) {
+      event.target.blur();
       this.getTableData(this.typeValue);
     }
   }
@@ -215,8 +235,20 @@ export class ConsolidationComponent implements OnInit {
         if ((typeof res.data == 'string')) {
           switch (res.data) {
             case ResponseStrings.DNE:
-              this.global.ShowToastr(ToasterType.Error,ToasterMessages.ConsolidationOrderInvalid, ToasterTitle.Error);
-              this.searchBoxField?.nativeElement.focus();
+              const dialogRef: any = this.global.OpenDialog(ErrorDialogComponent, {
+                height: 'auto',
+                width: Style.w786px,
+                data: {
+                  message: 'The Order/Tote that you entered is invalid or no longer exists in the system.',
+                  heading: 'Invalid Tote/Order Number'
+                },
+                autoFocus: DialogConstants.autoFocus,
+                disableClose: true,
+              });
+              dialogRef.afterClosed().subscribe(() => {
+                this.searchBoxField.nativeElement.focus();
+                this.searchBoxField.nativeElement.select();
+              });
               break;
             case ResponseStrings.Conflict:
               this.openCmOrderToteConflict()
@@ -297,7 +329,7 @@ export class ConsolidationComponent implements OnInit {
       else {
         let tempData: any[] = [];
         this.unverifiedItems.data.forEach((row: any) => {
-          // check if the value at row.itemNumber exists in the IDS array using the indexOf method. 
+          // check if the value at row.itemNumber exists in the IDS array using the indexOf method.
           if (IDS.indexOf(row.id.toString()) != -1) {
             tempData.push(row)
           }
@@ -468,7 +500,7 @@ checkDuplicatesForVerify(val) {
     // If the selected column is 'Item Number', iterate through the filter options to find the result.
     if (columnIndex == 0) this.filterOption.forEach((e: any) => result = this.checkVerifyType(val));
     else result = this.checkVerifyType(val);
-    
+
     // If the value count is greater than or equal to 1 and verifyItems is set to 'No', open a dialog for user selection.
     if (result.valueCount > 1 && verifyItems == StringConditions.No) {
       const dialogRef = this.global.OpenDialog(CmItemSelectedComponent, {

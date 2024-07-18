@@ -1,0 +1,22 @@
+<div class="mat-modal-wrap text-center">
+  <mat-dialog-content>
+    <div class="prompt-wrap">
+      <div class="d-flex justify-content-center prompt-icon-wrap">
+                <span class="material-symbols-outlined prompt-icon-error mb-4">
+                    error_outline
+                </span>
+      </div>
+      <h1 class="mat-card-title text-error">
+        {{ heading }}
+      </h1>
+      <p class="prompt-message py-4 mb-0">
+        <b>{{ message }}</b>
+      </p>
+    </div>
+  </mat-dialog-content>
+  <mat-dialog-actions class="d-flex flex-column justify-content-center">
+    <button [mat-dialog-close]="true" class="prompt-action-basic-button mb-3 w-100 btn-lg" mat-stroked-button>
+      OK
+    </button>
+  </mat-dialog-actions>
+</div>

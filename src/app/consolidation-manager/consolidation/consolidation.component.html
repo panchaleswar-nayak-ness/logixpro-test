@@ -1,7 +1,7 @@
 <mat-card class="mat-elevation-z g-card mb-3 mt-2 h-100">
     <mat-card-content>
         <div class="d-xl-flex d-block justify-content-between">
-            
+
             <app-icon-heading-component class="card-header-title mb-3 d-flex align-items-center" heading="Order" icon="filter_frames"></app-icon-heading-component>
 
             <div>
@@ -29,7 +29,9 @@
                     <div class="d-flex flex-wrap">
                         <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline">
                             <mat-label class="pe-2">Order Number/Tote ID</mat-label>
-                            <input matInput class="" type="text" maxlength="50" [(ngModel)]="typeValue" (keypress)="enterOrderID($event)" #autoFocusField>
+                            <input #autoFocusField (keyup)="enterOrderID($event)" [(ngModel)]="typeValue" class=""
+                                   matInput
+                                   maxlength="50" type="text">
                             <button matSuffix *ngIf="typeValue" class="clear-btn"  (click)="openCmOrderNo()"><mat-icon class="text-20 text-chrome-600">cancel</mat-icon></button>
                         </mat-form-field>
                     </div>
@@ -90,8 +92,7 @@
                                 <td class="mat-cell" [attr.colspan]="stageColumns.length">No data available in table.</td>
                             </tr>
 
-                           
-                            
+
                             <tr mat-header-row *matHeaderRowDef="stageColumns; sticky: true" class="table-header-clr"></tr>
                             <tr mat-row *matRowDef="let row; columns: stageColumns;"></tr>
                         </table>
@@ -111,27 +112,27 @@
         <app-unverified-item
             [startSelectFilterLabel]="startSelectFilterLabel"
             [startSelectFilter]="startSelectFilter"
-            [filterOption]="filterOption" 
-            [filterValue]="filterValue" 
-            [unverifiedItems]="unverifiedItems" 
-            [isItemVisible]="isItemVisible" 
-            [isSupplyVisible]="isSupplyVisible" 
-            [verifyBtn]="verifyBtn"  
-            [searchAutoCompleteItemNum]="searchAutoCompleteItemNum" 
-            [unverifiedItemsColumns]="unverifiedItemsColumns"  
-            (selected)="getSelected($event)" 
-            (filterVal)="getFilterValue($event)" 
-            (verify)="verifyLine($event)"  
-            (verifyAllEmit)="verifyAll()" 
-            (autoComplete)="autoCompleteSearchColumnItem($event)" 
+            (autoComplete)="autoCompleteSearchColumnItem($event)"
+            (filterVal)="getFilterValue($event)"
+            (selected)="getSelected($event)"
+            (verify)="verifyLine($event)"
+            (verifyAllEmit)="verifyAll()"
+            [filterOption]="filterOption"
+            [filterValue]="filterValue"
+            [isItemVisible]="isItemVisible"
+            [isSupplyVisible]="isSupplyVisible"
+            [searchAutoCompleteItemNum]="searchAutoCompleteItemNum"
+            [unverifiedItemsColumns]="unverifiedItemsColumns"
+            [unverifiedItems]="unverifiedItems"
+            [verifyBtn]="verifyBtn"
             (row)="getRow($event)">
         </app-unverified-item>
     </div>
 
     <div class="col-lg-6">
         <app-verified-item
-            [verifiedItemsColumns]="verifiedItemsColumns"  
-            [verifiedItems]="verifiedItems"  
+                [verifiedItemsColumns]="verifiedItemsColumns"
+                [verifiedItems]="verifiedItems"
             [unverifyBtn]="unverifyBtn"
             (unverifyAllEmit)="unverifyAll()"
             (unverify)="unverifyLine($event)">
