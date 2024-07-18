@@ -21,7 +21,7 @@
 }
 
 .custom-scrollbar {
-  min-height: 275px !important; // Adjust as needed
+  min-height:calc(90vh - 455px) !important; // Adjust as needed
 }
 @media (max-height: 800px) {
   .custom-scrollbar {
