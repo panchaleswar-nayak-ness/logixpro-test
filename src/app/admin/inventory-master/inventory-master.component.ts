@@ -979,6 +979,7 @@ ContextMenu($event:any){
         this.tabIndex = tabIndex;
         this.prevTabIndex = tabIndex;
         this.isTabChange = false;
+        this.global.changesConfirmation = false;
       } else {
         await this.getInvMasterDetail(this.searchValue,false);
         this.isTabChange = false;
