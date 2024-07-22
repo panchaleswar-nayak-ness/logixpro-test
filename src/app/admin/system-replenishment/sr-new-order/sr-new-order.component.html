@@ -32,8 +32,6 @@
                         </mat-form-field>
                     </div>
 
-                    
-
                     <mat-form-field class="action-dropdown d-xl-flex d-block  mb-3 mb-xl-0" appearance="outline">
                         <mat-label>Show</mat-label>
                         <mat-select class="employees-action" (selectionChange)="showChange($event.value)"  >
@@ -59,9 +57,6 @@
                         expand_more
                     </span>
                 </mat-form-field>
-
-
-
             </div>
         </div>
 
@@ -119,8 +114,7 @@
                     <ng-container matColumnDef="Transaction Qty">
                         <th mat-header-cell *matHeaderCellDef mat-sort-header> Trans Qty </th>
                         <td (dblclick)="viewItemInInventoryMaster(seletedRecord)" mat-cell *matCellDef="let seletedRecord" (contextmenu)="onContextMenu($event, seletedRecord.transactionQuantity, 'Transaction Qty')">
-                            <mat-form-field class="custom-form-field w-100 __grab_cursor" appearance="outline"
-                                (click)="editTransDialog(seletedRecord)" >
+                            <mat-form-field class="custom-form-field w-100 __grab_cursor" appearance="outline" (click)="editTransDialog(seletedRecord)" >
                                 <input matInput type="text" maxlength="50" readonly="true" value="000000" [ngModel]="seletedRecord.transactionQuantity">
                                 <span matSuffix>
                                     <mat-icon class="matIcon-style">unfold_more</mat-icon>
@@ -169,7 +163,7 @@
 
                         <td class="matCellDef-style" mat-cell *matCellDef="let seletedRecord">
 
-                            <button mat-icon-button [matMenuTriggerFor]="appMenu" aria-label="" [ngClass]="{'active-btn':seletedRecord.selected}" class="circle-icon-o active-btn" appearance="outline">
+                            <button mat-icon-button [matMenuTriggerFor]="appMenu" aria-label="a" [ngClass]="{'active-btn':seletedRecord.selected}" class="circle-icon-o active-btn" appearance="outline">
                                 <mat-icon>more_horiz</mat-icon>
                             </button>
 
@@ -187,15 +181,20 @@
                         </td>
                     </tr>
 
-                    <tr class="matHeaderRowDef-style" mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"
-                        ></tr>
+                    <tr class="matHeaderRowDef-style" mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
                     <tr mat-row *matRowDef="let row; columns: displayedColumns;" (click)="selectRow(row)"></tr>
                 </table>
             </ng-scrollbar>
         </div>
         <div class="d-flex justify-content-between bg-white">
-            <mat-paginator [length]="tableDataTotalCount" showFirstLastButtons [pageSize]="tablePayloadObj.length" [disabled]="tableData.length == 0 && filteredTableData.length == 0"
-                [pageSizeOptions]="[10,15,20,25,50,100]" (page)="paginatorChange($event)"></mat-paginator>
+            <mat-paginator 
+                [length]="tableDataTotalCount" 
+                showFirstLastButtons 
+                [pageSize]="tablePayloadObj.length" 
+                [disabled]="tableData.length == 0 && filteredTableData.length == 0"
+                [pageSizeOptions]="[10,15,20,25,50,100]" 
+                (page)="paginatorChange($event)">
+            </mat-paginator>
         </div>
     </mat-card-content>
 </mat-card>
@@ -205,4 +204,4 @@
     </button>
 </div>
 
-<app-table-context-menu-component  (optionSelected)="optionSelected($event)" *ngIf="tabIndex == 0 && isActiveTrigger" [componentName]="'sysRepNewOrd'"></app-table-context-menu-component>
+<app-table-context-menu-component (optionSelected)="optionSelected($event)" *ngIf="tabIndex == 0 && isActiveTrigger" [componentName]="'sysRepNewOrd'"></app-table-context-menu-component>

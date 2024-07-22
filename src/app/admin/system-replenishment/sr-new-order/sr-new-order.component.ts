@@ -26,7 +26,7 @@ import { ContextMenuFiltersService } from 'src/app/common/init/context-menu-filt
 })
 export class SrNewOrderComponent implements OnInit {
   @ViewChild('openActionDropDown') openActionDropDown: MatSelect;
- @Input() tabIndex:any;
+  @Input() tabIndex:any;
   displayedColumns: string[] = [Column.ItemNumber, Column.Description, ColumnDef.Warehouse, 'Stock Qty', 'Replenishment Point', 'Replenishment Level', 'Available Qty', 'Replenishment Qty', 'Case Qty', 'Transaction Qty', 'Replenish', 'Replenish Exists', 'Alloc Pick', 'Alloc Put', ColumnDef.Action];
   tableData: any = [];
   filteredTableData: any = [];
@@ -73,7 +73,6 @@ export class SrNewOrderComponent implements OnInit {
     private global:GlobalService,
     private contextMenuService : TableContextMenuService,
     private authService: AuthService,
-    
     private filterService:ContextMenuFiltersService,
     public adminApiService: AdminApiService
   ) { 
@@ -88,9 +87,7 @@ export class SrNewOrderComponent implements OnInit {
     this.userData = this.authService.userData();
     this.tablePayloadObj.username = this.userData.userName;
     this.tablePayloadObj.wsid = this.userData.wsid;
-    this.refreshNewOrders.subscribe(e => {
-      
-    });
+    this.refreshNewOrders.subscribe(e => {});
   }
 
   ngOnDestroy() {
@@ -137,7 +134,7 @@ export class SrNewOrderComponent implements OnInit {
     const dialogRef:any = this.global.OpenDialog(TransactionQtyEditComponent, {
       width: Style.w560px,
       autoFocus: DialogConstants.autoFocus,
-      disableClose:true,
+      disableClose: true,
       data: {
         rP_ID: element.rP_ID,
         transactionQuantity: element.transactionQuantity,
@@ -148,9 +145,7 @@ export class SrNewOrderComponent implements OnInit {
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
         this.filteredTableData.filter((item: any) => {
-          if (item.rP_ID == result.rP_ID) {
-            item.transactionQuantity = result.transactionQuantity;
-          }
+          if (item.rP_ID == result.rP_ID) item.transactionQuantity = result.transactionQuantity;
         });
       }
     });
@@ -167,11 +162,7 @@ export class SrNewOrderComponent implements OnInit {
           this.tableDataTotalCount = res.data.recordsFiltered;
           this.filteredTableData = JSON.parse(JSON.stringify(this.tableData));
         }
-        else {
-          this.global.ShowToastr(ToasterType.Error, this.global.globalErrorMsg(), ToasterTitle.Error);
-          console.log("SystemReplenishmentNewTable",res.responseMessage);
-
-        } 
+        else this.global.ShowToastr(ToasterType.Error, this.global.globalErrorMsg(), ToasterTitle.Error);
       });
     }
   }
@@ -192,32 +183,19 @@ export class SrNewOrderComponent implements OnInit {
   }
 
   createNewReplenishments(kanban: boolean) {
-    let paylaod = {
-      "kanban": kanban, 
-    }
+    let paylaod = { "kanban": kanban }
     this.iAdminApiService.ReplenishmentInsert(paylaod).subscribe((res: any) => {
-      if (res.isExecuted && res.data) {
-        this.newOrderListCreated = true;
-      }
+      if (res.isExecuted && res.data) this.newOrderListCreated = true;
       this.newReplenishmentOrders();
     });
   }
 
   actionChange(event: any) {
-    if(this.tableData.length != 0){
-      if (event == '5') {
-        this.selectAll();
-      }
-      else if (event == '6' && this.numberSelectedRep != 0) {
-        this.unSelectAll();
-      }
-    }
-    if (event == '1') {
-      this.filterItemNo();
-    }
-    if (event == '2') {
-      this.print();
-    }
+    if(this.tableData.length != 0)
+      if (event == '5') this.selectAll();
+      else if (event == '6' && this.numberSelectedRep != 0) this.unSelectAll();
+    if (event == '1') this.filterItemNo();
+    if (event == '2') this.print();
   }
 
   showChange(event: any) {
@@ -232,15 +210,12 @@ export class SrNewOrderComponent implements OnInit {
   }
 
   searchChange(event: any) {
-    if(event == ""){
-      this.tablePayloadObj.searchString = "";
-    }
-      this.tablePayloadObj.searchColumn = event;
-      this.getSearchOptions();
-      this.resetPagination();
-      this.newReplenishmentOrders(true);
+    if(event == "") this.tablePayloadObj.searchString = "";
+    this.tablePayloadObj.searchColumn = event;
+    this.getSearchOptions();
+    this.resetPagination();
+    this.newReplenishmentOrders(true);
   }
-
 
   paginatorChange(event: PageEvent) {
     this.tablePayloadObj.start = event.pageSize * event.pageIndex;
@@ -249,15 +224,12 @@ export class SrNewOrderComponent implements OnInit {
   }
 
   viewItemInInventoryMaster(element: any) {
-    
     window.open(`/#/admin/inventoryMaster?itemNumber=${element.itemNumber}`, UniqueConstants._blank, "location=yes");
   }
 
-  print() {
-
-  
+  print() {  
     let dialogRef:any = this.global.OpenDialog(ConfirmationDialogComponent, {
-      height: 'auto',
+      height: DialogConstants.auto,
       width: Style.w560px,
       autoFocus: DialogConstants.autoFocus,
       disableClose:true,
@@ -266,10 +238,7 @@ export class SrNewOrderComponent implements OnInit {
       },
     });
     dialogRef.afterClosed().subscribe((result) => {
-      if (result == ResponseStrings.Yes) {
-        this.global.Print(`FileName:printNewReplenishmentReport|reorder:${this.tablePayloadObj.reOrder}`) ;
-
-      }
+      if (result == ResponseStrings.Yes) this.global.Print(`FileName:printNewReplenishmentReport|reorder:${this.tablePayloadObj.reOrder}`);
     });
   }
 
@@ -333,37 +302,33 @@ export class SrNewOrderComponent implements OnInit {
   }
 
   processReplenishments() {
-
     let paylaod = {
       "kanban": this.kanban, 
     }
     this.iAdminApiService.ProcessReplenishments(paylaod).subscribe((res: any) => {
       if (res.isExecuted && res.data) {
-        if(res.responseMessage == "Update Successful"){
-          this.global.ShowToastr(ToasterType.Success,labels.alert.success, ToasterTitle.Success);
-        }
+        if(res.responseMessage == "Update Successful") this.global.ShowToastr(ToasterType.Success,labels.alert.success, ToasterTitle.Success);
         if(res.responseMessage == "Reprocess"){
           let dialogRef2:any = this.global.OpenDialog(ConfirmationDialogComponent, {
             height: 'auto',
             width: Style.w560px,
             autoFocus: DialogConstants.autoFocus,
-      disableClose:true,
+            disableClose:true,
             data: {
               message: `Replenishments finished. There are reprocess transactions due to the replenishment process. Click Ok to print a process report now.`,
             },
           });
           dialogRef2.afterClosed().subscribe((result) => {
-            if (result == ResponseStrings.Yes) {
-              this.global.Print(`FileName:printReprocessTransactions|History:0|ID:|OrderNumber:|ItemNumber:|Reason:|Message:|Date:`);
+            if (result == ResponseStrings.Yes) this.global.Print(`FileName:printReprocessTransactions|History:0|ID:|OrderNumber:|ItemNumber:|Reason:|Message:|Date:`);
+            else {
+              this.newReplenishmentOrders();
+              this.replenishmentsProcessed.emit();
             }
           });
         }
         this.newReplenishmentOrders();
         this.replenishmentsProcessed.emit();
-      } else {
-        this.global.ShowToastr(ToasterType.Success,res.responseMessage, ToasterTitle.Success);
-        console.log("ProcessReplenishments",res.responseMessage);
-      }
+      } else this.global.ShowToastr(ToasterType.Success,res.responseMessage, ToasterTitle.Success);
     });
   }
 
@@ -386,12 +351,8 @@ export class SrNewOrderComponent implements OnInit {
       "replenish": replenish, 
     }
     this.iAdminApiService.ReplenishmentsIncludeUpdate(paylaod).subscribe((res: any) => {
-      if (res.isExecuted && res.data) {
-        this.newReplenishmentOrders();
-      } else {
-        this.global.ShowToastr(ToasterType.Error,res.responseMessage, ToasterTitle.Error);
-        console.log("ReplenishmentsIncludeUpdate",res.responseMessage);
-      }
+      if (res.isExecuted && res.data) this.newReplenishmentOrders();
+      else this.global.ShowToastr(ToasterType.Error,res.responseMessage, ToasterTitle.Error);
     });
   }
 
@@ -404,47 +365,30 @@ export class SrNewOrderComponent implements OnInit {
       "filter": "1=1", 
     }
     this.iAdminApiService.ReplenishmentsIncludeAllUpdate(paylaod).subscribe((res: any) => {
-      if (res.isExecuted && res.data) {
-        this.newReplenishmentOrders();
-      } 
-        else if (replenish){
-          this.global.ShowToastr(ToasterType.Error,"No items available to replenish.", ToasterTitle.Error);
-        }else{
-          this.global.ShowToastr(ToasterType.Error ,res.responseMessage, ToasterTitle.Error);
-          console.log("ReplenishmentsIncludeAllUpdate",res.responseMessage);
-        }
-      
+        if (res.isExecuted && res.data) this.newReplenishmentOrders();
+        else if (replenish) this.global.ShowToastr(ToasterType.Error,"No items available to replenish.", ToasterTitle.Error);
+        else this.global.ShowToastr(ToasterType.Error ,res.responseMessage, ToasterTitle.Error);
     });
   }
 
   getSearchOptionsSubscribe: any;
-  getSearchOptions(loader:boolean=false){
+  getSearchOptions(loader: boolean = false){
     let payload = {
       "searchString": this.tablePayloadObj.searchString,
       "searchColumn": this.tablePayloadObj.searchColumn 
     }
     this.getSearchOptionsSubscribe = this.iAdminApiService.SystemReplenishNewTA(payload).subscribe((res: any) => {
-      if (res.isExecuted && res.data) {
-        this.searchAutocompleteList = res.data.sort();
-      }
-      else {
-        this.global.ShowToastr(ToasterType.Error, this.global.globalErrorMsg(), ToasterTitle.Error);
-        console.log("SystemReplenishNewTA",res.responseMessage);
-
-      }
+      if (res.isExecuted && res.data) this.searchAutocompleteList = res.data.sort();
+      else this.global.ShowToastr(ToasterType.Error, this.global.globalErrorMsg(), ToasterTitle.Error);
     });
   }
 
   selectRow(row: any) {
     this.filteredTableData.forEach(element => {
-      if(row != element){
-        element.selected = false;
-      }
+      if (row != element) element.selected = false;
     });
     const selectedRow = this.filteredTableData.find((x: any) => x === row);
-    if (selectedRow) {
-      selectedRow.selected = !selectedRow.selected;
-    }
+    if (selectedRow) selectedRow.selected = !selectedRow.selected;
   }
   
 }

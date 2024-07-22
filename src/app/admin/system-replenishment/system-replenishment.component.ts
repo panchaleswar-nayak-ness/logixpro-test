@@ -4,7 +4,7 @@ import { GlobalService } from 'src/app/common/services/global.service';
 import { DeleteRangeComponent } from 'src/app/dialogs/delete-range/delete-range.component';
 import { PrintReplenLabelsComponent } from 'src/app/dialogs/print-replen-labels/print-replen-labels.component';
 import { SrDeleteOrderComponent } from 'src/app/dialogs/sr-delete-order/sr-delete-order.component';
-import {  DialogConstants ,Style} from 'src/app/common/constants/strings.constants';
+import { DialogConstants, Style } from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-system-replenishment',
@@ -13,13 +13,13 @@ import {  DialogConstants ,Style} from 'src/app/common/constants/strings.constan
 })
 export class SystemReplenishmentComponent {
   tabIndex:any = 0;
-  constructor(private global:GlobalService) { }
 
   refreshCurrentOrders:Subject<any> = new Subject();
   replenishmentsProcessed:boolean = false;
   refreshNewOrders:Subject<any> = new Subject();
   replenishmentsDeleted:boolean = false;
 
+  constructor(private global:GlobalService) { }
  
   deleteRange(): void {
     const dialogRef:any = this.global.OpenDialog(DeleteRangeComponent, {
@@ -27,9 +27,7 @@ export class SystemReplenishmentComponent {
       autoFocus: DialogConstants.autoFocus,
       disableClose:true,
     });
-    dialogRef.afterClosed().subscribe(() => {
-      
-    });
+    dialogRef.afterClosed().subscribe(() => {});
   }
   printLabels(): void {
     const dialogRef:any = this.global.OpenDialog(PrintReplenLabelsComponent, {
@@ -37,9 +35,7 @@ export class SystemReplenishmentComponent {
       autoFocus: DialogConstants.autoFocus,
       disableClose:true,
     });
-    dialogRef.afterClosed().subscribe(() => {
-      
-    });
+    dialogRef.afterClosed().subscribe(() => {});
   }
 
   deleteSelectedOrder(): void {
@@ -48,9 +44,7 @@ export class SystemReplenishmentComponent {
       autoFocus: DialogConstants.autoFocus,
       disableClose:true,
     });
-    dialogRef.afterClosed().subscribe(() => {
-      
-    });
+    dialogRef.afterClosed().subscribe(() => {});
   }
 
   activeTabIndex:number = 0;
