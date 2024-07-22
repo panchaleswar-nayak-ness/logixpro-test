@@ -32,11 +32,16 @@
                             <input #autoFocusField (keyup)="enterOrderID($event)" [(ngModel)]="typeValue" class=""
                                    matInput
                                    maxlength="50" type="text">
-                            <button matSuffix *ngIf="typeValue" class="clear-btn"  (click)="openCmOrderNo()"><mat-icon class="text-20 text-chrome-600">cancel</mat-icon></button>
+                          <button (click)="resetScreen()" *ngIf="typeValue" class="clear-btn" matSuffix>
+                            <mat-icon class="text-20 text-chrome-600">cancel</mat-icon>
+                          </button>
                         </mat-form-field>
                     </div>
                     <div class="d-flex flex-wrap">
-                        <button type="button" [disabled]="nextOrderbtn" mat-flat-button color="primary" class="mb-3 btn-regular w-100" (click)="openCmOrderNo()">Next Order</button>
+                      <button (click)="resetScreen()" [disabled]="nextOrderbtn" class="mb-3 btn-regular w-100"
+                              color="primary"
+                              mat-flat-button type="button">Next Order
+                      </button>
                     </div>
                 </div>
             </div>
@@ -108,34 +113,34 @@
 
 
 <div class="row">
-    <div class="col-lg-6">
-        <app-unverified-item
-            [startSelectFilterLabel]="startSelectFilterLabel"
-            [startSelectFilter]="startSelectFilter"
-            (autoComplete)="autoCompleteSearchColumnItem($event)"
-            (filterVal)="getFilterValue($event)"
-            (selected)="getSelected($event)"
-            (verify)="verifyLine($event)"
-            (verifyAllEmit)="verifyAll()"
-            [filterOption]="filterOption"
-            [filterValue]="filterValue"
-            [isItemVisible]="isItemVisible"
-            [isSupplyVisible]="isSupplyVisible"
-            [searchAutoCompleteItemNum]="searchAutoCompleteItemNum"
-            [unverifiedItemsColumns]="unverifiedItemsColumns"
-            [unverifiedItems]="unverifiedItems"
-            [verifyBtn]="verifyBtn"
-            (row)="getRow($event)">
-        </app-unverified-item>
-    </div>
+  <div class="col-lg-6">
+    <app-unverified-item
+      (autoComplete)="autoCompleteSearchColumnItem($event)"
+      (filterVal)="getFilterValue($event)"
+      (row)="getRow($event)"
+      (selected)="getSelected($event)"
+      (verify)="verifyLine($event)"
+      (verifyAllEmit)="verifyAll()"
+      [filterOption]="filterOption"
+      [filterValue]="filterValue"
+      [isItemVisible]="isItemVisible"
+      [isSupplyVisible]="isSupplyVisible"
+      [searchAutoCompleteItemNum]="searchAutoCompleteItemNum"
+      [startSelectFilterLabel]="startSelectFilterLabel"
+      [startSelectFilter]="startSelectFilter"
+      [unverifiedItemsColumns]="unverifiedItemsColumns"
+      [unverifiedItems]="unverifiedItems"
+      [verifyBtn]="verifyBtn">
+    </app-unverified-item>
+  </div>
 
-    <div class="col-lg-6">
-        <app-verified-item
-                [verifiedItemsColumns]="verifiedItemsColumns"
-                [verifiedItems]="verifiedItems"
-            [unverifyBtn]="unverifyBtn"
-            (unverifyAllEmit)="unverifyAll()"
-            (unverify)="unverifyLine($event)">
-        </app-verified-item>
-    </div>
+  <div class="col-lg-6">
+    <app-verified-item
+      (unverify)="unverifyLine($event)"
+      (unverifyAllEmit)="unverifyAll()"
+      [unverifyBtn]="unverifyBtn"
+      [verifiedItemsColumns]="verifiedItemsColumns"
+      [verifiedItems]="verifiedItems">
+    </app-verified-item>
+  </div>
 </div>
