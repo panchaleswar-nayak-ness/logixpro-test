@@ -452,7 +452,7 @@ export class ConsolidationComponent implements OnInit {
     let index;
     this.unverifiedItems.data.some((obj, i) => {
       for (let key in obj) {
-        if (obj[key] === filterVal) {
+        if (obj[key].toLowerCase() === filterVal.toLowerCase()) {
           index = i;
           valueCount++;
         }
