@@ -422,7 +422,8 @@ export class OmOrderManagerComponent implements OnInit {
 
           let payload = {
             val: this.viewType,
-            page: AppPermissions.OrderManager
+            page: AppPermissions.OrderManager,
+            allowPartRel:this.OMIndex.preferences[0].allowPartRel
           };
       
           this.iOrderManagerApi.ReleaseOrders(payload).subscribe((res: any) => {
@@ -461,7 +462,8 @@ export class OmOrderManagerComponent implements OnInit {
 
           let payload = {
             val: this.viewType,
-            page: AppPermissions.OrderManager
+            page: AppPermissions.OrderManager,
+            allowPartRel:this.OMIndex.preferences[0].allowPartRel
           };
       
           this.iOrderManagerApi.ReleaseOrders(payload).subscribe((res: any) => {
