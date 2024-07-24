@@ -1,23 +1,30 @@
+import {Component, ElementRef, Inject, OnInit, ViewChild,} from '@angular/core';
+import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
 import {
-  Component,
-  OnInit,
-  Inject,
-  ViewChild,
-  ElementRef,
-} from '@angular/core';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { ReprocessTransactionDetailViewComponent } from '../reprocess-transaction-detail-view/reprocess-transaction-detail-view.component';
+  ReprocessTransactionDetailViewComponent
+} from '../reprocess-transaction-detail-view/reprocess-transaction-detail-view.component';
 
-import { UserFieldsComponent } from '../user-fields/user-fields.component';
-import { TotesAddEditComponent } from '../totes-add-edit/totes-add-edit.component';
-import { Router } from '@angular/router';
-import { MatSelect } from '@angular/material/select';
-import { MatOption } from '@angular/material/core';
-import { ConfirmationDialogComponent } from '../../../app/admin/dialogs/confirmation-dialog/confirmation-dialog.component';
-import { GlobalService } from 'src/app/common/services/global.service';
-import { IInductionManagerApiService } from 'src/app/common/services/induction-manager-api/induction-manager-api-interface';
-import { InductionManagerApiService } from 'src/app/common/services/induction-manager-api/induction-manager-api.service';
-import {  ToasterTitle ,ResponseStrings,ToasterType,ToasterMessages,DialogConstants,Style,UniqueConstants} from 'src/app/common/constants/strings.constants';
+import {UserFieldsComponent} from '../user-fields/user-fields.component';
+import {Router} from '@angular/router';
+import {MatSelect} from '@angular/material/select';
+import {MatOption} from '@angular/material/core';
+import {
+  ConfirmationDialogComponent
+} from '../../../app/admin/dialogs/confirmation-dialog/confirmation-dialog.component';
+import {GlobalService} from 'src/app/common/services/global.service';
+import {
+  IInductionManagerApiService
+} from 'src/app/common/services/induction-manager-api/induction-manager-api-interface';
+import {InductionManagerApiService} from 'src/app/common/services/induction-manager-api/induction-manager-api.service';
+import {
+  DialogConstants,
+  ResponseStrings,
+  Style,
+  ToasterMessages,
+  ToasterTitle,
+  ToasterType,
+  UniqueConstants
+} from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-cross-dock-transaction',
@@ -287,42 +294,36 @@ export class CrossDockTransactionComponent implements OnInit {
             wsid: this.wsid,
           };
 
+          if (this.imPreferences.autoPrintCrossDockLabel) {
+            if (this.imPreferences.printDirectly) {
+              this.iInductionManagerApi.PrintCrossDockTote(this.selectedRowObj.id, this.zone, this.selectedRowObj.toteID);
+              this.iInductionManagerApi.PrintCrossDockItem(this.selectedRowObj.id, this.zone);
+            } else {
+              window.open(
+                `/#/report-view?file=FileName:autoPrintCrossDock|tote:true|otid:${this.OTRecID}|ZoneLabel:${this.zone}`,
+                UniqueConstants._blank,
+                'width=' +
+                screen.width +
+                ',height=' +
+                screen.height +
+                ',toolbar=0,menubar=0,location=0,status=1,scrollbars=1,resizable=1,left=0,top=0'
+              );
+            }
+          }
+
           this.iInductionManagerApi.CompletePick(payLoad).subscribe(
             (res: any) => {
               if (res.data && res.isExecuted) {
                 this.OTRecID = res.data;
-                this.qtyToSubtract += this.selectedRowObj.completedQuantity
-                  ? parseInt(this.selectedRowObj.completedQuantity)
-                  : 0;
+                this.qtyToSubtract += this.selectedRowObj.completedQuantity ? parseInt(this.selectedRowObj.completedQuantity) : 0;
                 this.getCrossDock();
 
-                if (this.imPreferences.autoPrintCrossDockLabel) {
-                  if (this.imPreferences.printDirectly) {
-                    this.iInductionManagerApi.PrintCrossDockTote(this.selectedRowObj.id, this.zone, this.selectedRowObj.toteID);
-                    this.iInductionManagerApi.PrintCrossDockItem(this.selectedRowObj.id, this.zone);
-                  } else {
-                    window.open(
-                      `/#/report-view?file=FileName:autoPrintCrossDock|tote:true|otid:${this.OTRecID}|ZoneLabel:${this.zone}`,
-                      UniqueConstants._blank,
-                      'width=' +
-                        screen.width +
-                        ',height=' +
-                        screen.height +
-                        ',toolbar=0,menubar=0,location=0,status=1,scrollbars=1,resizable=1,left=0,top=0'
-                    );
-                    this.global.ShowToastr(
-                      ToasterType.Success,
-                      'Pick Completed Successfully',
-                      ToasterTitle.Success
-                    );
-                  }
-                } else {
-                  this.global.ShowToastr(
-                    ToasterType.Success,
-                    'Pick Completed Successfully',
-                    ToasterTitle.Success
-                  );
-                }
+                this.global.ShowToastr(
+                  ToasterType.Success,
+                  'Pick Completed Successfully',
+                  ToasterTitle.Success
+                );
+
               } else {
                 this.global.ShowToastr(
                   ToasterType.Error,
@@ -335,7 +336,8 @@ export class CrossDockTransactionComponent implements OnInit {
           );
         }
       });
-    } catch (error) {}
+    } catch (error) {
+    }
   }
 
   PrintCrossDock() {
