@@ -75,6 +75,7 @@ export class ConsolidationComponent implements OnInit {
   public stagingBtn: boolean = true;
   public shippingBtn: boolean = true;
   public printButtons: boolean = true;
+  public focusOnSearch: boolean = false;
   public type: any = '';
   @ViewChild('matRef') matRef: MatSelect;
 
@@ -247,6 +248,7 @@ export class ConsolidationComponent implements OnInit {
           }
         } else {
           this.btnEnable();
+          this.focusOnSearch = true;
           this.open = res.data.openLinesCount;
           this.completed = res.data.completedLinesCount;
           this.backOrder = res.data.reprocessLinesCount;
