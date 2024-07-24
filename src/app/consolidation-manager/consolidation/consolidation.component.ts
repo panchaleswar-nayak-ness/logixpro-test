@@ -450,11 +450,13 @@ export class ConsolidationComponent implements OnInit {
     if (val != undefined) {
       filterVal = val
     }
+    // Convert 'filterVal' to lowercase once before the loop to improve efficiency
+    const lowerCaseFilterVal = filterVal.toString().toLowerCase();
     let valueCount = 0;
     let index;
     this.unverifiedItems.data.some((obj, i) => {
       for (let key in obj) {
-        if (obj[key].toLowerCase() === filterVal.toLowerCase()) {
+        if (obj[key].toString().toLowerCase() === lowerCaseFilterVal) {
           index = i;
           valueCount++;
         }
