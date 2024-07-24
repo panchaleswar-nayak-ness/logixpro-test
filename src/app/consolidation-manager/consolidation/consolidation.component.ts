@@ -182,8 +182,8 @@ export class ConsolidationComponent implements OnInit {
   }
 
   enterOrderID(event) {
-    this.typeValue = event.target.value;
     if (event.keyCode == KeyboardCodes.ENTER) {
+      this.typeValue = event.target.value;
       this.type = '';
       this.getTableData(this.typeValue);
     }
@@ -248,7 +248,7 @@ export class ConsolidationComponent implements OnInit {
           }
         } else {
           this.btnEnable();
-          this.focusOnSearch = true;
+          this.focusItemSearch();
           this.open = res.data.openLinesCount;
           this.completed = res.data.completedLinesCount;
           this.backOrder = res.data.reprocessLinesCount;
@@ -438,7 +438,7 @@ export class ConsolidationComponent implements OnInit {
    * @param data - The data object containing the event and filter value.
    */
   getFilterValue(data) {
-    if (data.event.keyCode == KeyboardCodes.ENTER && data.filterValue) {
+    if (data.event.keyCode == KeyboardCodes.ENTER && data.filterValue && data.filterValue !== '') {
       this.checkDuplicatesForVerify(data.filterValue);
     }
     this.recordSavedItem();
@@ -473,8 +473,7 @@ export class ConsolidationComponent implements OnInit {
     let columnIndex = this.startSelectFilter;
     let result;
     const {verifyItems, blindVerifyItems} = this.consolidationIndex.cmPreferences;
-
-    // If the selected column is 'Item Number', iterate through the filter options to find the result.
+    this.focusItemSearch();
     if (columnIndex == 0)
       this.filterOption.forEach((e: any) => result = this.checkVerifyType(val));
     else
@@ -720,6 +719,7 @@ export class ConsolidationComponent implements OnInit {
   }
 
   openCmOrderToteConflict() {
+    this.searchBoxField.nativeElement.blur();
     let dialogRef: any = this.global.OpenDialog(CmOrderToteConflictComponent, {
       height: 'auto',
       width: '620px',
@@ -815,6 +815,10 @@ export class ConsolidationComponent implements OnInit {
       autoFocus: DialogConstants.autoFocus,
       disableClose: true,
     });
+  }
+
+  private focusItemSearch() {
+    this.focusOnSearch = !this.focusOnSearch;
   }
 }
 

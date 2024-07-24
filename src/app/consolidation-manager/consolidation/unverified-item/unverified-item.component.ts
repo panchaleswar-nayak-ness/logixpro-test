@@ -1,9 +1,9 @@
-import { LiveAnnouncer } from '@angular/cdk/a11y';
-import { Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild, SimpleChanges } from '@angular/core';
-import { MatPaginator } from '@angular/material/paginator';
-import { MatSort, Sort } from '@angular/material/sort';
-import { Subject, debounceTime, distinctUntilChanged } from 'rxjs';
-import {  LiveAnnouncerMessage } from 'src/app/common/constants/strings.constants';
+import {LiveAnnouncer} from '@angular/cdk/a11y';
+import {Component, ElementRef, EventEmitter, Input, OnInit, Output, SimpleChanges, ViewChild} from '@angular/core';
+import {MatPaginator} from '@angular/material/paginator';
+import {MatSort, Sort} from '@angular/material/sort';
+import {debounceTime, distinctUntilChanged, Subject} from 'rxjs';
+import {LiveAnnouncerMessage} from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-unverified-item',
@@ -47,7 +47,8 @@ export class UnverifiedItemComponent implements OnInit {
   }
 
   ngOnChanges(changes: SimpleChanges){
-    if (changes['focusOnSearch']) this.focusOnItemNumberInput();
+    if (changes['focusOnSearch'])
+      this.clearAndFocusInput();
     this.unverifiedItems.sort = this.sort;
     this.unverifiedItems.paginator = this.paginator;
   }
@@ -82,7 +83,8 @@ export class UnverifiedItemComponent implements OnInit {
     this.autoComplete.emit(this.filterValue)
   }
 
-  focusOnItemNumberInput() {
+  clearAndFocusInput() {
+    this.filterValue = '';
     this.itemNumberInput.nativeElement.focus();
   }
 }
