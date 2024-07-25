@@ -74,10 +74,14 @@ export class GlobalService {
   }
 
   ShowToastr(type? : any, msg? : any, title? : any, timeOut? : any, positionClass? : any){
+    // if timeout is not specified set timeout to 5 seconds if not a success message.  Else set to 2 seconds
+    debugger
+    if (!timeOut) timeOut = type == ToasterType.Success ? 2000 : 5000;
+
     this.toastr[type](msg, title || 'Success!',
       {
         positionClass: positionClass || 'toast-bottom-right',
-        timeOut: timeOut || 8000,
+        timeOut: timeOut,
       }
     );
   }

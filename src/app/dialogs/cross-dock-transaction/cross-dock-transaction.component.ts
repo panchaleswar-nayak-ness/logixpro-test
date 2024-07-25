@@ -25,6 +25,7 @@ import {
   ToasterType,
   UniqueConstants
 } from 'src/app/common/constants/strings.constants';
+import {forkJoin} from "rxjs";
 
 @Component({
   selector: 'app-cross-dock-transaction',
@@ -271,74 +272,93 @@ export class CrossDockTransactionComponent implements OnInit {
 
       dialogRef.afterClosed().subscribe((result) => {
 
+        if (result != ResponseStrings.Yes)
+          return;
 
-        if (result == ResponseStrings.Yes) {
-          let payLoad = {
-            pick: this.transactions[this.selectedRow].completedQuantity,
-            put: this.transactions[this.selectedRow].completedQuantity,
-            reel: this.data.values.subCategory == 'reel tracking',
-            ser: this.data.values.serialNumber,
-            htid: this.transactions[this.selectedRow].hostTransactionID,
-            rpid: this.transactions[this.selectedRow].id,
-            otid: this.data.otid,
-            item: this.data.values.itemNumber,
-            uf1: this.transactions[this.selectedRow].userField1
-              ? this.transactions[this.selectedRow].userField1
-              : '',
-            toteID: this.transactions[this.selectedRow].toteID,
-            order: this.transactions[this.selectedRow].orderNumber,
-            invMapID: this.data.values.invMapID,
-            whse: this.data.values.warehouse,
-            batch: this.data.values.batchID,
-            username: this.userId,
-            wsid: this.wsid,
-          };
+        if (!this.imPreferences.autoPrintCrossDockLabel) {
+          this.InsertOTFromOTTemp();
+          return;
+        }
 
-          if (this.imPreferences.autoPrintCrossDockLabel) {
-            if (this.imPreferences.printDirectly) {
-              this.iInductionManagerApi.PrintCrossDockTote(this.selectedRowObj.id, this.zone, this.selectedRowObj.toteID);
-              this.iInductionManagerApi.PrintCrossDockItem(this.selectedRowObj.id, this.zone);
-            } else {
-              window.open(
-                `/#/report-view?file=FileName:autoPrintCrossDock|tote:true|otid:${this.OTRecID}|ZoneLabel:${this.zone}`,
-                UniqueConstants._blank,
-                'width=' +
-                screen.width +
-                ',height=' +
-                screen.height +
-                ',toolbar=0,menubar=0,location=0,status=1,scrollbars=1,resizable=1,left=0,top=0'
-              );
+        if (this.imPreferences.printDirectly) {
+          const printTote$ = this.iInductionManagerApi.PrintCrossDockTote(this.selectedRowObj.id, this.zone, this.selectedRowObj.toteID);
+          const printItem$ = this.iInductionManagerApi.PrintCrossDockItem(this.selectedRowObj.id, this.zone);
+          forkJoin({
+            printTote: printTote$,
+            printItem: printItem$
+          }).subscribe({
+            next: ({}) => {
+              console.log("prints complete")
+              this.InsertOTFromOTTemp();
+            },
+            error: (error) => {
+              console.error('Error in print operations', error);
             }
+          });
+        } else {
+          window.open(
+            `/#/report-view?file=FileName:autoPrintCrossDock|tote:true|otid:${this.OTRecID}|ZoneLabel:${this.zone}`,
+            UniqueConstants._blank,
+            'width=' + screen.width +
+            ',height=' + screen.height +
+            ',toolbar=0,menubar=0,location=0,status=1,scrollbars=1,resizable=1,left=0,top=0'
+          );
           }
 
-          this.iInductionManagerApi.CompletePick(payLoad).subscribe(
-            (res: any) => {
-              if (res.data && res.isExecuted) {
-                this.OTRecID = res.data;
-                this.qtyToSubtract += this.selectedRowObj.completedQuantity ? parseInt(this.selectedRowObj.completedQuantity) : 0;
-                this.getCrossDock();
-
-                this.global.ShowToastr(
-                  ToasterType.Success,
-                  'Pick Completed Successfully',
-                  ToasterTitle.Success
-                );
-
-              } else {
-                this.global.ShowToastr(
-                  ToasterType.Error,
-                  ToasterMessages.SomethingWentWrong,
-                  ToasterTitle.Error
-                );
-              }
-            },
-            (error) => {}
-          );
-        }
       });
     } catch (error) {
     }
   }
+
+  InsertOTFromOTTemp() {
+    let payLoad = {
+      pick: this.transactions[this.selectedRow].completedQuantity,
+      put: this.transactions[this.selectedRow].completedQuantity,
+      reel: this.data.values.subCategory == 'reel tracking',
+      ser: this.data.values.serialNumber,
+      htid: this.transactions[this.selectedRow].hostTransactionID,
+      rpid: this.transactions[this.selectedRow].id,
+      otid: this.data.otid,
+      item: this.data.values.itemNumber,
+      uf1: this.transactions[this.selectedRow].userField1
+        ? this.transactions[this.selectedRow].userField1
+        : '',
+      toteID: this.transactions[this.selectedRow].toteID,
+      order: this.transactions[this.selectedRow].orderNumber,
+      invMapID: this.data.values.invMapID,
+      whse: this.data.values.warehouse,
+      batch: this.data.values.batchID,
+      username: this.userId,
+      wsid: this.wsid,
+    };
+
+    this.iInductionManagerApi.CompletePick(payLoad).subscribe(
+      (res: any) => {
+        console.log("crossdock complete")
+
+        if (res.data && res.isExecuted) {
+          this.OTRecID = res.data;
+          this.qtyToSubtract += this.selectedRowObj.completedQuantity ? parseInt(this.selectedRowObj.completedQuantity) : 0;
+          this.getCrossDock();
+
+          this.global.ShowToastr(
+            ToasterType.Success,
+            'Pick Completed Successfully',
+            ToasterTitle.Success
+          );
+
+        } else {
+          this.global.ShowToastr(
+            ToasterType.Error,
+            ToasterMessages.SomethingWentWrong,
+            ToasterTitle.Error
+          );
+        }
+      }
+    );
+
+  }
+
 
   PrintCrossDock() {
     let res: any = this.global.Print(
