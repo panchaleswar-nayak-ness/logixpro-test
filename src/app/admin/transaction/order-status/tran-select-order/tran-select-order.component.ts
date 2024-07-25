@@ -188,8 +188,7 @@ export class TranSelectOrderComponent implements OnInit {
   ngOnInit(): void {
 
       this.searchControl.valueChanges.pipe(
-        debounceTime(1500), // Wait for 1.5 seconds
-        distinctUntilChanged()
+        debounceTime(1500) // Wait for 1.5 seconds
       ).subscribe(value => {
         this.searchField = value;
         this.autoCompleteSearchColumn();
@@ -224,7 +223,7 @@ export class TranSelectOrderComponent implements OnInit {
   }
 
   getNextItemNo(event: any) {
-    this.searchControl.setValue(event.target.value); // Update the value of the FormControl
+    this.searchControl.setValue(event.target.value, {emitEvent: true}); // Update the value of the FormControl
     if(event.target.value == ''){
       this.resetLines();
       this.columnSelect = '';
