@@ -259,6 +259,11 @@ export class CrossDockTransactionComponent implements OnInit {
 
   compPick() {
     try {
+      if (this.transactions[this.selectedRow].completedQuantity == 0) {
+        this.global.ShowToastr(ToasterType.Error, 'Completed Quantity cannot be 0', ToasterTitle.Error);
+        return;
+      }
+
       let dialogRef: any = this.global.OpenDialog(ConfirmationDialogComponent, {
         height: 'auto',
         width: Style.w560px,
