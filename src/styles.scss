@@ -414,11 +414,11 @@ button {
   content: "\e86c";
   position: absolute;
   top: 50%;
-  left: 0.5em;
+  left: 0.8em;
   transform: translateY(-50%);
   background: rgba(var(--clr-success-rgb-shade),  0.1);
-  width: 66px;
-  height: 66px;
+  width: 90px;
+  height: 90px;
   font-family: 'Material Symbols Outlined',sans-serif;
   font-weight: normal;
   font-style: normal;
@@ -434,7 +434,7 @@ button {
   align-items: center;
   justify-content: center;
   border-radius: 50%;
-  font-size: 34px;
+  font-size: 36px;
   color: var(--clr-success-shade);
 }
 
@@ -442,11 +442,11 @@ button {
   content: "\e5c9";
   position: absolute;
   top: 50%;
-  left: 0.5em;
+  left: 0.8em;
   transform: translateY(-50%);
   background: rgba(var(--clr-danger-rgb-shade), 0.1);
-  width: 66px;
-  height: 66px;
+  width: 90px;
+  height: 90px;
   font-family: 'Material Symbols Outlined',sans-serif;
   font-weight: normal;
   font-style: normal;
@@ -462,7 +462,7 @@ button {
   align-items: center;
   justify-content: center;
   border-radius: 50%;
-  font-size: 34px;
+  font-size: 36px;
   color: var(--clr-danger-shade);
 }
 
@@ -470,11 +470,11 @@ button {
   content: "\e88e";
   position: absolute;
   top: 50%;
-  left: 0.5em;
+  left: 0.8em;
   transform: translateY(-50%);
   background: rgba(var(--clr-primary-rgb-10), 1);
-  width: 66px;
-  height: 66px;
+  width: 90px;
+  height: 90px;
   font-family: 'Material Symbols Outlined',sans-serif;
   font-weight: normal;
   font-style: normal;
@@ -490,12 +490,14 @@ button {
   align-items: center;
   justify-content: center;
   border-radius: 50%;
-  font-size: 34px;
+  font-size: 36px;
   color: var(--clr-primary-500);
 }
 
 #pickpro .toast-container .ngx-toastr {
-  padding-left: 5.9em !important;
+  // padding-left: 5.9em !important;
+  padding: 30px 30px 30px 140px !important;
+  width: 520px;
   background-image: none;
   background-color: var(--clr-pure-white);
   border-radius: 16px;
@@ -504,29 +506,30 @@ button {
 
 #pickpro .toast-container .ngx-toastr.toast-success .toast-title {
   color: var(--clr-success-shade);
-  font-size: 16px;
+  font-size: 24px;
   font-weight: 700;
-  margin-bottom: 0.5em;
+  margin-bottom: 0.2em;
 }
 
 #pickpro .toast-container .ngx-toastr.toast-error .toast-title {
   color: var(--clr-danger-shade);
-  font-size: 16px;
+  font-size: 24px;
   font-weight: 700;
-  margin-bottom: 0.5em;
+  margin-bottom: 0.2em;
 }
 
 #pickpro .toast-container .ngx-toastr.toast-info .toast-title {
   color: var(--clr-primary-500);
-  font-size: 16px;
+  font-size: 24px;
   font-weight: 700;
-  margin-bottom: 0.5em;
+  margin-bottom: 0.2em;
 }
 
 #pickpro .toast-container .ngx-toastr .toast-message {
   color: var(--clr-tertiary-900);
-  font-size: 16px;
-  line-height: 1.1;
+  font-size: 24px;
+  line-height: 1.2;
+  font-weight: 600;
 }
 
 .icon-white {

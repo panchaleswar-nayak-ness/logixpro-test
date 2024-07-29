@@ -8,7 +8,7 @@ import { LiveAnnouncer } from "@angular/cdk/a11y";
 import { IConsolidationApi } from "src/app/common/services/consolidation-api/consolidation-api-interface";
 import { ConsolidationApiService } from "src/app/common/services/consolidation-api/consolidation-api.service";
 import { GlobalService } from "src/app/common/services/global.service";
-import {  LiveAnnouncerMessage ,ToasterTitle,ToasterType,ColumnDef,TableConstant,UniqueConstants} from 'src/app/common/constants/strings.constants';
+import { LiveAnnouncerMessage, ToasterTitle, ToasterType, ColumnDef, TableConstant } from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-cm-item-selected',
@@ -23,7 +23,7 @@ export class CmItemSelectedComponent implements OnInit {
   public colLabel: any;
   public columnModal: any;
   userData: any;
-  displayedColumns: string[] = ['itemNumber', TableConstant.WareHouse, TableConstant.completedQuantity, ColumnDef.ToteID, TableConstant.SerialNumber, ColumnDef.userField1, TableConstant.LotNumber, ColumnDef.Actions];
+  displayedColumns: string[] = ['itemNumber', 'lineStatus', TableConstant.WareHouse, TableConstant.completedQuantity, ColumnDef.ToteID, TableConstant.SerialNumber, ColumnDef.userField1, TableConstant.LotNumber, ColumnDef.Actions];
   itemSelectTable: any
   dataSourceList: any
   @ViewChild(MatSort) sort: MatSort;
@@ -52,13 +52,11 @@ export class CmItemSelectedComponent implements OnInit {
   }
 
   announceSortChange(sortState: Sort) {
-    if (sortState.direction) {
-      this._liveAnnouncer.announce(`Sorted ${sortState.direction}ending`);
-    } else {
-      this._liveAnnouncer.announce(LiveAnnouncerMessage.SortingCleared);
-    }
+    if (sortState.direction) this._liveAnnouncer.announce(`Sorted ${sortState.direction}ending`);
+    else this._liveAnnouncer.announce(LiveAnnouncerMessage.SortingCleared);
     this.itemSelectTable.sort = this.sort;
-  } 
+  }
+
   getItemSelectedData() {
     let payload = {
       "orderNumber": this.identModal,
@@ -70,50 +68,30 @@ export class CmItemSelectedComponent implements OnInit {
         this.itemSelectTable = new MatTableDataSource(res.data);
         this.itemSelectTable.paginator = this.paginator;
       }
-      else {
-        this.global.ShowToastr(ToasterType.Error, this.global.globalErrorMsg(), ToasterTitle.Error);
-        console.log("ItemModelData", res.responseMessage);
-      }
+      else this.global.ShowToastr(ToasterType.Error, this.global.globalErrorMsg(), ToasterTitle.Error);
     }))
-  } 
+  }
+
   verifyLine(index) {
     let id = this.itemSelectTable.data[index].id; 
-    let payload = {
-      "id": id
-    } 
+    let payload = { "id": id } 
     this.iConsolidationAPI.VerifyItemPost(payload).subscribe((res: any) => { 
-      if (res.isExecuted) { 
-        this.dialogRef.close({ isExecuted: true }); 
-      }
-      else {
-        this.global.ShowToastr(ToasterType.Error, res.responseMessage, ToasterTitle.Error);
-        console.log("VerifyItemPost", res.responseMessage);
-      } 
-
+      if (res.isExecuted) this.dialogRef.close({ isExecuted: true }); 
+      else this.global.ShowToastr(ToasterType.Error, res.responseMessage, ToasterTitle.Error);
     }) 
   }
 
   verifyAll() {
     let itemLineStatus = new Set();
     this.itemSelectTable.data.forEach((row: any) => {
-      if (!["Not Completed", "Not Assigned", "Waiting Reprocess"].includes(row.lineStatus)) {
-        itemLineStatus.add(row.id);
-      }
+      if (!["Not Completed", "Not Assigned", "Waiting Reprocess"].includes(row.lineStatus)) itemLineStatus.add(row.id);
     });
 
-    let tabID = this.unverifiedItems.filter((el) => itemLineStatus.has(el.id))
-      .map((row) => row.id.toString());
-
-    let payload = {
-      "iDs": tabID
-    };
+    let tabID = this.unverifiedItems.filter((el) => itemLineStatus.has(el.id)).map((row) => row.id.toString());
+    let payload = { "iDs": tabID };
     this.iConsolidationAPI.VerifyAllItemPost(payload).subscribe((res: any) => {
-      if (res.isExecuted) {
-        this.dialogRef.close({ isExecuted: true }); 
-      }
-      else {
-        this.global.ShowToastr(ToasterType.Error, res.responseMessage, ToasterTitle.Error);
-      } 
+      if (res.isExecuted) this.dialogRef.close({ isExecuted: true }); 
+      else this.global.ShowToastr(ToasterType.Error, res.responseMessage, ToasterTitle.Error);
     }) 
   } 
 }

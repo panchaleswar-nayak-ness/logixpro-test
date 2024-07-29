@@ -1,9 +1,9 @@
-import { LiveAnnouncer } from '@angular/cdk/a11y';
-import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
-import { MatPaginator } from '@angular/material/paginator';
-import { MatSort, Sort } from '@angular/material/sort';
-import { Subject, debounceTime, distinctUntilChanged } from 'rxjs';
-import {  LiveAnnouncerMessage } from 'src/app/common/constants/strings.constants';
+import {LiveAnnouncer} from '@angular/cdk/a11y';
+import {Component, ElementRef, EventEmitter, Input, OnInit, Output, SimpleChanges, ViewChild} from '@angular/core';
+import {MatPaginator} from '@angular/material/paginator';
+import {MatSort, Sort} from '@angular/material/sort';
+import {debounceTime, distinctUntilChanged, Subject} from 'rxjs';
+import {LiveAnnouncerMessage} from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-unverified-item',
@@ -23,6 +23,7 @@ export class UnverifiedItemComponent implements OnInit {
   @Input() verifyBtn: any;
   @Input() searchAutoCompleteItemNum: any;
   @Input() unverifiedItemsColumns: any;
+  @Input() focusOnSearch: boolean = false;
 
   @Output() selected = new EventEmitter<any>();
   @Output() filterVal = new EventEmitter<{ event: KeyboardEvent, filterValue: string }>();
@@ -33,6 +34,7 @@ export class UnverifiedItemComponent implements OnInit {
 
   searchByItem: any = new Subject<string>();
 
+  @ViewChild('itemNumberInput') itemNumberInput: ElementRef;
   @ViewChild('paginator') paginator: MatPaginator;
   @ViewChild('matSort') sort: MatSort;
 
@@ -44,7 +46,9 @@ export class UnverifiedItemComponent implements OnInit {
     this.searchByItem.pipe(debounceTime(400), distinctUntilChanged()).subscribe(() => this.autocompleteSearchColumnItem());
   }
 
-  ngOnChanges() {
+  ngOnChanges(changes: SimpleChanges){
+    if (changes['focusOnSearch'])
+      this.clearAndFocusInput();
     this.unverifiedItems.sort = this.sort;
     this.unverifiedItems.paginator = this.paginator;
   }
@@ -77,5 +81,10 @@ export class UnverifiedItemComponent implements OnInit {
 
   autocompleteSearchColumnItem() {
     this.autoComplete.emit(this.filterValue)
+  }
+
+  clearAndFocusInput() {
+    this.filterValue = '';
+    this.itemNumberInput.nativeElement.focus();
   }
 }

@@ -236,5 +236,6 @@ export interface IAdminApiService
     WorkstationSettingsUpdate(payload : any);
     ToteManagementUpdate(payload : any);
   LocationAssignmentFunctionsUpdate(payload: any);
+
   PrintPutAwayItemLabels(otid: number);
 }

@@ -306,9 +306,9 @@ export class ToteTransactionViewComponent implements OnInit {
       }
     } else if (type == 'item-label') {
       if (this.imPreferences.printDirectly) {
-        this.global.Print(
-          `FileName:PrintPrevToteItemLabel|ID:-1|BatchID:${this.batchID}|ToteNum:${this.tote}`
-        );
+        for (let item of this.dataSource.data) {
+          this.iInductionManagerApi.PrintPutAwayItem(item.id);
+        }
       } else {
         window.open(
           `/#/report-view?file=FileName:PrintPrevToteItemLabel|ID:-1|BatchID:${this.batchID}|ToteNum:${this.tote}`,

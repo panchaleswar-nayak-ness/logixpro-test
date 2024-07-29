@@ -1,27 +1,35 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import { FormControl } from '@angular/forms';
-import { FloatLabelType } from '@angular/material/form-field';
+import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
+import {FormControl} from '@angular/forms';
+import {FloatLabelType} from '@angular/material/form-field';
 
-import { debounceTime, distinctUntilChanged, Subject } from 'rxjs';
-import { AuthService } from 'src/app/common/init/auth.service';
-import { SetItemLocationComponent } from '../../dialogs/set-item-location/set-item-location.component';
-import { TemporaryManualOrderNumberAddComponent } from '../../dialogs/temporary-manual-order-number-add/temporary-manual-order-number-add.component';
+import {debounceTime, distinctUntilChanged, Subject} from 'rxjs';
+import {AuthService} from 'src/app/common/init/auth.service';
+import {SetItemLocationComponent} from '../../dialogs/set-item-location/set-item-location.component';
+import {
+  TemporaryManualOrderNumberAddComponent
+} from '../../dialogs/temporary-manual-order-number-add/temporary-manual-order-number-add.component';
 import labels from 'src/app/common/labels/labels.json';
-import { PostManualTransactionComponent } from '../../dialogs/post-manual-transaction/post-manual-transaction.component';
-import { DeleteConfirmationManualTransactionComponent } from '../../dialogs/delete-confirmation-manual-transaction/delete-confirmation-manual-transaction.component';
-import { InvalidQuantityComponent } from '../../dialogs/invalid-quantity/invalid-quantity.component';
-import { MatSelect } from '@angular/material/select';
-import { MatOption } from '@angular/material/core';
-import { ApiFuntions } from 'src/app/common/services/ApiFuntions';
-import { GlobalService } from 'src/app/common/services/global.service';
-import { IAdminApiService } from 'src/app/common/services/admin-api/admin-api-interface';
-import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.service';
-import { CommonApiService } from 'src/app/common/services/common-api/common-api.service';
-import { ICommonApi } from 'src/app/common/services/common-api/common-api-interface';
+import {PostManualTransactionComponent} from '../../dialogs/post-manual-transaction/post-manual-transaction.component';
+import {
+  DeleteConfirmationManualTransactionComponent
+} from '../../dialogs/delete-confirmation-manual-transaction/delete-confirmation-manual-transaction.component';
+import {InvalidQuantityComponent} from '../../dialogs/invalid-quantity/invalid-quantity.component';
+import {MatSelect} from '@angular/material/select';
+import {MatOption} from '@angular/material/core';
+import {ApiFuntions} from 'src/app/common/services/ApiFuntions';
+import {GlobalService} from 'src/app/common/services/global.service';
+import {IAdminApiService} from 'src/app/common/services/admin-api/admin-api-interface';
+import {AdminApiService} from 'src/app/common/services/admin-api/admin-api.service';
+import {CommonApiService} from 'src/app/common/services/common-api/common-api.service';
+import {ICommonApi} from 'src/app/common/services/common-api/common-api-interface';
+import {PrintApiService} from "../../../common/services/print-api/print-api.service";
 import {
   DialogConstants,
+  StringConditions,
+  Style,
   ToasterTitle,
-  ToasterType,Style,StringConditions,UniqueConstants} from 'src/app/common/constants/strings.constants';
+  ToasterType
+} from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-generate-transaction',
@@ -88,6 +96,7 @@ export class GenerateTransactionComponent implements OnInit {
     private authService: AuthService,
     private Api: ApiFuntions,
     private global: GlobalService,
+    public printApiService: PrintApiService,
 
     private adminApiService: AdminApiService
   ) {
@@ -108,10 +117,8 @@ export class GenerateTransactionComponent implements OnInit {
     return this.floatLabelControl.value ?? 'auto';
   }
   printLabelMT() {
-    this.global.Print(
-      `FileName:printMTLabel|ID:${this.transactionID}|User:${this.userData.userName}`,
-      UniqueConstants.Ibl
-    );
+    return this.printApiService.PrintManualTrans(this.transactionID);
+
   }
   clearMatSelectList() {
     this.openAction?.options.forEach((data: MatOption) => data.deselect());
