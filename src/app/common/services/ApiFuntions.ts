@@ -285,6 +285,9 @@ export class ApiFuntions {
   public CreateMoveTransactions(Body:any): Observable<any> {
     return this.ApiBase.Post("/Admin/movetransactions",Body);
   }
+  public MoveNow(Body:any): Observable<any> {
+    return this.ApiBase.Post("/Admin/movenow",Body);
+  }
   public CycleCountQueueInsert(Body:any): Observable<any> {
     return this.ApiBase.Post("/Admin/cyclecountqueue",Body);
   }

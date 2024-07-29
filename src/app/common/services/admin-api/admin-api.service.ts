@@ -284,6 +284,14 @@ export class AdminApiService implements IAdminApiService {
     }
     return this.Api.CreateMoveTransactions(payload);
   }
+  public MoveNow(body: any) {
+    const payload = {
+      username: this.userData.userName,
+      wsid: this.userData.wsid,
+      ...body
+    }
+    return this.Api.MoveNow(payload);
+  }
   public CycleCountQueueInsert(body: any) {
     const payload = {
       username: this.userData.userName,

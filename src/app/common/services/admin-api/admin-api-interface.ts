@@ -40,6 +40,7 @@ export interface IAdminApiService
       GetCCQueue(payload : any);
       GetMoveItemsTable(payload : any);
       CreateMoveTransactions(payload : any);
+      MoveNow(payload : any);
       CycleCountQueueInsert(payload : any);
       BatchResultTable(payload : any);
       GetCountBatches();

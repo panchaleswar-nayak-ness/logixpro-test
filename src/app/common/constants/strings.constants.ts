@@ -109,7 +109,8 @@ export const ToasterTitle = {
 }
 
 export const ConfirmationHeadings = {
-    BatchManager: 'Batch Manager'
+    BatchManager: 'Batch Manager',
+    MoveNow:"Continue Move Now?"
 }
 
 
@@ -120,7 +121,8 @@ export const ConfirmationMessages = {
     ClickOkToPrintBatchReport:'Click Ok to print a Batch Report for the selected orders?',
     ClickOkToPrintItemLabels:'Click Ok to print item labels for the selected batch orders?',
     UnverfiedItemsLeft:'There are still unverfied items. Coninue the preview?',
-    EventLogDeleteWithRange: 'Are you sure you want to delete all Event Log entries with specified date, message, event location and name stamp filters?'
+    EventLogDeleteWithRange: 'Are you sure you want to delete all Event Log entries with specified date, message, event location and name stamp filters?',
+    ClickOkToUpdateLocation:'You will now update both locations to complete the current move'
 }
 
 export const ToasterMessages = {
