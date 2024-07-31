@@ -39,7 +39,7 @@ const routes: Routes = [
     canActivate: [AuthGuardGuard],
   },
   {
-    path: 'inventoryMaster/utilize',
+    path: 'inventoryMaster/utilizationDashboard',
     component: UtilizationDashboardComponent,
     canActivate: [AuthGuardGuard],
   },
@@ -117,7 +117,7 @@ const routes: Routes = [
      canActivate: [AuthGuardGuard],
   },
   {
-    path: 'reports/utilize',
+    path: 'reports/utilizationDashboard',
     component: UtilizationDashboardComponent,
      canActivate: [AuthGuardGuard],
   },

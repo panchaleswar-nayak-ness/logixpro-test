@@ -11,7 +11,7 @@ export class UtilizationPiechartComponent implements OnChanges {
   @Input() statusData: pieChartData[] = [];
   @ViewChildren('chartContainer', { read: ElementRef }) chartContainers!: QueryList<ElementRef>;
 
-  constructor() {}
+  constructor() { }
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['statusData']) {
@@ -30,21 +30,22 @@ export class UtilizationPiechartComponent implements OnChanges {
     }
   }
 
-  getUtilizationClass(utilizedPercentage: number): string {
-    if (utilizedPercentage <= 50) {
-      return 'very-low-utilization'; // or any class name you prefer
-    } else if (utilizedPercentage > 50 && utilizedPercentage < 70) {
-      return 'low-utilization'; // or any class name you prefer
-    } else if (utilizedPercentage >= 70 && utilizedPercentage < 80) {
-      return 'medium-utilization'; // or any class name you prefer
-    } else if (utilizedPercentage >= 80 && utilizedPercentage < 90) {
-      return 'high-utilization'; // or any class name you prefer
-    } else if (utilizedPercentage >= 90) {
-      return 'very-high-utilization'; // or any class name you prefer
+  getUtilizationClass(usedPercentage: number): string {
+    if (usedPercentage <= 50) {
+      return 'very-low-utilization'; 
+    } else if (usedPercentage > 50 && usedPercentage < 70) {
+      return 'low-utilization'; 
+    } else if (usedPercentage >= 70 && usedPercentage < 80) {
+      return 'medium-utilization'; 
+    } else if (usedPercentage >= 80 && usedPercentage < 90) {
+      return 'high-utilization'; 
+    } else if (usedPercentage >= 90) {
+      return 'very-high-utilization'; 
     } else {
-      return 'default-utilization'; // Fallback class name, if needed
+      return 'default-utilization'; 
     }
   }
+  
 
   initCharts(): void {
     this.chartContainers.toArray().forEach((container: ElementRef, index: number) => {
@@ -53,47 +54,44 @@ export class UtilizationPiechartComponent implements OnChanges {
         const chart = echarts.init(chartElement);
         const item = this.statusData[index]; // Get the corresponding item
 
-        // Debugging: Log item and index
-        console.log(`Rendering chart for index ${index}`, item);
-
-      const option: echarts.EChartsOption = {
+        const option: echarts.EChartsOption = {
           tooltip: {
             trigger: 'item',
             formatter: '{a} <br/>{b}: {c} ({d}%)'
           },
           legend: {
             data: [
-              'Utilized Locations',
+              'Used Locations',
               'Dedicated Location',
               'Dedicated with Zero Quantity',
               'Empty Locations',
             ],
-            textStyle:{
-              fontSize:14,
+            textStyle: {
+              fontSize: 9,
             },
-            itemHeight:20
+            itemHeight: 10,
           },
-          color:[ 
-         "#653490",
-         "#8E51C4",
-         "#B277E6",
-         "#E7D0FC",
-        ],
-          
+          color: [
+            "#653490",
+            "#8E51C4",
+            "#B277E6",
+            "#E7D0FC",
+          ],
+
           series: [
             {
-              name: 'Carousel',
+              name: `Carousel ${item.carousel}`,
               type: 'pie',
-              radius: ['35%', '70%'],
+              radius: ['15%', '40%'],
               labelLine: {
-                length: 30
+                length: 20
               },
               itemStyle: {
-                borderRadius: 10,
+                borderRadius: 6,
                 borderColor: '#fff',
                 borderWidth: 2
               },
-              
+
               label: {
                 formatter: '{a|{a}}{abg|}\n{hr|}\n  {b|{b}：}{c}  {per|{d}%}  ',
                 backgroundColor: '#F6F8FC',
@@ -103,7 +101,7 @@ export class UtilizationPiechartComponent implements OnChanges {
                 rich: {
                   a: {
                     color: '#6E7079',
-                    lineHeight: 22,
+                    lineHeight: 16,
                     align: 'center'
                   },
                   hr: {
@@ -114,23 +112,24 @@ export class UtilizationPiechartComponent implements OnChanges {
                   },
                   b: {
                     color: '#4C5058',
-                    fontSize: 14,
+                    fontSize: 10,
                     fontWeight: 'bold',
-                    lineHeight: 33
+                    lineHeight: 22
                   },
                   per: {
                     color: '#fff',
                     backgroundColor: '#4C5058',
                     padding: [3, 4],
-                    borderRadius: 4
+                    borderRadius: 4,
+                    fontSize:10,
                   }
                 }
               },
               data: [
-                { value: item.totalDedicatedWithEmptyItemQuantity, name: 'Dedicated with Zero Quantity' },
+                { value: item.usedLocation, name: 'Used Locations' },
                 { value: item.totalDedicated, name: 'Dedicated Location' },
+                { value: item.totalDedicatedWithEmptyItemQuantity, name: 'Dedicated with Zero Quantity' },
                 { value: item.emptyLocations, name: 'Empty Locations' },
-                { value: item.utilizedLocations, name: 'Utilized Locations' }
               ]
             }
           ]

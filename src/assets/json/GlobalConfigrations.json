@@ -33,7 +33,7 @@
         "Permission": "Inventory"
     },
     {
-        "path": "/admin/inventoryMaster/utilize",
+        "path": "/admin/inventoryMaster/utilizationDashboard",
         "Permission": "Inventory"
     },
     {
@@ -49,7 +49,7 @@
         "Permission": "Reports"
     }, 
       {
-        "path": "/admin/reports/utilize",
+        "path": "/admin/reports/utilizationDashboard",
         "Permission": "Reports"
     }, 
     {

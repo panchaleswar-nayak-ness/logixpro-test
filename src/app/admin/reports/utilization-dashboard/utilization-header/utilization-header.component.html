@@ -29,7 +29,6 @@
             <mat-form-field class="action-dropdown w-100 mb-3 mb-xl-0" appearance="outline">
               <mat-label>Zones</mat-label>
               <mat-select class="employees-action" (selectionChange)="onZoneSelect($event.value)">
-                <mat-option value=""></mat-option>
                 <mat-option *ngFor="let item of zones" [value]="item">
                   {{ item }}
                 </mat-option>
