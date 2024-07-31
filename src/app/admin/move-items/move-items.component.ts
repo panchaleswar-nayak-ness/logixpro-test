@@ -14,8 +14,9 @@ import { ICommonApi } from 'src/app/common/services/common-api/common-api-interf
 import { CommonApiService } from 'src/app/common/services/common-api/common-api.service';
 import { GlobalService } from 'src/app/common/services/global.service';
 import { TableContextMenuService } from 'src/app/common/globalComponents/table-context-menu-component/table-context-menu.service';
-import { DialogConstants, ToasterTitle, ToasterType ,ResponseStrings,Column,zoneType,ColumnDef,TableConstant,Style,UniqueConstants,FilterColumnName,StringConditions} from 'src/app/common/constants/strings.constants';
+import { DialogConstants, ToasterTitle, ToasterType ,ResponseStrings,Column,zoneType,ColumnDef,TableConstant,Style,UniqueConstants,FilterColumnName,StringConditions, ConfirmationMessages, ConfirmationHeadings} from 'src/app/common/constants/strings.constants';
 import { ContextMenuFiltersService } from 'src/app/common/init/context-menu-filters.service';
+import { ConfirmationDialogComponent } from '../dialogs/confirmation-dialog/confirmation-dialog.component';
 
 const TRNSC_DATA = [
   { colHeader: TableConstant.WareHouse, colDef: ColumnDef.Warehouse },
@@ -246,13 +247,24 @@ export class MoveItemsComponent implements OnInit {
 
         if (tableName === StringConditions.MoveTo) {
           res?.data && res.data['moveMapItems'].map((item : any) => item.isSelected = false);
-          this.moveToDatasource = new MatTableDataSource(res?.data && res.data && res.data['moveMapItems']);
+          const sortedMoveMapItems = (res?.data && res.data['moveMapItems']) || [];
+
+          // Sort by itemNumber in ascending order
+          sortedMoveMapItems.sort((a, b) => {
+            return (a.itemNumber.trim() === '' ? 1 : 0) - (b.itemNumber.trim() === '' ? 1 : 0);
+          });
+          this.moveToDatasource = new MatTableDataSource(sortedMoveMapItems);
           this.totalRecordsTo = res?.data.recordsTotal;
           this.recordsFilteredTo = res?.data.recordsFiltered;
           this.customLabelTo = `Showing page ${this.totalRecords} of ${Math.ceil(this.totalRecords / this.recordsPerPage)}`;
         } else {
           res?.data && res.data && res.data['moveMapItems'].map((item : any) => item.isSelected = false);
-          this.dataSource = new MatTableDataSource(res?.data['moveMapItems']);
+          // this.dataSource = new MatTableDataSource(res?.data['moveMapItems']);
+          
+          const filteredData = res?.data['moveMapItems'].filter(item => item.itemNumber !== '');
+
+          // Initialize MatTableDataSource with filtered data
+          this.dataSource = new MatTableDataSource(filteredData);
           this.totalRecords = res?.data.recordsTotal;
           this.recordsFiltered = res?.data.recordsFiltered;
           this.customLabel = `Showing page ${this.totalRecords} of ${Math.ceil(this.totalRecords / this.recordsPerPage)}`;
@@ -322,6 +334,9 @@ export class MoveItemsComponent implements OnInit {
   }
 
   getMoveFromDetails(row, i?, type?) {
+
+    
+    
     let isMoveFromSelected = false;
     console.log(row)
 
@@ -368,6 +383,7 @@ export class MoveItemsComponent implements OnInit {
     } 
     else if (type === StringConditions.MoveFrom) 
     {
+      
       this.dataSource._data._value[i].isSelected = !this.dataSource._data._value[i].isSelected;
       this.isRowSelected = !this.isRowSelected;
       
@@ -619,6 +635,53 @@ export class MoveItemsComponent implements OnInit {
       this.isDedicated = false;
     }
     this.reqDate = new Date();
+  }
+
+
+  moveNow(){
+    let dialogRef: any = this.global.OpenDialog(ConfirmationDialogComponent, {
+      height: DialogConstants.auto,
+      width: Style.w786px,
+      autoFocus: DialogConstants.autoFocus,
+      disableClose: true,
+      data: {
+        message: ConfirmationMessages.ClickOkToUpdateLocation,
+        heading: ConfirmationHeadings.MoveNow,
+      },
+    });
+    dialogRef.afterClosed().subscribe((res) => {
+      if (res === ResponseStrings.Yes) {
+        
+    let payload = {
+      moveFromID: this.invMapmoveFromID,
+      moveToID: this.invMapmoveToID,
+      moveFromItemNumber: this.from_itemNo,
+      moveToItemNumber: this.to_itemNo,
+      moveToZone: this.from_zone,
+      moveQuantity: this.from_itemQuantity,
+      requestedDate: this.reqDate,
+      priority: this.from_priority,
+      dedicateMoveTo: this.dedicateMoveTo,
+      unDedicateMoveFrom: this.undedicateMoveFrom,
+      
+    };
+
+    this.iAdminApiService.MoveNow(payload).subscribe((res: any) => {
+
+      if(res.isExecuted){
+        this.global.ShowToastr(ToasterType.Success, 'Item moved successfully', ToasterTitle.Success);
+        this.resetPagination();
+      }
+      else{
+        this.global.ShowToastr(ToasterType.Error, res.responseMessage, ToasterTitle.Error);
+      }
+    })
+      }
+    });
+
+
+    
+
   }
 
   callCreateMoveTrans() {

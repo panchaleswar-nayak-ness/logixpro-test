@@ -374,11 +374,13 @@ export class ApiFuntions {
   public CreateMoveTransactions(Body: any): Observable<any> {
     return this.ApiBase.Post("/Admin/movetransactions", Body);
   }
-
-  public CycleCountQueueInsert(Body: any): Observable<any> {
-    return this.ApiBase.Post("/Admin/cyclecountqueue", Body);
+  public MoveNow(Body:any): Observable<any> {
+    return this.ApiBase.Post("/Admin/movenow",Body);
   }
+  public CycleCountQueueInsert(Body:any): Observable<any> {
+    return this.ApiBase.Post("/Admin/cyclecountqueue",Body);
 
+  }
   public BatchResultTable(Body: any): Observable<any> {
     return this.ApiBase.Post("/Admin/batchresult", Body);
   }

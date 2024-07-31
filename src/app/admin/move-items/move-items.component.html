@@ -70,9 +70,14 @@
         </mat-card>
     </div>
 </div>
-<div class="d-flex justify-content-end pt-3">
+<div class="d-flex gap-12 mt-3" mat-dialog-actions>
+    <button  mat-stroked-button class="btn-lg" style="background-color: white;" color="primary"  [disabled]="!isValidateMove" (click)="validateMove()">
+        Create Move Transactions
+    </button>
+    <button mat-flat-button color="primary"  class="btn-lg btn-create" [disabled]="!isValidateMove" (click)="moveNow()">Move Now</button>
+<!-- <div class="d-flex justify-content-end pt-3">
     <button mat-flat-button color="primary" [disabled]="!isValidateMove" class="btn-lg btn-create" (click)="validateMove()">Create Move Transactions</button>
-</div>
+</div> -->
 
 
 <app-table-context-menu-component *ngIf="isActiveTrigger"  (optionSelected)="optionSelected($event)" [componentName]="'moveItem'"></app-table-context-menu-component>
