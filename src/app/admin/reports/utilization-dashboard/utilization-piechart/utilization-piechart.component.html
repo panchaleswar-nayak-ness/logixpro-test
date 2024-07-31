@@ -1,0 +1,53 @@
+<div class="row g-4">
+<ng-container *ngFor="let item of statusData; let i = index">
+  <div class=" col-6">
+  <mat-card class="mat-elevation-z g-card mb-4">
+    <div class="mb-3">
+    <app-icon-heading-component icon="data_usage" heading="Carousel {{ item.carousel }}"></app-icon-heading-component>
+  </div>
+    <mat-card-content>
+      <div class="row d-flex align-items-center">
+        <div class="col-8">
+          
+          <div class="d-md-flex gap-12 d-block card px-3 pt-3 pb-2">
+            <div class="d-flex gap-12 align-items-center flex-wrap"><h6 class="text-tertiary-900 m-0"><b>Carousel Status</b></h6></div>
+            <div class="row g-2">
+            <div class="progress-container">
+              <mat-progress-bar
+      mode="determinate"
+      [value]="item.utilizedPercentage"
+      [ngClass]="getUtilizationClass(item.utilizedPercentage)">
+    </mat-progress-bar>
+              <div class="progress-text">{{ item.utilizedPercentage }}%</div>
+          </div> 
+        </div>
+        </div>          
+        </div>
+        <div class="col-4">
+          <div class="d-md-flex gap-12 d-block card px-3 pt-3 pb-2">
+            <div>
+              <h6 class="text-tertiary-900"><b>Total Locations</b></h6>
+              <div class="d-flex gap-20 justify-content-center flex-wrap">
+                <div class="customer text-center">
+                  <app-stats-circle [value]="item.totalLocations.toString()" title="Lines"></app-stats-circle>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+      </div>
+      
+    
+
+  
+
+  <div #chartContainer>
+    <div [ngClass]="'chart-' + i" style="height: 400px; width: 100%;"></div>
+  </div>
+
+</mat-card-content>
+</mat-card>
+</div>
+</ng-container>
+</div>

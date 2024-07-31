@@ -18,6 +18,7 @@ import { AdminPreferencesComponent } from './admin-preferences/admin-preferences
 import { EventLogComponent } from '../order-manager/event-log/event-log.component';
 import { DeAllocateOrdersComponent } from './de-allocate-orders/de-allocate-orders.component';
 import { ReportsComponent } from './reports/reports.component';
+import { UtilizationDashboardComponent } from './reports/utilization-dashboard/utilization-dashboard.component';
 
 const routes: Routes = [
   { path: '', component: AdminComponent,
@@ -38,6 +39,11 @@ const routes: Routes = [
     canActivate: [AuthGuardGuard],
   },
   {
+    path: 'inventoryMaster/utilize',
+    component: UtilizationDashboardComponent,
+    canActivate: [AuthGuardGuard],
+  },
+  {
     path: 'inventoryMaster/:itemNumber',
     component: InventoryMasterComponent,
     canActivate: [AuthGuardGuard],
@@ -49,6 +55,7 @@ const routes: Routes = [
     canDeactivate: [ConfirmationGuard],
     data: {title: 'Inventory Master'}
   },
+
   {
     path: 'batchManager',
     component: BatchManagerComponent,
@@ -107,6 +114,11 @@ const routes: Routes = [
   {
     path: 'reports',
     component: ReportsComponent,
+     canActivate: [AuthGuardGuard],
+  },
+  {
+    path: 'reports/utilize',
+    component: UtilizationDashboardComponent,
      canActivate: [AuthGuardGuard],
   },
   

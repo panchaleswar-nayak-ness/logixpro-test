@@ -217,6 +217,8 @@ export interface IAdminApiService {
 
   getZones()
 
+  getZoneData(payload:any)
+
   updateEmployeeZone(payload: any);
 
   deleteEmployeeZone(payload: any);

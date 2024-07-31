@@ -920,6 +920,11 @@ export class AdminApiService implements IAdminApiService {
     return this.Api.getZones()
   }
 
+  public getZoneData(body:any) {
+    
+    return this.Api.getZoneData(body)
+  }
+
   public updateEmployeeZone(body: any) {
     const payload = {
       username: this.userData.userName,

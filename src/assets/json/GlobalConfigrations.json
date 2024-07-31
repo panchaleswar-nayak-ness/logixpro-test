@@ -33,6 +33,10 @@
         "Permission": "Inventory"
     },
     {
+        "path": "/admin/inventoryMaster/utilize",
+        "Permission": "Inventory"
+    },
+    {
         "path": "/admin/inventoryMap",
         "Permission": "Inventory Map"
     },
@@ -42,6 +46,10 @@
     },
     {
         "path": "/admin/Reports",
+        "Permission": "Reports"
+    }, 
+      {
+        "path": "/admin/reports/utilize",
         "Permission": "Reports"
     }, 
     {

@@ -1,0 +1,44 @@
+.progress-container {
+    position: relative;
+    width: 100%;
+  }
+  
+  mat-progress-bar {
+    width: 100%;
+  }
+  
+  .progress-text {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: #f0f0f0; /* Adjust the color as needed */
+    font-weight: bold;
+    pointer-events: none; /* Ensure text doesn't interfere with interactions */
+  }
+  
+  .mat-progress-bar {
+    display: block;
+    height: 20px;
+border-radius: 6px;
+}
+
+::ng-deep .very-low-utilization .mat-progress-bar-fill::after {
+  background-color: #1D865C !important; /* Example color */
+}
+
+::ng-deep .low-utilization .mat-progress-bar-fill::after {
+  background-color: #12CA80 !important; /* Example color */
+}
+
+::ng-deep .medium-utilization .mat-progress-bar-fill::after {
+  background-color: #FFC458 !important; /* Example color */
+}
+
+::ng-deep .high-utilization .mat-progress-bar-fill::after {
+  background-color: #F89500 !important; /* Example color */
+}
+
+::ng-deep .very-high-utilization .mat-progress-bar-fill::after {
+  background-color: #DE2654 !important; /* Example color */
+}

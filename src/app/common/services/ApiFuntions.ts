@@ -1130,6 +1130,10 @@ export class ApiFuntions {
     return this.ApiBase.Get(`/Admin/zones`);
   }
 
+  public getZoneData(Body: any): Observable<any> {
+    return this.ApiBase.Get(`/zoned/${Body}`);
+  }
+
   public updateEmployeeZone(Body: any): Observable<any> {
     return this.ApiBase.Put(`/Admin/employee/zone`, Body);
   }

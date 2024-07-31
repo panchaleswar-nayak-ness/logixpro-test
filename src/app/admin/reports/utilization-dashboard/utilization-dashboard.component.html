@@ -1,0 +1,11 @@
+
+<div class="container-fluid">
+  <div class="row g-4">
+  <app-utilization-header [zones]="zones" (backButtonClicked)="navigateBasedOnCondition()"  (zoneSelected)="getRequiredZone($event)"></app-utilization-header>
+  </div>
+
+    <div>
+      <app-utilization-piechart   [statusData]="pieChartData"></app-utilization-piechart>
+    </div>
+  
+</div>
