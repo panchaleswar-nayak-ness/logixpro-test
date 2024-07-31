@@ -110,6 +110,7 @@ export interface IAdminApiService
       submitControlResponse(payload : any);
       insertUserGroup(payload : any);   
       getZones() 
+      getZoneData(payload:any)
       updateEmployeeZone(payload : any); 
       deleteEmployeeZone(payload : any); 
       insertAllAccess(payload : any);  
