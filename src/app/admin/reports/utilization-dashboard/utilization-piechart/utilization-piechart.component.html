@@ -16,16 +16,17 @@
                 </div>
                 <div class="row g-2">
                   <div class="progress-container">
-                   
                     <mat-progress-bar mode="determinate" [value]="item.usedPercentage"
-                      [ngClass]="getUtilizationClass(item.usedPercentage)">
+                                      [ngClass]="getUtilizationDetails(item.usedPercentage).class">
                     </mat-progress-bar>
-                    <div class="progress-text">{{ item.usedPercentage }}%</div>
-                    <div class="progress-labels">
-                      <span class="text-tertiary-900 text-12 bold">Usable</span>
-                      <span class="text-tertiary-900 text-12 bold">Unusable</span>
+                    <div class="progress-text" [ngStyle]="{'color': getUtilizationDetails(item.usedPercentage).color}">
+                        {{ item.usedPercentage }}%
                     </div>
-                  </div>
+                    <div class="progress-labels">
+                        <span class="text-tertiary-900 text-12 bold">Usable</span>
+                        <span class="text-tertiary-900 text-12 bold">Unusable</span>
+                    </div>
+                </div>
                 </div>
               </div>
             </div>

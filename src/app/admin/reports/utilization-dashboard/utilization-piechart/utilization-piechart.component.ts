@@ -30,21 +30,23 @@ export class UtilizationPiechartComponent implements OnChanges {
     }
   }
 
-  getUtilizationClass(usedPercentage: number): string {
-    if (usedPercentage <= 50) {
-      return 'very-low-utilization'; 
-    } else if (usedPercentage > 50 && usedPercentage < 70) {
-      return 'low-utilization'; 
-    } else if (usedPercentage >= 70 && usedPercentage < 80) {
-      return 'medium-utilization'; 
-    } else if (usedPercentage >= 80 && usedPercentage < 90) {
-      return 'high-utilization'; 
-    } else if (usedPercentage >= 90) {
-      return 'very-high-utilization'; 
+
+
+  getUtilizationDetails(percentage: number): { class: string, color: string } {
+    if (percentage <= 50) {
+        return { class: 'very-low-utilization', color: '#FFFFFF' };
+    } else if (percentage > 50 && percentage < 70) {
+        return { class: 'low-utilization', color: '#000000' };
+    } else if (percentage >= 70 && percentage < 80) {
+        return { class: 'medium-utilization', color: '#000000' };
+    } else if (percentage >= 80 && percentage < 90) {
+        return { class: 'high-utilization', color: '#FFFFFF' };
+    } else if (percentage >= 90) {
+        return { class: 'very-high-utilization', color: '#FFFFFF' };
     } else {
-      return 'default-utilization'; 
+        return { class: 'very-low-utilization', color: '#FFFFFF' };
     }
-  }
+}
   
 
   initCharts(): void {
