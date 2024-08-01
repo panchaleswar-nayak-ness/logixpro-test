@@ -13,7 +13,6 @@ import { GlobalService } from 'src/app/common/services/global.service';
 export class UtilizationDashboardComponent implements OnInit {
   zones: string[] = [];
   pieChartData: pieChartData[] = [];
-  errorMessage: string | null = null; // Property for storing error messages
 
   constructor(private router: Router, public adminApiService: AdminApiService, public global: GlobalService) {}
 
@@ -29,13 +28,13 @@ export class UtilizationDashboardComponent implements OnInit {
     });
   }
 
-  getRequiredZone(zone: any) {
+  getRequiredZone(zone: string) {
     this.adminApiService.getZoneData(zone).subscribe({
-      next: (res: any) => {
+      next: (res: pieChartData[]) => {
         this.pieChartData = res.map((item: any) => {
           return {
             ...item,
-            utilizedPercentage: Math.floor(item.utilizedPercentage)
+            usedPercentage: Math.floor(item.usedPercentage)
           };
         });
       },
@@ -53,13 +52,11 @@ export class UtilizationDashboardComponent implements OnInit {
         this.router.navigate(['/admin/reports']).catch(err => {
           console.error('Navigation error:', err);
         });
-      } else if (currentUrl.includes('admin/inventoryMaster/utilize')) {
+      } else if (currentUrl.includes('admin/inventoryMaster/utilizationDashboard')) {
         this.router.navigate(['/admin/inventoryMaster']).catch(err => {
           console.error('Navigation error:', err);
         });
-      } else {
-        // Default navigation or other conditions
-      }
+      } 
     } catch (err) {
       console.error('Error in navigation logic:', err);
     }

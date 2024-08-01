@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 
 @Component({
   selector: 'app-utilization-header',
@@ -9,10 +9,6 @@ export class UtilizationHeaderComponent  {
   @Input() zones: string[];
   @Output() backButtonClicked = new EventEmitter<void>();
   @Output() zoneSelected = new EventEmitter<string>();
-
-  
-
-
 
   onBackButtonClick() {
     this.backButtonClicked.emit();

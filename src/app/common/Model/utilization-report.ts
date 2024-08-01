@@ -1,10 +1,10 @@
 export class pieChartData{
     carousel :string
     totalLocations :number
-    utilizedLocations :number
+    usedLocation :number
     emptyLocations :number
     totalDedicated :number
     totalDedicatedWithEmptyItemQuantity :number
-    utilizedPercentage :number
+    usedPercentage :number
     emptyPercentage :number
 }
