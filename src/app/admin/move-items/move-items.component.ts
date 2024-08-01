@@ -166,7 +166,7 @@ export class MoveItemsComponent implements OnInit {
 
   ngOnInit(): void {
     
-    this.getMoveItemList(StringConditions.MoveFrom);
+   
     this.itemNumberSearch
       .pipe(debounceTime(400), distinctUntilChanged())
       .subscribe((value) => {
@@ -232,11 +232,15 @@ export class MoveItemsComponent implements OnInit {
         this.viewModeTo = ResponseStrings.AllCaps;
       } else if (unselectFrom) {
         this.viewModeTo = ResponseStrings.AllCaps;
-      } else {
+      }
+      else if(searchColumn==''){
+        this.viewModeTo = ResponseStrings.AllCaps;
+      }
+     else {
         this.viewModeTo = 'NOA';
       }
     }
-  
+ 
     let payload = {
       draw: 1,
       StartRow: tableName === StringConditions.MoveFrom ? this.startRow : this.startRowTo,
@@ -247,11 +251,15 @@ export class MoveItemsComponent implements OnInit {
       sortOrder: tableName === StringConditions.MoveFrom ? this.sortOrder : this.sortOrderTo,
       tableName: tableName,
       cellSize: this.from_cellSize,
-      warehouse: this.seletedWarehouse,
+      warehouse: this.seletedWarehouse|| '',
       invMapid: tableName === StringConditions.MoveFrom ? this.invMapID : this.invMapIDToItem,
       viewMode: tableName === StringConditions.MoveFrom ? this.viewMode : this.viewModeTo,
       filter: tableName === StringConditions.MoveFrom ? this.moveFromFilter : this.moveToFilter,
     };
+
+    if(payload.searchString == "" && !this.isRowSelected){
+      payload.viewMode = ResponseStrings.AllCaps
+    }
   
     this.iAdminApiService.GetMoveItemsTable(payload).subscribe((res: any) => {
       if (res.isExecuted) {
@@ -376,6 +384,7 @@ export class MoveItemsComponent implements OnInit {
   }
   selectedWarehouse(event){
     this.seletedWarehouse=event;
+    
     this.getMoveItemList(StringConditions.MoveFrom        );
     console.log("events",this.seletedWarehouse);
     
@@ -416,7 +425,6 @@ export class MoveItemsComponent implements OnInit {
 
   getMoveFromDetails(row, i?, type?) {
 
-    
     
     let isMoveFromSelected = false;
     console.log(row)
@@ -517,13 +525,13 @@ export class MoveItemsComponent implements OnInit {
         return;
       } else if (row.quantityAllocatedPick > 0) {
         this.from_itemQuantity = this.maxMoveQty;
-        this.openAlertDialog('MoveCap', this.maxMoveQty);
+        this.openAlertDialog('MoveCap',"",this.maxMoveQty);
       } else this.from_itemQuantity = this.maxMoveQty;
       this.getMoveItemList(StringConditions.MoveTo);
     }
   }
 
-  openAlertDialog(type, maxMoveQty?, callback?) {
+  openAlertDialog(type, flag: string = "", maxMoveQty?, callback?) {
     let message = '';
     let isDisableButton = true;
     let buttonFields = false;
@@ -597,22 +605,21 @@ export class MoveItemsComponent implements OnInit {
         if (type === 'Dedicate') {
           if (result) {
             this.dedicateMoveTo = true;
-            this.openAlertDialog('Un-Dedicate');
+            this.openAlertDialog('Un-Dedicate',flag);
           } else {
             this.dedicateMoveTo = false;
-            this.openAlertDialog('Un-Dedicate');
+            this.openAlertDialog('Un-Dedicate',flag);
           }
         }
 
         if (type === 'Un-Dedicate') {
           if (result) {
             this.undedicateMoveFrom = true;
-
-            this.callCreateMoveTrans();
+            flag ? this.callMoveNow() : this.callCreateMoveTrans();
           } else {
             this.undedicateMoveFrom = false;
 
-            this.callCreateMoveTrans();
+            flag ? this.callMoveNow() : this.callCreateMoveTrans();
           }
         }
       } else if (!this.isDedicated && this.moveFromDedicated === 'Dedicated') {
@@ -620,11 +627,11 @@ export class MoveItemsComponent implements OnInit {
         if (result) {
           this.undedicateMoveFrom = true;
 
-          this.callCreateMoveTrans();
+          flag ? this.callMoveNow() : this.callCreateMoveTrans();
         } else {
           this.undedicateMoveFrom = false;
 
-          this.callCreateMoveTrans();
+          flag ? this.callMoveNow() : this.callCreateMoveTrans();
         }
       } else if (
         this.isDedicated &&
@@ -634,11 +641,11 @@ export class MoveItemsComponent implements OnInit {
         if (result) {
           this.dedicateMoveTo = true;
 
-          this.callCreateMoveTrans();
+          flag ? this.callMoveNow() : this.callCreateMoveTrans();
         } else {
           this.dedicateMoveTo = false;
 
-          this.callCreateMoveTrans();
+          flag ? this.callMoveNow() : this.callCreateMoveTrans();
         }
       }
     });
@@ -654,12 +661,12 @@ export class MoveItemsComponent implements OnInit {
       return;
     } 
     else if (moveQty > this.maxMoveQty) {
-      this.openAlertDialog('MaxMove', this.maxMoveQty);
+      this.openAlertDialog('MaxMove',"",this.maxMoveQty);
       return;
     }
 
     if (this.isDedicated) {
-      this.openAlertDialog('Dedicate', null, (val) => {});
+      this.openAlertDialog('Dedicate',"", null, (val) => {});
       return;
     }
 
@@ -719,7 +726,7 @@ export class MoveItemsComponent implements OnInit {
   }
 
 
-  moveNow(){
+  callMoveNow(){
     let dialogRef: any = this.global.OpenDialog(ConfirmationDialogComponent, {
       height: DialogConstants.auto,
       width: Style.w786px,
@@ -750,6 +757,14 @@ export class MoveItemsComponent implements OnInit {
     this.iAdminApiService.MoveNow(payload).subscribe((res: any) => {
 
       if(res.isExecuted){
+        this.moveToFilter=UniqueConstants.OneEqualsOne;
+        this.moveFromFilter=UniqueConstants.OneEqualsOne;
+        this.tabIndex=0;
+        this.itemNumberSearch.next('');
+        this.getMoveItemList(StringConditions.MoveFrom);
+        this.getMoveItemList(StringConditions.MoveTo);
+        this.clearFields(StringConditions.MoveFrom)
+        this.clearFields(StringConditions.MoveTo)
         this.global.ShowToastr(ToasterType.Success, 'Item moved successfully', ToasterTitle.Success);
         this.resetPagination();
       }
@@ -763,6 +778,33 @@ export class MoveItemsComponent implements OnInit {
 
     
 
+  }
+
+  moveNow() {
+    let moveQty: any = this.from_itemQuantity;
+    this.dedicateMoveTo = false;
+    this.undedicateMoveFrom = false;
+
+    if (moveQty === '' || moveQty <= 0) {
+      this.openAlertDialog('ZeroQty');
+      return;
+    } 
+    else if (moveQty > this.maxMoveQty) {
+      this.openAlertDialog('MaxMove',"MoveNow", this.maxMoveQty);
+      return;
+    }
+
+    if (this.isDedicated) {
+      this.openAlertDialog('Dedicate',"MoveNow", null, (val) => {});
+      return;
+    }
+
+    if (this.moveFromDedicated === 'Dedicated') {
+      this.openAlertDialog('Un-Dedicate',"MoveNow");
+      return;
+    }
+
+    this.callMoveNow();
   }
 
   callCreateMoveTrans() {

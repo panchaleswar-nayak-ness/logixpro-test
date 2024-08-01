@@ -53,10 +53,10 @@ export class MoveLocationsComponent {
     this.adminApiService.getWarehouses().subscribe({
       next: (res: any) => {
         this.warehouses = res.data;
-        if (this.warehouses.length > 0) {
-          this.selectedWarehouse = this.warehouses[0];
-          this.selectedWarehouseEmit.emit( this.selectedWarehouse);
-        }
+        // if (this.warehouses.length > 0) {
+        //   this.selectedWarehouse = this.warehouses[0];
+        //   this.selectedWarehouseEmit.emit( this.selectedWarehouse);
+        // }
         console.log(res.data);
         
       },
@@ -82,6 +82,7 @@ export class MoveLocationsComponent {
 
   tabChanged(event) {
     this.tabChangedEmit.emit(event);
+    this.onChangeLocationEmit.emit(this.viewAll=false);
   }
 
   sortChange(event) {
