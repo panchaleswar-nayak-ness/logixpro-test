@@ -165,6 +165,8 @@ export class MoveItemsComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    
+    this.getMoveItemList(StringConditions.MoveFrom);
     this.itemNumberSearch
       .pipe(debounceTime(400), distinctUntilChanged())
       .subscribe((value) => {

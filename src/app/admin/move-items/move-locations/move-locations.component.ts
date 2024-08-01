@@ -43,7 +43,7 @@ export class MoveLocationsComponent {
   @Output() handlePageEventToEmit = new EventEmitter();
   @Output() itemNumberSearchEmit = new EventEmitter();
   @Output() activeTrigger = new EventEmitter<any>();
-  
+  selectedWarehouse: string;
   @Output() selectedWarehouseEmit= new EventEmitter<string>();
 
   constructor(
@@ -53,6 +53,10 @@ export class MoveLocationsComponent {
     this.adminApiService.getWarehouses().subscribe({
       next: (res: any) => {
         this.warehouses = res.data;
+        if (this.warehouses.length > 0) {
+          this.selectedWarehouse = this.warehouses[0];
+          this.selectedWarehouseEmit.emit( this.selectedWarehouse);
+        }
         console.log(res.data);
         
       },
