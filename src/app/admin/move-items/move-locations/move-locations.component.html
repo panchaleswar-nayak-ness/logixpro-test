@@ -9,36 +9,52 @@
             location</span>
     </div>
     <div class="card bg-light-blue bg-50 br-none px-4 py-4 br-20 mb-3">
-        <div class="d-flex g-mini-search-box gap-20 align-items-center w-100 flex-wrap">
-            <div class="search-box">
+        <div class="row g-2 g-mini-search-box align-items-center w-100 flex-wrap">
+            <div class="col-xl-6">
+                <div class="search-box">
 
 
-                <mat-form-field class="w-100 bg-white br-8" appearance="fill"
-                    [floatLabel]="getFloatLabelValue()" [hideRequiredMarker]="hideRequiredControl.value">
-                    <span class="material-symbols-outlined icon-search"> search </span>
-                    <input type="text" placeholder="Item No." aria-label="Number" matInput autoFocus
-                        [(ngModel)]='itemNo' maxlength="255" [matAutocomplete]="auto"
-                        (ngModelChange)="itemNumberSearch()">
-                        <button matSuffix *ngIf="itemNo != ''" class="clear-btn" (click)="clearItemNum()"><mat-icon class="text-20 text-chrome-600">cancel</mat-icon></button>
-                    <mat-autocomplete class="card custom-scroll panel-custom-scroll" #auto="matAutocomplete"
-                        (optionSelected)="searchData($event)">
-
-                        <h6 class="card-header matAutoCompHeader stickyHeader "><span>Item
-                                Number</span><span>Description</span> </h6>
-
-                        <mat-option *ngFor="let option of searchAutocompletItemNo"
-                            [value]="option.itemNumber" class="matAutoCompTableContent">
-                            <div class="loc_option">
-                                <span class="searchColumn">{{option.itemNumber}}</span><span [matTooltip]="option.description" matTooltipPosition="above" [matTooltipDisabled]="option.description && option.description.length>=29?false:true" >{{option.description}}</span>
-                            </div>
-                        </mat-option>
-                    </mat-autocomplete>
-                </mat-form-field>
-
-
-
+                    <mat-form-field class="w-100 bg-white br-8" appearance="fill"
+                        [floatLabel]="getFloatLabelValue()" [hideRequiredMarker]="hideRequiredControl.value">
+                        <span class="material-symbols-outlined icon-search"> search </span>
+                        <input type="text" placeholder="Item No." aria-label="Number" matInput autoFocus
+                            [(ngModel)]='itemNo' maxlength="255" [matAutocomplete]="auto"
+                            (ngModelChange)="itemNumberSearch()">
+                            <button matSuffix *ngIf="itemNo != ''" class="clear-btn" (click)="clearItemNum()"><mat-icon class="text-20 text-chrome-600">cancel</mat-icon></button>
+                        <mat-autocomplete class="card custom-scroll panel-custom-scroll" #auto="matAutocomplete"
+                            (optionSelected)="searchData($event)">
+    
+                            <h6 class="card-header matAutoCompHeader stickyHeader "><span>Item
+                                    Number</span><span>Description</span> </h6>
+    
+                            <mat-option *ngFor="let option of searchAutocompletItemNo"
+                                [value]="option.itemNumber" class="matAutoCompTableContent">
+                                <div class="loc_option">
+                                    <span class="searchColumn">{{option.itemNumber}}</span><span [matTooltip]="option.description" matTooltipPosition="above" [matTooltipDisabled]="option.description && option.description.length>=29?false:true" >{{option.description}}</span>
+                                </div>
+                            </mat-option>
+                        </mat-autocomplete>
+                    </mat-form-field>
+    
+    
+    
+                </div>
             </div>
-            <mat-checkbox [(ngModel)]="viewAll" color="primary" (change)="onChangeLocation($event)" [disabled]="!isViewAll">View All Locations</mat-checkbox>
+            <div class="col-xl-6">
+                <mat-form-field class="action-dropdown w-100 mb-3 mb-xl-0" appearance="outline" *ngIf="!isViewAll">
+                    <mat-label>Warehouse</mat-label>
+                    <mat-select class="employees-action" (selectionChange)="onWarehouseSelect($event.value)">
+                      <mat-option value=""></mat-option>
+                      <mat-option *ngFor="let item of warehouses" [value]="item">
+                        {{item}}
+                      </mat-option>
+                    </mat-select>
+                    <span class="material-symbols-outlined icon-expand-more">expand_more</span>
+                  </mat-form-field>
+                <mat-checkbox [(ngModel)]="viewAll" color="primary" (change)="onChangeLocation($event)" *ngIf="isViewAll">View All Locations</mat-checkbox>
+            </div>
+            
+            
         </div>
     </div>
     <div class="card p-4">

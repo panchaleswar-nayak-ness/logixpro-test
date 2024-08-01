@@ -927,7 +927,10 @@ export class AdminApiService implements IAdminApiService {
   public getZones() {
     return this.Api.getZones()
   }
-
+  //getWarehouses
+  public getWarehouses() {
+    return this.Api.getWarehouses()
+  }
   public getZoneData(body:any) {
     
     return this.Api.getZoneData(body)

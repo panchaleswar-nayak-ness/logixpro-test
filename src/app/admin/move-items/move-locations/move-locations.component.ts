@@ -1,7 +1,10 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { FloatLabelType } from '@angular/material/form-field';
+import { ToasterTitle, ToasterType } from 'src/app/common/constants/strings.constants';
 import { TableContextMenuService } from 'src/app/common/globalComponents/table-context-menu-component/table-context-menu.service';
+import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.service';
+import { GlobalService } from 'src/app/common/services/global.service';
 
 @Component({
   selector: 'app-move-locations',
@@ -13,6 +16,7 @@ export class MoveLocationsComponent {
   floatLabelControl = new FormControl('auto' as FloatLabelType);
   hideRequiredControl = new FormControl(false);
 
+  warehouses: string[] = [];
   @Input() itemSelected : boolean = false; 
   @Input() itemNo : string = "";
   @Input() viewAll : boolean = false;
@@ -40,11 +44,30 @@ export class MoveLocationsComponent {
   @Output() itemNumberSearchEmit = new EventEmitter();
   @Output() activeTrigger = new EventEmitter<any>();
   
+  @Output() selectedWarehouseEmit= new EventEmitter<string>();
 
   constructor(
-    private contextMenuService : TableContextMenuService
+    private contextMenuService : TableContextMenuService, public adminApiService: AdminApiService, public global: GlobalService
   ) { }
+  ngOnInit(): void {
+    this.adminApiService.getWarehouses().subscribe({
+      next: (res: any) => {
+        this.warehouses = res.data;
+        console.log(res.data);
+        
+      },
+      error: (err: any) => {
+        this.global.ShowToastr(ToasterType.Error, this.global.globalErrorMsg(), ToasterTitle.Error);
+        console.error('Error loading warehouses:', err);
+      }
+    });
+  }
 
+  onWarehouseSelect(warehouse: string) {
+    console.log(warehouse);
+    
+    this.selectedWarehouseEmit.emit(warehouse);
+  }
   getFloatLabelValue(): FloatLabelType {
     return this.floatLabelControl.value ?? 'auto';
   }

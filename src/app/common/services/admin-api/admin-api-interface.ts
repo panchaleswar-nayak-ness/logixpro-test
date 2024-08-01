@@ -109,6 +109,7 @@ export interface IAdminApiService
       deleteControlName(payload : any); 
       submitControlResponse(payload : any);
       insertUserGroup(payload : any);   
+      getWarehouses() 
       getZones() 
       getZoneData(payload:any)
       updateEmployeeZone(payload : any); 

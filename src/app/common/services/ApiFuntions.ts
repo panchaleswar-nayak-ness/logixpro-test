@@ -1131,6 +1131,9 @@ export class ApiFuntions {
   public getZones(): Observable<any> {
     return this.ApiBase.Get(`/Admin/zones`);
   }
+  public getWarehouses(): Observable<any> {
+    return this.ApiBase.Get(`/common/warehouses`);
+  }
 
   public getZoneData(Body: any): Observable<any> {
     return this.ApiBase.Get(`/zoned/${Body}`);
