@@ -78,7 +78,7 @@ export class SideNavComponent implements OnInit {
     { icon: 'tune', title: ' Preferences ', route: '/ConsolidationManager/Preferences', permission: 'Consolidation Mgr Admin' },
     // Vector (Stroke)
     { icon: 'analytics', title: 'Reporting ', route: '/ConsolidationManager/Reports', permission: 'Consolidation Mgr Admin' },
-    { icon: 'view_module', title: 'Order Status', route: '/ConsolidationManager/OrderStatus', paramsObj: { IsOrderStatus: true }, permission: 'Order Status' }
+    { icon: 'view_module', title: 'Order Status', route: '/ConsolidationManager/OrderStatus', paramsObj: { IsOrderStatus: true }, permission: AppPermissions.ConsolidationManager }
     //  flex_wrap
   ];
   inductionAdminMenus: any = [

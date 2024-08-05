@@ -56,9 +56,7 @@
           </div>
         </div>
   
-        <div class="col-xl-3 col-lg-6" 
-        [ngClass]="isAuthorized('Order Status') ? 'isDivDisabled' : ''"
-        >
+        <div class="col-xl-3 col-lg-6">
           <div matRipple [matRippleColor]="tabHoverColor" class="main-section-option bg-white"
           routerLink="/ConsolidationManager/OrderStatus" [queryParams]="{IsOrderStatus:true}" >
             <a class="main-section-option-link" href="#"></a>

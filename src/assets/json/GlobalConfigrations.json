@@ -138,7 +138,7 @@
     },
     {
         "path": "/OrderManager",
-        "Permission": "Admin Release Orders"
+        "Permission": true
     },
     {
         "path": "/OrderManager/OrderStatus",
@@ -146,7 +146,7 @@
     },
     {
         "path": "/ConsolidationManager/OrderStatus",
-        "Permission": "Order Status"
+        "Permission": true
     },
     {
         "path": "/OrderManager/InventoryMaster",
