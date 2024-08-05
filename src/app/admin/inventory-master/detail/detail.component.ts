@@ -202,7 +202,7 @@ export class DetailComponent implements OnInit {
     else{
       this.router.navigate([]).then(() => {
         let url = '/#/admin/transaction?itemNumber=' + this.details.controls['itemNumber'].value + '&type='+ type.toString().replace(/\+/gi, '%2B');
-        window.open(url, UniqueConstants._blank);
+        window.open(url, UniqueConstants._self);
       });
     }
   }
