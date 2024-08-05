@@ -729,7 +729,7 @@ export class MoveItemsComponent implements OnInit {
   callMoveNow(){
     let dialogRef: any = this.global.OpenDialog(ConfirmationDialogComponent, {
       height: DialogConstants.auto,
-      width: Style.w786px,
+      width: Style.w560px,
       autoFocus: DialogConstants.autoFocus,
       disableClose: true,
       data: {
