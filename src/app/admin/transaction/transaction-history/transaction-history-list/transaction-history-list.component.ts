@@ -17,9 +17,10 @@ import { IAdminApiService } from 'src/app/common/services/admin-api/admin-api-in
 import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.service';
 import { GlobalService } from 'src/app/common/services/global.service';
 import { TableContextMenuService } from 'src/app/common/globalComponents/table-context-menu-component/table-context-menu.service';
-import { Column, DialogConstants, StringConditions, TableName, ToasterMessages, ToasterTitle, ToasterType, UniqueConstants } from 'src/app/common/constants/strings.constants';
-import { RouteNames } from 'src/app/common/constants/menu.constants';
+import { Column, ColumnDef, DialogConstants, localStorageKeys, StringConditions, TableName, ToasterMessages, ToasterTitle, ToasterType, UniqueConstants } from 'src/app/common/constants/strings.constants';
+import { AppNames, AppRoutes, RouteNames, RouteUpdateMenu } from 'src/app/common/constants/menu.constants';
 import { DatePipe } from '@angular/common';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-transaction-history-list',
@@ -175,6 +176,7 @@ export class TransactionHistoryListComponent implements OnInit, AfterViewInit {
     private global: GlobalService,
     private sharedService: SharedService,
     private filterService: ContextMenuFiltersService, 
+    private router: Router,
   ) {
     this.filterService.filterString= "";
     this.userData = this.authService.userData();
@@ -223,6 +225,8 @@ export class TransactionHistoryListComponent implements OnInit, AfterViewInit {
         }
       })
     );
+
+    this.spliUrl = this.router.url.split('/');
   }
 
   clearMatSelectList(){
@@ -275,6 +279,7 @@ export class TransactionHistoryListComponent implements OnInit, AfterViewInit {
         this.displayedColumns = this.TRNSC_DATA;
         if (res.data) {
           this.columnValues = res.data;
+          this.columnValues.push(ColumnDef.Actions);
           this.getContentData();
         } else this.global.ShowToastr(ToasterType.Error, ToasterMessages.SomethingWentWrong, ToasterTitle.Error);
       }
@@ -418,5 +423,12 @@ export class TransactionHistoryListComponent implements OnInit, AfterViewInit {
   clear(){
     this.columnSearch.searchValue = ''
     this.getContentData()
+  }
+
+  spliUrl;
+
+  viewInInventoryMaster(row) {
+    localStorage.setItem(localStorageKeys.TransactionTabIndex,"2");
+    this.router.navigate([]).then(() => { window.open(`/#${AppRoutes.AdminInventoryMaster}?itemNumber=${row.itemNumber}`, UniqueConstants._self); });
   }
 }

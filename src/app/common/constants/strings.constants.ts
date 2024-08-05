@@ -3,7 +3,8 @@ export const StringAssignments = {
 };
 
 export const localStorageKeys = {
-    UserRights : 'userRights'
+    UserRights : 'userRights',
+    TransactionTabIndex: 'TransactionTabIndex'
 }
 
 export const TransactionType = {
@@ -316,7 +317,8 @@ export const ColumnDef= {
     SerialNumber:'Serial Number',
     Bin:'bin',
     Warehouse:'Warehouse',
-    RequiredDate:'requiredDate'
+    RequiredDate:'requiredDate',
+    actions:'actions'
 }
 
 export const Case = {

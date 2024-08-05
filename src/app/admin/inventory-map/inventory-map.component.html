@@ -80,7 +80,7 @@
                 </tr>
 
                 <mat-header-row *matHeaderRowDef="columnValues;sticky: true"  class="border"></mat-header-row>
-                <mat-row *matRowDef="let row; columns: columnValues;" (click)="selectRow(row)"></mat-row>
+                <mat-row *matRowDef="let row; columns: columnValues;" (dblclick)="viewInInventoryMaster(row)" (click)="selectRow(row)"></mat-row>
               </table>
             </ng-scrollbar>
           </div>

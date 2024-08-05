@@ -124,22 +124,28 @@
 
                                 <ng-container [matColumnDef]="col.colDef"
                                     *ngFor="let col of displayedColumns; let indexOfelement=index;">
-
                                     <th class="header header-custom-style" mat-header-cell *cdkHeaderCellDef mat-sort-header
                                         (sortActionDescription)="indexOfelement">
                                         {{ col.colDef }}
-
                                     </th>
-
                                     <td *matCellDef="let element; let i = index" class="cell-custom-style"
                                          #tooltip="matTooltip" [matTooltip]="element[col.colHeader]"
                                         matTooltipPosition="above"
                                         [matTooltipDisabled]="element[col.colHeader] && element[col.colHeader].length>=25?false:true">
-
                                         {{element[col.colHeader] }}</td>
-
                                 </ng-container>
 
+                                <ng-container matColumnDef="actions" stickyEnd>
+                                    <th mat-header-cell *matHeaderCellDef class="custom-header-cell"></th>
+                                    <td mat-cell *matCellDef="let seletedRecord" class="custom-cell">
+                                        <button mat-icon-button [matMenuTriggerFor]="appMenu" class="circle-icon-o" appearance="outline">
+                                            <mat-icon>more_horiz</mat-icon>
+                                        </button>
+                                        <mat-menu #appMenu="matMenu">
+                                            <button mat-menu-item (click)="viewInInventoryMaster(seletedRecord)">View Item in Inventory Master</button>
+                                        </mat-menu>
+                                    </td>
+                                </ng-container>
 
                                 <tr class="mat-row w-100" *matNoDataRow
                                     [attr.colspan]="displayedColumns && displayedColumns.length">
@@ -149,7 +155,7 @@
                                 </tr>
                                 <tr mat-header-row *matHeaderRowDef="columnValues; sticky: true"></tr>
                                 <tr mat-row [class.selected]="rowClicked == row.id"
-                                    *matRowDef="let row; columns: columnValues;"
+                                    *matRowDef="let row; columns: columnValues;" (dblclick)="viewInInventoryMaster(row)"
                                     (click)="getTransaction(row);changeTableRowColor(row.id);getTransactionInfo(false)">
                                 </tr>
 

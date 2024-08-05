@@ -7,7 +7,7 @@ import { AuthService } from 'src/app/common/init/auth.service';
 import { IAdminApiService } from 'src/app/common/services/admin-api/admin-api-interface';
 import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.service';
 import { GlobalService } from 'src/app/common/services/global.service';
-import { ToasterTitle, ToasterType, TableConstant} from 'src/app/common/constants/strings.constants';
+import { ToasterTitle, ToasterType, TableConstant, localStorageKeys} from 'src/app/common/constants/strings.constants';
 import { AppRoutes, RouteUpdateMenu } from 'src/app/common/constants/menu.constants';
 
 @Component({
@@ -43,8 +43,17 @@ export class TransactionComponent implements OnInit, AfterViewInit {
     private global : GlobalService,
   ) { 
     this.iAdminApiService = adminApiService;
+    let transTabIndex:string | null = localStorage.getItem(localStorageKeys.TransactionTabIndex);
     if(router.url == AppRoutes.OrderManagerOrderStatus) this.tabIndex = 0;
-    else if(router.url == AppRoutes.AdminTrans) this.tabIndex = 1;
+    else if(router.url == AppRoutes.AdminTrans){
+      if(transTabIndex){
+        this.tabIndex = parseInt(transTabIndex);
+        localStorage.removeItem(localStorageKeys.TransactionTabIndex);
+      }
+      else{
+        this.tabIndex = 1;  
+      }
+    } 
   }
 
   ngAfterViewInit() {

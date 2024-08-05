@@ -17,6 +17,8 @@ import { GlobalService } from 'src/app/common/services/global.service';
 import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.service';
 import { IAdminApiService } from 'src/app/common/services/admin-api/admin-api-interface';
 import { Column, DialogConstants, StringConditions, TableName, ToasterMessages, ToasterTitle, ToasterType ,TableConstant,zoneType,ColumnDef,Style,UniqueConstants,FilterColumnName} from 'src/app/common/constants/strings.constants';
+import { Router } from '@angular/router';
+import { AppNames, AppRoutes, RouteUpdateMenu } from 'src/app/common/constants/menu.constants';
 
 
 @Component({
@@ -188,6 +190,7 @@ export class ReprocessTransactionComponent implements OnInit {
   floatLabelControlColumn = new FormControl('auto' as FloatLabelType);
   hideRequiredFormControl = new FormControl(false);
   searchByColumn = new Subject<string>();
+  spliUrl;
 
   public iAdminApiService: IAdminApiService;
 
@@ -195,7 +198,8 @@ export class ReprocessTransactionComponent implements OnInit {
     private authService: AuthService,
     private global:GlobalService,
     private sharedService: SharedService,
-    public adminApiService: AdminApiService
+    public adminApiService: AdminApiService,
+    private router: Router,
   ) {
     this.iAdminApiService = adminApiService;
   }
@@ -232,6 +236,17 @@ export class ReprocessTransactionComponent implements OnInit {
       })
     );
     this.dataSource.paginator = this.paginator;
+    this.spliUrl=this.router.url.split('/');
+  }
+
+  viewInInventoryMaster(row) {
+    localStorage.setItem("prevTab","/admin/transaction");
+    if(this.spliUrl[1] == AppNames.OrderManager) this.router.navigate([]).then(() => window.open(`/#/OrderManager/InventoryMaster?itemNumber=${row.itemNumber}`, UniqueConstants._self));
+    else if(this.spliUrl[1] == AppNames.InductionManager) window.open(`/#${AppRoutes.InductionManagerAdminInvMap}?itemNumber=${row.itemNumber}`, UniqueConstants._self);
+    else {
+      localStorage.setItem(RouteUpdateMenu.RouteFromInduction,'false')
+      this.router.navigate([]).then(() => { window.open(`/#${AppRoutes.AdminInventoryMaster}?itemNumber=${row.itemNumber}`, UniqueConstants._self); });
+    }   
   }
 
   clearDelete(showOptions = "")
@@ -664,6 +679,7 @@ export class ReprocessTransactionComponent implements OnInit {
         this.displayedColumns = this.TRNSC_DATA;
         if (res.data) {
           this.columnValues = res.data;
+          // this.columnValues.push(ColumnDef.Actions);
           this.getContentData();
         } else {
           this.global.ShowToastr(ToasterType.Error, ToasterMessages.SomethingWentWrong, ToasterTitle.Error);

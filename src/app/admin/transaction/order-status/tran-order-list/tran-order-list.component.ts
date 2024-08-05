@@ -17,8 +17,8 @@ import {GlobalService} from 'src/app/common/services/global.service';
 import {IAdminApiService} from 'src/app/common/services/admin-api/admin-api-interface';
 import {AdminApiService} from 'src/app/common/services/admin-api/admin-api.service';
 import { TableContextMenuService } from 'src/app/common/globalComponents/table-context-menu-component/table-context-menu.service';
-import { Column, DialogConstants, StringConditions, ToasterTitle, ToasterType ,TableConstant,LiveAnnouncerMessage,zoneType,ColumnDef,Style,UniqueConstants,FilterColumnName} from 'src/app/common/constants/strings.constants';
-import { AppRoutes, RouteNames } from 'src/app/common/constants/menu.constants';
+import { Column, DialogConstants, StringConditions, ToasterTitle, ToasterType ,TableConstant,LiveAnnouncerMessage,zoneType,ColumnDef,Style,UniqueConstants,FilterColumnName, localStorageKeys} from 'src/app/common/constants/strings.constants';
+import { AppNames, AppRoutes, RouteNames, RouteUpdateMenu } from 'src/app/common/constants/menu.constants';
 
 @Component({
   selector: 'app-tran-order-list',
@@ -126,6 +126,7 @@ export class TranOrderListComponent implements OnInit, AfterViewInit {
     ColumnDef.HostTransactionId,
     UniqueConstants.emergency,
     'id',
+    ColumnDef.actions
   ];
 
   public dataSource: any = new MatTableDataSource();
@@ -217,6 +218,8 @@ export class TranOrderListComponent implements OnInit, AfterViewInit {
 
   public priority = false;
   shippingComplete = false;
+
+  spliUrl;
 
   public iAdminApiService: IAdminApiService;
 
@@ -550,6 +553,7 @@ export class TranOrderListComponent implements OnInit, AfterViewInit {
 
   ngAfterViewInit() {
     this.dataSource.paginator = this.paginator;
+    this.spliUrl = this.router.url.split('/');
   }
 
   ngOnDestroy() {
@@ -612,5 +616,10 @@ export class TranOrderListComponent implements OnInit, AfterViewInit {
 
   previewReport(){
     window.open(`/#/report-view?file=OrderStatus-lst-prv|field:Order Number|exptype:=|expone:${this.orderNo}|exptwo:`, UniqueConstants._blank, 'width=' + screen.width + ',height=' + screen.height + ',toolbar=0,menubar=0,location=0,status=1,scrollbars=1,resizable=1,left=0,top=0')
+  }
+
+  viewInInventoryMaster(row) {
+    localStorage.setItem(localStorageKeys.TransactionTabIndex,"0");
+    this.router.navigate([]).then(() => { window.open(`/#${AppRoutes.AdminInventoryMaster}?itemNumber=${row.itemNumber}`, UniqueConstants._self); });
   }
 }

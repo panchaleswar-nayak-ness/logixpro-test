@@ -135,3 +135,16 @@ table tr.selected {
 .min-h-100px{
   min-height: 100px;
 }
+
+.custom-header-cell {
+  border: 0;
+  height: 67px;
+  padding-left: 65px;
+  border-bottom: 1px solid var(--clr-tertiary-50);
+}
+
+.custom-cell {
+  border: 0;
+  padding-left: 24px;
+  background: var(--clr-pure-white);
+}
