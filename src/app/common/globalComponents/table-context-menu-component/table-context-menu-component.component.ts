@@ -89,7 +89,8 @@ export class TableContextMenuComponentComponent implements OnInit{
       data:{
         FilterColumnName: FilterColumnName,
         Condition: Condition,
-        TypeOfElement:TypeOfElement
+        TypeOfElement:TypeOfElement,
+        butttonText:"Filter"
       },
       autoFocus: DialogConstants.autoFocus,
       disableClose:true,
