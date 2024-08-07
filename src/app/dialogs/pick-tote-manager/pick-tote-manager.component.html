@@ -228,7 +228,7 @@
                           <td mat-cell *matCellDef="let element">
                             <div class="pe-2">
                               <mat-form-field class="custom-form-field w-80" appearance="outline"  >
-                                <input matInput type="text" #specialFeature maxlength="255" [(ngModel)]="element.sequence" (ngModelChange)="onChangeFunctionsFields(element)" (focusout)="isUniqueSeq(element)">
+                                <input matInput type="number" min="0" #specialFeature maxlength="255" [(ngModel)]="element.sequence" (ngModelChange)="onChangeFunctionsFields(element)" (focusout)="isUniqueSeq(element)">
                               </mat-form-field>
                             </div>
                           </td>
