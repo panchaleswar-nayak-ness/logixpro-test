@@ -1015,7 +1015,7 @@ export class PickToteManagerComponent implements OnInit {
                     this.orderByData = [];
                     this.pickBatchOrder = res.data.pickBatchOrder;
                     if (!this.pickBatchOrder) {
-                      this.onAddOrderBy();
+                      this.onAddOrderBy(this.orderByData);
                     }
                     else{
                         this.onAddOrderBy(this.pickBatchOrder);
@@ -1264,8 +1264,7 @@ export class PickToteManagerComponent implements OnInit {
             AndOr: element.andOr,
             Description: this.savedFilter.value,
         };
-        this.filterData.forEach((val) => {
-            if (val.is_db) {
+            if (element.is_db) {
                 this.iInductionManagerApi
                     .PickBatchFilterUpdate(payload)
                     .subscribe((res) => {
@@ -1309,8 +1308,7 @@ export class PickToteManagerComponent implements OnInit {
                             console.log('PickBatchFilterInsert', res.responseMessage);
                         }
                     });
-            }
-        });
+            };
     }
 }
 onSaveSingleOrder(element: any) {
@@ -1398,6 +1396,11 @@ refreshOrderDataGrid() {
     });
     dialogRef.afterClosed().subscribe((result) => {
       if (result === ResponseStrings.Yes) {
+        if(!element.is_db){
+          this.refreshFilterDataGrid();
+          this.isFilterAdd = true;
+          return;
+        }
         let payload = {
           Sequence: element.sequence,
           Description: this.savedFilter.value,
@@ -1437,6 +1440,11 @@ refreshOrderDataGrid() {
     });
     dialogRef.afterClosed().subscribe((result) => {
       if (result === ResponseStrings.Yes) {
+        if(!element.id){
+          this.refreshOrderDataGrid();
+          this.isOrderByAdd = true;
+          return;
+        }
         let payload = {
           id: element.id,
         };
@@ -1444,7 +1452,7 @@ refreshOrderDataGrid() {
           .PickBatchOrderDelete(payload)
           .subscribe((res) => {
             if (res.isExecuted) {
-              this.isFilterAdd = true;
+              this.isOrderByAdd = true;
               this.global.ShowToastr(
                 ToasterType.Success,
                 labels.alert.delete,
