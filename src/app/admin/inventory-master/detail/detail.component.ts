@@ -167,7 +167,7 @@ export class DetailComponent implements OnInit {
     let dialogRef:any = this.global.OpenDialog(UnitMeasureComponent, {
       height: DialogConstants.auto,
       width: '750px',
-      autoFocus: DialogConstants.autoFocus,
+      autoFocus: false,
       disableClose:true,
       data: {
         mode: '',

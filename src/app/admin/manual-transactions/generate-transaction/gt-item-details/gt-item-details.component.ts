@@ -73,9 +73,12 @@ openUnitOfMeasureDialogue() {
     }
   });
   dialogRef.afterClosed().subscribe((res) => {
-    this.uom = res;
-    this.clearMatSelectList();
-    this.onFieldChange(this.uom);
+    
+    if(res != DialogConstants.close){
+      this.uom = res;
+      this.clearMatSelectList();
+      this.onFieldChange(this.uom);}
+    
   });
 }
 

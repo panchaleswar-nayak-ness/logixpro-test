@@ -33,10 +33,16 @@ export class UnitMeasureComponent implements OnInit {
     this.getUOM()
   }
   getUOM(){
+  
     this.enableButton = [];
     this.iCommonAPI.getUnitOfMeasure().subscribe((res) => {
       if (res.isExecuted) {
+    
+        
         this.unitOfMeasure_list = res.data;
+       
+        console.log("reponse:",this.unitOfMeasure_list);
+        
 
         for(let i=0;i<this.unitOfMeasure_list.length;i++)
       {
@@ -48,8 +54,10 @@ export class UnitMeasureComponent implements OnInit {
       setTimeout(() => {
         const inputElements = this.unit_name.toArray();
         const inputElement = inputElements[0].nativeElement as HTMLInputElement;
-          this.renderer.selectRootElement(inputElement).focus();
+          // this.renderer.selectRootElement(inputElement).focus();
       }, 100)
+    
+      
       }
       else {
         this.global.ShowToastr(ToasterType.Error, this.global.globalErrorMsg(), ToasterTitle.Error);
@@ -93,6 +101,9 @@ export class UnitMeasureComponent implements OnInit {
     this.iCommonAPI.saveUnitOfMeasure(paylaod).subscribe((res) => {
       if(res.isExecuted){
         this.getUOM();
+       
+        
+        //this.ngOnInit();
         this.global.ShowToastr(ToasterType.Success, oldUM.toString()==''?labels.alert.success:labels.alert.update, ToasterTitle.Success);
       }
       else {
@@ -102,6 +113,8 @@ export class UnitMeasureComponent implements OnInit {
 
     });
   }
+  //this.getUOM();
+  console.log("updated",this.unitOfMeasure_list);
   }
 
   enableDisableButton(i:any)
@@ -139,6 +152,7 @@ export class UnitMeasureComponent implements OnInit {
       } else {
         this.unitOfMeasure_list.shift();
       }
+      
      }
     })
   }
