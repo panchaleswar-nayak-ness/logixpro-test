@@ -587,7 +587,8 @@ export class PickToteManagerComponent implements OnInit {
             this.filterSeq = '0';
             this.orderBySeq = '0';
             this.clearMatSelectList();
-            this.pickBatchFilterOrderData(result);
+            this.pickBatchFilterOrderData(result, 'filter');
+            this.pickBatchFilterOrderData(result, 'order');
           }
         });
     }
@@ -684,7 +685,8 @@ export class PickToteManagerComponent implements OnInit {
             this.isOrderByAdd = true;
             this.filterSeq = '0';
             this.orderBySeq = '0';
-            this.pickBatchFilterOrderData(res.data);
+            this.pickBatchFilterOrderData(res.data, 'filter');
+            this.pickBatchFilterOrderData(res.data, 'order');
           } else {
             this.global.ShowToastr(
               ToasterType.Error,
@@ -747,7 +749,8 @@ export class PickToteManagerComponent implements OnInit {
       this.isOrderByAdd = true;
       this.filterSeq = '0';
       this.orderBySeq = '0';
-      this.pickBatchFilterOrderData(val.option.value);
+      this.pickBatchFilterOrderData(val.option.value, 'filter');
+      this.pickBatchFilterOrderData(val.option.value, 'order');
       this.ordersFilterZoneSelect();
     }
   }
@@ -992,37 +995,42 @@ export class PickToteManagerComponent implements OnInit {
       });
     }
   }
-  pickBatchFilterOrderData(filter: string | null) {
-    let paylaod = {
-      filter: filter,
+  pickBatchFilterOrderData(filter: string | null, target: 'filter' | 'order') {
+    let payload = {
+        filter: filter,
     };
     this.iInductionManagerApi
-      .PickBatchFilterOrderData(paylaod)
-      .subscribe((res) => {
-        if (res.isExecuted && res.data) {
-          this.filterData = [];
-          this.orderByData = [];
-          this.pickBatchFilter = res.data.pickBatchFilter;
-          this.pickBatchOrder = res.data.pickBatchOrder;
-          if (!this.pickBatchFilter) {
-            this.onAddFilter();
-          } else {
-            this.onAddFilter(this.pickBatchFilter);
-          }
-
-          if (this.pickBatchOrder) {
-            this.onAddOrderBy(this.pickBatchOrder);
-          }
-        } else {
-          this.global.ShowToastr(
-            ToasterType.Error,
-            this.global.globalErrorMsg(),
-            ToasterTitle.Error
-          );
-          console.log('PickBatchFilterOrderData', res.responseMessage);
-        }
-      });
-  }
+        .PickBatchFilterOrderData(payload)
+        .subscribe((res) => {
+            if (res.isExecuted && res.data) {
+                if (target === 'filter') {
+                    this.filterData = [];
+                    this.pickBatchFilter = res.data.pickBatchFilter;
+                    if (!this.pickBatchFilter) {
+                        this.onAddFilter();
+                    } else {
+                        this.onAddFilter(this.pickBatchFilter);
+                    }
+                } else if (target === 'order') {
+                    this.orderByData = [];
+                    this.pickBatchOrder = res.data.pickBatchOrder;
+                    if (!this.pickBatchOrder) {
+                      this.onAddOrderBy(this.orderByData);
+                    }
+                    else{
+                        this.onAddOrderBy(this.pickBatchOrder);
+                    }
+                }
+            } else {
+                this.global.ShowToastr(
+                    ToasterType.Error,
+                    this.global.globalErrorMsg(),
+                    ToasterTitle.Error
+                );
+                console.log('PickBatchFilterOrderData', res.responseMessage);
+            }
+        });
+}
   savedFilClosed() {
     if (!this.savedFilter.value) {
       this.isFilterAdd = false;
@@ -1242,136 +1250,143 @@ export class PickToteManagerComponent implements OnInit {
 
   onSaveSingleFilter(element: any) {
     if (element.value === '') {
-      this.global.ShowToastr(
-        ToasterType.Error,
-        'Some of the inputs are missing values. Cannot add row to filter.',
-        ToasterTitle.Error
-      );
+        this.global.ShowToastr(
+            ToasterType.Error,
+            'Some of the inputs are missing values. Cannot add row to filter.',
+            ToasterTitle.Error
+        );
     } else {
-      let payload = {
-        Sequence: element.sequence,
-        Field: element.field,
-        Criteria: element.criteria,
-        Value: element.value,
-        AndOr: element.andOr,
-        Description: this.savedFilter.value,
-      };
-      this.filterData.forEach((val) => {
-        if (val.is_db) {
-          this.iInductionManagerApi
-            .PickBatchFilterUpdate(payload)
-            .subscribe((res) => {
-              if (res.isExecuted) {
-                this.isFilterAdd = true;
-                this.global.ShowToastr(
-                  ToasterType.Success,
-                  labels.alert.update,
-                  ToasterTitle.Success
-                );
-                this.filterSeq = element.sequence;
-                this.pickBatchFilterOrderData(this.savedFilter.value);
-              } else {
-                this.global.ShowToastr(
-                  ToasterType.Error,
-                  this.global.globalErrorMsg(),
-                  ToasterTitle.Error
-                );
-                console.log('PickBatchFilterUpdate', res.responseMessage);
-              }
-            });
-        } else {
-          this.iInductionManagerApi
-            .PickBatchFilterInsert(payload)
-            .subscribe((res) => {
-              if (res.isExecuted) {
-                this.isFilterAdd = true;
-                this.global.ShowToastr(
-                  ToasterType.Success,
-                  labels.alert.success,
-                  ToasterTitle.Success
-                );
-                this.filterSeq = element.sequence;
-                this.pickBatchFilterOrderData(this.savedFilter.value);
-              } else {
-                this.global.ShowToastr(
-                  ToasterType.Error,
-                  this.global.globalErrorMsg(),
-                  ToasterTitle.Error
-                );
-                console.log('PickBatchFilterInsert', res.responseMessage);
-              }
-            });
-        }
-      });
+        let payload = {
+            Sequence: element.sequence,
+            Field: element.field,
+            Criteria: element.criteria,
+            Value: element.value,
+            AndOr: element.andOr,
+            Description: this.savedFilter.value,
+        };
+            if (element.is_db) {
+                this.iInductionManagerApi
+                    .PickBatchFilterUpdate(payload)
+                    .subscribe((res) => {
+                        if (res.isExecuted) {
+                            this.isFilterAdd = true;
+                            this.global.ShowToastr(
+                                ToasterType.Success,
+                                labels.alert.update,
+                                ToasterTitle.Success
+                            );
+                            this.filterSeq = element.sequence;
+                            this.refreshFilterDataGrid();
+                        } else {
+                            this.global.ShowToastr(
+                                ToasterType.Error,
+                                this.global.globalErrorMsg(),
+                                ToasterTitle.Error
+                            );
+                            console.log('PickBatchFilterUpdate', res.responseMessage);
+                        }
+                    });
+            } else {
+                this.iInductionManagerApi
+                    .PickBatchFilterInsert(payload)
+                    .subscribe((res) => {
+                        if (res.isExecuted) {
+                            this.isFilterAdd = true;
+                            this.global.ShowToastr(
+                                ToasterType.Success,
+                                labels.alert.success,
+                                ToasterTitle.Success
+                            );
+                            this.filterSeq = element.sequence;
+                            this.refreshFilterDataGrid();
+                        } else {
+                            this.global.ShowToastr(
+                                ToasterType.Error,
+                                this.global.globalErrorMsg(),
+                                ToasterTitle.Error
+                            );
+                            console.log('PickBatchFilterInsert', res.responseMessage);
+                        }
+                    });
+            };
     }
-  }
-  onSaveSingleOrder(element: any) {
-    if (element.id) {
+}
+onSaveSingleOrder(element: any) {
+  if (element.id) {
       let payload = {
-        id: +element.id,
-        Sequence: element.sequence,
-        Field: element.field,
-        Order: element.sortOrder,
-        Description: this.savedFilter.value,
+          id: +element.id,
+          Sequence: element.sequence,
+          Field: element.field,
+          Order: element.sortOrder,
+          Description: this.savedFilter.value,
       };
       this.iInductionManagerApi
-        .PickBatchOrderUpdate(payload)
-        .subscribe((res) => {
-          if (res.isExecuted) {
-            this.isOrderByAdd = true;
-            this.global.ShowToastr(ToasterType.Success, labels.alert.update, ToasterTitle.Success);
-          } else {
-            this.global.ShowToastr(
-              ToasterType.Error,
-              this.global.globalErrorMsg(),
-              ToasterTitle.Error
-            );
-            console.log('PickBatchOrderUpdate', res.responseMessage);
-          }
-        });
-    } else {
+          .PickBatchOrderUpdate(payload)
+          .subscribe((res) => {
+              if (res.isExecuted) {
+                  this.isOrderByAdd = true;
+                  this.global.ShowToastr(ToasterType.Success, labels.alert.update, ToasterTitle.Success);
+                  this.refreshOrderDataGrid();
+              } else {
+                  this.global.ShowToastr(
+                      ToasterType.Error,
+                      this.global.globalErrorMsg(),
+                      ToasterTitle.Error
+                  );
+                  console.log('PickBatchOrderUpdate', res.responseMessage);
+              }
+          });
+  } else {
       let payload = {
-        Sequence: element.sequence,
-        Field: element.field,
-        Order: element.sortOrder,
-        Description: this.savedFilter.value,
+          Sequence: element.sequence,
+          Field: element.field,
+          Order: element.sortOrder,
+          Description: this.savedFilter.value,
       };
       this.iInductionManagerApi
-        .PickBatchOrderInsert(payload)
-        .subscribe((res) => {
-          if (res.isExecuted) {
-            this.isOrderByAdd = true;
-            this.global.ShowToastr(ToasterType.Success, labels.alert.success, ToasterTitle.Success);
-            element.id = res.data;
-            this.orderBySeq = element.sequence;
-          } else {
-            this.global.ShowToastr(
-              ToasterType.Error,
-              this.global.globalErrorMsg(),
-              ToasterTitle.Error
-            );
-            console.log('PickBatchOrderInsert', res.responseMessage);
-          }
-        });
-    }
-    this.pickBatchFilterOrderData(this.savedFilter.value);
+          .PickBatchOrderInsert(payload)
+          .subscribe((res) => {
+              if (res.isExecuted) {
+                  this.isOrderByAdd = true;
+                  this.global.ShowToastr(ToasterType.Success, labels.alert.success, ToasterTitle.Success);
+                  element.id = res.data;
+                  this.orderBySeq = element.sequence;
+                  this.refreshOrderDataGrid();
+              } else {
+                  this.global.ShowToastr(
+                      ToasterType.Error,
+                      this.global.globalErrorMsg(),
+                      ToasterTitle.Error
+                  );
+                  console.log('PickBatchOrderInsert', res.responseMessage);
+              }
+          });
   }
-  isUniqueSeq(element: any) {
-    let res: any = [];
-    this.orderBydataSource.filteredData.map((item) => {
+  this.isUniqueSeq(element);
+}
+isUniqueSeq(element: any) {
+  let res: any[] = [];
+  this.orderBydataSource.filteredData.map((item) => {
       let existItem = res.find((x: any) => x.sequence == item.sequence);
       if (existItem) {
-        this.global.ShowToastr(
-          ToasterType.Error,
-          "Can't have conflicting sequences within the order rows. A new sequence has been provided",
-          ToasterTitle.Error
-        );
-        element.sequence = +existItem.sequence + 1;
+          this.global.ShowToastr(
+              ToasterType.Error,
+              "Can't have conflicting sequences within the order rows. A new sequence has been provided",
+              ToasterTitle.Error
+          );
+          element.sequence = +existItem.sequence + 1;
       } else {
-        res.push(item);
+          res.push(item);
       }
-    });
-  }
+  });
+}
+refreshFilterDataGrid() {
+  this.pickBatchFilterOrderData(this.savedFilter.value, 'filter');
+}
+
+refreshOrderDataGrid() {
+  this.pickBatchFilterOrderData(this.savedFilter.value, 'order');
+}
   onDeleteSingleFilter(element: any) {
     const dialogRef: any = this.global.OpenDialog(DeleteConfirmationComponent, {
       height: 'auto',
@@ -1381,6 +1396,11 @@ export class PickToteManagerComponent implements OnInit {
     });
     dialogRef.afterClosed().subscribe((result) => {
       if (result === ResponseStrings.Yes) {
+        if(!element.is_db){
+          this.refreshFilterDataGrid();
+          this.isFilterAdd = true;
+          return;
+        }
         let payload = {
           Sequence: element.sequence,
           Description: this.savedFilter.value,
@@ -1395,7 +1415,7 @@ export class PickToteManagerComponent implements OnInit {
                 labels.alert.delete,
                 ToasterTitle.Success
               );
-              this.pickBatchFilterOrderData(this.savedFilter.value);
+              this.refreshFilterDataGrid();
             } else {
               this.global.ShowToastr(
                 ToasterType.Error,
@@ -1420,6 +1440,11 @@ export class PickToteManagerComponent implements OnInit {
     });
     dialogRef.afterClosed().subscribe((result) => {
       if (result === ResponseStrings.Yes) {
+        if(!element.id){
+          this.refreshOrderDataGrid();
+          this.isOrderByAdd = true;
+          return;
+        }
         let payload = {
           id: element.id,
         };
@@ -1427,13 +1452,13 @@ export class PickToteManagerComponent implements OnInit {
           .PickBatchOrderDelete(payload)
           .subscribe((res) => {
             if (res.isExecuted) {
-              this.isFilterAdd = true;
+              this.isOrderByAdd = true;
               this.global.ShowToastr(
                 ToasterType.Success,
                 labels.alert.delete,
                 ToasterTitle.Success
               );
-              this.pickBatchFilterOrderData(this.savedFilter.value);
+              this.refreshOrderDataGrid();
             } else {
               this.global.ShowToastr(
                 ToasterType.Error,
