@@ -225,6 +225,8 @@ export class OpenTransactionOnHoldComponent implements OnInit, AfterViewInit {
     },
   ];
 
+  clickTimeout: ReturnType<typeof setTimeout>;
+
   public iAdminApiService: IAdminApiService;
 
   constructor(
@@ -385,6 +387,7 @@ export class OpenTransactionOnHoldComponent implements OnInit, AfterViewInit {
   }
 
   viewInInventoryMaster(row) {
+    clearTimeout(this.clickTimeout); 
     localStorage.setItem("prevTab","/admin/transaction");
     if(this.spliUrl[1] == AppNames.OrderManager) this.router.navigate([]).then(() => window.open(`/#/OrderManager/InventoryMaster?itemNumber=${row.itemNumber}`, UniqueConstants._self));
     else if(this.spliUrl[1] == AppNames.InductionManager) window.open(`/#${AppRoutes.InductionManagerAdminInvMap}?itemNumber=${row.itemNumber}`, UniqueConstants._self);
@@ -677,9 +680,11 @@ export class OpenTransactionOnHoldComponent implements OnInit, AfterViewInit {
   }
 
   selectRow(row: any) {
-    this.dataSource.filteredData.forEach(element => { if(row != element) element.selected = false; });
-    const selectedRow = this.dataSource.filteredData.find((x: any) => x === row);
-    if(selectedRow) selectedRow.selected = !selectedRow.selected;
+    this.clickTimeout = setTimeout(() => {
+      this.dataSource.filteredData.forEach(element => { if(row != element) element.selected = false; });
+      const selectedRow = this.dataSource.filteredData.find((x: any) => x === row);
+      if(selectedRow) selectedRow.selected = !selectedRow.selected;
+    }, 250); 
   }
 
 }

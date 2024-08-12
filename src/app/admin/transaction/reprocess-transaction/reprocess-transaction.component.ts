@@ -123,6 +123,7 @@ export class ReprocessTransactionComponent implements OnInit {
   deleteByItemNumber=false; //Only visible if searched
   deleteByOrderNumber=false; //Only visible if searched
   private subscription: Subscription = new Subscription();
+  clickTimeout:ReturnType<typeof setTimeout>;
 
   @ViewChild(UniqueConstants.Description) description: TemplateRef<any>;
 
@@ -240,6 +241,7 @@ export class ReprocessTransactionComponent implements OnInit {
   }
 
   viewInInventoryMaster(row) {
+    clearTimeout(this.clickTimeout);
     localStorage.setItem(localStorageKeys.TransactionTabIndex,"3");
     this.router.navigate([]).then(() => { window.open(`/#${AppRoutes.AdminInventoryMaster}?itemNumber=${row.itemNumber}`, UniqueConstants._self); });  
   }
@@ -857,5 +859,13 @@ export class ReprocessTransactionComponent implements OnInit {
 
     if (print) this.global.Print(queryParams);
     else window.open(fileLink, UniqueConstants._blank, `width=${screen.width},height=${screen.height},toolbar=0,menubar=0,location=0,status=1,scrollbars=1,resizable=1,left=0,top=0`);
+  }
+
+  rowClick(row){
+    this.clickTimeout = setTimeout(() => {
+      this.getTransaction(row);
+      this.changeTableRowColor(row.id);
+      this.getTransactionInfo(false);
+    }, 250);
   }
 }

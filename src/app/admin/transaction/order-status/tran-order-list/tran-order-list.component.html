@@ -80,7 +80,8 @@
 
               <ng-container matColumnDef="itemNumber">
                 <th mat-header-cell mat-sort-header *matHeaderCellDef> Item Number</th>
-                <td mat-cell *matCellDef="let element"  
+                <td mat-cell *matCellDef="let element"
+                (dblclick)="viewInInventoryMaster(element)"
                 (contextmenu)="onContextMenu($event, element.itemNumber, getColDef('itemNumber'))"
                 #tooltip="matTooltip" [matTooltip]="element.itemNumber"   matTooltipPosition="above" [matTooltipDisabled]="element.itemNumber && element.itemNumber.length>=15?false:true" >{{element.itemNumber}}</td>
               </ng-container>
@@ -325,7 +326,7 @@
               </tr>
               
               <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
-              <tr mat-row *matRowDef="let row; columns: displayedColumns;" (dblclick)="viewInInventoryMaster(row)"></tr>
+              <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
 
             </table>
           </ng-scrollbar>

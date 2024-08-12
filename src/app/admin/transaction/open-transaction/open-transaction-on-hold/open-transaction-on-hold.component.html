@@ -164,6 +164,7 @@
                         <ng-container class="d-table-row"[matColumnDef]="col.colDef" *ngFor="let col of displayedColumns; let indexOfelement=index;">
                             <th class="header" mat-header-cell *matHeaderCellDef mat-sort-header (sortActionDescription)="indexOfelement">{{ col.colDef }} </th>
                             <td *matCellDef="let element"
+                            (dblclick)="col.colDef == 'Item Number' && viewInInventoryMaster(element)"
                                 (contextmenu)="onContextMenu($event, element[col.colHeader], col.colDef)" mat-cell class="table-cell-style"
                                  #tooltip="matTooltip" matTooltipPosition="above"
                                 [matTooltip]="element[col.colHeader]" [matTooltipDisabled]="element[col.colHeader] && element[col.colHeader].length > 19 ? false : true">
@@ -190,7 +191,7 @@
                             </div>
                         </tr>
                         <mat-header-row *matHeaderRowDef="columnValues; sticky: true"></mat-header-row>
-                        <mat-row *matRowDef="let row; columns: columnValues;" (dblclick)="viewInInventoryMaster(row)" (click)="selectRow(row)"></mat-row>
+                        <mat-row *matRowDef="let row; columns: columnValues;" (click)="selectRow(row)"></mat-row>
                     </table>
                 </ng-scrollbar>
             </div>
