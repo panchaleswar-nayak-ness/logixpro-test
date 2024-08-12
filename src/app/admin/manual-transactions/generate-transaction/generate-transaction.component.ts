@@ -339,7 +339,8 @@ export class GenerateTransactionComponent implements OnInit {
                   this.clearFields();
                 }
                 this.invMapID = '';
-                this.getRow({ id: this.transactionID }, type);
+                // this.getRow({ id: this.transactionID }, type);
+                this.clearFields();
               } else {
                 this.global.ShowToastr(
                   ToasterType.Error,
@@ -351,7 +352,8 @@ export class GenerateTransactionComponent implements OnInit {
                   this.clearFields();
                 }
                 this.invMapID = '';
-                this.getRow({ id: this.transactionID }, type);
+                // this.getRow({ id: this.transactionID }, type);
+                this.clearFields();
               }
             });
         }
