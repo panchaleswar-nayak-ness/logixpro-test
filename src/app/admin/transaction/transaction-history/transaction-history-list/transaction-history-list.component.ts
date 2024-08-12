@@ -229,6 +229,11 @@ export class TransactionHistoryListComponent implements OnInit, AfterViewInit {
     this.spliUrl = this.router.url.split('/');
   }
 
+  ngOnDestroy() {
+    this.searchBar.unsubscribe();
+    this.subscription.unsubscribe();
+  }
+
   clearMatSelectList(){
     this.matRef.options.forEach((data: MatOption) => data.deselect());
   }
@@ -375,11 +380,6 @@ export class TransactionHistoryListComponent implements OnInit, AfterViewInit {
     this.sortCol = index;
     this.sortOrder = event.direction;
     this.getContentData();
-  }
-
-  ngOnDestroy() {
-    this.searchBar.unsubscribe();
-    this.subscription.unsubscribe();
   }
 
   onInputChange(event: Event): void {

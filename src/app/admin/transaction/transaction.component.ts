@@ -44,7 +44,15 @@ export class TransactionComponent implements OnInit, AfterViewInit {
   ) { 
     this.iAdminApiService = adminApiService;
     let transTabIndex:string | null = localStorage.getItem(localStorageKeys.TransactionTabIndex);
-    if(router.url == AppRoutes.OrderManagerOrderStatus) this.tabIndex = 0;
+    if(router.url == AppRoutes.OrderManagerOrderStatus){
+      if(transTabIndex){
+        this.tabIndex = parseInt(transTabIndex);
+        localStorage.removeItem(localStorageKeys.TransactionTabIndex);
+      }
+      else{
+        this.tabIndex = 0;
+      }
+    } 
     else if(router.url == AppRoutes.AdminTrans){
       if(transTabIndex){
         this.tabIndex = parseInt(transTabIndex);
