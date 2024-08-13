@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output, ViewChild } from '@angular/core';
 import { MatOption } from '@angular/material/core';
 import { data } from 'jquery';
 import { AddNotesComponent } from 'src/app/admin/dialogs/add-notes/add-notes.component';
@@ -6,6 +6,8 @@ import { SupplierItemIdComponent } from 'src/app/admin/dialogs/supplier-item-id/
 import { UnitMeasureComponent } from 'src/app/admin/dialogs/unit-measure/unit-measure.component';
 import { UserFieldsEditComponent } from 'src/app/admin/dialogs/user-fields-edit/user-fields-edit.component';
 import { DialogConstants ,Style} from 'src/app/common/constants/strings.constants';
+import { ICommonApi } from 'src/app/common/services/common-api/common-api-interface';
+import { CommonApiService } from 'src/app/common/services/common-api/common-api.service';
 import { GlobalService } from 'src/app/common/services/global.service';
 
 @Component({
@@ -15,7 +17,9 @@ import { GlobalService } from 'src/app/common/services/global.service';
 })
 export class GtItemDetailsComponent {
 
-constructor(private global:GlobalService){};
+constructor(private global:GlobalService, public commonAPI : CommonApiService, ){
+  this.iCommonAPI = commonAPI;
+};
 @Input() orderNumber: any ="";
 @Input() item: any ="";
 @Input() columns: any ="";
@@ -31,6 +35,7 @@ constructor(private global:GlobalService){};
 
 invMapIDget: any ="";
 isInvalid = false;
+public iCommonAPI : ICommonApi;
 
 openAction: any;
 @Input() userData :any ="";
@@ -41,6 +46,7 @@ openAction: any;
 @Output() fieldValuesChanged = new EventEmitter<any>();
 @Output() openSetItemLocationDialogue :EventEmitter<any> = new EventEmitter();
 @Output()  onFormFieldFocusOut :EventEmitter<any> = new EventEmitter();
+
 openNotes(){
   if (this.orderNumber == '' || !this.item) return;
   const dialogRef:any = this.global.OpenDialog(AddNotesComponent, {
@@ -107,6 +113,34 @@ openSupplierItemDialogue() {
     this.onFieldChange(this.supplierID);
   });
 }
+
+
+
+triggerSaveEmptyUserFields() {
+  let userFields:any=[];
+  userFields[0]= '';
+  userFields[1]= '';
+  userFields[2]= '' ;
+  userFields[3]= '' ;
+  userFields[4]= '';
+  userFields[5]= ''  ;
+  userFields[6]= '';
+  userFields[7]= '' ;
+  userFields[8]= '' ;
+  userFields[9]= '' ;
+
+  let payload = {
+    transaction: this.transactionID,
+    userFields: userFields
+  };
+  this.iCommonAPI.UserFieldMTSave(payload).subscribe((res:any)=>{
+    if(res.isExecuted){
+         console.log('userfield empty')
+    }
+  })
+}
+
+
 
 
 openUserFieldsEditDialogue() {

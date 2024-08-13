@@ -21,6 +21,7 @@ export interface ICommonApi
 	getSearchedItem(payload: any)
 	ItemExists(payload: any)
 	SupplierItemIDInfo(payload: any)
+	ItemnumberInfo(payload: any)
 	UserFieldGetByID(payload: any)
 	UserFieldTypeAhead(payload: any)
 	UserFieldMTSave(payload: any)

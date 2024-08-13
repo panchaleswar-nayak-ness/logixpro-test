@@ -30,6 +30,7 @@ import {
   ToasterTitle,
   ToasterType
 } from 'src/app/common/constants/strings.constants';
+import { GtItemDetailsComponent } from './gt-item-details/gt-item-details.component';
 
 @Component({
   selector: 'app-generate-transaction',
@@ -39,6 +40,7 @@ import {
 export class GenerateTransactionComponent implements OnInit {
   @ViewChild('openAction') openAction: MatSelect;
   @ViewChild('publicSearchBox') searchBoxField: ElementRef;
+  @ViewChild(GtItemDetailsComponent) gtitemcomponent!: GtItemDetailsComponent;
 
   isInvalidQuantityPopUp: boolean = false;
   isPost: boolean = true;
@@ -140,6 +142,42 @@ export class GenerateTransactionComponent implements OnInit {
         console.log('ColumnAlias', res.responseMessage);
       }
     });
+  }
+
+  clearAfterPost(){
+    this.clear();
+    this.supplierID = '';
+    this.expDate = '';
+    this.revision = '';
+    this.description = '';
+    this.lotNumber = '';
+    this.uom = '';
+    this.notes = '';
+    this.serialNumber ='';;
+    this.transType = 'Pick';;
+    this.reqDate = '';
+    this.lineNumber = '0';
+    this.transQuantity ='0';
+    this.priority ='0';
+    this.lineSeq ='0';
+    this.hostTransID = '';
+    this.batchPickID = '';
+    this.wareHouse ='';
+    this.toteID = '';
+    this.emergency = false;
+    this.warehouseSensitivity ='';;
+    this.totalQuantity = '';
+    this.isLocation =false
+    this.zone = '';
+    this.row = '';
+    this.shelf ='';
+    this.carousel = '';
+    this.invMapID = '';
+    this.bin = ''
+    this.quantityAllocatedPick = '';
+    this.quantityAllocatedPutAway = '';
+    this.gtitemcomponent.triggerSaveEmptyUserFields()
+
   }
   getRow(row?, type?) {
     if (type != 'save') {
@@ -262,12 +300,33 @@ export class GenerateTransactionComponent implements OnInit {
       },
     });
     dialogRef.afterClosed().subscribe((res) => {
+
+      if(res?.isExecuted){
+        this.itemNumber = res.itemNumber;
+        this.getItemnumberInfo()
+      }
       if (res?.invMapID) {
         this.invMapIDget = res.invMapID;
-        this.itemNumber = res.itemNumber;
         this.getLocationData();
+       
+      }
+      else{
+        this.clearLocationData()
+        
       }
     });
+  }
+
+  clearLocationData(){
+    this.zone = '';
+    this.carousel = '';
+    this.row = '';
+    this.bin = '';
+    this.shelf = '';
+    this.totalQuantity = '';
+    this.quantityAllocatedPick = '';
+    this.quantityAllocatedPutAway = '';
+    this.invMapID = '';
   }
 
   clearFields() {
@@ -313,7 +372,7 @@ export class GenerateTransactionComponent implements OnInit {
           data: {
             message:
               type === 'save'
-                ? 'Click OK To Save And Post The Temporary Transaction.'
+                ? 'Click OK To Post And Save The Temporary Transaction.'
                 : 'Click OK To Post And Delete the Temporary Transaction',
           },
         }
@@ -335,12 +394,12 @@ export class GenerateTransactionComponent implements OnInit {
                   ToasterTitle.Success
                 );
                 this.updateTrans();
+                // this.clearFields();
                 if (type != 'save') {
                   this.clearFields();
                 }
                 this.invMapID = '';
-                // this.getRow({ id: this.transactionID }, type);
-                this.clearFields();
+                this.clearAfterPost()
               } else {
                 this.global.ShowToastr(
                   ToasterType.Error,
@@ -349,11 +408,10 @@ export class GenerateTransactionComponent implements OnInit {
                 );
                 console.log('PostTransaction', res.responseMessage);
                 if (type != 'save') {
-                  this.clearFields();
+                  // this.clearFields();
                 }
                 this.invMapID = '';
-                // this.getRow({ id: this.transactionID }, type);
-                this.clearFields();
+                this.clearAfterPost()
               }
             });
         }
@@ -459,6 +517,7 @@ export class GenerateTransactionComponent implements OnInit {
         this.row = items.row;
         this.shelf = items.shelf;
         this.bin = items.bin;
+        this.invMapID = this.invMapIDget;
         this.totalQuantity = res.data.totalQuantity;
         this.quantityAllocatedPick = res.data.pickQuantity;
         this.quantityAllocatedPutAway = res.data.putQuantity;
@@ -561,6 +620,28 @@ export class GenerateTransactionComponent implements OnInit {
     }
   }
 
+
+  getItemnumberInfo(){
+    let payload = {
+      ID:  this.itemNumber,
+    };
+    this.iCommonAPI.ItemnumberInfo(payload).subscribe((res: any) => {
+      if (res?.isExecuted) {
+        this.supplierID = res.data[0].supplierItemID;
+        this.description = res.data[0].description;
+        this.uom  = res.data[0].unitofMeasure;
+      }
+      else {
+        this.global.ShowToastr(
+          ToasterType.Error,
+          this.global.globalErrorMsg(),
+          ToasterTitle.Error
+        );
+        console.log('ItemNumberInfo', res.responseMessage);
+      }
+    })
+  }
+
   getSupplierItemInfo() {
     let payload = {
       ID: this.supplierID,
@@ -569,6 +650,7 @@ export class GenerateTransactionComponent implements OnInit {
       if (res?.isExecuted) {
         this.itemNumber = res.data[0].itemNumber;
         this.description = res.data[0].description;
+        this.uom  = res.data[0].unitofMeasure;
         if (res.data[0].unitofMeasure != this.uom) {
           if (this.uom == '') {
             this.uom = res.data[0].unitofMeasure;

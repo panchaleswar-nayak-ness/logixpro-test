@@ -1448,6 +1448,9 @@ export class ApiFuntions {
   public SupplierItemIDInfo(Body: any): Observable<any> {
     return this.ApiBase.Get(`/Common/supplieriteminfo/id`, Body);
   }
+  public ItemnumberInfo(Body: any): Observable<any> {
+    return this.ApiBase.Get(`/Common/itemnumberinfo/id`, Body);
+  }
 
   public UpdateTransaction(Body: any): Observable<any> {
     return this.ApiBase.Put(`/Admin/transaction`, Body);
