@@ -108,9 +108,9 @@ openSupplierItemDialogue() {
   dialogRef.afterClosed().subscribe((res) => {
     if(!res)return
     this.supplierID = res.supplierID;
-    this.getSupplierItemInfo.emit();
     this.clearMatSelectList();
     this.onFieldChange(this.supplierID);
+    this.getSupplierItemInfo.emit();
   });
 }
 
