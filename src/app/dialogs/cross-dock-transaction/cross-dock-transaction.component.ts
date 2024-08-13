@@ -280,35 +280,7 @@ export class CrossDockTransactionComponent implements OnInit {
         if (result != ResponseStrings.Yes)
           return;
 
-        if (!this.imPreferences.autoPrintCrossDockLabel) {
-          this.InsertOTFromOTTemp();
-          return;
-        }
-
-        if (this.imPreferences.printDirectly) {
-          const printTote$ = this.iInductionManagerApi.PrintCrossDockTote(this.selectedRowObj.id, this.zone, this.selectedRowObj.toteID);
-          const printItem$ = this.iInductionManagerApi.PrintCrossDockItem(this.selectedRowObj.id, this.zone);
-          forkJoin({
-            printTote: printTote$,
-            printItem: printItem$
-          }).subscribe({
-            next: ({}) => {
-              console.log("prints complete")
-              this.InsertOTFromOTTemp();
-            },
-            error: (error) => {
-              console.error('Error in print operations', error);
-            }
-          });
-        } else {
-          window.open(
-            `/#/report-view?file=FileName:autoPrintCrossDock|tote:true|otid:${this.OTRecID}|ZoneLabel:${this.zone}`,
-            UniqueConstants._blank,
-            'width=' + screen.width +
-            ',height=' + screen.height +
-            ',toolbar=0,menubar=0,location=0,status=1,scrollbars=1,resizable=1,left=0,top=0'
-          );
-          }
+        this.InsertOTFromOTTemp();
 
       });
     } catch (error) {
@@ -345,6 +317,7 @@ export class CrossDockTransactionComponent implements OnInit {
           this.OTRecID = res.data;
           this.qtyToSubtract += this.selectedRowObj.completedQuantity ? parseInt(this.selectedRowObj.completedQuantity) : 0;
           this.getCrossDock();
+          this.AutoPrintLabels();
 
           this.global.ShowToastr(
             ToasterType.Success,
@@ -362,6 +335,32 @@ export class CrossDockTransactionComponent implements OnInit {
       }
     );
 
+  }
+
+  AutoPrintLabels() {
+    if (this.imPreferences.printDirectly) {
+      const printTote$ = this.iInductionManagerApi.PrintCrossDockToteAuto(this.OTRecID, this.zone);
+      const printItem$ = this.iInductionManagerApi.PrintCrossDockItemAuto(this.OTRecID, this.zone);
+      forkJoin({
+        printTote: printTote$,
+        printItem: printItem$
+      }).subscribe({
+        next: ({}) => {
+          console.log("prints complete")
+        },
+        error: (error) => {
+          console.error('Error in print operations', error);
+        }
+      });
+    } else {
+      window.open(
+        `/#/report-view?file=FileName:autoPrintCrossDock|tote:true|otid:${this.OTRecID}|ZoneLabel:${this.zone}`,
+        UniqueConstants._blank,
+        'width=' + screen.width +
+        ',height=' + screen.height +
+        ',toolbar=0,menubar=0,location=0,status=1,scrollbars=1,resizable=1,left=0,top=0'
+      );
+    }
   }
 
 

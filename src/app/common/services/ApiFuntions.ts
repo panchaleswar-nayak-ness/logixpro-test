@@ -2003,6 +2003,14 @@ export class ApiFuntions {
     return await this.ApiBase.PostAsync(`/print/crossdockitem`, body);
   }
 
+  public async PrintCrossDockItemAuto(body: { wsid: any; otId: bigint; zone: any }) {
+    return await this.ApiBase.PostAsync(`/print/crossdockitemauto`, body);
+  }
+
+  public async PrintCrossDockToteAuto(body: { wsid: any; otId: bigint; zone: any }) {
+    return await this.ApiBase.PostAsync(`/print/crossdocktoteauto`, body);
+  }
+
 //===========markout=============
   public GetMarkoutData(body: MarkoutToteRequest) {
     return this.ApiBase.Get(`/markout/totedata/`, body);
@@ -2043,5 +2051,6 @@ export class ApiFuntions {
   public async PrintPutAwayItem(body) {
     return await this.ApiBase.PostAsync(`/print/putawayitem`, body);
   }
+
 
 }
