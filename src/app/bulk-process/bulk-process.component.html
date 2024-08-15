@@ -3,7 +3,8 @@
       <div class="row g-4">
         <!-- Main Section Option (Import Export) -->
     
-        <div class="col-xl-3 col-lg-6">
+        <div class="col-xl-3 col-lg-6"
+        [ngClass]="isAuthorized('Bulk Pick') ? 'isDivDisabled' : ''">
           <div matRipple [matRippleColor]="tabHoverColor" class="main-section-option" 
           routerLink="/BulkTransactions/BulkPick"
           (click)="updateMenu('BulkPick', '/BulkTransactions/BulkPick')">
@@ -14,7 +15,8 @@
             <h4 class="main-section-title text-22">Bulk Pick</h4>
           </div>
         </div>
-        <div class="col-xl-3 col-lg-6">
+        <div class="col-xl-3 col-lg-6"
+        [ngClass]="isAuthorized('Bulk Put Away') ? 'isDivDisabled' : ''">
             <div matRipple [matRippleColor]="tabHoverColor" class="main-section-option" 
             routerLink="/BulkTransactions/BulkPutAway"
             (click)="updateMenu('BulkPick', '/BulkTransactions/BulkPutAway')">
@@ -25,7 +27,8 @@
               <h4 class="main-section-title text-22">Bulk Put Aways</h4>
             </div>
           </div>
-          <div class="col-xl-3 col-lg-6">
+          <div class="col-xl-3 col-lg-6"
+          [ngClass]="isAuthorized('Bulk Cycle Count') ? 'isDivDisabled' : ''">
             <div matRipple [matRippleColor]="tabHoverColor" class="main-section-option" 
             routerLink="/BulkTransactions/BulkCount"
             (click)="updateMenu('BulkCount', '/BulkTransactions/BulkCount')">
@@ -36,7 +39,8 @@
               <h4 class="main-section-title text-22">Bulk Count</h4>
             </div>
           </div>
-          <div class="col-xl-3 col-lg-6">
+          <div class="col-xl-3 col-lg-6"
+          [ngClass]="isAuthorized('Bulk Preferences') ? 'isDivDisabled' : ''">
             <div matRipple [matRippleColor]="tabHoverColor" class="main-section-option" 
             routerLink="/BulkTransactions/Preferences"
             (click)="updateMenu('BulkPick', '/BulkTransactions/Preferences')">

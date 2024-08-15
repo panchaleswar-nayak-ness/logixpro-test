@@ -3,7 +3,8 @@
       <div class="row g-4">
         <!-- Main Section Option (Import Export) -->
     
-        <div class="col-xl-3 col-lg-6">
+        <div class="col-xl-3 col-lg-6"
+        [ngClass]="isAuthorized('Flowrack Replenishment') ? 'isDivDisabled' : ''">
           <div matRipple [matRippleColor]="tab_hover_color" class="main-section-option" 
           routerLink="/FlowrackReplenish/Flowrack"
           (click)="updateMenu('FlowrackReplenish', '/FlowrackReplenish/Flowrack')">
@@ -15,7 +16,8 @@
           </div>
         </div>
   
-        <div class="col-xl-3 col-lg-6"  >
+        <div class="col-xl-3 col-lg-6"  
+        [ngClass]="isAuthorized('Flowrack Replenishment Preferences') ? 'isDivDisabled' : ''">
           <div matRipple [matRippleColor]="tab_hover_color" class="main-section-option" 
           routerLink="/FlowrackReplenish/Preferences"
           (click)="updateMenu('FlowrackReplenish', '/FlowrackReplenish/Preferences')">

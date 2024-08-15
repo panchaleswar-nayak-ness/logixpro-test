@@ -2,13 +2,13 @@
     <div class="container-fluid">
       <div class="row g-4">
         <!-- Main Section Option (Import Export) -->
-        <div class="col-xl-3 col-lg-6">
+        <div class="col-xl-3 col-lg-6"
+        [ngClass]="isAuthorized('Tote Transactions') ? 'isDivDisabled' : ''">
           <div 
           matRipple 
           [matRippleColor]="tab_hover_color" 
           class="main-section-option" 
           routerLink="/InductionManager/ProcessPutAways"
-          [ngClass]="isAuthorized('Tote Transactions') ? 'isDivDisabled' : ''"
           (click)="updateMenu('induction', '/InductionManager/ProcessPutAways')"
           >
             <a class="main-section-option-link" href="#"></a>
@@ -22,13 +22,13 @@
         </div>
   
         <!-- Main Section Option (Admin) -->
-        <div class="col-xl-3 col-lg-6">
+        <div class="col-xl-3 col-lg-6"
+        [ngClass]="isAuthorized('Tote Transactions') ? 'isDivDisabled' : ''">
           <div matRipple 
             [matRippleColor]="tab_hover_color" 
             class="main-section-option" 
             routerLink="/InductionManager/ProcessPicks" 
-            (click)="updateMenu('induction', '/InductionManager/ProcessPicks')"
-            [ngClass]="isAuthorized('Tote Transactions') ? 'isDivDisabled' : ''">
+            (click)="updateMenu('induction', '/InductionManager/ProcessPicks')">
             <div class="main-section-icon">
               <span class="material-symbols-outlined">
                 directions_alt 
@@ -39,12 +39,12 @@
         </div>
   
         <!-- Main Section Option (Induction Manager) -->
-        <div class="col-xl-3 col-lg-6">
+        <div class="col-xl-3 col-lg-6"
+        [ngClass]="isAuthorized('Induction Super Batch') ? 'isDivDisabled' : ''">
           <div matRipple 
             [matRippleColor]="tab_hover_color" 
             class="main-section-option" 
             (click)="updateMenu('induction', '/InductionManager/SuperBatch')"
-            [ngClass]="isAuthorized('Induction Manager') ? 'isDivDisabled' : ''"
             routerLink="/InductionManager/SuperBatch">
             <div class="main-section-icon">
               <span class="material-symbols-outlined">
@@ -58,12 +58,12 @@
         <!-- Main Section Option (Work Manager) -->
     
 
-        <div class="col-xl-3 col-lg-6">
+        <div class="col-xl-3 col-lg-6"
+        [ngClass]="isAuthorized('Induction Pallet Receiving') ? 'isDivDisabled' : ''">
           <div matRipple 
             [matRippleColor]="tab_hover_color" 
             class="main-section-option" 
             (click)="updateMenu('induction', '/InductionManager/PalletReceiving')"
-            [ngClass]="isAuthorized('Induction Manager') ? 'isDivDisabled' : ''"
             routerLink="/InductionManager/PalletReceiving">
             <div class="main-section-icon">
               <span class="material-symbols-outlined">
@@ -79,12 +79,12 @@
      
 
         
-        <div class="col-xl-3 col-lg-6">
+        <div class="col-xl-3 col-lg-6"
+        [ngClass]="isAuthorized('Induction Mark Empty Reels') ? 'isDivDisabled' : ''">
           <div matRipple 
             [matRippleColor]="tab_hover_color" 
             class="main-section-option" 
             (click)="updateMenu('induction', '/InductionManager/MarkEmptyReels')"
-            [ngClass]="isAuthorized('Induction Manager') ? 'isDivDisabled' : ''"
             routerLink="/InductionManager/MarkEmptyReels">
             <div class="main-section-icon">
               <span class="material-symbols-outlined">
