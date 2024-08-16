@@ -372,7 +372,7 @@ export class GenerateTransactionComponent implements OnInit {
           data: {
             message:
               type === 'save'
-                ? 'Click OK To Post And Save The Temporary Transaction.'
+                ? 'Click OK To Save And Post The Temporary Transaction.'
                 : 'Click OK To Post And Delete the Temporary Transaction',
           },
         }
