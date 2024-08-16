@@ -356,7 +356,7 @@ export class EmployeesSettingsComponent implements OnInit {
     let dialogRef;
     dialogRef = this.global.OpenDialog(AddGroupAllowedComponent, {
       height: 'auto',
-      width: Style.w480px,
+      width: Style.w560px,
       autoFocus: DialogConstants.autoFocus,
       disableClose: true,
       data: {
