@@ -82,7 +82,7 @@ export class ChooseLocationComponent implements OnInit {
     } catch (error) { 
     }    
   }
-
+  //Sumbit me pop pop
   submit() {
     try {
       let payLoad = {
