@@ -289,7 +289,7 @@ export class CrossDockTransactionComponent implements OnInit {
 
   InsertOTFromOTTemp() {
     let payLoad = {
-      pick: this.transactions[this.selectedRow].completedQuantity,
+      pick: this.transactions[this.selectedRow].transactionQuantity, // The transaction quantity of the pick
       put: this.transactions[this.selectedRow].completedQuantity,
       reel: this.data.values.subCategory == 'reel tracking',
       ser: this.data.values.serialNumber,
