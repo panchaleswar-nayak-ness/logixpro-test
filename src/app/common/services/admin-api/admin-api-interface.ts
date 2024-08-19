@@ -111,6 +111,7 @@ export interface IAdminApiService
       insertUserGroup(payload : any);   
       getWarehouses() 
       getZones() 
+      getAllZone() 
       getZoneData(payload:any)
       updateEmployeeZone(payload : any); 
       deleteEmployeeZone(payload : any); 

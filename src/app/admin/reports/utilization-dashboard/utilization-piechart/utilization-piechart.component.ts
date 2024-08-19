@@ -9,6 +9,7 @@ import { pieChartData } from 'src/app/common/Model/utilization-report';
 })
 export class UtilizationPiechartComponent implements OnChanges {
   @Input() statusData: pieChartData[] = [];
+   @Input() isCarousel: boolean; 
   @ViewChildren('chartContainer', { read: ElementRef }) chartContainers!: QueryList<ElementRef>;
 
   constructor() { }
@@ -25,6 +26,7 @@ export class UtilizationPiechartComponent implements OnChanges {
 
   ngAfterViewInit(): void {
     // Initialize charts once the view has been initialized
+   
     if (this.statusData && this.statusData.length > 0) {
       this.initCharts();
     }
@@ -32,29 +34,38 @@ export class UtilizationPiechartComponent implements OnChanges {
 
 
 
-  getUtilizationDetails(percentage: number): { class: string, color: string } {
-    if (percentage <= 50) {
-        return { class: 'very-low-utilization', color: '#FFFFFF' };
+  getUtilizationDetails(percentage: number): { class: string, color: any } {
+    if (percentage < 50) {
+        return { class: 'very-low-utilization', color: 'var(--clr-pure-black)' };
     } else if (percentage > 50 && percentage < 70) {
-        return { class: 'low-utilization', color: '#000000' };
+        return { class: 'low-utilization', color: 'var(--clr-pure-white)' };
     } else if (percentage >= 70 && percentage < 80) {
-        return { class: 'medium-utilization', color: '#000000' };
+        return { class: 'medium-utilization', color: 'var(--clr-pure-white)' };
     } else if (percentage >= 80 && percentage < 90) {
-        return { class: 'high-utilization', color: '#FFFFFF' };
+        return { class: 'high-utilization', color: 'var(--clr-pure-white)' };
     } else if (percentage >= 90) {
-        return { class: 'very-high-utilization', color: '#FFFFFF' };
+        return { class: 'very-high-utilization', color: 'var(--clr-pure-white)' };
     } else {
-        return { class: 'very-low-utilization', color: '#FFFFFF' };
+        return { class: 'very-low-utilization', color: 'var(--clr-pure-white)' };
     }
 }
+
+
   
 
   initCharts(): void {
+    const secondary800 = getComputedStyle(document.documentElement).getPropertyValue('--clr-secondary-800').trim();
+    const secondary600 = getComputedStyle(document.documentElement).getPropertyValue('--clr-secondary-600').trim();
+    const secondary400 = getComputedStyle(document.documentElement).getPropertyValue('--clr-secondary-400').trim();
+    const secondary100 = getComputedStyle(document.documentElement).getPropertyValue('--clr-secondary-100').trim();
+
+
     this.chartContainers.toArray().forEach((container: ElementRef, index: number) => {
       const chartElement = container.nativeElement.querySelector(`.chart-${index}`);
       if (chartElement && this.statusData[index]) {
         const chart = echarts.init(chartElement);
         const item = this.statusData[index]; // Get the corresponding item
+        const label = this.isCarousel?'Carousel':'Bulk'
 
         const option: echarts.EChartsOption = {
           tooltip: {
@@ -74,15 +85,15 @@ export class UtilizationPiechartComponent implements OnChanges {
             itemHeight: 10,
           },
           color: [
-            "#653490",
-            "#8E51C4",
-            "#B277E6",
-            "#E7D0FC",
+            secondary800,
+            secondary600,
+            secondary400,
+            secondary100,
           ],
 
           series: [
             {
-              name: `Carousel ${item.carousel}`,
+              name: `${label} ${item.carousel}`,
               type: 'pie',
               radius: ['15%', '40%'],
               labelLine: {

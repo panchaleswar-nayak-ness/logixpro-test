@@ -1,11 +1,20 @@
 
 <div class="container-fluid">
   <div class="row g-4">
-  <app-utilization-header [zones]="zones" (backButtonClicked)="navigateBasedOnCondition()"  (zoneSelected)="getRequiredZone($event)"></app-utilization-header>
+  <app-utilization-header
+   [zones]="zones"
+   [isCarousel]="isCarousel"
+   [BulkVelocities]="BulkVelocities"
+   [BulkCellSizes]="BulkCellSizes" 
+   (backButtonClicked)="navigateBasedOnCondition()"  
+   (zoneSelected)="handleZoneSelected($event)"
+   (bulkVelocitiesSelected)="handleVelocitySelected($event)"
+   (bulkCellSizesSelected)="handleCellSizeSelected($event)"
+   ></app-utilization-header>
   </div>
 
     <div>
-      <app-utilization-piechart   [statusData]="pieChartData"></app-utilization-piechart>
+      <app-utilization-piechart [isCarousel]="isCarousel"  [statusData]="pieChartData"></app-utilization-piechart>
     </div>
   
 </div>

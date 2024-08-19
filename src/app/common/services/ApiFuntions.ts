@@ -1131,12 +1131,20 @@ export class ApiFuntions {
   public getZones(): Observable<any> {
     return this.ApiBase.Get(`/Admin/zones`);
   }
+  public getBulkVelocityAndCellSize(): Observable<any> {
+    return this.ApiBase.Get(`/zones/velocity-cellsize`);
+  }
   public getWarehouses(): Observable<any> {
     return this.ApiBase.Get(`/common/warehouses`);
   }
 
   public getZoneData(Body: any): Observable<any> {
-    return this.ApiBase.Get(`/zones/utilization/${Body}`);
+    // Construct the URL
+    return this.ApiBase.Post(`/zones/utilization`, Body);
+  }
+
+  public getAllZone(): Observable<any> {
+    return this.ApiBase.Get(`/zones/allzones`);
   }
 
   public updateEmployeeZone(Body: any): Observable<any> {
