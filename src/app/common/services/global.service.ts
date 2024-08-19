@@ -72,8 +72,11 @@ export class GlobalService {
     this.iAdminApiService = adminApiService;
     this.iinductionManagerApi = inductionManagerApi;
   }
-
+  private lastMessage: string | null = null;
   ShowToastr(type? : any, msg? : any, title? : any, timeOut? : any, positionClass? : any){
+    if (this.lastMessage === msg) {
+      return; // Do nothing if the message is the same
+    }
     if (!timeOut) timeOut = type == ToasterType.Success ? 2000 : 5000;
     this.toastr[type](msg, title || 'Success!',
       {
@@ -81,8 +84,17 @@ export class GlobalService {
         timeOut: timeOut,
       }
     );
-  }
+     // Update the lastMessage with the current message
+     this.lastMessage = msg;
 
+     // Reset lastMessage when the toast disappears
+     setTimeout(() => {
+      this.resetLastMessage();
+    }, timeOut);
+  }
+  private resetLastMessage() {
+    this.lastMessage = null;
+  }
   globalErrorMsg() {
     return "Error Response from Server";
   }
