@@ -165,7 +165,6 @@ export class GenerateTransactionComponent implements OnInit {
     this.wareHouse ='';
     this.toteID = '';
     this.emergency = false;
-    this.warehouseSensitivity ='';;
     this.totalQuantity = '';
     this.isLocation =false
     this.zone = '';
@@ -307,6 +306,7 @@ export class GenerateTransactionComponent implements OnInit {
       }
       if (res?.invMapID) {
         this.invMapIDget = res.invMapID;
+        this.isLocation = res.LocationNumber
         this.getLocationData();
        
       }
@@ -512,7 +512,7 @@ export class GenerateTransactionComponent implements OnInit {
       if (res?.isExecuted) {
         let items = res.data.locationTables[0];
         this.zone = items.zone;
-        this.isLocation = items.location;
+        // this.isLocation = items.location;
         this.carousel = items.carousel;
         this.row = items.row;
         this.shelf = items.shelf;
@@ -533,6 +533,7 @@ export class GenerateTransactionComponent implements OnInit {
   }
 
   updateTransactionFunction() {
+    debugger
     if(this.transQuantity < 0){
       this.transactionQtyInvalid = true;
       this.message = `Transaction Quantity must be a positive integer for transaction type ${this.transType} `;
