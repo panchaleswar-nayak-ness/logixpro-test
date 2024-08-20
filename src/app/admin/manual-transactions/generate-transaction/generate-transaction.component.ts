@@ -349,7 +349,6 @@ export class GenerateTransactionComponent implements OnInit {
   }
 
   postTranscationFunction(type) {
-    debugger
     if (
       this.item === '' ||
       this.item === undefined ||
@@ -533,7 +532,6 @@ export class GenerateTransactionComponent implements OnInit {
   }
 
   updateTransactionFunction() {
-    debugger
     if(this.transQuantity < 0){
       this.transactionQtyInvalid = true;
       this.message = `Transaction Quantity must be a positive integer for transaction type ${this.transType} `;
