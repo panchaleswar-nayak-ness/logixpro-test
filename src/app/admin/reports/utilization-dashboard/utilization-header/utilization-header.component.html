@@ -40,7 +40,8 @@
           <div class="col-xl-4" *ngIf="!isCarousel">
             <mat-form-field class="action-dropdown w-100 mb-3 mb-xl-0" appearance="outline">
               <mat-label>Velocity Code</mat-label>
-              <mat-select class="employees-action"  (selectionChange)="onBulkVelocitiesSelect($event.value)">
+              <mat-select class="employees-action" [(value)]="selectedBulkVelocity" (selectionChange)="onBulkVelocitiesSelect($event.value)">
+                <mat-option [value]="''">All</mat-option> 
                 <mat-option *ngFor="let item of BulkVelocities" [value]="item">
                   {{ item }}
                 </mat-option>
@@ -51,7 +52,8 @@
           <div class="col-xl-4" *ngIf="!isCarousel"> 
             <mat-form-field class="action-dropdown w-100 mb-3 mb-xl-0" appearance="outline">
               <mat-label>Cell Size</mat-label>
-              <mat-select class="employees-action"  (selectionChange)="onBulkCellSizesSelect($event.value)">
+              <mat-select class="employees-action" [(value)]="selectedBulkCellSize" (selectionChange)="onBulkCellSizesSelect($event.value)">
+                <mat-option [value]="''">All</mat-option> 
                 <mat-option *ngFor="let item of BulkCellSizes" [value]="item">
                   {{ item }}
                 </mat-option>

@@ -14,6 +14,8 @@ export class UtilizationHeaderComponent  {
   @Output() zoneSelected = new EventEmitter<string>();
   @Output() bulkVelocitiesSelected = new EventEmitter<string>();
   @Output() bulkCellSizesSelected = new EventEmitter<string>();
+  selectedBulkVelocity:string = ''
+  selectedBulkCellSize: String = ''
 
   onBackButtonClick() {
     this.backButtonClicked.emit();

@@ -349,6 +349,7 @@ export class GenerateTransactionComponent implements OnInit {
   }
 
   postTranscationFunction(type) {
+    debugger
     if (
       this.item === '' ||
       this.item === undefined ||
@@ -512,7 +513,6 @@ export class GenerateTransactionComponent implements OnInit {
       if (res?.isExecuted) {
         let items = res.data.locationTables[0];
         this.zone = items.zone;
-        // this.isLocation = items.location;
         this.carousel = items.carousel;
         this.row = items.row;
         this.shelf = items.shelf;

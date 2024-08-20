@@ -37,8 +37,8 @@ export class UtilizationDashboardComponent implements OnInit {
     });
     this.adminApiService.getBulkVelocityAndCellSize().subscribe({
       next: (res: any) => {
-        this.BulkVelocities = res.bulkVelocities ;
-        this.BulkCellSizes = res.bulkCellSizes;
+        this.BulkVelocities = res.bulkVelocities.sort((a, b) => a - b);
+        this.BulkCellSizes = res.bulkCellSizes.sort();
       },
       error: (err: any) => {
         this.global.ShowToastr(ToasterType.Error, this.global.globalErrorMsg(), ToasterTitle.Error);
