@@ -32,6 +32,7 @@ export class SetItemLocationComponent implements OnInit {
   location: any;
   itemInvalid=false;
   invMapID;
+  LocationNumber;
   public iAdminApiService: IAdminApiService;
   public iCommonAPI : ICommonApi;
 
@@ -65,11 +66,10 @@ export class SetItemLocationComponent implements OnInit {
   }
   getRow(row){
     this.invMapID=row.invMapID
-  
-    
+    this.LocationNumber = row.locationNumber
   }
   setLocation(){
-    this.dialogRef.close({ isExecuted: true,invMapID:this.invMapID,itemNumber:this.itemNumber});
+    this.dialogRef.close({ isExecuted: true,invMapID:this.invMapID,LocationNumber:this.LocationNumber,itemNumber:this.itemNumber});
   }
   validateItem(){
     let payLoad = {

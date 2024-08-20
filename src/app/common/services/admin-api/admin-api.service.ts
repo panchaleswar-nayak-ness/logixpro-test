@@ -927,13 +927,24 @@ export class AdminApiService implements IAdminApiService {
   public getZones() {
     return this.Api.getZones()
   }
+
+  public getAllZone() {
+    return this.Api.getAllZone()
+  }
+
+  public getBulkVelocityAndCellSize() {
+    return this.Api.getBulkVelocityAndCellSize()
+  }
   //getWarehouses
   public getWarehouses() {
     return this.Api.getWarehouses()
   }
-  public getZoneData(body:any) {
+  public getZoneData(payload) {
+    // Construct query parameters object
     
-    return this.Api.getZoneData(body)
+  
+    // Pass parameters to the API service
+    return this.Api.getZoneData(payload);
   }
 
   public updateEmployeeZone(body: any) {

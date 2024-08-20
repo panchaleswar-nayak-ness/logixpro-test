@@ -7,4 +7,5 @@ export class pieChartData{
     totalDedicatedWithEmptyItemQuantity :number
     usedPercentage :number
     emptyPercentage :number
+    isCarousel:boolean
 }
