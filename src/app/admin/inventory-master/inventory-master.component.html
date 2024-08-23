@@ -85,15 +85,15 @@
             <div class="card bg-white bg-50 px-4 py-4 br-20 mb-3" class="min-height">
               <mat-tab-group  dynamicHeight (selectedTabChange)="tabChanged($event)" [(selectedIndex)]="tabIndex" >
                 <mat-tab label="Details">
-                  <app-detail [events]="eventsSubject.asObservable()" [isActiveTrigger]="tabIndex == 0" [fieldNameDetails]="fieldNames" [details]="invMaster" (notifyContextMenu)="ContextMenu($event)"  (notifyParent)="getNotification($event)"></app-detail>
+                  <app-detail [events]="eventsSubject.asObservable()" [isActiveTrigger]="tabIndex == 1" [fieldNameDetails]="fieldNames" [details]="invMaster" (notifyContextMenu)="ContextMenu($event)"  (notifyParent)="getNotification($event)"></app-detail>
                 </mat-tab>
                 <mat-tab label="Item Setup" >
                   <div class="remaining"></div> 
-                  <app-item-setup [itemSetup]="invMaster" [isActiveTrigger]="tabIndex == 1" (notifyContextMenu)="ContextMenu($event)" ></app-item-setup>
+                  <app-item-setup [itemSetup]="invMaster" [isActiveTrigger]="tabIndex == 2" (notifyContextMenu)="ContextMenu($event)" ></app-item-setup>
                 </mat-tab>
                 <mat-tab label="Kit Items" >
                   <div class="remaining"></div> 
-                  <app-kit-item [kitItem]="invMaster"  [isActiveTrigger]="tabIndex == 2" (notifyParent)="getNotification($event)" (saveKitItem)="saveKitItem()" (notifyContextMenu)="ContextMenu($event)" ></app-kit-item>
+                  <app-kit-item [kitItem]="invMaster"  [isActiveTrigger]="tabIndex == 3" (notifyParent)="getNotification($event)" (saveKitItem)="saveKitItem()" (notifyContextMenu)="ContextMenu($event)" ></app-kit-item>
                 </mat-tab>
                 <mat-tab label="Location"  >
                   <div class="remaining"></div>
