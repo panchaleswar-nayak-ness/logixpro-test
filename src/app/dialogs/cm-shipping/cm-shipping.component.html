@@ -189,7 +189,7 @@
                     </ng-container>
                     <ng-container *ngIf="shippingPreferences && shippingPreferences.userField1">
                         <ng-container matColumnDef="userField1" *ngIf="shippingPreferences && shippingPreferences.userField1">
-                            <th mat-header-cell *matHeaderCellDef> User Field 1 </th>
+                            <th mat-header-cell *matHeaderCellDef> {{shippingPreferences.userField1Alias}} </th>
                             <td mat-cell *matCellDef="let element">
                                 <mat-form-field class="custom-form-field w-60" appearance="outline">
                                     <input matInput

@@ -76,14 +76,12 @@ export class CmShippingComponent implements OnInit {
             this.shippingPreferences = res.data.shippingPreferences;
             let indx = 0;
             for (let key in this.shippingPreferences) {
-              if (
-                this.displayedColumns.indexOf(key) <= -1 &&
-                this.shippingPreferences[key]
-              ) {
+              if (this.displayedColumns.indexOf(key) <= -1 && this.shippingPreferences[key] ) {
                 this.displayedColumns.splice(3 + indx, 0, key);
                 indx = indx + 1;
               }
             }
+            this.displayedColumns = this.displayedColumns.filter((x: string) => !x.includes("Alias"));
             this.shippingComp = res.data.shippingComp;
             this.orderNumber = res.data.orderNumber;
             this.isLoading = false;
