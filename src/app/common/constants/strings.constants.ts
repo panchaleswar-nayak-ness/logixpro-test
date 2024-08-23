@@ -215,7 +215,21 @@ export const CMShippingPreferences = {
     Length: 'length',
     Width: 'width',
     Height: 'height',
-    Cube: 'cube'
+    Cube: 'cube',
+    userField1: 'userField1',
+    userField2: 'userField2',
+    userField3: 'userField3',
+    userField4: 'userField4',
+    userField5: 'userField5',
+    userField6: 'userField6',
+    userField7: 'userField7',
+    userField_1_Alias: 'userField_1_Alias',
+    userField_2_Alias: 'userField_2_Alias',
+    userField_3_Alias: 'userField_3_Alias',
+    userField_4_Alias: 'userField_4_Alias',
+    userField_5_Alias: 'userField_5_Alias',
+    userField_6_Alias: 'userField_6_Alias',
+    userField_7_Alias: 'userField_7_Alias',
 }
 
 export const ApiEndpoints = {

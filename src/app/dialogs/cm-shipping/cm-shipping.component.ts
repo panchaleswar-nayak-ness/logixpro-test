@@ -143,6 +143,13 @@ export class CmShippingComponent implements OnInit {
       width: element.width ? element.width : 0,
       height: element.height ? element.height : 0,
       cube: element.cube,
+      userField1:element.userField1,
+      userField2:element.userField2,
+      userField3:element.userField3,
+      userField4:element.userField4,
+      userField5:element.userField5,
+      userField6:element.userField6,
+      userField7:element.userField7,
     };
     this.iConsolidationAPI.ShipmentItemUpdate(obj).subscribe((res: any) => {});
   }
