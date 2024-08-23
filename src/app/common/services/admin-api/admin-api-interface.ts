@@ -181,7 +181,8 @@ export interface IAdminApiService
     AllAllocatedOrders(payload : any);
     OrderItemsTable(payload : any);
     DeAllocateOrder(payload : any) ; 
-    SaveTransaction(payload : any); 
+    SaveTransaction(payload : any);
+    AddOpenTransaction(paylaod : any); 
     ReprocessTransactionDelete(payload : any);
     deleteInventoryMap(payload : any); 
     quarantineInventoryMap(payload : any); 

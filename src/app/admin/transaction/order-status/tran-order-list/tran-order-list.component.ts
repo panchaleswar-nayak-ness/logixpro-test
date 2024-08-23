@@ -268,7 +268,7 @@ export class TranOrderListComponent implements OnInit, AfterViewInit {
           this.detailDataInventoryMap = res.data?.orderStatus;
           this.getOrderForTote = res.data?.orderNo;
           this.dataSource = new MatTableDataSource(res.data?.orderStatus);
-
+          this.checkOrderStatus(res);
           this.columnValues = res.data?.orderStatusColSequence;
           this.customPagination.total = res.data?.totalRecords;
           this.getOrderForTote = res?.data?.orderStatus[0]?.orderNumber;
@@ -303,6 +303,7 @@ export class TranOrderListComponent implements OnInit, AfterViewInit {
               return item.carousel;
             });
           }
+
           const combinedData = res.data?.onCar.concat(res.data?.offCar);
           this.onLocationZoneChange(combinedData);
         }
@@ -314,6 +315,80 @@ export class TranOrderListComponent implements OnInit, AfterViewInit {
       error: (error) => { }
     });
   }
+
+  isOpenLinesExistForTheOrder: boolean = false;
+
+  checkOrderStatus(response){
+  if (response.isExecuted && response.data && Array.isArray(response.data.orderStatus)) {
+    // Check if any 'Put Away' transaction has incomplete fields
+    const hasOpenLines = response.data.orderStatus.some(item => 
+        item.transactionType === 'Put Away' && 
+        (item.completedDate === "" || item.completedBy === "" || item.completedQuantity === "")
+    );
+
+    if (hasOpenLines && !this.isOpenLinesExistForTheOrder) {
+      this.isOpenLinesExistForTheOrder = true;
+      let dialogRef: any = this.global.OpenDialog(ConfirmationDialogComponent, {
+            height: DialogConstants.auto,
+            width: Style.w560px,
+            autoFocus: DialogConstants.autoFocus,
+            disableClose: true,
+            data: {
+                customButtonText: true,
+                heading: 'Open Lines Exist for the Order',
+                btn1Text: 'Proceed',
+                btn2Text: 'Cancel',
+                message: 'Would You Like to Proceed?',
+            },
+        });
+
+        dialogRef.afterClosed().subscribe((res) => {
+          this.isOpenLinesExistForTheOrder = false;
+          if (res === 'Yes') {
+            let payload:any = {
+              ID: []
+            };
+            response.data.orderStatus.forEach(item => {
+              if(item.transactionType === 'Put Away' && (item.completedDate === "" || item.completedBy === "" || item.completedQuantity === "")){
+                payload.ID.push(item.id);
+              }
+            });
+            this.iAdminApiService.AddOpenTransaction(payload).subscribe((res: any) => {
+              if(res.isExecuted)
+              {
+                this.getContentData();
+              }
+            });
+          }
+      });
+    } 
+    else {
+        // Check if all 'Put Away' transactions have completed fields
+        const isComplete = response.data.orderStatus.some(item => 
+            item.transactionType === 'Put Away' && 
+            (item.completedDate !== "" && item.completedBy !== "" && item.completedQuantity !== "")
+        );
+
+        if (isComplete) {
+            this.global.OpenDialog(ConfirmationDialogComponent, {
+                height: DialogConstants.auto,
+                width: Style.w560px,
+                autoFocus: DialogConstants.autoFocus,
+                disableClose: true,
+                data: {
+                    customButtonText: true,
+                    heading: 'All Lines are Complete for This Order',
+                    btn1Text: 'Proceed',
+                    btn2Text: 'Cancel',
+                    message: 'Would You Like to Proceed?',
+                },
+            });
+        }
+    }
+  }
+}
+
+
 
   selShipComp(event: any) {
     if (event.searchField != "" && event.columnFIeld == Column.OrderNumber) {
@@ -638,4 +713,22 @@ export class TranOrderListComponent implements OnInit, AfterViewInit {
     localStorage.setItem(localStorageKeys.TransactionTabIndex, "0");
     this.router.navigate([]).then(() => { window.open(`/#${AppRoutes.AdminInventoryMaster}?itemNumber=${row.itemNumber}`, UniqueConstants._self); });
   }
+
+  confirmationDialog(){
+    this.global.OpenDialog(ConfirmationDialogComponent, {
+      height: DialogConstants.auto,
+      width: Style.w560px,
+      autoFocus: DialogConstants.autoFocus,
+      disableClose: true,
+      data: {
+        customButtonText: true,
+        heading: 'All Lines Are Complete for This Order',
+        btn1Text: 'Proceed',
+        btn2Text: 'Cancel',
+        message: `        
+        Would You Like to Proceed?`,
+      },
+    });
+  }
+
 }

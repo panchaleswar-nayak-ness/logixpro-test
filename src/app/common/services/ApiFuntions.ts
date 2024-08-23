@@ -2060,5 +2060,8 @@ export class ApiFuntions {
     return await this.ApiBase.PostAsync(`/print/putawayitem`, body);
   }
 
+  public AddOpenTransaction(body) {
+    return this.ApiBase.Post(`/Admin/addopentransaction`, body);
+  }
 
 }
