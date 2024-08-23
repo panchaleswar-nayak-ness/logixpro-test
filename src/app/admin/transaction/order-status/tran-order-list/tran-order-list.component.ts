@@ -20,6 +20,7 @@ import { TableContextMenuService } from 'src/app/common/globalComponents/table-c
 import { Column, DialogConstants, StringConditions, ToasterTitle, ToasterType, TableConstant, LiveAnnouncerMessage, zoneType, ColumnDef, Style, UniqueConstants, FilterColumnName, localStorageKeys } from 'src/app/common/constants/strings.constants';
 import { AppNames, AppRoutes, RouteNames, RouteUpdateMenu } from 'src/app/common/constants/menu.constants';
 import { CurrentTabDataService } from 'src/app/admin/inventory-master/current-tab-data-service';
+import { ConfirmationDialogComponent } from 'src/app/admin/dialogs/confirmation-dialog/confirmation-dialog.component';
 
 @Component({
   selector: 'app-tran-order-list',
