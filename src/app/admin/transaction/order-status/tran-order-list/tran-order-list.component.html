@@ -11,7 +11,8 @@
             [searchAutocompleteList]="this.searchAutocompleteList"
             (autoCompleteEvent)="this.searchString = $event; this.searchByInput.next($event)"
             [showClearBtn]="true"
-            (clearBtnEvent)="clearData($event)">
+            (clearBtnEvent)="clearData($event)"
+            (valueChangeEvent)="valueChanges($event)">
           </app-column-filter-component>
       </div>
 

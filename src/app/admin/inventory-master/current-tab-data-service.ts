@@ -14,6 +14,8 @@ export class CurrentTabDataService {
     public TRANSACTIONS = "Transactions";
     public TRANSACTIONS_ORDER = "Transactions Order";
     public TRANSACTIONS_ORDER_SELECT = "Transactions Order Select";
+    public TRANSACTIONS_History= "Transactions History";
+    public Reprocess_Transaction= "Reprocess Transaction";
     public CONSOLIDATION = "Consolidation";
     public ORDER_MANAGER = AppPermissions.OrderManager;
     

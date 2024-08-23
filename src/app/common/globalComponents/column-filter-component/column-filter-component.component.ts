@@ -3,6 +3,7 @@ import { FormControl } from '@angular/forms';
 import { FloatLabelType } from '@angular/material/form-field';
 import { Subject } from 'rxjs';
 import { TableHeaderDefinitions } from '../../types/CommonTypes';
+import { CurrentTabDataService } from 'src/app/admin/inventory-master/current-tab-data-service';
 
 @Component({
   selector: 'app-column-filter-component',
@@ -28,6 +29,10 @@ export class ColumnFilterComponentComponent {
   @Output() optionSelectedEvent = new EventEmitter<string>();
   @Output() clearBtnEvent = new EventEmitter<Event>();
 
+  @Output() valueChangeEvent = new EventEmitter<{ searchCol: any, searchString: any }>();
+
+  constructor(private currentTabDataService: CurrentTabDataService){}
+
   hideRequiredControl = new FormControl(false);
   floatLabelControl = new FormControl('auto' as FloatLabelType);
 
@@ -37,18 +42,22 @@ export class ColumnFilterComponentComponent {
 
   selectionChange(event) {
     this.selectionChangeEvent.emit(event);
+    this.emitValueChange();
   }
 
   colKeyUpEnter(event) {
     this.colKeyUpEnterEvent.emit(event);
+    this.emitValueChange();
   }
 
   searchKeyUpEnter(event) {
     this.searchKeyUpEnterEvent.emit(event);
+    this.emitValueChange();
   }
 
   searchKeyUp(event) {
     this.searchKeyUpEvent.emit(this.searchString);
+    this.emitValueChange();
   }
 
   searchFocus(event) {
@@ -57,6 +66,7 @@ export class ColumnFilterComponentComponent {
 
   clearInputField(event) {
     this.clearInputFieldEvent.emit(event);
+    this.emitValueChange();
   }
 
   getFloatLabelValue(): FloatLabelType {
@@ -65,6 +75,7 @@ export class ColumnFilterComponentComponent {
 
   clearBtn(event) {
     this.clearBtnEvent.emit(event);
+    this.emitValueChange();
   }
 
   autoComplete(event) {
@@ -73,6 +84,14 @@ export class ColumnFilterComponentComponent {
   
   optionSelected(event) {
     this.optionSelectedEvent.emit(this.searchString);
+    this.emitValueChange();
+  }
+
+  emitValueChange() {
+    this.valueChangeEvent.emit({
+      searchCol: this.searchCol,
+      searchString: this.searchString
+    });
   }
 
 }

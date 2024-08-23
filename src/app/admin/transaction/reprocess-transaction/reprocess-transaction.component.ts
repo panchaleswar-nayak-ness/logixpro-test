@@ -19,6 +19,7 @@ import { IAdminApiService } from 'src/app/common/services/admin-api/admin-api-in
 import { Column, DialogConstants, StringConditions, TableName, ToasterMessages, ToasterTitle, ToasterType ,TableConstant,zoneType,ColumnDef,Style,UniqueConstants,FilterColumnName, localStorageKeys} from 'src/app/common/constants/strings.constants';
 import { Router } from '@angular/router';
 import { AppNames, AppRoutes, RouteUpdateMenu } from 'src/app/common/constants/menu.constants';
+import { CurrentTabDataService } from '../../inventory-master/current-tab-data-service';
 
 
 @Component({
@@ -201,11 +202,23 @@ export class ReprocessTransactionComponent implements OnInit {
     private sharedService: SharedService,
     public adminApiService: AdminApiService,
     private router: Router,
+    private currentTabDataService: CurrentTabDataService
   ) {
     this.iAdminApiService = adminApiService;
   }
 
   ngOnInit(): void {
+
+    if (this.currentTabDataService.savedItem[this.currentTabDataService.Reprocess_Transaction]) {
+      let param = this.currentTabDataService.savedItem[this.currentTabDataService.Reprocess_Transaction];
+      this.columnSearch.searchColumn.colDef = param.searchCol
+      this.columnSearch.searchValue = param.searchString
+    }
+    else{
+      this.columnSearch.searchColumn.colDef =''
+      this.columnSearch.searchValue = ''
+    }
+    
     this.customPagination = {
       total: '',
       recordsPerPage: 20,
@@ -867,5 +880,13 @@ export class ReprocessTransactionComponent implements OnInit {
       this.changeTableRowColor(row.id);
       this.getTransactionInfo(false);
     }, 250);
+  }
+
+  valueChanges(event:any){
+    this.currentTabDataService.savedItem[this.currentTabDataService.Reprocess_Transaction] = {
+      ...this.currentTabDataService.savedItem[this.currentTabDataService.Reprocess_Transaction],
+      searchCol: event.searchCol,
+      searchString: event.searchString
+    };
   }
 }

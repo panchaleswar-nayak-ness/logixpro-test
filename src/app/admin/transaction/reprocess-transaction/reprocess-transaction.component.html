@@ -45,7 +45,8 @@
                                     [searchString]="this.columnSearch.searchValue"
                                     [searchByInput]="this.searchByColumn"
                                     [searchAutocompleteList]="this.searchAutocompleteListByCol"
-                                    (autoCompleteEvent)="this.columnSearch.searchValue = $event; this.searchByColumn.next($event)">
+                                    (autoCompleteEvent)="this.columnSearch.searchValue = $event; this.searchByColumn.next($event)"
+                                    (valueChangeEvent)="valueChanges($event)">
                                 </app-column-filter-component>
 
                             </div>
