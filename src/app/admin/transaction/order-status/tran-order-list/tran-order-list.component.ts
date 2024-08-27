@@ -269,7 +269,7 @@ export class TranOrderListComponent implements OnInit, AfterViewInit {
           this.detailDataInventoryMap = res.data?.orderStatus;
           this.getOrderForTote = res.data?.orderNo;
           this.dataSource = new MatTableDataSource(res.data?.orderStatus);
-          this.checkOrderStatus(res);
+          // this.checkOrderStatus(res);
           this.columnValues = res.data?.orderStatusColSequence;
           this.customPagination.total = res.data?.totalRecords;
           this.getOrderForTote = res?.data?.orderStatus[0]?.orderNumber;
@@ -320,9 +320,9 @@ export class TranOrderListComponent implements OnInit, AfterViewInit {
   isOpenLinesExistForTheOrder: boolean = false;
 
   checkOrderStatus(response){
-  if (response.isExecuted && response.data && Array.isArray(response.data.orderStatus)) {
+    
     // Check if any 'Put Away' transaction has incomplete fields
-    const hasOpenLines = response.data.orderStatus.some(item => 
+    const hasOpenLines = response.some(item => 
         item.transactionType === 'Put Away' && 
         (item.completedDate === "" || item.completedBy === "" || item.completedQuantity === "")
     );
@@ -349,7 +349,7 @@ export class TranOrderListComponent implements OnInit, AfterViewInit {
             let payload:any = {
               ID: []
             };
-            response.data.orderStatus.forEach(item => {
+            response.forEach(item => {
               if(item.transactionType === 'Put Away' && (item.completedDate === "" || item.completedBy === "" || item.completedQuantity === "")){
                 payload.ID.push(item.id);
               }
@@ -365,13 +365,13 @@ export class TranOrderListComponent implements OnInit, AfterViewInit {
     } 
     else {
         // Check if all 'Put Away' transactions have completed fields
-        const isComplete = response.data.orderStatus.some(item => 
+        const isComplete = response.some(item => 
             item.transactionType === 'Put Away' && 
             (item.completedDate !== "" && item.completedBy !== "" && item.completedQuantity !== "")
         );
 
         if (isComplete) {
-            this.global.OpenDialog(ConfirmationDialogComponent, {
+          let dialogRef: any = this.global.OpenDialog(ConfirmationDialogComponent, {
                 height: DialogConstants.auto,
                 width: Style.w560px,
                 autoFocus: DialogConstants.autoFocus,
@@ -384,9 +384,28 @@ export class TranOrderListComponent implements OnInit, AfterViewInit {
                     message: 'Would You Like to Proceed?',
                 },
             });
+
+            dialogRef.afterClosed().subscribe((res) => {
+              if (res === 'Yes') {
+                let payload:any = {
+                  ID: []
+                };
+                response.forEach(item => {
+                  if(item.transactionType === 'Put Away' && (item.completedDate !== "" && item.completedBy !== "" && item.completedQuantity !== "")){
+                    payload.ID.push(item.id);
+                  }
+                });
+                this.iAdminApiService.AddCompleteTransaction(payload).subscribe((res: any) => {
+                  if(res.isExecuted)
+                  {
+                    this.getContentData();
+                  }
+                });
+              }
+          });
         }
     }
-  }
+ 
 }
 
 
@@ -716,20 +735,25 @@ export class TranOrderListComponent implements OnInit, AfterViewInit {
   }
 
   confirmationDialog(){
-    this.global.OpenDialog(ConfirmationDialogComponent, {
-      height: DialogConstants.auto,
-      width: Style.w560px,
-      autoFocus: DialogConstants.autoFocus,
-      disableClose: true,
-      data: {
-        customButtonText: true,
-        heading: 'All Lines Are Complete for This Order',
-        btn1Text: 'Proceed',
-        btn2Text: 'Cancel',
-        message: `        
-        Would You Like to Proceed?`,
-      },
-    });
+    console.log(this.dataSource);
+    this.checkOrderStatus(this.dataSource.filteredData);
+
+
+
+    // this.global.OpenDialog(ConfirmationDialogComponent, {
+    //   height: DialogConstants.auto,
+    //   width: Style.w560px,
+    //   autoFocus: DialogConstants.autoFocus,
+    //   disableClose: true,
+    //   data: {
+    //     customButtonText: true,
+    //     heading: 'All Lines Are Complete for This Order',
+    //     btn1Text: 'Proceed',
+    //     btn2Text: 'Cancel',
+    //     message: `        
+    //     Would You Like to Proceed?`,
+    //   },
+    // });
   }
 
 }

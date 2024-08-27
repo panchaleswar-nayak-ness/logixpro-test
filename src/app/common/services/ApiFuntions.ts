@@ -2064,4 +2064,7 @@ export class ApiFuntions {
     return this.ApiBase.Post(`/Admin/addopentransaction`, body);
   }
 
+  public AddCompleteTransaction(body) {
+    return this.ApiBase.Post(`/Admin/addcompletetransaction`, body);
+  }
 }

@@ -2040,4 +2040,12 @@ export class AdminApiService implements IAdminApiService {
   }
 
 
-}
+
+  public AddCompleteTransaction(body: any) {
+    const payload = {
+      ...body
+    }
+      return this.Api.AddCompleteTransaction(payload);
+    }
+  }
+
