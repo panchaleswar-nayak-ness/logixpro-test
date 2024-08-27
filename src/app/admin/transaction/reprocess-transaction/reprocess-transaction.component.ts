@@ -208,8 +208,7 @@ export class ReprocessTransactionComponent implements OnInit {
   }
 
   ngOnInit(): void {
-
-    if (this.currentTabDataService.savedItem[this.currentTabDataService.Reprocess_Transaction]) {
+    if (this.currentTabDataService.savedItem[this.currentTabDataService.Reprocess_Transaction].saveState) {
       let param = this.currentTabDataService.savedItem[this.currentTabDataService.Reprocess_Transaction];
       this.columnSearch.searchColumn.colDef = param.searchCol
       this.columnSearch.searchValue = param.searchString
@@ -218,6 +217,9 @@ export class ReprocessTransactionComponent implements OnInit {
       this.columnSearch.searchColumn.colDef =''
       this.columnSearch.searchValue = ''
     }
+
+    // this.columnSearch.searchColumn.colDef =''
+    //   this.columnSearch.searchValue = ''
     
     this.customPagination = {
       total: '',
@@ -886,7 +888,9 @@ export class ReprocessTransactionComponent implements OnInit {
     this.currentTabDataService.savedItem[this.currentTabDataService.Reprocess_Transaction] = {
       ...this.currentTabDataService.savedItem[this.currentTabDataService.Reprocess_Transaction],
       searchCol: event.searchCol,
-      searchString: event.searchString
+      searchString: event.searchString,
+      saveState:true
+      
     };
   }
 }
