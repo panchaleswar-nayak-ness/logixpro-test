@@ -208,7 +208,7 @@ export class ReprocessTransactionComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    if (this.currentTabDataService.savedItem[this.currentTabDataService.Reprocess_Transaction].saveState) {
+    if (this.currentTabDataService?.savedItem[this.currentTabDataService.Reprocess_Transaction]?.saveState) {
       let param = this.currentTabDataService.savedItem[this.currentTabDataService.Reprocess_Transaction];
       this.columnSearch.searchColumn.colDef = param.searchCol
       this.columnSearch.searchValue = param.searchString
