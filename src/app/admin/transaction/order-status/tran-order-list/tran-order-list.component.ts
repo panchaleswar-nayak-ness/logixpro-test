@@ -21,6 +21,7 @@ import { Column, DialogConstants, StringConditions, ToasterTitle, ToasterType, T
 import { AppNames, AppRoutes, RouteNames, RouteUpdateMenu } from 'src/app/common/constants/menu.constants';
 import { CurrentTabDataService } from 'src/app/admin/inventory-master/current-tab-data-service';
 import { ConfirmationDialogComponent } from 'src/app/admin/dialogs/confirmation-dialog/confirmation-dialog.component';
+import moment from 'moment';
 
 @Component({
   selector: 'app-tran-order-list',
@@ -268,6 +269,14 @@ export class TranOrderListComponent implements OnInit, AfterViewInit {
         if (res.isExecuted) {
           this.detailDataInventoryMap = res.data?.orderStatus;
           this.getOrderForTote = res.data?.orderNo;
+          res.data?.orderStatus.forEach(element => {
+            const inputFormat = 'M/D/YYYY h:mm:ss A';
+            const date = moment(element.completedDate, inputFormat);
+            if (date.isValid()) {
+              const outputFormat = 'YYYY/M/D h:mm:ss A';
+              element.completedDate = date.format(outputFormat);
+            }
+          });
           this.dataSource = new MatTableDataSource(res.data?.orderStatus);
           // this.checkOrderStatus(res);
           this.columnValues = res.data?.orderStatusColSequence;
