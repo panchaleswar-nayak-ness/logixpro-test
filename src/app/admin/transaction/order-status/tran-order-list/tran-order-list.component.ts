@@ -270,6 +270,7 @@ export class TranOrderListComponent implements OnInit, AfterViewInit {
           this.detailDataInventoryMap = res.data?.orderStatus;
           this.getOrderForTote = res.data?.orderNo;
           res.data?.orderStatus.forEach(element => {
+            element.orignalCompletedDate = element.completedDate;
             const inputFormat = 'M/D/YYYY h:mm:ss A';
             const date = moment(element.completedDate, inputFormat);
             if (date.isValid()) {

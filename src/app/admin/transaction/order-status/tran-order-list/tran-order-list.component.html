@@ -59,8 +59,8 @@
               <ng-container matColumnDef="completedDate">
                 <th mat-header-cell mat-sort-header *matHeaderCellDef> Completed Date </th>
                 <td mat-cell *matCellDef="let element"  
-                (contextmenu)="onContextMenu($event, element.completedDate, getColDef('completedDate'))"
-                #tooltip="matTooltip" [matTooltip]="element.completedDate"   matTooltipPosition="above" [matTooltipDisabled]="element.completedDate && element.completedDate.length>=15?false:true" > {{element.completedDate}} </td>
+                (contextmenu)="onContextMenu($event, element.orignalCompletedDate, getColDef('completedDate'))"
+                #tooltip="matTooltip" [matTooltip]="element.orignalCompletedDate"   matTooltipPosition="above" [matTooltipDisabled]="element.orignalCompletedDate && element.orignalCompletedDate.length>=15?false:true" > {{element.orignalCompletedDate}} </td>
               </ng-container>
 
               <!-- Weight Column -->
