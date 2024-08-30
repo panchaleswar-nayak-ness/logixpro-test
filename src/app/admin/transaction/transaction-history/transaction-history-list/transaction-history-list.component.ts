@@ -203,6 +203,7 @@ export class TransactionHistoryListComponent implements OnInit, AfterViewInit {
     };
     this.searchBar.pipe(debounceTime(500), distinctUntilChanged()).subscribe(() => {
       this.autoCompleteSearchColumn();
+      this.filterString = "1=1"
       this.getContentData();
     });
     this.getColumnsData();
@@ -215,6 +216,7 @@ export class TransactionHistoryListComponent implements OnInit, AfterViewInit {
         if(itemNo) {
           this.selectedDropdown = Column.ItemNumber;
           this.columnSearch.searchValue = itemNo;
+          this.filterString = this.filterService.onContextMenuCommand( this.columnSearch.searchValue, this.selectedDropdown, "equals to", "string");
         }
       })
     );
@@ -224,6 +226,7 @@ export class TransactionHistoryListComponent implements OnInit, AfterViewInit {
         if(itemNo){
           this.selectedDropdown = Column.ItemNumber;
           this.columnSearch.searchValue = itemNo;
+          this.filterString = this.filterService.onContextMenuCommand( this.columnSearch.searchValue ,  this.selectedDropdown, "equals to", "string");
         }
       })
     );
