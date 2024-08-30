@@ -19,7 +19,7 @@ export class TableContextMenuService{
     this.FilterColumnName = FilterColumnName;
     this.FilterConditon = FilterConditon;
     this.FilterItemType = FilterItemType;
-    this.contextMenuObserver?.next(true); 
+    this.contextMenuObserver.next(true); 
   }
 
 }

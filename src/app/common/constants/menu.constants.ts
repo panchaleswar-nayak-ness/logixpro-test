@@ -53,7 +53,7 @@ export const AppRoutes = {
     AdminCreateCounts: '/admin/createCounts',
     AdminCreateCountBatches: '/admin/createCountBatches',
     OrderManagerInventoryMap:'/OrderManager/InventoryMap',
-    AdminInventoryMap:'/admin/inventoryMap',
+    AdminInventoryMap:'/#/admin/inventoryMap',
     InductionManagerAdminInventoryMap:'/InductionManager/Admin/InventoryMap',
     Dashboard: '/dashboard',
     InductionManagerAdmin:'/InductionManager/Admin',
