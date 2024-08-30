@@ -290,6 +290,7 @@ export class OpenTransactionOnHoldComponent implements OnInit, AfterViewInit {
 
     this.searchByColumn.pipe(debounceTime(400), distinctUntilChanged()).subscribe((value) => {
       this.autoCompleteSearchColumn(false);
+      this.filterString = "1=1"
       this.getContentData();
     });
 
@@ -333,6 +334,7 @@ export class OpenTransactionOnHoldComponent implements OnInit, AfterViewInit {
         if(itemNo) {
           this.columnSearch.searchColumn.colDef = Column.ItemNumber;
           this.columnSearch.searchValue = itemNo;
+          this.filterString = this.filterService.onContextMenuCommand(this.columnSearch.searchValue, this.columnSearch.searchColumn.colDef , "equals to", "string");
         }
       })
     );
