@@ -50,289 +50,134 @@ export class DeleteConfirmationComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.Message = ''; 
-    if (this.data?.ErrorMessage) this.Message = this.data.ErrorMessage;
+    this.Message = this.data?.ErrorMessage || '';
     this.userData = this.authService.userData();
-    if (this.data?.action) this.action = this.data.action;
-    if (this.data?.actionMessage) this.actionMessage = this.data.actionMessage;
+    this.action = this.data?.action || this.action;
+    this.actionMessage = this.data?.actionMessage || this.actionMessage;
   }
 
   onConfirmdelete() {
-    if (this.data) {
-      if (this.data.mode === Mode.DeleteZone) {
-        let zoneData = {
+    if (!this.data) {
+      this.dialogRef.close(ResponseStrings.Yes);
+      return;
+    }
+
+    switch (this.data.mode) {
+      case Mode.DeleteZone:
+        this.handleDelete(this.adminApiService.deleteEmployeeZone, {
           zone: this.data.zone,
           username: this.data.userName,
-        };
-        this.iAdminApiService.deleteEmployeeZone(zoneData).subscribe((res: any) => {
-          if (res.isExecuted) {
-            this.dialog.closeAll();
-            this.global.ShowToastr(ToasterType.Success, labels.alert.delete, ToasterTitle.Success);
-          } else {
-            this.dialog.closeAll();
-            this.global.ShowToastr(ToasterType.Error, labels.alert.went_worng, ToasterTitle.Error);
-            console.log("deleteEmployeeZone", res.responseMessage);
-          }
         });
-      } else if (this.data.mode === Mode.DeletePickLevel) {
-        let pickLevelData = {
+        break;
+      case Mode.DeletePickLevel:
+        this.handleDelete(this.adminApiService.deletePickLevels, {
           levelID: this.data.picklevel.levelID.toString(),
           startShelf: this.data.picklevel.startCarousel.toString(),
           endShelf: this.data.picklevel.endCarousel.toString(),
           userName: this.data.userName,
-        };
-        this.iAdminApiService.deletePickLevels(pickLevelData).subscribe((res: any) => {
-          if (res.isExecuted) {
-            this.dialog.closeAll();
-            this.global.ShowToastr(ToasterType.Success, labels.alert.delete, ToasterTitle.Success);
-          } else {
-            this.dialog.closeAll();
-            this.global.ShowToastr(ToasterType.Error, labels.alert.went_worng, ToasterTitle.Error);
-            console.log("deletePickLevels", res.responseMessage);
-          }
         });
-      } else if (this.data.mode === Mode.DeleteLocation) {
-        let locationData = {
+        break;
+      case Mode.DeleteLocation:
+        this.handleDelete(this.adminApiService.deleteEmployeeLocation, {
           startLocation: this.data.location.startLocation,
           endLocation: this.data.location.endLocation,
           username: this.data.userName,
-        };
-        this.iAdminApiService.deleteEmployeeLocation(locationData).subscribe((res: any) => {
-          if (res.isExecuted) {
-            this.dialog.closeAll();
-            this.global.ShowToastr(ToasterType.Success, labels.alert.delete, ToasterTitle.Success);
-          } else {
-            this.dialog.closeAll();
-            this.global.ShowToastr(ToasterType.Error, labels.alert.went_worng, ToasterTitle.Error);
-            console.log("deleteEmployeeLocation",res.responseMessage);
-          }
         });
-      } else if (this.data.mode === Mode.DeleteConnectionString) {
-        let payload = {
+        break;
+      case Mode.DeleteConnectionString:
+        this.handleDelete(this.globalConfigApi.ConnectionDelete, {
           ConnectionName: this.data.connectionName,
-        };
-        this.iGlobalConfigApi
-          .ConnectionDelete(payload)
-          .subscribe(
-            (res: any) => {
-              if (res.isExecuted) {
-                this.global.ShowToastr(ToasterType.Success, res.responseMessage, ToasterTitle.Success);
-                this.dialogRef.close({ isExecuted: true });
-              }
-            },
-            (error) => {
-              this.global.ShowToastr(ToasterType.Error, labels.alert.went_worng, ToasterTitle.Error);
-              console.log("ConnectionDelete", error);
-            }
-          );
-      } else if (this.data.mode === Mode.DeleteGroup) {
-        let groupData = {
-          GroupName: this.data.grp_data.groupName,
-          userName: this.data.userName,
-        };
-        this.iAdminApiService.deleteGroup(groupData).subscribe((res: any) => {
-          if (res.isExecuted) {
-            this.dialog.closeAll();
-            this.global.ShowToastr(ToasterType.Success, labels.alert.delete, ToasterTitle.Success);
-          } else {
-            this.dialog.closeAll();
-            this.global.ShowToastr(ToasterType.Error, labels.alert.went_worng, ToasterTitle.Error);
-            console.log("deleteGroup",res.responseMessage);
-          }
         });
-      } else if (this.data.mode === Mode.DeleteAllowedGroup) {
-        let groupData = {
-          GroupName: this.data.allowedGroup,
+        break;
+      case Mode.DeleteGroup:
+      case Mode.DeleteAllowedGroup:
+        this.handleDelete(this.adminApiService.deleteGroup, {
+          GroupName: this.data.grp_data?.groupName || this.data.allowedGroup,
           userName: this.data.userName,
-        };
-        this.iAdminApiService.deleteGroup(groupData).subscribe((res: any) => {
-          if (res.isExecuted) {
-            this.dialog.closeAll();
-            this.global.ShowToastr(ToasterType.Success, labels.alert.delete, ToasterTitle.Success);
-          } else {
-            this.dialog.closeAll();
-            this.global.ShowToastr(ToasterType.Error, labels.alert.went_worng, ToasterTitle.Error);
-            console.log("deleteGroup",res.responseMessage);
-          }
         });
-      } else if (this.data.mode === Mode.DeleteAllowedFunction) {
-        let groupData = {
+        break;
+      case Mode.DeleteAllowedFunction:
+        this.handleDelete(this.adminApiService.deleteControlName, {
           controlName: this.data.controlName,
           userName: this.data.userName,
-        };
-        this.iAdminApiService.deleteControlName(groupData).subscribe((res: any) => {
-          if (res.isExecuted) {
-            this.dialog.closeAll();
-            this.global.ShowToastr(ToasterType.Success, labels.alert.delete, ToasterTitle.Success);
-          } else {
-            this.dialog.closeAll();
-            this.global.ShowToastr(ToasterType.Error, labels.alert.went_worng, ToasterTitle.Error);
-            console.log("deleteControlName",res.responseMessage);
-          }
         });
-      } else if (this.data.mode === Mode.DeleteInvMap) {
-        let payload = {
-          inventoryMapID: this.data.id, 
-        };
-        this.iAdminApiService.deleteInventoryMap(payload).subscribe((res: any) => {
-          if (res.isExecuted) {
-            this.dialog.closeAll();
-            this.global.ShowToastr(ToasterType.Success, labels.alert.delete, ToasterTitle.Success);
-          } else {
-            this.dialog.closeAll();
-            this.global.ShowToastr(ToasterType.Error, labels.alert.went_worng, ToasterTitle.Error);
-            console.log("deleteInventoryMap",res.responseMessage);
-          }
+        break;
+      case Mode.DeleteInvMap:
+        this.handleDelete(this.adminApiService.deleteInventoryMap, {
+          inventoryMapID: this.data.id,
         });
-      } else if (this.data.mode === Mode.DeleteEmp) {
-        let emp_data = {
+        break;
+      case Mode.DeleteEmp:
+        this.handleDelete(this.adminApiService.deleteAdminEmployee, {
           userName: this.data.emp_data.userName,
-          deleteBy: this.userData.userName
-        };
-        this.iAdminApiService
-          .deleteAdminEmployee(emp_data)
-          .subscribe((res: any) => {
-            if (res.isExecuted) {
-              this.dialogRef.close('deleted');
-              this.global.ShowToastr(ToasterType.Success, labels.alert.delete, ToasterTitle.Success);
-            }
-            else {
-              this.global.ShowToastr(ToasterType.Error, this.global.globalErrorMsg(), ToasterTitle.Error);
-              console.log("deleteAdminEmployee",res.responseMessage);
-            }
-          });
-      } else if (this.data.mode === Mode.DeleteGrpAllowed) {
-        let emp_data = {
+          deleteBy: this.userData.userName,
+        });
+        break;
+      case Mode.DeleteGrpAllowed:
+        this.handleDelete(this.adminApiService.deleteUserGroup, {
           groupname: this.data.allowedGroup.groupName,
           username: this.data.allowedGroup.userName,
-        };
-        this.iAdminApiService.deleteUserGroup(emp_data).subscribe((res: any) => {
-          if (res.isExecuted) {
-            this.dialog.closeAll();
-            this.global.ShowToastr(ToasterType.Success, labels.alert.delete, ToasterTitle.Success);
-          } else {
-            this.global.ShowToastr(ToasterType.Error, res.responseMessage, ToasterTitle.Error);
-            console.log("deleteUserGroup",res.responseMessage);
-          }
         });
-      } else if (this.data.mode === Mode.DeleteWarehouse) {
-        let emp_data = {
-          warehouse: this.data.warehouse
-        };
-        this.iCommonAPI.dltWareHouse(emp_data).subscribe((res: any) => {
-          if (res.isExecuted) {
-            this.dialogRef.close(ResponseStrings.Yes);
-            this.global.ShowToastr(ToasterType.Success, labels.alert.delete, ToasterTitle.Success);
-          } else {
-            this.global.ShowToastr(ToasterType.Error, res.responseMessage, ToasterTitle.Error);
-            console.log("dltWareHouse",res.responseMessage);
-          }
+        break;
+      case Mode.DeleteWarehouse:
+        this.handleDelete(this.commonAPI.dltWareHouse, {
+          warehouse: this.data.warehouse,
         });
-      } else if (this.data.mode === Mode.DeleteVelocity) {
-        let emp_data = {
-          velocity: this.data.velocity
-        };
-        this.iCommonAPI.dltVelocityCode(emp_data).subscribe((res: any) => {
-          if (res.isExecuted) {
-            this.dialogRef.close(ResponseStrings.Yes);
-            this.global.ShowToastr(ToasterType.Success, labels.alert.delete, ToasterTitle.Success);
-          } else {
-            this.global.ShowToastr(ToasterType.Error, res.responseMessage, ToasterTitle.Error);
-            console.log("dltVelocityCode",res.responseMessage);
-          }
+        break;
+      case Mode.DeleteVelocity:
+        this.handleDelete(this.commonAPI.dltVelocityCode, {
+          velocity: this.data.velocity,
         });
-      } else if (this.data.mode === Mode.DeleteOrderStatus) {
-        this.iAdminApiService
-          .DeleteOrderStatus(this.data.paylaod)
-          .subscribe(
-            (res: any) => {
-              if (res.isExecuted) {
-                this.global.ShowToastr(ToasterType.Success, labels.alert.delete, ToasterTitle.Success);
-                this.dialogRef.close({ isExecuted: true });
-              } else {
-                this.global.ShowToastr(ToasterType.Error, labels.alert.went_worng, ToasterTitle.Error);
-                this.dialogRef.close({ isExecuted: false });
-                console.log("DeleteOrderStatus",res.responseMessage);
-                
-                
-              }
-            },
-            (error) => {}
-          );
-      } else if (this.data.mode === Mode.DeleteCarrier) {
-        let payload = {
-          carrier: this.data.carrier
-        };
-        this.iConsolidationAPI
-          .CarrierDelete(payload)
-          .subscribe(
-            (res: any) => {
-              if (res.isExecuted) {
-                this.global.ShowToastr(ToasterType.Success, labels.alert.delete, ToasterTitle.Success);
-                this.dialogRef.close({ isExecuted: true });
-              } else {
-                this.global.ShowToastr(ToasterType.Error, labels.alert.went_worng, ToasterTitle.Error);
-                this.dialogRef.close({ isExecuted: false });
-                console.log("CarrierDelete",res.responseMessage);
-              }
-            },
-            (error) => {}
-          );
-      } else if (this.data.mode === Mode.DeleteWorkstation) {
-        this.iGlobalConfigApi
-          .WorkStationDelete()
-          .subscribe(
-            (res: any) => {
-              if (res.isExecuted) {
-                this.global.ShowToastr(ToasterType.Success, labels.alert.delete, ToasterTitle.Success);
-                this.dialogRef.close({ isExecuted: true });
-              } else {
-                this.global.ShowToastr(ToasterType.Error, labels.alert.went_worng, ToasterTitle.Error);
-                console.log("WorkStationDelete",res.responseMessage);
-              }
-              this.dialogRef.close({ isExecuted: false });
-            },
-            (err) => {
-              this.global.ShowToastr(ToasterType.Error, labels.alert.went_worng, ToasterTitle.Error);
-              
-            }
-          );
-      } else if(this.data.mode == Mode.DeleteCategory) {
-        let payload = {
-          Category:this.data.category,
-          SubCategory:this.data.subCategory,
-        };
+        break;
+      case Mode.DeleteOrderStatus:
+        this.handleDelete(this.adminApiService.DeleteOrderStatus, this.data.paylaod);
+        break;
+      case Mode.DeleteCarrier:
+        this.handleDelete(this.consolidationAPI.CarrierDelete, {
+          carrier: this.data.carrier,
+        });
+        break;
+      case Mode.DeleteWorkstation:
+        this.handleDelete(this.globalConfigApi.WorkStationDelete);
+        break;
+      case Mode.DeleteCategory:
+        this.handleDelete(this.commonAPI.CategoryDelete, {
+          Category: this.data.category,
+          SubCategory: this.data.subCategory,
+        });
+        break;
+      default:
+        this.dialogRef.close(ResponseStrings.Yes);
+    }
+  }
 
-        this.iCommonAPI
-          .CategoryDelete(payload)
-          .subscribe(
-            (res: any) => {
-              if (res.isExecuted) {
-                this.global.ShowToastr(ToasterType.Success, labels.alert.delete, ToasterTitle.Success);
-                this.dialogRef.close(ResponseStrings.Yes);
-              } else {
-                this.global.ShowToastr(ToasterType.Error, labels.alert.went_worng, ToasterTitle.Error);
-                this.dialogRef.close({ isExecuted: false });
-                console.log("CategoryDelete",res.responseMessage);
-              }
-            },
-            (err) => {
-              this.global.ShowToastr(ToasterType.Error, labels.alert.went_worng, ToasterTitle.Error);
-            }
-          );
-      } 
-      else this.dialogRef.close(ResponseStrings.Yes);
-    } 
-    else this.dialogRef.close(ResponseStrings.Yes);
+  private handleDelete(apiMethod: Function, payload?: any) {
+    apiMethod(payload).subscribe(
+      (res: any) => {
+        if (res.isExecuted) {
+          this.global.ShowToastr(ToasterType.Success, labels.alert.delete, ToasterTitle.Success);
+          this.dialogRef.close({ isExecuted: true });
+        } else {
+          this.global.ShowToastr(ToasterType.Error, labels.alert.went_worng, ToasterTitle.Error);
+          this.dialogRef.close({ isExecuted: false });
+          console.log(apiMethod.name, res.responseMessage);
+        }
+      },
+      (error: any) => {
+        this.global.ShowToastr(ToasterType.Error, labels.alert.went_worng, ToasterTitle.Error);
+        console.log(apiMethod.name, error);
+      }
+    );
   }
 
   checkOptions(event: MatCheckboxChange): void {
-    if (event.checked) this.isChecked = false;
-    else this.isChecked = true;
+    this.isChecked = !event.checked;
   }
 
   reloadCurrentRoute() {
     let currentUrl = this.router.url;
-    this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => { this.router.navigate([currentUrl]); });
+    this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => { 
+      this.router.navigate([currentUrl]); 
+    });
   }
 }

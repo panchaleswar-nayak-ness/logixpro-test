@@ -1,26 +1,27 @@
-import {Injectable} from '@angular/core';
-import {MatDialog} from '@angular/material/dialog';
-import {SafeUrl} from '@angular/platform-browser';
-import {BrChooseReportTypeComponent} from 'src/app/dialogs/br-choose-report-type/br-choose-report-type.component';
-import {AuthService} from 'src/app/common/init/auth.service';
-import {OrderManagerApiService} from 'src/app/common/services/orderManager-api/order-manager-api.service';
-import {IOrderManagerAPIService} from 'src/app/common/services/orderManager-api/order-manager-api-interface';
-import {IAdminApiService} from 'src/app/common/services/admin-api/admin-api-interface';
-import {AdminApiService} from 'src/app/common/services/admin-api/admin-api.service';
-import {
-  IInductionManagerApiService
-} from 'src/app/common/services/induction-manager-api/induction-manager-api-interface';
-import {InductionManagerApiService} from 'src/app/common/services/induction-manager-api/induction-manager-api.service';
-import {ToastrService} from 'ngx-toastr';
-import {DialogConstants, ToasterTitle, ToasterType} from '../constants/strings.constants';
-import {BaseService} from 'src/app/common/services/base-service.service';
+import { Injectable } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
+import { SafeUrl } from '@angular/platform-browser';
+import { BrChooseReportTypeComponent } from 'src/app/dialogs/br-choose-report-type/br-choose-report-type.component';
+import { AuthService } from 'src/app/common/init/auth.service';
+import { OrderManagerApiService } from 'src/app/common/services/orderManager-api/order-manager-api.service';
+import { IOrderManagerAPIService } from 'src/app/common/services/orderManager-api/order-manager-api-interface';
+import { IAdminApiService } from 'src/app/common/services/admin-api/admin-api-interface';
+import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.service';
+import { IInductionManagerApiService } from 'src/app/common/services/induction-manager-api/induction-manager-api-interface';
+import { InductionManagerApiService } from 'src/app/common/services/induction-manager-api/induction-manager-api.service';
+import { ToastrService } from 'ngx-toastr';
+import { DialogConstants, ToasterTitle, ToasterType } from '../constants/strings.constants';
+import { BaseService } from 'src/app/common/services/base-service.service';
+import { ApiResponse, UserSession } from '../types/CommonTypes';
+import { OrderManagerSettings, PickToteSetupIndex } from '../Model/preferences';
+
 
 @Injectable({
   providedIn: 'root'
 })
 export class GlobalService {
   safeUrl: SafeUrl;
-  userData:any;
+  userData: UserSession;
   sqlLimits : any = {
     numerics: {
         bigint: {
@@ -72,29 +73,31 @@ export class GlobalService {
     this.iAdminApiService = adminApiService;
     this.iinductionManagerApi = inductionManagerApi;
   }
+
   private lastMessage: string | null = null;
-  ShowToastr(type? : any, msg? : any, title? : any, timeOut? : any, positionClass? : any){
-    if (this.lastMessage === msg) {
-      return; // Do nothing if the message is the same
-    }
+
+  ShowToastr(type? : any, msg : string | null = null, title? : string, timeOut? : number, positionClass? : string) {
+    if (this.lastMessage === msg) return; // Do nothing if the message is the same
+
     if (!timeOut) timeOut = type == ToasterType.Success ? 2000 : 5000;
-    this.toastr[type](msg, title || 'Success!',
+
+    this.toastr[type](msg, title || 'Success!', 
       {
         positionClass: positionClass || 'toast-bottom-right',
         timeOut: timeOut,
       }
     );
-     // Update the lastMessage with the current message
-     this.lastMessage = msg;
+    // Update the lastMessage with the current message
+    this.lastMessage = msg;
 
-     // Reset lastMessage when the toast disappears
-     setTimeout(() => {
-      this.resetLastMessage();
-    }, timeOut);
+    // Reset lastMessage when the toast disappears
+    setTimeout(() => { this.resetLastMessage(); }, timeOut);
   }
+
   private resetLastMessage() {
     this.lastMessage = null;
   }
+
   globalErrorMsg() {
     return "Error Response from Server";
   }
@@ -255,7 +258,7 @@ export class GlobalService {
     });
   }
 
-  OpenExportModal(name:any, reportName) {
+  OpenExportModal(name: string, reportName: string) {
     reportName = reportName.replace(".lst","-lst").replace(".lbl","-lbl");
     name = name.replace(".lst","").replace(".lbl","");
 
@@ -267,13 +270,13 @@ export class GlobalService {
       data:{ ReportName:reportName, Name:name }
     });
 
-    dialogRef.afterClosed().subscribe((result) => {
+    dialogRef.afterClosed().subscribe((result : { FileName : string, Type : string }) => {
       if (result.FileName != null) this.Export(reportName, result.Type, result.FileName);
     });
   }
 
-  Export(ChooseReport:any,Type:any,filename:any){
-    let paylaod:any={
+  Export(ChooseReport: string, Type: string, filename: string){
+    let paylaod = {
       ClientCustomData:`${this.capitalizeAndRemoveSpaces(ChooseReport)}`,
       repositoryIdOfProject:"BCAEC8B2-9D16-4ACD-94EC-74932157BF82",
       type:Type,
@@ -285,35 +288,26 @@ export class GlobalService {
           if(res.data.fileName.indexOf("txt") > -1 || res.data.fileName.indexOf("csv") > -1) this.downloadTextFile(res.data.fileName, res.data.fileContent);
           else {
             this.apiBase.DownloadFile(res.data.url).subscribe((response) => {
-              if (response.body) {
-                const blobUrl = URL.createObjectURL(response.body);
-                const anchor = document.createElement('a');
-                anchor.href = blobUrl;
-                let headers = response.headers;
-                let disposition = headers.get('content-disposition');
-                let dispositions = disposition.split(';');
-                let filename = dispositions.find((d) => d.includes('filename'));
-                filename = filename.split('=')[1];
-                anchor.download = filename;
-
-                document.body.appendChild(anchor);
-                anchor.click();
-                document.body.removeChild(anchor);
-                URL.revokeObjectURL(blobUrl);
-
-              }
-              else {
-                this.ShowToastr(ToasterType.Error, "Export unsuccessfully complete", ToasterTitle.Error);
-              }
-
+                if (response.body) {
+                  const blobUrl = URL.createObjectURL(response.body);
+                  const anchor = document.createElement('a');
+                  anchor.href = blobUrl;
+                  let headers = response.headers;
+                  let disposition = headers.get('content-disposition');
+                  let dispositions = disposition.split(';');
+                  let filename = dispositions.find((d) => d.includes('filename'));
+                  filename = filename.split('=')[1];
+                  anchor.download = filename;
+                  document.body.appendChild(anchor);
+                  anchor.click();
+                  document.body.removeChild(anchor);
+                  URL.revokeObjectURL(blobUrl);
+        
+                } else this.ShowToastr(ToasterType.Error, "Export unsuccessfully complete", ToasterTitle.Error);
               },
-            (error) => {
-              this.ShowToastr(ToasterType.Error, "Export unsuccessfully complete", ToasterTitle.Error);
-            }
+              (error) => this.ShowToastr(ToasterType.Error, "Export unsuccessfully complete", ToasterTitle.Error)
             );
-
-
-          }
+          }   
       } else this.ShowToastr(ToasterType.Error, "Export unsuccessfully complete", ToasterTitle.Error);
     })
   }
@@ -332,7 +326,7 @@ export class GlobalService {
     URL.revokeObjectURL(link.href);
   }
 
-  getOmPreferences(): any{
+  getOmPreferences(): any {
     const preferencesString = localStorage.getItem('OmPreference');
     if(preferencesString) return JSON.parse(preferencesString)
     else {
@@ -347,7 +341,7 @@ export class GlobalService {
   }
 
   updateOmPref(){
-    this.iOrderManagerApi.OrderManagerPreferenceIndex().subscribe((response: any) => {
+    this.iOrderManagerApi.OrderManagerPreferenceIndex().subscribe((response: ApiResponse<OrderManagerSettings>) => {
       if (response.isExecuted) localStorage.setItem('OmPreference', JSON.stringify(response.data.preferences[0]));
     });
   }
@@ -357,7 +351,7 @@ export class GlobalService {
   }
 
   updateImPreferences(){
-    this.iinductionManagerApi.PickToteSetupIndex({}).subscribe(res => {
+    this.iinductionManagerApi.PickToteSetupIndex({}).subscribe((res : ApiResponse<PickToteSetupIndex>) => {
       localStorage.setItem('InductionPreference', JSON.stringify(res.data.imPreference));
     });
   }

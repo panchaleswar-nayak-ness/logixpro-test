@@ -9,7 +9,31 @@ import { IAdminApiService } from 'src/app/common/services/admin-api/admin-api-in
 import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.service';
 import { SharedService } from 'src/app/common/services/shared.service';
 import {  StringConditions, ToasterTitle, ToasterType ,DialogConstants,Style,TableConstant,UniqueConstants,ColumnDef} from 'src/app/common/constants/strings.constants';
+import { ApiResponse, CustomPagination, UserSession } from 'src/app/common/types/CommonTypes';
 
+interface DevicePreference {
+  zone: string;
+  deviceType: string;
+  deviceNumber: string;
+  deviceModel: string;
+  controllerType: string | null;
+  controllerTermPort: string;
+  arrowDirection: string;
+  lightDirection: string;
+  laserPointer: string;
+  lightTreeNumber: string;
+  beginAddress: string;
+  displayPositions: string;
+  displayCharacters: string;
+  deviceID: string;
+  selected: boolean;
+}
+
+interface DevicePreferencesTableResponse {
+  recordsTotal: number;
+  recordsFiltered: number;
+  devicePreferences: DevicePreference[];
+}
 
 @Component({
   selector: 'app-sp-device-preference',
@@ -17,15 +41,15 @@ import {  StringConditions, ToasterTitle, ToasterType ,DialogConstants,Style,Tab
   styleUrls: ['./sp-device-preference.component.scss'],
 })
 export class SpDevicePreferenceComponent implements OnInit {
-  public dataSource: any = new MatTableDataSource();
+  public dataSource: MatTableDataSource<DevicePreference>;
   @ViewChild(MatPaginator) paginator: MatPaginator;
-  public userData: any;
+  public userData: UserSession;
   pageEvent: PageEvent;
   public iAdminApiService: IAdminApiService;
-  sortCol = 0;
-  sortDir = UniqueConstants.Asc;
-  customPagination: any = {
-    total: '',
+  sortCol: number = 0;
+  sortDir: string = UniqueConstants.Asc;
+  customPagination: CustomPagination = {
+    total: 0,
     recordsPerPage: 10,
     startIndex: 0,
     endIndex: 10,
@@ -49,7 +73,7 @@ export class SpDevicePreferenceComponent implements OnInit {
   constructor(
     public authService: AuthService,
     private global:GlobalService,
-    private adminApiService: AdminApiService,  
+    public adminApiService: AdminApiService,  
     private sharedService: SharedService
   ) {
     this.iAdminApiService = adminApiService;
@@ -62,11 +86,7 @@ export class SpDevicePreferenceComponent implements OnInit {
 
   ngAfterViewInit() {
     this.dataSource.paginator = this.paginator;
-
-    this.sharedService.devicePrefObserver.subscribe((evt) => {
- 
-      this.getDevicePrefTable();
-    });
+    this.sharedService.devicePrefObserver.subscribe((evt) => this.getDevicePrefTable());
   }
 
   getDevicePrefTable() {
@@ -79,28 +99,20 @@ export class SpDevicePreferenceComponent implements OnInit {
       zone: '', 
     };
 
-
-    this.iAdminApiService.DevicePreferencesTable(payload)
-    .subscribe((res: any) => {
-      
-
+    this.iAdminApiService.DevicePreferencesTable(payload).subscribe((res: ApiResponse<DevicePreferencesTableResponse>) => {
       if (res?.data?.devicePreferences) {
         this.dataSource = new MatTableDataSource(res.data.devicePreferences);
         this.customPagination.total = res.data?.recordsFiltered;
-      }
-
-      else
-      {
-        
+      } else { 
         this.global.ShowToastr(ToasterType.Error, this.global.globalErrorMsg(), ToasterTitle.Error);
         console.log("LocationZone", res.responseMessage);
       }
     });
   }
 
-  addEditNewDevice(item?, isEdit = false) {
-    let dialogRef:any = this.global.OpenDialog(AddNewDeviceComponent, {
-      height: 'auto',
+  addEditNewDevice(item? : DevicePreference, isEdit = false) {
+    const dialogRef: any = this.global.OpenDialog(AddNewDeviceComponent, {
+      height: DialogConstants.auto,
       width: '960px',
       autoFocus: DialogConstants.autoFocus,
       disableClose:true,
@@ -109,12 +121,10 @@ export class SpDevicePreferenceComponent implements OnInit {
         item: item,
       },
     });
-    dialogRef.afterClosed().subscribe((result) => {
-      if (result === StringConditions.Yes) {
-        this.getDevicePrefTable();
-      }
-    });
+
+    dialogRef.afterClosed().subscribe((result) => { if(result === StringConditions.Yes) this.getDevicePrefTable() });
   }
+
   handlePageEvent(e: PageEvent) {
     this.pageEvent = e;
     this.customPagination.startIndex = e.pageSize * e.pageIndex;
@@ -122,9 +132,10 @@ export class SpDevicePreferenceComponent implements OnInit {
     this.customPagination.recordsPerPage = e.pageSize;
     this.getDevicePrefTable();
   }
+
   deleteAllOrders(deviceID) {
     const dialogRef:any = this.global.OpenDialog(DeleteConfirmationComponent, {
-      height: 'auto',
+      height: DialogConstants.auto,
       width: Style.w560px,
       autoFocus: DialogConstants.autoFocus,
       disableClose:true,
@@ -132,14 +143,11 @@ export class SpDevicePreferenceComponent implements OnInit {
         action: UniqueConstants.delete,
       },
     });
+
     dialogRef.afterClosed().subscribe((result) => {
       if (result === StringConditions.Yes) {
-        let payload = {
-          deviceID: deviceID, 
-        };
-        this.iAdminApiService
-          .DevicePreferencesDelete(payload)
-          .subscribe((res: any) => {
+        let payload = { deviceID: deviceID };
+        this.iAdminApiService.DevicePreferencesDelete(payload).subscribe((res: any) => {
             if (res.isExecuted) {
               this.global.ShowToastr(ToasterType.Success,res.responseMessage, ToasterTitle.Success);
               this.getDevicePrefTable();
@@ -147,38 +155,29 @@ export class SpDevicePreferenceComponent implements OnInit {
               this.global.ShowToastr(ToasterType.Error,res.responseMessage, ToasterTitle.Error);
               console.log("DevicePreferencesDelete",res.responseMessage);
             }
-          });
+        });
       }
     });
   }
   sortChange(event) {
     if (
-      !this.dataSource._data._value ||
+      // !this.dataSource._data._value ||
       event.direction == '' ||
       event.direction == this.sortCol
     )
       return;
     let index;
-    this.displayedColumns.forEach((x, i) => {
-      if (x === event.active) {
-        index = i + 1;
-      }
-    });
-
+    this.displayedColumns.forEach((x, i) => { if (x === event.active) index = i + 1 });
     this.sortCol = index;
     this.sortDir = event.direction;
     this.getDevicePrefTable();
   }
 
-  selectRow(row: any) {
+  selectRow(row: DevicePreference) {
     this.dataSource.filteredData.forEach(element => {
-      if(row != element){
-        element.selected = false;
-      }
+      if(row != element) element.selected = false;
     });
-    const selectedRow = this.dataSource.filteredData.find((x: any) => x === row);
-    if (selectedRow) {
-      selectedRow.selected = !selectedRow.selected;
-    }
+    const selectedRow = this.dataSource.filteredData.find(x => x === row);
+    if (selectedRow) selectedRow.selected = !selectedRow.selected;
   }
 }

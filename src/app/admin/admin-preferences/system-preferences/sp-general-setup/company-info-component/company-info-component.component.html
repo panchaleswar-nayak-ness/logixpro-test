@@ -1,173 +1,61 @@
 <div class="d-flex justify-content-between align-items-center mb-3">
-  <app-icon-heading-component
-    heading="Company Information"
-    icon="corporate_fare"
-  >
-  </app-icon-heading-component>
+  <app-icon-heading-component heading="Company Information" icon="corporate_fare"></app-icon-heading-component>
 </div>
 <div class="card p-3">
   <div class="row">
     <div class="col-xl-6">
-      <mat-form-field
-        class="custom-form-field custom-form-field-bg-white w-100 mb-3"
-        appearance="outline"
-      >
+      <mat-form-field class="custom-form-field custom-form-field-bg-white w-100 mb-3" appearance="outline">
         <mat-label>Company Name</mat-label>
-        <input
-          type="text"
-          [(ngModel)]="companyObj.companyName"
-          (change)="payload(1)"
-          matInput
-          maxlength="255"
-        />
+        <input type="text" [(ngModel)]="companyInfo.companyName" (change)="update()" matInput maxlength="255" />
       </mat-form-field>
-      <mat-form-field
-        class="custom-form-field custom-form-field-bg-white w-100 mb-3"
-        appearance="outline"
-      >
+      <mat-form-field class="custom-form-field custom-form-field-bg-white w-100 mb-3" appearance="outline">
         <mat-label>Address</mat-label>
-        <input
-          type="text"
-          [(ngModel)]="companyObj.address1"
-          (change)="payload(1)"
-          matInput
-          maxlength="255"
-        />
+        <input type="text" [(ngModel)]="companyInfo.address1" (change)="update()" matInput maxlength="255"/>
       </mat-form-field>
-      <mat-form-field
-        class="custom-form-field custom-form-field-bg-white w-100 mb-3"
-        appearance="outline"
-      >
+      <mat-form-field class="custom-form-field custom-form-field-bg-white w-100 mb-3" appearance="outline">
         <mat-label>City</mat-label>
-        <input
-          type="text"
-          [(ngModel)]="companyObj.city"
-          (change)="payload(1)"
-          matInput
-          maxlength="255"
-        />
+        <input type="text" [(ngModel)]="companyInfo.city" (change)="update()" matInput maxlength="255"/>
       </mat-form-field>
-      <mat-form-field
-        class="custom-form-field custom-form-field-bg-white w-100 mb-3"
-        appearance="outline"
-      >
+      <mat-form-field class="custom-form-field custom-form-field-bg-white w-100 mb-3" appearance="outline">
         <mat-label>State</mat-label>
-        <input
-          type="text"
-          [(ngModel)]="companyObj.state"
-          (change)="payload(1)"
-          matInput
-          maxlength="255"
-        />
+        <input type="text" [(ngModel)]="companyInfo.state" (change)="update()" matInput maxlength="255"/>
       </mat-form-field>
-      <mat-form-field
-        class="custom-form-field custom-form-field-bg-white w-100 mb-3"
-        appearance="outline"
-      >
+      <mat-form-field class="custom-form-field custom-form-field-bg-white w-100 mb-3" appearance="outline">
         <mat-label>Early Break Time</mat-label>
-        <input
-          type="text"
-          [(ngModel)]="companyObj.earlyBreakTime"
-          (change)="payload(1)"
-          matInput
-          maxlength="255"
-        />
+        <input type="text" [(ngModel)]="companyInfo.earlyBreakTime" (change)="update()" matInput maxlength="255"/>
       </mat-form-field>
     </div>
     <div class="col-xl-6">
-      <mat-form-field
-        class="custom-form-field custom-form-field-bg-white w-100 mb-3"
-        appearance="outline"
-      >
+      <mat-form-field class="custom-form-field custom-form-field-bg-white w-100 mb-3" appearance="outline">
         <mat-label>Mid Break Time</mat-label>
-        <input
-          type="text"
-          [(ngModel)]="companyObj.midBreakTime"
-          (change)="payload(1)"
-          matInput
-          maxlength="255"
-        />
+        <input type="text" [(ngModel)]="companyInfo.midBreakTime" (change)="update()" matInput maxlength="255"/>
       </mat-form-field>
-      <mat-form-field
-        class="custom-form-field custom-form-field-bg-white w-100 mb-3"
-        appearance="outline"
-      >
+      <mat-form-field class="custom-form-field custom-form-field-bg-white w-100 mb-3" appearance="outline">
         <mat-label>Early Mid Duration (Min)</mat-label>
-        <input
-          type="text"
-          [(ngModel)]="companyObj.midBreakDuration"
-          (change)="payload(1)"
-          matInput
-          maxlength="255"
-        />
+        <input type="text" [(ngModel)]="companyInfo.midBreakDuration" (change)="update()" matInput maxlength="255"/>
       </mat-form-field>
-      <mat-form-field
-        class="custom-form-field custom-form-field-bg-white w-100 mb-3"
-        appearance="outline"
-      >
+      <mat-form-field class="custom-form-field custom-form-field-bg-white w-100 mb-3" appearance="outline">
         <mat-label>Late Break Time</mat-label>
-        <input
-          type="text"
-          [(ngModel)]="companyObj.lateBreakTime"
-          (change)="payload(1)"
-          matInput
-          maxlength="255"
-        />
+        <input type="text" [(ngModel)]="companyInfo.lateBreakTime" (change)="update()" matInput maxlength="255"/>
       </mat-form-field>
-      <mat-form-field
-        class="custom-form-field custom-form-field-bg-white w-100 mb-3"
-        appearance="outline"
-      >
+      <mat-form-field class="custom-form-field custom-form-field-bg-white w-100 mb-3" appearance="outline">
         <mat-label>Early Late Duration (Min)</mat-label>
-        <input
-          type="text"
-          [(ngModel)]="companyObj.lateBreakDuration"
-          (change)="payload(1)"
-          matInput
-          maxlength="255"
-        />
+        <input type="text" [(ngModel)]="companyInfo.lateBreakDuration" (change)="update()" matInput maxlength="255"/>
       </mat-form-field>
-      <mat-form-field
-        class="custom-form-field custom-form-field-bg-white w-100 mb-3"
-        appearance="outline"
-      >
+      <mat-form-field class="custom-form-field custom-form-field-bg-white w-100 mb-3" appearance="outline">
         <mat-label>Early Break Duration (Min)</mat-label>
-        <input
-          type="text"
-          [(ngModel)]="companyObj.earlyBreakDuration"
-          (change)="payload(1)"
-          matInput
-          maxlength="255"
-        />
+        <input type="text" [(ngModel)]="companyInfo.earlyBreakDuration" (change)="update()" matInput maxlength="255"/>
       </mat-form-field>
     </div>
     <div class="col-xl-12">
-      <mat-form-field
-        class="custom-form-field custom-form-field-bg-white w-100 mb-3 btn-init"
-        appearance="outline"
-      >
+      <mat-form-field class="custom-form-field custom-form-field-bg-white w-100 mb-3 btn-init" appearance="outline">
         <mat-label>Company Logo</mat-label>
-        <input
-          type="text"
-          [(ngModel)]="companyObj.companylogo"
-          matInput
-          maxlength="255"
-        />
-        <span matSuffix
-          ><button mat-button color="primary">Browse</button></span
-        >
+        <input type="text" matInput maxlength="255"/>
+        <span matSuffix><button mat-button color="primary">Browse</button></span>
       </mat-form-field>
       <div class="d-block d-xxl-flex gap-12">
-        <button
-          mat-stroked-button
-          color="primary"
-          class="btn-md mb-3 w-100"
-        >
-          View Current Company Logo
-        </button>
-        <button mat-flat-button color="primary" class="btn-md mb-3 w-100">
-          Upload
-        </button>
+        <button mat-stroked-button color="primary" class="btn-md mb-3 w-100">View Current Company Logo</button>
+        <button mat-flat-button color="primary" class="btn-md mb-3 w-100">Upload</button>
       </div>
     </div>
   </div>
