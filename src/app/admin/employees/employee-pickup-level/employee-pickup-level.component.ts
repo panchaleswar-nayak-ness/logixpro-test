@@ -36,7 +36,7 @@ export class EmployeePickupLevelComponent{
   @ViewChild(MatSort) sort: MatSort;
   public nextPickLvl:any;
 
-   displayedColumns: string[] = ['pickLevel', 'startShelf', 'endShelf', StringConditions.edit];
+   displayedColumns: string[] = ['pickLevel', 'startShelf', 'endShelf', 'startCarousel', 'endCarousel', StringConditions.edit];
 
   ngOnChanges(changes: SimpleChanges): void { 
     if(this.pickUplevels){

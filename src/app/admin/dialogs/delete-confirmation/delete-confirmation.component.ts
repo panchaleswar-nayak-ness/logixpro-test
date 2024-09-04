@@ -14,6 +14,7 @@ import { ICommonApi } from 'src/app/common/services/common-api/common-api-interf
 import { CommonApiService } from 'src/app/common/services/common-api/common-api.service';
 import { GlobalService } from 'src/app/common/services/global.service';
 import { Mode, ToasterTitle, ToasterType ,ResponseStrings} from 'src/app/common/constants/strings.constants';
+import { UserSession } from 'src/app/common/types/CommonTypes';
 
 @Component({
   selector: 'app-delete-confirmation',
@@ -24,7 +25,7 @@ export class DeleteConfirmationComponent implements OnInit {
   action = 'remove';
   actionMessage = '';
   Message: any;
-  public userData;
+  public userData : UserSession;
 
   public iAdminApiService: IAdminApiService;
   public iConsolidationAPI : IConsolidationApi;
@@ -70,11 +71,12 @@ export class DeleteConfirmationComponent implements OnInit {
         });
         break;
       case Mode.DeletePickLevel:
-        this.handleDelete(this.adminApiService.deletePickLevels, {
+        this.handleDelete(this.iAdminApiService.deletePickLevels, {
           levelID: this.data.picklevel.levelID.toString(),
           startShelf: this.data.picklevel.startCarousel.toString(),
           endShelf: this.data.picklevel.endCarousel.toString(),
           userName: this.data.userName,
+          wsid: this.userData.wsid
         });
         break;
       case Mode.DeleteLocation:

@@ -2,13 +2,14 @@ import {Injectable} from '@angular/core';
 import {ApiFuntions} from '../ApiFuntions';
 import {AuthService} from 'src/app/common/init/auth.service';
 import {IAdminApiService} from './admin-api-interface'
+import { UserSession } from '../../types/CommonTypes';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AdminApiService implements IAdminApiService {
 
-  public userData: any;
+  public userData: UserSession;
 
   constructor(
     private Api: ApiFuntions,
