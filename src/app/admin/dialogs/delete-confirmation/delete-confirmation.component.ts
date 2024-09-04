@@ -71,13 +71,26 @@ export class DeleteConfirmationComponent implements OnInit {
         });
         break;
       case Mode.DeletePickLevel:
-        this.handleDelete(this.iAdminApiService.deletePickLevels, {
+        this.iAdminApiService.deletePickLevels({
           levelID: this.data.picklevel.levelID.toString(),
           startShelf: this.data.picklevel.startCarousel.toString(),
           endShelf: this.data.picklevel.endCarousel.toString(),
           userName: this.data.userName,
           wsid: this.userData.wsid
-        });
+        }).subscribe(
+          (res: any) => {
+            if (res.isExecuted) {
+              this.global.ShowToastr(ToasterType.Success, labels.alert.delete, ToasterTitle.Success);
+              this.dialogRef.close({ isExecuted: true });
+            } else {
+              this.global.ShowToastr(ToasterType.Error, labels.alert.went_worng, ToasterTitle.Error);
+              this.dialogRef.close({ isExecuted: false });
+            }
+          },
+          (error: any) => {
+            this.global.ShowToastr(ToasterType.Error, labels.alert.went_worng, ToasterTitle.Error);
+          }
+        );
         break;
       case Mode.DeleteLocation:
         this.handleDelete(this.adminApiService.deleteEmployeeLocation, {
