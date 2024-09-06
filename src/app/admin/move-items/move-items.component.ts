@@ -76,7 +76,7 @@ export class MoveItemsComponent implements OnInit {
   itemNo: any = '';
   isValidateMove = false;
   isViewAll = false;
-  reqDate: Date;
+  reqDate: Date =  new Date();
   sortOrder = UniqueConstants.Asc;
   sortCol = 0;
   totalRecords = 0;
