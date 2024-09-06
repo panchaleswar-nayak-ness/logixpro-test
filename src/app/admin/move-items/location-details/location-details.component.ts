@@ -37,6 +37,9 @@ export class LocationDetailsComponent {
   @Output() setMoveQtyEmit = new EventEmitter();
   @Output() setDedicatedEmit = new EventEmitter();
 
+  @Output() setReqDateEmit = new EventEmitter();
+  @Output() setPriorityEmit = new EventEmitter();
+
   @ViewChild('myInput') myInput: ElementRef<HTMLInputElement>;
 
   restrictTo4Digits(): void {
@@ -57,6 +60,12 @@ export class LocationDetailsComponent {
 
   setDedicated() {
     this.setDedicatedEmit.emit(this.isDedicated);
+  }
+  setReqDate() {
+    this.setReqDateEmit.emit(this.reqDate);
+  }
+  setPriority() {
+    this.setPriorityEmit.emit(this.from_priority);
   }
 
 }

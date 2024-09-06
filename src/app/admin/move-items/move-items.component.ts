@@ -76,7 +76,7 @@ export class MoveItemsComponent implements OnInit {
   itemNo: any = '';
   isValidateMove = false;
   isViewAll = false;
-  reqDate: Date = new Date();
+  reqDate: Date;
   sortOrder = UniqueConstants.Asc;
   sortCol = 0;
   totalRecords = 0;
@@ -725,8 +725,24 @@ export class MoveItemsComponent implements OnInit {
     this.reqDate = new Date();
   }
 
-
+formatDateTimeToLocal(dateString) {
+    const date = new Date(dateString);
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    const hours = String(date.getHours()).padStart(2, '0');
+    const minutes = String(date.getMinutes()).padStart(2, '0');
+    const seconds = String(date.getSeconds()).padStart(2, '0');
+    const timezoneOffset = -date.getTimezoneOffset();
+    const offsetHours = String(Math.floor(Math.abs(timezoneOffset) / 60)).padStart(2, '0');
+    const offsetMinutes = String(Math.abs(timezoneOffset) % 60).padStart(2, '0');
+    const sign = timezoneOffset > 0 ? '+' : '-';
+    
+    return `${year}-${month}-${day}T${hours}:${minutes}:${seconds}${sign}${offsetHours}:${offsetMinutes}`;
+}
   callMoveNow(){
+  
+    let localDateTimeString = this.formatDateTimeToLocal(this.reqDate);
     let dialogRef: any = this.global.OpenDialog(ConfirmationDialogComponent, {
       height: DialogConstants.auto,
       width: Style.w560px,
@@ -747,12 +763,14 @@ export class MoveItemsComponent implements OnInit {
       moveToItemNumber: this.to_itemNo,
       moveToZone: this.from_zone,
       moveQuantity: this.from_itemQuantity,
-      requestedDate: this.reqDate,
+      requestedDate:localDateTimeString,
       priority: this.from_priority,
       dedicateMoveTo: this.dedicateMoveTo,
       unDedicateMoveFrom: this.undedicateMoveFrom,
       
     };
+    console.log("Local DateTime String:", localDateTimeString);
+    console.log("Payload DateTime:", payload.requestedDate);
 
     this.iAdminApiService.MoveNow(payload).subscribe((res: any) => {
 
@@ -808,7 +826,7 @@ export class MoveItemsComponent implements OnInit {
   }
 
   callCreateMoveTrans() {
-
+    let localDateTimeString = this.formatDateTimeToLocal(this.reqDate);
     let payload = {
       moveFromID: this.invMapmoveFromID,
       moveToID: this.invMapmoveToID,
@@ -816,7 +834,7 @@ export class MoveItemsComponent implements OnInit {
       moveToItemNumber: this.to_itemNo,
       moveToZone: this.from_zone,
       moveQuantity: this.from_itemQuantity,
-      requestedDate: this.reqDate,
+      requestedDate: localDateTimeString,
       priority: this.from_priority,
       dedicateMoveTo: this.dedicateMoveTo,
       unDedicateMoveFrom: this.undedicateMoveFrom,

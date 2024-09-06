@@ -1,6 +1,7 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { FloatLabelType } from '@angular/material/form-field';
+import { MatTab, MatTabChangeEvent } from '@angular/material/tabs';
 import { ToasterTitle, ToasterType } from 'src/app/common/constants/strings.constants';
 import { TableContextMenuService } from 'src/app/common/globalComponents/table-context-menu-component/table-context-menu.service';
 import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.service';
@@ -76,11 +77,15 @@ export class MoveLocationsComponent {
     return this.floatLabelControl.value ?? 'auto';
   }
 
+ 
   onChangeLocation(event) {
+    
     this.onChangeLocationEmit.emit(this.viewAll);
   }
 
-  tabChanged(event) {
+  tabChanged(event, p0?: { index: number; tab: typeof MatTab; }) {
+    
+    this.tabIndex=event.index;
     this.tabChangedEmit.emit(event);
     this.onChangeLocationEmit.emit(this.viewAll=false);
   }
@@ -102,7 +107,10 @@ export class MoveLocationsComponent {
   }
 
   getMoveFromDetails(element, i : number, tableName : string) {
+   
     this.getMoveFromDetailsEmit.emit({ element, i, tableName });
+    //this.tabChangedEmit.emit({index:1,tab:MatTab});
+     this.tabChanged({index:1,tab:MatTab})
   }
 
   sortChangeToItems(event) {

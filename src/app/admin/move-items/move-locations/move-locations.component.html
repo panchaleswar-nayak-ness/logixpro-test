@@ -45,7 +45,7 @@
                     <mat-label>Warehouse</mat-label>
                     
                     <mat-select class="employees-action"  (selectionChange)="onWarehouseSelect($event.value)">
-                        <mat-option></mat-option>
+                        <mat-option>ALL</mat-option>
                       <mat-option *ngFor="let item of warehouses" [value]="item">
                         {{item}}
                       </mat-option>
