@@ -1,7 +1,7 @@
-import { Injectable } from '@angular/core';
-import { ApiFuntions } from '../ApiFuntions';
-import { AuthService } from 'src/app/common/init/auth.service';
-import { IInductionManagerApiService } from './induction-manager-api-interface'
+import {Injectable} from '@angular/core';
+import {ApiFuntions} from '../ApiFuntions';
+import {AuthService} from 'src/app/common/init/auth.service';
+import {IInductionManagerApiService} from './induction-manager-api-interface'
 
 @Injectable({
   providedIn: 'root'
@@ -12,10 +12,11 @@ export class InductionManagerApiService implements IInductionManagerApiService {
 
   constructor(
     private Api: ApiFuntions,
-    private authService: AuthService) { 
+    private authService: AuthService) {
       this.userData = this.authService.userData();
-    }  
-public getPickBatchTransactionTable(body:any) { 
+  }
+
+  public getPickBatchTransactionTable(body: any) {
   const payload = {
     username: this.userData.username,
     wsid: this.userData.wsid,
@@ -24,25 +25,31 @@ public getPickBatchTransactionTable(body:any) {
   return this.Api.getPickBatchTransactionTable(payload);
 }
 
-public AllBatchDelete() { 
+  public AllBatchDelete() {
   return this.Api.AllBatchDelete();
-}   
-public GetFromToteTypeAhead() { 
+  }
+
+  public GetFromToteTypeAhead() {
   return this.Api.GetFromToteTypeAhead();
 }
-public SuperBatchIndex() { 
+
+  public SuperBatchIndex() {
   return this.Api.SuperBatchIndex();
 }
-public NextBatchID() { 
+
+  public NextBatchID() {
   return this.Api.NextBatchID();
 }
-public ProcessPutAwayIndex() { 
+
+  public ProcessPutAwayIndex() {
   return this.Api.ProcessPutAwayIndex();
 }
-public NextTote() { 
+
+  public NextTote() {
   return this.Api.NextTote();
 }
-public completeTransaction(payloadParams:any) { 
+
+  public completeTransaction(payloadParams: any) {
     const payload = {
     username: this.userData.username,
     wsid: this.userData.wsid,
@@ -50,7 +57,8 @@ public completeTransaction(payloadParams:any) {
   }
   return this.Api.completeTransaction(payload);
 }
-public completePickBatch(payloadParams:any) { 
+
+  public completePickBatch(payloadParams: any) {
     const payload = {
     username: this.userData.username,
     wsid: this.userData.wsid,
@@ -58,7 +66,8 @@ public completePickBatch(payloadParams:any) {
   }
   return this.Api.completePickBatch(payload);
 }
-public shortTransaction(payloadParams:any) { 
+
+  public shortTransaction(payloadParams: any) {
     const payload = {
     username: this.userData.username,
     wsid: this.userData.wsid,
@@ -66,14 +75,15 @@ public shortTransaction(payloadParams:any) {
   }
   return this.Api.shortTransaction(payload);
 }
-public blossomTote(payloadParams:any) { 
+
+  public blossomTote(payloadParams: any) {
     const payload = {
     username: this.userData.username,
     wsid: this.userData.wsid,
     ...payloadParams
   }
   return this.Api.blossomTote(payload);
-} 
+  }
 public ClearPickToteInfo(payloadParams:any) {
     const payload = {
     username: this.userData.username,
@@ -98,29 +108,34 @@ public SelectToteTransManTable(payloadParams:any) {
   }
   return this.Api.SelectToteTransManTable(payload);
 }
-public CompName() { 
+
+  public CompName() {
   return this.Api.CompName();
-} 
-public PreferenceIndex() { 
+  }
+
+  public PreferenceIndex() {
   return this.Api. PreferenceIndex();
 }
-public PickBatchFilterRename(payloadParams:any) { 
+
+  public PickBatchFilterRename(payloadParams: any) {
     const payload = {
     username: this.userData.username,
     wsid: this.userData.wsid,
     ...payloadParams
   }
   return this.Api.PickBatchFilterRename(payload);
-}   
-public ProcessBlossom(payloadParams:any) { 
+  }
+
+  public ProcessBlossom(payloadParams: any) {
     const payload = {
     username: this.userData.username,
     wsid: this.userData.wsid,
     ...payloadParams
   }
   return this.Api.ProcessBlossom(payload);
-}   
-public PickBatchZonesSelect(payloadParams:any) { 
+  }
+
+  public PickBatchZonesSelect(payloadParams: any) {
     const payload = {
     username: this.userData.username,
     wsid: this.userData.wsid,
@@ -128,7 +143,8 @@ public PickBatchZonesSelect(payloadParams:any) {
   }
   return this.Api.PickBatchZonesSelect(payload);
 }
-public PickBatchFilterTypeAhead(payloadParams:any) { 
+
+  public PickBatchFilterTypeAhead(payloadParams: any) {
     const payload = {
     username: this.userData.username,
     wsid: this.userData.wsid,
@@ -136,7 +152,8 @@ public PickBatchFilterTypeAhead(payloadParams:any) {
   }
   return this.Api.PickBatchFilterTypeAhead(payload);
 }
-public PickBatchDefaultFilterMark(payloadParams:any) { 
+
+  public PickBatchDefaultFilterMark(payloadParams: any) {
     const payload = {
     username: this.userData.username,
     wsid: this.userData.wsid,
@@ -144,7 +161,8 @@ public PickBatchDefaultFilterMark(payloadParams:any) {
   }
   return this.Api.PickBatchDefaultFilterMark(payload);
 }
-public PickBatchDefaultFilterClear(payloadParams:any) { 
+
+  public PickBatchDefaultFilterClear(payloadParams: any) {
     const payload = {
     username: this.userData.username,
     wsid: this.userData.wsid,
@@ -152,7 +170,8 @@ public PickBatchDefaultFilterClear(payloadParams:any) {
   }
   return this.Api.PickBatchDefaultFilterClear(payload);
 }
-public PickBatchDefaultFilterSelect(payloadParams:any) { 
+
+  public PickBatchDefaultFilterSelect(payloadParams: any) {
     const payload = {
     username: this.userData.username,
     wsid: this.userData.wsid,
@@ -160,7 +179,8 @@ public PickBatchDefaultFilterSelect(payloadParams:any) {
   }
   return this.Api.PickBatchDefaultFilterSelect(payload);
 }
-public PickBatchFilterBatchDelete(payloadParams:any) { 
+
+  public PickBatchFilterBatchDelete(payloadParams: any) {
     const payload = {
     username: this.userData.username,
     wsid: this.userData.wsid,
@@ -168,7 +188,8 @@ public PickBatchFilterBatchDelete(payloadParams:any) {
   }
   return this.Api.PickBatchFilterBatchDelete(payload);
 }
-public OrdersFilterZoneSelect(payloadParams:any) { 
+
+  public OrdersFilterZoneSelect(payloadParams: any) {
     const payload = {
     username: this.userData.username,
     wsid: this.userData.wsid,
@@ -176,7 +197,8 @@ public OrdersFilterZoneSelect(payloadParams:any) {
   }
   return this.Api.OrdersFilterZoneSelect(payload);
 }
-public PickToteTransDT(payloadParams:any) { 
+
+  public PickToteTransDT(payloadParams: any) {
     const payload = {
     username: this.userData.username,
     wsid: this.userData.wsid,
@@ -184,7 +206,8 @@ public PickToteTransDT(payloadParams:any) {
   }
   return this.Api.PickToteTransDT(payload);
 }
-public PickBatchFilterOrderData(payloadParams:any) { 
+
+  public PickBatchFilterOrderData(payloadParams: any) {
     const payload = {
     username: this.userData.username,
     wsid: this.userData.wsid,
@@ -192,7 +215,8 @@ public PickBatchFilterOrderData(payloadParams:any) {
   }
   return this.Api.PickBatchFilterOrderData(payload);
 }
-public PickBatchFilterUpdate(payloadParams:any) { 
+
+  public PickBatchFilterUpdate(payloadParams: any) {
     const payload = {
     username: this.userData.username,
     wsid: this.userData.wsid,
@@ -200,7 +224,8 @@ public PickBatchFilterUpdate(payloadParams:any) {
   }
   return this.Api.PickBatchFilterUpdate(payload);
 }
-public PickBatchFilterInsert(payloadParams:any) { 
+
+  public PickBatchFilterInsert(payloadParams: any) {
     const payload = {
     username: this.userData.username,
     wsid: this.userData.wsid,
@@ -208,7 +233,8 @@ public PickBatchFilterInsert(payloadParams:any) {
   }
   return this.Api.PickBatchFilterInsert(payload);
 }
-public PickBatchOrderUpdate(payloadParams:any) { 
+
+  public PickBatchOrderUpdate(payloadParams: any) {
     const payload = {
     username: this.userData.username,
     wsid: this.userData.wsid,
@@ -216,7 +242,8 @@ public PickBatchOrderUpdate(payloadParams:any) {
   }
   return this.Api.PickBatchOrderUpdate(payload);
 }
-public PickBatchOrderInsert(payloadParams:any) { 
+
+  public PickBatchOrderInsert(payloadParams: any) {
     const payload = {
     username: this.userData.username,
     wsid: this.userData.wsid,
@@ -224,7 +251,8 @@ public PickBatchOrderInsert(payloadParams:any) {
   }
   return this.Api.PickBatchOrderInsert(payload);
 }
-public PickBatchOrderDelete(payloadParams:any) { 
+
+  public PickBatchOrderDelete(payloadParams: any) {
     const payload = {
     username: this.userData.username,
     wsid: this.userData.wsid,
@@ -232,7 +260,8 @@ public PickBatchOrderDelete(payloadParams:any) {
   }
   return this.Api.PickBatchOrderDelete(payload);
 }
-public PickBatchZoneDefaultMark(payloadParams:any) { 
+
+  public PickBatchZoneDefaultMark(payloadParams: any) {
     const payload = {
     username: this.userData.username,
     wsid: this.userData.wsid,
@@ -240,7 +269,8 @@ public PickBatchZoneDefaultMark(payloadParams:any) {
   }
   return this.Api.PickBatchZoneDefaultMark(payload);
 }
-public PickBatchFilterDelete(payloadParams:any) { 
+
+  public PickBatchFilterDelete(payloadParams: any) {
     const payload = {
     username: this.userData.username,
     wsid: this.userData.wsid,
@@ -248,7 +278,8 @@ public PickBatchFilterDelete(payloadParams:any) {
   }
   return this.Api.PickBatchFilterDelete(payload);
 }
-public OrdersInZone(payloadParams:any) { 
+
+  public OrdersInZone(payloadParams: any) {
     const payload = {
     username: this.userData.username,
     wsid: this.userData.wsid,
@@ -256,7 +287,8 @@ public OrdersInZone(payloadParams:any) {
   }
   return this.Api.OrdersInZone(payload);
 }
-public WSPickZoneSelect(payloadParams:any) { 
+
+  public WSPickZoneSelect(payloadParams: any) {
     const payload = {
     username: this.userData.username,
     wsid: this.userData.wsid,
@@ -264,7 +296,8 @@ public WSPickZoneSelect(payloadParams:any) {
   }
   return this.Api.WSPickZoneSelect(payload);
 }
-public PickToteSetupIndex(payloadParams:any) { 
+
+  public PickToteSetupIndex(payloadParams: any) {
     const payload = {
     username: this.userData.username,
     wsid: this.userData.wsid,
@@ -272,7 +305,8 @@ public PickToteSetupIndex(payloadParams:any) {
   }
   return this.Api.PickToteSetupIndex(payload);
 }
-  public FillOrderNumber(payloadParams:any) { 
+
+  public FillOrderNumber(payloadParams: any) {
     const payload = {
     username: this.userData.username,
     wsid: this.userData.wsid,
@@ -280,7 +314,8 @@ public PickToteSetupIndex(payloadParams:any) {
   }
     return this.Api.FillOrderNumber(payload);
 }
-public ValidateOrderNumber(payloadParams:any) { 
+
+  public ValidateOrderNumber(payloadParams: any) {
     const payload = {
     username: this.userData.username,
     wsid: this.userData.wsid,
@@ -288,7 +323,8 @@ public ValidateOrderNumber(payloadParams:any) {
   }
   return this.Api.ValidateOrderNumber(payload);
 }
-public InZoneSetupProcess(payloadParams:any) { 
+
+  public InZoneSetupProcess(payloadParams: any) {
     const payload = {
     username: this.userData.username,
     wsid: this.userData.wsid,
@@ -296,7 +332,8 @@ public InZoneSetupProcess(payloadParams:any) {
   }
   return this.Api.InZoneSetupProcess(payload);
 }
-public PickToteSetupProcess(payloadParams:any) { 
+
+  public PickToteSetupProcess(payloadParams: any) {
     const payload = {
     username: this.userData.username,
     wsid: this.userData.wsid,
@@ -304,7 +341,8 @@ public PickToteSetupProcess(payloadParams:any) {
   }
   return this.Api.PickToteSetupProcess(payload);
 }
-public LocationZonesSelect(payloadParams:any) { 
+
+  public LocationZonesSelect(payloadParams: any) {
     const payload = {
     username: this.userData.username,
     wsid: this.userData.wsid,
@@ -312,7 +350,8 @@ public LocationZonesSelect(payloadParams:any) {
   }
   return this.Api.LocationZonesSelect(payload);
 }
-public WSPickZoneInsert(payloadParams:any) { 
+
+  public WSPickZoneInsert(payloadParams: any) {
     const payload = {
     username: this.userData.username,
     wsid: this.userData.wsid,
@@ -320,7 +359,8 @@ public WSPickZoneInsert(payloadParams:any) {
   }
   return this.Api.WSPickZoneInsert(payload);
 }
-public WSPickZoneDelete(payloadParams:any) { 
+
+  public WSPickZoneDelete(payloadParams: any) {
     const payload = {
     username: this.userData.username,
     wsid: this.userData.wsid,
@@ -328,10 +368,12 @@ public WSPickZoneDelete(payloadParams:any) {
   }
   return this.Api.WSPickZoneDelete(payload);
 }
-public ClrWSPickZone() { 
+
+  public ClrWSPickZone() {
   return this.Api.ClrWSPickZone();
 }
-public InZoneTransDT(payloadParams:any) { 
+
+  public InZoneTransDT(payloadParams: any) {
     const payload = {
     username: this.userData.username,
     wsid: this.userData.wsid,
@@ -339,119 +381,134 @@ public InZoneTransDT(payloadParams:any) {
   }
   return this.Api.InZoneTransDT(payload);
 }
-public TaskComplete(payloadParams:any) { 
+
+  public TaskComplete(payloadParams: any) {
     const payload = {
     username: this.userData.username,
     wsid: this.userData.wsid,
     ...payloadParams
   }
   return this.Api.TaskComplete(payload);
-}  
-public CrossDock(payloadParams:any) { 
+  }
+
+  public CrossDock(payloadParams: any) {
   const payload = {
     username: this.userData.username,
     wsid: this.userData.wsid,
     ...payloadParams
   }
   return this.Api.CrossDock(payload);
-}  
-public FindLocation(payloadParams:any) { 
+  }
+
+  public FindLocation(payloadParams: any) {
     const payload = {
     username: this.userData.username,
     wsid: this.userData.wsid,
     ...payloadParams
   }
   return this.Api.FindLocation(payload);
-}  
-public CheckForwardLocations(payloadParams:any) { 
+  }
+
+  public CheckForwardLocations(payloadParams: any) {
     const payload = {
     username: this.userData.username,
     wsid: this.userData.wsid,
     ...payloadParams
   }
   return this.Api.CheckForwardLocations(payload);
-}  
-public IMUpdate(payloadParams:any) { 
+  }
+
+  public IMUpdate(payloadParams: any) {
   const payload = {
     username: this.userData.username,
     wsid: this.userData.wsid,
     ...payloadParams
   }
   return this.Api.IMUpdate(payload);
-}  
-public ItemDetails(payloadParams:any) { 
+  }
+
+  public ItemDetails(payloadParams: any) {
     const payload = {
     username: this.userData.username,
     wsid: this.userData.wsid,
     ...payloadParams
   }
   return this.Api.ItemDetails(payload);
-}  
-public AvailableZone(payloadParams:any) { 
+  }
+
+  public AvailableZone(payloadParams: any) {
     const payload = {
     username: this.userData.username,
     wsid: this.userData.wsid,
     ...payloadParams
   }
   return this.Api.AvailableZone(payload);
-}  
-public RPDetails(payloadParams:any) { 
+  }
+
+  public RPDetails(payloadParams: any) {
   const payload = {
     username: this.userData.username,
     wsid: this.userData.wsid,
     ...payloadParams
   }
   return this.Api.RPDetails(payload);
-}  
-public CompletePick(payloadParams:any) { 
+  }
+
+  public CompletePick(payloadParams: any) {
     const payload = {
     username: this.userData.username,
     wsid: this.userData.wsid,
     ...payloadParams
   }
   return this.Api.CompletePick(payload);
-}  
-public BatchLocationTypeAhead(payloadParams:any) { 
+  }
+
+  public BatchLocationTypeAhead(payloadParams: any) {
   const payload = {
     username: this.userData.username,
     wsid: this.userData.wsid,
     ...payloadParams
   }
   return this.Api.BatchLocationTypeAhead(payload);
-}  
-public ReserveLocation(payloadParams:any) { 
+  }
+
+  public ReserveLocation(payloadParams: any) {
     const payload = {
     username: this.userData.username,
     wsid: this.userData.wsid,
     ...payloadParams
   }
   return this.Api.ReserveLocation(payload);
-}  
-public BatchTotesDelete(payloadParams:any) { 
+  }
+
+  public BatchTotesDelete(payloadParams: any) {
     const payload = {
     username: this.userData.username,
     wsid: this.userData.wsid,
     ...payloadParams
   }
   return this.Api.BatchTotesDelete(payload);
-}   
-public TransTableView(payloadParams:any) { 
+  }
+
+  public TransTableView(payloadParams: any) {
     const payload = {
     username: this.userData.username,
     wsid: this.userData.wsid,
     ...payloadParams
   }
   return this.Api.TransTableView(payload);
-}  
-public TransactionForTote(payloadParams:any) { 
+  }
+
+  public TransactionForTote(payloadParams: any) {
     const payload = {
     username: this.userData.username,
     wsid: this.userData.wsid,
     ...payloadParams
   }
   return this.Api.TransactionForTote(payload);
-}  
-public NextSerialNumber(payloadParams:any) { 
+  }
+
+  public NextSerialNumber(payloadParams: any) {
     const payload = {
     username: this.userData.username,
     wsid: this.userData.wsid,
@@ -459,7 +516,8 @@ public NextSerialNumber(payloadParams:any) {
   }
   return this.Api.NextSerialNumber(payload);
 }
-public ReelsCreate(payloadParams:any) { 
+
+  public ReelsCreate(payloadParams: any) {
     const payload = {
     username: this.userData.username,
     wsid: this.userData.wsid,
@@ -467,24 +525,26 @@ public ReelsCreate(payloadParams:any) {
   }
   return this.Api.ReelsCreate(payload);
 }
-public ValidateSn(payloadParams:any) { 
+
+  public ValidateSn(payloadParams: any) {
     const payload = {
     username: this.userData.username,
     wsid: this.userData.wsid,
     ...payloadParams
   }
   return this.Api.ValidateSn(payload);
-}  
-public BatchByZone(payloadParams:any) { 
+  }
+
+  public BatchByZone(payloadParams: any) {
     const payload = {
     username: this.userData.username,
     wsid: this.userData.wsid,
     ...payloadParams
   }
   return this.Api.BatchByZone(payload);
-}    
+  }
 
-public ItemZoneDataSelect(payloadParams:any) { 
+  public ItemZoneDataSelect(payloadParams: any) {
     const payload = {
     username: this.userData.username,
     wsid: this.userData.wsid,
@@ -492,7 +552,8 @@ public ItemZoneDataSelect(payloadParams:any) {
   }
   return this.Api.ItemZoneDataSelect(payload);
 }
-public SuperBatchCreate(payloadParams:any) { 
+
+  public SuperBatchCreate(payloadParams: any) {
     const payload = {
     username: this.userData.username,
     wsid: this.userData.wsid,
@@ -500,7 +561,8 @@ public SuperBatchCreate(payloadParams:any) {
   }
   return this.Api.SuperBatchCreate(payload);
 }
-public TotePrintTableInsert(payloadParams:any) { 
+
+  public TotePrintTableInsert(payloadParams: any) {
     const payload = {
     username: this.userData.username,
     wsid: this.userData.wsid,
@@ -508,10 +570,12 @@ public TotePrintTableInsert(payloadParams:any) {
   }
   return this.Api.TotePrintTableInsert(payload);
 }
-public ReqDateDataSelect() { 
+
+  public ReqDateDataSelect() {
   return this.Api.ReqDateDataSelect();
-} 
-public MarkToteFull(payloadParams:any) { 
+  }
+
+  public MarkToteFull(payloadParams: any) {
     const payload = {
     username: this.userData.username,
     wsid: this.userData.wsid,
@@ -519,7 +583,8 @@ public MarkToteFull(payloadParams:any) {
   }
   return this.Api.MarkToteFull(payload);
 }
-public CompleteBatch(payloadParams:any) { 
+
+  public CompleteBatch(payloadParams: any) {
     const payload = {
     username: this.userData.username,
     wsid: this.userData.wsid,
@@ -527,7 +592,8 @@ public CompleteBatch(payloadParams:any) {
   }
   return this.Api.CompleteBatch(payload);
 }
-public TotesTable(payloadParams:any) { 
+
+  public TotesTable(payloadParams: any) {
     const payload = {
     username: this.userData.username,
     wsid: this.userData.wsid,
@@ -535,7 +601,8 @@ public TotesTable(payloadParams:any) {
   }
   return this.Api.TotesTable(payload);
 }
-public BatchIDTypeAhead(payloadParams:any) { 
+
+  public BatchIDTypeAhead(payloadParams: any) {
     const payload = {
     username: this.userData.username,
     wsid: this.userData.wsid,
@@ -543,7 +610,8 @@ public BatchIDTypeAhead(payloadParams:any) {
   }
   return this.Api.BatchIDTypeAhead(payload);
 }
-public NextToteUpdate(payloadParams:any) { 
+
+  public NextToteUpdate(payloadParams: any) {
     const payload = {
     username: this.userData.username,
     wsid: this.userData.wsid,
@@ -552,7 +620,7 @@ public NextToteUpdate(payloadParams:any) {
   return this.Api.NextToteUpdate(payload);
 }
 
-public ProcessBatch(payloadParams:any) { 
+  public ProcessBatch(payloadParams: any) {
     const payload = {
     username: this.userData.username,
     wsid: this.userData.wsid,
@@ -560,7 +628,8 @@ public ProcessBatch(payloadParams:any) {
   }
   return this.Api.ProcessBatch(payload);
 }
-public ValidateTotesForPutAways(payloadParams:any) { 
+
+  public ValidateTotesForPutAways(payloadParams: any) {
     const payload = {
     username: this.userData.username,
     wsid: this.userData.wsid,
@@ -568,7 +637,8 @@ public ValidateTotesForPutAways(payloadParams:any) {
   }
   return this.Api.ValidateTotesForPutAways(payload);
 }
-public BatchExist(payloadParams:any) { 
+
+  public BatchExist(payloadParams: any) {
     const payload = {
     username: this.userData.username,
     wsid: this.userData.wsid,
@@ -576,7 +646,8 @@ public BatchExist(payloadParams:any) {
   }
   return this.Api.BatchExist(payload);
 }
-public BatchTotes(payloadParams:any) { 
+
+  public BatchTotes(payloadParams: any) {
     const payload = {
     username: this.userData.username,
     wsid: this.userData.wsid,
@@ -585,7 +656,7 @@ public BatchTotes(payloadParams:any) {
   return this.Api.BatchTotes(payload);
 }
 
-public ValidateTote(payloadParams:any) { 
+  public ValidateTote(payloadParams: any) {
     const payload = {
     username: this.userData.username,
     wsid: this.userData.wsid,
@@ -593,7 +664,8 @@ public ValidateTote(payloadParams:any) {
   }
   return this.Api.ValidateTote(payload);
 }
-public ValidateItem(payloadParams:any) { 
+
+  public ValidateItem(payloadParams: any) {
     const payload = {
     username: this.userData.username,
     wsid: this.userData.wsid,
@@ -601,7 +673,8 @@ public ValidateItem(payloadParams:any) {
   }
   return this.Api.ValidateItem(payload);
 }
-public ProcessPallet(payloadParams:any) { 
+
+  public ProcessPallet(payloadParams: any) {
     const payload = {
     username: this.userData.username,
     wsid: this.userData.wsid,
@@ -609,7 +682,8 @@ public ProcessPallet(payloadParams:any) {
   }
   return this.Api.ProcessPallet(payload);
 }
-public ValidateSerialNumber(payloadParams:any) { 
+
+  public ValidateSerialNumber(payloadParams: any) {
     const payload = {
     username: this.userData.username,
     wsid: this.userData.wsid,
@@ -617,7 +691,8 @@ public ValidateSerialNumber(payloadParams:any) {
   }
   return this.Api.ValidateSerialNumber(payload);
 }
-public DeleteSerialNumber(payloadParams:any) { 
+
+  public DeleteSerialNumber(payloadParams: any) {
     const payload = {
     username: this.userData.username,
     wsid: this.userData.wsid,
@@ -626,7 +701,7 @@ public DeleteSerialNumber(payloadParams:any) {
   return this.Api.DeleteSerialNumber(payload);
 }
 
-  public DynamicMethod(payloadParams:any, url : any) { 
+  public DynamicMethod(payloadParams: any, url: any) {
     const payload = {
       username: this.userData.username,
       wsid: this.userData.wsid,
@@ -652,6 +727,24 @@ public DeleteSerialNumber(payloadParams:any) {
       zone: zone
     }
     return this.Api.PrintCrossDockItem(payload);
+  }
+
+  PrintCrossDockToteAuto(OTRecID: bigint, zone: any) {
+    const payload = {
+      wsid: this.userData.wsid,
+      otId: OTRecID,
+      zone: zone
+    }
+    return this.Api.PrintCrossDockToteAuto(payload);
+  }
+
+  PrintCrossDockItemAuto(OTRecID: bigint, zone: any) {
+    const payload = {
+      wsid: this.userData.wsid,
+      otId: OTRecID,
+      zone: zone
+    }
+    return this.Api.PrintCrossDockItemAuto(payload);
   }
 
   public PrintPutAwayItem(otid: number) {

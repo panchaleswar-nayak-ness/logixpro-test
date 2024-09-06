@@ -1,9 +1,9 @@
 <div class="row w-100 mt-4 mx-0">
   <div class="col-xl-8 mb-3 mb-xl-0">
-    <app-company-info-component></app-company-info-component>
-    <app-system-logic-preferences></app-system-logic-preferences>
+    <app-company-info-component [companyInfo]="generalSetupInfo" (updateInfo)="generatePayload(1, $event)"></app-company-info-component>
+    <app-system-logic-preferences [systemLogicPref]="generalSetupInfo" (updatesystemLogicPref)="generatePayload(3, $event)"></app-system-logic-preferences>
   </div>
   <div class="col-xl-4">
-    <app-pod-setup-component></app-pod-setup-component>
+    <app-pod-setup-component [fieldNames]="fieldNames" (updatesPodSetup)="generatePayload(4, $event)"></app-pod-setup-component>
   </div>
 </div>

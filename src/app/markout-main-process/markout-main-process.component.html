@@ -3,7 +3,8 @@
       <div class="row g-4">
         <!-- Main Section Option (Import Export) -->
     
-        <div class="col-xl-3 col-lg-6">
+        <div class="col-xl-3 col-lg-6"
+        [ngClass]="isAuthorized('Markout Process') ? 'isDivDisabled' : ''">
           <div matRipple [matRippleColor]="tab_hover_color" class="main-section-option" 
           routerLink="/MarkoutProcess/Markout"
           (click)="updateMenu('/MarkoutProcess', '/MarkoutProcess/Markout')"
@@ -16,7 +17,8 @@
           </div>
         </div>
   
-        <div class="col-xl-3 col-lg-6"  >
+        <div class="col-xl-3 col-lg-6"  
+        [ngClass]="isAuthorized('Markout Preferences') ? 'isDivDisabled' : ''">
           <div matRipple [matRippleColor]="tab_hover_color"  class="main-section-option" 
           routerLink="/MarkoutProcess/Preferences"
           (click)="updateMenu('/MarkoutProcess', '/MarkoutProcess/Preferences')"

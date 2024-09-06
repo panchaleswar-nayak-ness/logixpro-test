@@ -116,6 +116,7 @@ export class InventoryMapComponent implements OnInit {
   detailDataInventoryMap: any;
   transHistory:boolean = false;
   inventoryRoute:any;
+  clickTimeout:ReturnType<typeof setTimeout>;
 
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
@@ -510,7 +511,7 @@ export class InventoryMapComponent implements OnInit {
   }
 
   viewInInventoryMaster(row){
-
+    clearTimeout(this.clickTimeout);
     if( this.spliUrl[1] == AppNames.OrderManager ){
       this.router.navigate([]).then(() => {
         window.open(`/#/OrderManager/InventoryMaster?itemNumber=${row.itemNumber}`, UniqueConstants._self);
@@ -666,15 +667,17 @@ export class InventoryMapComponent implements OnInit {
 }
 
 selectRow(row: any) {
-  this.dataSource.filteredData.forEach(element => {
-    if(row != element){
-      element.selected = false;
+  this.clickTimeout = setTimeout(() => {
+    this.dataSource.filteredData.forEach(element => {
+      if(row != element){
+        element.selected = false;
+      }
+    });
+    const selectedRow = this.dataSource.filteredData.find((x: any) => x === row);
+    if (selectedRow) {
+      selectedRow.selected = !selectedRow.selected;
     }
-  });
-  const selectedRow = this.dataSource.filteredData.find((x: any) => x === row);
-  if (selectedRow) {
-    selectedRow.selected = !selectedRow.selected;
-  }
+  }, 250);
 }
 
 }

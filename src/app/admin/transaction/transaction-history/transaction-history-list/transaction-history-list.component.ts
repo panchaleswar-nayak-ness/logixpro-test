@@ -21,6 +21,7 @@ import { Column, ColumnDef, DialogConstants, localStorageKeys, StringConditions,
 import { AppNames, AppRoutes, RouteNames, RouteUpdateMenu } from 'src/app/common/constants/menu.constants';
 import { DatePipe } from '@angular/common';
 import { Router } from '@angular/router';
+import { CurrentTabDataService } from 'src/app/admin/inventory-master/current-tab-data-service';
 
 @Component({
   selector: 'app-transaction-history-list',
@@ -177,6 +178,7 @@ export class TransactionHistoryListComponent implements OnInit, AfterViewInit {
     private sharedService: SharedService,
     private filterService: ContextMenuFiltersService, 
     private router: Router,
+    private currentTabDataService: CurrentTabDataService
   ) {
     this.filterService.filterString= "";
     this.userData = this.authService.userData();
@@ -184,6 +186,15 @@ export class TransactionHistoryListComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit(): void {
+    if (this.currentTabDataService.savedItem[this.currentTabDataService.TRANSACTIONS_History]) {
+      let param = this.currentTabDataService.savedItem[this.currentTabDataService.TRANSACTIONS_History];
+      this.selectedDropdown = param.searchCol;
+      this.columnSearch.searchValue = param.searchString;
+    }
+    else{
+      this.selectedDropdown = ''
+      this.columnSearch.searchValue = ''
+    }
     this.customPagination = {
       total: '',
       recordsPerPage: 20,
@@ -192,6 +203,7 @@ export class TransactionHistoryListComponent implements OnInit, AfterViewInit {
     };
     this.searchBar.pipe(debounceTime(500), distinctUntilChanged()).subscribe(() => {
       this.autoCompleteSearchColumn();
+      this.filterString = "1=1"
       this.getContentData();
     });
     this.getColumnsData();
@@ -204,6 +216,7 @@ export class TransactionHistoryListComponent implements OnInit, AfterViewInit {
         if(itemNo) {
           this.selectedDropdown = Column.ItemNumber;
           this.columnSearch.searchValue = itemNo;
+          this.filterString = this.filterService.onContextMenuCommand( this.columnSearch.searchValue, this.selectedDropdown, "equals to", "string");
         }
       })
     );
@@ -213,6 +226,7 @@ export class TransactionHistoryListComponent implements OnInit, AfterViewInit {
         if(itemNo){
           this.selectedDropdown = Column.ItemNumber;
           this.columnSearch.searchValue = itemNo;
+          this.filterString = this.filterService.onContextMenuCommand( this.columnSearch.searchValue ,  this.selectedDropdown, "equals to", "string");
         }
       })
     );
@@ -227,6 +241,11 @@ export class TransactionHistoryListComponent implements OnInit, AfterViewInit {
     );
 
     this.spliUrl = this.router.url.split('/');
+  }
+
+  ngOnDestroy() {
+    this.searchBar.unsubscribe();
+    this.subscription.unsubscribe();
   }
 
   clearMatSelectList(){
@@ -377,11 +396,6 @@ export class TransactionHistoryListComponent implements OnInit, AfterViewInit {
     this.getContentData();
   }
 
-  ngOnDestroy() {
-    this.searchBar.unsubscribe();
-    this.subscription.unsubscribe();
-  }
-
   onInputChange(event: Event): void {
     const value = (event.target as HTMLInputElement).value;
     if (Number(value) < 0) this.columnSearch.searchValue = 0;
@@ -430,5 +444,14 @@ export class TransactionHistoryListComponent implements OnInit, AfterViewInit {
   viewInInventoryMaster(row) {
     localStorage.setItem(localStorageKeys.TransactionTabIndex,"2");
     this.router.navigate([]).then(() => { window.open(`/#${AppRoutes.AdminInventoryMaster}?itemNumber=${row.itemNumber}`, UniqueConstants._self); });
+  }
+
+
+  valueChanges(event:any){
+    this.currentTabDataService.savedItem[this.currentTabDataService.TRANSACTIONS_History] = {
+      ...this.currentTabDataService.savedItem[this.currentTabDataService.TRANSACTIONS_History],
+      searchCol: event.searchCol,
+      searchString: event.searchString
+    };
   }
 }

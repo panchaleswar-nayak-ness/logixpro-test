@@ -18,7 +18,7 @@ import { CMShippingPreferences, ToasterMessages, ToasterTitle, ToasterType ,Stri
 @Component({
   selector: 'app-preferences-shipping',
   templateUrl: './preferences-shipping.component.html',
-  styleUrls: [],
+  styleUrls: ['./preferences-shipping.component.scss'],
 })
 export class PreferencesShippingComponent implements OnInit {
   shippingForm: FormGroup;
@@ -55,6 +55,20 @@ export class PreferencesShippingComponent implements OnInit {
       contID: new FormControl(''),
       confirmQTY: new FormControl(''),
       contIDText: new FormControl(''),
+      userField1: new FormControl(''),
+      userField2: new FormControl(''),
+      userField3: new FormControl(''),
+      userField4: new FormControl(''),
+      userField5: new FormControl(''),
+      userField6: new FormControl(''),
+      userField7: new FormControl(''),
+      userField_1_Alias: new FormControl(''),
+      userField_2_Alias: new FormControl(''),
+      userField_3_Alias: new FormControl(''),
+      userField_4_Alias: new FormControl(''),
+      userField_5_Alias: new FormControl(''),
+      userField_6_Alias: new FormControl(''),
+      userField_7_Alias: new FormControl(''),
     });
     this.IconsolidationAPI = consolidationAPI;
   }
@@ -92,6 +106,20 @@ export class PreferencesShippingComponent implements OnInit {
     this.shippingForm.controls[CMShippingPreferences.Width].setValue(item.width);
     this.shippingForm.controls[CMShippingPreferences.Height].setValue(item.height);
     this.shippingForm.controls[CMShippingPreferences.Cube].setValue(item.cube);
+    this.shippingForm.controls[CMShippingPreferences.userField1].setValue(item.userField1);
+    this.shippingForm.controls[CMShippingPreferences.userField2].setValue(item.userField2);
+    this.shippingForm.controls[CMShippingPreferences.userField3].setValue(item.userField3);
+    this.shippingForm.controls[CMShippingPreferences.userField4].setValue(item.userField4);
+    this.shippingForm.controls[CMShippingPreferences.userField5].setValue(item.userField5);
+    this.shippingForm.controls[CMShippingPreferences.userField6].setValue(item.userField6);
+    this.shippingForm.controls[CMShippingPreferences.userField7].setValue(item.userField7);
+    this.shippingForm.controls[CMShippingPreferences.userField_1_Alias].setValue(item.userField1Alias);
+    this.shippingForm.controls[CMShippingPreferences.userField_2_Alias].setValue(item.userField2Alias);
+    this.shippingForm.controls[CMShippingPreferences.userField_3_Alias].setValue(item.userField3Alias);
+    this.shippingForm.controls[CMShippingPreferences.userField_4_Alias].setValue(item.userField4Alias);
+    this.shippingForm.controls[CMShippingPreferences.userField_5_Alias].setValue(item.userField5Alias);
+    this.shippingForm.controls[CMShippingPreferences.userField_6_Alias].setValue(item.userField6Alias);
+    this.shippingForm.controls[CMShippingPreferences.userField_7_Alias].setValue(item.userField7Alias);
 
     if (item.packing && item.confirmAndPacking) {
       this.selectionPacking = true;
@@ -145,6 +173,20 @@ export class PreferencesShippingComponent implements OnInit {
       width: this.shippingForm.controls[CMShippingPreferences.Width].value,
       height: this.shippingForm.controls[CMShippingPreferences.Height].value,
       cube: this.shippingForm.controls[CMShippingPreferences.Cube].value,
+      userField1: this.shippingForm.controls[CMShippingPreferences.userField1].value,
+      userField2: this.shippingForm.controls[CMShippingPreferences.userField2].value,
+      userField3: this.shippingForm.controls[CMShippingPreferences.userField3].value,
+      userField4: this.shippingForm.controls[CMShippingPreferences.userField4].value,
+      userField5: this.shippingForm.controls[CMShippingPreferences.userField5].value,
+      userField6: this.shippingForm.controls[CMShippingPreferences.userField6].value,
+      userField7: this.shippingForm.controls[CMShippingPreferences.userField7].value,
+      userField_1_Alias: this.shippingForm.controls[CMShippingPreferences.userField_1_Alias].value,
+      userField_2_Alias: this.shippingForm.controls[CMShippingPreferences.userField_2_Alias].value,
+      userField_3_Alias: this.shippingForm.controls[CMShippingPreferences.userField_3_Alias].value,
+      userField_4_Alias: this.shippingForm.controls[CMShippingPreferences.userField_4_Alias].value,
+      userField_5_Alias: this.shippingForm.controls[CMShippingPreferences.userField_5_Alias].value,
+      userField_6_Alias: this.shippingForm.controls[CMShippingPreferences.userField_6_Alias].value,
+      userField_7_Alias: this.shippingForm.controls[CMShippingPreferences.userField_7_Alias].value,
       shipping: this.shippingForm.controls[CMShippingPreferences.AllowShip]?.value
     };
     this.IconsolidationAPI

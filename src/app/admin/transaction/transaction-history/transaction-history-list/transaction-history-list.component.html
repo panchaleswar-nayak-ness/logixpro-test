@@ -14,7 +14,8 @@
                         [searchString]="this.columnSearch.searchValue"
                         [searchByInput]="this.searchBar"
                         [searchAutocompleteList]="this.searchAutocompleteList"
-                        (autoCompleteEvent)="this.columnSearch.searchValue = $event; this.searchBar.next($event)">
+                        (autoCompleteEvent)="this.columnSearch.searchValue = $event; this.searchBar.next($event)"
+                        (valueChangeEvent)="valueChanges($event)">
                     </app-column-filter-component>
 
                 </div>
@@ -46,7 +47,8 @@
                             (sortActionDescription)="indexOfelement">
                             {{ col.colDef }}
                         </th>
-                        <td mat-cell *matCellDef="let element" 
+                        <td mat-cell *matCellDef="let element"
+                        (dblclick)="col.colDef == 'Item Number' && viewInInventoryMaster(element)"
                         (contextmenu)="onContextMenu($event, element[col.colHeader], col.colDef)"
                         #tooltip="matTooltip" [matTooltip]="element[col.colHeader]"   matTooltipPosition="above"  [matTooltipDisabled]="element[col.colHeader] && element[col.colHeader].length>=19?false:true"
                             class="transaction-cell-style">
@@ -72,7 +74,7 @@
                     </tr>
 
                     <mat-header-row *matHeaderRowDef="columnValues;sticky: true" class="border-0"></mat-header-row>
-                    <mat-row *matRowDef="let row; columns: columnValues;" (dblclick)="viewInInventoryMaster(row)"></mat-row>
+                    <mat-row *matRowDef="let row; columns: columnValues;"></mat-row>
                 </table>
             </ng-scrollbar>
         </div>

@@ -47,7 +47,10 @@
 
                 <ng-container matColumnDef="{{col.colDef}}" *ngFor="let col of displayedColumns; let indexOfelement=index;">
                   <th class="header container-table-header" mat-header-cell  *matHeaderCellDef mat-sort-header >{{ col.colDef === 'User Field1' ? fieldNames && fieldNames.userField1 : col.colDef === 'User Field2' ? fieldNames && fieldNames.userField2:col.colDef }}</th>
-                  <td class="container-table-data" mat-cell *matCellDef="let element" (contextmenu)=" onContextMenu($event,  element[col.colHeader], col.colDef)"   [ngClass]="{'quarantineColor': element.warehouse.includes('Quarantine')}" > {{ element[col.colHeader] }}</td>
+                  <td class="container-table-data" mat-cell *matCellDef="let element" 
+                  (dblclick)="col.colDef == 'Item Number' && viewInInventoryMaster(element)"
+                  (contextmenu)=" onContextMenu($event,  element[col.colHeader], col.colDef)"  
+                  [ngClass]="{'quarantineColor': element.warehouse.includes('Quarantine')}" > {{ element[col.colHeader] }}</td>
                 </ng-container>
 
                 <ng-container matColumnDef="actions" stickyEnd>
@@ -80,7 +83,7 @@
                 </tr>
 
                 <mat-header-row *matHeaderRowDef="columnValues;sticky: true"  class="border"></mat-header-row>
-                <mat-row *matRowDef="let row; columns: columnValues;" (dblclick)="viewInInventoryMaster(row)" (click)="selectRow(row)"></mat-row>
+                <mat-row *matRowDef="let row; columns: columnValues;" (click)="selectRow(row)"></mat-row>
               </table>
             </ng-scrollbar>
           </div>

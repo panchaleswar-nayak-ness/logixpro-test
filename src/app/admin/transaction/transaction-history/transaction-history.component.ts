@@ -1,16 +1,17 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 
 @Component({
   selector: 'app-transaction-history',
   templateUrl: './transaction-history.component.html',
   styleUrls: [],
 })
-export class TransactionHistoryComponent {
+export class TransactionHistoryComponent  {
   startDateEvent: Event;
   endDateEvent: Event;
   orderNoEvent:Event;
   resetDateEvent:Event;
   clearEvent: Event;
+
 
   @Input() tabIndex:any;
   
@@ -33,4 +34,6 @@ export class TransactionHistoryComponent {
   onClearFromStatus(event: Event) {
     this.clearEvent = event; 
   }
+  
+
 }

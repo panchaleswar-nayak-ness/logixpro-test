@@ -76,14 +76,12 @@ export class CmShippingComponent implements OnInit {
             this.shippingPreferences = res.data.shippingPreferences;
             let indx = 0;
             for (let key in this.shippingPreferences) {
-              if (
-                this.displayedColumns.indexOf(key) <= -1 &&
-                this.shippingPreferences[key]
-              ) {
+              if (this.displayedColumns.indexOf(key) <= -1 && this.shippingPreferences[key] ) {
                 this.displayedColumns.splice(3 + indx, 0, key);
                 indx = indx + 1;
               }
             }
+            this.displayedColumns = this.displayedColumns.filter((x: string) => !x.includes("Alias"));
             this.shippingComp = res.data.shippingComp;
             this.orderNumber = res.data.orderNumber;
             this.isLoading = false;
@@ -143,6 +141,13 @@ export class CmShippingComponent implements OnInit {
       width: element.width ? element.width : 0,
       height: element.height ? element.height : 0,
       cube: element.cube,
+      userField1:element.userField1,
+      userField2:element.userField2,
+      userField3:element.userField3,
+      userField4:element.userField4,
+      userField5:element.userField5,
+      userField6:element.userField6,
+      userField7:element.userField7,
     };
     this.iConsolidationAPI.ShipmentItemUpdate(obj).subscribe((res: any) => {});
   }

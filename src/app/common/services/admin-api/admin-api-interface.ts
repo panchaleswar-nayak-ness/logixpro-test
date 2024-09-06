@@ -111,6 +111,7 @@ export interface IAdminApiService
       insertUserGroup(payload : any);   
       getWarehouses() 
       getZones() 
+      getAllZone() 
       getZoneData(payload:any)
       updateEmployeeZone(payload : any); 
       deleteEmployeeZone(payload : any); 
@@ -180,7 +181,9 @@ export interface IAdminApiService
     AllAllocatedOrders(payload : any);
     OrderItemsTable(payload : any);
     DeAllocateOrder(payload : any) ; 
-    SaveTransaction(payload : any); 
+    SaveTransaction(payload : any);
+    AddOpenTransaction(paylaod : any);
+    AddCompleteTransaction(payload : any);
     ReprocessTransactionDelete(payload : any);
     deleteInventoryMap(payload : any); 
     quarantineInventoryMap(payload : any); 

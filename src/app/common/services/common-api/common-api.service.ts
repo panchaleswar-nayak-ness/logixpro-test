@@ -202,6 +202,18 @@ export class CommonApiService implements ICommonApi{
 		return this.Api.SupplierItemIDInfo(payload);
 	}
 
+	
+	ItemnumberInfo(payloadParams : any) {
+		this.userData = this.authService.userData();
+			const payload = {
+				username: this.userData.userName,
+		  wsid: this.userData.wsid,
+				...payloadParams 
+			}
+	
+			return this.Api.ItemnumberInfo(payload);
+		}
+
   UserFieldGetByID(payloadParams : any) {
     this.userData = this.authService.userData();
 		const payload = {

@@ -5,6 +5,7 @@ import { IAdminApiService } from 'src/app/common/services/admin-api/admin-api-in
 import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.service';
 import { GlobalService } from 'src/app/common/services/global.service';
 import { StringConditions, ToasterTitle, ToasterType } from 'src/app/common/constants/strings.constants';
+import { CurrentTabDataService } from 'src/app/admin/inventory-master/current-tab-data-service';
 
 @Component({
   selector: 'app-tran-in-reprocess',
@@ -39,13 +40,28 @@ export class TranInReprocessComponent implements OnInit {
     private global: GlobalService,
     private authService: AuthService,
     public adminApiService: AdminApiService,
-    private sharedService: SharedService
+    private sharedService: SharedService,
+    private currentTabDataService: CurrentTabDataService 
   ) {   
     this.iAdminApiService = adminApiService; 
   }
 
   ngOnInit(): void {
+    if (this.currentTabDataService.savedItem[this.currentTabDataService.Reprocess_Transaction]) {
+      let param = this.currentTabDataService.savedItem[this.currentTabDataService.Reprocess_Transaction];
+      this.itemNumber = param.itemNumber
+      this.orderNumber = param.orderNumber
+      this.selectedOption = param.selectedOption
+      this.reasonFilter = param.reasonFilter
+    }else{
+      this.itemNumber = '';
+      this.orderNumber = '';
+      this.selectedOption = "reprocess";
+      this.reasonFilter = "none";
+    }
     this.selectedOptionChange.emit(this.selectedOption);
+    this.updateService('selectedOption', this.selectedOption);
+
     this.userData = this.authService.userData();
     this.getFilteredList();
     this.sharedService.updateReprocessObserver.subscribe((selectedOrder) => {
@@ -67,6 +83,8 @@ export class TranInReprocessComponent implements OnInit {
     this.radioChangeEvent.emit({radioChange:true})
     this.reprocessSelectionEvent.emit(event.value);
     this.selectedOptionChange.emit(this.selectedOption);
+
+    this.updateService('selectedOption', this.selectedOption);
     this.clear();
   }
 
@@ -75,6 +93,8 @@ export class TranInReprocessComponent implements OnInit {
     this.itemNumber='';
     this.radioChangeEvent.emit({radioChange:true})
     this.reasonFilterEvent.emit(event.value);
+
+    this.updateService('reasonFilter', event.value);
     this.clear();
   }
 
@@ -97,6 +117,11 @@ export class TranInReprocessComponent implements OnInit {
     this.reasonFilter = 'none';
     this.selectedOption = 'reprocess';
     this.history = false;
+
+    this.updateService('orderNumber', this.orderNumber);
+    this.updateService('itemNumber', this.itemNumber);
+    this.updateService('reasonFilter', this.reasonFilter);
+    this.updateService('selectedOption', this.selectedOption);
   }
 
   getFilteredList() {
@@ -116,11 +141,13 @@ export class TranInReprocessComponent implements OnInit {
 
   orderSelected() { 
     this.selectedOrderNumber.emit(this.orderNumber);
+    this.updateService('orderNumber', this.orderNumber);
     this.getItemList();
   }
 
   listSelected() { 
     this.selectedItemNum.emit(this.itemNumber);
+    this.updateService('itemNumber', this.itemNumber);
   }
 
   getItemList() {
@@ -136,5 +163,12 @@ export class TranInReprocessComponent implements OnInit {
         console.log("ReprocessTypeahead",res.responseMessage);
       }
     });
+  }
+
+  private updateService(key: string, value: any) {
+    this.currentTabDataService.savedItem[this.currentTabDataService.Reprocess_Transaction] = {
+      ...this.currentTabDataService.savedItem[this.currentTabDataService.Reprocess_Transaction],
+      [key]: value
+    };
   }
 }

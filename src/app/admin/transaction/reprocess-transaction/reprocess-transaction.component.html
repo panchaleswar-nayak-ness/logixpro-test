@@ -45,7 +45,8 @@
                                     [searchString]="this.columnSearch.searchValue"
                                     [searchByInput]="this.searchByColumn"
                                     [searchAutocompleteList]="this.searchAutocompleteListByCol"
-                                    (autoCompleteEvent)="this.columnSearch.searchValue = $event; this.searchByColumn.next($event)">
+                                    (autoCompleteEvent)="this.columnSearch.searchValue = $event; this.searchByColumn.next($event)"
+                                    (valueChangeEvent)="valueChanges($event)">
                                 </app-column-filter-component>
 
                             </div>
@@ -129,6 +130,7 @@
                                         {{ col.colDef }}
                                     </th>
                                     <td *matCellDef="let element; let i = index" class="cell-custom-style"
+                                    (dblclick)="col.colDef == 'Item Number' && viewInInventoryMaster(element)"
                                          #tooltip="matTooltip" [matTooltip]="element[col.colHeader]"
                                         matTooltipPosition="above"
                                         [matTooltipDisabled]="element[col.colHeader] && element[col.colHeader].length>=25?false:true">
@@ -155,8 +157,8 @@
                                 </tr>
                                 <tr mat-header-row *matHeaderRowDef="columnValues; sticky: true"></tr>
                                 <tr mat-row [class.selected]="rowClicked == row.id"
-                                    *matRowDef="let row; columns: columnValues;" (dblclick)="viewInInventoryMaster(row)"
-                                    (click)="getTransaction(row);changeTableRowColor(row.id);getTransactionInfo(false)">
+                                    *matRowDef="let row; columns: columnValues;"
+                                    (click)="rowClick(row)">
                                 </tr>
 
                             </table>

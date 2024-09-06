@@ -111,7 +111,7 @@ export class BatchManagerComponent implements OnInit {
 
   getDeletedOrder() {
     this.currentTabDataService.savedItem[this.currentTabDataService.BATCH_MANAGER] = undefined;
-    this.initializeComponent;
+    this.initializeComponent();
   }
 
   addRemoveOrder(order: any, type: any) {
@@ -158,7 +158,7 @@ export class BatchManagerComponent implements OnInit {
   batchCreated(event: any) {
     if (event) {
       this.currentTabDataService.savedItem[this.currentTabDataService.BATCH_MANAGER] = undefined;
-      this.initializeComponent;
+      this.initializeComponent();
     }
   }
 

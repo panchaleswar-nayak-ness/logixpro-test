@@ -1,36 +1,30 @@
 <div class="container-fluid-0 mt-4 p-0">
     <div class="row">
         <div class="col-xl-4">
-
             <mat-card class="mat-elevation-z g-card mb-4 mb-xl-0">
                 <mat-card-content>
-
                     <div class="d-xl-flex justify-content-between">
                         <div class="d-flex align-items-center justify-content-between mb-3">
-                            
                             <app-icon-heading-component class="card-header-title d-flex align-items-center mb-0" heading="Report Label Or Export Description" icon="short_text"></app-icon-heading-component>
                         </div>
                     </div>
-
                     <div class="px-2 my-3">
-                        <mat-radio-group class="d-flex align-items-center gap-12 flex-wrap"
-                            aria-label="Select an option">
-                            <mat-radio-button color="primary" (click)="ChangeReport(true)" value="none" [checked]="isSystemReport == true">
+                        <mat-radio-group class="d-flex align-items-center gap-12 flex-wrap" aria-label="Select an option">
+                            <mat-radio-button color="primary" (click)="changeReport(true)" value="none" [checked]="isSystemReport == true">
                                 System
                             </mat-radio-button>
-                            <mat-radio-button color="primary" (click)="ChangeReport(false)" value="hold" [checked]="isSystemReport == false">
+                            <mat-radio-button color="primary" (click)="changeReport(false)" value="hold" [checked]="isSystemReport == false">
                                 User Created
                             </mat-radio-button>
                         </mat-radio-group>
                     </div>
-
                     <div class="card report-label-list">
                         <ul class="">
                             <ng-scrollbar class="NGscrolbar-style" track="all">
-                          <li class="my-2 px-2" *ngFor="let item of listReports ; index as i" (click)="Getreportdetails(item.filename,i ,item)" [class.selected]="item.isSelected">
-                           {{item.title}}
-                          </li>
-                        </ng-scrollbar>
+                                <li class="my-2 px-2" *ngFor="let item of listReports ; index as i" (click)="getReportDetails(item.fileName,i ,item)" [class.selected]="item.isSelected">
+                                    {{item.title}}
+                                </li>
+                            </ng-scrollbar>
                         </ul>
                     </div>
                 </mat-card-content>
@@ -48,11 +42,11 @@
                         <div class="d-flex d-lg-block">
                             <mat-form-field class="action-dropdown mb-3 flex-1" appearance="outline">
                                 <mat-label>Actions</mat-label>
-                                <mat-select  #matRef  class="employees-action" value="pick"  (selectionChange)="openAction($event)">
-                                    <mat-option value="123456"(click)="CrAddNewCustomReportDialogue()">Add New</mat-option>
+                                <mat-select  #matRef  class="employees-action" value="pick"  (selectionChange)="openAction()">
+                                    <mat-option value="123456"(click)="crAddNewCustomReportDialogue()">Add New</mat-option>
                                     <mat-option [value]="detail.testData" [disabled]="!detail.testData" (click)="this.global.OpenExportModal(this.detail.fileName,this.detail.fileName)">Export</mat-option>
                                     <mat-option [value]="detail.testData" [disabled]="!detail.testData" (click)="this.global.Print(this.detail.fileName.replace('.','-'))">Print</mat-option>
-                                    <mat-option [value]="detail.testData" [disabled]="!detail.testData" (click)="OpenListAndLabel('report')">Design</mat-option>
+                                    <mat-option [value]="detail.testData" [disabled]="!detail.testData" (click)="openListAndLabel('report')">Design</mat-option>
                                     <mat-option (click)="openDeleteDialogue()" [disabled]="!detail.testData" >Delete</mat-option>
                                     <mat-option (click)="fileInput.click()"[disabled]="!detail.testData"  >Import</mat-option>
                                 </mat-select>

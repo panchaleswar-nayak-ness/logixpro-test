@@ -2,13 +2,14 @@ import {Injectable} from '@angular/core';
 import {ApiFuntions} from '../ApiFuntions';
 import {AuthService} from 'src/app/common/init/auth.service';
 import {IAdminApiService} from './admin-api-interface'
+import { UserSession } from '../../types/CommonTypes';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AdminApiService implements IAdminApiService {
 
-  public userData: any;
+  public userData: UserSession;
 
   constructor(
     private Api: ApiFuntions,
@@ -927,13 +928,24 @@ export class AdminApiService implements IAdminApiService {
   public getZones() {
     return this.Api.getZones()
   }
+
+  public getAllZone() {
+    return this.Api.getAllZone()
+  }
+
+  public getBulkVelocityAndCellSize() {
+    return this.Api.getBulkVelocityAndCellSize()
+  }
   //getWarehouses
   public getWarehouses() {
     return this.Api.getWarehouses()
   }
-  public getZoneData(body:any) {
+  public getZoneData(payload) {
+    // Construct query parameters object
     
-    return this.Api.getZoneData(body)
+  
+    // Pass parameters to the API service
+    return this.Api.getZoneData(payload);
   }
 
   public updateEmployeeZone(body: any) {
@@ -2020,4 +2032,21 @@ export class AdminApiService implements IAdminApiService {
     }
     return this.Api.PrintPutAwayItem(payload);
   }
-}
+
+  public AddOpenTransaction(body: any) {
+    const payload = {
+      ...body
+    }
+    return this.Api.AddOpenTransaction(payload);
+  }
+
+
+
+  public AddCompleteTransaction(body: any) {
+    const payload = {
+      ...body
+    }
+      return this.Api.AddCompleteTransaction(payload);
+    }
+  }
+

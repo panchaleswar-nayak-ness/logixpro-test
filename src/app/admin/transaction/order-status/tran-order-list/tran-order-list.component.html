@@ -1,4 +1,4 @@
-<mat-card class="mat-elevation-z g-card mb-4 h-100" >
+<mat-card class="mat-elevation-z g-card mb-4" >
   <mat-card-content>
     <div class="row mb-2">
       <div class="col-xl-5">
@@ -11,7 +11,8 @@
             [searchAutocompleteList]="this.searchAutocompleteList"
             (autoCompleteEvent)="this.searchString = $event; this.searchByInput.next($event)"
             [showClearBtn]="true"
-            (clearBtnEvent)="clearData($event)">
+            (clearBtnEvent)="clearData($event)"
+            (valueChangeEvent)="valueChanges($event)">
           </app-column-filter-component>
       </div>
 
@@ -58,8 +59,8 @@
               <ng-container matColumnDef="completedDate">
                 <th mat-header-cell mat-sort-header *matHeaderCellDef> Completed Date </th>
                 <td mat-cell *matCellDef="let element"  
-                (contextmenu)="onContextMenu($event, element.completedDate, getColDef('completedDate'))"
-                #tooltip="matTooltip" [matTooltip]="element.completedDate"   matTooltipPosition="above" [matTooltipDisabled]="element.completedDate && element.completedDate.length>=15?false:true" > {{element.completedDate}} </td>
+                (contextmenu)="onContextMenu($event, element.orignalCompletedDate, getColDef('completedDate'))"
+                #tooltip="matTooltip" [matTooltip]="element.orignalCompletedDate"   matTooltipPosition="above" [matTooltipDisabled]="element.orignalCompletedDate && element.orignalCompletedDate.length>=15?false:true" > {{element.orignalCompletedDate}} </td>
               </ng-container>
 
               <!-- Weight Column -->
@@ -80,7 +81,8 @@
 
               <ng-container matColumnDef="itemNumber">
                 <th mat-header-cell mat-sort-header *matHeaderCellDef> Item Number</th>
-                <td mat-cell *matCellDef="let element"  
+                <td mat-cell *matCellDef="let element"
+                (dblclick)="viewInInventoryMaster(element)"
                 (contextmenu)="onContextMenu($event, element.itemNumber, getColDef('itemNumber'))"
                 #tooltip="matTooltip" [matTooltip]="element.itemNumber"   matTooltipPosition="above" [matTooltipDisabled]="element.itemNumber && element.itemNumber.length>=15?false:true" >{{element.itemNumber}}</td>
               </ng-container>
@@ -325,7 +327,7 @@
               </tr>
               
               <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
-              <tr mat-row *matRowDef="let row; columns: displayedColumns;" (dblclick)="viewInInventoryMaster(row)"></tr>
+              <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
 
             </table>
           </ng-scrollbar>
@@ -336,20 +338,28 @@
               <mat-paginator [length]="this.customPagination.total" [pageSize]="20" showFirstLastButtons [pageSizeOptions]="[10, 20, 100]" (page)="handlePageEvent($event)"></mat-paginator>
             </div>
           </div>
-          <div class="col-xl-4 offset-xl-3">
-            <div class="d-flex justify-content-end">
-              <button [disabled]="!shippingComplete" mat-flat-button color="primary" class="btn-regular mx-2 w-100" (click)="shippingCompleteDialog()">
-                Shipping Complete
-              </button>
-              <button *ngIf="priority" mat-flat-button color="primary" class="btn-regular w-100" (click)="openGcBeginTest()">
-                Change Priority
-              </button>
-            </div>
-          </div>
         </div>
       </div>
     </div>
   </mat-card-content>
 </mat-card>
+<div class="container-fluid">
+<div class="row g-2">
+  <div class="col">
+    <button mat-flat-button color="primary" class="btn-lg mx-2 w-100" (click)="confirmationDialog()">
+      Complete Order
+    </button>
+  </div>
+  <div class="col">
+    <button [disabled]="!shippingComplete" mat-flat-button color="primary" class="btn-lg mx-2 w-100" (click)="shippingCompleteDialog()">
+      Shipping Complete
+    </button>
+    <button *ngIf="priority" mat-flat-button color="primary" class="btn-lg w-100" (click)="openGcBeginTest()">
+      Change Priority
+    </button>
+  </div>
+</div>
+</div>
+
 
 <app-table-context-menu-component *ngIf="TabIndex==0 && isActiveTrigger" (optionSelected)="optionSelected($event)" [componentName]="'transOrders'"></app-table-context-menu-component>

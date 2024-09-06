@@ -65,20 +65,20 @@ export class SideNavComponent implements OnInit {
     { icon: 'directions_alt', title: 'Process Picks', route: '/InductionManager/ProcessPicks', permission: 'Tote Transactions' },
     { icon: 'dashboard', title: 'Process Put Aways', route: '/InductionManager/ProcessPutAways', permission: 'Tote Transactions' },
     { icon: 'manage_accounts', title: 'Admin', route: '/InductionManager/Admin', permission: 'Tote Admin Menu' },
-    { icon: 'edit_attributes', title: 'Mark Empty Reels', route: '/InductionManager/MarkEmptyReels', permission: AppPermissions.InductionManager },
-    { icon: 'linear_scale', title: 'Pallet Receiving', route: '/InductionManager/PalletReceiving', permission: AppPermissions.InductionManager },
-    { icon: 'line_style', title: 'Super Batch', route: '/InductionManager/SuperBatch', permission: AppPermissions.InductionManager },
+    { icon: 'edit_attributes', title: 'Mark Empty Reels', route: '/InductionManager/MarkEmptyReels', permission: 'Induction Mark Empty Reels' },
+    { icon: 'linear_scale', title: 'Pallet Receiving', route: '/InductionManager/PalletReceiving', permission: 'Induction Pallet Receiving' },
+    { icon: 'line_style', title: 'Super Batch', route: '/InductionManager/SuperBatch', permission: 'Induction Super Batch' },
     { icon: 'library_add_check', title: 'Complete Pick Batch', route: '/InductionManager/CompletePickBatch', permission: AppPermissions.InductionManager },
   ];
   consolidationMenus: any = [
     { icon: 'arrow_back', title: AppPermissions.ConsolidationManager, route: '/ConsolidationManager', class: UniqueConstants.backClass, permission: AppPermissions.ConsolidationManager },
-    { icon: 'insert_chart', title: 'Consolidation', route: '/ConsolidationManager/Consolidation', class: UniqueConstants.backClass, permission: AppPermissions.ConsolidationManager },
+    { icon: 'insert_chart', title: 'Consolidation', route: '/ConsolidationManager/Consolidation', class: UniqueConstants.backClass, permission: 'Consolidation Mngr' },
     // Vector
-    { icon: 'add_location_alt', title: 'Staging Locations', route: '/ConsolidationManager/StagingLocations', permission: AppPermissions.ConsolidationManager },
+    { icon: 'add_location_alt', title: 'Staging Locations', route: '/ConsolidationManager/StagingLocations', permission: 'Consolidation Staging Loc' },
     { icon: 'tune', title: ' Preferences ', route: '/ConsolidationManager/Preferences', permission: 'Consolidation Mgr Admin' },
     // Vector (Stroke)
     { icon: 'analytics', title: 'Reporting ', route: '/ConsolidationManager/Reports', permission: 'Consolidation Mgr Admin' },
-    { icon: 'view_module', title: 'Order Status', route: '/ConsolidationManager/OrderStatus', paramsObj: { IsOrderStatus: true }, permission: AppPermissions.ConsolidationManager }
+    { icon: 'view_module', title: 'Order Status', route: '/ConsolidationManager/OrderStatus', paramsObj: { IsOrderStatus: true }, permission: 'Consolidation Order Status' }
     //  flex_wrap
   ];
   inductionAdminMenus: any = [
@@ -95,7 +95,7 @@ export class SideNavComponent implements OnInit {
   orderManagerMenus: any = [
     { icon: 'arrow_back', title: AppPermissions.OrderManager, route: AppRoutes.Dashboard, class: UniqueConstants.backClass, permission: AppPermissions.OrderManager },
     { icon: ' pending_actions', title: AppPermissions.OrderManager, route: '/OrderManager/OrderManager', permission: 'Admin Release Orders' },
-    { icon: 'view_module', title: 'Order Status ', route: '/OrderManager/OrderStatus', permission: true },
+    { icon: 'view_module', title: 'Order Status ', route: '/OrderManager/OrderStatus', permission: 'Order Status OM' },
     { icon: 'event_note', title: 'Event Log ', route: '/OrderManager/EventLog', permission: 'Admin Release Orders' },
     { icon: 'dataset', title: 'Inventory Master Info', route: '/OrderManager/InventoryMaster', permission: 'Admin Inventory Master' },
     { icon: TableConstant.WareHouse, title: 'Stock Location & Quantity ', route: '/OrderManager/InventoryMap', permission: 'Admin Stock Locations' },
@@ -104,21 +104,21 @@ export class SideNavComponent implements OnInit {
   ];
   flowrackReplenishmentMenus: any = [
     { icon: 'arrow_back', title: 'Flowrack Replenish', route: '/FlowrackReplenish', class: UniqueConstants.backClass, permission: 'FlowRack Replenish' },
-    { icon: 'schema', title: 'Flowrack Replenishment', route: '/FlowrackReplenish/Flowrack', permission: 'FlowRack Replenish' },
-    { icon: 'tune', title: 'Preferences ', route: '/FlowrackReplenish/Preferences', permission: 'FlowRack Replenish' },
+    { icon: 'schema', title: 'Flowrack Replenishment', route: '/FlowrackReplenish/Flowrack', permission: 'Flowrack Replenishment' },
+    { icon: 'tune', title: 'Preferences ', route: '/FlowrackReplenish/Preferences', permission: 'Flowrack Replenishment Preferences' },
   ];
   bulkProcessMenus: any = [
     { icon: 'arrow_back', title: 'Bulk Transactions', route: '/BulkTransactions', class: UniqueConstants.backClass, permission: 'FlowRack Replenish' },
-    { icon: 'unarchive', title: 'Bulk Pick', route: '/BulkTransactions/BulkPick', permission: 'FlowRack Replenish' },
-    { icon: 'archive', title: 'Bulk Put Away', route: '/BulkTransactions/BulkPutAway', permission: true },
-    { icon: 'archive', title: 'Bulk Count', route: '/BulkTransactions/BulkCount', permission: true },
-    { icon: 'tune', title: 'Preferences', route: '/BulkTransactions/Preferences', permission: 'FlowRack Replenish' },
+    { icon: 'unarchive', title: 'Bulk Pick', route: '/BulkTransactions/BulkPick', permission: 'Bulk Pick' },
+    { icon: 'archive', title: 'Bulk Put Away', route: '/BulkTransactions/BulkPutAway', permission: 'Bulk Put Away' },
+    { icon: 'archive', title: 'Bulk Count', route: '/BulkTransactions/BulkCount', permission: 'Bulk Cycle Count' },
+    { icon: 'tune', title: 'Preferences', route: '/BulkTransactions/Preferences', permission: 'Bulk Preferences' },
   ];
 
   markOutMenus: any = [
     { icon: 'arrow_back', title: 'Markout Process', route: AppRoutes.Markout, class: UniqueConstants.backClass, permission: 'Markout' },
-    { icon: 'schema', title: 'Markout', route: '/MarkoutProcess/Markout', permission: 'Markout' },
-    { icon: 'tune', title: 'Preferences ', route: '/MarkoutProcess/Preferences', permission: 'Markout' },
+    { icon: 'schema', title: 'Markout', route: '/MarkoutProcess/Markout', permission: 'Markout Process' },
+    { icon: 'tune', title: 'Preferences ', route: '/MarkoutProcess/Preferences', permission: 'Markout Preferences' },
   ];
 
 

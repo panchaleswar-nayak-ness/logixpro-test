@@ -13,8 +13,9 @@
       <div class="card p-3">
 
         <div class="d-flex align-items-center flex-wrap">
-          
-          <app-icon-heading-component class="card-header-title mb-3 me-4 d-flex align-items-center" heading="Order Info" icon="filter_frames"></app-icon-heading-component>
+
+          <app-icon-heading-component class="card-header-title mb-3 me-4 d-flex align-items-center" heading="Order Info"
+            icon="filter_frames"></app-icon-heading-component>
         </div>
         <div class="d-block d-xl-flex justify-content-between align-items-center w-100">
           <div class="col-xl-3 d-flex">
@@ -31,7 +32,7 @@
         </div>
       </div>
     </div>
-   
+
     <div class="row mb-3">
       <div class="col-xl-6">
         <mat-card class="card mb-3">
@@ -42,87 +43,83 @@
             </div>
 
             <div class="card br-14 borderless px-0 mb-3 overflow-x-auto">
-              <ng-scrollbar class="mat-table-scrollbar h-310"  track="all">
-                <table mat-table #table1 [dataSource]="tableData1" class="w-100" matSort #MatSort1="matSort" (matSortChange)="announceSortChange1($event)">
+              <ng-scrollbar class="mat-table-scrollbar h-310" track="all">
+                <table mat-table #table1 [dataSource]="tableData1" class="w-100" matSort #MatSort1="matSort"
+                  (matSortChange)="announceSortChange1($event)">
 
                   <ng-container matColumnDef="sT_ID">
                     <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by number">ID</th>
-                    <td mat-cell *matCellDef="let element"
-                                #tooltip="matTooltip" matTooltipPosition="above" [matTooltip]="element.sT_ID"
-                [matTooltipDisabled]="element.sT_ID && element.sT_ID.length>=20?false:true"
-                                > {{element.sT_ID}} </td>
+                    <td mat-cell *matCellDef="let element" #tooltip="matTooltip" matTooltipPosition="above"
+                      [matTooltip]="element.sT_ID"
+                      [matTooltipDisabled]="element.sT_ID && element.sT_ID.length>=20?false:true"> {{element.sT_ID}}
+                    </td>
                   </ng-container>
 
                   <ng-container matColumnDef="itemNumber">
-                    <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by number">Item Number</th>
-                    <td mat-cell *matCellDef="let element"
-                                #tooltip="matTooltip" matTooltipPosition="above" [matTooltip]="element.itemNumber" 
-                
-                [matTooltipDisabled]="element.itemNumber && element.itemNumber.length>=20?false:true"
-                                > {{element.itemNumber}} </td>
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by number">Item
+                      Number</th>
+                    <td mat-cell *matCellDef="let element" #tooltip="matTooltip" matTooltipPosition="above"
+                      [matTooltip]="element.itemNumber"
+                      [matTooltipDisabled]="element.itemNumber && element.itemNumber.length>=20?false:true">
+                      {{element.itemNumber}} </td>
                   </ng-container>
 
                   <ng-container matColumnDef="lineNumber">
-                    <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by name">Line Number</th>
-                    <td mat-cell *matCellDef="let element"
-                                #tooltip="matTooltip" matTooltipPosition="above" [matTooltip]="element.lineNumber" 
-                
-                [matTooltipDisabled]="element.lineNumber && element.lineNumber.length>=20?false:true"
-                                > {{element.lineNumber}} </td>
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by name">Line
+                      Number</th>
+                    <td mat-cell *matCellDef="let element" #tooltip="matTooltip" matTooltipPosition="above"
+                      [matTooltip]="element.lineNumber"
+                      [matTooltipDisabled]="element.lineNumber && element.lineNumber.length>=20?false:true">
+                      {{element.lineNumber}} </td>
                   </ng-container>
 
                   <ng-container matColumnDef="toteID">
-                    <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by weight">Tote ID</th>
-                    <td mat-cell *matCellDef="let element"
-                                #tooltip="matTooltip" matTooltipPosition="above" [matTooltip]="element.toteID" 
-                
-                [matTooltipDisabled]="element.toteID && element.toteID.length>=20?false:true"
-                                > {{element.toteID}} </td>
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by weight">Tote ID
+                    </th>
+                    <td mat-cell *matCellDef="let element" #tooltip="matTooltip" matTooltipPosition="above"
+                      [matTooltip]="element.toteID"
+                      [matTooltipDisabled]="element.toteID && element.toteID.length>=20?false:true"> {{element.toteID}}
+                    </td>
                   </ng-container>
 
                   <ng-container matColumnDef="transactionQuantity">
                     <th mat-header-cell mat-sort-header *matHeaderCellDef>Order Quantity</th>
-                    <td mat-cell *matCellDef="let element"
-                                #tooltip="matTooltip" matTooltipPosition="above" [matTooltip]="element.transactionQuantity" 
-                
-                [matTooltipDisabled]="element.transactionQuantity && element.transactionQuantity.length>=20?false:true"
-                                > {{element.transactionQuantity}} </td>
+                    <td mat-cell *matCellDef="let element" #tooltip="matTooltip" matTooltipPosition="above"
+                      [matTooltip]="element.transactionQuantity"
+                      [matTooltipDisabled]="element.transactionQuantity && element.transactionQuantity.length>=20?false:true">
+                      {{element.transactionQuantity}} </td>
                   </ng-container>
 
                   <ng-container matColumnDef="completedQuantity">
                     <th mat-header-cell mat-sort-header *matHeaderCellDef>Picked Quantity</th>
-                    <td mat-cell *matCellDef="let element"
-                                #tooltip="matTooltip" matTooltipPosition="above" [matTooltip]="element.completedQuantity" 
-                
-                [matTooltipDisabled]="element.completedQuantity && element.completedQuantity.length>=20?false:true"
-                                > {{element.completedQuantity}} </td>
+                    <td mat-cell *matCellDef="let element" #tooltip="matTooltip" matTooltipPosition="above"
+                      [matTooltip]="element.completedQuantity"
+                      [matTooltipDisabled]="element.completedQuantity && element.completedQuantity.length>=20?false:true">
+                      {{element.completedQuantity}} </td>
                   </ng-container>
 
                   <ng-container matColumnDef="containerID">
                     <th mat-header-cell mat-sort-header *matHeaderCellDef>Container ID</th>
-                    <td mat-cell *matCellDef="let element"
-                                #tooltip="matTooltip" matTooltipPosition="above" [matTooltip]="element.containerID" 
-                
-                [matTooltipDisabled]="element.containerID && element.containerID.length>=20?false:true"
-                                > {{element.containerID}} </td>
+                    <td mat-cell *matCellDef="let element" #tooltip="matTooltip" matTooltipPosition="above"
+                      [matTooltip]="element.containerID"
+                      [matTooltipDisabled]="element.containerID && element.containerID.length>=20?false:true">
+                      {{element.containerID}} </td>
                   </ng-container>
 
                   <ng-container matColumnDef="shipQuantity">
                     <th mat-header-cell mat-sort-header *matHeaderCellDef>Ship Quantity</th>
-                    <td mat-cell *matCellDef="let element"
-                                #tooltip="matTooltip" matTooltipPosition="above" [matTooltip]="element.shipQuantity" 
-                
-                [matTooltipDisabled]="element.shipQuantity && element.shipQuantity.length>=20?false:true"
-                                > {{element.shipQuantity}} </td>
+                    <td mat-cell *matCellDef="let element" #tooltip="matTooltip" matTooltipPosition="above"
+                      [matTooltip]="element.shipQuantity"
+                      [matTooltipDisabled]="element.shipQuantity && element.shipQuantity.length>=20?false:true">
+                      {{element.shipQuantity}} </td>
                   </ng-container>
 
                   <ng-container matColumnDef="completedTime">
                     <th mat-header-cell mat-sort-header *matHeaderCellDef>Completed Time</th>
-                    <td mat-cell *matCellDef="let element"
-                                #tooltip="matTooltip" matTooltipPosition="above" [matTooltip]="element.completedTime" 
-                
-                [matTooltipDisabled]="element.completedTime && element.completedTime.length>=20?false:true"
-                                > {{element.completedTime}} </td>
+                    <td mat-cell *matCellDef="let element" #tooltip="matTooltip" matTooltipPosition="above"
+                      [matTooltip]="element.completedTime"
+                      [matTooltipDisabled]="element.completedTime && element.completedTime.length>=20?false:true">
+                      {{element.completedTime}} </td>
                   </ng-container>
 
                   <tr class="mat-row" *matNoDataRow>
@@ -136,8 +133,8 @@
                 </table>
               </ng-scrollbar>
             </div>
-            <mat-paginator class="d-flex justify-content-start" showFirstLastButtons [pageSizeOptions]="[5,10,20]" [pageSize]="5" #paginator1
-              aria-label="Select page of periodic elements">
+            <mat-paginator class="d-flex justify-content-start" showFirstLastButtons [pageSizeOptions]="[5,10,20]"
+              [pageSize]="5" #paginator1 aria-label="Select page of periodic elements">
             </mat-paginator>
 
           </mat-card-content>
@@ -155,123 +152,184 @@
 
             <div class="card br-14 borderless px-0 mb-3 overflow-x-auto">
               <ng-scrollbar class="mat-table-scrollbar  scrollbar-hover-padding h-310" track="all">
-                <table mat-table #table2 [dataSource]="tableData2" class="w-100" matSort #MatSort2="matSort" (matSortChange)="announceSortChange2($event)">
+                <table mat-table #table2 [dataSource]="tableData2" class="w-100" matSort #MatSort2="matSort"
+                  (matSortChange)="announceSortChange2($event)">
 
                   <ng-container matColumnDef="id">
                     <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by number">ID</th>
-                    <td mat-cell *matCellDef="let element"
-                                #tooltip="matTooltip" matTooltipPosition="above" [matTooltip]="element.id" 
-                
-                [matTooltipDisabled]="element.id && element.id.length>=20?false:true"
-                                > {{element.id}} </td>
+                    <td mat-cell *matCellDef="let element" #tooltip="matTooltip" matTooltipPosition="above"
+                      [matTooltip]="element.id" [matTooltipDisabled]="element.id && element.id.length>=20?false:true">
+                      {{element.id}} </td>
                   </ng-container>
 
                   <ng-container matColumnDef="containerID">
-                    <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by number">Container ID.</th>
-                    <td mat-cell *matCellDef="let element"
-                                #tooltip="matTooltip" matTooltipPosition="above" [matTooltip]="element.containerID" 
-                
-                [matTooltipDisabled]="element.containerID && element.containerID.length>=20?false:true"
-                                > {{element.containerID}} </td>
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by number">
+                      Container ID.</th>
+                    <td mat-cell *matCellDef="let element" #tooltip="matTooltip" matTooltipPosition="above"
+                      [matTooltip]="element.containerID"
+                      [matTooltipDisabled]="element.containerID && element.containerID.length>=20?false:true">
+                      {{element.containerID}} </td>
                   </ng-container>
 
                   <ng-container matColumnDef="carrierName">
-                    <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by name">Carrier Name</th>
-                      <td mat-cell *matCellDef="let element"
-                      #tooltip="matTooltip" matTooltipPosition="above" [matTooltip]="element.carrierName" 
-      
-      [matTooltipDisabled]="element.carrierName && element.carrierName.length>=20?false:true"
-                      > {{element.carrierName}} </td>
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by name">Carrier
+                      Name</th>
+                    <td mat-cell *matCellDef="let element" #tooltip="matTooltip" matTooltipPosition="above"
+                      [matTooltip]="element.carrierName"
+                      [matTooltipDisabled]="element.carrierName && element.carrierName.length>=20?false:true">
+                      {{element.carrierName}} </td>
                   </ng-container>
 
                   <ng-container matColumnDef="trackingNumber">
-                    <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by weight">Tracking Number</th>
-                    <td mat-cell *matCellDef="let element"
-                                #tooltip="matTooltip" matTooltipPosition="above" [matTooltip]="element.trackingNumber" 
-                
-                [matTooltipDisabled]="element.trackingNumber && element.trackingNumber.length>=20?false:true"
-                                > {{element.trackingNumber}} </td>
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by weight">
+                      Tracking Number</th>
+                    <td mat-cell *matCellDef="let element" #tooltip="matTooltip" matTooltipPosition="above"
+                      [matTooltip]="element.trackingNumber"
+                      [matTooltipDisabled]="element.trackingNumber && element.trackingNumber.length>=20?false:true">
+                      {{element.trackingNumber}} </td>
                   </ng-container>
 
                   <ng-container matColumnDef="freight">
-                    <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by weight">Freight</th>
-                      <td mat-cell *matCellDef="let element"
-                      #tooltip="matTooltip" matTooltipPosition="above" [matTooltip]="element.freight" 
-      
-      [matTooltipDisabled]="element.freight && element.freight.length>=20?false:true"
-                      > {{element.freight}} </td>
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by weight">Freight
+                    </th>
+                    <td mat-cell *matCellDef="let element" #tooltip="matTooltip" matTooltipPosition="above"
+                      [matTooltip]="element.freight"
+                      [matTooltipDisabled]="element.freight && element.freight.length>=20?false:true">
+                      {{element.freight}} </td>
                   </ng-container>
 
                   <ng-container matColumnDef="freight1">
-                    <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by number">Freight1</th>
-                    <td mat-cell *matCellDef="let element"
-                                #tooltip="matTooltip" matTooltipPosition="above" [matTooltip]="element.freight1" 
-                
-                [matTooltipDisabled]="element.freight1 && element.freight1.length>=20?false:true"
-                                > {{element.freight1}} </td>
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by number">
+                      Freight1</th>
+                    <td mat-cell *matCellDef="let element" #tooltip="matTooltip" matTooltipPosition="above"
+                      [matTooltip]="element.freight1"
+                      [matTooltipDisabled]="element.freight1 && element.freight1.length>=20?false:true">
+                      {{element.freight1}} </td>
                   </ng-container>
 
                   <ng-container matColumnDef="freight2">
-                    <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by number">Freight2</th>
-                    <td mat-cell *matCellDef="let element"
-                                #tooltip="matTooltip" matTooltipPosition="above" [matTooltip]="element.freight2" 
-                
-                [matTooltipDisabled]="element.freight2 && element.freight2.length>=20?false:true"
-                                > {{element.freight2}} </td>
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by number">
+                      Freight2</th>
+                    <td mat-cell *matCellDef="let element" #tooltip="matTooltip" matTooltipPosition="above"
+                      [matTooltip]="element.freight2"
+                      [matTooltipDisabled]="element.freight2 && element.freight2.length>=20?false:true">
+                      {{element.freight2}} </td>
                   </ng-container>
 
                   <ng-container matColumnDef="weight">
-                    <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by number">Weight</th>
-                    <td mat-cell *matCellDef="let element"
-                                #tooltip="matTooltip" matTooltipPosition="above" [matTooltip]="element.weight" 
-                
-                [matTooltipDisabled]="element.weight && element.weight.length>=20?false:true"
-                                > {{element.weight}} </td>
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by number">Weight
+                    </th>
+                    <td mat-cell *matCellDef="let element" #tooltip="matTooltip" matTooltipPosition="above"
+                      [matTooltip]="element.weight"
+                      [matTooltipDisabled]="element.weight && element.weight.length>=20?false:true"> {{element.weight}}
+                    </td>
                   </ng-container>
 
                   <ng-container matColumnDef="length">
-                    <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by number">Length</th>
-                    <td mat-cell *matCellDef="let element"
-                                #tooltip="matTooltip" matTooltipPosition="above" [matTooltip]="element.length" 
-                
-                [matTooltipDisabled]="element.length && element.length.length>=20?false:true"
-                                > {{element.length}} </td>
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by number">Length
+                    </th>
+                    <td mat-cell *matCellDef="let element" #tooltip="matTooltip" matTooltipPosition="above"
+                      [matTooltip]="element.length"
+                      [matTooltipDisabled]="element.length && element.length.length>=20?false:true"> {{element.length}}
+                    </td>
                   </ng-container>
 
                   <ng-container matColumnDef="width">
-                    <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by number">Width</th>
-                    <td mat-cell *matCellDef="let element"
-                                #tooltip="matTooltip" matTooltipPosition="above" [matTooltip]="element.width" 
-                
-                [matTooltipDisabled]="element.width && element.width.length>=20?false:true"
-                                > {{element.width}} </td>
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by number">Width
+                    </th>
+                    <td mat-cell *matCellDef="let element" #tooltip="matTooltip" matTooltipPosition="above"
+                      [matTooltip]="element.width"
+                      [matTooltipDisabled]="element.width && element.width.length>=20?false:true"> {{element.width}}
+                    </td>
                   </ng-container>
 
                   <ng-container matColumnDef="height">
-                    <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by number">Height</th>
-                    <td mat-cell *matCellDef="let element"
-                                #tooltip="matTooltip" matTooltipPosition="above" [matTooltip]="element.height" 
-                
-                [matTooltipDisabled]="element.height && element.height.length>=20?false:true"
-                                > {{element.height}} </td>
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by number">Height
+                    </th>
+                    <td mat-cell *matCellDef="let element" #tooltip="matTooltip" matTooltipPosition="above"
+                      [matTooltip]="element.height"
+                      [matTooltipDisabled]="element.height && element.height.length>=20?false:true"> {{element.height}}
+                    </td>
                   </ng-container>
 
                   <ng-container matColumnDef="cube">
-                    <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by number">Cube</th>
-                    <td mat-cell *matCellDef="let element"
-                                #tooltip="matTooltip" matTooltipPosition="above" [matTooltip]="element.cube" 
-                
-                [matTooltipDisabled]="element.cube && element.cube.length>=20?false:true"
-                                > {{element.cube}} </td>
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by number">Cube
+                    </th>
+                    <td mat-cell *matCellDef="let element" #tooltip="matTooltip" matTooltipPosition="above"
+                      [matTooltip]="element.cube"
+                      [matTooltipDisabled]="element.cube && element.cube.length>=20?false:true"> {{element.cube}} </td>
                   </ng-container>
 
                   <ng-container matColumnDef="completedTime">
-                    <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by number">Completed Time</th>
-                    <td mat-cell *matCellDef="let element"
-                                #tooltip="matTooltip" matTooltipPosition="above" [matTooltip]="element.completedTime" 
-                
-                [matTooltipDisabled]="element.completedTime && element.completedTime.length>=20?false:true"
-                                > {{element.completedTime}} </td>
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by number">
+                      Completed Time</th>
+                    <td mat-cell *matCellDef="let element" #tooltip="matTooltip" matTooltipPosition="above"
+                      [matTooltip]="element.completedTime"
+                      [matTooltipDisabled]="element.completedTime && element.completedTime.length>=20?false:true">
+                      {{element.completedTime}} </td>
+                  </ng-container>
+
+                  <ng-container matColumnDef="userField1">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by number">
+                      User Field 1</th>
+                    <td mat-cell *matCellDef="let element" #tooltip="matTooltip" matTooltipPosition="above"
+                      [matTooltip]="element.userField1"
+                      [matTooltipDisabled]="element.userField1 && element.userField1.length>=20?false:true">
+                      {{element.userField1}} </td>
+                  </ng-container>
+                  
+                  <ng-container matColumnDef="userField2">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by number">
+                      User Field 2</th>
+                    <td mat-cell *matCellDef="let element" #tooltip="matTooltip" matTooltipPosition="above"
+                      [matTooltip]="element.userField2"
+                      [matTooltipDisabled]="element.userField2 && element.userField2.length>=20?false:true">
+                      {{element.userField2}} </td>
+                  </ng-container>
+
+                  <ng-container matColumnDef="userField3">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by number">
+                      User Field 3</th>
+                    <td mat-cell *matCellDef="let element" #tooltip="matTooltip" matTooltipPosition="above"
+                      [matTooltip]="element.userField3"
+                      [matTooltipDisabled]="element.userField3 && element.userField3.length>=20?false:true">
+                      {{element.userField3}} </td>
+                  </ng-container>
+
+                  <ng-container matColumnDef="userField4">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by number">
+                      User Field 4</th>
+                    <td mat-cell *matCellDef="let element" #tooltip="matTooltip" matTooltipPosition="above"
+                      [matTooltip]="element.userField4"
+                      [matTooltipDisabled]="element.userField4 && element.userField4.length>=20?false:true">
+                      {{element.userField4}} </td>
+                  </ng-container>
+
+                  <ng-container matColumnDef="userField5">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by number">
+                      User Field 5</th>
+                    <td mat-cell *matCellDef="let element" #tooltip="matTooltip" matTooltipPosition="above"
+                      [matTooltip]="element.userField5"
+                      [matTooltipDisabled]="element.userField5 && element.userField5.length>=20?false:true">
+                      {{element.userField5}} </td>
+                  </ng-container>
+
+                  <ng-container matColumnDef="userField6">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by number">
+                      User Field 6</th>
+                    <td mat-cell *matCellDef="let element" #tooltip="matTooltip" matTooltipPosition="above"
+                      [matTooltip]="element.userField6"
+                      [matTooltipDisabled]="element.userField6 && element.userField6.length>=20?false:true">
+                      {{element.userField6}} </td>
+                  </ng-container>
+
+                  <ng-container matColumnDef="userField7">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by number">
+                      User Field 7</th>
+                    <td mat-cell *matCellDef="let element" #tooltip="matTooltip" matTooltipPosition="above"
+                      [matTooltip]="element.userField7"
+                      [matTooltipDisabled]="element.userField7 && element.userField7.length>=20?false:true">
+                      {{element.userField7}} </td>
                   </ng-container>
 
                   <tr class="mat-row" *matNoDataRow>
@@ -286,8 +344,8 @@
               </ng-scrollbar>
             </div>
 
-            <mat-paginator class="d-flex justify-content-start" showFirstLastButtons [pageSizeOptions]="[5,10,20]" [pageSize]="5" #paginator2
-              aria-label="Select page of periodic elements">
+            <mat-paginator class="d-flex justify-content-start" showFirstLastButtons [pageSizeOptions]="[5,10,20]"
+              [pageSize]="5" #paginator2 aria-label="Select page of periodic elements">
             </mat-paginator>
 
           </mat-card-content>

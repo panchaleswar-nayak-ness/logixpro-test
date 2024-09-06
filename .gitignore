@@ -41,3 +41,8 @@ testem.log
 .DS_Store
 Thumbs.db
 
+/.vs
+/server/.vs
+/server/LogixProServer/bin/Debug/net8.0
+/server/LogixProServer/obj
+/server/LogixProServer/wwwroot

@@ -95,7 +95,7 @@
 
     {
         "path": "/ConsolidationManager/StagingLocations",
-        "Permission": "Consolidation Manager"
+        "Permission": "Consolidation Staging Loc"
     },
     {
         "path": "/ConsolidationManager/Preferences",
@@ -116,7 +116,7 @@
 
     {
         "path": "/InductionManager/MarkEmptyReels",
-        "Permission": "Induction Manager"
+        "Permission": "Induction Mark Empty Reels"
     },
     {
         "path": "/InductionManager/ProcessPicks",
@@ -134,7 +134,7 @@
     },
     {
         "path": "/InductionManager/SuperBatch",
-        "Permission": "Induction Manager"
+        "Permission": "Induction Super Batch"
     },
     {
         "path": "/OrderManager",
@@ -142,11 +142,11 @@
     },
     {
         "path": "/OrderManager/OrderStatus",
-        "Permission": true
+        "Permission": "Order Status OM"
     },
     {
         "path": "/ConsolidationManager/OrderStatus",
-        "Permission": true
+        "Permission": "Consolidation Order Status"
     },
     {
         "path": "/OrderManager/InventoryMaster",
@@ -166,7 +166,7 @@
     },
     {
         "path": "/ConsolidationManager/Consolidation",
-        "Permission": "Consolidation Manager"
+        "Permission": "Consolidation Mngr"
     },
     {
         "path": "/InductionManager",
@@ -178,7 +178,7 @@
     },
     {
         "path": "/InductionManager/PalletReceiving",
-        "Permission": "Induction Manager"
+        "Permission": "Induction Pallet Receiving"
     },
     {
         "path": "/InductionManager/Admin",
@@ -229,7 +229,7 @@
     },
     {
         "path": "/FlowrackReplenish/Preferences",
-        "Permission": "Preferences"
+        "Permission": "Flowrack Replenishment Preferences"
     },
     {
         "path": "/MarkoutProcess",
@@ -237,15 +237,15 @@
     },
     {
         "path": "/MarkoutProcess/Preferences",
-        "Permission": "Markout"
+        "Permission": "Markout Preferences"
     },
     {
         "path": "/MarkoutProcess/Markout",
-        "Permission": "Markout"
+        "Permission": "Markout Process"
     },
     {
         "path": "/FlowrackReplenish/Flowrack",
-        "Permission": "Preferences"
+        "Permission": "Flowrack Replenishment"
     },
 
     {
@@ -254,19 +254,19 @@
     },
     {
         "path": "/BulkTransactions/BulkPick",
-        "Permission": "FlowRack Replenish"
+        "Permission": "Bulk Pick"
     },
     {
         "path": "/BulkTransactions/BulkPutAway",
-        "Permission": "FlowRack Replenish"
+        "Permission": "Bulk Put Away"
     },
     {
         "path": "/BulkTransactions/Preferences",
-        "Permission": "FlowRack Replenish"
+        "Permission": "Bulk Preferences"
     },
     {
         "path": "/BulkTransactions/BulkCount",
-        "Permission": "FlowRack Replenish"
+        "Permission": "Bulk Cycle Count"
     },
     {
         "path": "/BulkTransactions/count",

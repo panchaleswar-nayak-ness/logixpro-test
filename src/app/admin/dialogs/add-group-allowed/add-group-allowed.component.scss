@@ -3,6 +3,9 @@
     top: 0px;
     z-index: 200000000;
   }
+  .divWithClass{
+    width:48px !important;
+}
 
   ::ng-deep .custom-scroll{
     overflow:auto;
@@ -26,30 +29,30 @@
     }
 
     .C-NameFormClass{
-      height:200px;
-
+      min-height:80px;
+    }
       .controlNameStyleC{
-        width:40%;
+        width:250px;
       }
       .functionStyleC{
-        width:  60%;
+        width:  250px;
       }
       .controlNameOptionStyleC{
-        padding: 10px 12px; 
+        width:250px; 
         text-overflow: ellipsis; 
         overflow: hidden; 
-        width:40%; 
         white-space: nowrap;
       }
-      .functionStyleC{
-        padding: 10px 12px; 
+      .functionOptionStyleC{
+        width: 250px;
         text-overflow: ellipsis; 
         overflow: hidden; 
-        width:60%; 
         white-space: nowrap;
+        padding: 0px 8px;
       }
-    }
+
       
     .h-200px{
       height: 200px;
     }
+

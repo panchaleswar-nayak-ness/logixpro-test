@@ -1131,12 +1131,20 @@ export class ApiFuntions {
   public getZones(): Observable<any> {
     return this.ApiBase.Get(`/Admin/zones`);
   }
+  public getBulkVelocityAndCellSize(): Observable<any> {
+    return this.ApiBase.Get(`/zones/velocity-cellsize`);
+  }
   public getWarehouses(): Observable<any> {
     return this.ApiBase.Get(`/common/warehouses`);
   }
 
   public getZoneData(Body: any): Observable<any> {
-    return this.ApiBase.Get(`/zones/utilization/${Body}`);
+    // Construct the URL
+    return this.ApiBase.Post(`/zones/utilization`, Body);
+  }
+
+  public getAllZone(): Observable<any> {
+    return this.ApiBase.Get(`/zones/allzones`);
   }
 
   public updateEmployeeZone(Body: any): Observable<any> {
@@ -1447,6 +1455,9 @@ export class ApiFuntions {
 
   public SupplierItemIDInfo(Body: any): Observable<any> {
     return this.ApiBase.Get(`/Common/supplieriteminfo/id`, Body);
+  }
+  public ItemnumberInfo(Body: any): Observable<any> {
+    return this.ApiBase.Get(`/Common/itemnumberinfo/id`, Body);
   }
 
   public UpdateTransaction(Body: any): Observable<any> {
@@ -2000,6 +2011,14 @@ export class ApiFuntions {
     return await this.ApiBase.PostAsync(`/print/crossdockitem`, body);
   }
 
+  public async PrintCrossDockItemAuto(body: { wsid: any; otId: bigint; zone: any }) {
+    return await this.ApiBase.PostAsync(`/print/crossdockitemauto`, body);
+  }
+
+  public async PrintCrossDockToteAuto(body: { wsid: any; otId: bigint; zone: any }) {
+    return await this.ApiBase.PostAsync(`/print/crossdocktoteauto`, body);
+  }
+
 //===========markout=============
   public GetMarkoutData(body: MarkoutToteRequest) {
     return this.ApiBase.Get(`/markout/totedata/`, body);
@@ -2041,4 +2060,11 @@ export class ApiFuntions {
     return await this.ApiBase.PostAsync(`/print/putawayitem`, body);
   }
 
+  public AddOpenTransaction(body) {
+    return this.ApiBase.Post(`/Admin/addopentransaction`, body);
+  }
+
+  public AddCompleteTransaction(body) {
+    return this.ApiBase.Post(`/Admin/addcompletetransaction`, body);
+  }
 }

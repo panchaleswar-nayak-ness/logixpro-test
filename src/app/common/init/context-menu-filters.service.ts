@@ -16,7 +16,7 @@ export class ContextMenuFiltersService {
       this.conditionSymbol = this.getConditionSymbol(condition);
       this.selectedItemFormat =  this.getSelectedItemFormat(type, selectedItem, condition);
         
-      if(this.selectedColumnFormat != "" && this.conditionSymbol != "" && this.selectedItemFormat != "")
+      if(this.selectedColumnFormat != "" && this.conditionSymbol != "" && this.selectedItemFormat !== "")
         if(this.filterString != "" && this.filterString != "1 = 1") this.filterString = this.filterString + " AND " + this.selectedColumnFormat + this.conditionSymbol +  this.selectedItemFormat;
         else this.filterString = this.selectedColumnFormat + this.conditionSymbol +  this.selectedItemFormat;
       else this.filterString = "1 = 1";

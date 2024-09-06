@@ -19,6 +19,7 @@ import { IAdminApiService } from 'src/app/common/services/admin-api/admin-api-in
 import { Column, DialogConstants, StringConditions, TableName, ToasterMessages, ToasterTitle, ToasterType ,TableConstant,zoneType,ColumnDef,Style,UniqueConstants,FilterColumnName, localStorageKeys} from 'src/app/common/constants/strings.constants';
 import { Router } from '@angular/router';
 import { AppNames, AppRoutes, RouteUpdateMenu } from 'src/app/common/constants/menu.constants';
+import { CurrentTabDataService } from '../../inventory-master/current-tab-data-service';
 
 
 @Component({
@@ -123,6 +124,7 @@ export class ReprocessTransactionComponent implements OnInit {
   deleteByItemNumber=false; //Only visible if searched
   deleteByOrderNumber=false; //Only visible if searched
   private subscription: Subscription = new Subscription();
+  clickTimeout:ReturnType<typeof setTimeout>;
 
   @ViewChild(UniqueConstants.Description) description: TemplateRef<any>;
 
@@ -200,11 +202,25 @@ export class ReprocessTransactionComponent implements OnInit {
     private sharedService: SharedService,
     public adminApiService: AdminApiService,
     private router: Router,
+    private currentTabDataService: CurrentTabDataService
   ) {
     this.iAdminApiService = adminApiService;
   }
 
   ngOnInit(): void {
+    if (this.currentTabDataService?.savedItem[this.currentTabDataService.Reprocess_Transaction]?.saveState) {
+      let param = this.currentTabDataService.savedItem[this.currentTabDataService.Reprocess_Transaction];
+      this.columnSearch.searchColumn.colDef = param.searchCol
+      this.columnSearch.searchValue = param.searchString
+    }
+    else{
+      this.columnSearch.searchColumn.colDef =''
+      this.columnSearch.searchValue = ''
+    }
+
+    // this.columnSearch.searchColumn.colDef =''
+    //   this.columnSearch.searchValue = ''
+    
     this.customPagination = {
       total: '',
       recordsPerPage: 20,
@@ -240,6 +256,7 @@ export class ReprocessTransactionComponent implements OnInit {
   }
 
   viewInInventoryMaster(row) {
+    clearTimeout(this.clickTimeout);
     localStorage.setItem(localStorageKeys.TransactionTabIndex,"3");
     this.router.navigate([]).then(() => { window.open(`/#${AppRoutes.AdminInventoryMaster}?itemNumber=${row.itemNumber}`, UniqueConstants._self); });  
   }
@@ -857,5 +874,23 @@ export class ReprocessTransactionComponent implements OnInit {
 
     if (print) this.global.Print(queryParams);
     else window.open(fileLink, UniqueConstants._blank, `width=${screen.width},height=${screen.height},toolbar=0,menubar=0,location=0,status=1,scrollbars=1,resizable=1,left=0,top=0`);
+  }
+
+  rowClick(row){
+    this.clickTimeout = setTimeout(() => {
+      this.getTransaction(row);
+      this.changeTableRowColor(row.id);
+      this.getTransactionInfo(false);
+    }, 250);
+  }
+
+  valueChanges(event:any){
+    this.currentTabDataService.savedItem[this.currentTabDataService.Reprocess_Transaction] = {
+      ...this.currentTabDataService.savedItem[this.currentTabDataService.Reprocess_Transaction],
+      searchCol: event.searchCol,
+      searchString: event.searchString,
+      saveState:true
+      
+    };
   }
 }
