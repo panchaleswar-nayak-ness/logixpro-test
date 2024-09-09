@@ -17,6 +17,8 @@ import { TableContextMenuService } from 'src/app/common/globalComponents/table-c
 import { DialogConstants, ToasterTitle, ToasterType ,ResponseStrings,Column,zoneType,ColumnDef,TableConstant,Style,UniqueConstants,FilterColumnName,StringConditions, ConfirmationMessages, ConfirmationHeadings} from 'src/app/common/constants/strings.constants';
 import { ContextMenuFiltersService } from 'src/app/common/init/context-menu-filters.service';
 import { ConfirmationDialogComponent } from '../dialogs/confirmation-dialog/confirmation-dialog.component';
+import { MatTab } from '@angular/material/tabs';
+import { MoveLocationsComponent } from './move-locations/move-locations.component';
 
 const TRNSC_DATA = [
   { colHeader: TableConstant.WareHouse, colDef: ColumnDef.Warehouse },
@@ -62,6 +64,7 @@ export class MoveItemsComponent implements OnInit {
   paginators: QueryList<MatPaginator>;
   floatLabelControl = new FormControl('auto' as FloatLabelType);
   @ViewChild('matToolbar') matToolbar: ElementRef;
+  @ViewChild(MoveLocationsComponent) MoveLocationsComponent!: MoveLocationsComponent;
   public dataSource: any = new MatTableDataSource();
   public moveToDatasource: any = new MatTableDataSource();
   @ViewChild('trigger') trigger: MatMenuTrigger;
@@ -777,7 +780,7 @@ formatDateTimeToLocal(dateString) {
       if(res.isExecuted){
         this.moveToFilter=UniqueConstants.OneEqualsOne;
         this.moveFromFilter=UniqueConstants.OneEqualsOne;
-        this.tabIndex=0;
+       // this.tabIndex=0;
         this.itemNumberSearch.next('');
         this.getMoveItemList(StringConditions.MoveFrom);
         this.getMoveItemList(StringConditions.MoveTo);
@@ -785,6 +788,10 @@ formatDateTimeToLocal(dateString) {
         this.clearFields(StringConditions.MoveTo)
         this.global.ShowToastr(ToasterType.Success, 'Item moved successfully', ToasterTitle.Success);
         this.resetPagination();
+       // this.tabIndex = 0;
+       this.MoveLocationsComponent.tabChanged({index:0,tab:MatTab})
+
+        this.tabChanged({index:0,tab:MatTab});
       }
       else{
         this.global.ShowToastr(ToasterType.Error, res.responseMessage, ToasterTitle.Error);

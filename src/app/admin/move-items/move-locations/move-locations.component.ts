@@ -91,7 +91,7 @@ export class MoveLocationsComponent {
   }
 
   tabChanged(event, p0?: { index: number; tab: typeof MatTab; }) {
-    
+    debugger
     this.tabIndex=event.index;
     this.tabChangedEmit.emit(event);
     this.onChangeLocationEmit.emit(this.viewAll=false);
