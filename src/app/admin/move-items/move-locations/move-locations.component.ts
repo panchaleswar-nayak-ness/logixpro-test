@@ -16,7 +16,7 @@ export class MoveLocationsComponent {
 
   floatLabelControl = new FormControl('auto' as FloatLabelType);
   hideRequiredControl = new FormControl(false);
-
+  selectedWarehouse: string = 'ALL';
   warehouses: string[] = [];
   @Input() itemSelected : boolean = false; 
   @Input() itemNo : string = "";
@@ -44,16 +44,19 @@ export class MoveLocationsComponent {
   @Output() handlePageEventToEmit = new EventEmitter();
   @Output() itemNumberSearchEmit = new EventEmitter();
   @Output() activeTrigger = new EventEmitter<any>();
-  selectedWarehouse: string;
+
   @Output() selectedWarehouseEmit= new EventEmitter<string>();
+  
 
   constructor(
     private contextMenuService : TableContextMenuService, public adminApiService: AdminApiService, public global: GlobalService
   ) { }
   ngOnInit(): void {
+   
     this.adminApiService.getWarehouses().subscribe({
       next: (res: any) => {
-        this.warehouses = res.data;
+        this.warehouses = ['ALL', ...res.data]; 
+//this.warehouses = res.data;
         // if (this.warehouses.length > 0) {
         //   this.selectedWarehouse = this.warehouses[0];
         //   this.selectedWarehouseEmit.emit( this.selectedWarehouse);
@@ -70,9 +73,13 @@ export class MoveLocationsComponent {
 
   onWarehouseSelect(warehouse: string) {
     console.log(warehouse);
+    if(warehouse=='ALL'){
+      warehouse='';
+    }
     
     this.selectedWarehouseEmit.emit(warehouse);
   }
+ 
   getFloatLabelValue(): FloatLabelType {
     return this.floatLabelControl.value ?? 'auto';
   }
