@@ -1,6 +1,7 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { FloatLabelType } from '@angular/material/form-field';
+import { MatTab, MatTabChangeEvent } from '@angular/material/tabs';
 import { ToasterTitle, ToasterType } from 'src/app/common/constants/strings.constants';
 import { TableContextMenuService } from 'src/app/common/globalComponents/table-context-menu-component/table-context-menu.service';
 import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.service';
@@ -15,7 +16,7 @@ export class MoveLocationsComponent {
 
   floatLabelControl = new FormControl('auto' as FloatLabelType);
   hideRequiredControl = new FormControl(false);
-
+  selectedWarehouse: string = 'ALL';
   warehouses: string[] = [];
   @Input() itemSelected : boolean = false; 
   @Input() itemNo : string = "";
@@ -43,16 +44,19 @@ export class MoveLocationsComponent {
   @Output() handlePageEventToEmit = new EventEmitter();
   @Output() itemNumberSearchEmit = new EventEmitter();
   @Output() activeTrigger = new EventEmitter<any>();
-  selectedWarehouse: string;
+
   @Output() selectedWarehouseEmit= new EventEmitter<string>();
+  
 
   constructor(
     private contextMenuService : TableContextMenuService, public adminApiService: AdminApiService, public global: GlobalService
   ) { }
   ngOnInit(): void {
+   
     this.adminApiService.getWarehouses().subscribe({
       next: (res: any) => {
-        this.warehouses = res.data;
+        this.warehouses = ['ALL', ...res.data]; 
+//this.warehouses = res.data;
         // if (this.warehouses.length > 0) {
         //   this.selectedWarehouse = this.warehouses[0];
         //   this.selectedWarehouseEmit.emit( this.selectedWarehouse);
@@ -69,18 +73,26 @@ export class MoveLocationsComponent {
 
   onWarehouseSelect(warehouse: string) {
     console.log(warehouse);
+    if(warehouse=='ALL'){
+      warehouse='';
+    }
     
     this.selectedWarehouseEmit.emit(warehouse);
   }
+ 
   getFloatLabelValue(): FloatLabelType {
     return this.floatLabelControl.value ?? 'auto';
   }
 
+ 
   onChangeLocation(event) {
+    
     this.onChangeLocationEmit.emit(this.viewAll);
   }
 
-  tabChanged(event) {
+  tabChanged(event, p0?: { index: number; tab: typeof MatTab; }) {
+    debugger
+    this.tabIndex=event.index;
     this.tabChangedEmit.emit(event);
     this.onChangeLocationEmit.emit(this.viewAll=false);
   }
@@ -102,7 +114,10 @@ export class MoveLocationsComponent {
   }
 
   getMoveFromDetails(element, i : number, tableName : string) {
+   
     this.getMoveFromDetailsEmit.emit({ element, i, tableName });
+    //this.tabChangedEmit.emit({index:1,tab:MatTab});
+     this.tabChanged({index:1,tab:MatTab})
   }
 
   sortChangeToItems(event) {

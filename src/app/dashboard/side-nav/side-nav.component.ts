@@ -98,7 +98,7 @@ export class SideNavComponent implements OnInit {
     { icon: ' pending_actions', title: AppPermissions.OrderManager, route: '/OrderManager/OrderManager', permission: 'Admin Release Orders' },
     { icon: 'view_module', title: 'Order Status ', route: '/OrderManager/OrderStatus', permission: 'Order Status OM' },
     { icon: 'event_note', title: 'Event Log ', route: '/OrderManager/EventLog', permission: 'Admin Release Orders' },
-    { icon: 'dataset', title: 'Inventory Master Info', route: '/OrderManager/InventoryMaster', permission: 'Admin Inventory Master' },
+    { icon: 'dataset', title: 'Inventory', route: '/OrderManager/InventoryMaster', permission: 'Admin Inventory Master' },
     { icon: TableConstant.WareHouse, title: 'Stock Location & Quantity ', route: '/OrderManager/InventoryMap', permission: 'Admin Stock Locations' },
     { icon: 'analytics', title: 'Reports ', route: '/OrderManager/Reports', permission: 'Admin Reports' },
     { icon: 'tune', title: 'Preferences ', route: '/OrderManager/Preferences', permission: 'Admin Preferences' },

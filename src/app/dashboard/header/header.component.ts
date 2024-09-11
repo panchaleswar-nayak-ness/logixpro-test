@@ -107,10 +107,16 @@ export class HeaderComponent {
             if(splittedArray[0]==='FlowrackReplenishment'){
               splittedArray[0]='FlowrackReplenish'
             }
+          
+          
+           
+           
           splittedArray.forEach((element,i) => {
           if(element==='createCountBatches' || element==='cycleCounts'){
             element='CycleCount'
           }
+
+         
 
           if(element==='Flowrack'){
             element='FlowrackReplenishment'
@@ -145,12 +151,20 @@ export class HeaderComponent {
             })
           }
         });
+        this.updateBreadcrumbList();
         
         }   
       
     });
    }
 
+   private updateBreadcrumbList() {
+    this.breadcrumbList.forEach((breadcrumb: any) => {
+      if (breadcrumb.name === 'Inventory Master') {
+        breadcrumb.name = 'Inventory';
+      }
+    });
+  }
   capitalizeFirstLetter(string) {
     return string.charAt(0).toUpperCase() + string.slice(1);
   }
@@ -168,6 +182,8 @@ export class HeaderComponent {
   }
 
   ngOnInit(): void {
+   
+    
     this.loading = false;
     this.userData = JSON.parse(localStorage.getItem('user') ?? '{}');
     this.configUser = JSON.parse(localStorage.getItem('userConfig') ?? '{}');
@@ -190,6 +206,7 @@ export class HeaderComponent {
   }
 
   ngAfterViewInit() {
+    
     this.sharedService.breadCrumObserver.subscribe((res: any) => { 
       this.statusTab = res.tab.textLabel;
       this.breadcrumbList[this.breadcrumbList.length-1].name = this.statusTab

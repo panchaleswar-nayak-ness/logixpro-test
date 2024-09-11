@@ -17,6 +17,8 @@ import { TableContextMenuService } from 'src/app/common/globalComponents/table-c
 import { DialogConstants, ToasterTitle, ToasterType ,ResponseStrings,Column,zoneType,ColumnDef,TableConstant,Style,UniqueConstants,FilterColumnName,StringConditions, ConfirmationMessages, ConfirmationHeadings} from 'src/app/common/constants/strings.constants';
 import { ContextMenuFiltersService } from 'src/app/common/init/context-menu-filters.service';
 import { ConfirmationDialogComponent } from '../dialogs/confirmation-dialog/confirmation-dialog.component';
+import { MatTab } from '@angular/material/tabs';
+import { MoveLocationsComponent } from './move-locations/move-locations.component';
 
 const TRNSC_DATA = [
   { colHeader: TableConstant.WareHouse, colDef: ColumnDef.Warehouse },
@@ -62,6 +64,7 @@ export class MoveItemsComponent implements OnInit {
   paginators: QueryList<MatPaginator>;
   floatLabelControl = new FormControl('auto' as FloatLabelType);
   @ViewChild('matToolbar') matToolbar: ElementRef;
+  @ViewChild(MoveLocationsComponent) MoveLocationsComponent!: MoveLocationsComponent;
   public dataSource: any = new MatTableDataSource();
   public moveToDatasource: any = new MatTableDataSource();
   @ViewChild('trigger') trigger: MatMenuTrigger;
@@ -76,7 +79,7 @@ export class MoveItemsComponent implements OnInit {
   itemNo: any = '';
   isValidateMove = false;
   isViewAll = false;
-  reqDate: Date = new Date();
+  reqDate: Date =  new Date();
   sortOrder = UniqueConstants.Asc;
   sortCol = 0;
   totalRecords = 0;
@@ -725,8 +728,24 @@ export class MoveItemsComponent implements OnInit {
     this.reqDate = new Date();
   }
 
-
+formatDateTimeToLocal(dateString) {
+    const date = new Date(dateString);
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    const hours = String(date.getHours()).padStart(2, '0');
+    const minutes = String(date.getMinutes()).padStart(2, '0');
+    const seconds = String(date.getSeconds()).padStart(2, '0');
+    const timezoneOffset = -date.getTimezoneOffset();
+    const offsetHours = String(Math.floor(Math.abs(timezoneOffset) / 60)).padStart(2, '0');
+    const offsetMinutes = String(Math.abs(timezoneOffset) % 60).padStart(2, '0');
+    const sign = timezoneOffset > 0 ? '+' : '-';
+    
+    return `${year}-${month}-${day}T${hours}:${minutes}:${seconds}${sign}${offsetHours}:${offsetMinutes}`;
+}
   callMoveNow(){
+  
+    let localDateTimeString = this.formatDateTimeToLocal(this.reqDate);
     let dialogRef: any = this.global.OpenDialog(ConfirmationDialogComponent, {
       height: DialogConstants.auto,
       width: Style.w560px,
@@ -747,19 +766,21 @@ export class MoveItemsComponent implements OnInit {
       moveToItemNumber: this.to_itemNo,
       moveToZone: this.from_zone,
       moveQuantity: this.from_itemQuantity,
-      requestedDate: this.reqDate,
+      requestedDate:localDateTimeString,
       priority: this.from_priority,
       dedicateMoveTo: this.dedicateMoveTo,
       unDedicateMoveFrom: this.undedicateMoveFrom,
       
     };
+    console.log("Local DateTime String:", localDateTimeString);
+    console.log("Payload DateTime:", payload.requestedDate);
 
     this.iAdminApiService.MoveNow(payload).subscribe((res: any) => {
 
       if(res.isExecuted){
         this.moveToFilter=UniqueConstants.OneEqualsOne;
         this.moveFromFilter=UniqueConstants.OneEqualsOne;
-        this.tabIndex=0;
+       // this.tabIndex=0;
         this.itemNumberSearch.next('');
         this.getMoveItemList(StringConditions.MoveFrom);
         this.getMoveItemList(StringConditions.MoveTo);
@@ -767,6 +788,10 @@ export class MoveItemsComponent implements OnInit {
         this.clearFields(StringConditions.MoveTo)
         this.global.ShowToastr(ToasterType.Success, 'Item moved successfully', ToasterTitle.Success);
         this.resetPagination();
+       // this.tabIndex = 0;
+       this.MoveLocationsComponent.tabChanged({index:0,tab:MatTab})
+
+        this.tabChanged({index:0,tab:MatTab});
       }
       else{
         this.global.ShowToastr(ToasterType.Error, res.responseMessage, ToasterTitle.Error);
@@ -808,7 +833,7 @@ export class MoveItemsComponent implements OnInit {
   }
 
   callCreateMoveTrans() {
-
+    let localDateTimeString = this.formatDateTimeToLocal(this.reqDate);
     let payload = {
       moveFromID: this.invMapmoveFromID,
       moveToID: this.invMapmoveToID,
@@ -816,7 +841,7 @@ export class MoveItemsComponent implements OnInit {
       moveToItemNumber: this.to_itemNo,
       moveToZone: this.from_zone,
       moveQuantity: this.from_itemQuantity,
-      requestedDate: this.reqDate,
+      requestedDate: localDateTimeString,
       priority: this.from_priority,
       dedicateMoveTo: this.dedicateMoveTo,
       unDedicateMoveFrom: this.undedicateMoveFrom,

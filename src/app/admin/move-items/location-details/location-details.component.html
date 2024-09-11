@@ -5,6 +5,7 @@
             <mat-label>Actions</mat-label>
             <mat-select class="employees-action" >
                 <mat-option>Preview Top 50 Pages Only</mat-option>
+                <mat-option>Print Location Labels</mat-option>
             </mat-select>
             <span class="material-symbols-outlined icon-expand-more">
                 expand_more
@@ -17,7 +18,7 @@
     <div class="col-xl-6">
         <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline">
             <mat-label>Required Date</mat-label>
-            <input matInput [value]="reqDate" [(ngModel)]="reqDate" [matDatepicker]="requiredDate">
+            <input matInput [value]="reqDate" [(ngModel)]="reqDate" (ngModelChange)="setReqDate()" [matDatepicker]="requiredDate">
             <mat-datepicker-toggle matSuffix [for]="requiredDate" ngDefaultControl></mat-datepicker-toggle>
             <mat-datepicker #requiredDate></mat-datepicker>
         </mat-form-field>
@@ -25,7 +26,7 @@
     <div class="col-xl-6">
         <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline">
             <mat-label>Priority</mat-label>
-            <input [disabled]="isMoveQty" [NumbersOnly]="true" #myInput (input)="restrictTo4Digits()" (focusout)="onBlurPriority()" [(ngModel)]="from_priority" type="number" placeholder="Search" matInput maxlength="4">
+            <input [disabled]="isMoveQty" [NumbersOnly]="true" #myInput (input)="restrictTo4Digits()" (focusout)="onBlurPriority()" [(ngModel)]="from_priority" (ngModelChange)="setPriority()" type="number" placeholder="Search" matInput maxlength="4">
         </mat-form-field>
     </div>
 </div>

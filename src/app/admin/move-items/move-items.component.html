@@ -29,7 +29,8 @@
                 [to_lotNo]="to_lotNo"
                 [to_serialNo]="to_serialNo"
                 [fillQtytoShow]="fillQtytoShow"
-                
+                (setReqDateEmit)="reqDate=$event"
+                (setPriorityEmit)="from_priority=$event"
                 (setMoveQtyEmit)="from_itemQuantity = $event"
                 (setDedicatedEmit)="isDedicated = $event"></app-location-details>
             </mat-card-content>

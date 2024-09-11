@@ -44,8 +44,8 @@
                 <mat-form-field class="action-dropdown w-100 mb-3 mb-xl-0" appearance="outline" *ngIf="!isViewAll">
                     <mat-label>Warehouse</mat-label>
                     
-                    <mat-select class="employees-action"  (selectionChange)="onWarehouseSelect($event.value)">
-                        <mat-option></mat-option>
+                    <mat-select class="employees-action" [(value)]="selectedWarehouse"  (selectionChange)="onWarehouseSelect($event.value)">
+                     
                       <mat-option *ngFor="let item of warehouses" [value]="item">
                         {{item}}
                       </mat-option>

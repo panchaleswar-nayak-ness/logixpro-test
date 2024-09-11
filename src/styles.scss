@@ -1250,7 +1250,7 @@ h4.main-section-title {
 //-------------- BACKGROUND-COLOR-CLASSES ----START-------------------
 .bg-light-blue {
   // background: rgba(242, 242, 255, 0.5);
-  background: rgba(var(--clr-tertiary-rgb-10),  0.5);
+  background: rgba(var(--clr-tertiary-rgb-10),  0.5) !important;
 }
 
 .bg-light-purple {
