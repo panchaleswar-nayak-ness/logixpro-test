@@ -163,6 +163,8 @@ import {WorkstationLoginComponent} from './dialogs/workstation-login/workstation
 import {BpFullToteComponent} from './dialogs/bp-full-tote/bp-full-tote.component';
 import {BpNumberSelectionComponent} from './dialogs/bp-number-selection/bp-number-selection.component';
 import {OrderDetailsComponent} from './dialogs/order-details/order-details.component';
+import { ZoneGroupsComponent } from './dialogs/zone-groups/zone-groups.component';
+import { ImprefInductionFilterComponent } from './dialogs/impref-induction-filter/impref-induction-filter.component';
 
 // import { MarkoutComponent } from './markout/markout.component';
 
@@ -274,6 +276,8 @@ import {OrderDetailsComponent} from './dialogs/order-details/order-details.compo
     BpFullToteComponent,
     BpNumberSelectionComponent,
     OrderDetailsComponent,
+    ZoneGroupsComponent,
+    ImprefInductionFilterComponent,
   ],
   imports: [
     BrowserModule,

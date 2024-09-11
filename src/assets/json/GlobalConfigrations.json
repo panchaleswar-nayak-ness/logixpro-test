@@ -23,7 +23,6 @@
         "path": "/OrderManager/OrderManager",
         "Permission": "Admin Release Orders"
     },
-    
     {
         "path": "/wrd",
         "Permission": true
@@ -47,11 +46,11 @@
     {
         "path": "/admin/Reports",
         "Permission": "Reports"
-    }, 
-      {
+    },
+    {
         "path": "/admin/reports/utilizationDashboard",
         "Permission": "Reports"
-    }, 
+    },
     {
         "path": "/admin/transaction",
         "Permission": "Transaction Journal"
@@ -63,7 +62,7 @@
     {
         "path": "/admin/DeAllocateOrders",
         "Permission": "De-Allocate Orders"
-    },  
+    },
     {
         "path": "/admin/employees",
         "Permission": "employees"
@@ -92,7 +91,6 @@
         "path": "/admin/EventLog",
         "Permission": "Event Log Manager"
     },
-
     {
         "path": "/ConsolidationManager/StagingLocations",
         "Permission": "Consolidation Staging Loc"
@@ -113,7 +111,6 @@
         "path": "/admin/systemReplenishment",
         "Permission": "Replenishment"
     },
-
     {
         "path": "/InductionManager/MarkEmptyReels",
         "Permission": "Induction Mark Empty Reels"
@@ -121,13 +118,15 @@
     {
         "path": "/InductionManager/ProcessPicks",
         "Permission": "Induction Manager"
-    },   
-    
+    },
     {
         "path": "/InductionManager/CompletePickBatch",
         "Permission": "Induction Manager"
-    }, 
-
+    },
+    {
+        "path": "/InductionManager/PickToteInduction",
+        "Permission": "Induction Manager"
+    },
     {
         "path": "/InductionManager/ProcessPutAways",
         "Permission": "Tote Transactions"
@@ -184,7 +183,6 @@
         "path": "/InductionManager/Admin",
         "Permission": "Tote Admin Menu"
     },
-    
     {
         "path": "/InductionManager/Admin/InventoryMap",
         "Permission": "Induction Manager"
@@ -196,19 +194,19 @@
     {
         "path": "/InductionManager/Admin/ManualTransactions",
         "Permission": "Induction Manager"
-    }  ,
+    },
     {
         "path": "/InductionManager/Admin/ToteTransactionManager",
         "Permission": "Induction Manager"
-    }  ,
+    },
     {
         "path": "/InductionManager/Admin/ImToteManager",
         "Permission": "Induction Manager"
-    }  ,
+    },
     {
         "path": "/InductionManager/Admin/TransactionJournal",
         "Permission": "Induction Manager"
-    }  ,
+    },
     {
         "path": "/InductionManager/Admin/AdminPrefrences",
         "Permission": "Induction Manager"
@@ -217,12 +215,10 @@
         "path": "/InductionManager/Admin/Reports",
         "Permission": "Induction Manager"
     },
-
     {
         "path": "/admin/manualTransactions",
         "Permission": "Manual Transactions"
     },
-
     {
         "path": "/FlowrackReplenish",
         "Permission": "FlowRack Replenish"
@@ -247,7 +243,6 @@
         "path": "/FlowrackReplenish/Flowrack",
         "Permission": "Flowrack Replenishment"
     },
-
     {
         "path": "/BulkTransactions",
         "Permission": "FlowRack Replenish"

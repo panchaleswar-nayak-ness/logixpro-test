@@ -384,7 +384,6 @@ export class ProcessPutAwaysComponent implements OnInit {
       disableClose:true,
         data: {
           batchId: this.batchId,
-          userId: this.userData.username,
           wsid: this.userData.wsid,
           assignedZones: this.assignedZonesArray,
           status:this.status,

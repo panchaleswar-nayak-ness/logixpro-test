@@ -436,6 +436,7 @@ export const Style = {
     w600px:'600px',
     w786px:'786px',
     w402px:'402px',
+    w1080px:'1080px',
 }
 
 export const Width = {

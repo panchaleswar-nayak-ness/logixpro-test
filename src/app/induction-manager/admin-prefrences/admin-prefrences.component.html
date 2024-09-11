@@ -462,9 +462,6 @@
                 </mat-form-field>
               </div>
             </div>
-
-
-
           </div>
 
 
@@ -577,6 +574,70 @@
                 <mat-label>Order Number Prefix</mat-label>
                 <input (change)="updatePreferences(2)" formControlName="orderNoPrefix" matInput type="text">
               </mat-form-field>
+            </div>
+          </div>
+        </mat-card-content>
+      </mat-card>
+    </mat-tab>
+
+    <mat-tab label="Pick Tote Induction Settings">
+      <mat-card class="mat-elevation-z g-card mt-3 mb-4 p-4">
+        <mat-card-content>
+          <div class="mb-3">
+            <h2 class="card-header-title mb-3 d-flex align-items-center">
+              <div class="mat-icon-wrap me-lg-3 m-2">
+                <span class="material-symbols-outlined">conveyor_belt</span>
+              </div>
+              <span>Pick Tote Induction</span>
+            </h2>
+          </div>
+    
+          <div class="row mb-3">
+            <div class="col-md-4">
+              <div class="d-flex justify-content-between align-items-center">
+                <span>Exclude Orders in Reprocess:</span>
+                <mat-slide-toggle formControlName="excludeOrderInReprocess" color="primary"></mat-slide-toggle>
+              </div>
+            </div>
+          </div>
+
+
+       
+
+          <div class="row ">
+            <div class="col-md-4">
+              <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline">
+                <mat-label class="pe-2">Maximum Quantity Per Tote:</mat-label>
+                <input  type="text" matInput formControlName="maximumQtyPerTote">
+              </mat-form-field>
+            </div>
+          </div>
+    
+          <div class="row mb-3">
+            <div class="col-md-4">
+              <mat-form-field class="custom-form-field w-100" appearance="outline">
+                <mat-label>Default Zone Group</mat-label>
+                <mat-select formControlName="maximumQtyPerTote">
+                  <mat-option>Tommy</mat-option>
+                </mat-select>
+                <span class="material-symbols-outlined icon-expand-more">expand_more</span>
+              </mat-form-field>
+            </div>
+          </div>
+    
+          <div class="row mb-3">
+            <div class="col-md-4">
+              <button mat-stroked-button class="btn-regular w-100 mb-2" color="primary" (click)="openPickToteInductionFilter()">
+                <mat-label>Pick Tote Induction Filter</mat-label>
+              </button>
+            </div>
+          </div>
+    
+          <div class="row">
+            <div class="col-md-4">
+              <button mat-stroked-button class="btn-regular w-100 mb-2" color="primary" (click)="openZoneGroups()">
+                <mat-label>Pick Tote Induction Zone Groups</mat-label>
+              </button>
             </div>
           </div>
         </mat-card-content>

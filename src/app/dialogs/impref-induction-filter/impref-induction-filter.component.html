@@ -1,0 +1,80 @@
+<div class="d-flex justify-content-between mb-4 align-items-center">
+  <div class="w-48px"></div>
+  <h1 class="m-0" mat-dialog-title>Pick Tote Induction Filters</h1>
+  
+  <button mat-icon-button class="close-button dialog-close-button-fix" [mat-dialog-close]="true">
+    <mat-icon class="close-icon">close</mat-icon>
+  </button>
+</div>
+
+<div class="card br-14 table-responsive custom-table table-fix borderless px-0 mb-3">
+  <ng-scrollbar track="all" class="mat-table-scrollbar h-60v">
+    <table mat-table [dataSource]="filters" class="w-100">
+      <!-- Alias Column -->
+      <ng-container matColumnDef="alias">
+        <th mat-header-cell *matHeaderCellDef>Alias</th>
+        <td mat-cell *matCellDef="let filter">
+          <mat-form-field class="custom-form-field w-100 pe-2" appearance="outline">
+            <input matInput type="text" maxlength="50" [(ngModel)]="filter.alias">
+          </mat-form-field>
+        </td>
+      </ng-container>
+
+      <!-- Field Column -->
+      <ng-container matColumnDef="field">
+        <th mat-header-cell *matHeaderCellDef>Field</th>
+        <td mat-cell *matCellDef="let filter">
+          <mat-form-field class="action-dropdown custom-form-field w-100 pe-2" appearance="outline">
+            <mat-select [(ngModel)]="filter.field">
+              <mat-option value="Tommy">Tommy</mat-option>
+            </mat-select>
+            <span class="material-symbols-outlined icon-expand-more">expand_more</span>
+          </mat-form-field>
+        </td>
+      </ng-container>
+
+      <!-- Starting Characters Column -->
+      <ng-container matColumnDef="startingCharacters">
+        <th mat-header-cell *matHeaderCellDef>Starting Characters</th>
+        <td mat-cell *matCellDef="let filter">
+          <mat-form-field class="custom-form-field w-100 pe-2" appearance="outline">
+            <input matInput type="text" maxlength="50" [(ngModel)]="filter.startingCharacters">
+          </mat-form-field>
+        </td>
+      </ng-container>
+
+      <!-- Ending Characters Column -->
+      <ng-container matColumnDef="endingCharacters">
+        <th mat-header-cell *matHeaderCellDef>Ending Characters</th>
+        <td mat-cell *matCellDef="let filter">
+          <mat-form-field class="custom-form-field w-100 pe-2" appearance="outline">
+            <input matInput type="text" maxlength="50" [(ngModel)]="filter.endingCharacters">
+          </mat-form-field>
+        </td>
+      </ng-container>
+
+      <!-- Actions Column -->
+      <ng-container matColumnDef="actions" stickyEnd>
+        <th mat-header-cell *matHeaderCellDef class="text-center"></th>
+        <td mat-cell *matCellDef="let filter" class="text-center">
+          <div class="d-flex justify-content-center gap-2">
+            <button mat-flat-button color="primary" class="xsm-icon-button" (click)="saveFilter(filter)">
+              <mat-icon class="material-symbols-outlined">save</mat-icon>
+            </button>
+            <button mat-flat-button color="warn" class="xsm-icon-button" (click)="removeFilter(filter)">
+              <mat-icon class="material-symbols-outlined">close</mat-icon>
+            </button>
+          </div>
+        </td>
+      </ng-container>
+
+      <!-- Header and Row Definitions -->
+      <tr mat-header-row *matHeaderRowDef="['alias', 'field', 'startingCharacters', 'endingCharacters', 'actions']; sticky: true"></tr>
+      <tr mat-row *matRowDef="let filter; columns: ['alias', 'field', 'startingCharacters', 'endingCharacters', 'actions'];"></tr>
+    </table>
+  </ng-scrollbar>
+</div>
+
+<div class="d-flex gap-12">
+  <button type="submit" mat-flat-button class="form-button-submit btn-lg flex-grow-1" color="primary" (click)="onSubmit()">Done</button>
+</div>

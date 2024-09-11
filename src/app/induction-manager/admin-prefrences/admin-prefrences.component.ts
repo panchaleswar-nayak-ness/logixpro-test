@@ -4,7 +4,9 @@ import { AuthService } from 'src/app/common/init/auth.service';
 import { GlobalService } from 'src/app/common/services/global.service';
 import { IInductionManagerApiService } from 'src/app/common/services/induction-manager-api/induction-manager-api-interface';
 import { InductionManagerApiService } from 'src/app/common/services/induction-manager-api/induction-manager-api.service';
-import { ApiEndpoints, ToasterMessages, ToasterTitle, ToasterType, superBatchFilterListName ,Column,TableConstant,StringConditions,ColumnDef} from 'src/app/common/constants/strings.constants';
+import { ApiEndpoints, ToasterMessages, ToasterTitle, ToasterType, superBatchFilterListName ,Column,TableConstant,StringConditions,ColumnDef, DialogConstants, Style} from 'src/app/common/constants/strings.constants';
+import { ZoneGroupsComponent } from 'src/app/dialogs/zone-groups/zone-groups.component';
+import { ImprefInductionFilterComponent } from 'src/app/dialogs/impref-induction-filter/impref-induction-filter.component';
 
 @Component({
   selector: 'app-admin-prefrences',
@@ -213,6 +215,11 @@ export class AdminPrefrencesComponent implements OnInit {
       userField9: new FormControl('', Validators.compose([])),
       userField10: new FormControl('', Validators.compose([])),
       orderNoPrefix: new FormControl('', Validators.compose([])),
+
+      //Pick Tote Induction Settings
+      excludeOrderInReprocess: new FormControl(false, Validators.compose([])),
+      maximumQtyPerTote:  new FormControl(0, Validators.compose([])),
+      defaultZoneGroup: new FormControl('', Validators.compose([])),
     });
   }
   public userData: any;
@@ -330,6 +337,11 @@ export class AdminPrefrencesComponent implements OnInit {
                 userField9: reelVal.userField9,
                 userField10: reelVal.userField10,
                 orderNoPrefix: reelVal.orderNumberPrefix,
+
+                //Pick Tote Induction Settings
+                excludeOrderInReprocess: values.excludeOrdersinReprocess,
+                maximumQtyPerTote:values.maximumQuantityperTote,
+                defaultZoneGroup:values.defaultZoneGroup,
               });
             } else {
               this.global.ShowToastr(ToasterType.Error, ToasterMessages.SomethingWentWrong, ToasterTitle.Error);
@@ -383,7 +395,10 @@ export class AdminPrefrencesComponent implements OnInit {
           WSID: this.userData.wsid,
           DontAllowOverReceipt:values.dontAllowOverReceipt,
           AutoAssignAllZones:values.autoAssignAllZones,
-          PurchaseOrderRequired:values.purchaseOrderRequired
+          PurchaseOrderRequired:values.purchaseOrderRequired,
+          ExcludeOrdersinReprocess:values.excludeOrderInReprocess,
+          MaximumQuantityperTote:values.maximumQtyPerTote,
+          DefaultZoneGroup:values.defaultZoneGroup
         };
 
         endPoint = ApiEndpoints.IMSytemSettings;
@@ -503,5 +518,24 @@ export class AdminPrefrencesComponent implements OnInit {
       value = value.slice(0, 309);
     }
     inputElement.value = value;
+  }
+
+
+  openZoneGroups(){
+    const dialogRef:any = this.global.OpenDialog(ZoneGroupsComponent, {
+      height: 'auto',
+      width: '60%',
+      autoFocus: DialogConstants.autoFocus,
+    disableClose:true,
+    });
+  }
+
+  openPickToteInductionFilter(){
+    const dialogRef:any = this.global.OpenDialog(ImprefInductionFilterComponent, {
+      height: 'auto',
+      width: Style.w1080px,
+      autoFocus: DialogConstants.autoFocus,
+    disableClose:true,
+    });
   }
 }
