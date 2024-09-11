@@ -21,6 +21,9 @@ import { ProcessPickBatchesComponent } from './process-picks/process-pick-batche
 import { ProcessPickTotesComponent } from './process-picks/process-pick-totes/process-pick-totes.component';
 import { PpaTsBatchSetupComponent } from './process-put-aways/ppa-ts-batch-setup/ppa-ts-batch-setup.component';
 import { PpaTsTotesComponent } from './process-put-aways/ppa-ts-totes/ppa-ts-totes.component';
+import { FilterOrderNumberComponent } from './pick-tote-induction/filter-order-number/filter-order-number.component';
+import { PickToteInFilterComponent } from './pick-tote-induction/pick-tote-in-filter/pick-tote-in-filter.component';
+import { PickToteInductionComponent } from './pick-tote-induction/pick-tote-induction.component';
 
 
 @NgModule({
@@ -40,7 +43,10 @@ import { PpaTsTotesComponent } from './process-put-aways/ppa-ts-totes/ppa-ts-tot
         ProcessPickBatchesComponent,
         ProcessPickTotesComponent,
         PpaTsBatchSetupComponent,
-        PpaTsTotesComponent
+        PpaTsTotesComponent,
+        FilterOrderNumberComponent,
+        PickToteInFilterComponent,
+        PickToteInductionComponent
     ],
     imports: [
         CommonModule,

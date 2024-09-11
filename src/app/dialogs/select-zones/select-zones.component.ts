@@ -70,17 +70,17 @@ export class SelectZonesComponent implements OnInit {
     return selected;
   }
 
-  isAllReadyAssigned()
-  {
-    if(this.alreadyAssignedZones.length==this.elementData.length)
-    {
-      return true;
-    }
-    else 
-    {
-      return false;
-    }
-  }
+  // isAllReadyAssigned()
+  // {
+  //   if(this.alreadyAssignedZones.length==this.elementData.length)
+  //   {
+  //     return true;
+  //   }
+  //   else 
+  //   {
+  //     return false;
+  //   }
+  // }
 
   /** Selects all rows if they are not all selected; otherwise clear selection. */
   toggleAllRows($event:any) {
@@ -213,12 +213,11 @@ export class SelectZonesComponent implements OnInit {
    }
 
   ngOnInit(): void {
-    this.elementData.length=0;
-    this.batchID = this.data.batchId;
-    this.username= this.data.userId;
-    this.isNewBatch=this.data.isNewBatch;
-    this.wsid=this.data.wsid;
-    this.alreadyAssignedZones = this.data.assignedZones;
+    // this.elementData.length=0;
+    // this.batchID = this.data.batchId;
+    // this.isNewBatch=this.data.isNewBatch;
+    // this.wsid=this.data.wsid;
+    // this.alreadyAssignedZones = this.data.assignedZones;
     this.getAvailableZones();
   }
   

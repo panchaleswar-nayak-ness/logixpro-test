@@ -5,7 +5,7 @@
         <mat-icon class="close-icon">close</mat-icon>
     </button>
 </div>
-<div class="text-center"> <span class="label label-gray px-2 f-14 mb-4">Batch ID:&nbsp;<b>{{batchID}}</b></span></div>
+<!-- <div class="text-center"> <span class="label label-gray px-2 f-14 mb-4">Batch ID:&nbsp;<b>{{batchID}}</b></span></div> -->
 <div class="card br-14 table-responsive borderless px-0 mb-3" >
   <ng-scrollbar  class="mat-table-scrollbar h-60v">
     <table mat-table [dataSource]="dataSource" class="w-100">
@@ -14,7 +14,7 @@
         <ng-container matColumnDef="select">
           <th mat-header-cell *matHeaderCellDef>
             <mat-checkbox (change)="$event ? toggleAllRows($event) : null"
-                          [checked]="selection.hasValue() && isAllSelected()  || isAllReadyAssigned() || AllRecordsChecked()"
+                          [checked]="selection.hasValue() && isAllSelected() || AllRecordsChecked()"
                           [indeterminate]="selection.hasValue() && !isAllSelected()"
                           [aria-label]="checkboxLabel()" color="primary">
             </mat-checkbox>
