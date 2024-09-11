@@ -58,3 +58,10 @@
 ::ng-deep .mat-progress-bar-buffer {
   background-color: var(--clr-chrome-200) !important;
 }
+
+::ng-deep .chart-container{
+  div{
+    margin-left: auto !important;
+    margin-right: auto !important;
+  }
+}

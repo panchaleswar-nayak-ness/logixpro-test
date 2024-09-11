@@ -97,7 +97,7 @@ export class UtilizationPiechartComponent implements OnChanges {
               type: 'pie',
               radius: ['15%', '40%'],
               labelLine: {
-                length: 20
+                length: 10
               },
               itemStyle: {
                 borderRadius: 6,
