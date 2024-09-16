@@ -1,5 +1,4 @@
-import { ReturnStatement } from '@angular/compiler';
-import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
 import {
@@ -22,6 +21,7 @@ import { BlossomToteRecords, MarkoutBlossomTotenRequest, ToteData } from '../../
   styleUrls: ['./mo-blossom-tote.component.scss'],
 })
 export class MoBlossomToteComponent implements OnInit {
+
   public iMarkoutApiService: IMarkoutApiService;
   toteId: string = '';
   markoutlistdataSource: MatTableDataSource<ToteData>;
@@ -29,13 +29,13 @@ export class MoBlossomToteComponent implements OnInit {
   selectedList: [];
   isBlossomComplete: boolean = false;
   isBlossom: boolean = false;
-
   displayedColumns: string[] = [
     markoutdisplayedColumns.ItemNumber,
     markoutdisplayedColumns.TransQty,
     markoutdisplayedColumns.CompQty,
     markoutdisplayedColumns.ToteQty,
   ];
+
   constructor(
     public dialogRef: MatDialogRef<MoBlossomToteComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
@@ -60,6 +60,7 @@ export class MoBlossomToteComponent implements OnInit {
   blossomCompleteTransactions() {
     this.blossomTransactions(true);
   }
+
   getParamByName() {
     this.iMarkoutApiService
       .GetParamByName('BlossomComplete')
@@ -67,6 +68,7 @@ export class MoBlossomToteComponent implements OnInit {
         this.isBlossomComplete = res == '1';
       });
   }
+
   blossomTransactions(blossomcompete: boolean = false) {
     this.newToteIdValidation();
     if (this.isBlossom) {
@@ -94,14 +96,20 @@ export class MoBlossomToteComponent implements OnInit {
         disableClose: true,
         data: {
           customButtonText: true,
-          heading: 'Blossom',
+          heading: `${blossomcompete ? 'Blossom Complete' : 'Blossom'}`,
           btn1Text: 'Yes',
           btn2Text: 'No',
-          message: `
-            You have requested to blossom.
+          message: `${blossomcompete ? 
+            `You have requested to blossom complete.
+            This will complete the new tote with quantities entered, and update the
+            remaining quantities of the old tote.
+            Do you want to perform this action?` 
+            : 
+            `You have requested to blossom.
             This will complete the original tote with quantities entered,
             and assign the remaining quantities to the new tote.
-            Do you want to perform this action?`,
+            Do you want to perform this action?`}`
+           ,
         },
       });
       dialogRef.afterClosed().subscribe((result) => {
@@ -131,23 +139,23 @@ export class MoBlossomToteComponent implements OnInit {
   }
 
   newToteIdValidation() {
-    if(this.toteId){
-    this.iMarkoutApiService
-      .MarkoutValidTote(this.toteId)
-      .subscribe((res: boolean) => {
-        if (res == false) {
-          this.global.ShowToastr(
-            ToasterType.Error,
-            'Invalid Tote. This tote already has open transactions assigned to it',
-            ToasterTitle.Error
-          );
-          this.isBlossom = false;
-          this.toteId = '';
-        } else {
-          this.isBlossom = true;
-        }
-      });
-    }else{
+    if (this.toteId) {
+      this.iMarkoutApiService
+        .MarkoutValidTote(this.toteId)
+        .subscribe((res: boolean) => {
+          if (res == false) {
+            this.global.ShowToastr(
+              ToasterType.Error,
+              'Invalid Tote. This tote already has open transactions assigned to it',
+              ToasterTitle.Error
+            );
+            this.isBlossom = false;
+            this.toteId = '';
+          } else {
+            this.isBlossom = true;
+          }
+        });
+    } else {
       this.isBlossom = false;
     }
   }
