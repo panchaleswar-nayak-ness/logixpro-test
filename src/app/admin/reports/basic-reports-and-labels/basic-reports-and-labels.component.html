@@ -14,7 +14,6 @@
                             <mat-form-field class="action-dropdown mb-3 action-dropdown" appearance="outline" >
                                 <mat-label>Actions</mat-label>
                                 <mat-select #matRef  class="employees-action" [disabled]="!this.basicReportModel.ChooseReport" value="pick" (selectionChange)="openAction($event)">
-                                    <mat-option   routerLink="/admin/reports/utilizationDashboard">Utlilization Report</mat-option>
                                     <mat-option   (click)="this.global.Print(this.global.capitalizeAndRemoveSpaces(this.basicReportModel.ChooseReport)+'-lst')">Print</mat-option>
                                     <mat-option    (click)="this.global.OpenExportModal(this.basicReportModel.ChooseReport,this.basicReportModel.ChooseReport+'-lst')">Export</mat-option>
                                     <mat-option    (click)="openListAndLabel()">Preview Top 50 Pages Only</mat-option>
@@ -28,6 +27,7 @@
                     <mat-form-field class="action-dropdown custom-form-field-bg-white w-100 mb-2" appearance="outline">
                         <mat-label>Choose Report</mat-label>
                         <mat-select class="employees-action" [(ngModel)]="basicReportModel.ChooseReport" (ngModelChange)="basicReportDetails(basicReportModel.ChooseReport)">
+                            <mat-option  [value]="" routerLink="/admin/reports/utilizationDashboard">Utlilization Report</mat-option>
                             <mat-option *ngFor="let item of reports"[value]="item">{{item}}</mat-option> 
                         </mat-select>
                         <span class="material-symbols-outlined icon-expand-more">

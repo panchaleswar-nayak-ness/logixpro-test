@@ -32,7 +32,7 @@
         "Permission": "Inventory"
     },
     {
-        "path": "/admin/inventoryMaster/utilizationDashboard",
+        "path": "/admin/inventoryMap/utilizationDashboard",
         "Permission": "Inventory"
     },
     {
