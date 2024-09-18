@@ -47,6 +47,7 @@ export class SelectionTransactionForToteExtendComponent implements OnInit {
   toolTipMsgForTransQty: string = '';
   QtyToAssignFieldColor: string = 'primary';
   initialFocus: boolean = true;
+  blindInductionReason:boolean = false
 
   public iInductionManagerApi : IInductionManagerApiService;
   public iAdminApiService : IAdminApiService;
@@ -137,6 +138,7 @@ export class SelectionTransactionForToteExtendComponent implements OnInit {
     this.getDetails();
     this.imPreferences = this.global.getImPreferences();
     this.pickToteSetupIndex();
+    
   }
 
   ngAfterViewInit(): void {
@@ -146,6 +148,14 @@ export class SelectionTransactionForToteExtendComponent implements OnInit {
   public OSFieldFilterNames() {
     this.iAdminApiService.ColumnAlias().subscribe((res: any) => {
       if (res.data && res.isExecuted) this.fieldNames = res.data;
+      else this.global.ShowToastr(ToasterType.Error, this.global.globalErrorMsg(), ToasterTitle.Error);
+    });
+  }
+
+
+  public blindInduction() {
+    this.iAdminApiService.AdminCompanyInfo().subscribe((res: any) => {
+      if (res.data && res.isExecuted) this.blindInductionReason = res.data.requireHotReasons;
       else this.global.ShowToastr(ToasterType.Error, this.global.globalErrorMsg(), ToasterTitle.Error);
     });
   }
@@ -844,6 +854,7 @@ export class SelectionTransactionForToteExtendComponent implements OnInit {
 
       toteQty                           : this.data.defaultPutAwayQuantity
     });
+    this.blindInduction();
   }
 
   selectTotePosOrID(col : string, value : string) {

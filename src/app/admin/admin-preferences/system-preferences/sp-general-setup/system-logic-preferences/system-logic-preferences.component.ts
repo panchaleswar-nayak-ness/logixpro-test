@@ -44,7 +44,8 @@ export class SystemLogicPreferencesComponent{
     midBreakTime: '',
     midBreakDuration: 0,
     lateBreakTime: '',
-    lateBreakDuration: 0
+    lateBreakDuration: 0,
+    requireHotReasons:false
   };
   @Output() updatesystemLogicPref = new EventEmitter<GeneralSetup>();
 

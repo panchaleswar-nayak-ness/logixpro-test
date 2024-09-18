@@ -241,6 +241,11 @@ export interface IAdminApiService
     WorkstationSettingsUpdate(payload : any);
     ToteManagementUpdate(payload : any);
   LocationAssignmentFunctionsUpdate(payload: any);
+  
 
   PrintPutAwayItemLabels(otid: number);
+  getLookupTableData(paramName: any);
+  updateLookupTableData(payload : any);
+  createLookupTableData(payload : any);
+  deleteLookupTableData(id : any);
 }

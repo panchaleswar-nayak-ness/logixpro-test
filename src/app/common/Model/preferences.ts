@@ -37,6 +37,7 @@ export interface GeneralSetup {
     distinctKitOrders: boolean;
     printReplenPutLabels: boolean;
     generateQuarantineTransactions: boolean;
+    requireHotReasons: boolean;
 }
 
 interface Preferences {

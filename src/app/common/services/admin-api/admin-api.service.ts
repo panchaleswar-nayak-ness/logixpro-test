@@ -2048,5 +2048,31 @@ export class AdminApiService implements IAdminApiService {
     }
       return this.Api.AddCompleteTransaction(payload);
     }
+
+
+    public getLookupTableData(body: any) {
+     
+        return this.Api.getLookupTableData(body);
+      }
+
+      public updateLookupTableData(body: any) {
+        const payload = {
+          ...body
+        }
+        return this.Api.updateLookupTableData(payload);
+      }
+
+      public createLookupTableData(body: any) {
+        const payload = {
+          ...body
+        }
+        return this.Api.createLookupTableData(payload);
+      }
+
+      
+    public deleteLookupTableData(body: any) {
+     
+      return this.Api.deleteLookupTableData(body);
+    }
   }
 
