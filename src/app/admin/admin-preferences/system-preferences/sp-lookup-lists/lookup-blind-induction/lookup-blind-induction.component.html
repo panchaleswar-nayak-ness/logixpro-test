@@ -27,7 +27,6 @@
           </td>
         </ng-container>
 
-        <!-- (keyup)="check(element.codeValue, i)" -->
   
         <ng-container matColumnDef="codeValue">
           <th mat-header-cell *matHeaderCellDef> Code Value </th>
@@ -47,12 +46,11 @@
           </td>
         </ng-container>
   
-        <!-- [disabled]="((OldtableData.length > i && OldtableData[i].sequence === element.sequence) || element.IsDisabled || (element.value === ''))" -->
         <ng-container matColumnDef="actions" stickyEnd>
           <th width="10%" mat-header-cell *matHeaderCellDef class="px-2"> Actions </th>
           <td width="10%" mat-cell *matCellDef="let element; let i=index" class="px-2">
             <div class="d-flex gap-12 align-items-center">
-              <button mat-flat-button color="primary"  class="xsm-icon-button" (click)="saveBlindInduction(element, i)">
+              <button mat-flat-button color="primary"  class="xsm-icon-button" (click)="saveBlindInduction(element, i)" [disabled]="((OldtableData.length > i && OldtableData[i].sequence === element.sequence && OldtableData[i].value === element.value && OldtableData[i].valueName === element.valueName) || element.IsDisabled || (element.value === ''))">
                 <mat-icon class="material-symbols-outlined">save</mat-icon>
               </button>
               <button mat-flat-button color="warn" class="xsm-icon-button" (click)="deleteBlindInduction(element)">

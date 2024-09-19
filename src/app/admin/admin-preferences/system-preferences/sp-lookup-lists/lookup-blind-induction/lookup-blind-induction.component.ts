@@ -69,19 +69,41 @@ export class LookupBlindInductionComponent implements OnInit {
   }
 
 
-  // check(codeValue, ind) {
-  //   for (const element of this.OldtableData) {
-  //     if (element.codeValue === codeValue) {
-  //       this.tableData[ind].IsDisabled = true;
-  //       this.global.ShowToastr(ToasterType.Error, `Code value must be unique. Another entry matches it.`, ToasterTitle.Error);
-  //       break;
-  //     } else {
-  //       this.tableData[ind].IsDisabled = false;
-  //     }
-  //   }
-  // }
+  checkDuplicateFields(ele, index) {
+    const duplicateFields:any = [];
+  
+    // Check if Status Code and Code Value are the same
+    if (ele.valueName === ele.value) {
+      duplicateFields.push('Status Code and Code Value');
+    }
+  
+    // Check for duplicate Sequence
+    const isDuplicateSequence = this.tableData.some((item, i) => item.sequence === ele.sequence && i !== index);
+    if (isDuplicateSequence) {
+      duplicateFields.push('Sequence');
+    }
+  
+    // Check for duplicate Value Name
+    const isDuplicateValueName = this.tableData.some((item, i) => item.valueName === ele.valueName && i !== index);
+    if (isDuplicateValueName) {
+      duplicateFields.push('Status Code');
+    }
+  
+    // Check for duplicate Code Value
+    const isDuplicateValue = this.tableData.some((item, i) => item.value === ele.value && i !== index);
+    if (isDuplicateValue) {
+      duplicateFields.push('Code Value');
+    }
+  
+    return duplicateFields;
+  }
 
   saveBlindInduction(ele, i) {
+    const duplicateFields = this.checkDuplicateFields(ele, i);
+    if (duplicateFields.length > 0) {
+      this.global.ShowToastr(ToasterType.Error, `${duplicateFields.join(', ')} must be unique`, ToasterTitle.Error);
+      return;
+    }
     let payload = {
       "id": ele.id??0,  // If id is null, it will create a new record
       'ValueName': ele.valueName,
