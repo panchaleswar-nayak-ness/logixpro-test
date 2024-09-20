@@ -90,7 +90,7 @@ export class MarkoutSearchComponent implements OnInit {
       });
       dialogRefTote.afterClosed().subscribe((result) => {
         if(result){
-          this.toteIdEmitter.emit( {toteId: '', viewType: '' });
+          this.toteIdEmitter.emit( {toteId: '', viewType: this.selectedView });
         }
       });
     }
