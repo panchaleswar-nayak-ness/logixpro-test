@@ -28,10 +28,10 @@
                 <mat-form-field class="action-dropdown d-block mt-3 mt-xl-0 mt-sm-3" appearance="outline">
                   <mat-label>Actions</mat-label>
                   <mat-select #matRef class="employees-action" (selectionChange)="inventoryMapAction($event)" placeholder="Actions">
-                    <mat-option    routerLink="/admin/inventoryMap/utilizationDashboard">Utlilization Report</mat-option>
                     <mat-option (click)="addLocDialog()"  *ngIf="inventoryRoute && !isAuthorized('Inv Map Add Location')">Add Location</mat-option>
                     <mat-option (click)="printRange()">Print Range</mat-option>
                     <mat-option value="set_column_sq">Set Column Sequence</mat-option>
+                    <mat-option    routerLink="/admin/inventoryMap/utilizationDashboard">Utlilization Report</mat-option>
                   </mat-select>
                   <span class="material-symbols-outlined icon-expand-more">expand_more</span>
                 </mat-form-field>

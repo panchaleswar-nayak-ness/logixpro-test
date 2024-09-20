@@ -1,20 +1,39 @@
-
 <div class="container-fluid">
   <div class="row g-4">
-  <app-utilization-header
-   [zones]="zones"
-   [isCarousel]="isCarousel"
-   [BulkVelocities]="BulkVelocities"
-   [BulkCellSizes]="BulkCellSizes" 
-   (backButtonClicked)="navigateBasedOnCondition()"  
-   (zoneSelected)="handleZoneSelected($event)"
-   (bulkVelocitiesSelected)="handleVelocitySelected($event)"
-   (bulkCellSizesSelected)="handleCellSizeSelected($event)"
-   ></app-utilization-header>
+    <app-utilization-header
+      [zones]="zones"
+      [isCarousel]="isCarousel"
+      [BulkVelocities]="BulkVelocities"
+      [BulkCellSizes]="BulkCellSizes"
+      (backButtonClicked)="navigateBasedOnCondition()"
+      (zoneSelected)="handleZoneSelected($event)"
+      (bulkVelocitiesSelected)="handleVelocitySelected($event)"
+      (bulkCellSizesSelected)="handleCellSizeSelected($event)"
+    ></app-utilization-header>
   </div>
 
-    <div>
-      <app-utilization-piechart [isCarousel]="isCarousel"  [statusData]="pieChartData"></app-utilization-piechart>
-    </div>
-  
+  <div>
+    <!-- Initial screen - Show when no zone is selected yet -->
+    <mat-card class="mat-elevation-z g-card mb-4" *ngIf="!isZoneSelected">
+      <div class="d-flex flex-column align-items-center justify-content-center h-50vh">
+        <div class="material-symbols-outlined cursor-pointer text-42 text-chrome-600 mb-3" matTooltipPosition="above">center_focus_weak</div>
+        <div>
+          <p class="text-chrome-600 text-16">Please select a zone to view the utilization report.</p>
+        </div>
+      </div>
+    </mat-card>
+
+    <!-- No data for the selected zone -->
+    <mat-card class="mat-elevation-z g-card mb-4" *ngIf="isZoneSelected && !isDataAvailable">
+      <div class="d-flex flex-column align-items-center justify-content-center h-50vh">
+        <div class="material-symbols-outlined cursor-pointer text-42 text-chrome-600 mb-3" matTooltipPosition="above">data_alert</div>
+        <div>
+          <p class="text-chrome-600 text-16">No Records found, Please select another zone.</p>
+        </div>
+      </div>
+    </mat-card>
+
+    <!-- Show pie chart when data is available -->
+    <app-utilization-piechart *ngIf="isDataAvailable" [isCarousel]="isCarousel" [statusData]="pieChartData"></app-utilization-piechart>
+  </div>
 </div>

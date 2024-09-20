@@ -33,7 +33,7 @@
     },
     {
         "path": "/admin/inventoryMap/utilizationDashboard",
-        "Permission": "Inventory"
+        "Permission": "Inventory Map"
     },
     {
         "path": "/admin/inventoryMap",

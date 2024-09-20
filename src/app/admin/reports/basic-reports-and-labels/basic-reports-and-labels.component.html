@@ -27,13 +27,10 @@
                     <mat-form-field class="action-dropdown custom-form-field-bg-white w-100 mb-2" appearance="outline">
                         <mat-label>Choose Report</mat-label>
                         <mat-select class="employees-action" [(ngModel)]="basicReportModel.ChooseReport" (ngModelChange)="basicReportDetails(basicReportModel.ChooseReport)">
-                            <mat-option  [value]="" routerLink="/admin/reports/utilizationDashboard">Utlilization Report</mat-option>
-                            <mat-option *ngFor="let item of reports"[value]="item">{{item}}</mat-option> 
+                          <mat-option *ngFor="let item of reports" [value]="item">{{ item }}</mat-option>
                         </mat-select>
-                        <span class="material-symbols-outlined icon-expand-more">
-                            expand_more
-                        </span>
-                    </mat-form-field>
+                        <span class="material-symbols-outlined icon-expand-more">expand_more</span>
+                      </mat-form-field>
                     <ng-container *ngFor="let title of reportTitles; let i = index">
                         <mat-form-field class="custom-form-field custom-form-field-bg-white w-100 mb-2" appearance="outline">
                           <mat-label>Report Title #{{ i + 1 }}</mat-label>

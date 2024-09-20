@@ -63,7 +63,7 @@ export class BasicReportsAndLabelsComponent implements OnInit {
 
     public iAdminApiService: IAdminApiService;
     public userData: any;
-  constructor(private dialog: MatDialog,private api:ApiFuntions,private adminApiService: AdminApiService,private authService:AuthService,private route:Router,public global:GlobalService) {
+  constructor(private dialog: MatDialog,private api:ApiFuntions,private adminApiService: AdminApiService,private authService:AuthService,private route:Router,public global:GlobalService,private router: Router) {
     this.iAdminApiService = adminApiService;    
     this.userData = this.authService.userData(); 
     this.route.events.subscribe((event) => {
@@ -123,6 +123,10 @@ export class BasicReportsAndLabelsComponent implements OnInit {
       if(res.isExecuted && res.data)
       {
         this.reports = res?.data?.reports;
+        this.reports.push('Utilization Report');
+        
+        // Sort reports alphabetically, ignoring case
+        this.reports.sort((a, b) => a.toLowerCase().localeCompare(b.toLowerCase()));
       this.reports.unshift('');
       }
       else {
@@ -131,23 +135,34 @@ export class BasicReportsAndLabelsComponent implements OnInit {
       }
     })
   }
-  basicReportDetails(Report){
-   let payload:any = {
-    report:Report, 
-    }
-    this.iAdminApiService.basicreportdetails(payload).subscribe((res:any)=>{
-      if(res.isExecuted && res.data)
-      {
-        this.reportData = res?.data?.reportData; 
-      this.fields = res?.data?.fields; 
-      this.fields.unshift('');
+
+
+
+// Method to handle selection and navigation
+basicReportDetails(selectedReport: string) {
+  if (selectedReport === 'Utilization Report') {
+      // Navigate to utilizationDashboard when "Utilization Report" is selected
+      this.router.navigate(['/admin/reports/utilizationDashboard']);
+  } else {
+    let payload:any = {
+      report:selectedReport, 
       }
-      else {
-        this.global.ShowToastr(ToasterType.Error, this.global.globalErrorMsg(), ToasterTitle.Error);
-        console.log("basicreportdetails",res.responseMessage);
-      }
-    })
+      this.iAdminApiService.basicreportdetails(payload).subscribe((res:any)=>{
+        if(res.isExecuted && res.data)
+        {
+          this.reportData = res?.data?.reportData; 
+        this.fields = res?.data?.fields; 
+        this.fields.unshift('');
+        }
+        else {
+          this.global.ShowToastr(ToasterType.Error, this.global.globalErrorMsg(), ToasterTitle.Error);
+          console.log("basicreportdetails",res.responseMessage);
+        }
+      })
   }
+}
+
+
   async changeFilter(column,index){
  
     let payload:any ={

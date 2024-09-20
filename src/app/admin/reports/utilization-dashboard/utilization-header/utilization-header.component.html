@@ -1,70 +1,66 @@
-
-
-
 <mat-card class="mat-elevation-z g-card mb-4">
-    <mat-card-content>
-      <div class="d-xl-flex align-items-center justify-content-between mb-2">
-        <div class="d-flex align-items-center">
-          <button mat-icon-button class="dialog-close-button-fix close-button d-flex justify-content-center align-items-center me-lg-3 me-2" (click)="onBackButtonClick()">
-            <span class="material-symbols-outlined cursor-pointer" matTooltipPosition="above">
-              arrow_back
-            </span>
-          </button>
-    
-          
-          <app-icon-heading-component icon="data_usage" heading="Utilization Dashboard"></app-icon-heading-component>
-        </div>
-        <mat-form-field class="" appearance="outline">
-          <mat-label>Actions</mat-label>
-          <mat-select #matRef class="employees-action" placeholder="Actions">
-            <mat-option>Print Report</mat-option>
-          </mat-select>
-          <span class="material-symbols-outlined icon-expand-more">expand_more</span>
-        </mat-form-field>
+  <mat-card-content>
+    <div class="d-xl-flex align-items-center justify-content-between mb-2">
+      <div class="d-flex align-items-center">
+        <button mat-icon-button class="dialog-close-button-fix close-button d-flex justify-content-center align-items-center me-lg-3 me-2" (click)="onBackButtonClick()">
+          <span class="material-symbols-outlined cursor-pointer" matTooltipPosition="above">
+            arrow_back
+          </span>
+        </button>
+        <app-icon-heading-component icon="data_usage" heading="Utilization Dashboard"></app-icon-heading-component>
       </div>
-      
-      <div class="">
-        <div class="row g-2 bg-light-blue bg-50 br-none w-100 px-3 py-3 br-20 m-h-140 d-flex justify-content-between">
-          <div class="col-xl-4">
-            <mat-form-field class="action-dropdown w-100 mb-3 mb-xl-0" appearance="outline">
-              <mat-label>Zones</mat-label>
-              <mat-select class="employees-action" (selectionChange)="onZoneSelect($event.value)">
-                <mat-option *ngFor="let item of zones" [value]="item">
-                  
-                  {{ item.zone }}
-                </mat-option>
-              </mat-select>
-              <span class="material-symbols-outlined icon-expand-more">expand_more</span>
-            </mat-form-field>
-          </div>
-          <div class="col-xl-4" *ngIf="!isCarousel">
-            <mat-form-field class="action-dropdown w-100 mb-3 mb-xl-0" appearance="outline">
-              <mat-label>Velocity Code</mat-label>
-              <mat-select class="employees-action" [(value)]="selectedBulkVelocity" (selectionChange)="onBulkVelocitiesSelect($event.value)">
-                <mat-option [value]="''">All</mat-option> 
-                <mat-option *ngFor="let item of BulkVelocities" [value]="item">
-                  {{ item }}
-                </mat-option>
-              </mat-select>
-              <span class="material-symbols-outlined icon-expand-more">expand_more</span>
-            </mat-form-field>
-          </div>
-          <div class="col-xl-4" *ngIf="!isCarousel"> 
-            <mat-form-field class="action-dropdown w-100 mb-3 mb-xl-0" appearance="outline">
-              <mat-label>Cell Size</mat-label>
-              <mat-select class="employees-action" [(value)]="selectedBulkCellSize" (selectionChange)="onBulkCellSizesSelect($event.value)">
-                <mat-option [value]="''">All</mat-option> 
-                <mat-option *ngFor="let item of BulkCellSizes" [value]="item">
-                  {{ item }}
-                </mat-option>
-              </mat-select>
-              <span class="material-symbols-outlined icon-expand-more">expand_more</span>
-            </mat-form-field>
-          </div>
-        
-        
+
+      <mat-form-field class="" appearance="outline">
+        <mat-label>Actions</mat-label>
+        <mat-select #matRef class="employees-action" placeholder="Actions">
+          <mat-option>Print Report</mat-option>
+        </mat-select>
+        <span class="material-symbols-outlined icon-expand-more">expand_more</span>
+      </mat-form-field>
+    </div>
+
+    <div class="">
+      <div class="row g-2 bg-light-blue bg-50 br-none w-100 px-3 py-3 br-20 m-h-140 d-flex justify-content-between">
+        <div class="col-xl-4">
+          <mat-form-field class="action-dropdown w-100 mb-3 mb-xl-0" appearance="outline">
+            <mat-label>Zones</mat-label>
+            <mat-select class="employees-action" (selectionChange)="onZoneSelect($event.value)">
+              <mat-option *ngFor="let item of zones" [value]="item">
+                {{ item.zone }}
+              </mat-option>
+            </mat-select>
+            <span class="material-symbols-outlined icon-expand-more">expand_more</span>
+          </mat-form-field>
         </div>
 
+        <!-- Velocity Code Dropdown, Enabled or Disabled based on isCarousel -->
+        <div class="col-xl-4">
+          <mat-form-field class="action-dropdown w-100 mb-3 mb-xl-0" appearance="outline">
+            <mat-label>Velocity Code</mat-label>
+            <mat-select class="employees-action" [(value)]="selectedBulkVelocity" (selectionChange)="onBulkVelocitiesSelect($event.value)" [disabled]="isCarousel">
+              <mat-option [value]="''">All</mat-option> 
+              <mat-option *ngFor="let item of BulkVelocities" [value]="item">
+                {{ item }}
+              </mat-option>
+            </mat-select>
+            <span class="material-symbols-outlined icon-expand-more">expand_more</span>
+          </mat-form-field>
+        </div>
+
+        <!-- Cell Size Dropdown, Enabled or Disabled based on isCarousel -->
+        <div class="col-xl-4">
+          <mat-form-field class="action-dropdown w-100 mb-3 mb-xl-0" appearance="outline">
+            <mat-label>Cell Size</mat-label>
+            <mat-select class="employees-action" [(value)]="selectedBulkCellSize" (selectionChange)="onBulkCellSizesSelect($event.value)" [disabled]="isCarousel">
+              <mat-option [value]="''">All</mat-option> 
+              <mat-option *ngFor="let item of BulkCellSizes" [value]="item">
+                {{ item }}
+              </mat-option>
+            </mat-select>
+            <span class="material-symbols-outlined icon-expand-more">expand_more</span>
+          </mat-form-field>
+        </div>
       </div>
-    </mat-card-content>
-    </mat-card>
+    </div>
+  </mat-card-content>
+</mat-card>

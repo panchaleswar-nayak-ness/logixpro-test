@@ -19,6 +19,8 @@ export class UtilizationDashboardComponent implements OnInit {
   selectedVelocityCode?: string;
   selectedCellSize?: string;
   isCarousel: boolean = true;
+  isZoneSelected: boolean = false;  // To track if a zone has been selected
+  isDataAvailable: boolean = false;  // To track if data is available
 
   
   
@@ -47,43 +49,48 @@ export class UtilizationDashboardComponent implements OnInit {
     });
   }
 
+
   getRequiredZone(zone: any, velocityCode?: string, cellSize?: string) {
     this.selectedZone = zone.zone;
-    this.isCarousel = zone.isCarousel
-    
+    this.isCarousel = zone.isCarousel;
+    this.isZoneSelected = true;  // Zone has been selected
+    this.isDataAvailable = false;  // Reset data availability before making the request
 
     let payload: any = {
-        zone: this.selectedZone,
+      zone: this.selectedZone,
     };
-    this.selectedVelocityCode = ''
-    this.selectedCellSize = ''
-
+    this.selectedVelocityCode = '';
+    this.selectedCellSize = '';
 
     if (!this.isCarousel) {
-        this.selectedVelocityCode = velocityCode;
-        this.selectedCellSize = cellSize;
-        
-        payload.velocityCode = this.selectedVelocityCode;
-        payload.cellSize = this.selectedCellSize;
+      this.selectedVelocityCode = velocityCode;
+      this.selectedCellSize = cellSize;
+
+      payload.velocityCode = this.selectedVelocityCode;
+      payload.cellSize = this.selectedCellSize;
     }
 
     this.adminApiService.getZoneData(payload).subscribe({
-        next: (res: pieChartData[]) => {
-            console.log(res)
-            // Process pieChartData
-            this.pieChartData = res.map((item: any) => {
-                return {
-                    ...item,
-                    usedPercentage: Math.floor(item.usedPercentage)
-                };
-            });
-        },
-        error: (err: any) => {
-            this.global.ShowToastr(ToasterType.Error, this.global.globalErrorMsg(), ToasterTitle.Error);
-            console.error('Error loading zone data:', err);
+      next: (res: pieChartData[]) => {
+        if (res && res.length > 0) {
+          this.pieChartData = res.map((item: any) => {
+            return {
+              ...item,
+              usedPercentage: Math.floor(item.usedPercentage),
+            };
+          });
+          this.isDataAvailable = true;  // Set data available to true when data is received
+        } else {
+          this.isDataAvailable = false;  // No data available
         }
+      },
+      error: (err: any) => {
+        this.global.ShowToastr(ToasterType.Error, this.global.globalErrorMsg(), ToasterTitle.Error);
+        console.error('Error loading zone data:', err);
+        this.isDataAvailable = false;  // Set to false if there's an error
+      },
     });
-}
+  }
 
 handleZoneSelected(zone: any) {
   this.getRequiredZone(zone, this.selectedVelocityCode, this.selectedCellSize);
