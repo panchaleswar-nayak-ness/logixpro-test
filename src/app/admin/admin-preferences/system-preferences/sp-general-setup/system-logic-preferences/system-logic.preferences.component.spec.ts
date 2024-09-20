@@ -76,7 +76,8 @@ describe('SystemLogicPreferencesComponent', () => {
         midBreakTime: '',
         midBreakDuration: 0,
         lateBreakTime: '',
-        lateBreakDuration: 0
+        lateBreakDuration: 0,
+        requireHotReasons:false
     };
 
     component.systemLogicPref = mockPref;
@@ -126,7 +127,8 @@ describe('SystemLogicPreferencesComponent', () => {
         midBreakTime: '',
         midBreakDuration: 0,
         lateBreakTime: '',
-        lateBreakDuration: 0
+        lateBreakDuration: 0,
+        requireHotReasons:false
     };
 
     component.systemLogicPref = mockPref;

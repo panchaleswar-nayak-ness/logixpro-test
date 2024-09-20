@@ -85,13 +85,16 @@ export class SpGeneralSetupComponent implements OnInit {
       distinctKitOrders: false,
       printReplenPutLabels: false,
       generateQuarantineTransactions: false,
+      requireHotReasons:false
   };
   
   }
 
   public getGeneralSetupInfo(){
     this.iAdminApiService.AdminCompanyInfo().subscribe((res: ApiResponse<GeneralSetup>) => {
-      if(res.isExecuted && res.data) this.generalSetupInfo = res.data;
+      if(res.isExecuted && res.data){
+        this.generalSetupInfo = res.data;
+      }
       else {
         this.global.ShowToastr(ToasterType.Error, this.global.globalErrorMsg(), ToasterTitle.Error);
         console.log("AdminCompanyInfo", res.responseMessage);
@@ -147,7 +150,8 @@ export class SpGeneralSetupComponent implements OnInit {
         String(updatedInfo.otTemptoOTPending),
         String(updatedInfo.distinctKitOrders),
         String(updatedInfo.printReplenPutLabels),
-        String(updatedInfo.generateQuarantineTransactions)
+        String(updatedInfo.generateQuarantineTransactions),
+        String(updatedInfo.requireHotReasons)
       ]
     } else if(panelNumber == 4){
       return [

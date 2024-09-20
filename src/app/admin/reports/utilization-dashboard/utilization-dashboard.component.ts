@@ -104,8 +104,8 @@ handleCellSizeSelected(cellSize: string) {
         this.router.navigate(['/admin/reports']).catch(err => {
           console.error('Navigation error:', err);
         });
-      } else if (currentUrl.includes('admin/inventoryMaster/utilizationDashboard')) {
-        this.router.navigate(['/admin/inventoryMaster']).catch(err => {
+      } else if (currentUrl.includes('admin/inventoryMap/utilizationDashboard')) {
+        this.router.navigate(['/admin/inventoryMap']).catch(err => {
           console.error('Navigation error:', err);
         });
       } 

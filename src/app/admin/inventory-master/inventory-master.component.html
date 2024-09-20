@@ -69,7 +69,6 @@
                         <mat-label>Actions</mat-label>
                         <mat-select #matRef class="employees-action" placeholder="Actions" (selectionChange)="inventoryMapAction()" >
                           <mat-option value="add_new_transaction" (click)="openAddItemDialog()">Add New Item</mat-option>
-                          <mat-option    routerLink="/admin/inventoryMaster/utilizationDashboard">Utlilization Report</mat-option>
                             <mat-option value="add_new_transaction" (click)="viewLocations()">View Item Location</mat-option>
                             <mat-option value="add_new_transaction" [disabled]="!(this.currentPageItemNo)" (click)="deleteItem()">Delete Item</mat-option>
                             <mat-option value="add_new_transaction"  *ngIf="invMaster.controls['itemQuarantined'].value == 0" (click)="quarantineDialog()">Quarantine Item</mat-option>

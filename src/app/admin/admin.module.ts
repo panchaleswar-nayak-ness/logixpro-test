@@ -183,6 +183,10 @@ import { MoBlossomToteComponent } from '../markout-main-process/markout-main-mod
 import { UtilizationDashboardComponent } from './reports/utilization-dashboard/utilization-dashboard.component';
 import { UtilizationHeaderComponent } from './reports/utilization-dashboard/utilization-header/utilization-header.component';
 import { UtilizationPiechartComponent } from './reports/utilization-dashboard/utilization-piechart/utilization-piechart.component';
+import { LookupHotPickComponent } from './admin-preferences/system-preferences/sp-lookup-lists/lookup-hot-pick/lookup-hot-pick.component';
+import { LookupHotPutAwayComponent } from './admin-preferences/system-preferences/sp-lookup-lists/lookup-hot-put-away/lookup-hot-put-away.component';
+import { LookupHotMoveComponent } from './admin-preferences/system-preferences/sp-lookup-lists/lookup-hot-move/lookup-hot-move.component';
+import { LookupBlindInductionComponent } from './admin-preferences/system-preferences/sp-lookup-lists/lookup-blind-induction/lookup-blind-induction.component';
 
 @NgModule({
     declarations: [
@@ -364,6 +368,10 @@ import { UtilizationPiechartComponent } from './reports/utilization-dashboard/ut
         UtilizationDashboardComponent,
         UtilizationHeaderComponent,
         UtilizationPiechartComponent,
+        LookupHotPickComponent,
+        LookupHotPutAwayComponent,
+        LookupHotMoveComponent,
+        LookupBlindInductionComponent,
     ],
     imports: [
         CommonModule,

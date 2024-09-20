@@ -47,6 +47,8 @@ export class SelectionTransactionForToteExtendComponent implements OnInit {
   toolTipMsgForTransQty: string = '';
   QtyToAssignFieldColor: string = 'primary';
   initialFocus: boolean = true;
+  blindInductionReason:boolean = false
+  blindInductOptions: any[] = [];  // Array to store the API response
 
   public iInductionManagerApi : IInductionManagerApiService;
   public iAdminApiService : IAdminApiService;
@@ -88,6 +90,7 @@ export class SelectionTransactionForToteExtendComponent implements OnInit {
       transactionQuantity               : new FormControl('', Validators.compose([])),
       warehouse                         : new FormControl('', Validators.compose([])),
       returnToStock                     : new FormControl(false, Validators.compose([])),
+      blindInduct                       : new FormControl('', Validators.compose([])),
 
       // Item Info
       supplierItemID                    : new FormControl('', Validators.compose([])),
@@ -137,6 +140,7 @@ export class SelectionTransactionForToteExtendComponent implements OnInit {
     this.getDetails();
     this.imPreferences = this.global.getImPreferences();
     this.pickToteSetupIndex();
+    
   }
 
   ngAfterViewInit(): void {
@@ -147,6 +151,34 @@ export class SelectionTransactionForToteExtendComponent implements OnInit {
     this.iAdminApiService.ColumnAlias().subscribe((res: any) => {
       if (res.data && res.isExecuted) this.fieldNames = res.data;
       else this.global.ShowToastr(ToasterType.Error, this.global.globalErrorMsg(), ToasterTitle.Error);
+    });
+  }
+
+
+  public blindInduction() {
+    // Call the AdminCompanyInfo API to get the blindInductionReason
+    this.iAdminApiService.AdminCompanyInfo().subscribe((res: any) => {
+      if (res.data && res.isExecuted) {
+        this.blindInductionReason = res.data.requireHotReasons;
+        
+        // If blindInductionReason is true, call getBlindInductionTable
+        if (this.blindInductionReason) {
+          this.getBlindInductionTable();
+        }
+      } else {
+        // Handle error if the API response is not executed successfully
+        this.global.ShowToastr(ToasterType.Error, this.global.globalErrorMsg(), ToasterTitle.Error);
+      }
+    });
+  }
+
+  getBlindInductionTable() {
+    this.iAdminApiService.getLookupTableData("BlindInduct").subscribe(res => {
+      if (res.isExecuted) {
+        this.blindInductOptions = res.data;
+      } else {
+        this.global.ShowToastr(ToasterType.Error, this.global.globalErrorMsg(), ToasterTitle.Error);
+      }
     });
   }
 
@@ -600,6 +632,7 @@ export class SelectionTransactionForToteExtendComponent implements OnInit {
   }
 
   completeTransaction() {
+    debugger
     try {
       const values = this.toteForm.value;
       if (!this.validationPopups({...values, type : 1})) return;
@@ -686,6 +719,7 @@ export class SelectionTransactionForToteExtendComponent implements OnInit {
   }
 
   taskComplete(values : any) {
+    debugger
     let payload2 = {
       "otid": this.data.otid,
       "splitQty": values.splitQty || 0,
@@ -712,6 +746,7 @@ export class SelectionTransactionForToteExtendComponent implements OnInit {
       "reel": false,
       "dedicate": values.dedicated,
       "orderNumber": values.orderNumber,
+      "reasonCode":values.blindInduct
     }
 
     this.iInductionManagerApi.TaskComplete(payload2).subscribe(
@@ -844,6 +879,7 @@ export class SelectionTransactionForToteExtendComponent implements OnInit {
 
       toteQty                           : this.data.defaultPutAwayQuantity
     });
+    this.blindInduction();
   }
 
   selectTotePosOrID(col : string, value : string) {

@@ -2067,4 +2067,19 @@ export class ApiFuntions {
   public AddCompleteTransaction(body) {
     return this.ApiBase.Post(`/Admin/addcompletetransaction`, body);
   }
+
+  public getLookupTableData(paramName: any): Observable<any> {
+    return this.ApiBase.Get(`/Admin/lookup/${paramName}`);
+  }
+
+  public updateLookupTableData(body: any): Observable<any> {
+    return this.ApiBase.Put("/Admin/lookup/update", body);
+  }
+  public createLookupTableData(body: any): Observable<any> {
+    return this.ApiBase.Post("/Admin/lookup/create", body);
+  }
+
+  public deleteLookupTableData(paramName: any): Observable<any> {
+    return this.ApiBase.Delete(`/Admin/lookup/delete/${paramName}`);
+  }
 }
