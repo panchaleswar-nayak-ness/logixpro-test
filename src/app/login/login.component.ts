@@ -130,49 +130,70 @@ export class LoginComponent {
     const isSpace = (control.value || '').match(/\s/g);
     return isSpace ? { 'whitespace': true } : null;
   }
-
+ 
   loginUser() {
     this.loader.show();
-    this.addLoginForm.username = this.addLoginForm.username?.replace(/\s/g, "")||null;
-    this.addLoginForm.password = this.addLoginForm.password?.replace(/\s/g, "")||null;
-    this.login = this.addLoginForm;
-    this.iUserApi
-      .login(this.login)
-      .subscribe((response: ApiResponse<any>) => {
-        const exe = response.isExecuted
-        if (exe == true) {
-          let data = {
-            '_token': response.data.token,
-            'userName': response.data.userName,
-            'accessLevel': response.data.accessLevel,
-            'wsid': response.data.wsid,
-            'loginTime': response.data.loginTime,
-          }
-          let userRights = response.data.userRights;
-          userRights = this.addCustomPermission(userRights);
-          localStorage.setItem('user', JSON.stringify(data));
-          localStorage.setItem('userRights', JSON.stringify(userRights));
-       
-          this.getAppLicense(response.data.wsid); 
-          if(localStorage.getItem('LastRoute')){  
-              let url =   '/#'+localStorage.getItem('LastRoute');
-              window.location.href = url;
-              window.location.reload();            
-          } else {
-            window.location.href = "/#/dashboard"
-            window.location.reload();
-          }
-        }
-        else {
-          const errorMessage = response.responseMessage;
-          this.global.ShowToastr(ToasterType.Error,errorMessage?.toString(), ToasterTitle.Error);
-          console.log("login",response.responseMessage);
-        }
-
-
-      });
+    this.cleanLoginForm();
+  
+    this.iUserApi.login(this.login).subscribe((response: ApiResponse<any>) => {
+      const { isExecuted, data } = response;
+      const validity = data?.passwordValidity?.item1;
+      const errorMessage = data?.passwordValidity?.item2;
+  
+      if (!isExecuted || [400, 500].includes(validity)) {
+        return this.handleLoginFailure(response.responseMessage);
+      }
+  
+      switch (validity) {
+        case 100:
+          return this.handleLoginSuccess(response, errorMessage?.toString());
+        case 200:
+        case 0:
+          return this.handleLoginSuccess(response);
+        case 300:
+          return this.global.ShowToastr(ToasterType.Error, errorMessage?.toString(), ToasterTitle.Error);
+        default:
+          return this.handleLoginFailure(errorMessage);
+      }
+    });
   }
- 
+  
+  cleanLoginForm() {
+    this.addLoginForm.username = this.addLoginForm.username?.replace(/\s/g, "") || null;
+    this.addLoginForm.password = this.addLoginForm.password?.replace(/\s/g, "") || null;
+    this.login = this.addLoginForm;
+  }
+  
+  handleLoginSuccess(response: ApiResponse<any>, errorMessage: string = "") {
+    this.setLoginDatainLocalStorage(response,errorMessage);
+    this.getAppLicense(response.data.wsid);
+  
+      const lastRoute = localStorage.getItem('LastRoute');
+      const url = lastRoute ? `/#${lastRoute}` : "/#/dashboard";
+      window.location.href = url;
+      window.location.reload();
+  }
+  
+  handleLoginFailure(message: string) {
+    this.global.ShowToastr(ToasterType.Error, message?.toString(), ToasterTitle.Error);
+    console.log("login", message);
+  }
+  
+ setLoginDatainLocalStorage(response: any, errorMessage: string = ""){
+  let data = {
+    '_token': response.data.token,
+    'userName': response.data.userName,
+    'accessLevel': response.data.accessLevel,
+    'wsid': response.data.wsid,
+    'loginTime': response.data.loginTime,
+    'alertmsg': errorMessage
+  }
+  let userRights = response.data.userRights;
+  userRights = this.addCustomPermission(userRights);
+  localStorage.setItem('user', JSON.stringify(data));
+  localStorage.setItem('userRights', JSON.stringify(userRights));
+
+ }
   CompanyInfo(){
     this.iUserApi.CompanyInfo().subscribe((response: any) => {
       if (response.isExecuted && response.data) {

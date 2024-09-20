@@ -56,6 +56,10 @@ export class EmployeesLookupComponent implements OnInit {
       .subscribe((response: any) => {
         if (response.isExecuted && response.data) {
           this.employee_data_source = new MatTableDataSource(response.data.employees);
+          if (response.data.passwordExpiryMessage.item1 == 100){
+            this.global.ShowToastr(ToasterType.Info,response.data.passwordExpiryMessage.item2 , ToasterTitle.Alert);
+          }
+
         }
         else {
           this.global.ShowToastr(ToasterType.Error, this.global.globalErrorMsg(), ToasterTitle.Error);
