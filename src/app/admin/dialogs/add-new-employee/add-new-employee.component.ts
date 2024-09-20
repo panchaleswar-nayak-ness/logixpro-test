@@ -155,7 +155,7 @@ ChangePassword(data){
             }
             else {
               
-              this.global.ShowToastr(ToasterType.Error,res.responseMessage?.toString() + '. User already exists.', ToasterTitle.Error);
+              this.global.ShowToastr(ToasterType.Error,res.responseMessage?.toString(), ToasterTitle.Error);
               console.log("updateAdminEmployee",res.responseMessage);
             }
           });
@@ -172,7 +172,7 @@ ChangePassword(data){
             else if(response.responseMessage?.toString() === 'User already exists'){
                 this.global.ShowToastr(ToasterType.Error,response.responseMessage, ToasterTitle.Error);
               } else{
-                this.global.ShowToastr(ToasterType.Error,response.responseMessage?.toString() + '. User already exists.',ToasterTitle.Error);
+                this.global.ShowToastr(ToasterType.Error,response.responseMessage?.toString() ,ToasterTitle.Error);
               }
           });
       }
