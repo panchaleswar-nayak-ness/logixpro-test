@@ -20,7 +20,7 @@ export class BatchManagerComponent implements OnInit {
   public iAdminApiService: IAdminApiService;
   orderList: any;
   transTypeEvent: Event;
-  displayOrderCols: string[] = [UniqueConstants.OrderNumber, "countOfOrderNumber", "minOfPriority", "detail", ColumnDef.Action];
+  displayOrderCols: string[] = ["status", UniqueConstants.OrderNumber, "countOfOrderNumber", "minOfPriority", "detail", ColumnDef.Action];
   selOrderList: any = [];
   type: any;
   isAutoBatch = false;
