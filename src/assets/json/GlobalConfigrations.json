@@ -229,7 +229,7 @@
     },
     {
         "path": "/MarkoutProcess",
-        "Permission": "Markout"
+        "Permission": "MarkoutProcess"
     },
     {
         "path": "/MarkoutProcess/Preferences",

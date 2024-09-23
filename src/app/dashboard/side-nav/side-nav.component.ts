@@ -117,7 +117,7 @@ export class SideNavComponent implements OnInit {
   ];
 
   markOutMenus: any = [
-    { icon: 'arrow_back', title: 'Markout Process', route: AppRoutes.Markout, class: UniqueConstants.backClass, permission: 'Markout' },
+    { icon: 'arrow_back', title: 'Markout Process', route: AppRoutes.Markout, class: UniqueConstants.backClass, permission: 'MarkoutProcess' },
     { icon: 'schema', title: 'Markout', route: '/MarkoutProcess/Markout', permission: 'Markout Process' },
     { icon: 'tune', title: 'Preferences ', route: '/MarkoutProcess/Preferences', permission: 'Markout Preferences' },
   ];

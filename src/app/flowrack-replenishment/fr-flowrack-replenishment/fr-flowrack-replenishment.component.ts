@@ -387,12 +387,12 @@ export class FrFlowrackReplenishmentComponent implements OnInit {
         permission: AppPermissions.ImportExport,
       },
       {
-        appName: AppNames.Markout,
+        appName: AppNames.MarkoutProcess,
         route: AppRoutes.Hash,
         iconName: AppIcons.ManageAccounts,
-        name: RouteNames.Markout,
+        name: RouteNames.MarkoutProcess,
         updateMenu: RouteUpdateMenu.Empty,
-        permission: AppPermissions.Markout,
+        permission: AppPermissions.MarkoutProcess,
       },
       {
         appName: AppNames.OrderManager,

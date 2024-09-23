@@ -348,12 +348,12 @@ export class LoginComponent {
         permission: AppPermissions.ImportExport,
       },
       {
-        appName: AppNames.Markout,
+        appName: AppNames.MarkoutProcess,
         route: '#',
         iconName: 'manage_accounts',
-        name: RouteNames.Markout,
+        name: RouteNames.MarkoutProcess,
         updateMenu: RouteUpdateMenu.Empty,
-        permission: AppPermissions.Markout,
+        permission: AppPermissions.MarkoutProcess,
       },
       {
         appName: AppNames.OrderManager,
@@ -460,7 +460,7 @@ export class LoginComponent {
         case 'Induction':
           this.router.navigate(['/InductionManager']);
           break;
-        case 'Markout':
+        case 'MarkoutProcess':
           this.router.navigate(['/#']);
             break;
          case AppNames.OrderManager:
@@ -499,7 +499,7 @@ export class LoginComponent {
       AppPermissions.AdminMenu,
       AppPermissions.BulkTransactions,
       AppPermissions.FlowRackReplenish,
-      AppPermissions.Markout,
+      AppPermissions.MarkoutProcess,
       AppPermissions.Dashboard,
       AppPermissions.Home
     ];

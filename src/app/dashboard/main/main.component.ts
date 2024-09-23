@@ -195,12 +195,12 @@ export class MainComponent implements OnInit {
         permission: AppPermissions.ImportExport
       },
       {
-        appName: AppNames.Markout,
+        appName: AppNames.MarkoutProcess,
         route: '/MarkoutProcess',
         iconName: 'manage_accounts',
-        name: RouteNames.Markout,
+        name: RouteNames.MarkoutProcess,
         updateMenu: RouteUpdateMenu.MarkoutProcess,
-        permission: AppPermissions.Markout,
+        permission: AppPermissions.MarkoutProcess,
       },
       {
         appName: AppNames.OrderManager,
