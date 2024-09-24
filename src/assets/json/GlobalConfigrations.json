@@ -45,7 +45,8 @@
     },
     {
         "path": "/admin/Reports",
-        "Permission": "Reports"
+        "Permission": "Reports",
+         "Permission": "Tote Reports"
     },
     {
         "path": "/admin/reports/utilizationDashboard",
@@ -133,7 +134,7 @@
     },
     {
         "path": "/InductionManager/SuperBatch",
-        "Permission": "Induction Super Batch"
+        "Permission": "Tote Transactions"
     },
     {
         "path": "/OrderManager",
@@ -185,19 +186,23 @@
     },
     {
         "path": "/InductionManager/Admin/InventoryMap",
-        "Permission": "Induction Manager"
+        "Permission": "Induction Manager",
+        "Permission": "Tote Inventory Map"
     },
     {
         "path": "/InductionManager/Admin/InventoryMaster",
-        "Permission": "Induction Manager"
+        "Permission": "Induction Manager",
+        "Permission": "Tote Inventory"
     },
     {
         "path": "/InductionManager/Admin/ManualTransactions",
-        "Permission": "Induction Manager"
+        "Permission": "Induction Manager",
+        "Permission": "Tote Manual Transactions"
     },
     {
         "path": "/InductionManager/Admin/ToteTransactionManager",
-        "Permission": "Induction Manager"
+        "Permission": "Induction Manager",
+        "Permission": "Tote Batch Manager"
     },
     {
         "path": "/InductionManager/Admin/ImToteManager",
@@ -205,11 +210,13 @@
     },
     {
         "path": "/InductionManager/Admin/TransactionJournal",
-        "Permission": "Induction Manager"
+        "Permission": "Induction Manager",
+        "Permission": "Tote Transaction Journal"
     },
     {
         "path": "/InductionManager/Admin/AdminPrefrences",
-        "Permission": "Induction Manager"
+        "Permission": "Induction Manager",
+        "Permission": "Tote Preferences"
     },
     {
         "path": "/InductionManager/Admin/Reports",

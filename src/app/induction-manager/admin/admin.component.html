@@ -2,7 +2,8 @@
     <div class="container-fluid">
       <div class="row g-4">
         <!-- Main Section Option (Import Export) -->
-        <div class="col-xl-3 col-lg-6">
+        <div class="col-xl-3 col-lg-6"
+        [ngClass]="isAuthorized('Tote Inventory Map') ? 'isDivDisabled' : ''">
           <div matRipple 
             [matRippleColor]="tab_hover_color" 
             class="main-section-option"  
@@ -20,7 +21,8 @@
         </div>
   
         <!-- Main Section Option (Admin) -->
-        <div class="col-xl-3 col-lg-6">
+        <div class="col-xl-3 col-lg-6"
+        [ngClass]="isAuthorized('Tote Inventory') ? 'isDivDisabled' : ''">
           <div matRipple 
             [matRippleColor]="tab_hover_color" 
             class="main-section-option" 
@@ -36,7 +38,8 @@
         </div>
   
         <!-- Main Section Option (Induction Manager) -->
-        <div class="col-xl-3 col-lg-6 ">
+        <div class="col-xl-3 col-lg-6 "
+        [ngClass]="isAuthorized('Tote Batch Manager') ? 'isDivDisabled' : ''">
           <div matRipple [matRippleColor]="tab_hover_color"
            class="main-section-option"
            (click)="updateMenu('transaction-admin', '/InductionManager/Admin/ToteTransactionManager')"
@@ -53,7 +56,8 @@
         </div>
   
         <!-- Main Section Option (Work Manager) -->
-        <div class="col-xl-3 col-lg-6">
+        <div class="col-xl-3 col-lg-6"
+        [ngClass]="isAuthorized('Tote Manual Transactions') ? 'isDivDisabled' : ''">
           <div matRipple 
             [matRippleColor]="tab_hover_color" 
             class="main-section-option" 
@@ -91,7 +95,8 @@
         </div>
   
         <!-- Main Section Option (Consolidation Manager) -->
-        <div class="col-xl-3 col-lg-6" routerLink="/admin/transaction">
+        <div class="col-xl-3 col-lg-6" routerLink="/admin/transaction"
+        [ngClass]="isAuthorized('Tote Transaction Journal')? 'isDivDisabled' : ''">
           <div matRipple 
               [matRippleColor]="tab_hover_color" 
               class="main-section-option" 
@@ -108,7 +113,8 @@
         </div>
   
         <!-- Main Section Option (Order Manager) -->
-        <div class="col-xl-3 col-lg-6 ">
+        <div class="col-xl-3 col-lg-6 "
+        [ngClass]="isAuthorized('Tote Reports') ? 'isDivDisabled' : ''">
           <div matRipple [matRippleColor]="tab_hover_color" 
           (click)="updateMenu('transaction-admin', '/InductionManager/Admin/Reports')"
            routerLink="Reports" class="main-section-option">
@@ -122,7 +128,8 @@
           </div>
         </div>
 
-        <div class="col-xl-3 col-lg-6">
+        <div class="col-xl-3 col-lg-6"
+        [ngClass]="isAuthorized('Tote Preferences')? 'isDivDisabled' : ''">
             <div matRipple [matRippleColor]="tab_hover_color" class="main-section-option" routerLink="/InductionManager/Admin/AdminPrefrences">
               <div class="main-section-icon">
                 <span class="material-symbols-outlined">

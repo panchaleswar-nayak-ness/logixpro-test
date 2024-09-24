@@ -67,7 +67,7 @@ export class SideNavComponent implements OnInit {
     { icon: 'manage_accounts', title: 'Admin', route: '/InductionManager/Admin', permission: 'Tote Admin Menu' },
     { icon: 'edit_attributes', title: 'Mark Empty Reels', route: '/InductionManager/MarkEmptyReels', permission: 'Induction Mark Empty Reels' },
     { icon: 'linear_scale', title: 'Pallet Receiving', route: '/InductionManager/PalletReceiving', permission: 'Induction Pallet Receiving' },
-    { icon: 'line_style', title: 'Super Batch', route: '/InductionManager/SuperBatch', permission: 'Induction Super Batch' },
+    { icon: 'line_style', title: 'Super Batch', route: '/InductionManager/SuperBatch', permission: 'Tote Transactions' },
     { icon: 'library_add_check', title: 'Complete Pick Batch', route: '/InductionManager/CompletePickBatch', permission: AppPermissions.InductionManager },
     { icon: 'conveyor_belt', title: 'Pick Tote Induction', route: '/InductionManager/PickToteInduction', permission: AppPermissions.InductionManager  },
   ];
@@ -84,14 +84,14 @@ export class SideNavComponent implements OnInit {
   ];
   inductionAdminMenus: any = [
     { icon: 'arrow_back', title: 'Admin', route: '/InductionManager', class: UniqueConstants.backClass, permission: AppPermissions.InductionManager },
-    { icon: ' directions_alt', title: 'Inventory Map', route: '/InductionManager/Admin/InventoryMap', permission: AppPermissions.InductionManager },
-    { icon: ' dashboard ', title: 'Inventory ', route: '/InductionManager/Admin/InventoryMaster', permission: AppPermissions.InductionManager },
-    { icon: ' inventory_2 ', title: 'Tote Transaction Manager ', route: '/InductionManager/Admin/ToteTransactionManager', permission: AppPermissions.InductionManager },
-    { icon: 'ads_click   ', title: 'Manual Transactions ', route: '/InductionManager/Admin/ManualTransactions', permission: AppPermissions.InductionManager },
+    { icon: ' directions_alt', title: 'Inventory Map', route: '/InductionManager/Admin/InventoryMap', permission: 'Tote Inventory Map' },
+    { icon: ' dashboard ', title: 'Inventory ', route: '/InductionManager/Admin/InventoryMaster', permission:'Tote Inventory'},
+    { icon: ' inventory_2 ', title: 'Tote Transaction Manager ', route: '/InductionManager/Admin/ToteTransactionManager', permission: 'Tote Batch Manager' },
+    { icon: 'ads_click   ', title: 'Manual Transactions ', route: '/InductionManager/Admin/ManualTransactions', permission: 'Tote Manual Transactions' },
     { icon: 'elevator   ', title: 'Tote Manager ', route: '/InductionManager/Admin/ImToteManager', permission: AppPermissions.InductionManager },
-    { icon: 'post_add ', title: 'Transaction Journal ', route: '/InductionManager/Admin/TransactionJournal', permission: AppPermissions.InductionManager },
-    { icon: '     analytics     ', title: 'Reports ', route: '/InductionManager/Admin/Reports', permission: AppPermissions.InductionManager },
-    { icon: '      tune       ', title: 'Preferences ', route: '/InductionManager/Admin/AdminPrefrences', permission: AppPermissions.InductionManager },
+    { icon: 'post_add ', title: 'Transaction Journal ', route: '/InductionManager/Admin/TransactionJournal', permission: 'Tote Transaction Journal'},
+    { icon: '     analytics     ', title: 'Reports ', route: '/InductionManager/Admin/Reports', permission: 'Tote Reports' },
+    { icon: '      tune       ', title: 'Preferences ', route: '/InductionManager/Admin/AdminPrefrences', permission: 'Tote Preferences' },
   ];
   orderManagerMenus: any = [
     { icon: 'arrow_back', title: AppPermissions.OrderManager, route: AppRoutes.Dashboard, class: UniqueConstants.backClass, permission: AppPermissions.OrderManager },
