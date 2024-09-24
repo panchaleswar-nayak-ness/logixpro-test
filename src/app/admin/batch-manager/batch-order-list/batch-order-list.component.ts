@@ -195,4 +195,25 @@ export class BatchOrderListComponent implements OnInit {
   ngOnDestroy() {
     this.subscription.unsubscribe();
   }
+
+  checkOrderStatus(order: any): string {
+    if (order.isReprocess === false) {
+        return 'Open';
+    } else {
+        return 'Re-process';
+    }
+}
+
+
+getColors(order: any): string {
+  if ( order.isReprocess === false) {
+      return 'background-color: #FFF0D6;color:#4D3B1A';
+  } 
+  else {
+    return 'background-color:   #F7D0DA;color:#4D0D1D';
+      
+  }
+}
+
+
 }

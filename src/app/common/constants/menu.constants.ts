@@ -1,7 +1,7 @@
-export type AppName = 'ICSAdmin' | 'Consolidation Manager' | 'Induction' | 'InductionManager' | 'FlowRackReplenish' | 'BulkTransactions' | 'ImportExport' | 'Markout' | 'OrderManager' | 'WorkManager'
-export type RouteName = 'Admin' | 'Consolidation Manager' | 'Induction Manager' | 'FlowRack Replenishment' | 'Bulk Transactions' | 'Import Export' | 'Markout' | 'Order Manager' | 'Work Manager'
+export type AppName = 'ICSAdmin' | 'Consolidation Manager' | 'Induction' | 'InductionManager' | 'FlowRackReplenish' | 'BulkTransactions' | 'ImportExport' | 'MarkoutProcess' | 'OrderManager' | 'WorkManager'
+export type RouteName = 'Admin' | 'Consolidation Manager' | 'Induction Manager' | 'FlowRack Replenishment' | 'Bulk Transactions' | 'Import Export' | 'MarkoutProcess' | 'Order Manager' | 'Work Manager'
 export type RouteMenu = 'admin' | 'consolidation' | 'induction' | '' | 'orderManager' | 'transaction-admin' | 'FlowReplenishment' | 'BulkTransactions' | 'routeFromInduction' | 'MarkoutProcess'
-export type AppPermission = 'Admin Menu' | 'Consolidation Manager' | 'Induction Manager' | 'FlowRack Replenish' | 'Bulk Transactions' | 'Import Export' | 'Markout' | 'Order Manager' | 'Work Manager' | 'Order Status' | 'Home' | 'Dashboard'
+export type AppPermission = 'Admin Menu' | 'Consolidation Manager' | 'Induction Manager' | 'FlowRack Replenish' | 'Bulk Transactions' | 'Import Export' | 'MarkoutProcess' | 'Order Manager' | 'Work Manager' | 'Order Status' | 'Home' | 'Dashboard'
 
 export const RouteNames: {
     Admin: RouteName;
@@ -10,7 +10,7 @@ export const RouteNames: {
     FlowRackReplenishment: RouteName;
     BulkTransactions: RouteName;
     ImportExport: RouteName;
-    Markout: RouteName;
+    MarkoutProcess: RouteName;
     OrderManager: RouteName;
     WorkManager: RouteName;
 } = {
@@ -20,7 +20,7 @@ export const RouteNames: {
     FlowRackReplenishment: 'FlowRack Replenishment',
     BulkTransactions: 'Bulk Transactions',
     ImportExport: 'Import Export',
-    Markout: 'Markout',
+    MarkoutProcess: 'MarkoutProcess',
     OrderManager: 'Order Manager',
     WorkManager: 'Work Manager'
 }
@@ -68,7 +68,7 @@ export const AppNames: {
     FlowRackReplenish: AppName;
     BulkTransactions: AppName;
     ImportExport: AppName;
-    Markout: AppName;
+    MarkoutProcess: AppName;
     OrderManager: AppName;
     WorkManager: AppName;
 } = {
@@ -79,7 +79,7 @@ export const AppNames: {
     FlowRackReplenish: 'FlowRackReplenish',
     BulkTransactions: 'BulkTransactions',
     ImportExport: 'ImportExport',
-    Markout: 'Markout',
+    MarkoutProcess: 'MarkoutProcess',
     OrderManager: 'OrderManager',
     WorkManager: 'WorkManager'
 }
@@ -119,7 +119,7 @@ export const AppPermissions: {
     FlowRackReplenish: AppPermission;
     BulkTransactions: AppPermission;
     ImportExport: AppPermission;
-    Markout: AppPermission;
+    MarkoutProcess: AppPermission;
     OrderManager: AppPermission;
     WorkManager: AppPermission;
     OrderStatus: AppPermission;
@@ -132,7 +132,7 @@ export const AppPermissions: {
     FlowRackReplenish: 'FlowRack Replenish',
     BulkTransactions: 'Bulk Transactions',
     ImportExport: 'Import Export',
-    Markout: 'Markout',
+    MarkoutProcess: 'MarkoutProcess',
     OrderManager: 'Order Manager',
     WorkManager: 'Work Manager',
     OrderStatus: 'Order Status',

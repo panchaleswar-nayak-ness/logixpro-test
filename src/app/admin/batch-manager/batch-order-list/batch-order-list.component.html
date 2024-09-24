@@ -53,6 +53,17 @@
       <ng-scrollbar class="mat-table-scrollbar scrollbar-hover-padding count-table-scrollbar" track="all">
       <table mat-table [dataSource]="batchOrderDataTable" matSort class="w-100 table-fix">
 
+        <!-- Status Column -->
+        <ng-container matColumnDef="status" sticky>
+          <th mat-header-cell *matHeaderCellDef mat-sort-header
+            sortActionDescription="Sort by status"> Status </th>
+          <td mat-cell *matCellDef="let element">
+            <div class="d-flex align-items-center ">
+              <span class="br-14  label px-3 f-16" [style]="getColors(element)" >{{checkOrderStatus(element)}}</span>
+            </div> 
+          </td>
+        </ng-container>
+
         <!-- Position Column -->
         <ng-container matColumnDef="orderNumber">
           <th mat-header-cell *matHeaderCellDef mat-sort-header
