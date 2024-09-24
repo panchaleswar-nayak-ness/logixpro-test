@@ -445,6 +445,13 @@ export class VerifyBulkComponent implements OnInit {
     }
   }
 
+  printTote(index) {
+    const transactionType = this.url;
+    let orderNumber = [this.orderLines.filteredData[index]['orderNumber']];
+    let toteId = [this.orderLines.filteredData[index]['toteId']];
+    this.iAdminApiService.PrintTotes(orderNumber, toteId, transactionType, index);
+  }
+
 
   @ViewChild('tooltip') tooltip: MatTooltip;
 
