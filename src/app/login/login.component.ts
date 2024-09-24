@@ -139,11 +139,13 @@ export class LoginComponent {
       const { isExecuted, data } = response;
       const validity = data?.passwordValidity?.item1;
       const errorMessage = data?.passwordValidity?.item2;
-  
-      if (!isExecuted || [400, 500].includes(validity)) {
+      if (!isExecuted) {
         return this.handleLoginFailure(response.responseMessage);
+      } else {
+        if ([400, 500].includes(validity)) {
+          return this.handleLoginFailure(errorMessage);
+        }
       }
-  
       switch (validity) {
         case 100:
           return this.handleLoginSuccess(response, errorMessage?.toString());
