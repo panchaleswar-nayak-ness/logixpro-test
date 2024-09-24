@@ -73,7 +73,7 @@ export class BmToteidEntryComponent implements OnInit {
     this.iAdminApiService.PrintTotes(orderNumbers, toteIds,this.data.type);
   }
   printTote(index) {
-    let orderNumber = [this.selectedList[index]['toteId']];
+    let orderNumber = [this.selectedList[index]['orderNumber']];
     let toteId = [this.selectedList[index]['toteId']];
     this.iAdminApiService.PrintTotes(orderNumber, toteId, this.data.type, index);
   }
