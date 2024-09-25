@@ -112,7 +112,6 @@ export class LoginComponent {
       this.global.setCookie("WSName", res, 525600);
       this.workstationD = true;
     }
-    
   });
   }
 
