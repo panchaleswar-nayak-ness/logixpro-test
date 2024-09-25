@@ -122,7 +122,6 @@ export class LicensingComponent implements OnInit {
     this.dataSource = new MatTableDataSource(arrayOfObjects);
   }
   saveLicense(item) {
-
     let payload = {
       LicenseString: item.license,
       AppUrl:item.appurl,
@@ -177,10 +176,10 @@ export class LicensingComponent implements OnInit {
     newLicenceObj.displayname = '';
     newLicenceObj.license = '';
     newLicenceObj.numlicense = '';
-    newLicenceObj.status = true;
+    newLicenceObj.status = 'Invalid';
     newLicenceObj.appurl = '';
     newLicenceObj.isButtonDisable = true;
-    newLicenceObj.isNewConn = true;
+    newLicenceObj.isNewRow = true; // Mark this as a new row
     return newLicenceObj;
   }
 }
