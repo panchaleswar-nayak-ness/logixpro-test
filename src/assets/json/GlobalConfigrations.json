@@ -126,7 +126,8 @@
     },
     {
         "path": "/InductionManager/PickToteInduction",
-        "Permission": "Induction Manager"
+        "Permission": "Induction Manager",
+        "Permission": "Induction Super Batch"
     },
     {
         "path": "/InductionManager/ProcessPutAways",

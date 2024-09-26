@@ -69,7 +69,7 @@ export class SideNavComponent implements OnInit {
     { icon: 'linear_scale', title: 'Pallet Receiving', route: '/InductionManager/PalletReceiving', permission: 'Induction Pallet Receiving' },
     { icon: 'line_style', title: 'Super Batch', route: '/InductionManager/SuperBatch', permission: 'Tote Transactions' },
     { icon: 'library_add_check', title: 'Complete Pick Batch', route: '/InductionManager/CompletePickBatch', permission: AppPermissions.InductionManager },
-    { icon: 'conveyor_belt', title: 'Pick Tote Induction', route: '/InductionManager/PickToteInduction', permission: AppPermissions.InductionManager  },
+    { icon: 'conveyor_belt', title: 'Pick Tote Induction', route: '/InductionManager/PickToteInduction', permission: 'Induction Super Batch'  },
   ];
   consolidationMenus: any = [
     { icon: 'arrow_back', title: AppPermissions.ConsolidationManager, route: '/ConsolidationManager', class: UniqueConstants.backClass, permission: AppPermissions.ConsolidationManager },
