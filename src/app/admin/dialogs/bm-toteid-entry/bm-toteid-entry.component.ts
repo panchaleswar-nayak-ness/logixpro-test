@@ -88,13 +88,12 @@ export class BmToteidEntryComponent implements OnInit {
       return;
     }
 
-    this.bulkProcessApiService.BatchNextTote(this.selectedList.length + 1).then((res) => {
+    this.bulkProcessApiService.BatchNextTote(this.selectedList.length).then((res) => {
       this.nextToteID = res.body?.nextId;
       this.selectedList.forEach((element, i) => {
         this.selectedList[i].IsTote = false;
         this.selectedList[i].IsError = false;
-        this.selectedList[i]['toteId'] =
-          parseInt(this.nextToteID) + i + 1;
+        this.selectedList[i]['toteId'] = i == 0 ? parseInt(this.nextToteID) : parseInt(this.nextToteID) + i;
       });
     });
   }
