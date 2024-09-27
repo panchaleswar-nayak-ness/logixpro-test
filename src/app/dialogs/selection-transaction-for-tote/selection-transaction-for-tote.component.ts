@@ -7,6 +7,8 @@ import { InductionManagerApiService } from 'src/app/common/services/induction-ma
 import { GlobalService } from 'src/app/common/services/global.service';
 import {  ResponseStrings ,ToasterMessages,ToasterTitle,ToasterType,DialogConstants,Style,ColumnDef} from 'src/app/common/constants/strings.constants';
 import { ApiResponse, ColumnAlias, OpenTransactions } from 'src/app/common/types/CommonTypes';
+import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.service';
+import { IAdminApiService } from 'src/app/common/services/admin-api/admin-api-interface';
 
 interface TransactionForToteResponse {
   inputType: string;
@@ -41,23 +43,28 @@ export class SelectionTransactionForToteComponent implements OnInit {
   fieldNames : ColumnAlias; 
   lowerBound : number = 1;
   upperBound : number = 5; 
+  blindInductionReason:boolean = false
 
   showBtnNewPutAwayForSameSKU : boolean = true;
   
   public iInductionManagerApi: IInductionManagerApiService;
+  public iAdminApiService : IAdminApiService;
 
   constructor(
     private global: GlobalService,
     public inductionManagerApi: InductionManagerApiService,
     public dialogRef: MatDialogRef<SelectionTransactionForToteComponent>,
+    public adminApiService: AdminApiService,
     @Inject(MAT_DIALOG_DATA) public data: any
   ) { 
     this.iInductionManagerApi = inductionManagerApi;
+    this.iAdminApiService = adminApiService;
   }
 
   ngOnInit(): void {
     this.setData();
     this.getTransactions();
+    this.blindInduction();
   }
 
   setData(){
@@ -203,8 +210,21 @@ export class SelectionTransactionForToteComponent implements OnInit {
       }
     );
   }
+  public blindInduction() {
+    // Call the AdminCompanyInfo API to get the blindInductionReason
+    this.iAdminApiService.AdminCompanyInfo().subscribe((res: any) => {
+      if (res.data && res.isExecuted) {
+        this.blindInductionReason = res.data.requireHotReasons;
+      } else {
+        // Handle error if the API response is not executed successfully
+        this.global.ShowToastr(ToasterType.Error, this.global.globalErrorMsg(), ToasterTitle.Error);
+      }
+    });
+  }
 
   openSelectionExtendDialogue() {
+
+  
     const dialogRef : any = this.global.OpenDialog(SelectionTransactionForToteExtendComponent, {
       height: DialogConstants.auto,
       width: Style.w100vw,
@@ -218,7 +238,8 @@ export class SelectionTransactionForToteComponent implements OnInit {
         totes       : this.data.totes,
         defaultPutAwayQuantity: this.data.defaultPutAwayQuantity,
         autoForwardReplenish: this.data.autoForwardReplenish,
-        imPreference: this.data.imPreference
+        imPreference: this.data.imPreference,
+        blindInductionReason: this.blindInductionReason
       }
     });
 

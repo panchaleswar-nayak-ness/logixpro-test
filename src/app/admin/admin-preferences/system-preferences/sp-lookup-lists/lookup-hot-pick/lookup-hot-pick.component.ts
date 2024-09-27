@@ -168,7 +168,6 @@ hasChanges(element, i) {
   
 
   deleteHotPick(ele) {
-    debugger
     const dialogRef: any = this.global.OpenDialog(DeleteConfirmationComponent, {
       height: 'auto',
       width: Style.w600px,
@@ -181,7 +180,6 @@ hasChanges(element, i) {
     });
     dialogRef.afterClosed().subscribe((res) => {
       if (res === ResponseStrings.Yes) {
-        debugger
        
         this.iAdminApiService.deleteLookupTableData(ele.id).subscribe((res => {
           if (res.isExecuted) {
