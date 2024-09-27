@@ -1,5 +1,5 @@
 <div class="d-flex justify-content-center align-items-center" mat-dialog-title style="position: relative;">
-    <button mat-button  *ngIf="(wizardIndex != 0)" style="position: absolute; left: 0;" (click)="wizardIndex=wizardIndex-1">Back</button>
+    <!-- <button mat-button  *ngIf="(wizardIndex != 0)" style="position: absolute; left: 0;" (click)="wizardIndex=wizardIndex-1">Back</button> -->
     <h1 class="m-0" mat-dialog-title>New Workstation Setup</h1>
 </div>
 
@@ -7,16 +7,16 @@
 
 
 <div mat-dialog-content *ngIf="(wizardIndex == 0)">
-    <div class="p-2 d-flex br-8 mb-3" style="background-color: #f0f4f8;" *ngIf="!(errorMessage && (wsName && wsName == invalidWorkstationName))">
-        <mat-icon class="material-symbols-outlined" style="color: #1976d2;">info</mat-icon>
+    <div class="p-2 d-flex br-8 mb-3 label-blue3" *ngIf="!(errorMessage && (wsName && wsName == invalidWorkstationName))">
+        <mat-icon class="material-symbols-outlined">info</mat-icon>
         <div class="ps-2 w-100">
             <span>This workstation does not appear to be in our system and will need to be configured before using this site.</span><br>
         </div>
         
     </div>
 
-    <div class="p-2 d-flex br-8 mb-3" style="background-color: #e8eaf6;">
-        <mat-icon class="material-symbols-outlined" style="color: #1976d2;">warning</mat-icon>
+    <div class="p-2 d-flex br-8 mb-3 label-red">
+        <mat-icon class="material-symbols-outlined">warning</mat-icon>
         <div class="ps-2 w-100">
             <span >Cookies must be allowed for this site to work correctly. If you are sure that this workstation has already been configured, you might need to double check that cookies are not being cleared after closing the browser.</span>
         </div>
@@ -26,6 +26,9 @@
         <button mat-flat-button color="primary" class="btn-lg flex-grow-1"  (click)="wizardIndex=wizardIndex+1">
             Proceed
         </button>
+
+        
+            
        
     </div>
 </div>
@@ -37,7 +40,7 @@
     </div>
     <div class="row">
         <div class="col-xl-12">
-            <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline">
+            <mat-form-field class="custom-form-field action-dropdown w-100 mb-3" appearance="outline">
                 <mat-label>PC Name</mat-label>
                 <input #locFocus [(ngModel)]="wsName" matInput type="text" (ngModelChange)="inputChange()">
             </mat-form-field>
@@ -45,23 +48,25 @@
     </div>
 
 
-    <div class="d-flex gap-12 mb-1" mat-dialog-actions>
-        <button mat-flat-button color="primary" class="btn-lg flex-grow-1" [disabled]="!wsName" (click)="submit()">
+    <div class="d-flex flex-column gap-12 mb-1">
+        <button mat-flat-button color="primary" class="btn-lg w-100" [disabled]="!wsName" (click)="submit()">
             Submit
+        </button>
+        <button mat-stroked-button color="primary" class="btn-lg w-100"  (click)="wizardIndex=wizardIndex-1">Go Back</button>
+        <button mat-stroked-button color="primary" class="btn-lg w-100" (click)="wizardIndex=2">
+            Advanced Options
         </button>
     </div>
 
-    <button mat-button class="w-100" style="text-align: center; font-size: smaller;" (click)="wizardIndex=2">
-        Advanced Options
-    </button>
+    
 
     
 </div>  
 
 <div mat-dialog-content *ngIf="(wizardIndex == 2)">
     <!-- big fat warning -->
-    <div class="p-2 d-flex br-8 mb-3" style="background-color: #e8eaf6;">
-        <mat-icon class="material-symbols-outlined" style="color: #1976d2;">warning</mat-icon>
+    <div class="p-2 d-flex br-8 mb-3 label-red">
+        <mat-icon class="material-symbols-outlined">warning</mat-icon>
         <div class="ps-2 w-100">
             <span >WARNING: Selecting an existing workstation profile may result in unpredictable behavior and possible data corruption.</span>
         </div>
@@ -86,17 +91,17 @@
     </div>  
 
     <!-- we should also add a little checkbox/label to acknowledge the risks -->
-    <div class="d-flex align-items-center mb-3" style="margin-top: 20px;">
-        <mat-checkbox class="me-2" [(ngModel)]="acknowledgeRisks" color="primary"></mat-checkbox>
-        <span style="line-height: normal;">I acknowledge the risks and wish to proceed with an existing workstation profile.</span>
+    <div class="d-flex align-items-center mb-3 w-100" style="margin-top: 20px;">
+        <mat-checkbox [(ngModel)]="acknowledgeRisks" color="primary"><span class="text-wrap">I acknowledge the risks and wish to proceed with an existing workstation profile.</span></mat-checkbox>
     </div>
     
 
     <!--submit existing button-->
-    <div class="d-flex gap-12 mb-1" mat-dialog-actions>
-        <button mat-flat-button color="primary" class="btn-lg flex-grow-1" [disabled]="(!selectedWorkstation || !acknowledgeRisks)" (click)="submitExisting()">
+    <div class="d-flex flex-column gap-12 mb-1">
+        <button mat-flat-button color="primary" class="btn-lg w-100" [disabled]="(!selectedWorkstation || !acknowledgeRisks)" (click)="submitExisting()">
             Submit
         </button>
+        <button mat-stroked-button color="primary" class="btn-lg w-100"  (click)="wizardIndex=wizardIndex-1">Go Back</button>
     </div>
 </div>
 
