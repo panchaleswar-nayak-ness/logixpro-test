@@ -20,6 +20,8 @@ export class ConfirmationDialogComponent implements OnInit {
   customButtonText:boolean = false;
   btn1Text: string = '';
   btn2Text: string = '';
+  hideCancel:boolean=true;
+
   constructor(@Inject(MAT_DIALOG_DATA) public data: any,
   private global:GlobalService, 
    
@@ -35,6 +37,7 @@ export class ConfirmationDialogComponent implements OnInit {
     this.customButtonText = this.data?.customButtonText;
     this.btn1Text = this.data?.btn1Text;
     this.btn2Text = this.data?.btn2Text;
+    this.hideCancel=this.data?.hideCancel;
   }
 
   confirmOK()

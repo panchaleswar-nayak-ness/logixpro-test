@@ -404,12 +404,14 @@ export class InventoryMapComponent implements OnInit {
   }
 
   delete(event: any){ 
-    if(event.itemQuantity > 0){
+  if (event.itemQuantity > 0 || event.QuantityAllocatedPick > 0 || event.quantityAllocatedPutAway > 0) 
+    {
       this.global.OpenDialog(ConfirmationDialogComponent, {
         height: DialogConstants.auto,
-        width: Style.w786px,
+        width: Style.w560px,
         data: {
-          message: "This location currently has a positive item quantity and cannot be deleted.",
+          message: "This location currently has a positive item quantity or quantity is allocated and cannot be deleted",
+          hideCancel: true
         },
         autoFocus: DialogConstants.autoFocus
       });
