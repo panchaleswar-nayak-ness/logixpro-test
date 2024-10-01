@@ -76,6 +76,7 @@
                     <button [disabled]="element.status == 'Complete' ||element.status == 'Ship Short'"  mat-menu-item (click)="completeTrans(element)">Complete</button>
                     <button [disabled]="element.status == 'Complete' || element.status == 'Ship Short'" mat-menu-item (click)="shipShort(element)">Ship Short</button>
                     <button [disabled]="element.status == 'Complete' || element.status == 'Ship Short'" mat-menu-item (click)="showUpdateQTY(element)">Update Quantity</button>
+                    <button [disabled]="element.status == 'Complete'" mat-menu-item (click)="blossom(element)">Blossom</button>
                   </mat-menu>
                 </td>
               </ng-container>

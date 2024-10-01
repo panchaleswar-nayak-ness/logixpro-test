@@ -457,7 +457,8 @@ export const markoutdisplayedColumns = {
     CompQty:'compQty',
     ShortQty:'shortQty',
     ToteQty:'toteQty',
-    actions:'actions'
+    actions:'actions',
+    TotalQty:'totalQty'
     }
 
 

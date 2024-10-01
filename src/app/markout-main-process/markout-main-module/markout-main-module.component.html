@@ -1,7 +1,7 @@
 <div class="container-fluid p-0  h-auto">
     <div class="row g-3">
         <div class="col-xl-5">
-            <app-markout-search (toteIdEmitter)="handleToteId($event)"
+            <app-markout-search (toteIdEmitter)="handleToteId($event)" (viewChangeEmitter)="viewChange($event)"
                 [toteDataResponse]="toteDataResponse"></app-markout-search>
         </div>
         <div class="col-xl-7">
@@ -9,8 +9,8 @@
         </div>
         <div class="col-xl-12">
             <app-markout-list 
-            (updateTableEmitter)="getToteData()"
-            [toteDataResponse]="toteDataResponse"></app-markout-list>
+            (updateTableEmitter)="getToteData()" (toteIdEmitter)="handleToteId($event)"
+            [toteDataResponse]="toteDataResponse" [selectedView]="selectedView"></app-markout-list>
         </div>
     </div>
 </div>

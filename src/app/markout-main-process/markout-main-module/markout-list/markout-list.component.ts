@@ -25,7 +25,8 @@ import { GlobalService } from 'src/app/common/services/global.service';
 import { IMarkoutApiService } from 'src/app/common/services/markout-api/markout-api-interface';
 import { MarkoutApiService } from 'src/app/common/services/markout-api/markout-api-service';
 import { InputFilterComponent } from 'src/app/dialogs/input-filter/input-filter.component';
-import { MarkoutCompleteTransactionRequest, ToteData, ToteDataResponse, UpdateQuantityRequest } from '../models/markout-model';
+import { MarkoutCompleteTransactionRequest, MarkoutToteRequest, ToteData, ToteDataResponse, UpdateQuantityRequest } from '../models/markout-model';
+import { MoBlossomToteComponent } from '../dialogs/mo-blossom-tote/mo-blossom-tote.component';
 
 @Component({
   selector: 'app-markout-list',
@@ -33,6 +34,7 @@ import { MarkoutCompleteTransactionRequest, ToteData, ToteDataResponse, UpdateQu
   styleUrls: ['./markout-list.component.scss'],
 })
 export class MarkoutListComponent implements OnInit {
+
   displayedColumns: string[] = [
     markoutdisplayedColumns.Status,
     markoutdisplayedColumns.ToteID,
@@ -43,13 +45,14 @@ export class MarkoutListComponent implements OnInit {
     markoutdisplayedColumns.ShortQty,
     markoutdisplayedColumns.actions,
   ];
-
   public iMarkoutApiService: IMarkoutApiService;
   @Input() toteDataResponse: ToteDataResponse;
+  @Input() selectedView: string;
   @Output() updateTableEmitter = new EventEmitter<string>();
   @ViewChild('paginator') paginator: MatPaginator;
   markoutlistdataSource: MatTableDataSource<ToteData>;
   @ViewChild(MatSort) sort: MatSort;
+  @Output() toteIdEmitter = new EventEmitter<MarkoutToteRequest>();
 
   constructor(
     private _liveAnnouncer: LiveAnnouncer,
@@ -59,12 +62,12 @@ export class MarkoutListComponent implements OnInit {
     this.iMarkoutApiService = markoutApiService;
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void { }
 
   selectRow(row: any) {
-    this.markoutlistdataSource.filteredData.forEach(element => { if(row != element) element.selected = false; });
+    this.markoutlistdataSource.filteredData.forEach(element => { if (row != element) element.selected = false; });
     const selectedRow = this.markoutlistdataSource.filteredData.find((x: any) => x === row);
-    if(selectedRow) selectedRow.selected = !selectedRow.selected;
+    if (selectedRow) selectedRow.selected = !selectedRow.selected;
   }
 
   announceSortChange(sortState: Sort) {
@@ -82,7 +85,7 @@ export class MarkoutListComponent implements OnInit {
       this.markoutlistdataSource = new MatTableDataSource(
         this.toteDataResponse.data
       );
-      if(this.toteDataResponse.data.length) this.markoutlistdataSource.sort = this.sort;
+      if (this.toteDataResponse.data.length) this.markoutlistdataSource.sort = this.sort;
       setTimeout(() => {
         this.markoutlistdataSource.paginator = this.paginator;
       }, 100);
@@ -220,4 +223,23 @@ export class MarkoutListComponent implements OnInit {
       }
     });
   }
+
+  blossom(element: ToteData) {
+    let dialogRefTote;
+    dialogRefTote = this.global.OpenDialog(MoBlossomToteComponent, {
+      height: DialogConstants.auto,
+      width: '990px',
+      autoFocus: DialogConstants.autoFocus,
+      disableClose: true,
+      data: {
+        markoutlistdataSource: [element]
+      }
+    });
+    dialogRefTote.afterClosed().subscribe((result) => {
+      if (result) {
+        this.toteIdEmitter.emit({ toteId: '', viewType: this.selectedView });
+      }
+    });
+  }
+
 }

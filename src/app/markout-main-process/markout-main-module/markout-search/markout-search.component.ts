@@ -22,7 +22,9 @@ import { MarkoutToteRequest, MOPrefResponse, ToteDataResponse } from '../models/
   styleUrls: ['./markout-search.component.scss'],
 })
 export class MarkoutSearchComponent implements OnInit {
+
   @Output() toteIdEmitter = new EventEmitter<MarkoutToteRequest>();
+  @Output() viewChangeEmitter = new EventEmitter<string>();
 
   floatLabelControl = new FormControl('auto' as FloatLabelType);
   toteId: string = '';
@@ -50,8 +52,12 @@ export class MarkoutSearchComponent implements OnInit {
       changes['toteDataResponse']['currentValue']
     ) {
       this.orderNumber = this.toteDataResponse.data[0]?.orderNumber || "";
-      this.toteId = '';
+      this.toteId = this.toteDataResponse.data[0]?.toteId || "";
     }
+  }
+
+  viewChange(){
+    this.viewChangeEmitter.emit(this.selectedView);
   }
 
   emitSelectedValue(viewType: string) {
@@ -62,7 +68,8 @@ export class MarkoutSearchComponent implements OnInit {
     this.iMarkoutApiService
       .GetMarkoutPreferences()
       .subscribe((res: MOPrefResponse) => {
-        this.selectedView = res.defaultViewType
+        this.selectedView = res.defaultViewType;
+        this.viewChangeEmitter.emit(this.selectedView);
       });
   }
 
@@ -73,7 +80,6 @@ export class MarkoutSearchComponent implements OnInit {
   getFloatLabelValue(): FloatLabelType {
     return this.floatLabelControl.value ?? 'auto';
   }
-
 
   blossomtotedialog(){
     if(this.toteDataResponse && this.toteDataResponse.data && (this.toteDataResponse.data.length != 0 && this.toteDataResponse.toteStatus != 'Complete')){

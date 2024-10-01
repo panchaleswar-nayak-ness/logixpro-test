@@ -13,33 +13,35 @@ export class MarkoutMainModuleComponent implements OnInit {
 
   public iMarkoutApiService: IMarkoutApiService;
   toteDataResponse: ToteDataResponse;
-  toteId: string;
-  viewType: string
-  MarkoutToteReq:MarkoutToteRequest
-  
-  constructor(public markoutApiService: MarkoutApiService,private sharedService: SharedService,) {
+  MarkoutToteReq: MarkoutToteRequest;
+  selectedView: string = '';
+
+  constructor(public markoutApiService: MarkoutApiService, private sharedService: SharedService,) {
     this.iMarkoutApiService = markoutApiService;
   }
 
   ngOnInit(): void {
-    let appd=JSON.parse(localStorage.getItem('availableApps') ?? '');
-    this.sharedService.setMenuData(appd);
   }
 
   handleToteId(event: MarkoutToteRequest) {
     const { toteId, viewType } = event;
-     this.MarkoutToteReq = new MarkoutToteRequest()
+    this.MarkoutToteReq = new MarkoutToteRequest()
     this.MarkoutToteReq.toteId = toteId
     this.MarkoutToteReq.viewType = viewType
     this.getToteData();
   }
 
   getToteData() {
-
     this.iMarkoutApiService
       .GetMarkoutData(this.MarkoutToteReq)
       .subscribe((res: ToteDataResponse) => {
         this.toteDataResponse = res;
       });
   }
+
+  viewChange(event: string) {
+    this.selectedView = event;
+  }
+
+
 }

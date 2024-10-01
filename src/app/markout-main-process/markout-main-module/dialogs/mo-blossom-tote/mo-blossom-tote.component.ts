@@ -34,6 +34,7 @@ export class MoBlossomToteComponent implements OnInit {
     markoutdisplayedColumns.TransQty,
     markoutdisplayedColumns.CompQty,
     markoutdisplayedColumns.ToteQty,
+    markoutdisplayedColumns.TotalQty,
   ];
 
   constructor(
@@ -176,5 +177,9 @@ export class MoBlossomToteComponent implements OnInit {
       );
       element.oldToteQty = undefined;
     }
+  }
+
+  calculateTotal(element:ToteData){
+    return element?.oldToteQty ? element?.transQty + element?.oldToteQty : element?.transQty;
   }
 }
