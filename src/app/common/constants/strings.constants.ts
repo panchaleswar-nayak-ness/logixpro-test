@@ -461,5 +461,10 @@ export const markoutdisplayedColumns = {
     TotalQty:'totalQty'
     }
 
+    export const SpecificFilters = {
+      ColumnNames: 'ColumnNames',
+      SelectedFilters: 'SelectedFilters',
+      SelectedFilter: 'SelectedFilter',
+    };
 
 
