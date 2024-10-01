@@ -180,6 +180,6 @@ export class MoBlossomToteComponent implements OnInit {
   }
 
   calculateTotal(element:ToteData){
-    return element?.oldToteQty ? element?.transQty + element?.oldToteQty : element?.transQty;
+    return element?.oldToteQty ? element?.compQty + element?.oldToteQty : element?.compQty;
   }
 }
