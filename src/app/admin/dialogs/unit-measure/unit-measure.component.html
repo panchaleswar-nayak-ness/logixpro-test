@@ -31,7 +31,7 @@
 
                 <div *ngFor="let unit of unitOfMeasure_list;;let i=index" class="d-flex align-items-center mb-2">
 
-                    <mat-radio-button [disabled]="enableButton[i]?.value === false"  value="{{unit}}" [checked]="unit == data.UOM" class="custom-radio-btn" (change)="selectUnitMeasure(unit_name.value)">
+                    <mat-radio-button [disabled]="enableButton[i].value === false"  value="{{unit}}" [checked]="unit == data.UOM" class="custom-radio-btn" (change)="selectUnitMeasure(unit_name.value)">
                     </mat-radio-button>
 
                     <div class="container w-100">
