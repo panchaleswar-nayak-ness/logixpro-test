@@ -27,12 +27,12 @@ export class MarkoutSearchComponent implements OnInit {
   @Output() viewChangeEmitter = new EventEmitter<string>();
 
   floatLabelControl = new FormControl('auto' as FloatLabelType);
-  toteId: string = '';
   orderNumber: string = '';
   selectedView: string = '';
   
   public iMarkoutApiService: IMarkoutApiService;
   
+  @Input() toteId: string = '';
   @Input() toteDataResponse: ToteDataResponse;
   
   constructor(
@@ -52,7 +52,12 @@ export class MarkoutSearchComponent implements OnInit {
       changes['toteDataResponse']['currentValue']
     ) {
       this.orderNumber = this.toteDataResponse.data[0]?.orderNumber || "";
-      this.toteId = this.toteDataResponse.data[0]?.toteId || "";
+    }
+    if (
+      changes['toteId'] &&
+      changes['toteId']['currentValue']
+    ) {
+      this.toteId = changes['toteId']['currentValue'];
     }
   }
 

@@ -15,6 +15,7 @@ export class MarkoutMainModuleComponent implements OnInit {
   toteDataResponse: ToteDataResponse;
   MarkoutToteReq: MarkoutToteRequest;
   selectedView: string = '';
+  toteId: string = '';
 
   constructor(public markoutApiService: MarkoutApiService, private sharedService: SharedService,) {
     this.iMarkoutApiService = markoutApiService;
@@ -25,9 +26,10 @@ export class MarkoutMainModuleComponent implements OnInit {
 
   handleToteId(event: MarkoutToteRequest) {
     const { toteId, viewType } = event;
-    this.MarkoutToteReq = new MarkoutToteRequest()
-    this.MarkoutToteReq.toteId = toteId
-    this.MarkoutToteReq.viewType = viewType
+    this.toteId = toteId;
+    this.MarkoutToteReq = new MarkoutToteRequest();
+    this.MarkoutToteReq.toteId = toteId;
+    this.MarkoutToteReq.viewType = viewType;
     this.getToteData();
   }
 
