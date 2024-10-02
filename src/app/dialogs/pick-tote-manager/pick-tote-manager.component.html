@@ -156,7 +156,7 @@
                           <th mat-header-cell *matHeaderCellDef> Value </th>
                           <td mat-cell *matCellDef="let element">
                             <div class="pe-2">
-                              <mat-form-field class="custom-form-field w-60" appearance="outline">
+                              <mat-form-field class="custom-form-field w-100" appearance="outline">
                                 <input matInput type="text" maxlength="255" [(ngModel)]="element.value" (ngModelChange)="onChangeFunctionsFields(element)">
                               </mat-form-field>
                             </div>
@@ -387,6 +387,15 @@
                             </div>
                           </td>
                         </ng-container>
+                         <!-- Name Column -->
+                         <ng-container matColumnDef="transactionsline">
+                          <th mat-header-cell *matHeaderCellDef> Total Lines </th>
+                          <td mat-cell *matCellDef="let element" [class.selected]="element.isSelected">
+                            <div class="pe-2">
+                              {{element.otLines}}
+                            </div>
+                          </td>
+                        </ng-container>
 
                         <!-- Name Column -->
                         <ng-container matColumnDef="priority">
@@ -588,6 +597,13 @@
                           <th mat-header-cell *matHeaderCellDef> Required Date </th>
                           <td mat-cell *matCellDef="let element" [class.selected]="element.isSelected">
                               {{element.reqDate}}
+                          </td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="transactionsline">
+                          <th mat-header-cell *matHeaderCellDef> Total Lines</th>
+                          <td mat-cell *matCellDef="let element" [class.selected]="element.isSelected">
+                            {{element.otLines}}
                           </td>
                         </ng-container>
 

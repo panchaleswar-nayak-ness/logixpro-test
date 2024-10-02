@@ -679,10 +679,27 @@ export class ProcessPicksComponent implements OnInit {
     });
   }
 
-  clearOrderNumber(i: any) {
-    this.tote_Setup[i].orderNumber = '';
-    this.tote_Setup[i].priority = '';
-    this.allOrders[i] = '';
+  clearOrderNumber(index: any) {
+    this.tote_Setup[index].orderNumber = '';
+    this.tote_Setup[index].priority = '';
+    this.allOrders[index] = '';
+    this.tote_Setup.splice(index, 1); // Removes the item at index 'i' from the array
+    this.allOrders.splice(index, 1);  
+    console.log(this.tote_Setup);
+     // Adjust the position of the remaining items
+     this.tote_Setup = this.tote_Setup.map((item, i) => {
+      if (i >= index) {
+        return {
+          ...item,
+          position: item.position - 1
+        };
+      }
+      return item;
+    });
+    this.dataSource = new MatTableDataSource<any>(this.tote_Setup);
+    this.resultObj.splice(index, 1); 
+
+     console.log(this.tote_Setup);
   }
 
   confirmProcessSetup() {
