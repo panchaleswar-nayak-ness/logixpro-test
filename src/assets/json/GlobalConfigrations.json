@@ -203,11 +203,11 @@
     {
         "path": "/InductionManager/Admin/ToteTransactionManager",
         "Permission": "Induction Manager",
-        "Permission": "Tote Batch Manager"
+        "Permission": "Tote Transactions"
     },
     {
         "path": "/InductionManager/Admin/ImToteManager",
-        "Permission": "Induction Manager"
+        "Permission": "Tote Manager"
     },
     {
         "path": "/InductionManager/Admin/TransactionJournal",
