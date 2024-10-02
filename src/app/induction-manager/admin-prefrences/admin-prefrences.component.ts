@@ -1,12 +1,30 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
+import {
+  FormGroup,
+  FormControl,
+  FormBuilder,
+  Validators,
+} from '@angular/forms';
 import { AuthService } from 'src/app/common/init/auth.service';
 import { GlobalService } from 'src/app/common/services/global.service';
 import { IInductionManagerApiService } from 'src/app/common/services/induction-manager-api/induction-manager-api-interface';
 import { InductionManagerApiService } from 'src/app/common/services/induction-manager-api/induction-manager-api.service';
-import { ApiEndpoints, ToasterMessages, ToasterTitle, ToasterType, superBatchFilterListName ,Column,TableConstant,StringConditions,ColumnDef, DialogConstants, Style} from 'src/app/common/constants/strings.constants';
+import {
+  ApiEndpoints,
+  ToasterMessages,
+  ToasterTitle,
+  ToasterType,
+  superBatchFilterListName,
+  Column,
+  TableConstant,
+  StringConditions,
+  ColumnDef,
+  DialogConstants,
+  Style,
+} from 'src/app/common/constants/strings.constants';
 import { ZoneGroupsComponent } from 'src/app/dialogs/zone-groups/zone-groups.component';
 import { ImprefInductionFilterComponent } from 'src/app/dialogs/impref-induction-filter/impref-induction-filter.component';
+import { MatSlideToggleChange } from '@angular/material/slide-toggle';
 
 @Component({
   selector: 'app-admin-prefrences',
@@ -14,10 +32,8 @@ import { ImprefInductionFilterComponent } from 'src/app/dialogs/impref-induction
   styleUrls: ['./admin-prefrences.component.scss'],
 })
 export class AdminPrefrencesComponent implements OnInit {
-
   @ViewChild('myInput') myInput: ElementRef<HTMLInputElement>;
   @ViewChild('maxNumber') maxNumber: ElementRef<HTMLInputElement>;
-
 
   preferencesForm: FormGroup;
 
@@ -46,6 +62,8 @@ export class AdminPrefrencesComponent implements OnInit {
       name: 'Right',
     },
   ];
+
+  zoneGroupingsList: any = [];
 
   pickOrderSortList: any = [
     {
@@ -126,8 +144,6 @@ export class AdminPrefrencesComponent implements OnInit {
   ) {
     this.iInductionManagerApi = inductionManagerApi;
     this.preferencesForm = this.formBuilder.group({
-
-
       // System Settings
       useDefault: new FormControl('', Validators.compose([])),
       pickBatchQuantity: new FormControl(0, Validators.compose([])),
@@ -173,7 +189,9 @@ export class AdminPrefrencesComponent implements OnInit {
       autoPrintPickLabels: new FormControl(false, Validators.compose([])),
       pickLabelsOnePerQty: new FormControl(false, Validators.compose([])),
       autoPrintPickToteLabels: new FormControl(false, Validators.compose([])),
-      autoPrintPutAwayToteLabels: new FormControl(false, Validators.compose([])
+      autoPrintPutAwayToteLabels: new FormControl(
+        false,
+        Validators.compose([])
       ),
 
       autoPrintOffCarouselPickList: new FormControl(
@@ -218,139 +236,165 @@ export class AdminPrefrencesComponent implements OnInit {
 
       //Pick Tote Induction Settings
       excludeOrderInReprocess: new FormControl(false, Validators.compose([])),
-      maximumQtyPerTote:  new FormControl(0, Validators.compose([])),
+      maximumQtyPerTote: new FormControl(0, Validators.compose([])),
       defaultZoneGroup: new FormControl('', Validators.compose([])),
     });
   }
+
   public userData: any;
+
   ngOnInit(): void {
     this.userData = this.authService.userData();
     this.getPreferences();
+    this.getZoneGroupings();
   }
+
   trackIndIsDisable = false;
+
   getPreferences() {
     try {
-      this.iInductionManagerApi
-        .PreferenceIndex()
-        .subscribe(
-          (res: any) => {
-            if (res.data && res.isExecuted) {
-              const values = res.data.imPreference;
-              const reelVal = res.data.rtUserFieldData[0];
-              if (values.superBatchByToteID) {
-                this.superBatchFilterList = [
-                  { id: 1, name: superBatchFilterListName.ToteID },
-                  { id: 0, name: superBatchFilterListName.OrderNo },
-                ];
-                this.preferencesForm.get('superBatchFilter')?.setValue('1');
-              } else {
-                this.superBatchFilterList = [
-                  { id: 0, name: superBatchFilterListName.OrderNo },
-                  { id: 1, name: superBatchFilterListName.ToteID },
-                ];
-                this.preferencesForm.get('superBatchFilter')?.setValue('0');
-              }
-              if (!values.trackInductionTransactions) {
-                this.preferencesForm.get('inductionLocation')?.disable();
-                this.trackIndIsDisable = true;
-              }
+      this.iInductionManagerApi.PreferenceIndex().subscribe((res: any) => {
+        if (res.data && res.isExecuted) {
+          const values = res.data.imPreference;
+          const reelVal = res.data.rtUserFieldData[0];
+          if (values.superBatchByToteID) {
+            this.superBatchFilterList = [
+              { id: 1, name: superBatchFilterListName.ToteID },
+              { id: 0, name: superBatchFilterListName.OrderNo },
+            ];
+            this.preferencesForm.get('superBatchFilter')?.setValue('1');
+          } else {
+            this.superBatchFilterList = [
+              { id: 0, name: superBatchFilterListName.OrderNo },
+              { id: 1, name: superBatchFilterListName.ToteID },
+            ];
+            this.preferencesForm.get('superBatchFilter')?.setValue('0');
+          }
+          if (!values.trackInductionTransactions) {
+            this.preferencesForm.get('inductionLocation')?.disable();
+            this.trackIndIsDisable = true;
+          }
 
-              this.preferencesForm.patchValue({
-                // System Settings
-                useDefault: values.useDefaultFilter ? StringConditions.filter : TableConstant.zone,
-                pickBatchQuantity: values.pickBatchQuantity,
-                defaultCells: values.defaultCells,
-                shortMethod: values.shortMethod,
-                selectIfOne: values.selectIfOne,
-                validateTotes: values.validateTotes,
-                autoForwardReplenish: values.autoForwardReplenish,
-                createItemMaster: values.createItemMaster,
-                sapLocationTransactions: values.sapLocationTransactions,
-                stripScan: values.stripScan,
-                stripSide: values.stripSide,
-                stripNumber: values.stripNumber,
+          this.preferencesForm.patchValue({
+            // System Settings
+            useDefault: values.useDefaultFilter
+              ? StringConditions.filter
+              : TableConstant.zone,
+            pickBatchQuantity: values.pickBatchQuantity,
+            defaultCells: values.defaultCells,
+            shortMethod: values.shortMethod,
+            selectIfOne: values.selectIfOne,
+            validateTotes: values.validateTotes,
+            autoForwardReplenish: values.autoForwardReplenish,
+            createItemMaster: values.createItemMaster,
+            sapLocationTransactions: values.sapLocationTransactions,
+            stripScan: values.stripScan,
+            stripSide: values.stripSide,
+            stripNumber: values.stripNumber,
 
-                // Pick Settings
-                autoPickOrderSelection: values.autoPickOrderSelection,
-                autoPickToteID: values.autoPickToteID,
-                carouselToteIDPicks: values.carouselToteIDPicks,
-                offCarouselToteIDPicks: values.offCarouselToteIDPicks,
-                usePickBatchManager: values.usePickBatchManager,
-                carouselBatchIDPicks: values.carouselBatchIDPicks,
-                offCarouselBatchIDPicks: values.offCarouselBatchIDPicks,
-                orderSort: values.orderSort,
-                useInZonePickScreen: values.useInZonePickScreen,
-                autoPrintCaseLabel: values.autoPrintCaseLabel,
+            // Pick Settings
+            autoPickOrderSelection: values.autoPickOrderSelection,
+            autoPickToteID: values.autoPickToteID,
+            carouselToteIDPicks: values.carouselToteIDPicks,
+            offCarouselToteIDPicks: values.offCarouselToteIDPicks,
+            usePickBatchManager: values.usePickBatchManager,
+            carouselBatchIDPicks: values.carouselBatchIDPicks,
+            offCarouselBatchIDPicks: values.offCarouselBatchIDPicks,
+            orderSort: values.orderSort,
+            useInZonePickScreen: values.useInZonePickScreen,
+            autoPrintCaseLabel: values.autoPrintCaseLabel,
 
-                // Put Away Settings
-                autoPutAwayToteID: values.autoPutAwayToteID,
-                splitShortPutAway: values.splitShortPutAway,
-                carouselBatchIDPutAways: values.carouselBatchIDPutAways,
-                offCarouselBatchIDAways: values.offCarouselBatchIDAways,
-                createPutAwayAdjustments: values.createPutAwayAdjustments,
-                defaultPutAwayScanType: values.defaultPutAwayScanType,
-                defaultPutAwayPriority: values.defaultPutAwayPriority,
-                defaultPutAwayQuantity: values.defaultPutAwayQuantity,
-                putAwayInductionScreen: values.putAwayInductionScreen,
-                dontAllowOverReceipt: values.dontAllowOverReceipt,
-                autoAssignAllZones: values.autoAssignAllZones,
-                purchaseOrderRequired: values.purchaseOrderRequired,
+            // Put Away Settings
+            autoPutAwayToteID: values.autoPutAwayToteID,
+            splitShortPutAway: values.splitShortPutAway,
+            carouselBatchIDPutAways: values.carouselBatchIDPutAways,
+            offCarouselBatchIDAways: values.offCarouselBatchIDAways,
+            createPutAwayAdjustments: values.createPutAwayAdjustments,
+            defaultPutAwayScanType: values.defaultPutAwayScanType,
+            defaultPutAwayPriority: values.defaultPutAwayPriority,
+            defaultPutAwayQuantity: values.defaultPutAwayQuantity,
+            putAwayInductionScreen: values.putAwayInductionScreen,
+            dontAllowOverReceipt: values.dontAllowOverReceipt,
+            autoAssignAllZones: values.autoAssignAllZones,
+            purchaseOrderRequired: values.purchaseOrderRequired,
 
-                // Print Settings
-                autoPrintCrossDockLabel: values.autoPrintCrossDockLabel,
-                autoPrintPickLabels: values.autoPrintPickLabels,
-                pickLabelsOnePerQty: values.pickLabelsOnePerQty,
-                autoPrintPickToteLabels: values.autoPrintPickToteLabels,
-                autoPrintPutAwayToteLabels: values.autoPrintPutAwayToteLabels,
-                autoPrintOffCarouselPickList:
-                  values.autoPrintOffCarouselPickList,
-                autoPrintOffCarouselPutAwayList:
-                  values.autoPrintOffCarouselPutAwayList,
-                autoPrintPutAwayLabels: values.autoPrintPutAwayLabels,
-                requestNumberOfPutAwayLabels:
-                  values.requestNumberOfPutAwayLabels,
-                autoPrintPickBatchList: values.autoPrintPickBatchList,
-                printDirectly: values.printDirectly,
-                maxNumberOfPutAwayLabels: values.maxNumberOfPutAwayLabels,
+            // Print Settings
+            autoPrintCrossDockLabel: values.autoPrintCrossDockLabel,
+            autoPrintPickLabels: values.autoPrintPickLabels,
+            pickLabelsOnePerQty: values.pickLabelsOnePerQty,
+            autoPrintPickToteLabels: values.autoPrintPickToteLabels,
+            autoPrintPutAwayToteLabels: values.autoPrintPutAwayToteLabels,
+            autoPrintOffCarouselPickList: values.autoPrintOffCarouselPickList,
+            autoPrintOffCarouselPutAwayList:
+              values.autoPrintOffCarouselPutAwayList,
+            autoPrintPutAwayLabels: values.autoPrintPutAwayLabels,
+            requestNumberOfPutAwayLabels: values.requestNumberOfPutAwayLabels,
+            autoPrintPickBatchList: values.autoPrintPickBatchList,
+            printDirectly: values.printDirectly,
+            maxNumberOfPutAwayLabels: values.maxNumberOfPutAwayLabels,
 
-                //  MISC Setup
+            //  MISC Setup
 
-                trackInductionLocation: values.trackInductionTransactions,
-                inductionLocation: values.inductionLocation,
-                stageUsingBulk: values.stageUsingBulkPro,
-                stageVelocityCode: values.stageVelocityCode,
-                confirmSuperBatch: values.confirmSuperBatch,
-                defaultSuperBatchSize:
-                  values.defaultSuperBatchSize < 2
-                    ? 2
-                    : values.defaultSuperBatchSize,
+            trackInductionLocation: values.trackInductionTransactions,
+            inductionLocation: values.inductionLocation,
+            stageUsingBulk: values.stageUsingBulkPro,
+            stageVelocityCode: values.stageVelocityCode,
+            confirmSuperBatch: values.confirmSuperBatch,
+            defaultSuperBatchSize:
+              values.defaultSuperBatchSize < 2
+                ? 2
+                : values.defaultSuperBatchSize,
 
-                // Reel Tracking
-                userField1: reelVal.userField1,
-                userField2: reelVal.userField2,
-                userField3: reelVal.userField3,
-                userField4: reelVal.userField4,
-                userField5: reelVal.userField5,
-                userField6: reelVal.userField6,
-                userField7: reelVal.userField7,
-                userField8: reelVal.userField8,
-                userField9: reelVal.userField9,
-                userField10: reelVal.userField10,
-                orderNoPrefix: reelVal.orderNumberPrefix,
+            // Reel Tracking
+            userField1: reelVal.userField1,
+            userField2: reelVal.userField2,
+            userField3: reelVal.userField3,
+            userField4: reelVal.userField4,
+            userField5: reelVal.userField5,
+            userField6: reelVal.userField6,
+            userField7: reelVal.userField7,
+            userField8: reelVal.userField8,
+            userField9: reelVal.userField9,
+            userField10: reelVal.userField10,
+            orderNoPrefix: reelVal.orderNumberPrefix,
 
-                //Pick Tote Induction Settings
-                excludeOrderInReprocess: values.excludeOrdersinReprocess,
-                maximumQtyPerTote:values.maximumQuantityperTote,
-                defaultZoneGroup:values.defaultZoneGroup,
-              });
-            } else {
-              this.global.ShowToastr(ToasterType.Error, ToasterMessages.SomethingWentWrong, ToasterTitle.Error);
-              console.log("PreferenceIndex", res.responseMessage);
-            }
-          },
-        );
-    } catch (error) {
-    }
+            //Pick Tote Induction Settings
+            excludeOrderInReprocess: values.excludeOrdersinReprocess,
+            maximumQtyPerTote: values.maximumQuantityperTote,
+            defaultZoneGroup: values.defaultZoneGroup,
+          });
+        } else {
+          this.global.ShowToastr(
+            ToasterType.Error,
+            ToasterMessages.SomethingWentWrong,
+            ToasterTitle.Error
+          );
+          console.log('PreferenceIndex', res.responseMessage);
+        }
+      });
+    } catch (error) {}
+  }
+
+  getZoneGroupings() {
+    try {
+      this.iInductionManagerApi.GetZoneGroupings().subscribe((res: any) => {
+        if (res.data && res.isExecuted) {
+          res.data.forEach((f) => {
+            this.zoneGroupingsList.push({ id: f.id, name: f.zoneGroup });
+            // console.log(this.zoneGroupingsList);
+          });
+
+          this.getPreferences();
+        } else {
+          this.global.ShowToastr(
+            ToasterType.Error,
+            ToasterMessages.SomethingWentWrong,
+            ToasterTitle.Error
+          );
+          console.log('Get Zone Groups', res.responseMessage);
+        }
+      });
+    } catch (error) {}
   }
 
   updatePreferences(type: any, event?) {
@@ -393,12 +437,12 @@ export class AdminPrefrencesComponent implements OnInit {
           AutoPrintCaseLabel: values.autoPrintCaseLabel,
           ShortMethod: values.shortMethod,
           WSID: this.userData.wsid,
-          DontAllowOverReceipt:values.dontAllowOverReceipt,
-          AutoAssignAllZones:values.autoAssignAllZones,
-          PurchaseOrderRequired:values.purchaseOrderRequired,
-          ExcludeOrdersinReprocess:values.excludeOrderInReprocess,
-          MaximumQuantityperTote:values.maximumQtyPerTote,
-          DefaultZoneGroup:values.defaultZoneGroup
+          DontAllowOverReceipt: values.dontAllowOverReceipt,
+          AutoAssignAllZones: values.autoAssignAllZones,
+          PurchaseOrderRequired: values.purchaseOrderRequired,
+          ExcludeOrdersinReprocess: values.excludeOrderInReprocess,
+          MaximumQuantityperTote: values.maximumQtyPerTote,
+          DefaultZoneGroup: values.defaultZoneGroup,
         };
 
         endPoint = ApiEndpoints.IMSytemSettings;
@@ -428,8 +472,12 @@ export class AdminPrefrencesComponent implements OnInit {
         }
 
         if (values.defaultSuperBatchSize < 2) {
-          this.global.ShowToastr(ToasterType.Error, "Default Super Batch Size must be greater than 1", ToasterTitle.Error);
-          return
+          this.global.ShowToastr(
+            ToasterType.Error,
+            'Default Super Batch Size must be greater than 1',
+            ToasterTitle.Error
+          );
+          return;
         }
 
         payLoad = {
@@ -462,36 +510,47 @@ export class AdminPrefrencesComponent implements OnInit {
 
         endPoint = ApiEndpoints.IMPrintSettings;
       }
-      console.log("here",payLoad);
-      this.iInductionManagerApi.DynamicMethod(payLoad, endPoint).subscribe(
-        (res: any) => {
+      console.log('here', payLoad);
+      this.iInductionManagerApi
+        .DynamicMethod(payLoad, endPoint)
+        .subscribe((res: any) => {
           if (res.data && res.isExecuted) {
-            this.global.updateImPreferences()
-            this.global.ShowToastr(ToasterType.Success, "Your details have been updated", ToasterTitle.Success);
+            this.global.updateImPreferences();
+            this.global.ShowToastr(
+              ToasterType.Success,
+              'Your details have been updated',
+              ToasterTitle.Success
+            );
           } else {
-            this.global.ShowToastr(ToasterType.Error, ToasterMessages.SomethingWentWrong, ToasterTitle.Error);
-            console.log("DynamicMethod", res.responseMessage);
+            this.global.ShowToastr(
+              ToasterType.Error,
+              ToasterMessages.SomethingWentWrong,
+              ToasterTitle.Error
+            );
+            console.log('DynamicMethod', res.responseMessage);
           }
-        },
-      );
-    } catch (error) {
-    }
+        });
+    } catch (error) {}
   }
   getCompName() {
-
-    this.iInductionManagerApi.CompName().subscribe(
-      (res: any) => {
-        if (res.data && res.isExecuted) {
-
-          this.preferencesForm.get('inductionLocation')?.setValue(res.data);
-          this.updatePreferences(3);
-          this.global.ShowToastr(ToasterType.Success, "Your details have been updated", ToasterTitle.Success);
-        } else {
-          this.global.ShowToastr(ToasterType.Error, ToasterMessages.SomethingWentWrong, ToasterTitle.Error);
-          console.log("CompName", res.responseMessage);
-        }
+    this.iInductionManagerApi.CompName().subscribe((res: any) => {
+      if (res.data && res.isExecuted) {
+        this.preferencesForm.get('inductionLocation')?.setValue(res.data);
+        this.updatePreferences(3);
+        this.global.ShowToastr(
+          ToasterType.Success,
+          'Your details have been updated',
+          ToasterTitle.Success
+        );
+      } else {
+        this.global.ShowToastr(
+          ToasterType.Error,
+          ToasterMessages.SomethingWentWrong,
+          ToasterTitle.Error
+        );
+        console.log('CompName', res.responseMessage);
       }
-    );
+    });
   }
   checkDBQ() {
     if (this.preferencesForm.value.pickBatchQuantity >= 20) {
@@ -500,7 +559,6 @@ export class AdminPrefrencesComponent implements OnInit {
       });
     }
   }
-
 
   restrictTo10Digits(): void {
     const inputElement = this.myInput.nativeElement;
@@ -520,22 +578,24 @@ export class AdminPrefrencesComponent implements OnInit {
     inputElement.value = value;
   }
 
-
-  openZoneGroups(){
-    const dialogRef:any = this.global.OpenDialog(ZoneGroupsComponent, {
+  openZoneGroups() {
+    const dialogRef: any = this.global.OpenDialog(ZoneGroupsComponent, {
       height: 'auto',
       width: '60%',
       autoFocus: DialogConstants.autoFocus,
-    disableClose:true,
+      disableClose: true,
     });
   }
 
-  openPickToteInductionFilter(){
-    const dialogRef:any = this.global.OpenDialog(ImprefInductionFilterComponent, {
-      height: 'auto',
-      width: Style.w1080px,
-      autoFocus: DialogConstants.autoFocus,
-    disableClose:true,
-    });
+  openPickToteInductionFilter() {
+    const dialogRef: any = this.global.OpenDialog(
+      ImprefInductionFilterComponent,
+      {
+        height: 'auto',
+        width: Style.w1080px,
+        autoFocus: DialogConstants.autoFocus,
+        disableClose: true,
+      }
+    );
   }
 }

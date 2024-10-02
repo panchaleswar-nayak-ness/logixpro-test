@@ -1046,6 +1046,10 @@ export class ApiFuntions {
     return this.ApiBase.Get("/Induction/compname");
   }
 
+  public GetZoneGroupings(): Observable<any> {
+    return this.ApiBase.Get("/Induction/zonegrouping");
+  }
+
   public PreferenceIndex(): Observable<any> {
     return this.ApiBase.Get("/Induction/preferenceindex");
   }
