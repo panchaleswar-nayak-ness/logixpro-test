@@ -1,3 +1,5 @@
+import { AddPickToteInductionFilter } from "src/app/induction-manager/models/PickToteInductionModel";
+
 export interface IInductionManagerApiService {
   getPickBatchTransactionTable(payload: any);
 
@@ -176,4 +178,9 @@ export interface IInductionManagerApiService {
   PrintCrossDockToteAuto(OTRecID: bigint, zone);
 
   PrintCrossDockItemAuto(OTRecID: bigint, zone);
+
+  AddPickToteInductionFilter(payloadParams: AddPickToteInductionFilter);
+  GetPickToteInductionFilter();
+  DeletePickToteInductionFilter(paramname: number);
+
 }

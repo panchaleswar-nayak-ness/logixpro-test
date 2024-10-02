@@ -9,6 +9,7 @@ import {
   MarkoutToteRequest,
   UpdateQuantityRequest
 } from 'src/app/markout-main-process/markout-main-module/models/markout-model';
+import { AddPickToteInductionFilter } from 'src/app/induction-manager/models/PickToteInductionModel';
 
 @Injectable({
   providedIn: 'root'
@@ -2085,5 +2086,16 @@ export class ApiFuntions {
 
   public deleteLookupTableData(paramName: any): Observable<any> {
     return this.ApiBase.Delete(`/Admin/lookup/delete/${paramName}`);
+  }
+
+  public AddPickToteInductionFilter(body : AddPickToteInductionFilter): Observable<any> {
+    return this.ApiBase.Put("/induction/totefilter", body);
+  }
+
+  public GetPickToteInductionFilter() {
+    return this.ApiBase.Get("/induction/totefilter");
+  }
+  public DeletePickToteInductionFilter(id: number): Observable<any> {
+    return this.ApiBase.Delete(`/Induction/totefilter/${id}`);
   }
 }
