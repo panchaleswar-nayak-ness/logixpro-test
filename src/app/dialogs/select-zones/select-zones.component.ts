@@ -91,8 +91,6 @@ export class SelectZonesComponent implements OnInit {
       }
     }
     this.dataSource = new MatTableDataSource<any>(this.elementData);
-    
-
 
   }
 
@@ -194,6 +192,7 @@ export class SelectZonesComponent implements OnInit {
             );
         }
         this.dataSource = new MatTableDataSource<any>(this.elementData);
+        this.selectZones();
 
         } else {
           this.global.ShowToastr(ToasterType.Error,ToasterMessages.SomethingWentWrong, ToasterTitle.Error);
@@ -219,7 +218,17 @@ export class SelectZonesComponent implements OnInit {
     // this.wsid=this.data.wsid;
     // this.alreadyAssignedZones = this.data.assignedZones;
     this.getAvailableZones();
-  }
+    }
   
-
+ 
+    selectZones() {
+      if (this.data) {
+        this.dataSource.data.forEach((x) => {
+          var availableZone = this.data.find(y => y.Zone === x.zone);
+          if (availableZone)
+            x.selected = true;
+          x.available = true;
+        })    
+    } 
+  }
 }

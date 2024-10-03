@@ -11,10 +11,10 @@
                         <div class="col-lg-6">
                             <mat-form-field class="action-dropdown w-100 " appearance="outline">
                                 <mat-label>Zone Group</mat-label>
-                                <mat-select>
-                                    <mat-option>
-                                        4650
-                                    </mat-option>
+                                <mat-select (selectionChange)="showChange($event.value)">
+                                    <ng-container *ngFor="let item of zoneGroupingsList">
+                                        <mat-option [value]="item.Id">{{ item.ZoneGroup }}</mat-option>
+                                      </ng-container>
                                 </mat-select>
                                 <span class="material-symbols-outlined icon-expand-more">
                                     expand_more
