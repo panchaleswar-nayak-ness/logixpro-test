@@ -10,7 +10,7 @@ import { FormControl } from '@angular/forms';
 
 import { FloatLabelType } from '@angular/material/form-field';
 import { MoBlossomToteComponent } from 'src/app/markout-main-process/markout-main-module/dialogs/mo-blossom-tote/mo-blossom-tote.component';
-import { DialogConstants } from 'src/app/common/constants/strings.constants';
+import { BlossomType, DialogConstants } from 'src/app/common/constants/strings.constants';
 import { GlobalService } from 'src/app/common/services/global.service';
 import { IMarkoutApiService } from 'src/app/common/services/markout-api/markout-api-interface';
 import { MarkoutApiService } from 'src/app/common/services/markout-api/markout-api-service';
@@ -34,6 +34,8 @@ export class MarkoutSearchComponent implements OnInit {
   
   @Input() toteId: string = '';
   @Input() toteDataResponse: ToteDataResponse;
+  @Input() isBlossomComplete: boolean;
+  blossomType = BlossomType;
   
   constructor(
   private global: GlobalService,
@@ -86,7 +88,10 @@ export class MarkoutSearchComponent implements OnInit {
     return this.floatLabelControl.value ?? 'auto';
   }
 
-  blossomtotedialog(){
+  blossomtotedialog(type){
+    if(type == this.blossomType.BlossomComplete && !this.isBlossomComplete){
+      return;
+    }
     if(this.toteDataResponse && this.toteDataResponse.data && (this.toteDataResponse.data.length != 0 && this.toteDataResponse.toteStatus != 'Complete')){
       let dialogRefTote;
       dialogRefTote = this.global.OpenDialog(MoBlossomToteComponent, {
@@ -96,7 +101,8 @@ export class MarkoutSearchComponent implements OnInit {
         disableClose: true,
         data: {
           markoutlistdataSource: JSON.parse(JSON.stringify(this.toteDataResponse.data.
-          filter((element) => (element.status != 'Ship Short') && (element.status != 'Complete'))))
+          filter((element) => (element.status != 'Ship Short') && (element.status != 'Complete')))),
+          type:type
         }
       });
       dialogRefTote.afterClosed().subscribe((result) => {

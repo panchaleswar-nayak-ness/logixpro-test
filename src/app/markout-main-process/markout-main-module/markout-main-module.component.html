@@ -2,7 +2,7 @@
     <div class="row g-3">
         <div class="col-xl-5">
             <app-markout-search (toteIdEmitter)="handleToteId($event)" (viewChangeEmitter)="viewChange($event)"
-                [toteDataResponse]="toteDataResponse" [toteId]="toteId"></app-markout-search>
+                [toteDataResponse]="toteDataResponse" [toteId]="toteId" [isBlossomComplete]="isBlossomComplete"></app-markout-search>
         </div>
         <div class="col-xl-7">
             <app-markout-status [toteDataResponse]="toteDataResponse"></app-markout-status>
@@ -10,7 +10,7 @@
         <div class="col-xl-12">
             <app-markout-list 
             (updateTableEmitter)="getToteData()" (toteIdEmitter)="handleToteId($event)"
-            [toteDataResponse]="toteDataResponse" [selectedView]="selectedView"></app-markout-list>
+            [toteDataResponse]="toteDataResponse" [selectedView]="selectedView" [isBlossomComplete]="isBlossomComplete"></app-markout-list>
         </div>
     </div>
 </div>

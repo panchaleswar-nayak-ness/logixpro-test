@@ -3,7 +3,7 @@ export const StringAssignments = {
 };
 
 export const localStorageKeys = {
-    UserRights : 'userRights',
+    UserRights: 'userRights',
     TransactionTabIndex: 'TransactionTabIndex'
 }
 
@@ -16,13 +16,13 @@ export const TransactionType = {
 export const DialogConstants = {
     auto: 'auto',
     close: 'close',
-    autoFocus:'__non_existing_element__'
+    autoFocus: '__non_existing_element__'
 }
 
 export const StringConditions = {
-    SupplierItemID:'Supplier Item ID',
+    SupplierItemID: 'Supplier Item ID',
     ToteID: 'Tote ID',
-    WaitingReprocess:'Waiting Reprocess',
+    WaitingReprocess: 'Waiting Reprocess',
     Reprocess: 'Reprocess',
     Complete: 'Complete',
     NotCompleted: 'Not Completed',
@@ -40,50 +40,50 @@ export const StringConditions = {
     AllTransaction: 'All Transaction',
     AllTransactions: 'All Transactions',
     Batch: 'Batch',
-    BatchWithID:'batchWithID',
-    PrintBatch:'PrintBatch',
+    BatchWithID: 'batchWithID',
+    PrintBatch: 'PrintBatch',
     PrintCase: 'PrintCase',
-    PrintPickList:'PrintPickList',
-    PickPickLabel:'PrintPickLabel',
+    PrintPickList: 'PrintPickList',
+    PickPickLabel: 'PrintPickLabel',
     PrintTote: 'PrintTote',
     Invalid: 'Invalid',
     orderTypeOpen: 'Open',
-    ResetField:'resetField',
-    isAdd:'isAdd',
-    filterLoc:'Nothing',
-    True:'true',
+    ResetField: 'resetField',
+    isAdd: 'isAdd',
+    filterLoc: 'Nothing',
+    True: 'true',
     InProgress: 'In Progress',
     Completed: 'Completed',
     on: 'on',
     off: 'off',
-    EntireOrder:'Entire Order',
-    currentValue : 'currentValue',
+    EntireOrder: 'Entire Order',
+    currentValue: 'currentValue',
     history: 'history',
     cleared: 'cleared',
-    set_column_sq : 'set_column_sq',
+    set_column_sq: 'set_column_sq',
     hold: 'hold',
     reprocess: 'reprocess',
     complete: 'complete',
-    start:'start',
-    False:'False',
-    clear:'clear',
-    filter:'filter',
-    MoveTo:'MoveTo',
-    edit:'edit',
-    MoveFrom:'MoveFrom'
+    start: 'start',
+    False: 'False',
+    clear: 'clear',
+    filter: 'filter',
+    MoveTo: 'MoveTo',
+    edit: 'edit',
+    MoveFrom: 'MoveFrom'
 }
 
 export const ResponseStrings = {
     No: 'No',
     Yes: 'Yes',
-    Cancel:'Cancel',
+    Cancel: 'Cancel',
     Empty: '',
     Null: null,
     DNE: 'DNE',
     Conflict: 'Conflict',
     Error: 'Error',
     All: 'all',
-    AllCaps:'All',
+    AllCaps: 'All',
     Modal: 'modal',
     DNENP: 'DNENP',
     Fail: 'Fail',
@@ -111,7 +111,7 @@ export const ToasterTitle = {
 
 export const ConfirmationHeadings = {
     BatchManager: 'Batch Manager',
-    MoveNow:"Continue Move Now?"
+    MoveNow: "Continue Move Now?"
 }
 
 
@@ -119,11 +119,11 @@ export const ConfirmationHeadings = {
 export const ConfirmationMessages = {
     NoOrdersSelected: 'No Orders Selected.',
     BatchIDMustBeSpecified: 'Batch ID must be specified.',
-    ClickOkToPrintBatchReport:'Click Ok to print a Batch Report for the selected orders?',
-    ClickOkToPrintItemLabels:'Click Ok to print item labels for the selected batch orders?',
-    UnverfiedItemsLeft:'There are still unverfied items. Coninue the preview?',
+    ClickOkToPrintBatchReport: 'Click Ok to print a Batch Report for the selected orders?',
+    ClickOkToPrintItemLabels: 'Click Ok to print item labels for the selected batch orders?',
+    UnverfiedItemsLeft: 'There are still unverfied items. Coninue the preview?',
     EventLogDeleteWithRange: 'Are you sure you want to delete all Event Log entries with specified date, message, event location and name stamp filters?',
-    ClickOkToUpdateLocation:'You will now update both locations to complete the current move'
+    ClickOkToUpdateLocation: 'You will now update both locations to complete the current move'
 }
 
 export const ToasterMessages = {
@@ -135,46 +135,46 @@ export const ToasterMessages = {
     EnterQuantity: 'Please enter a quantity.',
     ItemQuantityAdded: 'Item Quantity Added',
     QuantityErrorInventoryMap: 'The quantity was not entered due to an error in the Inventory Map',
-    ConsolidationOrderInvalid:'Consolidation The Order/Tote that you entered is invalid or no longer exists in the system.',
-    ValueMatchToToteOrder:'The Value you Entered matched a Tote and Order Number, select one to Continue.',
-    ErrorWhileRetrievingData:'An Error occured while retrieving data.',
-    ErrorOccured:'Error has occured',
-    ConsolidatedAllItemsInOrder:'You have consolidated all items in this order',
+    ConsolidationOrderInvalid: 'Consolidation The Order/Tote that you entered is invalid or no longer exists in the system.',
+    ValueMatchToToteOrder: 'The Value you Entered matched a Tote and Order Number, select one to Continue.',
+    ErrorWhileRetrievingData: 'An Error occured while retrieving data.',
+    ErrorOccured: 'Error has occured',
+    ConsolidatedAllItemsInOrder: 'You have consolidated all items in this order',
     ItemNotCompleted: "The selected item has not yet been completed and can't be verified at this time",
-    ItemNotInOrder:'Item not in order or has already been consolidated',
+    ItemNotInOrder: 'Item not in order or has already been consolidated',
     NoUnverfiedItems: 'There are no unverfied items',
-    SomethingWentWrong:'Something went wrong',
-    DefaultSuperBatchSizeError:'Default Super Batch Size must be greater than 1',
-    NoOpenTransactionsBatch:"No open transactions for the entered batch",
-    NoOpenTranscationTote:"No open transaction for that tote in the batch",
+    SomethingWentWrong: 'Something went wrong',
+    DefaultSuperBatchSizeError: 'Default Super Batch Size must be greater than 1',
+    NoOpenTransactionsBatch: "No open transactions for the entered batch",
+    NoOpenTranscationTote: "No open transaction for that tote in the batch",
     ErrorOccuredTranscation: "An error occured completing this transaction",
-    ErrorWhileSave:'An Error Occured while trying to save',
-    OrderInvalid:'The Order/Tote that you entered is invalid or no longer exists in the system.',
-    InvalidLocation:'The Location entered was not valid',
-    ErrorOccuredTryingToRemoveAll:'An Error Occured while trying to remove all data, check the event log for more information',
+    ErrorWhileSave: 'An Error Occured while trying to save',
+    OrderInvalid: 'The Order/Tote that you entered is invalid or no longer exists in the system.',
+    InvalidLocation: 'The Location entered was not valid',
+    ErrorOccuredTryingToRemoveAll: 'An Error Occured while trying to remove all data, check the event log for more information',
     StartDateMustBeBeforeEndDate: 'Start date must be before end date!',
-    BlankZone:'Zone may not be left blank.  Zone will not be saved until this is fixed.',
-    SequenceMustEqualOrGreaterZero:'Sequence must be an integer greater than or equal to 0.  Zone will not be saved until this is fixed',
-    DuplicateZone:'Zone is currently set to be a duplicate. Zone will not be saved until this is fixed',
-    ErrorOccuredPalletSetup:'An error occurred processing this pallet setup',
-    PalletProcessed:'Pallet was processed',
-    EnterBatchIdtoProcess:'Please enter in a batch id to proccess.',
-    EnterBatchId:'Please enter in a batch id',
-    EnterToteId:'Please enter in at least 1 tote id to process.',
-    EnterOneOrderNoToProcess:'Please enter in at least 1 order number to process.',
-    PopupBlocked:'Popup was blocked by the browser.',
-    EnterOneTote:'Please enter in at least 1 tote id',
-    EnterOneOrder:'Please enter in at least 1 order number',
+    BlankZone: 'Zone may not be left blank.  Zone will not be saved until this is fixed.',
+    SequenceMustEqualOrGreaterZero: 'Sequence must be an integer greater than or equal to 0.  Zone will not be saved until this is fixed',
+    DuplicateZone: 'Zone is currently set to be a duplicate. Zone will not be saved until this is fixed',
+    ErrorOccuredPalletSetup: 'An error occurred processing this pallet setup',
+    PalletProcessed: 'Pallet was processed',
+    EnterBatchIdtoProcess: 'Please enter in a batch id to proccess.',
+    EnterBatchId: 'Please enter in a batch id',
+    EnterToteId: 'Please enter in at least 1 tote id to process.',
+    EnterOneOrderNoToProcess: 'Please enter in at least 1 order number to process.',
+    PopupBlocked: 'Popup was blocked by the browser.',
+    EnterOneTote: 'Please enter in at least 1 tote id',
+    EnterOneOrder: 'Please enter in at least 1 order number',
     BatchIDRequired: 'Batch id is required.',
-    BatchIDCannotBeEmpty:'Batch ID cannot be empty when opening the pick batch manager.',
-    NoOpenTote:'No open totes in batch',
-    SelectBatchID:'Please select a Batch ID to print',
-    EnterOrderNo:'Please enter in an order number.',
-    InvalidOrderNo:'This is not a vaild order number for this pick batch.',
-    ToteIdAlreadyInBatch:'This tote id is already in this batch. Enter a new one',
-    MissingDataFromPrint:'Missing data from the desired print row',
+    BatchIDCannotBeEmpty: 'Batch ID cannot be empty when opening the pick batch manager.',
+    NoOpenTote: 'No open totes in batch',
+    SelectBatchID: 'Please select a Batch ID to print',
+    EnterOrderNo: 'Please enter in an order number.',
+    InvalidOrderNo: 'This is not a vaild order number for this pick batch.',
+    ToteIdAlreadyInBatch: 'This tote id is already in this batch. Enter a new one',
+    MissingDataFromPrint: 'Missing data from the desired print row',
     DeletePendingTransaction: 'You can only delete pending transactions.',
-    ItemNumberExists:'Item Number Already Exists.',
+    ItemNumberExists: 'Item Number Already Exists.',
     RecordUpdatedSuccessful: 'Record Updated Successfully'
 }
 
@@ -235,7 +235,7 @@ export const CMShippingPreferences = {
 export const ApiEndpoints = {
     IMSytemSettings: '/Induction/imsytemsettings',
     RTSUserData: '/Induction/rtsuserdata',
-    IMMIScSetup:'/Induction/immiscsetup',
+    IMMIScSetup: '/Induction/immiscsetup',
     IMPrintSettings: '/Induction/imprintsettings'
 }
 
@@ -255,9 +255,9 @@ export const KeyboardKeys = {
 }
 
 export const zoneType = {
-    carousel:'carousel',
-    cartonFlow:'cartonFlow',
-    includePick:'includePick'
+    carousel: 'carousel',
+    cartonFlow: 'cartonFlow',
+    includePick: 'includePick'
 }
 
 export const alertMessage = {
@@ -265,21 +265,21 @@ export const alertMessage = {
     ErrorValidatingSerialNoMsg: 'There was an error validating serial number',
     EnterSerialNo: 'Please enter a serial number',
     SerialNoAlreadyScan: 'Serial Number already scanned',
-    DeleteMessage:'You are about to mark the scanned reels as empty. This will delete ALL current open transactions associated with the scanned reels.'
+    DeleteMessage: 'You are about to mark the scanned reels as empty. This will delete ALL current open transactions associated with the scanned reels.'
 }
 
 export const showNotificationHeading = {
-    FieldsMissing:'Fields Missing',
-    InvalidQuantity:'Invalid Quantity',
-    InvalidItemEntered:'Invalid Item Entered',
-    InvalidToteEntered:'Invalid Tote Entered'
+    FieldsMissing: 'Fields Missing',
+    InvalidQuantity: 'Invalid Quantity',
+    InvalidItemEntered: 'Invalid Item Entered',
+    InvalidToteEntered: 'Invalid Tote Entered'
 }
 
 export const showNotificationMessage = {
-    FieldsFill:'Not all the fields were filled out. Please fill them out',
-    InvalidQuantity:'An invalid quantity was entered. Please enter a quantity greater than 0',
-    ItemNotExists:'This item does not exist in Inventory',
-    ToteAlreadyExists:'This tote id already exists in Open Transactions'
+    FieldsFill: 'Not all the fields were filled out. Please fill them out',
+    InvalidQuantity: 'An invalid quantity was entered. Please enter a quantity greater than 0',
+    ItemNotExists: 'This item does not exist in Inventory',
+    ToteAlreadyExists: 'This tote id already exists in Open Transactions'
 }
 
 export const FieldName = {
@@ -300,39 +300,39 @@ export const Column = {
     LineNumber: 'Line Number',
     LotNumber: 'Lot Number',
     Location: 'Location',
-    Description:'Description',
+    Description: 'Description',
     TransType: 'transType',
-    Action:'action',
-    cell:'cell',
-    Row:'row'
+    Action: 'action',
+    cell: 'cell',
+    Row: 'row'
 }
-export const ColumnDef= {
-    userField1:'userField1',
-    userField2:'userField2',
-    userField3:'userField3',
-    userField4:'userField4',
-    userField5:'userField5',
-    userField6:'userField6',
-    userField7:'userField7',
-    userField8:'userField8',
-    userField9:'userField9',
-    userField10:'userField10',
-    Emergency:'Emergency',
-    HostTransactionId:'hostTransactionID',
-    Zone:'Zone',
-    BatchPickID:'Batch Pick ID',
-    Revision:'revision',
-    ExpirationDate:'expirationDate',
-    Actions:'actions',
-    Action:'action',
-    ToteID:'toteID',
-    TransactionQuantity:'transactionQuantity',
-    UnitOfMeasure:'unitOfMeasure',
-    SerialNumber:'Serial Number',
-    Bin:'bin',
-    Warehouse:'Warehouse',
-    RequiredDate:'requiredDate',
-    actions:'actions'
+export const ColumnDef = {
+    userField1: 'userField1',
+    userField2: 'userField2',
+    userField3: 'userField3',
+    userField4: 'userField4',
+    userField5: 'userField5',
+    userField6: 'userField6',
+    userField7: 'userField7',
+    userField8: 'userField8',
+    userField9: 'userField9',
+    userField10: 'userField10',
+    Emergency: 'Emergency',
+    HostTransactionId: 'hostTransactionID',
+    Zone: 'Zone',
+    BatchPickID: 'Batch Pick ID',
+    Revision: 'revision',
+    ExpirationDate: 'expirationDate',
+    Actions: 'actions',
+    Action: 'action',
+    ToteID: 'toteID',
+    TransactionQuantity: 'transactionQuantity',
+    UnitOfMeasure: 'unitOfMeasure',
+    SerialNumber: 'Serial Number',
+    Bin: 'bin',
+    Warehouse: 'Warehouse',
+    RequiredDate: 'requiredDate',
+    actions: 'actions'
 }
 
 export const Case = {
@@ -370,101 +370,105 @@ export const TableName = {
     TransactionHistory: 'Transaction History'
 }
 export const TableConstant = {
-    CompletedDate:'Completed Date',
-    HostTransactionID:'Host Transaction ID',
-    LineSequence:'lineSequence',
-    UserField1:'User Field1',
-    UserField2:'User Field2',
-    Revision:'Revision',
+    CompletedDate: 'Completed Date',
+    HostTransactionID: 'Host Transaction ID',
+    LineSequence: 'lineSequence',
+    UserField1: 'User Field1',
+    UserField2: 'User Field2',
+    Revision: 'Revision',
     ExpirationDate: 'Expiration Date',
-    ImportBy:'importBy',
-    Cell:'Cell',
-    TransactionQuantity:'Transaction Quantity',
-    ImportDate:'importDate',
-    zone:'zone',
+    ImportBy: 'importBy',
+    Cell: 'Cell',
+    TransactionQuantity: 'Transaction Quantity',
+    ImportDate: 'importDate',
+    zone: 'zone',
     TransactionType: 'Transaction Type',
-    Row:'Row',
-    shelf:'shelf',
-    Shelf:'Shelf',
-    Bin:'Bin',
-    Carousel:'Carousel',
-    Notes:'notes',
-    label:'label',
-    completedQuantity:'completedQuantity',
-    transactionType:'transactionType',
-    BatchPickID:'batchPickID',
+    Row: 'Row',
+    shelf: 'shelf',
+    Shelf: 'Shelf',
+    Bin: 'Bin',
+    Carousel: 'Carousel',
+    Notes: 'notes',
+    label: 'label',
+    completedQuantity: 'completedQuantity',
+    transactionType: 'transactionType',
+    BatchPickID: 'batchPickID',
     Location: 'location',
-    LineNumber:'lineNumber',
-    WareHouse:'warehouse',
-    SerialNumber:'serialNumber',
+    LineNumber: 'lineNumber',
+    WareHouse: 'warehouse',
+    SerialNumber: 'serialNumber',
     LotNumber: 'lotNumber',
-    
+
 }
 export const UniqueConstants = {
-    backClass:'back-class',
-    _blank:'_blank',
-    position : 'position',
-    goldenZone:'goldenZone',
-    searchValue:'searchValue',
-    event:'$event',
-    delete:'delete',
-    Asc:'asc',
-    Desc:'desc',
-    Description:"description",
-    Priority:'priority',
-    constantDate:"12/14/2022",
-    Select:'select',
-    emergency:'emergency',
-    _self:'_self',
-    cellSize:'cellSize',
-    item:'item',
-    itemCount:'itemCount',
-    OneEqualsOne:'1 = 1',
-    Lizard:'Lizard',
-    Lindsay:'Lindsay',
-    Blue:'Blue',
-    Ibl:'lbl',
-    OrderNumber:'orderNumber',
-    Regx:"^[0-9]*$"
+    backClass: 'back-class',
+    _blank: '_blank',
+    position: 'position',
+    goldenZone: 'goldenZone',
+    searchValue: 'searchValue',
+    event: '$event',
+    delete: 'delete',
+    Asc: 'asc',
+    Desc: 'desc',
+    Description: "description",
+    Priority: 'priority',
+    constantDate: "12/14/2022",
+    Select: 'select',
+    emergency: 'emergency',
+    _self: '_self',
+    cellSize: 'cellSize',
+    item: 'item',
+    itemCount: 'itemCount',
+    OneEqualsOne: '1 = 1',
+    Lizard: 'Lizard',
+    Lindsay: 'Lindsay',
+    Blue: 'Blue',
+    Ibl: 'lbl',
+    OrderNumber: 'orderNumber',
+    Regx: "^[0-9]*$"
 
 }
 export const Style = {
-    w560px:'560px',
-    w100vw:'100vw',
-    w50vw:'50vw',
-    w480px:'480px',
-    w600px:'600px',
-    w786px:'786px',
-    w402px:'402px',
-    w1080px:'1080px',
+    w560px: '560px',
+    w100vw: '100vw',
+    w50vw: '50vw',
+    w480px: '480px',
+    w600px: '600px',
+    w786px: '786px',
+    w402px: '402px',
+    w1080px: '1080px',
 }
 
 export const Width = {
-    w1300:1300,
+    w1300: 1300,
 }
 export const Height = {
-    h600:600,
+    h600: 600,
 }
 export const FilterColumnName = {
-    unitOfMeasure:'Unit of Measure'
+    unitOfMeasure: 'Unit of Measure'
 }
 export const markoutdisplayedColumns = {
-    Status:'status',
-    ToteID:'toteId',
-    ItemNumber:'itemNumber',
-    Location:'location',
-    TransQty:'transQty',
-    CompQty:'compQty',
-    ShortQty:'shortQty',
-    ToteQty:'toteQty',
-    actions:'actions',
-    TotalQty:'totalQty'
-    }
+    Status: 'status',
+    ToteID: 'toteId',
+    ItemNumber: 'itemNumber',
+    Location: 'location',
+    TransQty: 'transQty',
+    CompQty: 'compQty',
+    ShortQty: 'shortQty',
+    ToteQty: 'toteQty',
+    actions: 'actions',
+    TotalQty: 'totalQty'
+}
 
-    export const SpecificFilters = {
-      ColumnNames: 'ColumnNames',
-      SelectedFilters: 'SelectedFilters',
-      SelectedFilter: 'SelectedFilter',
-    };
+export const SpecificFilters = {
+    ColumnNames: 'ColumnNames',
+    SelectedFilters: 'SelectedFilters',
+    SelectedFilter: 'SelectedFilter',
+};
 
+export const BlossomType = {
+    Blossom: 'Blossom',
+    BlossomComplete: 'BlossomComplete',
+}
 

@@ -13,6 +13,7 @@ import { MatSort, Sort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { ConfirmationDialogComponent } from 'src/app/admin/dialogs/confirmation-dialog/confirmation-dialog.component';
 import {
+  BlossomType,
   DialogConstants,
   LiveAnnouncerMessage,
   ResponseStrings,
@@ -48,11 +49,13 @@ export class MarkoutListComponent implements OnInit {
   public iMarkoutApiService: IMarkoutApiService;
   @Input() toteDataResponse: ToteDataResponse;
   @Input() selectedView: string;
+  @Input() isBlossomComplete: boolean;
   @Output() updateTableEmitter = new EventEmitter<string>();
   @ViewChild('paginator') paginator: MatPaginator;
   markoutlistdataSource: MatTableDataSource<ToteData>;
   @ViewChild(MatSort) sort: MatSort;
   @Output() toteIdEmitter = new EventEmitter<MarkoutToteRequest>();
+  blossomType = BlossomType;
 
   constructor(
     private _liveAnnouncer: LiveAnnouncer,
@@ -224,7 +227,10 @@ export class MarkoutListComponent implements OnInit {
     });
   }
 
-  blossom(element: ToteData) {
+  blossom(element: ToteData,type) {
+    if(type == this.blossomType.BlossomComplete && !this.isBlossomComplete){
+      return;
+    }
     let dialogRefTote;
     dialogRefTote = this.global.OpenDialog(MoBlossomToteComponent, {
       height: DialogConstants.auto,
@@ -232,7 +238,8 @@ export class MarkoutListComponent implements OnInit {
       autoFocus: DialogConstants.autoFocus,
       disableClose: true,
       data: {
-        markoutlistdataSource: [element]
+        markoutlistdataSource: [element],
+        type:type
       }
     });
     dialogRefTote.afterClosed().subscribe((result) => {

@@ -16,12 +16,22 @@ export class MarkoutMainModuleComponent implements OnInit {
   MarkoutToteReq: MarkoutToteRequest;
   selectedView: string = '';
   toteId: string = '';
+  isBlossomComplete: boolean = false;
 
   constructor(public markoutApiService: MarkoutApiService, private sharedService: SharedService,) {
     this.iMarkoutApiService = markoutApiService;
   }
 
   ngOnInit(): void {
+    this.getBlossomCompleteParam();
+  }
+
+  getBlossomCompleteParam() {
+    this.iMarkoutApiService
+      .GetParamByName('BlossomComplete')
+      .subscribe((res: string) => {
+        this.isBlossomComplete = res == '1';
+      });
   }
 
   handleToteId(event: MarkoutToteRequest) {

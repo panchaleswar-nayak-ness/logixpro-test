@@ -13,9 +13,13 @@
         <mat-form-field class="action-dropdown mb-2 flex-1 w-100" appearance="outline">
           <mat-label>Actions</mat-label>
           <mat-select class="employees-action" (selectionChange)="emitSelectedValue($event.value)">
-            <mat-option (click)="blossomtotedialog()"
+            <mat-option (click)="blossomtotedialog(blossomType.Blossom)"
               [disabled]="toteDataResponse && toteDataResponse.data && (toteDataResponse.data.length == 0 || toteDataResponse.toteStatus == 'Complete')">
-              Blossom Tote
+              Blossom
+            </mat-option>
+            <mat-option (click)="blossomtotedialog(blossomType.BlossomComplete)"
+              [disabled]="toteDataResponse && toteDataResponse.data && (toteDataResponse.data.length == 0 || toteDataResponse.toteStatus == 'Complete' || !isBlossomComplete)">
+              Blossom Complete
             </mat-option>
             <mat-option [value]="'View by Order'" (click)="viewChange()">View by Order</mat-option>
             <mat-option [value]="'View by Tote'" (click)="viewChange()">View by Tote</mat-option>

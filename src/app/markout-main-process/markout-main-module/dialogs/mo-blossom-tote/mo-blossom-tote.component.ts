@@ -2,6 +2,7 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
 import {
+  BlossomType,
   DialogConstants,
   ResponseStrings,
   Style,
@@ -27,7 +28,6 @@ export class MoBlossomToteComponent implements OnInit {
   markoutlistdataSource: MatTableDataSource<ToteData>;
   orderNumber: string = '';
   selectedList: [];
-  isBlossomComplete: boolean = false;
   isBlossom: boolean = false;
   displayedColumns: string[] = [
     markoutdisplayedColumns.ItemNumber,
@@ -36,6 +36,8 @@ export class MoBlossomToteComponent implements OnInit {
     markoutdisplayedColumns.ToteQty,
     markoutdisplayedColumns.TotalQty,
   ];
+  blossomType = BlossomType;
+  type: string;
 
   constructor(
     public dialogRef: MatDialogRef<MoBlossomToteComponent>,
@@ -54,20 +56,12 @@ export class MoBlossomToteComponent implements OnInit {
     this.markoutlistdataSource = new MatTableDataSource(
       this.data?.markoutlistdataSource
     );
+    this.type = this.data?.type;
     this.orderNumber = this.data?.markoutlistdataSource[0].orderNumber;
-    this.getParamByName();
   }
 
   blossomCompleteTransactions() {
     this.blossomTransactions(true);
-  }
-
-  getParamByName() {
-    this.iMarkoutApiService
-      .GetParamByName('BlossomComplete')
-      .subscribe((res: string) => {
-        this.isBlossomComplete = res == '1';
-      });
   }
 
   blossomTransactions(blossomcompete: boolean = false) {
@@ -100,17 +94,17 @@ export class MoBlossomToteComponent implements OnInit {
           heading: `${blossomcompete ? 'Blossom Complete' : 'Blossom'}`,
           btn1Text: 'Yes',
           btn2Text: 'No',
-          message: `${blossomcompete ? 
+          message: `${blossomcompete ?
             `You have requested to blossom complete.
             This will complete the new tote with quantities entered, and update the
             remaining quantities of the old tote.
-            Do you want to perform this action?` 
-            : 
+            Do you want to perform this action?`
+            :
             `You have requested to blossom.
             This will complete the original tote with quantities entered,
             and assign the remaining quantities to the new tote.
             Do you want to perform this action?`}`
-           ,
+          ,
         },
       });
       dialogRef.afterClosed().subscribe((result) => {
@@ -179,7 +173,7 @@ export class MoBlossomToteComponent implements OnInit {
     }
   }
 
-  calculateTotal(element:ToteData){
+  calculateTotal(element: ToteData) {
     return element?.oldToteQty ? element?.compQty + element?.oldToteQty : element?.compQty;
   }
 }
