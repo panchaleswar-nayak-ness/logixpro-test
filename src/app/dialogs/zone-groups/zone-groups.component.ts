@@ -116,7 +116,15 @@ export class ZoneGroupsComponent implements OnInit {
     } catch (error) {}
   }
 
-  openSelectZones(index) {
+  openSelectZones(index: string | number) {
+    let formItems = this.form.controls['items'] as FormArray;
+    if (formItems && formItems.controls.length > 0) {
+      // this.assignedZonesArray = formItems.controls[index].value.selectedZone
+      //   .split(',')
+      //   .map((m: string) => {
+      //     return { zone: m.trim() };
+      //   });
+    }
     const dialogRef: any = this.global.OpenDialog(SelectZonesComponent, {
       height: 'auto',
       width: '60%',
@@ -130,8 +138,8 @@ export class ZoneGroupsComponent implements OnInit {
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
         let zones = '';
-        this.assignedZonesArray = result;
-        for (const element of result) {
+        this.assignedZonesArray = result.selectedRecords;
+        for (const element of result.selectedRecords) {
           zones = `${zones} ${element.zone}`;
         }
         this.assignedZones = zones.trim();
@@ -143,7 +151,6 @@ export class ZoneGroupsComponent implements OnInit {
         this.items.controls[index]
           .get('selectedZone')
           ?.patchValue(this.assignedZones);
-
         // console.log(this.items.controls[index].value);
         this.assignedZones = '';
         this.assignedZonesArray = [];
@@ -210,7 +217,6 @@ export class ZoneGroupsComponent implements OnInit {
   }
 
   removeItem(index: number) {
-
     const control = this.form.get('items') as FormArray;
     let valueToRemove = control.value[index];
 
