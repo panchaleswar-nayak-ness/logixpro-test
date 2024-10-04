@@ -518,6 +518,7 @@ export class ProcessPicksComponent implements OnInit {
               element.orderNumber = '';
             });
           }
+        
           this.tote_Setup.forEach((element, key) => {
             element.orderNumber = resultObj[key]?.orderNumber ?? '';
             element.priority = resultObj[key]?.priority ?? '';
@@ -683,23 +684,26 @@ export class ProcessPicksComponent implements OnInit {
     this.tote_Setup[index].orderNumber = '';
     this.tote_Setup[index].priority = '';
     this.allOrders[index] = '';
-    this.tote_Setup.splice(index, 1); // Removes the item at index 'i' from the array
-    this.allOrders.splice(index, 1);  
+  //  this.tote_Setup.splice(index, 1); // Removes the item at index 'i' from the array
+    //this.allOrders.splice(index, 1);  
     console.log(this.tote_Setup);
      // Adjust the position of the remaining items
-     this.tote_Setup = this.tote_Setup.map((item, i) => {
-      if (i >= index) {
-        return {
-          ...item,
-          position: item.position - 1
-        };
-      }
-      return item;
-    });
-    this.dataSource = new MatTableDataSource<any>(this.tote_Setup);
-    this.resultObj.splice(index, 1); 
+    //  this.tote_Setup = this.tote_Setup.map((item, i) => {
+    //   if (i >= index) {
+    //     return {
+    //       ...item,
+    //       position: item.position - 1
+    //     };
+    //   }
+    //   return item;
+    // });
+    // this.dataSource = new MatTableDataSource<any>(this.tote_Setup);
+     //this.resultObj[index]=''; 
+     this.resultObj = this.resultObj.filter((item, i) => i!== index);
+     console.log(this.resultObj);
+     
 
-     console.log(this.tote_Setup);
+    //  console.log(this.tote_Setup);
   }
 
   confirmProcessSetup() {

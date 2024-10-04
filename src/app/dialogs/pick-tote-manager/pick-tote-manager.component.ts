@@ -445,6 +445,7 @@ export class PickToteManagerComponent implements OnInit {
     } else {
       this.isFilter = TableConstant.zone;
     }
+    
     this.allSelectOrders = this.data.allOrders;
   }
 
@@ -837,7 +838,8 @@ export class PickToteManagerComponent implements OnInit {
                 this.selectedOrders.push(ele.orderNumber);
               });
               this.selectedOrders = [...new Set(this.selectedOrders)];
-              this.allSelectOrders = this.selectedOrders;
+             
+             // this.allSelectOrders = this.selectedOrders;
             }
             this.filterBatchOrdersZone = new MatTableDataSource<any>(
               this.filterBatchDataZone
@@ -865,6 +867,7 @@ export class PickToteManagerComponent implements OnInit {
   }
 
   onOrderSelect(row: any) {
+    
     if (this.selectedOrders.includes(row.orderNumber)) {
       this.filterBatchData.forEach((val) => {
         if (val.orderNumber === row.orderNumber) {
@@ -1475,6 +1478,7 @@ refreshOrderDataGrid() {
   }
 
   onClosePickToteManager() {
+    
     let selectedObj: any = [];
     let currentObjArr: any = [];
     if (this.isFilter === StringConditions.filter) {
@@ -1516,6 +1520,7 @@ refreshOrderDataGrid() {
   }
 
   onCloseAllPickToteManager() {
+   
     this.allSelectOrders = this.selectedOrders;
   }
 
