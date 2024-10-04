@@ -115,6 +115,14 @@ export class InductionManagerApiService implements IInductionManagerApiService {
     return this.Api.GetZoneGroupings();
   }
 
+  public SaveZoneGrouping(valueToSave) {
+    return this.Api.SaveZoneGrouping(valueToSave);
+  }
+
+  public RemoveZoneGrouping(valueToRemove) {
+    return this.Api.RemoveZoneGrouping(valueToRemove);
+  }
+
   public PreferenceIndex() {
     return this.Api.PreferenceIndex();
   }

@@ -2,7 +2,7 @@ import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { FloatLabelType } from '@angular/material/form-field';
 import { Subject, debounceTime, distinctUntilChanged } from 'rxjs';
-import { DeleteConfirmationComponent } from 'src/app/admin/dialogs/delete-confirmation/delete-confirmation.component';  
+import { DeleteConfirmationComponent } from 'src/app/admin/dialogs/delete-confirmation/delete-confirmation.component';
 import { MatTableDataSource } from '@angular/material/table';
 import { AuthService } from 'src/app/common/init/auth.service';
 import { BatchDeleteComponent } from 'src/app/dialogs/batch-delete/batch-delete.component';
@@ -13,7 +13,17 @@ import { GlobalService } from 'src/app/common/services/global.service';
 import { IInductionManagerApiService } from 'src/app/common/services/induction-manager-api/induction-manager-api-interface';
 import { InductionManagerApiService } from 'src/app/common/services/induction-manager-api/induction-manager-api.service';
 import { TableContextMenuService } from 'src/app/common/globalComponents/table-context-menu-component/table-context-menu.service';
-import { ToasterTitle, ToasterType ,ResponseStrings,DialogConstants,UniqueConstants,StringConditions,Style,TableConstant,ColumnDef} from 'src/app/common/constants/strings.constants';
+import {
+  ToasterTitle,
+  ToasterType,
+  ResponseStrings,
+  DialogConstants,
+  UniqueConstants,
+  StringConditions,
+  Style,
+  TableConstant,
+  ColumnDef,
+} from 'src/app/common/constants/strings.constants';
 @Component({
   selector: 'app-tote-transaction-manager',
   templateUrl: './tote-transaction-manager.component.html',
@@ -46,20 +56,20 @@ export class ToteTransactionManagerComponent implements OnInit {
       host_trans_id: '123641',
     },
   ];
-public iinductionManagerApi:IInductionManagerApiService;
+  public iinductionManagerApi: IInductionManagerApiService;
   pageEvent: PageEvent;
   public dataSource: any = new MatTableDataSource();
   batchId: any = '';
   sortOrder = UniqueConstants.Asc;
   sortCol = 0;
-  startRow=0;
-  endRow=10;
-  recordsPerPage=10;
-  totalRecords=0;
+  startRow = 0;
+  endRow = 10;
+  recordsPerPage = 10;
+  totalRecords = 0;
   batchPickId = new Subject<string>();
   userData: any;
   searchAutocompletBatchPick: any = [];
-  imPreferences:any;
+  imPreferences: any;
   public displayedColumns: string[] = [
     TableConstant.BatchPickID,
     'filterCount',
@@ -67,7 +77,7 @@ public iinductionManagerApi:IInductionManagerApiService;
     TableConstant.transactionType,
     'zoneLabel',
     'hostTransaction',
-    ColumnDef.Action
+    ColumnDef.Action,
   ];
 
   hideRequiredControl = new FormControl(false);
@@ -76,16 +86,16 @@ public iinductionManagerApi:IInductionManagerApiService;
   dataSourceList: any;
   @ViewChild('autoFocusField') searchBoxField: ElementRef;
 
-  isActiveTrigger:boolean = false;
+  isActiveTrigger: boolean = false;
 
   constructor(
-    private global:GlobalService,
-    private contextMenuService : TableContextMenuService,
+    private global: GlobalService,
+    private contextMenuService: TableContextMenuService,
     private authService: AuthService,
     public inductionManagerApi: InductionManagerApiService,
-    private filterService: ContextMenuFiltersService, 
+    private filterService: ContextMenuFiltersService
   ) {
-    this.filterService.filterString= "";
+    this.filterService.filterString = '';
     this.userData = this.authService.userData();
     this.iinductionManagerApi = inductionManagerApi;
   }
@@ -99,8 +109,7 @@ public iinductionManagerApi:IInductionManagerApiService;
       });
 
     this.getToteTrans();
-    this.imPreferences=this.global.getImPreferences();
-   
+    this.imPreferences = this.global.getImPreferences();
   }
   getFloatLabelValue(): FloatLabelType {
     return this.floatLabelControl.value ?? 'auto';
@@ -109,117 +118,117 @@ public iinductionManagerApi:IInductionManagerApiService;
   clearBatchButt() {
     this.batchId = '';
     this.searchAutocompletBatchPick.length = 0;
-    this.FilterString=UniqueConstants.OneEqualsOne;
+    this.FilterString = UniqueConstants.OneEqualsOne;
     this.resetPagination();
     this.getToteTrans();
   }
 
-   clearInfo(type,row?) {
- let enablebatch = false
-  if(row?.batchPickID != ''){
-    enablebatch = true
-  }
-        if (type != 'pickTote') {
-          const dialogRef:any = this.global.OpenDialog(BatchDeleteComponent, {
-            height: 'auto',
-            width: '60vw',
-            autoFocus: DialogConstants.autoFocus,
-      disableClose:true,
-            data: {
-              deleteAllDisable:true,
-              enableClear:enablebatch,
-              batchId: row?.batchPickID ? row.batchPickID : '',
-              toteId: row?.toteId ? row.toteId : '',
-              userName: this.userData.userName,
-              wsid: this.userData.wsid,
-              delButtonHide:true
-            },
-          });
-          dialogRef.afterClosed().subscribe((res) => {
-            if (res.isExecuted) {
-              this.getToteTrans()
-            }
-          });
-        } else {
-          const dialogRef:any = this.global.OpenDialog(DeleteConfirmationComponent, {
-            height: 'auto',
-            width: Style.w600px,
-            autoFocus: DialogConstants.autoFocus,
-      disableClose:true,
-            data: {
-              mode: 'clear-pick-tote-info',
-              action: StringConditions.clear,
-              actionMessage:
-                type === 'pickTote'
-                  ? 'the info for all pick batches'
-                  : 'this batch or tote id',
-            },
-          });
-          dialogRef.afterClosed().subscribe((res) => {
-            if (res === ResponseStrings.Yes) {
-              this.clearToteInfo();
-            }
-          })
-          // Clear tote info
+  clearInfo(type, row?) {
+    let enablebatch = false;
+    if (row?.batchPickID != '') {
+      enablebatch = true;
+    }
+    if (type != 'pickTote') {
+      const dialogRef: any = this.global.OpenDialog(BatchDeleteComponent, {
+        height: 'auto',
+        width: '60vw',
+        autoFocus: DialogConstants.autoFocus,
+        disableClose: true,
+        data: {
+          deleteAllDisable: true,
+          enableClear: enablebatch,
+          batchId: row?.batchPickID ? row.batchPickID : '',
+          toteId: row?.toteId ? row.toteId : '',
+          userName: this.userData.userName,
+          wsid: this.userData.wsid,
+          delButtonHide: true,
+        },
+      });
+      dialogRef.afterClosed().subscribe((res) => {
+        if (res.isExecuted) {
+          this.getToteTrans();
         }
+      });
+    } else {
+      const dialogRef: any = this.global.OpenDialog(
+        DeleteConfirmationComponent,
+        {
+          height: 'auto',
+          width: Style.w600px,
+          autoFocus: DialogConstants.autoFocus,
+          disableClose: true,
+          data: {
+            mode: 'clear-pick-tote-info',
+            action: StringConditions.clear,
+            actionMessage:
+              type === 'pickTote'
+                ? 'the info for all pick batches'
+                : 'this batch or tote id',
+          },
+        }
+      );
+      dialogRef.afterClosed().subscribe((res) => {
+        if (res === ResponseStrings.Yes) {
+          this.clearToteInfo();
+        }
+      });
+      // Clear tote info
+    }
   }
-  
- getToteTrans() {  
+
+  getToteTrans() {
     let payload = {
-   
-      BatchID: this.batchId?this.batchId:'',
+      BatchID: this.batchId ? this.batchId : '',
       StartRow: this.startRow,
       EndRow: this.endRow,
       SortCol: this.sortCol,
-      SortOrder:this.sortOrder,
+      SortOrder: this.sortOrder,
       Filter: this.FilterString,
     };
     this.iinductionManagerApi
       .SelectToteTransManTable(payload)
       .subscribe((res: any) => {
-        if(res.isExecuted && res.data)
-        {
-
-        this.totalRecords=  res?.data[0]?.totalCount? res.data[0].totalCount:0;
-        this.dataSource = new MatTableDataSource(res?.data);
-
+        if (res.isExecuted && res.data) {
+          this.totalRecords = res?.data[0]?.totalCount
+            ? res.data[0].totalCount
+            : 0;
+          this.dataSource = new MatTableDataSource(res?.data);
+        } else {
+          this.global.ShowToastr(
+            ToasterType.Error,
+            this.global.globalErrorMsg(),
+            ToasterTitle.Error
+          );
+          console.log('SelectToteTransManTable', res.responseMessage);
         }
-        else {
-          this.global.ShowToastr(ToasterType.Error, this.global.globalErrorMsg(), ToasterTitle.Error);
-          console.log("SelectToteTransManTable",res.responseMessage)
-
-        }
-        
       });
   }
 
   async autocompleteSearchColumn() {
-   let searchPayload = {
-      batchID:this.batchId
+    let searchPayload = {
+      batchID: this.batchId,
     };
     this.iinductionManagerApi
-    .SelectBatchPickTA(this.batchId?searchPayload:null)
+      .SelectBatchPickTA(this.batchId ? searchPayload : null)
       .subscribe(
         (res: any) => {
-          if (res.isExecuted && res.data)
-          {
+          if (res.isExecuted && res.data) {
             this.searchAutocompletBatchPick = res.data;
             this.getToteTrans();
-
+          } else {
+            this.global.ShowToastr(
+              ToasterType.Error,
+              this.global.globalErrorMsg(),
+              ToasterTitle.Error
+            );
+            console.log('SelectBatchPickTA', res.responseMessage);
           }
-          else {
-            this.global.ShowToastr(ToasterType.Error, this.global.globalErrorMsg(), ToasterTitle.Error);
-            console.log("SelectBatchPickTA",res.responseMessage);
-
-          }
-
-         
         },
         (error) => {}
       );
   }
   clearToteInfo() {
-    let payload = { 
+    let payload = {
       appName: '',
     };
     this.iinductionManagerApi
@@ -227,26 +236,30 @@ public iinductionManagerApi:IInductionManagerApiService;
       .subscribe((res: any) => {
         if (res.isExecuted) {
           this.getToteTrans();
-          this.global.ShowToastr(ToasterType.Success,labels.alert.delete, ToasterTitle.Success);
-        }
-        else {
-          this.global.ShowToastr(ToasterType.Error, this.global.globalErrorMsg(), ToasterTitle.Error);
-          console.log("ClearPickToteInfo",res.responseMessage);
-
+          this.global.ShowToastr(
+            ToasterType.Success,
+            labels.alert.delete,
+            ToasterTitle.Success
+          );
+        } else {
+          this.global.ShowToastr(
+            ToasterType.Error,
+            this.global.globalErrorMsg(),
+            ToasterTitle.Error
+          );
+          console.log('ClearPickToteInfo', res.responseMessage);
         }
       });
   }
 
-
   handlePageEvent(e: PageEvent) {
     this.pageEvent = e;
-   this.startRow = e.pageSize * e.pageIndex;
+    this.startRow = e.pageSize * e.pageIndex;
 
     this.endRow = e.pageSize * e.pageIndex + e.pageSize;
-   this.recordsPerPage = e.pageSize;
-   this.getToteTrans();
+    this.recordsPerPage = e.pageSize;
+    this.getToteTrans();
   }
-
 
   sortChange(event) {
     if (
@@ -267,13 +280,23 @@ public iinductionManagerApi:IInductionManagerApiService;
     this.sortOrder = event.direction;
     this.getToteTrans();
   }
-  printToteList(type,row){
+  printToteList(type, row) {
     switch (type) {
       case 'printCarouselList':
-        if(this.imPreferences.printDirectly){
-          this.global.Print(`FileName:PrintPrevOffCarList|ToteID:${row.toteId}|TransType:${row.transactionType}`)
-        }else{
-          window.open(`/#/report-view?file=FileName:PrintPrevOffCarList|ToteID:${row.toteId}|TransType:${row.transactionType}`, UniqueConstants._blank, 'width=' + screen.width + ',height=' + screen.height + ',toolbar=0,menubar=0,location=0,status=1,scrollbars=1,resizable=1,left=0,top=0')
+        if (this.imPreferences.printDirectly) {
+          this.global.Print(
+            `FileName:PrintPrevOffCarList|ToteID:${row.toteId}|TransType:${row.transactionType}`
+          );
+        } else {
+          window.open(
+            `/#/report-view?file=FileName:PrintPrevOffCarList|ToteID:${row.toteId}|TransType:${row.transactionType}`,
+            UniqueConstants._blank,
+            'width=' +
+              screen.width +
+              ',height=' +
+              screen.height +
+              ',toolbar=0,menubar=0,location=0,status=1,scrollbars=1,resizable=1,left=0,top=0'
+          );
         }
         break;
       case 'printTotelContents':
@@ -284,30 +307,52 @@ public iinductionManagerApi:IInductionManagerApiService;
         break;
       default:
         break;
-    }    
+    }
   }
 
   printOrOpenWindow(type, row) {
-    if(this.imPreferences.printDirectly){
-      this.global.Print(`FileName:PrintPrevToteContents|ToteID:${row.toteId}|ZoneLab:${row.zoneLabel}|TransType:${row.transactionType}`)
-    }else{
-      window.open(`/#/report-view?file=FileName:PrintPrevToteContents|ToteID:${row.toteId}|ZoneLab:${row.zoneLabel}|TransType:${row.transactionType}`, UniqueConstants._blank, 'width=' + screen.width + ',height=' + screen.height + ',toolbar=0,menubar=0,location=0,status=1,scrollbars=1,resizable=1,left=0,top=0')
+    if (this.imPreferences.printDirectly) {
+      this.global.Print(
+        `FileName:PrintPrevToteContents|ToteID:${row.toteId}|ZoneLab:${row.zoneLabel}|TransType:${row.transactionType}`
+      );
+    } else {
+      window.open(
+        `/#/report-view?file=FileName:PrintPrevToteContents|ToteID:${row.toteId}|ZoneLab:${row.zoneLabel}|TransType:${row.transactionType}`,
+        UniqueConstants._blank,
+        'width=' +
+          screen.width +
+          ',height=' +
+          screen.height +
+          ',toolbar=0,menubar=0,location=0,status=1,scrollbars=1,resizable=1,left=0,top=0'
+      );
     }
   }
-  
-  onContextMenu(event: MouseEvent, SelectedItem: any, FilterColumnName?: any, FilterConditon?: any, FilterItemType?: any) {
-    event.preventDefault()
+
+  onContextMenu(
+    event: MouseEvent,
+    SelectedItem: any,
+    FilterColumnName?: any,
+    FilterConditon?: any,
+    FilterItemType?: any
+  ) {
+    event.preventDefault();
     this.isActiveTrigger = true;
     setTimeout(() => {
-      this.contextMenuService.updateContextMenuState(event, SelectedItem, FilterColumnName, FilterConditon, FilterItemType);
+      this.contextMenuService.updateContextMenuState(
+        event,
+        SelectedItem,
+        FilterColumnName,
+        FilterConditon,
+        FilterItemType
+      );
     }, 100);
   }
 
-  FilterString : string = UniqueConstants.OneEqualsOne;
+  FilterString: string = UniqueConstants.OneEqualsOne;
 
-  optionSelected(filter : string) {
+  optionSelected(filter: string) {
     this.FilterString = filter;
-    this.getToteTrans();  
+    this.getToteTrans();
     this.isActiveTrigger = false;
   }
 
@@ -322,18 +367,20 @@ public iinductionManagerApi:IInductionManagerApiService;
     this.searchBoxField?.nativeElement.focus();
   }
 
-  test(){
+  test() {
     this.batchPickId.next('');
-    this.batchId='';
+    this.batchId = '';
   }
 
   selectRow(row: any) {
-    this.dataSource.filteredData.forEach(element => {
-      if(row != element){
+    this.dataSource.filteredData.forEach((element) => {
+      if (row != element) {
         element.selected = false;
       }
     });
-    const selectedRow = this.dataSource.filteredData.find((x: any) => x === row);
+    const selectedRow = this.dataSource.filteredData.find(
+      (x: any) => x === row
+    );
     if (selectedRow) {
       selectedRow.selected = !selectedRow.selected;
     }

@@ -35,6 +35,10 @@ export interface IInductionManagerApiService {
 
   GetZoneGroupings();
 
+  SaveZoneGrouping(valueToSave);
+  
+  RemoveZoneGrouping(valueToRemove);
+
   PickBatchFilterRename(payload: any);
 
   ProcessBlossom(payload: any);

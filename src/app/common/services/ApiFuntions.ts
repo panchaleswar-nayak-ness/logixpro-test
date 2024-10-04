@@ -1055,6 +1055,14 @@ export class ApiFuntions {
     return this.ApiBase.Get("/Induction/zonegrouping");
   }
 
+  public SaveZoneGrouping(valueToSave): Observable<any> {
+    return this.ApiBase.Post("/Induction/zonegrouping", valueToSave);
+  }
+
+  public RemoveZoneGrouping(valueToRemove): Observable<any> {
+    return this.ApiBase.Delete(`/Induction/zonegrouping/${valueToRemove}`);
+  }
+
   public PreferenceIndex(): Observable<any> {
     return this.ApiBase.Get("/Induction/preferenceindex");
   }
