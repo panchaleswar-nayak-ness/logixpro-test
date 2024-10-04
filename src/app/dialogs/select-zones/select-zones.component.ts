@@ -152,12 +152,19 @@ export class SelectZonesComponent implements OnInit {
     selectedRecords.push(element);
     }
     }
-    this.dialogRef.close(selectedRecords);
+    this.dialogRef.close({ selectedRecords: selectedRecords, zoneList:  this.zoneList});
   }
 
   close()
   {
-    this.dialogRef.close();
+    let selectedRecords=[{zone:'',locationName:'',locationType:'',stagingZone:'',selected: false,available: false}];
+    for (const element of this.elementData) {
+      if(element.selected)
+      {
+        selectedRecords.push(element);
+      }      
+    }
+    this.dialogRef.close({ selectedRecords: selectedRecords, zoneList:  this.zoneList});
   }
 
 
@@ -220,15 +227,17 @@ export class SelectZonesComponent implements OnInit {
     this.getAvailableZones();
     }
   
- 
+    zoneList: string[];
     selectZones() {
       if (this.data) {
+        this.zoneList = this.data;
         this.dataSource.data.forEach((x) => {
-          var availableZone = this.data.find(y => y.Zone === x.zone);
-          if (availableZone)
+          var availableZone = this.data.find(y => y === x.zone);
+          if (availableZone) 
             x.selected = true;
           x.available = true;
-        })    
-    } 
+        });
+    }
+    
   }
 }

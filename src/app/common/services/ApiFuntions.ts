@@ -550,6 +550,10 @@ export class ApiFuntions {
     return this.ApiBase.Get("/Induction/superbatchindex");
   }
 
+  public RetrieveNonSuperBatchOrders(params: any): Observable<any> {
+    return this.ApiBase.Post("/Induction/nonsuperbatchorders", params);
+  }
+
   public ItemZoneDataSelect(body: any): Observable<any> {
     return this.ApiBase.Get("/Induction/itemzonedata", body);
   }

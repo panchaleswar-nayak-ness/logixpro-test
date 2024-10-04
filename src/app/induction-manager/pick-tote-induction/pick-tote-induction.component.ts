@@ -21,6 +21,7 @@ export class PickToteInductionComponent implements OnInit {
   zoneGroupingsList: IZoneGroup[] = [];
   zoneAllGroupingsList: IZoneGroup[] = [];
   selectedZoneGrouping: IZoneGroup | undefined;
+  zoneList: string[];
   constructor(private global: GlobalService,
     private Api: ApiFuntions){}
   displayedColumns: string[] = [
@@ -42,26 +43,31 @@ export class PickToteInductionComponent implements OnInit {
   }
   showChange(selectedValue: any) {
     this.selectedZoneGrouping = this.zoneGroupingsList.find(x => x.Id === selectedValue);
+    let selectedZones: IZoneGroup[] = [];
+    if (this.selectedZoneGrouping) {
+        selectedZones = this.zoneAllGroupingsList.filter(x => x.ZoneGroup === this.selectedZoneGrouping?.ZoneGroup);
+    }
+    this.zoneList = selectedZones.map(zone => zone.Zone);
+    this.retrieveFilteredOrders(this.zoneList); // Call the function to filter orders
   }
   async getZoneGroups() {
     try {
       this.Api.GetZoneGroupings().subscribe((res: any) => {
-        if (res.data && res.isExecuted) {
-          console.log(res.data);
+        if (res.data && res.isExecuted) {          
           res.data.forEach((f) => {            
-            const existingItem = this.zoneGroupingsList.find(item => item.ZoneGroup === f.zoneGroup);  
+            const existingItem = this.zoneGroupingsList.find(item => item.ZoneGroup === f.zoneGroupName);  
             if (!existingItem) {
-              this.zoneGroupingsList.push({ Id : f.id, ZoneGroup : f.zoneGroup, Zone : f.zoneName });
+              this.zoneGroupingsList.push({ Id : f.id, ZoneGroup : f.zoneGroupName, Zone : f.zoneName });
             }
-            this.zoneAllGroupingsList.push({ Id : f.id, ZoneGroup : f.zoneGroup, Zone : f.zoneName });
+            this.zoneAllGroupingsList.push({ Id : f.id, ZoneGroup : f.zoneGroupName, Zone : f.zoneName });
+            this.zoneList = [];
           });          
         } else {
           this.global.ShowToastr(
             ToasterType.Error,
             ToasterMessages.SomethingWentWrong,
             ToasterTitle.Error
-          );
-          console.log('Get Zone Groups', res.responseMessage);
+          );          
         }
       });
     } catch (error) {}
@@ -90,18 +96,31 @@ export class PickToteInductionComponent implements OnInit {
   }
 
 
-  openSelectZones(){
-    let selectedZones : IZoneGroup[] = [];
-    if (this.selectedZoneGrouping)
-      selectedZones = this.zoneAllGroupingsList.filter(x => x.ZoneGroup === this.selectedZoneGrouping?.ZoneGroup);
-    const dialogRef:any = this.global.OpenDialog(SelectZonesComponent, {
-      height: 'auto',
-      width: '60%',
-      data: selectedZones,
-      autoFocus: DialogConstants.autoFocus,
-    disableClose:true,
-   
+  openSelectZones() {
+    const dialogRef: any = this.global.OpenDialog(SelectZonesComponent, {
+        height: 'auto',
+        width: '60%',
+        data: this.zoneList,
+        autoFocus: DialogConstants.autoFocus,
+        disableClose: true,
+    });
+    
+    dialogRef.afterClosed().subscribe((result) => {
+        if (result) {
+            const selectedZoneValues = result.selectedRecords.map(item => item.zone); // Get the list of selected zone values
+            this.retrieveFilteredOrders(selectedZoneValues); // Call the function to filter orders
+            this.zoneList = selectedZoneValues;
+        }
     });
   }
+
+  retrieveFilteredOrders(selectedZones: string[]) {
+      
+      this.Api.RetrieveNonSuperBatchOrders({Zones: selectedZones}).subscribe((filteredOrders) => {
+          console.log(filteredOrders.data);
+          this.dataSource = new MatTableDataSource(filteredOrders.data);
+      });
+  }
+
 
 }
