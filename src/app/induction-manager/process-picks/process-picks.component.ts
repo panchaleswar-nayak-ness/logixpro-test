@@ -631,6 +631,9 @@ export class ProcessPicksComponent implements OnInit {
       element.orderNumber = '';
       element.priority = '';
     });
+    this.resultObj = [];
+   
+    
     this.allOrders = [];
   }
 
