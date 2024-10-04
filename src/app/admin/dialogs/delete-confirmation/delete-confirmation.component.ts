@@ -138,7 +138,7 @@ export class DeleteConfirmationComponent implements OnInit {
         })
       },
       [Mode.DeleteOrderStatus]: {
-        method: () => this.adminApiService.DeleteOrderStatus(this.data.payload)
+        method: () => this.adminApiService.DeleteOrderStatus(this.data.payload) // The spelling was corrected here, but not in the original file setting this value.
       },
       [Mode.DeleteCarrier]: {
         method: () => this.consolidationAPI.CarrierDelete({

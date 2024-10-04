@@ -106,7 +106,7 @@ export class TranSelectOrderComponent implements OnInit {
     }
   }
   @Input()
-  
+
 
   @Input() set clearFromListEvent(event: Event) {
     if (event) {
@@ -141,7 +141,7 @@ export class TranSelectOrderComponent implements OnInit {
         filterCheck: this.filterByTote,
         type: this.columnSelect,
       });
-      
+
       this.currentTabDataService.savedItem[this.currentTabDataService.TRANSACTIONS_ORDER_SELECT] = {
         searchField: this.searchField,
         columnSelect: this.columnSelect,
@@ -162,7 +162,7 @@ export class TranSelectOrderComponent implements OnInit {
       })
     );
     const hasOrderStatus = this.route.snapshot.queryParamMap.has('orderStatus');
-    
+
     if (!hasOrderStatus) {
       if (this.currentTabDataService.savedItem[this.currentTabDataService.TRANSACTIONS_ORDER_SELECT])
       {
@@ -182,7 +182,7 @@ export class TranSelectOrderComponent implements OnInit {
         }
       }
       // Perform actions based on the order status
-    } 
+    }
   }
 
   ngOnInit(): void {
@@ -205,7 +205,7 @@ export class TranSelectOrderComponent implements OnInit {
           this.filterByTote = false;
           this.searchAutocompleteList.length = 0;
         }
-      })      
+      })
     );
 
     this.subscription.add(
@@ -288,11 +288,11 @@ export class TranSelectOrderComponent implements OnInit {
     this.searchAutocompleteList = [];
     this.searchField = '';
     this.columnSelect = '';
-    this.currentTabDataService.savedItem[this.currentTabDataService.TRANSACTIONS_ORDER_SELECT] = undefined; 
+    this.currentTabDataService.savedItem[this.currentTabDataService.TRANSACTIONS_ORDER_SELECT] = undefined;
   }
 
-  deleteOrder() {  
-    let paylaod = {
+  deleteOrder() {
+    let payload = {
       OrderNumber: this.searchField,
       TotalLines: JSON.stringify(this.totalLinesOrder)
     };
@@ -303,7 +303,7 @@ export class TranSelectOrderComponent implements OnInit {
       disableClose: true,
       data: {
         mode: Mode.DeleteOrderStatus,
-        paylaod: paylaod,
+        payload: payload,
         action:UniqueConstants.delete
       },
     });
@@ -326,7 +326,7 @@ export class TranSelectOrderComponent implements OnInit {
         column: this.columnSelect
       };
     }
- 
+
    if( this.columnSelect == Column.OrderNumber) {
     this.iAdminApiService.OrderNumberNext(searchPayload).subscribe({
       next: (res: any) => {
@@ -356,7 +356,7 @@ export class TranSelectOrderComponent implements OnInit {
     this.resetLines();
     this.sharedService.updateCompDate(event)
   }
-  
+
   ngOnDestroy() {
     this.searchByOrderNumber.unsubscribe();
     this.searchByToteId.unsubscribe();
