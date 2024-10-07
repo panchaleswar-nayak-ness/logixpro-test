@@ -6,6 +6,7 @@ import { SelectZonesComponent } from 'src/app/dialogs/select-zones/select-zones.
 import { PickToteInFilterComponent } from './pick-tote-in-filter/pick-tote-in-filter.component';
 import { FilterOrderNumberComponent } from './filter-order-number/filter-order-number.component';
 import { ApiFuntions } from 'src/app/common/services/ApiFuntions';
+import { PickToteInductionFilter } from '../models/PickToteInductionModel';
 
 interface IZoneGroup {
   Id : number,
@@ -26,16 +27,16 @@ export class PickToteInductionComponent implements OnInit {
     private Api: ApiFuntions){}
   displayedColumns: string[] = [
     'orderNumber',
-    'startZone',
+    'zone',
     'priority',
     'requiredDate',
     'totalOrderQty',
     'toteScanned',
   ];
   elementData = [
-    { orderNumber: 'Zone 1', startZone: 'Location 1', priority: 'Location 1', requiredDate:'02/02/2024', totalOrderQty: "5" },
-    { orderNumber: 'Zone 2', startZone: 'Location 2', priority: 'Location 1', requiredDate:'02/02/2024', totalOrderQty: "5" },
-    { orderNumber: 'Zone 3', startZone: 'Location 3', priority: 'Location 1', requiredDate:'02/02/2024', totalOrderQty: "5" }
+    { orderNumber: 'Zone 1', zone: 'Location 1', priority: 'Location 1', requiredDate:'02/02/2024', totalOrderQty: "5" },
+    { orderNumber: 'Zone 2', zone: 'Location 2', priority: 'Location 1', requiredDate:'02/02/2024', totalOrderQty: "5" },
+    { orderNumber: 'Zone 3', zone: 'Location 3', priority: 'Location 1', requiredDate:'02/02/2024', totalOrderQty: "5" }
   ];
   dataSource = new MatTableDataSource(this.elementData);
   ngOnInit(): void {
@@ -74,15 +75,21 @@ export class PickToteInductionComponent implements OnInit {
   }
   
   
- 
+  filters: PickToteInductionFilter[] = [];
 
   openColumnFilter(){
     const dialogRef:any = this.global.OpenDialog(PickToteInFilterComponent, {
       height: 'auto',
       width: Style.w786px,
       autoFocus: DialogConstants.autoFocus,
+      data: this.filters,
     disableClose:true,
     });
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+          this.filters = result;
+      }
+  });
   }
 
   

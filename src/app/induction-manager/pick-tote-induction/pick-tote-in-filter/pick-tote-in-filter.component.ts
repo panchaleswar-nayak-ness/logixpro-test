@@ -1,22 +1,24 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { GlobalService } from 'src/app/common/services/global.service';
 import { IInductionManagerApiService } from 'src/app/common/services/induction-manager-api/induction-manager-api-interface';
 import { InductionManagerApiService } from 'src/app/common/services/induction-manager-api/induction-manager-api.service';
 import { PickToteInductionFilter } from '../../models/PickToteInductionModel';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-pick-tote-in-filter',
   templateUrl: './pick-tote-in-filter.component.html',
   styleUrls: ['./pick-tote-in-filter.component.scss']
 })
-export class PickToteInFilterComponent implements OnInit {
-
+export class PickToteInFilterComponent implements OnInit {  
   public iInductionManagerApi: IInductionManagerApiService;
   filters: PickToteInductionFilter[] = [];
   apiFilterData: PickToteInductionFilter[] = [];
 
-  constructor(
+  constructor(    
+    @Inject(MAT_DIALOG_DATA) public data: any,
+    public dialogRef: MatDialogRef<PickToteInFilterComponent>,
     public inductionManagerApi: InductionManagerApiService,
     private global: GlobalService
 
@@ -36,6 +38,8 @@ export class PickToteInFilterComponent implements OnInit {
   ngOnInit(): void {
     this.GetPickToteInductionFilterData();
     this.initializeRows(); // Initialize table rows independently of the API response
+    if (this.data?.length > 0)
+      this.filters= this.data;
   }
 
 // Initialize table with empty rows, not based on API response
@@ -85,27 +89,21 @@ addRow() {
     console.log('Selected value:', value);
   }
   applyFilter() {
-    console.log("selected data : " + this.filters);
-    const finalFilters = this.filters.map(filter => {
+    console.log("selected data : " , this.filters);
+    this.filters.forEach(filter => {
       // Find the corresponding API data based on ppField selection
       const apiData = this.apiFilterData.find(api => api.alias === filter.ppField);
       if (apiData) {
-        return {
-          id: apiData.id,
-          alias: apiData.alias,
-          ppField: apiData.ppField,
-          startCharacter: apiData.startCharacter,
-          endCharacter: apiData.endCharacter,
-          Value: filter.Value
-        };
+        filter.startCharacter= apiData.startCharacter;
+        filter.endCharacter = apiData.endCharacter;
+        filter.alias = apiData.alias,
+        filter.ppField = apiData.ppField
       } else {
         // Handle the case where ppField does not match any API data
-        console.log(`No API data found for ppField: ${filter.ppField}`);
-        return null;
+        console.log(`No API data found for ppField: ${filter.ppField}`);        
       }
-    }).filter(filter => filter !== null); // Remove any null entries
-  
-    console.log('Final Filters:', finalFilters);
+    });
+    this.dialogRef.close(this.filters);
   
     // You can now send `finalFilters` to your backend API or use it as needed
   }
