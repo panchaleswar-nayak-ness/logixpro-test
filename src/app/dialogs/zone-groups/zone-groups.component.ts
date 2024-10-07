@@ -78,13 +78,16 @@ export class ZoneGroupsComponent implements OnInit {
     let grouped = this.getGroupedData(data);
     let res: any[] = [];
 
-    Object.entries(grouped).forEach(function (val, index) {
+    Object.entries(grouped).forEach(function (val: any[], index) {
+
+      let selZone = val[1].join(' ');
+     
       res.push({
         available: false,
         selectedZones: '',
         zoneName: '',
         zoneGroupName: val[0],
-        selectedZone: val.reduce((acc, current) => current + ' ', ''),
+        selectedZone: selZone,
       });
     });
 
@@ -117,14 +120,6 @@ export class ZoneGroupsComponent implements OnInit {
   }
 
   openSelectZones(index: string | number) {
-    let formItems = this.form.controls['items'] as FormArray;
-    if (formItems && formItems.controls.length > 0) {
-      // this.assignedZonesArray = formItems.controls[index].value.selectedZone
-      //   .split(',')
-      //   .map((m: string) => {
-      //     return { zone: m.trim() };
-      //   });
-    }
     const dialogRef: any = this.global.OpenDialog(SelectZonesComponent, {
       height: 'auto',
       width: '60%',
@@ -143,7 +138,6 @@ export class ZoneGroupsComponent implements OnInit {
           zones = `${zones} ${element.zone}`;
         }
         this.assignedZones = zones.trim();
-        // console.log(this.assignedZones);
 
         this.items.controls[index]
           .get('selectedZones')
@@ -151,7 +145,7 @@ export class ZoneGroupsComponent implements OnInit {
         this.items.controls[index]
           .get('selectedZone')
           ?.patchValue(this.assignedZones);
-        // console.log(this.items.controls[index].value);
+
         this.assignedZones = '';
         this.assignedZonesArray = [];
       }
@@ -219,8 +213,6 @@ export class ZoneGroupsComponent implements OnInit {
   removeItem(index: number) {
     const control = this.form.get('items') as FormArray;
     let valueToRemove = control.value[index];
-
-    // console.log(valueToRemove);
     control.removeAt(index);
     this.rebind();
 

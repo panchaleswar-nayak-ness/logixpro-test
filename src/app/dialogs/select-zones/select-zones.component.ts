@@ -59,8 +59,30 @@ export class SelectZonesComponent implements OnInit {
   alreadyAssignedZones: any;
   imPreferences: any;
   autoAssignAllZones: any;
-
   isNotToteInductionPreference: boolean;
+  zoneList: string[];
+
+  constructor(
+    @Inject(MAT_DIALOG_DATA) public data: any,
+    public inductionManagerApi: InductionManagerApiService,
+    private global: GlobalService,
+    public dialogRef: MatDialogRef<SelectZonesComponent>,
+    private router: Router
+  ) {
+    this.iInductionManagerApi = inductionManagerApi;
+  }
+
+  ngOnInit(): void {
+    // this.elementData.length=0;
+    // this.batchID = this.data.batchId;
+    // this.isNewBatch=this.data.isNewBatch;
+    // this.wsid=this.data.wsid;
+    this.alreadyAssignedZones = this.data.assignedZones;
+    this.getAvailableZones();
+    this.isNotToteInductionPreference = !this.router.url
+      .toLowerCase()
+      .includes('adminprefrences');
+  }
 
   selectZone(row: any) {
     const index = this.elementData.findIndex((o) => o.zone === row.zone);
@@ -181,19 +203,32 @@ export class SelectZonesComponent implements OnInit {
         selectedRecords.push(element);
       }
     }
-    this.dialogRef.close({ selectedRecords: selectedRecords, zoneList:  this.zoneList});
+    this.dialogRef.close({
+      selectedRecords: selectedRecords,
+      zoneList: this.zoneList,
+    });
   }
 
-  close()
-  {
-    let selectedRecords=[{zone:'',locationName:'',locationType:'',stagingZone:'',selected: false,available: false}];
-    for (const element of this.elementData) {
-      if(element.selected)
+  close() {
+    let selectedRecords = [
       {
+        zone: '',
+        locationName: '',
+        locationType: '',
+        stagingZone: '',
+        selected: false,
+        available: false,
+      },
+    ];
+    for (const element of this.elementData) {
+      if (element.selected) {
         selectedRecords.push(element);
-      }      
+      }
     }
-    this.dialogRef.close({ selectedRecords: selectedRecords, zoneList:  this.zoneList});
+    this.dialogRef.close({
+      selectedRecords: selectedRecords,
+      zoneList: this.zoneList,
+    });
   }
 
   getAvailableZones() {
@@ -201,10 +236,12 @@ export class SelectZonesComponent implements OnInit {
     let payLoad = {
       batchID: this.batchID,
     };
+
     this.iInductionManagerApi.AvailableZone(payLoad).subscribe(
       (res: any) => {
         if (res.data && res.isExecuted) {
           this.zoneDetails = res.data.zoneDetails;
+
           for (const zoneDetail of this.zoneDetails) {
             if (
               this.alreadyAssignedZones != null &&
@@ -216,6 +253,7 @@ export class SelectZonesComponent implements OnInit {
                 return o?.zone == zoneDetail?.zone;
               });
             }
+
             this.elementData.push({
               zone: zoneDetail.zone,
               locationName: zoneDetail.locationName,
@@ -225,6 +263,7 @@ export class SelectZonesComponent implements OnInit {
               available: zoneDetail.available,
             });
           }
+
           this.dataSource = new MatTableDataSource<any>(this.elementData);
           this.selectZones();
         } else {
@@ -233,6 +272,7 @@ export class SelectZonesComponent implements OnInit {
             ToasterMessages.SomethingWentWrong,
             ToasterTitle.Error
           );
+
           console.log('AvailableZone', res.responseMessage);
         }
       },
@@ -242,40 +282,21 @@ export class SelectZonesComponent implements OnInit {
     );
   }
 
-  constructor(
-    @Inject(MAT_DIALOG_DATA) public data: any,
-    public inductionManagerApi: InductionManagerApiService,
-    private global: GlobalService,
-    public dialogRef: MatDialogRef<SelectZonesComponent>,
-    private router: Router
-  ) {
-    this.iInductionManagerApi = inductionManagerApi;
-  }
+  selectZones() {
+    if (this.data) {
+      this.zoneList = this.data;
 
-  ngOnInit(): void {
-    // this.elementData.length=0;
-    // this.batchID = this.data.batchId;
-    // this.isNewBatch=this.data.isNewBatch;
-    // this.wsid=this.data.wsid;
-    this.alreadyAssignedZones = this.data.assignedZones;
-      this.getAvailableZones();
-      this.isNotToteInductionPreference = !this.router.url
-          .toLowerCase()
-          .includes('adminprefrences');
-      // console.log(this.isNotToteInductionPreference, this.router.url);
+      this.dataSource.data.forEach((x) => {
+        var availableZone = this.data.assignedZones.find(
+          (y) => y.zone === x.zone
+        );
+
+        if (availableZone) {
+          x.selected = true;
+        }
+
+        x.available = true;
+      });
     }
-  
-    zoneList: string[];
-    selectZones() {
-      if (this.data) {
-        this.zoneList = this.data;
-        this.dataSource.data.forEach((x) => {
-          var availableZone = this.data.find(y => y === x.zone);
-          if (availableZone) 
-            x.selected = true;
-          x.available = true;
-        });
-    }
-    
   }
 }
