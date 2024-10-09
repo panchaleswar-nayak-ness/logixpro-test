@@ -554,6 +554,10 @@ export class ApiFuntions {
     return this.ApiBase.Post("/Induction/nonsuperbatchorders", params);
   }
 
+  public RetrieveSuperBatchOrders(params: any): Observable<any> {
+    return this.ApiBase.Post("/Induction/superbatchorders", params);
+  }
+
   public ItemZoneDataSelect(body: any): Observable<any> {
     return this.ApiBase.Get("/Induction/itemzonedata", body);
   }
@@ -1053,6 +1057,10 @@ export class ApiFuntions {
 
   public GetZoneGroupings(): Observable<any> {
     return this.ApiBase.Get("/Induction/zonegrouping");
+  }
+
+  public GetZoneGroupingsByGroupName(zoneGroupName:string): Observable<any> {
+    return this.ApiBase.Get("/Induction/zonegrouping", zoneGroupName);
   }
 
   public SaveZoneGrouping(valueToSave): Observable<any> {
