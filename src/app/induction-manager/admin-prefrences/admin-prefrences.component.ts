@@ -379,8 +379,12 @@ export class AdminPrefrencesComponent implements OnInit {
     try {
       this.iInductionManagerApi.GetZoneGroupings().subscribe((res: any) => {
         if (res.data && res.isExecuted) {
-          res.data.forEach((f) => {
-            this.zoneGroupingsList.push({ id: f.zoneName, name: f.zoneName });
+          let uniqueZoneGroupNames = [
+            ...new Set(res.data.map((m) => m.zoneGroupName)),
+          ];
+
+          uniqueZoneGroupNames.forEach((f) => {
+            this.zoneGroupingsList.push({ id: f, name: f });
           });
 
           this.getPreferences();
