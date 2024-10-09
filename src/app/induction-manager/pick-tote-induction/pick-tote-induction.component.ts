@@ -31,7 +31,7 @@ export class PickToteInductionComponent implements OnInit {
   zoneAllGroupingsList: IZoneGroup[] = [];
   selectedZoneGrouping: IZoneGroup | undefined;
   zoneList: string[];
- 
+  selectedZones: string = '';
 
   ngOnInit(): void {
     this.getZoneGroups();
@@ -50,8 +50,9 @@ export class PickToteInductionComponent implements OnInit {
     }
 
     this.zoneList = selectedZones.map((zone) => zone.Zone);
+    this.selectedZones = this.zoneList.join(' ');
 
-     // Call the function to filter orders
+    // Call the function to filter orders
     // this.retrieveFilteredNonSuperBatchOrders(this.zoneList);
   }
 
@@ -92,7 +93,6 @@ export class PickToteInductionComponent implements OnInit {
   }
 
   openSelectZones() {
-  
     const dialogRef: any = this.global.OpenDialog(SelectZonesComponent, {
       height: 'auto',
       width: '60%',
@@ -107,18 +107,14 @@ export class PickToteInductionComponent implements OnInit {
       if (result) {
         const selectedZoneValues = result.selectedRecords.map(
           (item) => item.zone
-        ); 
-        
-        this.zoneList = selectedZoneValues;
+        );
 
+        this.zoneList = selectedZoneValues;
+        this.selectedZones = this.zoneList.join(' ');
+        
         // Get the list of selected zone values
         // this.retrieveFilteredNonSuperBatchOrders(selectedZoneValues); // Call the function to filter orders
       }
     });
   }
-
-  
-
-
-
 }

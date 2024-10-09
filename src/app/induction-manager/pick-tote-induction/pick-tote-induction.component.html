@@ -36,7 +36,7 @@
                 (click)="openSelectZones()"
               >
                 <mat-label>Zone</mat-label>
-                <input matInput type="text" maxlength="50" readonly />
+                <input matInput type="text" maxlength="50" readonly [(ngModel)]="selectedZones" />
                 <span matSuffix>
                   <mat-icon class="unfold_more">unfold_more</mat-icon>
                 </span>
