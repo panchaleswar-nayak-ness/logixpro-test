@@ -1,5 +1,4 @@
-import { Component, OnInit } from '@angular/core';
-import { MatTableDataSource } from '@angular/material/table';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import {
   DialogConstants,
   Style,
@@ -9,10 +8,14 @@ import {
 } from 'src/app/common/constants/strings.constants';
 import { GlobalService } from 'src/app/common/services/global.service';
 import { SelectZonesComponent } from 'src/app/dialogs/select-zones/select-zones.component';
-import { PickToteInFilterComponent } from './pick-tote-in-filter/pick-tote-in-filter.component';
-import { FilterOrderNumberComponent } from './filter-order-number/filter-order-number.component';
 import { ApiFuntions } from 'src/app/common/services/ApiFuntions';
+import { MatTabChangeEvent } from '@angular/material/tabs';
+import { NonSuperBatchOrdersComponent } from './non-super-batch-orders/non-super-batch-orders.component';
+import { SuperBatchOrdersComponent } from './super-batch-orders/super-batch-orders.component';
+import { PickToteInFilterComponent } from './pick-tote-in-filter/pick-tote-in-filter.component';
 import { PickToteInductionFilter } from '../models/PickToteInductionModel';
+import { FilterOrderNumberComponent } from './filter-order-number/filter-order-number.component';
+import { MatTableDataSource } from '@angular/material/table';
 
 interface IZoneGroup {
   Id: number;
@@ -32,6 +35,11 @@ export class PickToteInductionComponent implements OnInit {
   selectedZoneGrouping: IZoneGroup | undefined;
   zoneList: string[];
   selectedZones: string = '';
+  activeTab: MatTabChangeEvent;
+  @ViewChild(NonSuperBatchOrdersComponent, { static: true })
+  NonSuperBatchOrdersComponent: NonSuperBatchOrdersComponent;
+  @ViewChild(SuperBatchOrdersComponent, { static: true })
+  SuperBatchOrdersComponent: SuperBatchOrdersComponent;
 
   ngOnInit(): void {
     this.getZoneGroups();
@@ -53,7 +61,19 @@ export class PickToteInductionComponent implements OnInit {
     this.selectedZones = this.zoneList.join(' ');
 
     // Call the function to filter orders
-    // this.retrieveFilteredNonSuperBatchOrders(this.zoneList);
+    if (this.NonSuperBatchOrdersComponent) {
+      this.NonSuperBatchOrdersComponent.retrieveFilteredNonSuperBatchOrders(
+        this.zoneList
+      );
+      this.NonSuperBatchOrdersComponent.rebind();
+    }
+
+    if (this.SuperBatchOrdersComponent) {
+      this.SuperBatchOrdersComponent.retrieveFilteredSuperBatchOrders(
+        this.zoneList
+      );
+      this.SuperBatchOrdersComponent.rebind();
+    }
   }
 
   async getZoneGroups() {
@@ -111,10 +131,27 @@ export class PickToteInductionComponent implements OnInit {
 
         this.zoneList = selectedZoneValues;
         this.selectedZones = this.zoneList.join(' ');
-        
+
         // Get the list of selected zone values
-        // this.retrieveFilteredNonSuperBatchOrders(selectedZoneValues); // Call the function to filter orders
+        // Call the function to filter orders
+        if (this.NonSuperBatchOrdersComponent) {
+          this.NonSuperBatchOrdersComponent.retrieveFilteredNonSuperBatchOrders(
+            selectedZoneValues
+          );
+          this.NonSuperBatchOrdersComponent.rebind();
+        }
+
+        if (this.SuperBatchOrdersComponent) {
+          this.SuperBatchOrdersComponent.retrieveFilteredSuperBatchOrders(
+            selectedZoneValues
+          );
+          this.SuperBatchOrdersComponent.rebind();
+        }
       }
     });
+  }
+
+  onTabClick($event: MatTabChangeEvent) {
+    this.activeTab = $event;
   }
 }

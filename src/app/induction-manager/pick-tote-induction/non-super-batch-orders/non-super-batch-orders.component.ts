@@ -1,5 +1,15 @@
-import { Component, OnInit } from '@angular/core';
-import { DialogConstants, Style } from 'src/app/common/constants/strings.constants';
+import {
+  AfterViewInit,
+  Component,
+  Input,
+  OnChanges,
+  OnInit,
+  ViewChild,
+} from '@angular/core';
+import {
+  DialogConstants,
+  Style,
+} from 'src/app/common/constants/strings.constants';
 import { ApiFuntions } from 'src/app/common/services/ApiFuntions';
 import { GlobalService } from 'src/app/common/services/global.service';
 import { FilterOrderNumberComponent } from '../filter-order-number/filter-order-number.component';
@@ -10,11 +20,10 @@ import { MatTableDataSource } from '@angular/material/table';
 @Component({
   selector: 'app-non-super-batch-orders',
   templateUrl: './non-super-batch-orders.component.html',
-  styleUrls: ['./non-super-batch-orders.component.scss']
+  styleUrls: ['./non-super-batch-orders.component.scss'],
 })
 export class NonSuperBatchOrdersComponent implements OnInit {
-
-  constructor(private global: GlobalService, private Api: ApiFuntions) { }
+  constructor(private global: GlobalService, private Api: ApiFuntions) {}
 
   elementData = [
     {
@@ -48,12 +57,18 @@ export class NonSuperBatchOrdersComponent implements OnInit {
     'totalOrderQty',
     'toteScanned',
   ];
-  
+
   filters: PickToteInductionFilter[] = [];
-  dataSource = new MatTableDataSource(this.elementData);
- 
+  dataSource: any;
+  toteScanned: any;
 
   ngOnInit(): void {
+    this.rebind(this.elementData);
+  }
+
+  rebind(data?: any[]) {
+    let dataToBind = data ? data : this.elementData;
+    this.dataSource = new MatTableDataSource(dataToBind);
   }
 
   filterOrderNum() {
@@ -84,8 +99,13 @@ export class NonSuperBatchOrdersComponent implements OnInit {
   retrieveFilteredNonSuperBatchOrders(selectedZones: string[]) {
     this.Api.RetrieveNonSuperBatchOrders({ Zones: selectedZones }).subscribe(
       (filteredOrders) => {
-        this.dataSource = new MatTableDataSource(filteredOrders.data);
+        this.rebind(filteredOrders.data);
       }
     );
+  }
+
+  onEnter(element) {
+    console.log(element);
+    // TODO: call api to induct this tote as per PLST-2754
   }
 }

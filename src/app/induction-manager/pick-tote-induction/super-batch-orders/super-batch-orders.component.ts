@@ -53,6 +53,12 @@ export class SuperBatchOrdersComponent implements OnInit {
   filters: PickToteInductionFilter[] = [];
 
   ngOnInit(): void {
+    this.rebind(this.elementData);
+  }
+
+  rebind(data?: any[]) {
+    let dataToBind = data ? data : this.elementData;
+    this.dataSource = new MatTableDataSource(dataToBind);
   }
 
   filterOrderNum() {
@@ -86,5 +92,10 @@ export class SuperBatchOrdersComponent implements OnInit {
         this.dataSource = new MatTableDataSource(filteredOrders.data);
       }
     );
+  }
+
+  onEnter(element){
+    console.log(element);
+    // TODO: call api to induct this tote as per PLST-2772
   }
 }
