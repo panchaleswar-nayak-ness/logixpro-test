@@ -63,7 +63,7 @@ export class NonSuperBatchOrdersComponent implements OnInit {
   toteScanned: any;
 
   ngOnInit(): void {
-    this.rebind(this.elementData);
+    // this.rebind(this.elementData);
   }
 
   rebind(data?: any[]) {
@@ -99,7 +99,7 @@ export class NonSuperBatchOrdersComponent implements OnInit {
   retrieveFilteredNonSuperBatchOrders(selectedZones: string[]) {
     this.Api.RetrieveNonSuperBatchOrders({ Zones: selectedZones }).subscribe(
       (filteredOrders) => {
-        this.rebind(filteredOrders.data);
+        this.rebind(filteredOrders.data.result);
       }
     );
   }

@@ -82,7 +82,13 @@
                 appearance="outline"
               >
                 <mat-label>Enter Order</mat-label>
-                <input matInput type="text" value="" />
+                <input
+                  matInput
+                  type="text"
+                  value=""
+                  [(ngModel)]="orderNumber"
+                  (keyup.enter)="onEnter()"
+                />
               </mat-form-field>
             </div>
             <div class="col-lg-6">
@@ -91,14 +97,15 @@
                 appearance="outline"
               >
                 <mat-label>Enter Tote</mat-label>
-                <input matInput type="text" value="" />
+                <input matInput type="text" value="" [(ngModel)]="toteId"
+                (keyup.enter)="onEnter()" />
               </mat-form-field>
             </div>
           </div>
 
           <div class="d-flex">
-            Split<mat-slide-toggle class="mx-4" color="primary">
-            </mat-slide-toggle>
+            Split
+            <mat-slide-toggle class="mx-4" color="primary" [(ngModel)]="splitToggle"> </mat-slide-toggle>
           </div>
         </div>
       </div>

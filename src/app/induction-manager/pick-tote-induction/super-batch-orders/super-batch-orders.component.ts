@@ -53,7 +53,7 @@ export class SuperBatchOrdersComponent implements OnInit {
   filters: PickToteInductionFilter[] = [];
 
   ngOnInit(): void {
-    this.rebind(this.elementData);
+    // this.rebind(this.elementData);
   }
 
   rebind(data?: any[]) {
