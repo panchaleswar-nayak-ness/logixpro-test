@@ -102,7 +102,6 @@ export class MainComponent implements OnInit {
     this.iGlobalConfigApi.AppNameByWorkstation(payload).subscribe(
       (res: ApiResponse<AppNameByWorkstationResponse>) => {
         if (res?.data) {
-          
           this.setApplicationData(res.data);
           localStorage.setItem('availableApps', JSON.stringify(this.applicationData));
           this.sharedService.setMenuData(this.applicationData);
@@ -194,14 +193,14 @@ export class MainComponent implements OnInit {
         updateMenu: RouteUpdateMenu.Empty,
         permission: AppPermissions.ImportExport
       },
-      {
-        appName: AppNames.MarkoutProcess,
-        route: '/MarkoutProcess',
-        iconName: 'manage_accounts',
-        name: RouteNames.MarkoutProcess,
-        updateMenu: RouteUpdateMenu.MarkoutProcess,
-        permission: AppPermissions.MarkoutProcess,
-      },
+      // {
+      //   appName: AppNames.MarkoutProcess,
+      //   route: '/MarkoutProcess',
+      //   iconName: 'manage_accounts',
+      //   name: RouteNames.MarkoutProcess,
+      //   updateMenu: RouteUpdateMenu.MarkoutProcess,
+      //   permission: AppPermissions.MarkoutProcess,
+      // },
       {
         appName: AppNames.OrderManager,
         route: '/OrderManager',
@@ -241,7 +240,7 @@ export class MainComponent implements OnInit {
     else if (app.updateMenu == RouteUpdateMenu.OrderManager) this.sharedService.BroadCastMenuUpdate(app.route);
     else if (app.updateMenu == RouteUpdateMenu.Consolidation) this.sharedService.BroadCastMenuUpdate(app.route);
     else if (app.updateMenu === RouteUpdateMenu.FlowReplenishment) this.sharedService.updateFlowrackMenu(app.updateMenu);
-    else if (app.updateMenu === RouteUpdateMenu.MarkoutProcess) this.sharedService.updateMarkoutMenu(app.updateMenu);
+    // else if (app.updateMenu === RouteUpdateMenu.MarkoutProcess) this.sharedService.updateMarkoutMenu(app.updateMenu);
     else if (app.updateMenu === RouteUpdateMenu.BulkTransactions)this.sharedService.BroadCastMenuUpdate(app.route);
 
     this.sharedService.updateSidebar();

@@ -84,14 +84,14 @@ const routes: Routes = [
         component: ImportExportComponent,
         canActivate: [AuthGuardGuard],
       },
-     {
-        path: 'MarkoutProcess',
-        loadChildren: () =>
-          import('./markout-main-process/markout-main-process.module').then(
-            (m) => m.MarkoutMainProcessModule
-          ),
-        canActivate: [],
-      },
+    //  {
+    //     path: 'MarkoutProcess',
+    //     loadChildren: () =>
+    //       import('./markout-main-process/markout-main-process.module').then(
+    //         (m) => m.MarkoutMainProcessModule
+    //       ),
+    //     canActivate: [],
+    //   },
       {
         path: 'admin',
         loadChildren: () =>

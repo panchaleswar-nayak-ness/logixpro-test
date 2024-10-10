@@ -27,7 +27,7 @@ import { IMarkoutApiService } from 'src/app/common/services/markout-api/markout-
 import { MarkoutApiService } from 'src/app/common/services/markout-api/markout-api-service';
 import { InputFilterComponent } from 'src/app/dialogs/input-filter/input-filter.component';
 import { MarkoutCompleteTransactionRequest, MarkoutToteRequest, ToteData, ToteDataResponse, UpdateQuantityRequest } from '../models/markout-model';
-import { MoBlossomToteComponent } from '../dialogs/mo-blossom-tote/mo-blossom-tote.component';
+import { MoBlossomToteComponent } from '../../../consolidation-manager/cm-markout/dialogs/mo-blossom-tote/mo-blossom-tote.component';
 
 @Component({
   selector: 'app-markout-list',

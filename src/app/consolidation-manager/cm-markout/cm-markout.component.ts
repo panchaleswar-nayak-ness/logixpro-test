@@ -1,15 +1,15 @@
 import { Component, OnInit } from '@angular/core';
 import { IMarkoutApiService } from 'src/app/common/services/markout-api/markout-api-interface';
+import { MarkoutToteRequest, ToteDataResponse } from './models/markout-model';
 import { MarkoutApiService } from 'src/app/common/services/markout-api/markout-api-service';
 import { SharedService } from 'src/app/common/services/shared.service';
-import { MarkoutToteRequest, ToteDataResponse } from 'src/app/markout-main-process/markout-main-module/models/markout-model';
 
 @Component({
-  selector: 'app-markout-main-module',
-  templateUrl: './markout-main-module.component.html',
-  styleUrls: ['./markout-main-module.component.scss']
+  selector: 'app-cm-markout',
+  templateUrl: './cm-markout.component.html',
+  styleUrls: ['./cm-markout.component.scss']
 })
-export class MarkoutMainModuleComponent implements OnInit {
+export class CmMarkoutComponent implements OnInit {
 
   public iMarkoutApiService: IMarkoutApiService;
   toteDataResponse: ToteDataResponse;
@@ -54,6 +54,5 @@ export class MarkoutMainModuleComponent implements OnInit {
   viewChange(event: string) {
     this.selectedView = event;
   }
-
 
 }

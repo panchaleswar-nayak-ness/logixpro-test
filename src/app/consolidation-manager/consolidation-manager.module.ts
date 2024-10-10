@@ -14,6 +14,10 @@ import { SharedComponentsModule } from "../common/globalComponents/shared-compon
 import { SLSearchOrderNumberToteComponent } from './cm-staging-location/sl-search-order-number-tote/sl-search-order-number-tote.component';
 import { UnverifiedItemComponent } from './consolidation/unverified-item/unverified-item.component';
 import { VerifiedItemComponent } from './consolidation/verified-item/verified-item.component';
+import { CmMarkoutComponent } from './cm-markout/cm-markout.component';
+import { MarkoutListComponent } from './cm-markout/markout-list/markout-list.component';
+import { MarkoutSearchComponent } from './cm-markout/markout-search/markout-search.component';
+import { MarkoutStatusComponent } from './cm-markout/markout-status/markout-status.component';
 
 
 @NgModule({
@@ -26,7 +30,11 @@ import { VerifiedItemComponent } from './consolidation/verified-item/verified-it
         PreferencesConsolidationComponent,
         SLSearchOrderNumberToteComponent,
         UnverifiedItemComponent,
-        VerifiedItemComponent
+        VerifiedItemComponent,
+        CmMarkoutComponent,
+        MarkoutSearchComponent,
+        MarkoutStatusComponent,
+        MarkoutListComponent
     ],
     imports: [
         CommonModule,

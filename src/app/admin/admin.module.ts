@@ -179,7 +179,7 @@ import { GtTransactionDetailsComponent } from './manual-transactions/generate-tr
 import { WpWsWorkstationSettingsComponent } from './admin-preferences/workstation-preferences/wp-workstation-setup/wp-ws-workstation-settings/wp-ws-workstation-settings.component';
 import { WpWsToteManagementComponent } from './admin-preferences/workstation-preferences/wp-workstation-setup/wp-ws-tote-management/wp-ws-tote-management.component';
 import { WpWsLocationAssignmentFunctionsComponent } from './admin-preferences/workstation-preferences/wp-workstation-setup/wp-ws-location-assignment-functions/wp-ws-location-assignment-functions.component';
-import { MoBlossomToteComponent } from '../markout-main-process/markout-main-module/dialogs/mo-blossom-tote/mo-blossom-tote.component';
+import { MoBlossomToteComponent } from '../consolidation-manager/cm-markout/dialogs/mo-blossom-tote/mo-blossom-tote.component';
 import { UtilizationDashboardComponent } from './reports/utilization-dashboard/utilization-dashboard.component';
 import { UtilizationHeaderComponent } from './reports/utilization-dashboard/utilization-header/utilization-header.component';
 import { UtilizationPiechartComponent } from './reports/utilization-dashboard/utilization-piechart/utilization-piechart.component';

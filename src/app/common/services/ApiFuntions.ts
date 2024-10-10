@@ -7,8 +7,8 @@ import {
   MarkoutBlossomTotenRequest,
   MarkoutCompleteTransactionRequest,
   MarkoutToteRequest,
-  UpdateQuantityRequest,
-} from 'src/app/markout-main-process/markout-main-module/models/markout-model';
+  UpdateQuantityRequest
+} from 'src/app/consolidation-manager/cm-markout/models/markout-model';
 import { AddPickToteInductionFilter } from 'src/app/induction-manager/models/PickToteInductionModel';
 
 @Injectable({
