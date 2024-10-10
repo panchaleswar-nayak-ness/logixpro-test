@@ -110,11 +110,31 @@ export class SuperBatchOrdersComponent implements OnInit {
   }
 
   onEnter(element: any) {
-    console.log(element);
-    // call api to induct this tote as per PLST-2772
 
-     if(element) {
-      this.Api.PerformOrderInduction(element).subscribe(
+    const {
+      itemNumber,
+      priority,
+      warehouse,
+      requiredDate,
+      totalOrderQty,
+      toteScanned,
+    } = element;
+
+    var quality = warehouse && warehouse !== "" ? warehouse.substr(1,1) : "";
+
+    var valueToInduct = {
+      itemNumber,
+      priority,
+      quality,
+      requiredDate,
+      totalOrderQty,
+      toteScanned,
+    };
+    
+    console.log(valueToInduct);
+    // call api to induct this tote as per PLST-2772
+     if(valueToInduct.toteScanned) {
+      this.Api.PerformOrderInduction(valueToInduct).subscribe(
         (res: any) => {
           if (res.data) {
           } else {

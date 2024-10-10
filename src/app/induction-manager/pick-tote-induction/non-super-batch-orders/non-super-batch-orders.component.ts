@@ -121,29 +121,46 @@ export class NonSuperBatchOrdersComponent implements OnInit, AfterViewInit {
     });
   }
 
-  retrieveFilteredNonSuperBatchOrders(values) {
+  retrieveFilteredNonSuperBatchOrders(values: any) {
     this.Api.RetrieveNonSuperBatchOrders(values).subscribe((filteredOrders) => {
       this.rebind(filteredOrders.data.result);
     });
   }
 
   onEnter(element: any) {
-    console.log(element);
-    // call api to induct this tote as per PLST-2754
 
-    if(element) {
-      this.Api.PerformOrderInduction(element).subscribe(
-        (res: any) => {
-          if (res.data) {
-          } else {
-            this.global.ShowToastr(
-              ToasterType.Error,
-              ToasterMessages.SomethingWentWrong,
-              ToasterTitle.Error
-            );
-          }
+    const {
+      completedQuantity,
+      orderNumber,
+      zone,
+      priority,
+      toteScanned,
+      requiredDate,
+    } = element;
+
+    var valueToInduct = {
+      orderNumber,
+      zone,
+      priority,
+      requiredDate,
+      completedQuantity,
+      toteScanned,
+    };
+    
+    console.log(valueToInduct);
+
+    // call api to induct this tote as per PLST-2754
+    if (valueToInduct.toteScanned) {
+      this.Api.PerformOrderInduction(valueToInduct).subscribe((res: any) => {
+        if (res.data) {
+        } else {
+          this.global.ShowToastr(
+            ToasterType.Error,
+            ToasterMessages.SomethingWentWrong,
+            ToasterTitle.Error
+          );
         }
-      );
+      });
     }
   }
 }

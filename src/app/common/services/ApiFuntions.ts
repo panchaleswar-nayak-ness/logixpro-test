@@ -1066,13 +1066,13 @@ export class ApiFuntions {
     splitToggle: true;
   }) {
     return this.ApiBase.Post(
-      'Induction/performspecificorderinduction',
+      '/Induction/performspecificorderinduction',
       valueToInduct
     );
   }
 
   public PerformOrderInduction(valueToInduct: any) {
-    return this.ApiBase.Post('Induction/performorderinduction', valueToInduct);
+    return this.ApiBase.Post('/Induction/performorderinduction', valueToInduct);
   }
 
   public GetZoneGroupingsByGroupName(zoneGroupName: string): Observable<any> {
