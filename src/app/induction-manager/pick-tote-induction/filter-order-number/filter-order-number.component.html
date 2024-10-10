@@ -6,6 +6,7 @@
     mat-icon-button
     class="close-button dialog-close-button-fix"
     [mat-dialog-close]="true"
+    (click)="close()"
   >
     <mat-icon class="close-icon">close</mat-icon>
   </button>
@@ -20,7 +21,11 @@
     <div class="row">
       <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline">
         <mat-label>Paste Order here</mat-label>
-        <textarea matInput [(ngModel)]="orderNumberFilter"></textarea>
+        <textarea
+          matInput
+          [(ngModel)]="orderNumberFilter"
+          (paste)="onPaste($event)"
+        ></textarea>
       </mat-form-field>
     </div>
   </div>
@@ -31,6 +36,7 @@
     mat-flat-button
     class="form-button-submit btn-lg flex-grow-1"
     color="primary"
+    (click)="applyFilter()"
   >
     Filter
   </button>

@@ -13,6 +13,7 @@ import { NonSuperBatchOrdersComponent } from './non-super-batch-orders/non-super
 import { SuperBatchOrdersComponent } from './super-batch-orders/super-batch-orders.component';
 import { ConfirmationDialogComponent } from 'src/app/admin/dialogs/confirmation-dialog/confirmation-dialog.component';
 import { PickToteInFilterComponent } from './pick-tote-in-filter/pick-tote-in-filter.component';
+import { FilterOrderNumberComponent } from './filter-order-number/filter-order-number.component';
 
 interface IZoneGroup {
   Id: number;
@@ -47,6 +48,9 @@ export class PickToteInductionComponent implements OnInit, AfterViewInit {
   SuperBatchOrdersComponent: SuperBatchOrdersComponent;
   @ViewChild(PickToteInFilterComponent, { static: true })
   PickToteInductionFilter: PickToteInFilterComponent;
+  @ViewChild(FilterOrderNumberComponent, { static: true })
+  FilterOrderNumberComponent: FilterOrderNumberComponent;
+
   orderNumber: string = '';
   toteId: string = '';
   splitToggle: boolean = false;
@@ -87,10 +91,16 @@ export class PickToteInductionComponent implements OnInit, AfterViewInit {
 
     this.zoneList = selectedZones.map((zone) => zone.Zone);
     this.selectedZones = this.zoneList.join(' ');
+
+    // Reload the orders based on induction type and selected filters
     this.selectedFilters.Zones = this.zoneList;
-    // this.selectedFilters.ColumnFilters = ; // TODO: add column filters here
-    // this.selectedFilters.OrderNumberFilters = ; // TODO: add order number filters here
-    this.retrieveFilters();
+    this.selectedFilters.ColumnFilters = this.PickToteInductionFilter
+      ? this.PickToteInductionFilter.filters
+      : [];
+    this.selectedFilters.OrderNumberFilters = this.FilterOrderNumberComponent
+      ? this.FilterOrderNumberComponent.orderNumberFilter
+      : [];
+    this.retrieveOrders();
   }
 
   async getZoneGroups() {
@@ -148,10 +158,17 @@ export class PickToteInductionComponent implements OnInit, AfterViewInit {
 
         this.zoneList = selectedZoneValues;
         this.selectedZones = this.zoneList.join(' ');
+
+        // Reload the orders based on induction type and selected filters
         this.selectedFilters.Zone = selectedZoneValues;
-        // this.selectedFilters.ColumnFilters = ; // TODO: add column filters here
-        // this.selectedFilters.OrderNumberFilters = ; // TODO: add order number filters here
-        this.retrieveFilters();
+        this.selectedFilters.ColumnFilters = this.PickToteInductionFilter
+          ? this.PickToteInductionFilter.filters
+          : [];
+        this.selectedFilters.OrderNumberFilters = this
+          .FilterOrderNumberComponent
+          ? this.FilterOrderNumberComponent.orderNumberFilter
+          : [];
+        this.retrieveOrders();
       }
     });
   }
@@ -163,7 +180,7 @@ export class PickToteInductionComponent implements OnInit, AfterViewInit {
     }
   }
 
-  private retrieveFilters() {
+  private retrieveOrders() {
     // Get the list of selected zone values
     // Call the function to filter orders
     if (this.activeTab === TabNames.NonSuperBatch) {
@@ -184,10 +201,15 @@ export class PickToteInductionComponent implements OnInit, AfterViewInit {
   refreshOrders() {
     // refresh orders in table based on currently selcted filters this includes all filters currently selected
     console.log(this.selectedFilters);
-    // this.selectedFilters.zone = ; // TODO: add zone group filters here
-    // this.selectedFilters.ColumnFilters = ; // TODO: add column filters here
-    // this.selectedFilters.OrderNumberFilters = ; // TODO: add order number filters here
-    this.retrieveFilters();
+    // Reload the orders based on induction type and selected filters
+    this.selectedFilters.Zones = this.zoneList;
+    this.selectedFilters.ColumnFilters = this.PickToteInductionFilter
+      ? this.PickToteInductionFilter.filters
+      : [];
+    this.selectedFilters.OrderNumberFilters = this.FilterOrderNumberComponent
+      ? this.FilterOrderNumberComponent.orderNumberFilter
+      : [];
+    this.retrieveOrders();
   }
 
   clearFilters() {
@@ -202,7 +224,6 @@ export class PickToteInductionComponent implements OnInit, AfterViewInit {
     });
 
     dialogRef.afterClosed().subscribe((result) => {
-   
       // check for confirmation then clear all filters on the screen
       if (result) {
         let confirm = result.toLowerCase();
@@ -212,9 +233,15 @@ export class PickToteInductionComponent implements OnInit, AfterViewInit {
           this.selectedZones = '';
           this.zoneGroupSelect.value = '';
 
-          if(this.PickToteInductionFilter) {
+          if (this.PickToteInductionFilter) {
             this.PickToteInductionFilter.filters = [];
           }
+
+          if (this.FilterOrderNumberComponent) {
+            this.FilterOrderNumberComponent.orderNumberFilter = [];
+          }
+
+          this.retrieveOrders();
         }
       }
     });
@@ -230,11 +257,15 @@ export class PickToteInductionComponent implements OnInit, AfterViewInit {
       this.activeTab = TabNames.SuperBatch;
     }
 
-    // Reload the orders based on induction type
+    // Reload the orders based on induction type and selected filters
     this.selectedFilters.zone = this.zoneList;
-    // this.selectedFilters.ColumnFilters = ; // TODO: add column filters here
-    // this.selectedFilters.OrderNumberFilters = ; // TODO: add order number filters here
-    this.retrieveFilters();
+    this.selectedFilters.ColumnFilters = this.PickToteInductionFilter
+      ? this.PickToteInductionFilter.filters
+      : [];
+    this.selectedFilters.OrderNumberFilters = this.FilterOrderNumberComponent
+      ? this.FilterOrderNumberComponent.orderNumberFilter
+      : [];
+    this.retrieveOrders();
   }
 
   onEnter() {
