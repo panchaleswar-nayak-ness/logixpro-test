@@ -55,8 +55,17 @@
               mat-flat-button
               color="primary"
               class="primary-button btn-regular w-100 mb-3 mb-xl-0 matFlatButton-style"
+              (click)="refreshOrders()"
             >
               Refresh Order
+            </button>
+            <button
+              mat-flat-button
+              color="primary"
+              class="primary-button btn-regular w-100 mb-3 mb-xl-0 matFlatButton-style"
+              (click)="clearFilters()"
+            >
+              Clear Filters
             </button>
           </div>
         </div>

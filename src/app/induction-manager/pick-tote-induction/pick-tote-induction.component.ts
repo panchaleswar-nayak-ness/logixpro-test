@@ -16,6 +16,7 @@ import { PickToteInFilterComponent } from './pick-tote-in-filter/pick-tote-in-fi
 import { PickToteInductionFilter } from '../models/PickToteInductionModel';
 import { FilterOrderNumberComponent } from './filter-order-number/filter-order-number.component';
 import { MatTableDataSource } from '@angular/material/table';
+import { ConfirmationDialogComponent } from 'src/app/admin/dialogs/confirmation-dialog/confirmation-dialog.component';
 
 interface IZoneGroup {
   Id: number;
@@ -147,6 +148,28 @@ export class PickToteInductionComponent implements OnInit {
           );
           this.SuperBatchOrdersComponent.rebind();
         }
+      }
+    });
+  }
+
+  refreshOrders() {}
+
+  clearFilters() {
+
+    const dialogRef: any = this.global.OpenDialog(ConfirmationDialogComponent, {
+      height: 'auto',
+      width: '60%',
+      autoFocus: DialogConstants.autoFocus,
+      disableClose: true,
+      data: {
+        message: '',
+        heading: 'Do you want to clear all filters?',
+      },
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+      
       }
     });
   }
