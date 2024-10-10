@@ -59,6 +59,7 @@ export class NonSuperBatchOrdersComponent implements OnInit {
   ];
 
   filters: PickToteInductionFilter[] = [];
+  orderNumberFilter: string = '';
   dataSource: any;
   toteScanned: any;
 
@@ -76,7 +77,16 @@ export class NonSuperBatchOrdersComponent implements OnInit {
       height: DialogConstants.auto,
       width: Style.w560px,
       autoFocus: DialogConstants.autoFocus,
+      data: {
+        OrderNumberFilter: this.orderNumberFilter,
+      },
       disableClose: true,
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        
+      }
     });
   }
 
@@ -85,7 +95,9 @@ export class NonSuperBatchOrdersComponent implements OnInit {
       height: 'auto',
       width: Style.w786px,
       autoFocus: DialogConstants.autoFocus,
-      data: this.filters,
+      data: {
+        ColumnFilter: this.filters,
+      },
       disableClose: true,
     });
 
@@ -96,8 +108,9 @@ export class NonSuperBatchOrdersComponent implements OnInit {
     });
   }
 
-  retrieveFilteredNonSuperBatchOrders(selectedZones: string[]) {
-    this.Api.RetrieveNonSuperBatchOrders({ Zones: selectedZones }).subscribe(
+  retrieveFilteredNonSuperBatchOrders(values) {
+    debugger;
+    this.Api.RetrieveNonSuperBatchOrders(values).subscribe(
       (filteredOrders) => {
         this.rebind(filteredOrders.data.result);
       }

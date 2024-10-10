@@ -7,6 +7,8 @@ import { Component, OnInit } from '@angular/core';
 })
 export class FilterOrderNumberComponent implements OnInit {
 
+  orderNumberFilter: string;
+  
   constructor() { }
 
   ngOnInit(): void {

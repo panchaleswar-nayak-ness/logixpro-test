@@ -47,6 +47,20 @@ export class PickToteInductionComponent implements OnInit, AfterViewInit {
   toteId: string = '';
   splitToggle: boolean = false;
 
+  // this is the global filteration object used to refresh and select various filters on the tote induction screen
+  // this will be passed to the respective api for loading data in tables based on induction type currently selected
+  selectedFilters: any = {
+    Zones: [],
+    Filters: [],
+    SpecificFilters: {
+      orderNumber: '',
+      toteId: '',
+      splitToggle: false,
+    },
+    OrderNumberFilters: [],
+    ColumnFilters: [],
+  };
+
   ngOnInit(): void {
     this.getZoneGroups();
   }
@@ -70,7 +84,8 @@ export class PickToteInductionComponent implements OnInit, AfterViewInit {
 
     this.zoneList = selectedZones.map((zone) => zone.Zone);
     this.selectedZones = this.zoneList.join(' ');
-    this.retriveFilters(this.zoneList);
+    this.selectedFilters.Zones = this.zoneList;
+    this.retrieveFilters();
   }
 
   async getZoneGroups() {
@@ -128,7 +143,8 @@ export class PickToteInductionComponent implements OnInit, AfterViewInit {
 
         this.zoneList = selectedZoneValues;
         this.selectedZones = this.zoneList.join(' ');
-        this.retriveFilters(selectedZoneValues);
+        this.selectedFilters.Zone = selectedZoneValues;
+        this.retrieveFilters();
       }
     });
   }
@@ -140,25 +156,28 @@ export class PickToteInductionComponent implements OnInit, AfterViewInit {
     }
   }
 
-  private retriveFilters(values: any) {
+  private retrieveFilters() {
     // Get the list of selected zone values
     // Call the function to filter orders
-
     if (this.activeTab === TabNames.NonSuperBatch) {
       if (this.NonSuperBatchOrdersComponent) {
         this.NonSuperBatchOrdersComponent.retrieveFilteredNonSuperBatchOrders(
-          values
+          this.selectedFilters
         );
       }
     } else if (this.activeTab === TabNames.SuperBatch) {
       if (this.SuperBatchOrdersComponent) {
-        this.SuperBatchOrdersComponent.retrieveFilteredSuperBatchOrders(values);
+        this.SuperBatchOrdersComponent.retrieveFilteredSuperBatchOrders(
+          this.selectedFilters
+        );
       }
     }
   }
 
   refreshOrders() {
-    //TODO: refresh orders in tbale based on currently selcted filters this includes all filters currently selected
+    // refresh orders in table based on currently selcted filters this includes all filters currently selected
+    console.log(this.selectedFilters);
+    this.retrieveFilters();
   }
 
   clearFilters() {
@@ -173,7 +192,7 @@ export class PickToteInductionComponent implements OnInit, AfterViewInit {
     });
 
     dialogRef.afterClosed().subscribe((result) => {
-      debugger;
+  
       // TODO: check for confirmation then clear all filters on the screen
       if (result) {
         // this.zoneList = [];
@@ -193,7 +212,8 @@ export class PickToteInductionComponent implements OnInit, AfterViewInit {
     }
 
     // Reload the orders based on induction type
-    this.retriveFilters(this.zoneList);
+    this.selectedFilters.zone = this.zoneList;
+    this.retrieveFilters();
   }
 
   onEnter() {
