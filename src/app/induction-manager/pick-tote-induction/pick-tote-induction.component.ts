@@ -12,6 +12,7 @@ import { MatTabChangeEvent } from '@angular/material/tabs';
 import { NonSuperBatchOrdersComponent } from './non-super-batch-orders/non-super-batch-orders.component';
 import { SuperBatchOrdersComponent } from './super-batch-orders/super-batch-orders.component';
 import { ConfirmationDialogComponent } from 'src/app/admin/dialogs/confirmation-dialog/confirmation-dialog.component';
+import { PickToteInFilterComponent } from './pick-tote-in-filter/pick-tote-in-filter.component';
 
 interface IZoneGroup {
   Id: number;
@@ -38,11 +39,14 @@ export class PickToteInductionComponent implements OnInit, AfterViewInit {
   zoneList: string[];
   selectedZones: string = '';
   activeTab: TabNames;
+  @ViewChild('zoneGroupSelect') zoneGroupSelect;
   @ViewChild('tabGroup') tabGroup;
   @ViewChild(NonSuperBatchOrdersComponent, { static: true })
   NonSuperBatchOrdersComponent: NonSuperBatchOrdersComponent;
   @ViewChild(SuperBatchOrdersComponent, { static: true })
   SuperBatchOrdersComponent: SuperBatchOrdersComponent;
+  @ViewChild(PickToteInFilterComponent, { static: true })
+  PickToteInductionFilter: PickToteInFilterComponent;
   orderNumber: string = '';
   toteId: string = '';
   splitToggle: boolean = false;
@@ -198,10 +202,20 @@ export class PickToteInductionComponent implements OnInit, AfterViewInit {
     });
 
     dialogRef.afterClosed().subscribe((result) => {
-      // TODO: check for confirmation then clear all filters on the screen
+   
+      // check for confirmation then clear all filters on the screen
       if (result) {
-        // this.zoneList = [];
-        // this.selectedZones = '';
+        let confirm = result.toLowerCase();
+
+        if (confirm === 'yes') {
+          this.zoneList = [];
+          this.selectedZones = '';
+          this.zoneGroupSelect.value = '';
+
+          if(this.PickToteInductionFilter) {
+            this.PickToteInductionFilter.filters = [];
+          }
+        }
       }
     });
   }

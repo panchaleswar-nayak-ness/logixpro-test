@@ -17,7 +17,7 @@
                 appearance="outline"
               >
                 <mat-label>Zone Group</mat-label>
-                <mat-select (selectionChange)="showChange($event.value)">
+                <mat-select #zoneGroupSelect (selectionChange)="showChange($event.value)">
                   <ng-container *ngFor="let item of zoneGroupingsList">
                     <mat-option [value]="item.Id">{{
                       item.ZoneGroup
