@@ -1,6 +1,7 @@
 import {
   AfterViewInit,
   Component,
+  ElementRef,
   Input,
   OnChanges,
   OnInit,
@@ -9,21 +10,28 @@ import {
 import {
   DialogConstants,
   Style,
+  ToasterMessages,
+  ToasterTitle,
+  ToasterType,
 } from 'src/app/common/constants/strings.constants';
 import { ApiFuntions } from 'src/app/common/services/ApiFuntions';
 import { GlobalService } from 'src/app/common/services/global.service';
 import { FilterOrderNumberComponent } from '../filter-order-number/filter-order-number.component';
 import { PickToteInFilterComponent } from '../pick-tote-in-filter/pick-tote-in-filter.component';
 import { PickToteInductionFilter } from '../../models/PickToteInductionModel';
-import { MatTableDataSource } from '@angular/material/table';
+import { MatTable, MatTableDataSource } from '@angular/material/table';
+import { MatInput } from '@angular/material/input';
 
 @Component({
   selector: 'app-non-super-batch-orders',
   templateUrl: './non-super-batch-orders.component.html',
   styleUrls: ['./non-super-batch-orders.component.scss'],
 })
-export class NonSuperBatchOrdersComponent implements OnInit {
+export class NonSuperBatchOrdersComponent implements OnInit, AfterViewInit {
   constructor(private global: GlobalService, private Api: ApiFuntions) {}
+
+  @ViewChild('table') table: MatTable<any>;
+  @ViewChild('toteTextbox', { static: true }) toteTextbox: MatInput;
 
   elementData = [
     {
@@ -64,7 +72,13 @@ export class NonSuperBatchOrdersComponent implements OnInit {
   toteScanned: any;
 
   ngOnInit(): void {
-    // this.rebind(this.elementData);
+    this.rebind(this.elementData);
+  }
+
+  ngAfterViewInit() {
+    // const firstRow = this.table.rows[0];
+    // const firstRowTextbox = firstRow.querySelector('input');
+    // firstRowTextbox.focus();
   }
 
   rebind(data?: any[]) {
@@ -83,9 +97,8 @@ export class NonSuperBatchOrdersComponent implements OnInit {
       disableClose: true,
     });
 
-    dialogRef.afterClosed().subscribe((result) => {
+    dialogRef.afterClosed().subscribe((result: any) => {
       if (result) {
-        
       }
     });
   }
@@ -101,7 +114,7 @@ export class NonSuperBatchOrdersComponent implements OnInit {
       disableClose: true,
     });
 
-    dialogRef.afterClosed().subscribe((result) => {
+    dialogRef.afterClosed().subscribe((result: PickToteInductionFilter[]) => {
       if (result) {
         this.filters = result;
       }
@@ -109,16 +122,28 @@ export class NonSuperBatchOrdersComponent implements OnInit {
   }
 
   retrieveFilteredNonSuperBatchOrders(values) {
-    debugger;
-    this.Api.RetrieveNonSuperBatchOrders(values).subscribe(
-      (filteredOrders) => {
-        this.rebind(filteredOrders.data.result);
-      }
-    );
+    this.Api.RetrieveNonSuperBatchOrders(values).subscribe((filteredOrders) => {
+      this.rebind(filteredOrders.data.result);
+    });
   }
 
-  onEnter(element) {
+  onEnter(element: any) {
     console.log(element);
-    // TODO: call api to induct this tote as per PLST-2754
+    // call api to induct this tote as per PLST-2754
+
+    if(element) {
+      this.Api.PerformOrderInduction(element).subscribe(
+        (res: any) => {
+          if (res.data) {
+          } else {
+            this.global.ShowToastr(
+              ToasterType.Error,
+              ToasterMessages.SomethingWentWrong,
+              ToasterTitle.Error
+            );
+          }
+        }
+      );
+    }
   }
 }

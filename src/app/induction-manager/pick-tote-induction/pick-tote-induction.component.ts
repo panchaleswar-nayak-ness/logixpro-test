@@ -51,7 +51,6 @@ export class PickToteInductionComponent implements OnInit, AfterViewInit {
   // this will be passed to the respective api for loading data in tables based on induction type currently selected
   selectedFilters: any = {
     Zones: [],
-    Filters: [],
     SpecificFilters: {
       orderNumber: '',
       toteId: '',
@@ -85,6 +84,8 @@ export class PickToteInductionComponent implements OnInit, AfterViewInit {
     this.zoneList = selectedZones.map((zone) => zone.Zone);
     this.selectedZones = this.zoneList.join(' ');
     this.selectedFilters.Zones = this.zoneList;
+    // this.selectedFilters.ColumnFilters = ; // TODO: add column filters here
+    // this.selectedFilters.OrderNumberFilters = ; // TODO: add order number filters here
     this.retrieveFilters();
   }
 
@@ -144,6 +145,8 @@ export class PickToteInductionComponent implements OnInit, AfterViewInit {
         this.zoneList = selectedZoneValues;
         this.selectedZones = this.zoneList.join(' ');
         this.selectedFilters.Zone = selectedZoneValues;
+        // this.selectedFilters.ColumnFilters = ; // TODO: add column filters here
+        // this.selectedFilters.OrderNumberFilters = ; // TODO: add order number filters here
         this.retrieveFilters();
       }
     });
@@ -177,6 +180,9 @@ export class PickToteInductionComponent implements OnInit, AfterViewInit {
   refreshOrders() {
     // refresh orders in table based on currently selcted filters this includes all filters currently selected
     console.log(this.selectedFilters);
+    // this.selectedFilters.zone = ; // TODO: add zone group filters here
+    // this.selectedFilters.ColumnFilters = ; // TODO: add column filters here
+    // this.selectedFilters.OrderNumberFilters = ; // TODO: add order number filters here
     this.retrieveFilters();
   }
 
@@ -192,7 +198,6 @@ export class PickToteInductionComponent implements OnInit, AfterViewInit {
     });
 
     dialogRef.afterClosed().subscribe((result) => {
-  
       // TODO: check for confirmation then clear all filters on the screen
       if (result) {
         // this.zoneList = [];
@@ -213,11 +218,34 @@ export class PickToteInductionComponent implements OnInit, AfterViewInit {
 
     // Reload the orders based on induction type
     this.selectedFilters.zone = this.zoneList;
+    // this.selectedFilters.ColumnFilters = ; // TODO: add column filters here
+    // this.selectedFilters.OrderNumberFilters = ; // TODO: add order number filters here
     this.retrieveFilters();
   }
 
   onEnter() {
-    // TODO: perform specific order induction based on ngmodels orderNumber, toteId, splitToggle
+    // perform specific order induction based on ngmodels orderNumber, toteId, splitToggle
     console.log(this.orderNumber, this.toteId, this.splitToggle);
+
+    if (this.orderNumber && this.toteId && this.splitToggle) {
+      let valueToInduct = {
+        orderNumber: this.orderNumber,
+        toteId: this.toteId,
+        splitToggle: this.splitToggle,
+      };
+
+      this.Api.PerformSpecificOrderInduction(valueToInduct).subscribe(
+        (res: any) => {
+          if (res.data) {
+          } else {
+            this.global.ShowToastr(
+              ToasterType.Error,
+              ToasterMessages.SomethingWentWrong,
+              ToasterTitle.Error
+            );
+          }
+        }
+      );
+    }
   }
 }

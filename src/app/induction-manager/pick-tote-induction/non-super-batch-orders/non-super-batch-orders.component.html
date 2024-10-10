@@ -27,7 +27,7 @@
         class="mat-table-scrollbar scrollbar-hover-padding count-table-scrollbar h-30v"
         track="all"
       >
-      <mat-table [dataSource]="dataSource" matSort class="w-100 table-fix">
+        <mat-table #table [dataSource]="dataSource" matSort class="w-100 table-fix">
           <!-- Order Number Column -->
           <ng-container matColumnDef="orderNumber">
             <mat-header-cell
@@ -101,7 +101,11 @@
             <mat-header-cell *matHeaderCellDef>Tote Scanned</mat-header-cell>
             <mat-cell *matCellDef="let element">
               <mat-form-field appearance="outline">
-                <input matInput [(ngModel)]="element.toteScanned" (keyup.enter)="onEnter(element)"/>
+                <input
+                  matInput
+                  [(ngModel)]="element.toteScanned"
+                  (keyup.enter)="onEnter(element)" #toteTextbox
+                />
               </mat-form-field>
             </mat-cell>
           </ng-container>

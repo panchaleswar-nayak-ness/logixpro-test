@@ -3,6 +3,9 @@ import { MatTableDataSource } from '@angular/material/table';
 import {
   DialogConstants,
   Style,
+  ToasterMessages,
+  ToasterTitle,
+  ToasterType,
 } from 'src/app/common/constants/strings.constants';
 import { ApiFuntions } from 'src/app/common/services/ApiFuntions';
 import { GlobalService } from 'src/app/common/services/global.service';
@@ -57,7 +60,7 @@ export class SuperBatchOrdersComponent implements OnInit {
   toteScanned: any;
 
   ngOnInit(): void {
-    // this.rebind(this.elementData);
+    this.rebind(this.elementData);
   }
 
   rebind(data?: any[]) {
@@ -76,7 +79,7 @@ export class SuperBatchOrdersComponent implements OnInit {
       disableClose: true,
     });
 
-    dialogRef.afterClosed().subscribe((result) => {
+    dialogRef.afterClosed().subscribe((result: any) => {
       if (result) {
       }
     });
@@ -93,21 +96,36 @@ export class SuperBatchOrdersComponent implements OnInit {
       disableClose: true,
     });
 
-    dialogRef.afterClosed().subscribe((result) => {
+    dialogRef.afterClosed().subscribe((result: PickToteInductionFilter[]) => {
       if (result) {
         this.filters = result;
       }
     });
   }
 
-  retrieveFilteredSuperBatchOrders(values) {
+  retrieveFilteredSuperBatchOrders(values: any) {
     this.Api.RetrieveSuperBatchOrders(values).subscribe((filteredOrders) => {
       this.rebind(filteredOrders.data.result);
     });
   }
 
-  onEnter(element) {
+  onEnter(element: any) {
     console.log(element);
-    // TODO: call api to induct this tote as per PLST-2772
+    // call api to induct this tote as per PLST-2772
+
+     if(element) {
+      this.Api.PerformOrderInduction(element).subscribe(
+        (res: any) => {
+          if (res.data) {
+          } else {
+            this.global.ShowToastr(
+              ToasterType.Error,
+              ToasterMessages.SomethingWentWrong,
+              ToasterTitle.Error
+            );
+          }
+        }
+      );
+    }
   }
 }
