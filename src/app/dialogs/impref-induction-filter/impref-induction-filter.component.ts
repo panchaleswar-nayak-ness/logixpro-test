@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { MatDialogRef } from '@angular/material/dialog';
 import { ToasterTitle, ToasterType } from 'src/app/common/constants/strings.constants';
 import { GlobalService } from 'src/app/common/services/global.service';
 import { IInductionManagerApiService } from 'src/app/common/services/induction-manager-api/induction-manager-api-interface';
@@ -75,7 +76,10 @@ export class ImprefInductionFilterComponent implements OnInit {
   public iInductionManagerApi: IInductionManagerApiService;
   constructor(
     public inductionManagerApi: InductionManagerApiService,
-    private global: GlobalService
+    private global: GlobalService,
+    public dialogRef: MatDialogRef<ImprefInductionFilterComponent> // Inject MatDialogRef here
+
+
 
   ) {
     this.iInductionManagerApi = inductionManagerApi;
@@ -87,9 +91,6 @@ export class ImprefInductionFilterComponent implements OnInit {
 
   selectionChange(event) {
     console.log(event);
-  }
-  colKeyUpEnter(event) {
-
   }
   // Add a new empty filter
   addFilter(): void {
@@ -105,7 +106,6 @@ export class ImprefInductionFilterComponent implements OnInit {
   }
   // Save the filter at the specified index
   saveFilter(filter: PickToteInductionFilter): void {
-    console.log('Saving filter:', filter);
     this.iInductionManagerApi.AddPickToteInductionFilter(filter).subscribe(response => {
       if (response.isExecuted) {
         this.GetPickToteInductionFilterData();
@@ -130,7 +130,7 @@ export class ImprefInductionFilterComponent implements OnInit {
       this.filters = [...this.filters]; // Re-assign to a new array reference
     }
     if(filter.id >0){
-      this.iInductionManagerApi.DeletePickToteInductionFilter(filter.id).subscribe((response: any) => {
+      this.iInductionManagerApi.DeletePickToteInductionFilter([filter.id]).subscribe((response: any) => {
         if (response.isExecuted) {
           this.GetPickToteInductionFilterData();
           this.global.ShowToastr(
@@ -145,9 +145,26 @@ export class ImprefInductionFilterComponent implements OnInit {
     }
   }
     
-  // Handle form submission
+  removeAllFilters(): void {
+    // Call the API to delete all filters
+    const ids = this.filters.map(filter => filter.id);
+    this.iInductionManagerApi.DeletePickToteInductionFilter(ids).subscribe((response: any) => {
+      if (response.isExecuted) {
+        // Clear the filters array locally
+        this.filters = [];
+        this.global.ShowToastr(
+          ToasterType.Success,
+          'All filters have been removed',
+          ToasterTitle.Success
+        );
+      } else {
+        this.global.ShowToastr(ToasterType.Error, this.global.globalErrorMsg(), ToasterTitle.Error);
+      }
+    });
+  }
+  
   onSubmit(): void {
-    // Logic to process the submitted filters (e.g., send data to the server)
-    console.log('Submitted filters:', this.filters);
+    this.dialogRef.close(); // This will close the dialog when submit is clicked
+    
   }
 }

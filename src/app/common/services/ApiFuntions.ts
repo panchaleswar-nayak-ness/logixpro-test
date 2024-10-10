@@ -2146,7 +2146,8 @@ export class ApiFuntions {
   public GetPickToteInductionFilter() {
     return this.ApiBase.Get('/induction/totefilter');
   }
-  public DeletePickToteInductionFilter(id: number): Observable<any> {
-    return this.ApiBase.Delete(`/Induction/totefilter/${id}`);
+  public DeletePickToteInductionFilter(body: any): Observable<any> {
+    return this.ApiBase.Post(`/Induction/removetotefilter/`, body);
   }
+  
 }
