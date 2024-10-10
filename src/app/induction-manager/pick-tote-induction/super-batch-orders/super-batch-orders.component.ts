@@ -17,33 +17,33 @@ export class SuperBatchOrdersComponent implements OnInit {
   constructor(private global: GlobalService, private Api: ApiFuntions) { }
 
   displayedColumns: string[] = [
-    'orderNumber',
-    'zone',
+    'itemNumber',
     'priority',
+    'quality',
     'requiredDate',
     'totalOrderQty',
-    'toteScanned',
+    'toteScanned'
   ];
 
   elementData = [
     {
-      orderNumber: 'Zone 1',
-      zone: 'Location 1',
+      itemNumber: 'Zone 1',
       priority: 'Location 1',
+      quality: '1',
       requiredDate: '02/02/2024',
       totalOrderQty: '5',
     },
     {
-      orderNumber: 'Zone 2',
-      zone: 'Location 2',
+      itemNumber: 'Zone 2',
       priority: 'Location 1',
+      quality: '2',
       requiredDate: '02/02/2024',
       totalOrderQty: '5',
     },
     {
-      orderNumber: 'Zone 3',
-      zone: 'Location 3',
+      itemNumber: 'Zone 3',
       priority: 'Location 1',
+      quality: '3',
       requiredDate: '02/02/2024',
       totalOrderQty: '5',
     },

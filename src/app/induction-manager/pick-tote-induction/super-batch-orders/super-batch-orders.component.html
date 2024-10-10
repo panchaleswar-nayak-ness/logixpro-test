@@ -29,33 +29,21 @@
       >
       <mat-table [dataSource]="dataSource" matSort class="w-100 table-fix">
           <!-- Order Number Column -->
-          <ng-container matColumnDef="orderNumber">
+          <ng-container matColumnDef="itemNumber">
             <mat-header-cell
               *matHeaderCellDef
               mat-sort-header
-              sortActionDescription="Sort by orderNumber"
+              sortActionDescription="Sort by itemNumber"
             >
-              Order No.
+              Item No.
             </mat-header-cell>
             <mat-cell *matCellDef="let element">
-              {{ element.orderNumber }}
+              {{ element.itemNumber }}
             </mat-cell>
           </ng-container>
 
-          <!-- Start Zone Column -->
-          <ng-container matColumnDef="zone">
-            <mat-header-cell
-              *matHeaderCellDef
-              mat-sort-header
-              sortActionDescription="Sort by zone"
-            >
-              Start Zone
-            </mat-header-cell>
-            <mat-cell *matCellDef="let element">{{ element.zone }}</mat-cell>
-          </ng-container>
-
-          <!-- Priority Column -->
-          <ng-container matColumnDef="priority">
+           <!-- Priority Column -->
+           <ng-container matColumnDef="priority">
             <mat-header-cell
               *matHeaderCellDef
               mat-sort-header
@@ -67,6 +55,20 @@
               element.priority
             }}</mat-cell>
           </ng-container>
+
+          <!-- Quality Column -->
+          <ng-container matColumnDef="quality">
+            <mat-header-cell
+              *matHeaderCellDef
+              mat-sort-header
+              sortActionDescription="Sort by quality"
+            >
+              Quality
+            </mat-header-cell>
+            <mat-cell *matCellDef="let element">{{ element.quality }}</mat-cell>
+          </ng-container>
+
+         
 
           <!-- Required Date Column -->
           <ng-container matColumnDef="requiredDate">
@@ -89,7 +91,7 @@
               mat-sort-header
               sortActionDescription="Sort by totalOrderQty"
             >
-              Total Order Qty
+              Total Order Quantity
             </mat-header-cell>
             <mat-cell *matCellDef="let element">
               {{ element.totalOrderQty }}
