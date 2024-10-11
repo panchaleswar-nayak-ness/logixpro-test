@@ -274,7 +274,7 @@ export class PickToteInductionComponent
     }
 
     // Reload the orders based on induction type and selected filters
-    this.selectedFilters.zone = this.zoneList;
+    this.selectedFilters.Zones = this.zoneList;
     
     this.retrieveOrders();
   }

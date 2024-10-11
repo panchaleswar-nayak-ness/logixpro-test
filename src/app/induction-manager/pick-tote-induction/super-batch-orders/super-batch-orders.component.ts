@@ -64,7 +64,17 @@ export class SuperBatchOrdersComponent implements OnInit {
   }
 
   rebind(data?: any[]) {
-    let dataToBind = data ? data : this.elementData;
+    let mappedData = data?.map((m) => {
+      return {
+        itemNumber: m.itemNumber,
+        priority: m.minPriority,
+        quality: m.quality,
+        requiredDate: m.minRequiredDate,
+        totalOrderQty: m.totalQuantity
+      };
+    });
+
+    let dataToBind = mappedData ? mappedData : this.elementData;
     this.dataSource = new MatTableDataSource(dataToBind);
   }
 
@@ -81,11 +91,9 @@ export class SuperBatchOrdersComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe((result: any) => {
       this.orderNumberFilter = result.orderNumberFilter
-          .split(',')
-          .map((m: string) =>
-            this.global.getTrimmedAndLineBreakRemovedString(m)
-          );
-        this.global.sendMessage({ orderNumberFilters: this.orderNumberFilter });
+        .split(',')
+        .map((m: string) => this.global.getTrimmedAndLineBreakRemovedString(m));
+      this.global.sendMessage({ orderNumberFilters: this.orderNumberFilter });
     });
   }
 
@@ -110,7 +118,7 @@ export class SuperBatchOrdersComponent implements OnInit {
 
   retrieveFilteredSuperBatchOrders(values: any) {
     this.Api.RetrieveSuperBatchOrders(values).subscribe((filteredOrders) => {
-      this.rebind(filteredOrders.data.result);
+      this.rebind(filteredOrders.data);
     });
   }
 
@@ -133,7 +141,7 @@ export class SuperBatchOrdersComponent implements OnInit {
       requiredDate,
       totalOrderQty,
       toteScanned,
-      inductionType: ''
+      inductionType: '',
     };
     valueToInduct.inductionType = 'SuperBatch';
     console.log(valueToInduct);
