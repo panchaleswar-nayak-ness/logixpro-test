@@ -43,7 +43,7 @@
 >
   <ng-scrollbar class="mat-table-scrollbar h-60v">
     <form [formGroup]="form">
-      <mat-table formArrayName="items" [dataSource]="dataSource">
+      <table mat-table class="w-100" formArrayName="items" [dataSource]="dataSource">
         <!-- <ng-container cdkColumnDef="select">
           <mat-header-cell *cdkHeaderCellDef>
             <mat-checkbox
@@ -65,8 +65,8 @@
         </ng-container> -->
 
         <ng-container cdkColumnDef="zoneGroupName">
-          <mat-header-cell *cdkHeaderCellDef> Zone Group Name </mat-header-cell>
-          <mat-cell
+          <th mat-header-cell *cdkHeaderCellDef> Zone Group Name </th>
+          <td mat-cell
             *cdkCellDef="let row; let rowIndex = index"
             [formGroupName]="rowIndex"
           >
@@ -86,18 +86,18 @@
                 formControlName="zoneGroupName"
               />
             </mat-form-field>
-          </mat-cell>
+          </td>
         </ng-container>
 
         <ng-container cdkColumnDef="selectedZone">
-          <mat-header-cell *cdkHeaderCellDef> Selected Zone </mat-header-cell>
-          <mat-cell
+          <th mat-header-cell *cdkHeaderCellDef> Selected Zone </th>
+          <td mat-cell
             *cdkCellDef="let row; let rowIndex = index"
             [formGroupName]="rowIndex"
           >
             <div (click)="openSelectZones(rowIndex)">
               <mat-form-field
-                class="custom-form-field w-75 mb-0 pe-2"
+                class="custom-form-field w-100 mb-0 pe-2"
                 appearance="outline"
               >
                 <span matSuffix>
@@ -111,13 +111,13 @@
                 />
               </mat-form-field>
             </div>
-          </mat-cell>
+          </td>
         </ng-container>
 
         <!-- Actions Column -->
-        <ng-container matColumnDef="actions">
+        <ng-container matColumnDef="actions" stickyEnd>
           <th mat-header-cell *matHeaderCellDef class="text-center"></th>
-          <mat-cell
+          <td mat-cell
             *cdkCellDef="let row; let rowIndex = index"
             [formGroupName]="rowIndex"
           >
@@ -139,15 +139,15 @@
                 <mat-icon class="material-symbols-outlined">close</mat-icon>
               </button>
             </div>
-          </mat-cell>
+          </td>
         </ng-container>
 
         <!-- Header and Row Declarations -->
-        <mat-header-row
+        <tr mat-header-row
           *cdkHeaderRowDef="displayedColumns; sticky: true"
-        ></mat-header-row>
-        <mat-row *cdkRowDef="let row; columns: displayedColumns"></mat-row>
-      </mat-table>
+        ></tr>
+        <tr mat-row *cdkRowDef="let row; columns: displayedColumns"></tr>
+      </table>
     </form>
   </ng-scrollbar>
 </div>

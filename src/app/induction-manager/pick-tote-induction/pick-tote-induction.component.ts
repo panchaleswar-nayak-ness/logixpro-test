@@ -231,11 +231,11 @@ export class PickToteInductionComponent
   clearFilters() {
     const dialogRef: any = this.global.OpenDialog(ConfirmationDialogComponent, {
       height: 'auto',
-      width: '60%',
+      width: '560px',
       autoFocus: DialogConstants.autoFocus,
       disableClose: true,
       data: {
-        heading: 'Do you want to clear all filters?',
+        message: 'Do you want to clear all filters?',
       },
     });
 
