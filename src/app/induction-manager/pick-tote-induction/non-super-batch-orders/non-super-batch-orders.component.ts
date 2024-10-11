@@ -2,9 +2,11 @@ import {
   AfterViewInit,
   Component,
   ElementRef,
+  EventEmitter,
   Input,
   OnChanges,
   OnInit,
+  Output,
   ViewChild,
 } from '@angular/core';
 import {
@@ -72,7 +74,7 @@ export class NonSuperBatchOrdersComponent implements OnInit, AfterViewInit {
   toteScanned: any;
 
   ngOnInit(): void {
-    this.rebind(this.elementData);
+    // this.rebind(this.elementData);
   }
 
   ngAfterViewInit() {
@@ -99,6 +101,12 @@ export class NonSuperBatchOrdersComponent implements OnInit, AfterViewInit {
 
     dialogRef.afterClosed().subscribe((result: any) => {
       if (result) {
+        this.orderNumberFilter = result.orderNumberFilter
+          .split(',')
+          .map((m: string) =>
+            this.global.getTrimmedAndLineBreakRemovedString(m)
+          );
+        this.global.sendMessage({ orderNumberFilters: this.orderNumberFilter });
       }
     });
   }
@@ -117,6 +125,7 @@ export class NonSuperBatchOrdersComponent implements OnInit, AfterViewInit {
     dialogRef.afterClosed().subscribe((result: PickToteInductionFilter[]) => {
       if (result) {
         this.filters = result;
+        this.global.sendMessage({ columnFilters: this.filters });
       }
     });
   }
@@ -128,7 +137,6 @@ export class NonSuperBatchOrdersComponent implements OnInit, AfterViewInit {
   }
 
   onEnter(element: any) {
-
     const {
       completedQuantity,
       orderNumber,
@@ -145,8 +153,9 @@ export class NonSuperBatchOrdersComponent implements OnInit, AfterViewInit {
       requiredDate,
       completedQuantity,
       toteScanned,
+      inductionType: '',
     };
-    
+    valueToInduct.inductionType = 'NonSuperBatch';
     console.log(valueToInduct);
 
     // call api to induct this tote as per PLST-2754

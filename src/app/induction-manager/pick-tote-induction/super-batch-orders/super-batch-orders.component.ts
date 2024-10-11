@@ -60,7 +60,7 @@ export class SuperBatchOrdersComponent implements OnInit {
   toteScanned: any;
 
   ngOnInit(): void {
-    this.rebind(this.elementData);
+    // this.rebind(this.elementData);
   }
 
   rebind(data?: any[]) {
@@ -80,8 +80,12 @@ export class SuperBatchOrdersComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe((result: any) => {
-      if (result) {
-      }
+      this.orderNumberFilter = result.orderNumberFilter
+          .split(',')
+          .map((m: string) =>
+            this.global.getTrimmedAndLineBreakRemovedString(m)
+          );
+        this.global.sendMessage({ orderNumberFilters: this.orderNumberFilter });
     });
   }
 
@@ -99,6 +103,7 @@ export class SuperBatchOrdersComponent implements OnInit {
     dialogRef.afterClosed().subscribe((result: PickToteInductionFilter[]) => {
       if (result) {
         this.filters = result;
+        this.global.sendMessage({ columnFilters: this.filters });
       }
     });
   }
@@ -110,7 +115,6 @@ export class SuperBatchOrdersComponent implements OnInit {
   }
 
   onEnter(element: any) {
-
     const {
       itemNumber,
       priority,
@@ -120,7 +124,7 @@ export class SuperBatchOrdersComponent implements OnInit {
       toteScanned,
     } = element;
 
-    var quality = warehouse && warehouse !== "" ? warehouse.substr(1,1) : "";
+    var quality = warehouse && warehouse !== '' ? warehouse.substr(1, 1) : '';
 
     var valueToInduct = {
       itemNumber,
@@ -129,23 +133,22 @@ export class SuperBatchOrdersComponent implements OnInit {
       requiredDate,
       totalOrderQty,
       toteScanned,
+      inductionType: ''
     };
-    
+    valueToInduct.inductionType = 'SuperBatch';
     console.log(valueToInduct);
     // call api to induct this tote as per PLST-2772
-     if(valueToInduct.toteScanned) {
-      this.Api.PerformOrderInduction(valueToInduct).subscribe(
-        (res: any) => {
-          if (res.data) {
-          } else {
-            this.global.ShowToastr(
-              ToasterType.Error,
-              ToasterMessages.SomethingWentWrong,
-              ToasterTitle.Error
-            );
-          }
+    if (valueToInduct.toteScanned) {
+      this.Api.PerformOrderInduction(valueToInduct).subscribe((res: any) => {
+        if (res.data) {
+        } else {
+          this.global.ShowToastr(
+            ToasterType.Error,
+            ToasterMessages.SomethingWentWrong,
+            ToasterTitle.Error
+          );
         }
-      );
+      });
     }
   }
 }
