@@ -280,19 +280,24 @@ export class PickToteInductionComponent
   }
 
   onEnter() {
-    // perform specific order induction based on ngmodels orderNumber, toteId, splitToggle
     console.log(this.orderNumber, this.toteId, this.splitToggle);
-
-    if (this.orderNumber && this.toteId && this.splitToggle) {
-      let valueToInduct = {
+  
+    if (this.orderNumber && this.toteId) {
+      let valueToInduct: any = {
         orderNumber: this.orderNumber,
         toteId: this.toteId,
-        splitToggle: this.splitToggle,
+        splitToggle: this.splitToggle
       };
-
+  
+      // Add maxToteQuantity only if split is enabled
+      if (this.splitToggle) {
+        valueToInduct.maxToteQuantity = this.getMaxToteQuantity();  // your logic to fetch max tote quantity
+      }
+  
       this.Api.PerformSpecificOrderInduction(valueToInduct).subscribe(
         (res: any) => {
           if (res.data) {
+            // Success handling
           } else {
             this.global.ShowToastr(
               ToasterType.Error,
@@ -303,5 +308,10 @@ export class PickToteInductionComponent
         }
       );
     }
+  }
+  
+  getMaxToteQuantity() {
+    // Logic to retrieve the max tote quantity, could be hardcoded or retrieved from backend settings
+    return 21;  // Example value
   }
 }
