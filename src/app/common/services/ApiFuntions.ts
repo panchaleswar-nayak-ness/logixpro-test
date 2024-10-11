@@ -1074,7 +1074,7 @@ export class ApiFuntions {
   }
 
   public PerformOrderInduction(valueToInduct: any) {
-    return this.ApiBase.Post('/Induction/performorderinduction', valueToInduct);
+    return this.ApiBase.Post('/Induction/nonsuperbatchorderinduction', valueToInduct);
   }
 
   public GetZoneGroupingsByGroupName(zoneGroupName: string): Observable<any> {
