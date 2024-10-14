@@ -173,8 +173,8 @@ export class MoveItemsComponent implements OnInit {
     this.itemNumberSearch
       .pipe(debounceTime(400), distinctUntilChanged())
       .subscribe((value) => {
-        this.startRow = 0;
-        this.endRow = 10;
+        // this.startRow = 0;
+        // this.endRow = 10;
         this.resetPaginationFrom();
         this.autocompleteSearchColumn();
       });
@@ -228,7 +228,7 @@ export class MoveItemsComponent implements OnInit {
     searchColumn: string = Column.ItemNumber,
     searchString: string = ''
   ) {
-    debugger
+   
     if (tableName === StringConditions.MoveTo) {
       if (this.viewAll || this.dataSource.data.length === 0) {
         this.viewModeTo = ResponseStrings.AllCaps;
@@ -412,9 +412,13 @@ export class MoveItemsComponent implements OnInit {
   }
 
   handlePageEvent(e: PageEvent) {
+    
     this.pageEvent = e;
     this.startRow = e.pageSize * e.pageIndex;
-    this.endRow = e.pageSize * e.pageIndex + e.pageSize;
+    // this.endRow = e.pageSize
+    if (e.pageSize !== undefined) {
+      this.endRow = e.pageSize;
+  }
     this.recordsPerPage = e.pageSize;
     this.getMoveItemList(StringConditions.MoveFrom);
   }
@@ -871,12 +875,13 @@ formatDateTimeToLocal(dateString) {
     if (this.tableType === StringConditions.MoveFrom) this.moveFromFilter = filter;
     else if(this.tableType === StringConditions.MoveTo) this.moveToFilter = filter;
     this.resetFromFilters();
-    this.resetPaginationFrom();
+   // this.resetPaginationFrom();
     this.getMoveItemList(this.tableType);  
     this.isActiveTrigger = false;
   }
 
   resetPagination() {
+    
     this.sortOrder = UniqueConstants.Asc;
     this.sortCol = 0;
     this.totalRecords = 0;
@@ -904,6 +909,7 @@ formatDateTimeToLocal(dateString) {
   }
 
   resetPaginationFrom() {
+
     this.sortOrder = UniqueConstants.Asc;
     this.sortCol = 0;
     this.totalRecords = 0;
