@@ -179,7 +179,7 @@ export class NonSuperBatchOrdersComponent implements OnInit, AfterViewInit {
 
         // call api to induct this tote as per PLST-2754
         if (valueToInduct.toteScanned) {
-          this.Api.PerformOrderInduction(valueToInduct).subscribe(
+          this.Api.PerformNonSuperBatchOrderInduction(valueToInduct).subscribe(
             (res: any) => {
               if (res.data) {
               } else {

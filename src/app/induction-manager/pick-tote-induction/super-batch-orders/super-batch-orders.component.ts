@@ -153,9 +153,9 @@ export class SuperBatchOrdersComponent implements OnInit {
       toteScanned,
       inductionType: '',
       maxToteQuantity: 0,
+      maxSuperBatchSize:0
     };
     valueToInduct.inductionType = 'SuperBatch';
-
     let response: Observable<any> = this.iInductionManagerApi.PreferenceIndex();
     response.subscribe((res: any) => {
       if (res.data && res.isExecuted) {
@@ -163,11 +163,12 @@ export class SuperBatchOrdersComponent implements OnInit {
 
         //Pick Tote Induction Settings
         valueToInduct.maxToteQuantity = values.maximumQuantityperTote;
-        console.log(valueToInduct);
+        valueToInduct.maxSuperBatchSize=values.defaultSuperBatchSize
+        
 
         // call api to induct this tote as per PLST-2772
         if (valueToInduct.toteScanned) {
-          this.Api.PerformOrderInduction(valueToInduct).subscribe(
+          this.Api.PerformSuperBatchOrderInduction(valueToInduct).subscribe(
             (res: any) => {
               if (res.data) {
               } else {

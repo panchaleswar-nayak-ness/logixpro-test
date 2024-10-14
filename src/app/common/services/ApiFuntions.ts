@@ -1073,8 +1073,12 @@ export class ApiFuntions {
     );
   }
 
-  public PerformOrderInduction(valueToInduct: any) {
+  public PerformNonSuperBatchOrderInduction(valueToInduct: any) {
     return this.ApiBase.Post('/Induction/nonsuperbatchorderinduction', valueToInduct);
+  }
+  public PerformSuperBatchOrderInduction(valueToInduct: any) {
+    
+    return this.ApiBase.Post('/Induction/superbatchorderinduction', valueToInduct);
   }
 
   public GetZoneGroupingsByGroupName(zoneGroupName: string): Observable<any> {
