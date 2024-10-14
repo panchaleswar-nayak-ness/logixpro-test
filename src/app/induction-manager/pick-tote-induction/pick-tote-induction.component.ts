@@ -103,6 +103,8 @@ export class PickToteInductionComponent
         if (message.columnFilters && message.columnFilters.length > 0) {
           this.selectedFilters.ColumnFilters = message.columnFilters;
         }
+
+        this.retrieveOrders();
       }
     });
   }
