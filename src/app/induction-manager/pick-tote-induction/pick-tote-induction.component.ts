@@ -288,55 +288,76 @@ export class PickToteInductionComponent
     this.retrieveOrders();
   }
 
-  onEnter() {
 
+  
+  onEnter() {
+    console.log(this.orderNumber, this.toteId, this.splitToggle);
     if (this.orderNumber && this.toteId) {
       let valueToInduct: any = {
         orderNumber: this.orderNumber,
         toteId: this.toteId,
-        splitToggle: this.splitToggle,
+        splitToggle: this.splitToggle
       };
-
-      // Add maxToteQuantity only if split is enabled
+  
       if (this.splitToggle) {
-        this.getMaxToteQuantity(valueToInduct); // your logic to fetch max tote quantity
-      }
-    }
-  }
-
-  getMaxToteQuantity(valueToInduct: any) {
-    // Logic to retrieve the max tote quantity, could be hardcoded or retrieved from backend settings
-    // return 21;  // Example value
-    let response: Observable<any> = this.iInductionManagerApi.PreferenceIndex();
-    response.subscribe((res: any) => {
-      if (res.data && res.isExecuted) {
-
-        const values = res.data.imPreference;
-
-        //Pick Tote Induction Settings
-        valueToInduct.maxToteQuantity = values.maximumQuantityperTote;
-        console.log(valueToInduct);
-        
-        this.Api.PerformSpecificOrderInduction(valueToInduct).subscribe(
-          (res: any) => {
-            if (res.data) {
-              // Success handling
-            } else {
-              this.global.ShowToastr(
-                ToasterType.Error,
-                ToasterMessages.SomethingWentWrong,
-                ToasterTitle.Error
-              );
-            }
+        // Fetch the max tote quantity and proceed with induction
+        this.getMaxToteQuantity().subscribe(
+          (maxToteQuantity: number) => {
+            valueToInduct.maxToteQuantity = maxToteQuantity;
+            this.performInduction(valueToInduct);
+          },
+          (error: any) => {
+            this.global.ShowToastr(
+              ToasterType.Error,
+              ToasterMessages.SomethingWentWrong,
+              ToasterTitle.Error
+            );
           }
         );
       } else {
+        // Perform induction without maxToteQuantity
+        this.performInduction(valueToInduct);
+      }
+    }
+  }
+  
+  getMaxToteQuantity(): Observable<number> {
+    return new Observable<number>((observer) => {
+      this.iInductionManagerApi.PreferenceIndex().subscribe(
+        (res: any) => {
+          if (res.data && res.isExecuted) {
+            const values = res.data.imPreference;
+            observer.next(values.maximumQuantityperTote);
+          } else {
+            observer.error('Error fetching max tote quantity');
+          }
+        },
+        (err) => observer.error(err)
+      );
+    });
+  }
+  
+  performInduction(valueToInduct: any) {
+    this.Api.PerformSpecificOrderInduction(valueToInduct).subscribe(
+      (res: any) => {
+        if (res.data) {
+          this.refreshOrders()
+          // Success handling
+        } else {
+          this.global.ShowToastr(
+            ToasterType.Error,
+            ToasterMessages.SomethingWentWrong,
+            ToasterTitle.Error
+          );
+        }
+      },
+      (error: any) => {
         this.global.ShowToastr(
           ToasterType.Error,
           ToasterMessages.SomethingWentWrong,
           ToasterTitle.Error
         );
       }
-    });
+    );
   }
 }
