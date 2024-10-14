@@ -18,6 +18,7 @@ import {
   FormArray,
 } from '@angular/forms';
 import { MatCheckboxChange } from '@angular/material/checkbox';
+import { MatDialogRef } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-zone-groups',
@@ -40,7 +41,8 @@ export class ZoneGroupsComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private global: GlobalService,
-    public inductionManagerApi: InductionManagerApiService
+    public inductionManagerApi: InductionManagerApiService,
+    public dialogRef: MatDialogRef<ZoneGroupsComponent>
   ) {
     this.iInductionManagerApi = inductionManagerApi;
 
@@ -162,6 +164,12 @@ export class ZoneGroupsComponent implements OnInit {
           this.assignedZonesArray = [];
         }
       }
+    });
+  }
+
+  refreshZones() {
+    this.dialogRef.close({
+      confirm: true,
     });
   }
 

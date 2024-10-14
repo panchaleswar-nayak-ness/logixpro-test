@@ -63,6 +63,7 @@ export class SelectZonesComponent implements OnInit {
   isPickToteInduction: boolean;
   isAdminPreferences: boolean;
   zoneList: string[];
+  btnText: string;
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
@@ -83,6 +84,7 @@ export class SelectZonesComponent implements OnInit {
     this.isNotToteInductionPreference = !this.router.url
       .toLowerCase()
       .includes('adminprefrences');
+    this.btnText = this.isNotToteInductionPreference ? 'Continue' : 'Done';
     this.isPickToteInduction = this.router.url
       .toLowerCase()
       .includes('picktoteinduction');
@@ -209,11 +211,13 @@ export class SelectZonesComponent implements OnInit {
       },
     ];
     selectedRecords.shift();
+
     for (const element of this.elementData) {
       if (element.selected) {
         selectedRecords.push(element);
       }
     }
+
     this.dialogRef.close({
       selectedRecords: selectedRecords,
       zoneList: this.zoneList,
@@ -231,11 +235,13 @@ export class SelectZonesComponent implements OnInit {
         available: false,
       },
     ];
+
     for (const element of this.elementData) {
       if (element.selected) {
         selectedRecords.push(element);
       }
     }
+
     this.dialogRef.close({
       selectedRecords: selectedRecords,
       zoneList: this.zoneList,

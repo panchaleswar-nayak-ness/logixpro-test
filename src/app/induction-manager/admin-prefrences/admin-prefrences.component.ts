@@ -32,110 +32,6 @@ import { MatSlideToggleChange } from '@angular/material/slide-toggle';
   styleUrls: ['./admin-prefrences.component.scss'],
 })
 export class AdminPrefrencesComponent implements OnInit {
-  @ViewChild('myInput') myInput: ElementRef<HTMLInputElement>;
-  @ViewChild('maxNumber') maxNumber: ElementRef<HTMLInputElement>;
-
-  preferencesForm: FormGroup;
-
-  shortMethodList: any = [
-    {
-      id: 'Complete Short',
-      name: 'Complete Short',
-    },
-    {
-      id: 'Send to Markout',
-      name: 'Send to Markout',
-    },
-    {
-      id: 'Split and Deallocate',
-      name: 'Split and Deallocate',
-    },
-  ];
-
-  stripSideList: any = [
-    {
-      id: 'Left',
-      name: 'Left',
-    },
-    {
-      id: 'Right',
-      name: 'Right',
-    },
-  ];
-
-  zoneGroupingsList: any = [];
-
-  pickOrderSortList: any = [
-    {
-      id: 'Order Number Sequence',
-      name: 'Order Number Sequence',
-    },
-    {
-      id: 'Import Date and Order Number',
-      name: 'Import Date and Order Number',
-    },
-    {
-      id: 'Import Date and Priority',
-      name: 'Import Date and Priority',
-    },
-    {
-      id: 'Import File Sequence',
-      name: 'Import File Sequence',
-    },
-    {
-      id: 'Priority and Import Date',
-      name: 'Priority and Import Date',
-    },
-    {
-      id: 'Required Date and Priority',
-      name: 'Required Date and Priority',
-    },
-  ];
-
-  defaultPutAwayScanTypeList: any = [
-    {
-      id: 'Any',
-      name: 'Any',
-    },
-    {
-      id: Column.ItemNumber,
-      name: Column.ItemNumber,
-    },
-    {
-      id: ColumnDef.SerialNumber,
-      name: ColumnDef.SerialNumber,
-    },
-    {
-      id: Column.LotNumber,
-      name: Column.LotNumber,
-    },
-    {
-      id: TableConstant.HostTransactionID,
-      name: TableConstant.HostTransactionID,
-    },
-    {
-      id: 'Scan Code',
-      name: 'Scan Code',
-    },
-    {
-      id: 'Supplier Item ID',
-      name: 'Supplier Item ID',
-    },
-  ];
-
-  putAwayInductionScreenList: any = [
-    {
-      id: 'Unlimited Positions',
-      name: 'Unlimited Positions',
-    },
-    {
-      id: '20 Tote Matrix',
-      name: '20 Tote Matrix',
-    },
-  ];
-
-  superBatchFilterList: any;
-  public iInductionManagerApi: IInductionManagerApiService;
   constructor(
     private authService: AuthService,
     public inductionManagerApi: InductionManagerApiService,
@@ -241,15 +137,118 @@ export class AdminPrefrencesComponent implements OnInit {
     });
   }
 
+  @ViewChild('myInput') myInput: ElementRef<HTMLInputElement>;
+  @ViewChild('maxNumber') maxNumber: ElementRef<HTMLInputElement>;
+
+  preferencesForm: FormGroup;
+
+  shortMethodList: any = [
+    {
+      id: 'Complete Short',
+      name: 'Complete Short',
+    },
+    {
+      id: 'Send to Markout',
+      name: 'Send to Markout',
+    },
+    {
+      id: 'Split and Deallocate',
+      name: 'Split and Deallocate',
+    },
+  ];
+
+  stripSideList: any = [
+    {
+      id: 'Left',
+      name: 'Left',
+    },
+    {
+      id: 'Right',
+      name: 'Right',
+    },
+  ];
+
+  zoneGroupingsList: any = [];
+
+  pickOrderSortList: any = [
+    {
+      id: 'Order Number Sequence',
+      name: 'Order Number Sequence',
+    },
+    {
+      id: 'Import Date and Order Number',
+      name: 'Import Date and Order Number',
+    },
+    {
+      id: 'Import Date and Priority',
+      name: 'Import Date and Priority',
+    },
+    {
+      id: 'Import File Sequence',
+      name: 'Import File Sequence',
+    },
+    {
+      id: 'Priority and Import Date',
+      name: 'Priority and Import Date',
+    },
+    {
+      id: 'Required Date and Priority',
+      name: 'Required Date and Priority',
+    },
+  ];
+
+  defaultPutAwayScanTypeList: any = [
+    {
+      id: 'Any',
+      name: 'Any',
+    },
+    {
+      id: Column.ItemNumber,
+      name: Column.ItemNumber,
+    },
+    {
+      id: ColumnDef.SerialNumber,
+      name: ColumnDef.SerialNumber,
+    },
+    {
+      id: Column.LotNumber,
+      name: Column.LotNumber,
+    },
+    {
+      id: TableConstant.HostTransactionID,
+      name: TableConstant.HostTransactionID,
+    },
+    {
+      id: 'Scan Code',
+      name: 'Scan Code',
+    },
+    {
+      id: 'Supplier Item ID',
+      name: 'Supplier Item ID',
+    },
+  ];
+
+  putAwayInductionScreenList: any = [
+    {
+      id: 'Unlimited Positions',
+      name: 'Unlimited Positions',
+    },
+    {
+      id: '20 Tote Matrix',
+      name: '20 Tote Matrix',
+    },
+  ];
+
+  superBatchFilterList: any;
+  public iInductionManagerApi: IInductionManagerApiService;
   public userData: any;
+  trackIndIsDisable = false;
 
   ngOnInit(): void {
     this.userData = this.authService.userData();
     this.getPreferences();
     this.getZoneGroupings();
   }
-
-  trackIndIsDisable = false;
 
   getPreferences() {
     try {
@@ -377,6 +376,8 @@ export class AdminPrefrencesComponent implements OnInit {
 
   getZoneGroupings() {
     try {
+      this.zoneGroupingsList = [];
+
       this.iInductionManagerApi.GetZoneGroupings().subscribe((res: any) => {
         if (res.data && res.isExecuted) {
           let uniqueZoneGroupNames = [
@@ -535,6 +536,7 @@ export class AdminPrefrencesComponent implements OnInit {
         });
     } catch (error) {}
   }
+
   getCompName() {
     this.iInductionManagerApi.CompName().subscribe((res: any) => {
       if (res.data && res.isExecuted) {
@@ -555,6 +557,7 @@ export class AdminPrefrencesComponent implements OnInit {
       }
     });
   }
+
   checkDBQ() {
     if (this.preferencesForm.value.pickBatchQuantity >= 20) {
       this.preferencesForm.patchValue({
@@ -588,6 +591,13 @@ export class AdminPrefrencesComponent implements OnInit {
       autoFocus: DialogConstants.autoFocus,
       disableClose: true,
     });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      // check for confirmation then refresh zone groupins on the screen
+      if (result && result.confirm) {
+        this.getZoneGroupings();
+      }
+    });
   }
 
   openPickToteInductionFilter() {
@@ -600,5 +610,11 @@ export class AdminPrefrencesComponent implements OnInit {
         disableClose: true,
       }
     );
+
+    dialogRef.afterClosed().subscribe((result) => {
+      // check for confirmation then clear all filters on the screen
+      if (result) {
+      }
+    });
   }
 }
