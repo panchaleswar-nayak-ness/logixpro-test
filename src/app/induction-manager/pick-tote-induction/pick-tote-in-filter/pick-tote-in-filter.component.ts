@@ -33,7 +33,8 @@ export class PickToteInFilterComponent implements OnInit {
   ngOnInit(): void {
     this.GetPickToteInductionFilterData();
     this.initializeRows(); // Initialize table rows independently of the API response
-    if (this.data?.length > 0) this.filters = this.data;
+  
+    if (this.data?.ColumnFilter.length > 0) this.filters = this.data.ColumnFilter;
   }
 
   // Initialize table with empty rows, not based on API response
@@ -112,7 +113,11 @@ export class PickToteInFilterComponent implements OnInit {
       }
     });
 
-    this.dialogRef.close(this.filters);
+    this.close();
     // You can now send `finalFilters` to your backend API or use it as needed
+  }
+
+  close() {
+    this.dialogRef.close(this.filters);
   }
 }

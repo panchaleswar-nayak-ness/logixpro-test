@@ -116,6 +116,8 @@ export class NonSuperBatchOrdersComponent implements OnInit, AfterViewInit {
           .map((m: string) =>
             this.global.getTrimmedAndLineBreakRemovedString(m)
           );
+
+        // send the currently selected order number filters to parent component via observable
         this.global.sendMessage({ orderNumberFilters: this.orderNumberFilter });
       }
     });
@@ -135,6 +137,8 @@ export class NonSuperBatchOrdersComponent implements OnInit, AfterViewInit {
     dialogRef.afterClosed().subscribe((result: PickToteInductionFilter[]) => {
       if (result) {
         this.filters = result;
+
+        // send the currently selected column filters to parent component via observable
         this.global.sendMessage({ columnFilters: this.filters });
       }
     });

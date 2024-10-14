@@ -23,7 +23,7 @@ import { Observable } from 'rxjs';
 })
 export class SuperBatchOrdersComponent implements OnInit {
   constructor(
-    private global: GlobalService, 
+    private global: GlobalService,
     private Api: ApiFuntions,
     public inductionManagerApi: InductionManagerApiService
   ) {
@@ -103,6 +103,8 @@ export class SuperBatchOrdersComponent implements OnInit {
       this.orderNumberFilter = result.orderNumberFilter
         .split(',')
         .map((m: string) => this.global.getTrimmedAndLineBreakRemovedString(m));
+
+      // send the currently selected order number filters to parent component via observable
       this.global.sendMessage({ orderNumberFilters: this.orderNumberFilter });
     });
   }
@@ -121,6 +123,8 @@ export class SuperBatchOrdersComponent implements OnInit {
     dialogRef.afterClosed().subscribe((result: PickToteInductionFilter[]) => {
       if (result) {
         this.filters = result;
+
+        // send the currently selected column filters to parent component via observable
         this.global.sendMessage({ columnFilters: this.filters });
       }
     });

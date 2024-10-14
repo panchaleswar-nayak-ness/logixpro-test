@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { MatDialogRef } from '@angular/material/dialog';
+import { Component, Inject, OnInit } from '@angular/core';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-filter-order-number',
@@ -9,15 +9,20 @@ import { MatDialogRef } from '@angular/material/dialog';
 export class FilterOrderNumberComponent implements OnInit {
   orderNumberFilter: string[] = [];
 
-  constructor(public dialogRef: MatDialogRef<FilterOrderNumberComponent>) {}
+  constructor(
+    @Inject(MAT_DIALOG_DATA) public data: any,
+    public dialogRef: MatDialogRef<FilterOrderNumberComponent>
+  ) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    if (this.data?.OrderNumberFilter.length > 0) this.orderNumberFilter = this.data.OrderNumberFilter;
+  }
 
   onPaste(event: ClipboardEvent) {
     if (event && event.clipboardData) {
       const pastedText = event.clipboardData.getData('text');
       this.orderNumberFilter = pastedText.split('\n');
-      console.log(this.orderNumberFilter.join(','));
+      // console.log(this.orderNumberFilter.join(','));
     }
   }
 
@@ -26,7 +31,7 @@ export class FilterOrderNumberComponent implements OnInit {
     this.dialogRef.close({ orderNumberFilter: this.orderNumberFilter });
   }
 
-  applyFilter() {
+  applyFilter() {    
     this.dialogRef.close({ orderNumberFilter: this.orderNumberFilter });
   }
 }

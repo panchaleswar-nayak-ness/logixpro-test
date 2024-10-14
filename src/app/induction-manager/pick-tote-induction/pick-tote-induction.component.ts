@@ -89,6 +89,9 @@ export class PickToteInductionComponent
   ngOnInit(): void {
     this.getZoneGroups();
 
+    if (!this.activeTab) this.activeTab = 0;
+    this.refreshOrders();
+
     this.subscription = this.global.currentMessage.subscribe((message) => {
       console.log(message);
 
@@ -97,7 +100,10 @@ export class PickToteInductionComponent
           message.orderNumberFilters &&
           message.orderNumberFilters.length > 0
         ) {
-          this.selectedFilters.OrderNumberFilters = message.orderNumberFilters;
+          const uniqueOrderNumberFilters = [
+            ...new Set(message.orderNumberFilters),
+          ];
+          this.selectedFilters.OrderNumberFilters = uniqueOrderNumberFilters;
         }
 
         if (message.columnFilters && message.columnFilters.length > 0) {
@@ -260,10 +266,12 @@ export class PickToteInductionComponent
 
           if (this.PickToteInductionFilter) {
             this.PickToteInductionFilter.filters = [];
+            this.selectedFilters.ColumnFilters = [];
           }
 
           if (this.FilterOrderNumberComponent) {
             this.FilterOrderNumberComponent.orderNumberFilter = [];
+            this.selectedFilters.OrderNumberFilters = [];
           }
 
           this.retrieveOrders();
