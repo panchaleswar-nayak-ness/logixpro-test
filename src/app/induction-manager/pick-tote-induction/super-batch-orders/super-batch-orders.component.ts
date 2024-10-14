@@ -12,6 +12,9 @@ import { GlobalService } from 'src/app/common/services/global.service';
 import { FilterOrderNumberComponent } from '../filter-order-number/filter-order-number.component';
 import { PickToteInFilterComponent } from '../pick-tote-in-filter/pick-tote-in-filter.component';
 import { PickToteInductionFilter } from '../../models/PickToteInductionModel';
+import { InductionManagerApiService } from 'src/app/common/services/induction-manager-api/induction-manager-api.service';
+import { IInductionManagerApiService } from 'src/app/common/services/induction-manager-api/induction-manager-api-interface';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-super-batch-orders',
@@ -19,7 +22,13 @@ import { PickToteInductionFilter } from '../../models/PickToteInductionModel';
   styleUrls: ['./super-batch-orders.component.scss'],
 })
 export class SuperBatchOrdersComponent implements OnInit {
-  constructor(private global: GlobalService, private Api: ApiFuntions) {}
+  constructor(
+    private global: GlobalService, 
+    private Api: ApiFuntions,
+    public inductionManagerApi: InductionManagerApiService
+  ) {
+    this.iInductionManagerApi = inductionManagerApi;
+  }
 
   displayedColumns: string[] = [
     'itemNumber',
@@ -54,6 +63,7 @@ export class SuperBatchOrdersComponent implements OnInit {
     },
   ];
 
+  public iInductionManagerApi: IInductionManagerApiService;
   filters: PickToteInductionFilter[] = [];
   orderNumberFilter: string = '';
   dataSource: any;
@@ -70,12 +80,12 @@ export class SuperBatchOrdersComponent implements OnInit {
         priority: m.minPriority,
         quality: m.quality,
         requiredDate: m.minRequiredDate,
-        totalOrderQty: m.totalQuantity
+        totalOrderQty: m.totalQuantity,
       };
     });
 
-    let dataToBind = mappedData ? mappedData : this.elementData;
-    this.dataSource = new MatTableDataSource(dataToBind);
+    // let dataToBind = mappedData ? mappedData : this.elementData;
+    this.dataSource = new MatTableDataSource(mappedData);
   }
 
   filterOrderNum() {
@@ -142,21 +152,41 @@ export class SuperBatchOrdersComponent implements OnInit {
       totalOrderQty,
       toteScanned,
       inductionType: '',
+      maxToteQuantity: 0,
     };
     valueToInduct.inductionType = 'SuperBatch';
-    console.log(valueToInduct);
-    // call api to induct this tote as per PLST-2772
-    if (valueToInduct.toteScanned) {
-      this.Api.PerformOrderInduction(valueToInduct).subscribe((res: any) => {
-        if (res.data) {
-        } else {
-          this.global.ShowToastr(
-            ToasterType.Error,
-            ToasterMessages.SomethingWentWrong,
-            ToasterTitle.Error
+
+    let response: Observable<any> = this.iInductionManagerApi.PreferenceIndex();
+    response.subscribe((res: any) => {
+      if (res.data && res.isExecuted) {
+        const values = res.data.imPreference;
+
+        //Pick Tote Induction Settings
+        valueToInduct.maxToteQuantity = values.maximumQuantityperTote;
+        console.log(valueToInduct);
+
+        // call api to induct this tote as per PLST-2772
+        if (valueToInduct.toteScanned) {
+          this.Api.PerformOrderInduction(valueToInduct).subscribe(
+            (res: any) => {
+              if (res.data) {
+              } else {
+                this.global.ShowToastr(
+                  ToasterType.Error,
+                  ToasterMessages.SomethingWentWrong,
+                  ToasterTitle.Error
+                );
+              }
+            }
           );
         }
-      });
-    }
+      } else {
+        this.global.ShowToastr(
+          ToasterType.Error,
+          ToasterMessages.SomethingWentWrong,
+          ToasterTitle.Error
+        );
+      }
+    });
   }
 }

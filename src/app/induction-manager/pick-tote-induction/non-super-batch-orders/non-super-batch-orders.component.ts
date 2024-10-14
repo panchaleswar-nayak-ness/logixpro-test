@@ -23,6 +23,9 @@ import { PickToteInFilterComponent } from '../pick-tote-in-filter/pick-tote-in-f
 import { PickToteInductionFilter } from '../../models/PickToteInductionModel';
 import { MatTable, MatTableDataSource } from '@angular/material/table';
 import { MatInput } from '@angular/material/input';
+import { InductionManagerApiService } from 'src/app/common/services/induction-manager-api/induction-manager-api.service';
+import { IInductionManagerApiService } from 'src/app/common/services/induction-manager-api/induction-manager-api-interface';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-non-super-batch-orders',
@@ -30,7 +33,13 @@ import { MatInput } from '@angular/material/input';
   styleUrls: ['./non-super-batch-orders.component.scss'],
 })
 export class NonSuperBatchOrdersComponent implements OnInit, AfterViewInit {
-  constructor(private global: GlobalService, private Api: ApiFuntions) {}
+  constructor(
+    private global: GlobalService,
+    private Api: ApiFuntions,
+    public inductionManagerApi: InductionManagerApiService
+  ) {
+    this.iInductionManagerApi = inductionManagerApi;
+  }
 
   @ViewChild('table') table: MatTable<any>;
   @ViewChild('toteTextbox', { static: true }) toteTextbox: MatInput;
@@ -68,6 +77,7 @@ export class NonSuperBatchOrdersComponent implements OnInit, AfterViewInit {
     'toteScanned',
   ];
 
+  public iInductionManagerApi: IInductionManagerApiService;
   filters: PickToteInductionFilter[] = [];
   orderNumberFilter: string = '';
   dataSource: any;
@@ -84,8 +94,8 @@ export class NonSuperBatchOrdersComponent implements OnInit, AfterViewInit {
   }
 
   rebind(data?: any[]) {
-    let dataToBind = data ? data : this.elementData;
-    this.dataSource = new MatTableDataSource(dataToBind);
+    // let dataToBind = data ? data : this.elementData;
+    this.dataSource = new MatTableDataSource(data);
   }
 
   filterOrderNum() {
@@ -154,22 +164,41 @@ export class NonSuperBatchOrdersComponent implements OnInit, AfterViewInit {
       completedQuantity,
       toteScanned,
       inductionType: '',
+      maxToteQuantity: 0,
     };
     valueToInduct.inductionType = 'NonSuperBatch';
-    console.log(valueToInduct);
 
-    // call api to induct this tote as per PLST-2754
-    if (valueToInduct.toteScanned) {
-      this.Api.PerformOrderInduction(valueToInduct).subscribe((res: any) => {
-        if (res.data) {
-        } else {
-          this.global.ShowToastr(
-            ToasterType.Error,
-            ToasterMessages.SomethingWentWrong,
-            ToasterTitle.Error
+    let response: Observable<any> = this.iInductionManagerApi.PreferenceIndex();
+    response.subscribe((res: any) => {
+      if (res.data && res.isExecuted) {
+        const values = res.data.imPreference;
+
+        //Pick Tote Induction Settings
+        valueToInduct.maxToteQuantity = values.maximumQuantityperTote;
+        console.log(valueToInduct);
+
+        // call api to induct this tote as per PLST-2754
+        if (valueToInduct.toteScanned) {
+          this.Api.PerformOrderInduction(valueToInduct).subscribe(
+            (res: any) => {
+              if (res.data) {
+              } else {
+                this.global.ShowToastr(
+                  ToasterType.Error,
+                  ToasterMessages.SomethingWentWrong,
+                  ToasterTitle.Error
+                );
+              }
+            }
           );
         }
-      });
-    }
+      } else {
+        this.global.ShowToastr(
+          ToasterType.Error,
+          ToasterMessages.SomethingWentWrong,
+          ToasterTitle.Error
+        );
+      }
+    });
   }
 }

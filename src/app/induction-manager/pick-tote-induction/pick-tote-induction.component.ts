@@ -306,7 +306,6 @@ export class PickToteInductionComponent
     // Logic to retrieve the max tote quantity, could be hardcoded or retrieved from backend settings
     // return 21;  // Example value
     let response: Observable<any> = this.iInductionManagerApi.PreferenceIndex();
-
     response.subscribe((res: any) => {
       if (res.data && res.isExecuted) {
 
