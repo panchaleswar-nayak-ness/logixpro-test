@@ -107,20 +107,39 @@ export class TableContextMenuComponentComponent implements OnInit{
  
   onContextMenuCommand(SelectedItem: any, FilterColumnName: any, Condition: any, Type: any) 
   {
+   debugger
     if (this.componentName == 'InvMap' || this.componentName == 'moveItem' || this.componentName == 'sysRepCurOrd' || this.componentName == 'sysRepNewOrd' 
         || this.componentName == 'omCreateOrd' || this.componentName == 'omOrderManager' || this.componentName == 'eventLog' || this.componentName == 'toteTransManager')
     {
-      if(SelectedItem != undefined) {
+      if(SelectedItem != undefined && Condition !== 'clear') {
         this.filterString = this.filterService.onContextMenuCommand(SelectedItem, FilterColumnName, Condition, Type);
       }
+      
+      if (FilterColumnName && Condition === 'clear') {
+        debugger
+        this.filterString = this.filterService.clearSpecificColumnFilter(FilterColumnName);
+        this.optionSelected.emit(this.filterString);
+      } 
       this.filterString = this.filterString != "" ? this.filterString : "1 = 1";
     } 
     else if(this.componentName == 'deAllOrd' || this.componentName == 'openTransOnHold' || this.componentName == 'transOrders' || this.componentName == 'transHistory') 
     {
-      if(FilterColumnName != "" || Condition == "clear") {
+      if(FilterColumnName != "" && Condition == "clears") {
+        debugger
         this.filterString = this.filterService.onContextMenuCommand(SelectedItem, FilterColumnName, Condition, Type);
         this.filterString = this.filterString != "" ? this.filterString : "1=1";
       }
+
+      else  if (FilterColumnName && Condition === 'clear') {
+        debugger
+        this.filterString = this.filterService.clearSpecificColumnFilter(FilterColumnName);
+        this.optionSelected.emit(this.filterString);
+      } else if (SelectedItem != undefined) {
+        this.filterString = this.filterService.onContextMenuCommand(SelectedItem, FilterColumnName, Condition, Type);
+      }
+  
+      this.filterString = this.filterString != "" ? this.filterString : "1 = 1"; 
+      
     }
     
     this.optionSelected.emit(this.filterString);

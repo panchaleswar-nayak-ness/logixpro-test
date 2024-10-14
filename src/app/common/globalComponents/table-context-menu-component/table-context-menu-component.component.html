@@ -12,7 +12,8 @@
     </ng-container>
     
     <button mat-menu-item [matMenuTriggerFor]="InputFiltersList" [matMenuTriggerData]="{category: item}" *ngIf="getType(item.SelectedItem) != 'boolean'" >Input FIlters</button>
-    <button mat-menu-item (click)="onContextMenuCommand('', '', 'clear', '')">Clear Filters</button>
+    <button mat-menu-item (click)="onContextMenuCommand('', item.FilterColumnName, 'clear', '')">Clear Filter</button>
+    <button mat-menu-item (click)="onContextMenuCommand('', '', 'clears', '')">Clear Filters</button>
   </ng-template>
 </mat-menu>
 

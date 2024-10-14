@@ -228,6 +228,7 @@ export class MoveItemsComponent implements OnInit {
     searchColumn: string = Column.ItemNumber,
     searchString: string = ''
   ) {
+    debugger
     if (tableName === StringConditions.MoveTo) {
       if (this.viewAll || this.dataSource.data.length === 0) {
         this.viewModeTo = ResponseStrings.AllCaps;

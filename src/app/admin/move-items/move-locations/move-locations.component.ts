@@ -109,6 +109,7 @@ export class MoveLocationsComponent {
   }
 
   handlePageEvent(event) {
+    debugger
     this.handlePageEventEmit.emit(event);
   }
 
@@ -124,6 +125,7 @@ export class MoveLocationsComponent {
   }
 
   handlePageEventTo(event) {
+    debugger
     this.handlePageEventToEmit.emit(event);
   }
 
@@ -137,6 +139,7 @@ export class MoveLocationsComponent {
     setTimeout(() => {
       this.contextMenuService.updateContextMenuState(event, SelectedItem, FilterColumnName, FilterConditon, FilterItemType);
     }, 100);
+    this.handlePageEventEmit.emit(event);
   }
 
   isQuantityGreater(quantity: number): boolean {

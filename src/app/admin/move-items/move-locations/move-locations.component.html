@@ -149,7 +149,7 @@
                             </ng-container>
                             <ng-container matColumnDef="unitOfMeasure">
                                 <th mat-header-cell mat-sort-header *matHeaderCellDef> Unit of Measure</th>
-                                <td (contextmenu)="onContextMenu($event, element.unitOfMeasure, ' Unit of Measure')" [class.selected]="element.isSelected" mat-cell *matCellDef="let element">{{element.unitOfMeasure}}</td>
+                                <td (contextmenu)="onContextMenu($event, element.unitOfMeasure, 'Unit of Measure')" [class.selected]="element.isSelected" mat-cell *matCellDef="let element">{{element.unitOfMeasure}}</td>
                             </ng-container>
                             <ng-container matColumnDef="maximumQuantity">
                                 <th mat-header-cell mat-sort-header *matHeaderCellDef> Maximum Quantity

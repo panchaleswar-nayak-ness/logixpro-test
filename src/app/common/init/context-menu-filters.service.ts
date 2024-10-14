@@ -24,6 +24,40 @@ export class ContextMenuFiltersService {
     return this.filterString;
   }
 
+  clearSpecificColumnFilter(columnName: string): string {
+    debugger
+    if (!this.filterString || this.filterString === "1 = 1") {
+      this.filterString = "1 = 1"; // No filters to clear
+    } else {
+      // Directly use the filter string as it is, without decoding
+      let filterString = this.filterString;
+  
+      console.log('Current Filter String: ', filterString);
+  
+      // Split by 'AND' to get individual filters
+      let filters = filterString.split(' AND ');
+  
+      // Find and remove the specific column's filter
+      filters = filters.filter(filter => {
+        const normalizedFilterColumn = filter.match(/\[([^\]]+)\]/);
+        if (normalizedFilterColumn && normalizedFilterColumn[1].trim() === columnName.trim()) {
+          return false; // Remove the filter for the specific column
+        }
+        return true; // Keep other filters
+      });
+  
+      // Join the remaining filters, or reset to "1 = 1" if no filters remain
+      this.filterString = filters.length > 0 ? filters.join(' AND ') : "1 = 1";
+    }
+  
+    // Emit the updated filter string so that the API call can be made
+   
+  
+    return this.filterString;
+  }
+  
+  
+
   getType(val) : string {
     if(val == 'Expiration Date' ||  val == 'Put Away Date') return "date";
     else return typeof val;
