@@ -20,7 +20,9 @@ import { SuperBatchOrdersComponent } from './super-batch-orders/super-batch-orde
 import { ConfirmationDialogComponent } from 'src/app/admin/dialogs/confirmation-dialog/confirmation-dialog.component';
 import { PickToteInFilterComponent } from './pick-tote-in-filter/pick-tote-in-filter.component';
 import { FilterOrderNumberComponent } from './filter-order-number/filter-order-number.component';
-import { Subscription } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
+import { IInductionManagerApiService } from 'src/app/common/services/induction-manager-api/induction-manager-api-interface';
+import { InductionManagerApiService } from 'src/app/common/services/induction-manager-api/induction-manager-api.service';
 
 interface IZoneGroup {
   Id: number;
@@ -41,8 +43,15 @@ enum TabNames {
 export class PickToteInductionComponent
   implements OnInit, AfterViewInit, OnDestroy
 {
-  constructor(private global: GlobalService, private Api: ApiFuntions) {}
+  constructor(
+    private global: GlobalService,
+    private Api: ApiFuntions,
+    public inductionManagerApi: InductionManagerApiService
+  ) {
+    this.iInductionManagerApi = inductionManagerApi;
+  }
 
+  public iInductionManagerApi: IInductionManagerApiService;
   zoneGroupingsList: IZoneGroup[] = [];
   zoneAllGroupingsList: IZoneGroup[] = [];
   selectedZoneGrouping: IZoneGroup | undefined;
@@ -75,11 +84,9 @@ export class PickToteInductionComponent
     OrderNumberFilters: [],
     ColumnFilters: [],
   };
-
   subscription: Subscription;
 
   ngOnInit(): void {
-
     this.getZoneGroups();
 
     this.subscription = this.global.currentMessage.subscribe((message) => {
@@ -126,7 +133,7 @@ export class PickToteInductionComponent
 
     // Reload the orders based on induction type and selected filters
     this.selectedFilters.Zones = this.zoneList;
-    
+
     this.retrieveOrders();
   }
 
@@ -188,7 +195,7 @@ export class PickToteInductionComponent
 
         // Reload the orders based on induction type and selected filters
         this.selectedFilters.Zones = selectedZoneValues;
-        
+
         this.retrieveOrders();
       }
     });
@@ -224,7 +231,7 @@ export class PickToteInductionComponent
     // Reload the orders based on induction type and selected filters
     this.selectedFilters.Zones = this.zoneList;
     console.log(this.selectedFilters);
-    
+
     this.retrieveOrders();
   }
 
@@ -275,43 +282,60 @@ export class PickToteInductionComponent
 
     // Reload the orders based on induction type and selected filters
     this.selectedFilters.Zones = this.zoneList;
-    
+
     this.retrieveOrders();
   }
 
   onEnter() {
-    console.log(this.orderNumber, this.toteId, this.splitToggle);
-  
+
     if (this.orderNumber && this.toteId) {
       let valueToInduct: any = {
         orderNumber: this.orderNumber,
         toteId: this.toteId,
-        splitToggle: this.splitToggle
+        splitToggle: this.splitToggle,
       };
-  
+
       // Add maxToteQuantity only if split is enabled
       if (this.splitToggle) {
-        valueToInduct.maxToteQuantity = this.getMaxToteQuantity();  // your logic to fetch max tote quantity
+        this.getMaxToteQuantity(valueToInduct); // your logic to fetch max tote quantity
       }
-  
-      this.Api.PerformSpecificOrderInduction(valueToInduct).subscribe(
-        (res: any) => {
-          if (res.data) {
-            // Success handling
-          } else {
-            this.global.ShowToastr(
-              ToasterType.Error,
-              ToasterMessages.SomethingWentWrong,
-              ToasterTitle.Error
-            );
-          }
-        }
-      );
     }
   }
-  
-  getMaxToteQuantity() {
+
+  getMaxToteQuantity(valueToInduct: any) {
     // Logic to retrieve the max tote quantity, could be hardcoded or retrieved from backend settings
-    return 21;  // Example value
+    // return 21;  // Example value
+    let response: Observable<any> = this.iInductionManagerApi.PreferenceIndex();
+
+    response.subscribe((res: any) => {
+      if (res.data && res.isExecuted) {
+
+        const values = res.data.imPreference;
+
+        //Pick Tote Induction Settings
+        valueToInduct.maxToteQuantity = values.maximumQuantityperTote;
+        console.log(valueToInduct);
+        
+        this.Api.PerformSpecificOrderInduction(valueToInduct).subscribe(
+          (res: any) => {
+            if (res.data) {
+              // Success handling
+            } else {
+              this.global.ShowToastr(
+                ToasterType.Error,
+                ToasterMessages.SomethingWentWrong,
+                ToasterTitle.Error
+              );
+            }
+          }
+        );
+      } else {
+        this.global.ShowToastr(
+          ToasterType.Error,
+          ToasterMessages.SomethingWentWrong,
+          ToasterTitle.Error
+        );
+      }
+    });
   }
 }
