@@ -167,10 +167,9 @@ export class NonSuperBatchOrdersComponent implements OnInit, AfterViewInit {
       requiredDate,
       completedQuantity,
       toteScanned,
-      inductionType: '',
       maxToteQuantity: 0,
+      inductionType: 'NonSuperBatch'
     };
-    valueToInduct.inductionType = 'NonSuperBatch';
 
     let response: Observable<any> = this.iInductionManagerApi.PreferenceIndex();
     response.subscribe((res: any) => {

@@ -146,8 +146,6 @@ export class SuperBatchOrdersComponent implements OnInit {
       toteScanned,
     } = element;
 
-    // var quality = warehouse && warehouse !== '' ? warehouse.substr(1, 1) : '';
-    debugger;
     var valueToInduct = {
       itemNumber,
       priority,
@@ -155,11 +153,12 @@ export class SuperBatchOrdersComponent implements OnInit {
       requiredDate,
       totalOrderQty,
       toteScanned,
-      inductionType: '',
       maxToteQuantity: 0,
       maxSuperBatchSize: 0,
+      inductionType: 'SuperBatch'
     };
-    valueToInduct.inductionType = 'SuperBatch';
+    
+    
     let response: Observable<any> = this.iInductionManagerApi.PreferenceIndex();
     response.subscribe((res: any) => {
       if (res.data && res.isExecuted) {
