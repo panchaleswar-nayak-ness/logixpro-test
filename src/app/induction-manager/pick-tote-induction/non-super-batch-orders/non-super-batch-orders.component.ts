@@ -73,7 +73,7 @@ export class NonSuperBatchOrdersComponent implements OnInit, AfterViewInit {
     'zone',
     'priority',
     'requiredDate',
-    'totalOrderQty',
+    'completedQuantity',
     'toteScanned',
   ];
 
@@ -146,7 +146,22 @@ export class NonSuperBatchOrdersComponent implements OnInit, AfterViewInit {
 
   retrieveFilteredNonSuperBatchOrders(values: any) {
     this.Api.RetrieveNonSuperBatchOrders(values).subscribe((filteredOrders) => {
-      this.rebind(filteredOrders.data.result);
+      let response = filteredOrders.data.result;
+
+      if(response) {
+
+        let mappedResponse = response.map((m)=> {
+          return {
+            orderNumber: m.orderNumber,
+            zone: m.zone,
+            priority: m.priority,
+            requiredDate: m.requiredDate,
+            completedQuantity: m.completedQuantity
+          };
+        });
+
+        this.rebind(response);
+      }
     });
   }
 
