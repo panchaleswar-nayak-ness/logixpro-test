@@ -27,7 +27,13 @@
         class="mat-table-scrollbar scrollbar-hover-padding count-table-scrollbar h-30v"
         track="all"
       >
-        <mat-table #table [dataSource]="dataSource" matSort class="w-100 table-fix">
+        <mat-table
+          #table
+          [dataSource]="dataSource"
+          matSort
+          class="w-100 table-fix"
+          (matSortChange)="announceSortChange($event)"
+        >
           <!-- Order Number Column -->
           <ng-container matColumnDef="orderNumber">
             <mat-header-cell
@@ -104,7 +110,8 @@
                 <input
                   matInput
                   [(ngModel)]="element.toteScanned"
-                  (keyup.enter)="onEnter(element)" #toteTextbox
+                  (keyup.enter)="onEnter(element)"
+                  #toteTextbox
                 />
               </mat-form-field>
             </mat-cell>
@@ -131,9 +138,10 @@
       class="table-pagination d-flex justify-content-start align-items-center"
     >
       <mat-paginator
-        [pageSize]="20"
+        #paginator
+        [pageSize]="5"
+        [pageSizeOptions]="[5, 10, 20, 100]"
         showFirstLastButtons
-        [pageSizeOptions]="[10, 20, 100]"
       ></mat-paginator>
     </div>
   </mat-card-content>

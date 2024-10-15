@@ -11,6 +11,7 @@ import {
 } from '@angular/core';
 import {
   DialogConstants,
+  LiveAnnouncerMessage,
   Style,
   ToasterMessages,
   ToasterTitle,
@@ -26,6 +27,9 @@ import { MatInput } from '@angular/material/input';
 import { InductionManagerApiService } from 'src/app/common/services/induction-manager-api/induction-manager-api.service';
 import { IInductionManagerApiService } from 'src/app/common/services/induction-manager-api/induction-manager-api-interface';
 import { Observable } from 'rxjs';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatSort, Sort } from '@angular/material/sort';
+import { LiveAnnouncer } from '@angular/cdk/a11y';
 
 @Component({
   selector: 'app-non-super-batch-orders',
@@ -34,6 +38,7 @@ import { Observable } from 'rxjs';
 })
 export class NonSuperBatchOrdersComponent implements OnInit, AfterViewInit {
   constructor(
+    private _liveAnnouncer: LiveAnnouncer,
     private global: GlobalService,
     private Api: ApiFuntions,
     public inductionManagerApi: InductionManagerApiService
@@ -43,6 +48,8 @@ export class NonSuperBatchOrdersComponent implements OnInit, AfterViewInit {
 
   @ViewChild('table') table: MatTable<any>;
   @ViewChild('toteTextbox', { static: true }) toteTextbox: MatInput;
+  @ViewChild(MatSort) sort: MatSort;
+  @ViewChild('paginator') paginator: MatPaginator;
 
   elementData = [
     {
@@ -80,22 +87,36 @@ export class NonSuperBatchOrdersComponent implements OnInit, AfterViewInit {
   public iInductionManagerApi: IInductionManagerApiService;
   filters: PickToteInductionFilter[] = [];
   orderNumberFilter: string = '';
-  dataSource: any;
+  dataSource: MatTableDataSource<any>;
   toteScanned: any;
 
-  ngOnInit(): void {
-    // this.rebind(this.elementData);
-  }
+  ngOnInit(): void {}
 
-  ngAfterViewInit() {
-    // const firstRow = this.table.rows[0];
-    // const firstRowTextbox = firstRow.querySelector('input');
-    // firstRowTextbox.focus();
+  ngAfterViewInit(): void {
+    this.updatedPaginator();
   }
 
   rebind(data?: any[]) {
-    // let dataToBind = data ? data : this.elementData;
     this.dataSource = new MatTableDataSource(data);
+    this.updatedPaginator();
+    this.updateSorting();
+  }
+
+  updatedPaginator() {
+    if (this.dataSource && this.dataSource.filteredData.length > 0)
+      this.dataSource.paginator = this.paginator;
+  }
+
+  updateSorting() {
+    if (this.dataSource && this.dataSource.filteredData.length > 0)
+      this.dataSource.sort = this.sort;
+  }
+
+  announceSortChange(sortState: Sort) {
+    if (sortState.direction)
+      this._liveAnnouncer.announce(`Sorted ${sortState.direction}ending`);
+    else this._liveAnnouncer.announce(LiveAnnouncerMessage.SortingCleared);
+    this.updateSorting();
   }
 
   filterOrderNum() {
@@ -112,7 +133,7 @@ export class NonSuperBatchOrdersComponent implements OnInit, AfterViewInit {
     dialogRef.afterClosed().subscribe((result: any) => {
       if (result) {
         this.orderNumberFilter = result.orderNumberFilter
-          .split(',')
+          // .split(',')
           .map((m: string) =>
             this.global.getTrimmedAndLineBreakRemovedString(m)
           );
@@ -148,15 +169,14 @@ export class NonSuperBatchOrdersComponent implements OnInit, AfterViewInit {
     this.Api.RetrieveNonSuperBatchOrders(values).subscribe((filteredOrders) => {
       let response = filteredOrders.data.result;
 
-      if(response) {
-
-        let mappedResponse = response.map((m)=> {
+      if (response) {
+        let mappedResponse = response.map((m) => {
           return {
             orderNumber: m.orderNumber,
             zone: m.zone,
             priority: m.priority,
             requiredDate: m.requiredDate,
-            completedQuantity: m.completedQuantity
+            completedQuantity: m.completedQuantity,
           };
         });
 
@@ -183,7 +203,7 @@ export class NonSuperBatchOrdersComponent implements OnInit, AfterViewInit {
       completedQuantity,
       toteScanned,
       maxToteQuantity: 0,
-      inductionType: 'NonSuperBatch'
+      inductionType: 'NonSuperBatch',
     };
 
     let response: Observable<any> = this.iInductionManagerApi.PreferenceIndex();

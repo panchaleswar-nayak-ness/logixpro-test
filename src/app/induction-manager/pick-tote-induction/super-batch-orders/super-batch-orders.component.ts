@@ -1,7 +1,8 @@
-import { Component, OnInit } from '@angular/core';
-import { MatTableDataSource } from '@angular/material/table';
+import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
+import { MatTable, MatTableDataSource } from '@angular/material/table';
 import {
   DialogConstants,
+  LiveAnnouncerMessage,
   Style,
   ToasterMessages,
   ToasterTitle,
@@ -15,20 +16,28 @@ import { PickToteInductionFilter } from '../../models/PickToteInductionModel';
 import { InductionManagerApiService } from 'src/app/common/services/induction-manager-api/induction-manager-api.service';
 import { IInductionManagerApiService } from 'src/app/common/services/induction-manager-api/induction-manager-api-interface';
 import { Observable } from 'rxjs';
+import { MatSort, Sort } from '@angular/material/sort';
+import { MatPaginator } from '@angular/material/paginator';
+import { LiveAnnouncer } from '@angular/cdk/a11y';
+import { MatInput } from '@angular/material/input';
 
 @Component({
   selector: 'app-super-batch-orders',
   templateUrl: './super-batch-orders.component.html',
   styleUrls: ['./super-batch-orders.component.scss'],
 })
-export class SuperBatchOrdersComponent implements OnInit {
+export class SuperBatchOrdersComponent implements OnInit, AfterViewInit {
   constructor(
+    private _liveAnnouncer: LiveAnnouncer,
     private global: GlobalService,
     private Api: ApiFuntions,
     public inductionManagerApi: InductionManagerApiService
   ) {
     this.iInductionManagerApi = inductionManagerApi;
   }
+
+  @ViewChild(MatSort) sort: MatSort;
+  @ViewChild('paginator') paginator: MatPaginator;
 
   displayedColumns: string[] = [
     'itemNumber',
@@ -66,11 +75,13 @@ export class SuperBatchOrdersComponent implements OnInit {
   public iInductionManagerApi: IInductionManagerApiService;
   filters: PickToteInductionFilter[] = [];
   orderNumberFilter: string = '';
-  dataSource: any;
+  dataSource: MatTableDataSource<any>;
   toteScanned: any;
 
-  ngOnInit(): void {
-    // this.rebind(this.elementData);
+  ngOnInit(): void {}
+
+  ngAfterViewInit(): void {
+    this.updatedPaginator();
   }
 
   rebind(data?: any[]) {
@@ -84,8 +95,26 @@ export class SuperBatchOrdersComponent implements OnInit {
       };
     });
 
-    // let dataToBind = mappedData ? mappedData : this.elementData;
     this.dataSource = new MatTableDataSource(mappedData);
+    this.updatedPaginator();
+    this.updateSorting();
+  }
+
+  updatedPaginator() {
+    if (this.dataSource && this.dataSource.filteredData.length > 0)
+      this.dataSource.paginator = this.paginator;
+  }
+
+  updateSorting() {
+    if (this.dataSource && this.dataSource.filteredData.length > 0)
+      this.dataSource.sort = this.sort;
+  }
+
+  announceSortChange(sortState: Sort) {
+    if (sortState.direction)
+      this._liveAnnouncer.announce(`Sorted ${sortState.direction}ending`);
+    else this._liveAnnouncer.announce(LiveAnnouncerMessage.SortingCleared);
+    this.updateSorting();
   }
 
   filterOrderNum() {
@@ -101,7 +130,7 @@ export class SuperBatchOrdersComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe((result: any) => {
       this.orderNumberFilter = result.orderNumberFilter
-        .split(',')
+        // .split(',')
         .map((m: string) => this.global.getTrimmedAndLineBreakRemovedString(m));
 
       // send the currently selected order number filters to parent component via observable
@@ -155,10 +184,9 @@ export class SuperBatchOrdersComponent implements OnInit {
       toteScanned,
       maxToteQuantity: 0,
       maxSuperBatchSize: 0,
-      inductionType: 'SuperBatch'
+      inductionType: 'SuperBatch',
     };
-    
-    
+
     let response: Observable<any> = this.iInductionManagerApi.PreferenceIndex();
     response.subscribe((res: any) => {
       if (res.data && res.isExecuted) {

@@ -27,7 +27,12 @@
         class="mat-table-scrollbar scrollbar-hover-padding count-table-scrollbar h-30v"
         track="all"
       >
-      <mat-table [dataSource]="dataSource" matSort class="w-100 table-fix">
+        <mat-table
+          [dataSource]="dataSource"
+          matSort
+          class="w-100 table-fix"
+          (matSortChange)="announceSortChange($event)"
+        >
           <!-- Order Number Column -->
           <ng-container matColumnDef="itemNumber">
             <mat-header-cell
@@ -42,8 +47,8 @@
             </mat-cell>
           </ng-container>
 
-           <!-- Priority Column -->
-           <ng-container matColumnDef="priority">
+          <!-- Priority Column -->
+          <ng-container matColumnDef="priority">
             <mat-header-cell
               *matHeaderCellDef
               mat-sort-header
@@ -67,8 +72,6 @@
             </mat-header-cell>
             <mat-cell *matCellDef="let element">{{ element.quality }}</mat-cell>
           </ng-container>
-
-         
 
           <!-- Required Date Column -->
           <ng-container matColumnDef="requiredDate">
@@ -103,7 +106,11 @@
             <mat-header-cell *matHeaderCellDef>Tote Scanned</mat-header-cell>
             <mat-cell *matCellDef="let element">
               <mat-form-field appearance="outline">
-                <input matInput [(ngModel)]="element.toteScanned" (keyup.enter)="onEnter(element)"/>
+                <input
+                  matInput
+                  [(ngModel)]="element.toteScanned"
+                  (keyup.enter)="onEnter(element)"
+                />
               </mat-form-field>
             </mat-cell>
           </ng-container>
@@ -129,9 +136,10 @@
       class="table-pagination d-flex justify-content-start align-items-center"
     >
       <mat-paginator
-        [pageSize]="20"
+        #paginator
+        [pageSize]="5"
+        [pageSizeOptions]="[5, 10, 20, 100]"
         showFirstLastButtons
-        [pageSizeOptions]="[10, 20, 100]"
       ></mat-paginator>
     </div>
   </mat-card-content>
