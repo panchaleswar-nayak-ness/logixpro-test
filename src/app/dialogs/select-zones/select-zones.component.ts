@@ -319,8 +319,8 @@ export class SelectZonesComponent implements OnInit {
       this.zoneList = this.data;
 
       this.dataSource.data.forEach((x) => {
-        if (this.data.assignedZones) {
-          var availableZone = this.data.assignedZones.find(
+        if (this.data?.assignedZones?.selectedRecords) {
+          var availableZone = this.data.assignedZones.selectedRecords.find(
             (y) => y.zone === x.zone
           );
         } else if (this.data.zoneList) {
