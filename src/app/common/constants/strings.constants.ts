@@ -70,7 +70,8 @@ export const StringConditions = {
     filter: 'filter',
     MoveTo: 'MoveTo',
     edit: 'edit',
-    MoveFrom: 'MoveFrom'
+    MoveFrom: 'MoveFrom',
+    Short: 'Short'
 }
 
 export const ResponseStrings = {

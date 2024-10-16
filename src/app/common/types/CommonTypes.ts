@@ -79,4 +79,54 @@ export interface CustomPagination {
     recordsPerPage: number;
     startIndex: number;
     endIndex: number;
+}
+
+export interface CmPreferences {
+    emailPickingSlip: boolean;
+    defaultPackingList: string;
+    defaultLookupType: string;
+    verifyItems: string;
+    blindVerifyItems: string;
+    printVerified: string;
+    printUnVerified: string;
+    customToteManifest: string;
+    autoCompBOShipComplete: boolean;
+    packingListSort: string;
+    packing: boolean;
+    confirmAndPacking: boolean;
+    autoPrintContPL: boolean;
+    autoPrintOrderPL: boolean;
+    autoPrintContLabel: boolean;
+    enterContainerID: boolean;
+    containerIDDefault: string;
+    confirmAndPackingConfirmQuantity: boolean;
+    freight: boolean;
+    freight1: boolean;
+    freight2: boolean;
+    weight: boolean;
+    length: boolean;
+    width: boolean;
+    height: boolean;
+    cube: boolean;
+    shipping: boolean;
+    stageNonPickProOrders: boolean;
+    validateStagingLocations: boolean;
+    userField1: boolean;
+    userField2: boolean;
+    userField3: boolean;
+    userField4: boolean;
+    userField5: boolean;
+    userField6: boolean;
+    userField7: boolean;
+    userField1Alias: string;
+    userField2Alias: string;
+    userField3Alias: string;
+    userField4Alias: string;
+    userField5Alias: string;
+    userField6Alias: string;
+    userField7Alias: string;
+    autoPrintToteManifest: boolean;
+    autoPrintToteManifest2: boolean;
+    autoPrintMarkoutReport: boolean;
+    defaultViewType: string;
   }

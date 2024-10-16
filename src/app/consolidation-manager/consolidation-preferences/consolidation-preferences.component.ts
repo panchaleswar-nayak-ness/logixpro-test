@@ -6,6 +6,15 @@ import { IConsolidationApi } from 'src/app/common/services/consolidation-api/con
 import { ConsolidationApiService } from 'src/app/common/services/consolidation-api/consolidation-api.service';
 import { GlobalService } from 'src/app/common/services/global.service';
 import { ToasterTitle, ToasterType ,DialogConstants} from 'src/app/common/constants/strings.constants';
+import { CmPreferences, UserSession } from 'src/app/common/types/CommonTypes';
+
+interface Response {
+  data: {
+    cmPreferences: CmPreferences
+  };
+  responseMessage: string;
+  isExecuted: boolean;
+}
 
 @Component({
   selector: 'app-consolidation-preferences',
@@ -14,8 +23,8 @@ import { ToasterTitle, ToasterType ,DialogConstants} from 'src/app/common/consta
 })
 export class ConsolidationPreferencesComponent implements OnInit {
 
-  userData: any;
-  preferencesData: any;
+  userData: UserSession;
+  preferencesData: CmPreferences;
   private subscription: Subscription = new Subscription();
   public IconsolidationAPI: IConsolidationApi;
 
@@ -48,14 +57,9 @@ export class ConsolidationPreferencesComponent implements OnInit {
     };
     this.IconsolidationAPI
       .ConsoleDataSB(payload)
-      .subscribe((res) => {
-        if (res.isExecuted) {
-          this.preferencesData = res.data.cmPreferences;
-        }
-        else {
-          this.global.ShowToastr(ToasterType.Error, this.global.globalErrorMsg(), ToasterTitle.Error);
-          console.log("ConsoleDataSB", res.responseMessage);
-        }
+      .subscribe((res : Response) => {
+        if (res.isExecuted) this.preferencesData = res.data.cmPreferences;
+        else this.global.ShowToastr(ToasterType.Error, this.global.globalErrorMsg(), ToasterTitle.Error);
       });
   }
 

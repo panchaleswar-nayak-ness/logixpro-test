@@ -18,6 +18,7 @@ import { CmMarkoutComponent } from './cm-markout/cm-markout.component';
 import { MarkoutListComponent } from './cm-markout/markout-list/markout-list.component';
 import { MarkoutSearchComponent } from './cm-markout/markout-search/markout-search.component';
 import { MarkoutStatusComponent } from './cm-markout/markout-status/markout-status.component';
+import { PreferencesMarkoutComponent } from './consolidation-preferences/preferences-markout/preferences-markout.component';
 
 
 @NgModule({
@@ -34,7 +35,8 @@ import { MarkoutStatusComponent } from './cm-markout/markout-status/markout-stat
         CmMarkoutComponent,
         MarkoutSearchComponent,
         MarkoutStatusComponent,
-        MarkoutListComponent
+        MarkoutListComponent,
+        PreferencesMarkoutComponent
     ],
     imports: [
         CommonModule,

@@ -259,10 +259,10 @@ export class CrAddNewCustomReportComponent implements OnInit {
     });
   }
 
-  isFileNameAlreadyExists(fileName: string): boolean {
+  isFileNameAlreadyExists(filename: string): boolean {
     return this.listOfFileName.some((item) => {
-      const extractedValue: string = item.filename.split('.')[0];
-      return extractedValue === fileName;
+      const extractedValue: string = item.fileName.split('.')[0];
+      return extractedValue === filename;
     });
   }
 

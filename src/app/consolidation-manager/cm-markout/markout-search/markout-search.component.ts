@@ -44,7 +44,7 @@ export class MarkoutSearchComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.getMarkoutPreferences()
+    this.getMarkoutPreferences();
     this.toteDataResponse = new ToteDataResponse();
   }
 

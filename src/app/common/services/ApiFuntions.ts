@@ -947,6 +947,10 @@ export class ApiFuntions {
     return this.ApiBase.Put('/Consolidation/preferenceship', body);
   }
 
+  public ConsolidationPreferenceMarkoutUpdate(body: any): Observable<any> {
+    return this.ApiBase.Put('/Consolidation/preferencesmarkout', body);
+  }
+
   public ConsolidationIndex(body: any): Observable<any> {
     return this.ApiBase.Get('/Consolidation/index', body);
   }
@@ -1927,6 +1931,18 @@ export class ApiFuntions {
 
   public async PrintImManualTrans(body) {
     return await this.ApiBase.PostAsync(`/print/ImManualTrans`, body);
+  }
+
+  public async PrintMoToteManifest(body) {
+    return await this.ApiBase.PostAsync(`/print/MoToteManifest`, body);
+  }
+
+  public async PrintMoToteManifest2(body) {
+    return await this.ApiBase.PostAsync(`/print/MoToteManifest2`, body);
+  }
+
+  public async PrintMarkoutReport(body) {
+    return await this.ApiBase.PostAsync(`/print/MarkoutReport`, body);
   }
 
   public async CommonPrint(body) {

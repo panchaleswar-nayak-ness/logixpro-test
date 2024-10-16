@@ -105,6 +105,17 @@ export class ConsolidationApiService implements IConsolidationApi {
 		return this.Api.ConsolidationPreferenceShipUpdate(payload);
 	}
 
+	ConsolidationPreferenceMarkoutUpdate(payloadParams : any) {
+		this.userData = this.authService.userData();
+		const payload = {
+			username: this.userData.username,
+			wsid: this.userData.wsid,
+			...payloadParams 
+		}
+
+		return this.Api.ConsolidationPreferenceMarkoutUpdate(payload);
+	}
+
   ConsolidationIndex(payloadParams : any) {
     this.userData = this.authService.userData();
 		const payload = {
