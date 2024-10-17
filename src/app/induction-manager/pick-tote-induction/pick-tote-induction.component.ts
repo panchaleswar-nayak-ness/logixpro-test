@@ -21,7 +21,7 @@ import { SuperBatchOrdersComponent } from './super-batch-orders/super-batch-orde
 import { ConfirmationDialogComponent } from 'src/app/admin/dialogs/confirmation-dialog/confirmation-dialog.component';
 import { PickToteInFilterComponent } from './pick-tote-in-filter/pick-tote-in-filter.component';
 import { FilterOrderNumberComponent } from './filter-order-number/filter-order-number.component';
-import { Observable, Subscription } from 'rxjs';
+import { catchError, Observable, Subscription, throwError } from 'rxjs';
 import { IInductionManagerApiService } from 'src/app/common/services/induction-manager-api/induction-manager-api-interface';
 import { InductionManagerApiService } from 'src/app/common/services/induction-manager-api/induction-manager-api.service';
 
@@ -246,7 +246,7 @@ export class PickToteInductionComponent
   }
 
   refreshOrders() {
-    // refresh orders in table based on currently selcted filters this includes all filters currently selected
+    // refresh orders in table based on currently selected filters this includes all filters currently selected
     // Reload the orders based on induction type and selected filters
     this.selectedFilters.Zones = this.zoneList;
     console.log(this.selectedFilters);
@@ -307,17 +307,15 @@ export class PickToteInductionComponent
     this.retrieveOrders();
   }
 
-
-  
   onEnter() {
     console.log(this.orderNumber, this.toteId, this.splitToggle);
     if (this.orderNumber && this.toteId) {
       let valueToInduct: any = {
         orderNumber: this.orderNumber,
         toteId: this.toteId,
-        splitToggle: this.splitToggle
+        splitToggle: this.splitToggle,
       };
-  
+
       if (this.splitToggle) {
         // Fetch the max tote quantity and proceed with induction
         this.getMaxToteQuantity().subscribe(
@@ -339,7 +337,7 @@ export class PickToteInductionComponent
       }
     }
   }
-  
+
   getMaxToteQuantity(): Observable<number> {
     return new Observable<number>((observer) => {
       this.iInductionManagerApi.PreferenceIndex().subscribe(
@@ -355,27 +353,47 @@ export class PickToteInductionComponent
       );
     });
   }
-  
-  performInduction(valueToInduct: any) {
-    this.Api.PerformSpecificOrderInduction(valueToInduct).subscribe(
-      (res: any) => {
 
-        if (res.isExecuted) {
-          this.refreshOrders()
+  performInduction(valueToInduct: any) {
+    this.Api.PerformSpecificOrderInduction(valueToInduct)
+      .pipe(
+        catchError((errResponse) => {
+          // Check if the error is a 400 status
+          if (errResponse.error.status === 400) {
+            this.global.ShowToastr(
+              ToasterType.Error,
+              errResponse.error.responseMessage,
+              ToasterTitle.Error
+            );
+          } else {
+            // Handle other errors
+            this.global.ShowToastr(
+              ToasterType.Error,
+              errResponse.error.responseMessage,
+              ToasterTitle.Error
+            );
+          }
+          // Throw the error again if needed, or return an observable
+          return throwError(errResponse);
+        })
+      )
+      .subscribe((innerResponse: any) => {
+        if (innerResponse.data && innerResponse.isExecuted) {
+          this.refreshOrders();
           this.clearToteAndOrderFields();
+          this.global.ShowToastr(
+            ToasterType.Success,
+            innerResponse.responseMessage,
+            ToasterTitle.Success
+          );
         } else {
-          this.global.ShowToastr(ToasterType.Error,res.responseMessage, ToasterTitle.Error);
-          console.log("DevicePreferencesDelete",res.responseMessage);
+          this.global.ShowToastr(
+            ToasterType.Error,
+            innerResponse.responseMessage,
+            ToasterTitle.Error
+          );
+          console.log('DevicePreferencesDelete', innerResponse.responseMessage);
         }
-      
-      },
-      (error: any) => {
-        this.global.ShowToastr(
-          ToasterType.Error,
-          ToasterMessages.SomethingWentWrong,
-          ToasterTitle.Error
-        );
-      }
-    );
+      });
   }
 }

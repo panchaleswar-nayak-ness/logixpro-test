@@ -1,4 +1,11 @@
-import { AfterViewInit, Component, OnInit, QueryList, ViewChild, ViewChildren } from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  OnInit,
+  QueryList,
+  ViewChild,
+  ViewChildren,
+} from '@angular/core';
 import { MatTable, MatTableDataSource } from '@angular/material/table';
 import {
   DialogConstants,
@@ -15,7 +22,7 @@ import { PickToteInFilterComponent } from '../pick-tote-in-filter/pick-tote-in-f
 import { PickToteInductionFilter } from '../../models/PickToteInductionModel';
 import { InductionManagerApiService } from 'src/app/common/services/induction-manager-api/induction-manager-api.service';
 import { IInductionManagerApiService } from 'src/app/common/services/induction-manager-api/induction-manager-api-interface';
-import { Observable } from 'rxjs';
+import { catchError, Observable, throwError } from 'rxjs';
 import { MatSort, Sort } from '@angular/material/sort';
 import { MatPaginator } from '@angular/material/paginator';
 import { LiveAnnouncer } from '@angular/cdk/a11y';
@@ -109,6 +116,8 @@ export class SuperBatchOrdersComponent implements OnInit, AfterViewInit {
     this.dataSource = new MatTableDataSource(mappedData);
     this.updatedPaginator();
     this.updateSorting();
+    this.focusFirstInput();
+
   }
 
   updatedPaginator() {
@@ -173,7 +182,6 @@ export class SuperBatchOrdersComponent implements OnInit, AfterViewInit {
   retrieveFilteredSuperBatchOrders(values: any) {
     this.Api.RetrieveSuperBatchOrders(values).subscribe((filteredOrders) => {
       this.rebind(filteredOrders.data);
-      this.focusFirstInput();
     });
   }
 
@@ -210,15 +218,52 @@ export class SuperBatchOrdersComponent implements OnInit, AfterViewInit {
 
         // call api to induct this tote as per PLST-2772
         if (valueToInduct.toteScanned) {
-          this.Api.PerformSuperBatchOrderInduction(valueToInduct).subscribe(
-            (res: any) => {
-              if (res.data && res.isExecuted) {
-                this.global.ShowToastr(ToasterType.Success,res.responseMessage, ToasterTitle.Success);
+          this.Api.PerformSuperBatchOrderInduction(valueToInduct)
+            .pipe(
+              catchError((errResponse) => {
+                // Check if the error is a 400 status
+                if (errResponse.error.status === 400) {
+                  this.global.ShowToastr(
+                    ToasterType.Error,
+                    errResponse.error.responseMessage,
+                    ToasterTitle.Error
+                  );
+                } else {
+                  // Handle other errors
+                  this.global.ShowToastr(
+                    ToasterType.Error,
+                    errResponse.error.responseMessage,
+                    ToasterTitle.Error
+                  );
+                }
+                // Throw the error again if needed, or return an observable
+                return throwError(errResponse);
+              })
+            )
+            .subscribe((innerResponse: any) => {
+              if (innerResponse.data && innerResponse.isExecuted) {
+                this.global.ShowToastr(
+                  ToasterType.Success,
+                  innerResponse.responseMessage,
+                  ToasterTitle.Success
+                );
               } else {
-                this.global.ShowToastr(ToasterType.Error,res.responseMessage, ToasterTitle.Error);
+                this.global.ShowToastr(
+                  ToasterType.Error,
+                  innerResponse.responseMessage,
+                  ToasterTitle.Error
+                );
               }
-            }
-          );
+
+              console.log(this.dataSource.filteredData);
+
+              if (this.dataSource && this.dataSource.filteredData) {
+                let updated = this.dataSource.filteredData.filter(
+                  (f) => f.itemNumber !== valueToInduct.itemNumber
+                );
+                this.rebind(updated);
+              }
+            });
         }
       } else {
         this.global.ShowToastr(
