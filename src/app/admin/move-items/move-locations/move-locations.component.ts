@@ -109,7 +109,6 @@ export class MoveLocationsComponent {
   }
 
   handlePageEvent(event) {
-    debugger
     this.handlePageEventEmit.emit(event);
   }
 
@@ -125,7 +124,6 @@ export class MoveLocationsComponent {
   }
 
   handlePageEventTo(event) {
-    debugger
     this.handlePageEventToEmit.emit(event);
   }
 

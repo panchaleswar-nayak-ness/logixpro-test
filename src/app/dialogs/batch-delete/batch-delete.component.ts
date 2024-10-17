@@ -41,7 +41,6 @@ export class BatchDeleteComponent implements OnInit {
     this.batchIdFocus.nativeElement.focus();
   }
   batchTotesDelete(deAllocate?) {
-    debugger
     let payLoad = {
       batch: this.clearBatchTote === 'clearBatch',
       toteID: this.toteID,

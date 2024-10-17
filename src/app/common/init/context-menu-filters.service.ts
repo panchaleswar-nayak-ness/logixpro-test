@@ -25,7 +25,6 @@ export class ContextMenuFiltersService {
   }
 
   clearSpecificColumnFilter(columnName: string): string {
-    debugger
     if (!this.filterString || this.filterString === "1 = 1") {
       this.filterString = "1 = 1"; // No filters to clear
     } else {
