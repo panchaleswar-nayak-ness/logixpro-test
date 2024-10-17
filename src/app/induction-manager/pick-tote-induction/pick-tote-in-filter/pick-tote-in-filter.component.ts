@@ -27,7 +27,12 @@ export class PickToteInFilterComponent implements OnInit {
   }
 
   aliasFilterList = [{ colHeader: '', colDef: '' }];
-  displayedColumns: string[] = ['select', 'field', 'fieldValue', 'actions'];
+  displayedColumns: string[] = [
+    // 'select', 
+    'field', 
+    'fieldValue', 
+    'actions'
+  ];
   elementData = [{ field: 'Zone 1' }];
 
   ngOnInit(): void {
