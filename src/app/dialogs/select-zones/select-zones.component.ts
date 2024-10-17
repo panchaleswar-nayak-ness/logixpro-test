@@ -59,7 +59,7 @@ export class SelectZonesComponent implements OnInit {
   alreadyAssignedZones: any;
   imPreferences: any;
   autoAssignAllZones: any;
-  isNotToteInductionPreference: boolean;
+  isNotProcessPutAways: boolean;
   isPickToteInduction: boolean;
   isAdminPreferences: boolean;
   zoneList: string[];
@@ -81,10 +81,10 @@ export class SelectZonesComponent implements OnInit {
     // this.isNewBatch=this.data.isNewBatch;
     // this.wsid=this.data.wsid;
 
-    this.isNotToteInductionPreference = !this.router.url
+    this.isNotProcessPutAways = this.router.url
       .toLowerCase()
-      .includes('adminprefrences');
-    this.btnText = this.isNotToteInductionPreference ? 'Continue' : 'Done';
+      .includes('processputaways');
+    this.btnText = this.isNotProcessPutAways ? 'Continue' : 'Done';
     this.isPickToteInduction = this.router.url
       .toLowerCase()
       .includes('picktoteinduction');
