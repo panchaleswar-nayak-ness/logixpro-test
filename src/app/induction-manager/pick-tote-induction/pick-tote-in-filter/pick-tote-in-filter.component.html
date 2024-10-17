@@ -1,90 +1,143 @@
 <div class="d-flex justify-content-between align-items-center mb-3">
   <div class="w-48px"></div>
   <h1 class="m-0" mat-dialog-title>Pick Tote Induction Filters</h1>
-  <button mat-icon-button class="close-button dialog-close-button-fix" [mat-dialog-close]="true">
+  <button
+    mat-icon-button
+    class="close-button dialog-close-button-fix"
+    (click)="close()"
+  >
     <mat-icon class="close-icon">close</mat-icon>
   </button>
 </div>
 
-<div class="d-block d-xl-flex justify-content-between align-items-center w-100 gap-12 mt-3">
+<div
+  class="d-block d-xl-flex justify-content-between align-items-center w-100 gap-12 mt-3"
+>
   <div class="label-blue3 p-3 d-flex br-8 mb-2 w-100">
     <mat-icon class="material-symbols-outlined">info</mat-icon>
-    <span class="ps-2 w-100">This is used to add, edit and delete Pick Tote Induction filters</span>
+    <span class="ps-2 w-100"
+      >This is used to add, edit and delete Pick Tote Induction filters</span
+    >
   </div>
 
-
   <div class="d-flex justify-content-end">
-    <button mat-flat-button color="primary" class="add-icon-button mb-2 flex-grow-1" (click)="addRow()"
-    matTooltip="Add new" matTooltipPosition="above">
-      <span class="material-symbols-outlined" matTooltip="Add new" matTooltipPosition="above">
+    <button
+      mat-flat-button
+      color="primary"
+      class="add-icon-button mb-2 flex-grow-1"
+      (click)="addRow()"
+      matTooltip="Add new"
+      matTooltipPosition="above"
+    >
+      <span
+        class="material-symbols-outlined"
+        matTooltip="Add new"
+        matTooltipPosition="above"
+      >
         add
       </span>
     </button>
   </div>
 </div>
 
-<div class="card br-14 table-responsive custom-table table-fix borderless px-0 mb-3">
-  <ng-scrollbar track="all" class="mat-table-scrollbar  h-60v">
+<div
+  class="card br-14 table-responsive custom-table table-fix borderless px-0 mb-3"
+>
+  <ng-scrollbar track="all" class="mat-table-scrollbar h-60v">
     <table mat-table [dataSource]="filters" class="w-100">
       <!-- Checkbox Column -->
-      <ng-container matColumnDef="select">
+      <!-- <ng-container matColumnDef="select">
         <th mat-header-cell *matHeaderCellDef>
           <mat-checkbox color="primary"></mat-checkbox>
         </th>
         <td mat-cell *matCellDef="let row">
-          <mat-checkbox color="primary" matTooltipPosition="above"></mat-checkbox>
+          <mat-checkbox
+            color="primary"
+            matTooltipPosition="above"
+          ></mat-checkbox>
+        </td>
+      </ng-container> -->
+      <!-- Field Column -->
+      <ng-container matColumnDef="field">
+        <th mat-header-cell *matHeaderCellDef>Field</th>
+        <td mat-cell *matCellDef="let filter">
+          <mat-form-field
+            class="action-dropdown custom-form-field w-100 pe-2"
+            appearance="outline"
+          >
+            <mat-select
+              class="employees-action"
+              [(ngModel)]="filter.alias"
+              (selectionChange)="selectionChange($event.value)"
+            >
+              <!-- <mat-option value=""></mat-option> -->
+              <mat-option
+                *ngFor="let item of aliasFilterList"
+                [value]="item.colDef"
+              >
+                {{ item.colDef }}
+              </mat-option>
+            </mat-select>
+            <span class="material-symbols-outlined icon-expand-more"
+              >expand_more</span
+            >
+          </mat-form-field>
         </td>
       </ng-container>
-<!-- Field Column -->
-<ng-container matColumnDef="field">
-  <th mat-header-cell *matHeaderCellDef>Field</th>
-  <td mat-cell *matCellDef="let filter">
-    <mat-form-field class="action-dropdown custom-form-field w-100 pe-2" appearance="outline">
-      <mat-select class="employees-action" [(ngModel)]="filter.ppField"
-        (selectionChange)="selectionChange($event.value)">
-        <mat-option value=""></mat-option>
-        <mat-option *ngFor="let item of aliasFilterList" [value]="item.colDef">
-          {{item.colDef}}
-        </mat-option>
-      </mat-select>
-      <span class="material-symbols-outlined icon-expand-more">expand_more</span>
-    </mat-form-field>
-  </td>
-</ng-container>
 
-<!-- Value Column -->
-<ng-container matColumnDef="fieldValue">
-  <th mat-header-cell *matHeaderCellDef>Value</th>
-  <td mat-cell *matCellDef="let filter">
-    <mat-form-field class="custom-form-field w-100 pe-2" appearance="outline">
-      <input matInput [(ngModel)]="filter.Value" placeholder="Enter value" />
-    </mat-form-field>
-  </td>
-</ng-container>
+      <!-- Value Column -->
+      <ng-container matColumnDef="fieldValue">
+        <th mat-header-cell *matHeaderCellDef>Value</th>
+        <td mat-cell *matCellDef="let filter">
+          <mat-form-field
+            class="custom-form-field w-100 pe-2"
+            appearance="outline"
+          >
+            <input
+              matInput
+              [(ngModel)]="filter.Value"
+              placeholder="Enter value"
+            />
+          </mat-form-field>
+        </td>
+      </ng-container>
 
-   <!-- Actions Column -->
-<ng-container matColumnDef="actions" stickyEnd>
-  <th mat-header-cell *matHeaderCellDef class="text-center"></th>
-  <td mat-cell *matCellDef="let filters; let i = index" class="text-center">
-    <div class="d-flex justify-content-center gap-2">
-      <button mat-flat-button color="warn" class="xsm-icon-button" (click)="removeRow(i)">
-        <mat-icon class="material-symbols-outlined">close</mat-icon>
-      </button>
-    </div>
-  </td>
-</ng-container>
-
-
+      <!-- Actions Column -->
+      <ng-container matColumnDef="actions" stickyEnd>
+        <th mat-header-cell *matHeaderCellDef class="text-center"></th>
+        <td
+          mat-cell
+          *matCellDef="let filters; let i = index"
+          class="text-center"
+        >
+          <div class="d-flex justify-content-center ">
+            <button
+              mat-flat-button
+              color="warn"
+              class="xsm-icon-button"
+              (click)="removeRow(i)"
+            >
+              <mat-icon class="material-symbols-outlined">close</mat-icon>
+            </button>
+          </div>
+        </td>
+      </ng-container>
 
       <!-- Header and Row Definitions -->
       <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
-      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
     </table>
   </ng-scrollbar>
 </div>
 
 <div class="d-flex gap-12">
-  <button type="submit" mat-flat-button class="form-button-submit btn-lg flex-grow-1" color="primary"
-    (click)="applyFilter()">
-    Apply Filter</button>
+  <button
+    type="submit"
+    mat-flat-button
+    class="form-button-submit btn-lg flex-grow-1"
+    color="primary"
+    (click)="applyFilter()"
+  >
+    Apply Filter
+  </button>
 </div>

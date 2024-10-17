@@ -59,8 +59,11 @@ export class SelectZonesComponent implements OnInit {
   alreadyAssignedZones: any;
   imPreferences: any;
   autoAssignAllZones: any;
-  isNotToteInductionPreference: boolean;
+  isNotProcessPutAways: boolean;
+  isPickToteInduction: boolean;
+  isAdminPreferences: boolean;
   zoneList: string[];
+  btnText: string;
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
@@ -77,11 +80,20 @@ export class SelectZonesComponent implements OnInit {
     // this.batchID = this.data.batchId;
     // this.isNewBatch=this.data.isNewBatch;
     // this.wsid=this.data.wsid;
-    this.alreadyAssignedZones = this.data.assignedZones;
-    this.getAvailableZones();
-    this.isNotToteInductionPreference = !this.router.url
+
+    this.isNotProcessPutAways = this.router.url
+      .toLowerCase()
+      .includes('processputaways');
+    this.btnText = this.isNotProcessPutAways ? 'Continue' : 'Done';
+    this.isPickToteInduction = this.router.url
+      .toLowerCase()
+      .includes('picktoteinduction');
+    this.isAdminPreferences = this.router.url
       .toLowerCase()
       .includes('adminprefrences');
+
+    this.alreadyAssignedZones = this.data.assignedZones;
+    this.getAvailableZones();
   }
 
   selectZone(row: any) {
@@ -99,6 +111,7 @@ export class SelectZonesComponent implements OnInit {
 
   AllRecordsChecked() {
     let selected = false;
+
     for (const element of this.elementData) {
       if (!(!element.selected && !element.available)) {
         if (!element.selected) {
@@ -198,11 +211,13 @@ export class SelectZonesComponent implements OnInit {
       },
     ];
     selectedRecords.shift();
+
     for (const element of this.elementData) {
       if (element.selected) {
         selectedRecords.push(element);
       }
     }
+
     this.dialogRef.close({
       selectedRecords: selectedRecords,
       zoneList: this.zoneList,
@@ -220,11 +235,14 @@ export class SelectZonesComponent implements OnInit {
         available: false,
       },
     ];
+
+    selectedRecords.shift();
     for (const element of this.elementData) {
       if (element.selected) {
         selectedRecords.push(element);
       }
     }
+
     this.dialogRef.close({
       selectedRecords: selectedRecords,
       zoneList: this.zoneList,
@@ -264,6 +282,7 @@ export class SelectZonesComponent implements OnInit {
             });
           }
 
+          this.preselectZonesBySelectedGroupName();
           this.dataSource = new MatTableDataSource<any>(this.elementData);
           this.selectZones();
         } else {
@@ -282,14 +301,32 @@ export class SelectZonesComponent implements OnInit {
     );
   }
 
+  private preselectZonesBySelectedGroupName() {
+    if (this.isPickToteInduction || this.isAdminPreferences) {
+      if (this.data.zoneList) {
+        this.data.zoneList.forEach((val) => {
+          let element = this.elementData.find((f) => f.zone === val);
+
+          if (element) {
+            element.selected = true;
+          }
+        });
+      }
+    }
+  }
+
   selectZones() {
     if (this.data) {
       this.zoneList = this.data;
 
       this.dataSource.data.forEach((x) => {
-        var availableZone = this.data.assignedZones.find(
-          (y) => y.zone === x.zone
-        );
+        if (this.data?.assignedZones?.selectedRecords) {
+          var availableZone = this.data.assignedZones.selectedRecords.find(
+            (y) => y.zone === x.zone
+          );
+        } else if (this.data.zoneList) {
+          var availableZone = this.data.zoneList.find((y) => y === x.zone);
+        }
 
         if (availableZone) {
           x.selected = true;

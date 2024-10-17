@@ -12,7 +12,7 @@ import { CurrentTabDataService } from '../current-tab-data-service';
 import { IAdminApiService } from 'src/app/common/services/admin-api/admin-api-interface';
 import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.service';
 import { GlobalService } from 'src/app/common/services/global.service';
-import { DialogConstants, StringConditions, ToasterMessages, ToasterTitle, ToasterType, Style,UniqueConstants, Width, Height } from 'src/app/common/constants/strings.constants';
+import { DialogConstants, StringConditions, ToasterMessages, ToasterTitle, ToasterType, Style,UniqueConstants } from 'src/app/common/constants/strings.constants';
 import { AppNames } from 'src/app/common/constants/menu.constants';
 import { TableContextMenuService } from 'src/app/common/globalComponents/table-context-menu-component/table-context-menu.service';
 import { ContextMenuFiltersService } from 'src/app/common/init/context-menu-filters.service';
@@ -31,8 +31,8 @@ export class DetailComponent implements OnInit {
   @Input() details: FormGroup;
   public userData: any;
 
-  @Output() notifyParent: EventEmitter<any> = new EventEmitter(); 
-  @Output() notifyContextMenu: EventEmitter<any> = new EventEmitter(); 
+  @Output() notifyParent: EventEmitter<any> = new EventEmitter();
+  @Output() notifyContextMenu: EventEmitter<any> = new EventEmitter();
   filterString : string = UniqueConstants.OneEqualsOne;
   @Input() isActiveTrigger:boolean =false;
   sendNotification(notification) {
@@ -153,10 +153,10 @@ export class DetailComponent implements OnInit {
   }
   optionSelected(filter : string) {
     this.filterString = filter;
-    this.notifyContextMenu.emit(this.filterString);  
+    this.notifyContextMenu.emit(this.filterString);
     this.isActiveTrigger = false;
   }
-  onContextMenu(event: any,   FilterColumnName?: any, FilterConditon?: any, FilterItemType?: any) { 
+  onContextMenu(event: any,   FilterColumnName?: any, FilterConditon?: any, FilterItemType?: any) {
     event.preventDefault()
     this.isActiveTrigger = true;
     setTimeout(() => {
@@ -181,7 +181,7 @@ export class DetailComponent implements OnInit {
       });
     }
 
-       
+
       this.sharedService.updateInvMasterState(result, true)
     })
   }
@@ -202,7 +202,7 @@ export class DetailComponent implements OnInit {
     else{
       this.router.navigate([]).then(() => {
         let url = '/#/admin/transaction?itemNumber=' + this.details.controls['itemNumber'].value + '&type='+ type.toString().replace(/\+/gi, '%2B');
-        window.open(url,UniqueConstants._blank,'width=' + Width.w1300 + ',height=' + Height.h600 + ',top=' + ((screen.height / 2) - (Height.h600 / 2)) + ',left=' + ((screen.width / 2) - (Width.w1300 / 2)));
+        window.open(url, UniqueConstants._self);
       });
     }
   }

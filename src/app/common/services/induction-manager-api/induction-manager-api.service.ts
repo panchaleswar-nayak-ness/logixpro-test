@@ -772,7 +772,7 @@ export class InductionManagerApiService implements IInductionManagerApiService {
     return this.Api.GetPickToteInductionFilter();
   }
 
-  public DeletePickToteInductionFilter(paramname : number) {
+  public DeletePickToteInductionFilter(paramname : number[]) {
     return this.Api.DeletePickToteInductionFilter(paramname);
   }
 

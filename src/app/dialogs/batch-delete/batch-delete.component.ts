@@ -16,7 +16,7 @@ export class BatchDeleteComponent implements OnInit {
   @ViewChild('batchIdFocus') batchIdFocus: ElementRef;
   toteID = '';
   batchID = '';
-  transType = TransactionType.PutAway;
+  transType = "";
   clearBatchTote: string = '';
   deleteAllDisable:any;
   enableClear=false;
@@ -35,6 +35,7 @@ export class BatchDeleteComponent implements OnInit {
     this.clearBatchTote=this.data.deleteAllDisable?'clearTote':'clearBatch';
     this.enableClear=this.data?.enableClear
     this.deleteBtnHide = this.data?.delButtonHide ? this.data.delButtonHide : false
+    this.transType=this.data.transType
   }
   ngAfterViewChecked(): void {
     this.batchIdFocus.nativeElement.focus();

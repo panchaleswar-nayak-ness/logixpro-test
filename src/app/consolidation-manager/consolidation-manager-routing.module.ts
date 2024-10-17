@@ -7,6 +7,7 @@ import { ConsolidationPreferencesComponent } from './consolidation-preferences/c
 import { CmStagingLocationComponent } from './cm-staging-location/cm-staging-location.component';
 import { TransactionComponent } from '../admin/transaction/transaction.component';
 import { ReportsComponent } from '../admin/reports/reports.component';
+import { CmMarkoutComponent } from './cm-markout/cm-markout.component';
 
 const routes: Routes = [{ path: '', component: ConsolidationManagerComponent,
 canActivate: [AuthGuardGuard] },
@@ -30,7 +31,11 @@ canActivate: [AuthGuardGuard],
 { path: 'Reports', 
 component: ReportsComponent, 
 canActivate: [AuthGuardGuard], 
-}
+},
+{ path: 'Markout', 
+  component: CmMarkoutComponent, 
+  canActivate: [AuthGuardGuard], 
+  }
 ];
 
 @NgModule({

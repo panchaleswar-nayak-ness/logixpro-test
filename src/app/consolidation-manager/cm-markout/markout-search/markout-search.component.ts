@@ -9,7 +9,7 @@ import {
 import { FormControl } from '@angular/forms';
 
 import { FloatLabelType } from '@angular/material/form-field';
-import { MoBlossomToteComponent } from 'src/app/markout-main-process/markout-main-module/dialogs/mo-blossom-tote/mo-blossom-tote.component';
+import { MoBlossomToteComponent } from 'src/app/consolidation-manager/cm-markout/dialogs/mo-blossom-tote/mo-blossom-tote.component';
 import { BlossomType, DialogConstants } from 'src/app/common/constants/strings.constants';
 import { GlobalService } from 'src/app/common/services/global.service';
 import { IMarkoutApiService } from 'src/app/common/services/markout-api/markout-api-interface';
@@ -44,7 +44,7 @@ export class MarkoutSearchComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.getMarkoutPreferences()
+    this.getMarkoutPreferences();
     this.toteDataResponse = new ToteDataResponse();
   }
 

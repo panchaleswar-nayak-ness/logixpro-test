@@ -185,6 +185,6 @@ export interface IInductionManagerApiService {
 
   AddPickToteInductionFilter(payloadParams: AddPickToteInductionFilter);
   GetPickToteInductionFilter();
-  DeletePickToteInductionFilter(paramname: number);
+  DeletePickToteInductionFilter(paramname: number[]);
 
 }

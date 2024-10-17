@@ -70,7 +70,8 @@ export const StringConditions = {
     filter: 'filter',
     MoveTo: 'MoveTo',
     edit: 'edit',
-    MoveFrom: 'MoveFrom'
+    MoveFrom: 'MoveFrom',
+    Short: 'Short'
 }
 
 export const ResponseStrings = {
@@ -439,12 +440,6 @@ export const Style = {
     w1080px: '1080px',
 }
 
-export const Width = {
-    w1300: 1300,
-}
-export const Height = {
-    h600: 600,
-}
 export const FilterColumnName = {
     unitOfMeasure: 'Unit of Measure'
 }

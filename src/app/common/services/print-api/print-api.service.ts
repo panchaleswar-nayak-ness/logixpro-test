@@ -25,4 +25,30 @@ export class PrintApiService implements IPrintApiService {
     return await this.Api.PrintManualTrans(payload);
   }
 
+  public async PrintMoToteManifest(toteID: string) {
+    const payload = {
+      Wsid: this.userData.wsid,
+      User: this.userData.userName,
+      ToteID: toteID
+    }
+    return await this.Api.PrintMoToteManifest(payload);
+  }
+
+  public async PrintMoToteManifest2(toteID: string) {
+    const payload = {
+      Wsid: this.userData.wsid,
+      User: this.userData.userName,
+      ToteID: toteID
+    }
+    return await this.Api.PrintMoToteManifest2(payload);
+  }
+
+  public async PrintMarkoutReport(toteID: string) {
+    const payload = {
+      Wsid: this.userData.wsid,
+      User: this.userData.userName,
+      ToteID: toteID
+    }
+    return await this.Api.PrintMarkoutReport(payload);
+  }
 }

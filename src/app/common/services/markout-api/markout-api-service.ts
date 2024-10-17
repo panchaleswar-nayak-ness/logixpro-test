@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { ApiFuntions } from '../ApiFuntions';
 import { AuthService } from 'src/app/common/init/auth.service';
 import { IMarkoutApiService } from './markout-api-interface';
-import { MarkoutBlossomTotenRequest, MarkoutCompleteTransactionRequest, MarkoutToteRequest, UpdateMOPrefRequest, UpdateQuantityRequest } from 'src/app/markout-main-process/markout-main-module/models/markout-model';
+import { MarkoutBlossomTotenRequest, MarkoutCompleteTransactionRequest, MarkoutToteRequest, UpdateMOPrefRequest, UpdateQuantityRequest } from 'src/app/consolidation-manager/cm-markout/models/markout-model';
 @Injectable({
   providedIn: 'root',
 })

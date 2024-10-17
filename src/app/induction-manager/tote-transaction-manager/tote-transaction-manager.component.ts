@@ -142,6 +142,7 @@ export class ToteTransactionManagerComponent implements OnInit {
           userName: this.userData.userName,
           wsid: this.userData.wsid,
           delButtonHide: true,
+          transType: row.transactionType
         },
       });
       dialogRef.afterClosed().subscribe((res) => {

@@ -9,6 +9,7 @@ export interface IConsolidationApi
 	ConsolidationPreferenceUpdate(payload: any)
 	SystemPreferenceEmailSlip(payload: any)
 	ConsolidationPreferenceShipUpdate(payload: any)
+	ConsolidationPreferenceMarkoutUpdate(payload: any)
 	ConsolidationIndex(payload: any)
 	ShippingButtSet(payload: any)
 	VerifyAllItemPost(payload: any)

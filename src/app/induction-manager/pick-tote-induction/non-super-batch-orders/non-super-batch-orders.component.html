@@ -1,0 +1,148 @@
+<mat-card class="mat-elevation-z g-card mt-3 mb-4">
+  <mat-card-content>
+    <div class="d-block d-lg-flex justify-content-between align-items-center">
+      <app-icon-heading-component
+        class="card-header-title mb-3 d-flex align-items-center"
+        heading="Orders"
+        icon="filter_frames"
+      ></app-icon-heading-component>
+      <div>
+        <mat-form-field class="action-dropdown mb-3 w-100" appearance="outline">
+          <mat-label>Actions</mat-label>
+          <mat-select class="employees-action">
+            <mat-option (click)="filterOrderNum()"
+              >Filter Order Number</mat-option
+            >
+            <mat-option (click)="openColumnFilter()">Column Filter</mat-option>
+          </mat-select>
+          <span class="material-symbols-outlined icon-expand-more">
+            expand_more
+          </span>
+        </mat-form-field>
+      </div>
+    </div>
+
+    <div class="card br-14 table-responsive borderless px-0">
+      <ng-scrollbar
+        class="mat-table-scrollbar scrollbar-hover-padding count-table-scrollbar h-30v"
+        track="all"
+      >
+        <table mat-table
+          #table
+          [dataSource]="dataSource"
+          matSort
+          class="w-100 table-fix"
+          (matSortChange)="announceSortChange($event)"
+        >
+          <!-- Order Number Column -->
+          <ng-container matColumnDef="orderNumber">
+            <mat-header-cell
+              *matHeaderCellDef
+              mat-sort-header
+              sortActionDescription="Sort by orderNumber"
+            >
+              Order No.
+            </mat-header-cell>
+            <mat-cell *matCellDef="let element">
+              {{ element.orderNumber }}
+            </mat-cell>
+          </ng-container>
+
+          <!-- Start Zone Column -->
+          <ng-container matColumnDef="zone">
+            <mat-header-cell
+              *matHeaderCellDef
+              mat-sort-header
+              sortActionDescription="Sort by zone"
+            >
+              Start Zone
+            </mat-header-cell>
+            <mat-cell *matCellDef="let element">{{ element.zone }}</mat-cell>
+          </ng-container>
+
+          <!-- Priority Column -->
+          <ng-container matColumnDef="priority">
+            <mat-header-cell
+              *matHeaderCellDef
+              mat-sort-header
+              sortActionDescription="Sort by priority"
+            >
+              Priority
+            </mat-header-cell>
+            <mat-cell *matCellDef="let element">{{
+              element.priority
+            }}</mat-cell>
+          </ng-container>
+
+          <!-- Required Date Column -->
+          <ng-container matColumnDef="requiredDate">
+            <mat-header-cell
+              *matHeaderCellDef
+              mat-sort-header
+              sortActionDescription="Sort by requiredDate"
+            >
+              Required Date
+            </mat-header-cell>
+            <mat-cell *matCellDef="let element">
+              {{ element.requiredDate }}
+            </mat-cell>
+          </ng-container>
+
+          <!-- Total Order Quantity Column -->
+          <ng-container matColumnDef="completedQuantity">
+            <mat-header-cell
+              *matHeaderCellDef
+              mat-sort-header
+              sortActionDescription="Sort by completedQuantity"
+            >
+              Total Order Quantity
+            </mat-header-cell>
+            <mat-cell *matCellDef="let element">
+              {{ element.completedQuantity }}
+            </mat-cell>
+          </ng-container>
+
+          <!-- Tote Scanned Column -->
+          <ng-container matColumnDef="toteScanned">
+            <mat-header-cell *matHeaderCellDef>Tote Scanned</mat-header-cell>
+            <mat-cell *matCellDef="let element; let i = index">
+              <mat-form-field appearance="outline">
+                <input
+                  matInput
+                  [(ngModel)]="element.toteScanned"
+                  (keyup.enter)="onEnter(element)"
+                
+                />
+              </mat-form-field>
+            </mat-cell>
+          </ng-container>
+
+          <mat-header-row
+            *matHeaderRowDef="displayedColumns; sticky: true"
+          ></mat-header-row>
+          <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
+
+          <mat-row class="mat-row" *matNoDataRow>
+            <mat-cell
+              class="mat-cell notify-center-table"
+              [attr.colspan]="displayedColumns.length"
+            >
+              No data available in table.
+            </mat-cell>
+          </mat-row>
+        </table>
+      </ng-scrollbar>
+    </div>
+
+    <div
+      class="table-pagination d-flex justify-content-start align-items-center"
+    >
+      <mat-paginator
+        #paginator
+        [pageSize]="5"
+        [pageSizeOptions]="[5, 10, 20, 100]"
+        showFirstLastButtons
+      ></mat-paginator>
+    </div>
+  </mat-card-content>
+</mat-card>

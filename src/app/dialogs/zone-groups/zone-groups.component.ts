@@ -18,6 +18,7 @@ import {
   FormArray,
 } from '@angular/forms';
 import { MatCheckboxChange } from '@angular/material/checkbox';
+import { MatDialogRef } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-zone-groups',
@@ -27,7 +28,7 @@ import { MatCheckboxChange } from '@angular/material/checkbox';
 export class ZoneGroupsComponent implements OnInit {
   public iInductionManagerApi: IInductionManagerApiService;
   displayedColumns: string[] = [
-    'select',
+    // 'select',
     'zoneGroupName',
     'selectedZone',
     'actions',
@@ -40,7 +41,8 @@ export class ZoneGroupsComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private global: GlobalService,
-    public inductionManagerApi: InductionManagerApiService
+    public inductionManagerApi: InductionManagerApiService,
+    public dialogRef: MatDialogRef<ZoneGroupsComponent>
   ) {
     this.iInductionManagerApi = inductionManagerApi;
 
@@ -79,9 +81,8 @@ export class ZoneGroupsComponent implements OnInit {
     let res: any[] = [];
 
     Object.entries(grouped).forEach(function (val: any[], index) {
-
       let selZone = val[1].join(' ');
-     
+
       res.push({
         available: false,
         selectedZones: '',
@@ -120,6 +121,12 @@ export class ZoneGroupsComponent implements OnInit {
   }
 
   openSelectZones(index: string | number) {
+    let zoneList: any[] = [];
+    let { selectedZone } = this.form.value.items[index];
+    selectedZone.split(' ').forEach((val) => {
+      zoneList.push(val);
+    });
+
     const dialogRef: any = this.global.OpenDialog(SelectZonesComponent, {
       height: 'auto',
       width: '60%',
@@ -127,28 +134,42 @@ export class ZoneGroupsComponent implements OnInit {
       disableClose: true,
       data: {
         assignedZones: this.assignedZonesArray,
+        zoneList: zoneList,
       },
     });
 
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
         let zones = '';
-        this.assignedZonesArray = result.selectedRecords;
-        for (const element of result.selectedRecords) {
-          zones = `${zones} ${element.zone}`;
+
+        const isSelectedZoneNotEmpty =
+          result.selectedRecords.length > 0 &&
+          result.selectedRecords.every((e) => e.zone !== '');
+
+        if (isSelectedZoneNotEmpty) {
+          this.assignedZonesArray = result.selectedRecords;
+          for (const element of result.selectedRecords) {
+            zones = `${zones} ${element.zone}`;
+          }
+          this.assignedZones = zones.trim();
+
+          this.items.controls[index]
+            .get('selectedZones')
+            ?.patchValue(this.assignedZonesArray);
+          this.items.controls[index]
+            .get('selectedZone')
+            ?.patchValue(this.assignedZones);
+
+          this.assignedZones = '';
+          this.assignedZonesArray = [];
         }
-        this.assignedZones = zones.trim();
-
-        this.items.controls[index]
-          .get('selectedZones')
-          ?.patchValue(this.assignedZonesArray);
-        this.items.controls[index]
-          .get('selectedZone')
-          ?.patchValue(this.assignedZones);
-
-        this.assignedZones = '';
-        this.assignedZonesArray = [];
       }
+    });
+  }
+
+  refreshZones() {
+    this.dialogRef.close({
+      confirm: true,
     });
   }
 

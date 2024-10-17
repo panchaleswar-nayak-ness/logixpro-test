@@ -43,8 +43,8 @@
 >
   <ng-scrollbar class="mat-table-scrollbar h-60v">
     <form [formGroup]="form">
-      <mat-table formArrayName="items" [dataSource]="dataSource">
-        <ng-container cdkColumnDef="select">
+      <table mat-table class="w-100" formArrayName="items" [dataSource]="dataSource">
+        <!-- <ng-container cdkColumnDef="select">
           <mat-header-cell *cdkHeaderCellDef>
             <mat-checkbox
               (change)="checkAll($event)"
@@ -62,11 +62,11 @@
               color="primary"
             ></mat-checkbox>
           </mat-cell>
-        </ng-container>
+        </ng-container> -->
 
         <ng-container cdkColumnDef="zoneGroupName">
-          <mat-header-cell *cdkHeaderCellDef> Zone Group Name </mat-header-cell>
-          <mat-cell
+          <th mat-header-cell *cdkHeaderCellDef> Zone Group Name </th>
+          <td mat-cell
             *cdkCellDef="let row; let rowIndex = index"
             [formGroupName]="rowIndex"
           >
@@ -75,7 +75,8 @@
               appearance="outline"
             >
               <span matSuffix>
-                <mat-icon class="unfold_more">unfold_more</mat-icon>
+              
+                
               </span>
               <input
                 matInput
@@ -85,12 +86,12 @@
                 formControlName="zoneGroupName"
               />
             </mat-form-field>
-          </mat-cell>
+          </td>
         </ng-container>
 
         <ng-container cdkColumnDef="selectedZone">
-          <mat-header-cell *cdkHeaderCellDef> Selected Zone </mat-header-cell>
-          <mat-cell
+          <th mat-header-cell *cdkHeaderCellDef> Selected Zone </th>
+          <td mat-cell
             *cdkCellDef="let row; let rowIndex = index"
             [formGroupName]="rowIndex"
           >
@@ -105,22 +106,21 @@
                 <input
                   matInput
                   type="text"
-                  maxlength="50"
                   formControlName="selectedZone"
                 />
               </mat-form-field>
             </div>
-          </mat-cell>
+          </td>
         </ng-container>
 
         <!-- Actions Column -->
         <ng-container matColumnDef="actions" stickyEnd>
           <th mat-header-cell *matHeaderCellDef class="text-center"></th>
-          <mat-cell
+          <td mat-cell
             *cdkCellDef="let row; let rowIndex = index"
             [formGroupName]="rowIndex"
           >
-            <div class="d-flex justify-content-center gap-2">
+            <div class="d-flex justify-content-center gap-3">
               <button
                 mat-flat-button
                 color="primary"
@@ -138,15 +138,15 @@
                 <mat-icon class="material-symbols-outlined">close</mat-icon>
               </button>
             </div>
-          </mat-cell>
+          </td>
         </ng-container>
 
         <!-- Header and Row Declarations -->
-        <mat-header-row
+        <tr mat-header-row
           *cdkHeaderRowDef="displayedColumns; sticky: true"
-        ></mat-header-row>
-        <mat-row *cdkRowDef="let row; columns: displayedColumns"></mat-row>
-      </mat-table>
+        ></tr>
+        <tr mat-row *cdkRowDef="let row; columns: displayedColumns"></tr>
+      </table>
     </form>
   </ng-scrollbar>
 </div>
@@ -157,6 +157,7 @@
     mat-flat-button
     class="form-button-submit btn-lg flex-grow-1"
     color="primary"
+    (click)="refreshZones()"
   >
     Done
   </button>
