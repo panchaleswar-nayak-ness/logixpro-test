@@ -359,17 +359,15 @@ export class PickToteInductionComponent
   performInduction(valueToInduct: any) {
     this.Api.PerformSpecificOrderInduction(valueToInduct).subscribe(
       (res: any) => {
-        if (res.data) {
+
+        if (res.isExecuted) {
           this.refreshOrders()
           this.clearToteAndOrderFields();
-          // Success handling
         } else {
-          this.global.ShowToastr(
-            ToasterType.Error,
-            ToasterMessages.SomethingWentWrong,
-            ToasterTitle.Error
-          );
+          this.global.ShowToastr(ToasterType.Error,res.responseMessage, ToasterTitle.Error);
+          console.log("DevicePreferencesDelete",res.responseMessage);
         }
+      
       },
       (error: any) => {
         this.global.ShowToastr(

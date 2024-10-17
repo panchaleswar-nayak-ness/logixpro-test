@@ -212,13 +212,10 @@ export class SuperBatchOrdersComponent implements OnInit, AfterViewInit {
         if (valueToInduct.toteScanned) {
           this.Api.PerformSuperBatchOrderInduction(valueToInduct).subscribe(
             (res: any) => {
-              if (res.data) {
+              if (res.data && res.isExecuted) {
+                this.global.ShowToastr(ToasterType.Success,res.responseMessage, ToasterTitle.Success);
               } else {
-                this.global.ShowToastr(
-                  ToasterType.Error,
-                  ToasterMessages.SomethingWentWrong,
-                  ToasterTitle.Error
-                );
+                this.global.ShowToastr(ToasterType.Error,res.responseMessage, ToasterTitle.Error);
               }
             }
           );
