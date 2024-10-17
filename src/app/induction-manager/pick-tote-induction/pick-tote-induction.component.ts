@@ -1,6 +1,7 @@
 import {
   AfterViewInit,
   Component,
+  ElementRef,
   OnDestroy,
   OnInit,
   ViewChild,
@@ -60,6 +61,7 @@ export class PickToteInductionComponent
   activeTab: TabNames;
   @ViewChild('zoneGroupSelect') zoneGroupSelect;
   @ViewChild('tabGroup') tabGroup;
+  @ViewChild('orderNumberInput') orderNumberInput: ElementRef;
   @ViewChild(NonSuperBatchOrdersComponent, { static: true })
   NonSuperBatchOrdersComponent: NonSuperBatchOrdersComponent;
   @ViewChild(SuperBatchOrdersComponent, { static: true })
@@ -122,6 +124,15 @@ export class PickToteInductionComponent
 
   ngOnDestroy(): void {
     this.subscription.unsubscribe();
+  }
+
+  clearToteAndOrderFields() {
+    // Clear toteId and orderNumber fields
+    this.toteId = '';
+    this.orderNumber = '';
+
+    // Focus on the order number input field
+    // this.orderNumberInput.nativeElement.focus();
   }
 
   showChange(selectedValue: any) {
@@ -350,6 +361,7 @@ export class PickToteInductionComponent
       (res: any) => {
         if (res.data) {
           this.refreshOrders()
+          this.clearToteAndOrderFields();
           // Success handling
         } else {
           this.global.ShowToastr(

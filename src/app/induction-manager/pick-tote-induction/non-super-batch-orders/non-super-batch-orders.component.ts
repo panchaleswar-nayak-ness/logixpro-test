@@ -7,7 +7,9 @@ import {
   OnChanges,
   OnInit,
   Output,
+  QueryList,
   ViewChild,
+  ViewChildren,
 } from '@angular/core';
 import {
   DialogConstants,
@@ -47,10 +49,12 @@ export class NonSuperBatchOrdersComponent implements OnInit, AfterViewInit {
   }
 
   @ViewChild('table') table: MatTable<any>;
-  @ViewChild('toteTextbox', { static: true }) toteTextbox: MatInput;
+  @ViewChildren(MatInput) toteInputs!: QueryList<MatInput>;
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild('paginator') paginator: MatPaginator;
 
+
+  
   elementData = [
     {
       orderNumber: 'Zone 1',
@@ -94,6 +98,7 @@ export class NonSuperBatchOrdersComponent implements OnInit, AfterViewInit {
 
   ngAfterViewInit(): void {
     this.updatedPaginator();
+    this.focusFirstInput();
   }
 
   rebind(data?: any[]) {
@@ -181,6 +186,16 @@ export class NonSuperBatchOrdersComponent implements OnInit, AfterViewInit {
         });
 
         this.rebind(response);
+        this.focusFirstInput();
+      }
+    });
+  }
+
+  focusFirstInput() {
+    setTimeout(() => {
+      const firstInput = this.toteInputs?.first;
+      if (firstInput) {
+        firstInput.focus();
       }
     });
   }

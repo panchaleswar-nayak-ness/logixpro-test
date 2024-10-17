@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, OnInit, QueryList, ViewChild, ViewChildren } from '@angular/core';
 import { MatTable, MatTableDataSource } from '@angular/material/table';
 import {
   DialogConstants,
@@ -38,6 +38,7 @@ export class SuperBatchOrdersComponent implements OnInit, AfterViewInit {
 
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild('paginator') paginator: MatPaginator;
+  @ViewChildren(MatInput) toteInputs!: QueryList<MatInput>;
 
   displayedColumns: string[] = [
     'itemNumber',
@@ -82,6 +83,16 @@ export class SuperBatchOrdersComponent implements OnInit, AfterViewInit {
 
   ngAfterViewInit(): void {
     this.updatedPaginator();
+    this.focusFirstInput();
+  }
+
+  focusFirstInput() {
+    setTimeout(() => {
+      const firstInput = this.toteInputs?.first;
+      if (firstInput) {
+        firstInput.focus();
+      }
+    });
   }
 
   rebind(data?: any[]) {
@@ -162,6 +173,7 @@ export class SuperBatchOrdersComponent implements OnInit, AfterViewInit {
   retrieveFilteredSuperBatchOrders(values: any) {
     this.Api.RetrieveSuperBatchOrders(values).subscribe((filteredOrders) => {
       this.rebind(filteredOrders.data);
+      this.focusFirstInput();
     });
   }
 

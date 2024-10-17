@@ -72,6 +72,7 @@ export class ImprefInductionFilterComponent implements OnInit {
     { colHeader: 'emergency', colDef: 'Emergency' },
   ];
   filters: PickToteInductionFilter[] = [];
+  originalFilters: PickToteInductionFilter[] = [];
 
   public iInductionManagerApi: IInductionManagerApiService;
   constructor(
@@ -101,14 +102,38 @@ export class ImprefInductionFilterComponent implements OnInit {
     this.iInductionManagerApi.GetPickToteInductionFilter().subscribe((res: any) => {
       if (res.data && res.isExecuted) {
         this.filters = res.data;
+        this.originalFilters = JSON.parse(JSON.stringify(res.data))
       }
     });
+  }
+
+  isFilterModified(filter: PickToteInductionFilter): boolean {
+    // Treat new filters (id = 0) as modified
+    if (filter.id === 0) {
+      return true;
+    }
+  
+    const originalFilter = this.originalFilters.find(f => f.id === filter.id);
+  
+    // Return false if no matching original filter is found
+    if (!originalFilter) {
+      return false;
+    }
+  
+    // Compare filter properties to detect modifications
+    return (
+      filter.alias !== originalFilter.alias ||
+      filter.ppField !== originalFilter.ppField ||
+      filter.startCharacter !== originalFilter.startCharacter ||
+      filter.endCharacter !== originalFilter.endCharacter
+    );
   }
   // Save the filter at the specified index
   saveFilter(filter: PickToteInductionFilter): void {
     this.iInductionManagerApi.AddPickToteInductionFilter(filter).subscribe(response => {
       if (response.isExecuted) {
         this.GetPickToteInductionFilterData();
+        this.originalFilters = JSON.parse(JSON.stringify(this.filters));
         this.global.ShowToastr(
           ToasterType.Success,
           'Your details have been updated',

@@ -236,6 +236,7 @@ export class SelectZonesComponent implements OnInit {
       },
     ];
 
+    selectedRecords.shift();
     for (const element of this.elementData) {
       if (element.selected) {
         selectedRecords.push(element);

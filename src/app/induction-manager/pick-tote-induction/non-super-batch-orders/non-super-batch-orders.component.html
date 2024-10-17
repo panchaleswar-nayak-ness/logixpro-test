@@ -105,13 +105,13 @@
           <!-- Tote Scanned Column -->
           <ng-container matColumnDef="toteScanned">
             <mat-header-cell *matHeaderCellDef>Tote Scanned</mat-header-cell>
-            <mat-cell *matCellDef="let element">
+            <mat-cell *matCellDef="let element; let i = index">
               <mat-form-field appearance="outline">
                 <input
                   matInput
                   [(ngModel)]="element.toteScanned"
                   (keyup.enter)="onEnter(element)"
-                  #toteTextbox
+                
                 />
               </mat-form-field>
             </mat-cell>
