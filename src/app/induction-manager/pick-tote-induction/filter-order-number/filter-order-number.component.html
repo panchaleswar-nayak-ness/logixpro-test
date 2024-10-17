@@ -23,8 +23,9 @@
         <mat-label>Paste Order here</mat-label>
         <textarea
           matInput
-          [(ngModel)]="orderNumberFilter"
           (paste)="onPaste($event)"
+          (input)="onInput(myText.value)"
+          #myText
         ></textarea>
       </mat-form-field>
     </div>

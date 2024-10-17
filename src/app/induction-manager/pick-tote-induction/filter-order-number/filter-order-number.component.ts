@@ -1,5 +1,8 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, ElementRef, Inject, OnInit, ViewChild } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { MatInput } from '@angular/material/input';
+import { Subscription } from 'rxjs';
+import { GlobalService } from 'src/app/common/services/global.service';
 
 @Component({
   selector: 'app-filter-order-number',
@@ -7,22 +10,48 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
   styleUrls: ['./filter-order-number.component.scss'],
 })
 export class FilterOrderNumberComponent implements OnInit {
-  orderNumberFilter: string[] = [];
-
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
+    private global: GlobalService,
     public dialogRef: MatDialogRef<FilterOrderNumberComponent>
   ) {}
 
+  @ViewChild('myText', { static: true }) myText: ElementRef;
+  orderNumberFilter: string[] = [];
+  subscription: Subscription;
+
   ngOnInit(): void {
-    if (this.data?.OrderNumberFilter.length > 0) this.orderNumberFilter = this.data.OrderNumberFilter;
+    this.subscription = this.global.currentMessage.subscribe((message) => {
+  
+      if (message) {
+        if (
+          message.orderNumberFilters &&
+          message.orderNumberFilters.length > 0
+        ) {
+          this.orderNumberFilter = message.orderNumberFilters;
+
+          if (this.myText) {
+            this.myText.nativeElement.value = this.orderNumberFilter.join('\n');
+          }
+        }
+      }
+    });
+  }
+
+  ngOnDestroy(): void {
+    this.subscription.unsubscribe();
   }
 
   onPaste(event: ClipboardEvent) {
     if (event && event.clipboardData) {
       const pastedText = event.clipboardData.getData('text');
       this.orderNumberFilter = pastedText.split('\n');
-      // console.log(this.orderNumberFilter.join(','));
+    }
+  }
+
+  onInput(content: string) {
+    if (content && content !== '') {
+      this.orderNumberFilter = content.split('\n');
     }
   }
 
@@ -31,7 +60,7 @@ export class FilterOrderNumberComponent implements OnInit {
     this.dialogRef.close({ orderNumberFilter: this.orderNumberFilter });
   }
 
-  applyFilter() {    
+  applyFilter() {
     this.dialogRef.close({ orderNumberFilter: this.orderNumberFilter });
   }
 }
