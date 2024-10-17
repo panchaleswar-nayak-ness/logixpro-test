@@ -72,16 +72,16 @@ export class UserFieldsEditComponent implements OnInit {
 
   saveUserFields() {
     let userFields:any=[];
-    userFields[0]=this.shipVia;
-    userFields[1]=this.shipToName;
-    userFields[2]= this.shipToLine1;
-    userFields[3]= this.userField9;
-    userFields[4]=this.shipToCountry;
-    userFields[5]= this.shipToState ;
-    userFields[6]=this.shipToZip;
-    userFields[7]= this.promisedDate;
-    userFields[8]= this.isCancel;
-    userFields[9]= this.userField10;
+    userFields[0] = this.shipVia;
+    userFields[1] = this.shipToName;
+    userFields[2] = this.shipToState;
+    userFields[3] = this.shipToZip;
+    userFields[4] = this.promisedDate;
+    userFields[5] = this.isCancel;
+    userFields[6] = this.shipToCountry;
+    userFields[7] = this.shipToLine1;
+    userFields[8] = this.userField9;
+    userFields[9] = this.userField10;
 
     let payload = {
       transaction: this.data.transID,
@@ -131,13 +131,13 @@ export class UserFieldsEditComponent implements OnInit {
           let item = res.data;
           this.shipVia = item.userField1 ?? "";
           this.shipToName = item.userField2 ?? "";
-          this.shipToLine1 = item.userField3 ?? "";
-          this.userField9 = item.userField4 ?? "";
-          this.shipToCountry = item.userField5 ?? "";
-          this.shipToState = item.userField6 ?? "";
-          this.shipToZip = item.userField7 ?? "";
-          this.promisedDate = item.userField8 ?? "";
-          this.isCancel = item.userField9 ?? "";
+          this.shipToState = item.userField3 ?? "";
+          this.shipToZip = item.userField4 ?? "";
+          this.promisedDate = item.userField5 ?? "";
+          this.isCancel = item.userField6 ?? "";
+          this.shipToCountry = item.userField7 ?? "";
+          this.shipToLine1 = item.userField8 ?? "";
+          this.userField9 = item.userField9 ?? "";
           this.userField10 = item.userField10 ?? "";
         }
         else {
