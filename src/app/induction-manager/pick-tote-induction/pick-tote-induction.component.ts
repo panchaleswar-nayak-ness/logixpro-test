@@ -107,8 +107,11 @@ export class PickToteInductionComponent
           ];
           this.selectedFilters.OrderNumberFilters = uniqueOrderNumberFilters;
         }
+        else{
+          this.selectedFilters.OrderNumberFilters = message.orderNumberFilters;
+        }
 
-        if (message.columnFilters && message.columnFilters.length > 0) {
+        if (message.columnFilters) {
           this.selectedFilters.ColumnFilters = message.columnFilters;
         }
 

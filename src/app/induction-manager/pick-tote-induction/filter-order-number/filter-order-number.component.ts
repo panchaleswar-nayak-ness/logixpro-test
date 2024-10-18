@@ -1,4 +1,10 @@
-import { Component, ElementRef, Inject, OnInit, ViewChild } from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  Inject,
+  OnInit,
+  ViewChild,
+} from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MatInput } from '@angular/material/input';
 import { Subscription } from 'rxjs';
@@ -22,7 +28,6 @@ export class FilterOrderNumberComponent implements OnInit {
 
   ngOnInit(): void {
     this.subscription = this.global.currentMessage.subscribe((message) => {
-  
       if (message) {
         if (
           message.orderNumberFilters &&
@@ -52,6 +57,9 @@ export class FilterOrderNumberComponent implements OnInit {
   onInput(content: string) {
     if (content && content !== '') {
       this.orderNumberFilter = content.split('\n');
+    }
+    else{
+      this.orderNumberFilter = [];
     }
   }
 
