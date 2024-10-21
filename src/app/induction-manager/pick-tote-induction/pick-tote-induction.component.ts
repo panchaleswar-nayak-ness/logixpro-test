@@ -66,10 +66,7 @@ export class PickToteInductionComponent
   NonSuperBatchOrdersComponent: NonSuperBatchOrdersComponent;
   @ViewChild(SuperBatchOrdersComponent, { static: true })
   SuperBatchOrdersComponent: SuperBatchOrdersComponent;
-  @ViewChild(PickToteInFilterComponent, { static: true })
-  PickToteInductionFilter: PickToteInFilterComponent;
-  @ViewChild(FilterOrderNumberComponent, { static: true })
-  FilterOrderNumberComponent: FilterOrderNumberComponent;
+
   orderNumber: string = '';
   toteId: string = '';
   splitToggle: boolean = false;
@@ -94,50 +91,37 @@ export class PickToteInductionComponent
     if (!this.activeTab) this.activeTab = 0; // Default tab active should be non super batch orders
     this.refreshOrders();
 
-    let currentMessageSubscription = this.global.currentMessage.subscribe((message) => {
+    let currentMessageSubscription = this.global.currentMessage.subscribe(
+      (message) => {
+        if (message) {
+          if (
+            message.orderNumberFilters &&
+            message.orderNumberFilters.length > 0
+          ) {
+            const uniqueOrderNumberFilters = [
+              ...new Set(message.orderNumberFilters),
+            ];
+            this.selectedFilters.OrderNumberFilters = uniqueOrderNumberFilters;
+          }
 
-      if (message) {
-        if (
-          message.orderNumberFilters &&
-          message.orderNumberFilters.length > 0
-        ) {
-          const uniqueOrderNumberFilters = [
-            ...new Set(message.orderNumberFilters),
-          ];
-          this.selectedFilters.OrderNumberFilters = uniqueOrderNumberFilters;
+          if (message.columnFilters) {
+            this.selectedFilters.ColumnFilters = message.columnFilters;
+          }
+
+          this.retrieveOrders();
         }
-        // else{
-        //   this.selectedFilters.OrderNumberFilters = message.orderNumberFilters;
-        // }
-
-        if (message.columnFilters) {
-          this.selectedFilters.ColumnFilters = message.columnFilters;
-        }
-
-        this.retrieveOrders();
       }
-    });
+    );
 
     this.subscription.push(currentMessageSubscription);
-
-    let notifierSubscription = this.global.notifierMessage.subscribe((val) => {
-  
-      if (val) {
-        // this.selectedFilters.OrderNumberFilters = [];
-        // this.selectedFilters.ColumnFilters = [];
-      }
-    });
-
-    // this.subscription.push(notifierSubscription);
   }
 
   ngAfterViewInit(): void {
-    console.log('afterViewInit => ', this.tabGroup.selectedIndex);
     this.setNonSuperBatchAsDefaultTab();
   }
 
   ngOnDestroy(): void {
-    this.subscription.forEach((sub)=> {
+    this.subscription.forEach((sub) => {
       sub.unsubscribe();
     });
   }
@@ -265,8 +249,6 @@ export class PickToteInductionComponent
     // refresh orders in table based on currently selected filters this includes all filters currently selected
     // Reload the orders based on induction type and selected filters
     this.selectedFilters.Zones = this.zoneList;
-    console.log(this.selectedFilters);
-
     this.retrieveOrders();
   }
 
@@ -290,18 +272,9 @@ export class PickToteInductionComponent
           this.zoneList = [];
           this.selectedZones = '';
           this.zoneGroupSelect.value = '';
-
-          // if (this.PickToteInductionFilter) {
-          //   this.PickToteInductionFilter.filters = [];
-          //   this.selectedFilters.ColumnFilters = [];
-          // }
-
-          // if (this.FilterOrderNumberComponent) {
-          //   this.FilterOrderNumberComponent.orderNumberFilter = [];
-          //   this.selectedFilters.OrderNumberFilters = [];
-          // }
-
-          this.global.sendNotifierMessage(true);
+          this.selectedFilters.Zones = [];
+          this.selectedFilters.ColumnFilters = [];
+          this.selectedFilters.OrderNumberFilters = [];
           this.retrieveOrders();
         }
       }

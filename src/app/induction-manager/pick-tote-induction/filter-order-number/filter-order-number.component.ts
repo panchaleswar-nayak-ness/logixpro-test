@@ -27,40 +27,16 @@ export class FilterOrderNumberComponent implements OnInit {
   subscription: Subscription[];
 
   ngOnInit(): void {
-    let currentMessageSubscription = this.global.currentMessage.subscribe(
-      (message) => {
-        if (message) {
-          if (
-            message.orderNumberFilters &&
-            message.orderNumberFilters.length > 0
-          ) {
-            this.orderNumberFilter = message.orderNumberFilters;
-
-            if (this.myText) {
-              this.myText.nativeElement.value =
-                this.orderNumberFilter.join('\n');
-            }
-          }
-        }
-      }
-    );
-
-    this.subscription.push(currentMessageSubscription);
-
-    let notifierSubscription = this.global.notifierMessage.subscribe((val) => {
-     
-      if (val) {
-        // this.orderNumberFilter = [];
-      }
-    });
-
-    // this.subscription.push(notifierSubscription);
+    
+    this.orderNumberFilter = this.data.OrderNumberFilter;
+    
+    if (this.myText) {
+      this.myText.nativeElement.value = this.orderNumberFilter.join('\n');
+    }
   }
 
   ngOnDestroy(): void {
-    // this.subscription.forEach((sub) => {
-    //   sub.unsubscribe();
-    // });
+   
   }
 
   onPaste(event: ClipboardEvent) {
