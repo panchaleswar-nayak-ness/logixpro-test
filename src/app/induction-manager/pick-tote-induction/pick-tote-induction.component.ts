@@ -239,7 +239,9 @@ export class PickToteInductionComponent
     } else if (this.activeTab === TabNames.SuperBatch) {
       if (this.SuperBatchOrdersComponent) {
         this.SuperBatchOrdersComponent.retrieveFilteredSuperBatchOrders(
-          this.selectedFilters
+          { FilterResultsRequestParams : {
+              ... this.selectedFilters
+          }}
         );
       }
     }
