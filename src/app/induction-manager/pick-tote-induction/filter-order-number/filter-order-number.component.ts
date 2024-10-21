@@ -24,27 +24,43 @@ export class FilterOrderNumberComponent implements OnInit {
 
   @ViewChild('myText', { static: true }) myText: ElementRef;
   orderNumberFilter: string[] = [];
-  subscription: Subscription;
+  subscription: Subscription[];
 
   ngOnInit(): void {
-    this.subscription = this.global.currentMessage.subscribe((message) => {
-      if (message) {
-        if (
-          message.orderNumberFilters &&
-          message.orderNumberFilters.length > 0
-        ) {
-          this.orderNumberFilter = message.orderNumberFilters;
+    let currentMessageSubscription = this.global.currentMessage.subscribe(
+      (message) => {
+        if (message) {
+          if (
+            message.orderNumberFilters &&
+            message.orderNumberFilters.length > 0
+          ) {
+            this.orderNumberFilter = message.orderNumberFilters;
 
-          if (this.myText) {
-            this.myText.nativeElement.value = this.orderNumberFilter.join('\n');
+            if (this.myText) {
+              this.myText.nativeElement.value =
+                this.orderNumberFilter.join('\n');
+            }
           }
         }
       }
+    );
+
+    this.subscription.push(currentMessageSubscription);
+
+    let notifierSubscription = this.global.notifierMessage.subscribe((val) => {
+     
+      if (val) {
+        // this.orderNumberFilter = [];
+      }
     });
+
+    // this.subscription.push(notifierSubscription);
   }
 
   ngOnDestroy(): void {
-    this.subscription.unsubscribe();
+    // this.subscription.forEach((sub) => {
+    //   sub.unsubscribe();
+    // });
   }
 
   onPaste(event: ClipboardEvent) {
@@ -57,8 +73,7 @@ export class FilterOrderNumberComponent implements OnInit {
   onInput(content: string) {
     if (content && content !== '') {
       this.orderNumberFilter = content.split('\n');
-    }
-    else{
+    } else {
       this.orderNumberFilter = [];
     }
   }

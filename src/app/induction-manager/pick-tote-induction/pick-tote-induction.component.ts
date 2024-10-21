@@ -86,16 +86,15 @@ export class PickToteInductionComponent
     OrderNumberFilters: [],
     ColumnFilters: [],
   };
-  subscription: Subscription;
+  subscription: Subscription[];
 
   ngOnInit(): void {
     this.getZoneGroups();
 
-    if (!this.activeTab) this.activeTab = 0;
+    if (!this.activeTab) this.activeTab = 0; // Default tab active should be non super batch orders
     this.refreshOrders();
 
-    this.subscription = this.global.currentMessage.subscribe((message) => {
-      console.log(message);
+    let currentMessageSubscription = this.global.currentMessage.subscribe((message) => {
 
       if (message) {
         if (
@@ -107,9 +106,9 @@ export class PickToteInductionComponent
           ];
           this.selectedFilters.OrderNumberFilters = uniqueOrderNumberFilters;
         }
-        else{
-          this.selectedFilters.OrderNumberFilters = message.orderNumberFilters;
-        }
+        // else{
+        //   this.selectedFilters.OrderNumberFilters = message.orderNumberFilters;
+        // }
 
         if (message.columnFilters) {
           this.selectedFilters.ColumnFilters = message.columnFilters;
@@ -118,6 +117,18 @@ export class PickToteInductionComponent
         this.retrieveOrders();
       }
     });
+
+    this.subscription.push(currentMessageSubscription);
+
+    let notifierSubscription = this.global.notifierMessage.subscribe((val) => {
+  
+      if (val) {
+        // this.selectedFilters.OrderNumberFilters = [];
+        // this.selectedFilters.ColumnFilters = [];
+      }
+    });
+
+    // this.subscription.push(notifierSubscription);
   }
 
   ngAfterViewInit(): void {
@@ -126,7 +137,9 @@ export class PickToteInductionComponent
   }
 
   ngOnDestroy(): void {
-    this.subscription.unsubscribe();
+    this.subscription.forEach((sub)=> {
+      sub.unsubscribe();
+    });
   }
 
   clearToteAndOrderFields() {
@@ -278,16 +291,17 @@ export class PickToteInductionComponent
           this.selectedZones = '';
           this.zoneGroupSelect.value = '';
 
-          if (this.PickToteInductionFilter) {
-            this.PickToteInductionFilter.filters = [];
-            this.selectedFilters.ColumnFilters = [];
-          }
+          // if (this.PickToteInductionFilter) {
+          //   this.PickToteInductionFilter.filters = [];
+          //   this.selectedFilters.ColumnFilters = [];
+          // }
 
-          if (this.FilterOrderNumberComponent) {
-            this.FilterOrderNumberComponent.orderNumberFilter = [];
-            this.selectedFilters.OrderNumberFilters = [];
-          }
+          // if (this.FilterOrderNumberComponent) {
+          //   this.FilterOrderNumberComponent.orderNumberFilter = [];
+          //   this.selectedFilters.OrderNumberFilters = [];
+          // }
 
+          this.global.sendNotifierMessage(true);
           this.retrieveOrders();
         }
       }

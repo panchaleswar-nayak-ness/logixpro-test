@@ -550,12 +550,10 @@ export class ApiFuntions {
   }
 
   public RetrieveNonSuperBatchOrders(params: any): Observable<any> {
-    console.log(params);
     return this.ApiBase.Post('/Induction/nonsuperbatchorders', params);
   }
 
   public RetrieveSuperBatchOrders(params: any): Observable<any> {
-    console.log(params);
     return this.ApiBase.Post('/Induction/superbatchorders', params);
   }
 

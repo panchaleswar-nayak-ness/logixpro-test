@@ -136,6 +136,7 @@ export class NonSuperBatchOrdersComponent implements OnInit, AfterViewInit {
     });
 
     dialogRef.afterClosed().subscribe((result: any) => {
+
       if (result) {
         this.orderNumberFilter = result.orderNumberFilter
           // .split(',')
@@ -161,6 +162,7 @@ export class NonSuperBatchOrdersComponent implements OnInit, AfterViewInit {
     });
 
     dialogRef.afterClosed().subscribe((result: PickToteInductionFilter[]) => {
+
       if (result) {
         this.filters = result;
 

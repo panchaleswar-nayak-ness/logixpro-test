@@ -117,7 +117,6 @@ export class SuperBatchOrdersComponent implements OnInit, AfterViewInit {
     this.updatedPaginator();
     this.updateSorting();
     this.focusFirstInput();
-
   }
 
   updatedPaginator() {
@@ -149,12 +148,17 @@ export class SuperBatchOrdersComponent implements OnInit, AfterViewInit {
     });
 
     dialogRef.afterClosed().subscribe((result: any) => {
-      this.orderNumberFilter = result.orderNumberFilter
-        // .split(',')
-        .map((m: string) => this.global.getTrimmedAndLineBreakRemovedString(m));
 
-      // send the currently selected order number filters to parent component via observable
-      this.global.sendMessage({ orderNumberFilters: this.orderNumberFilter });
+      if (result) {
+        this.orderNumberFilter = result.orderNumberFilter
+          // .split(',')
+          .map((m: string) =>
+            this.global.getTrimmedAndLineBreakRemovedString(m)
+          );
+
+        // send the currently selected order number filters to parent component via observable
+        this.global.sendMessage({ orderNumberFilters: this.orderNumberFilter });
+      }
     });
   }
 
@@ -170,6 +174,7 @@ export class SuperBatchOrdersComponent implements OnInit, AfterViewInit {
     });
 
     dialogRef.afterClosed().subscribe((result: PickToteInductionFilter[]) => {
+   
       if (result) {
         this.filters = result;
 
