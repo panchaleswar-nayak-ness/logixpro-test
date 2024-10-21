@@ -87,6 +87,7 @@ export class PickToteInductionComponent
 
   ngOnInit(): void {
     this.getZoneGroups();
+    this.preloadDefaultZoneGroup();
 
     if (!this.activeTab) this.activeTab = 0; // Default tab active should be non super batch orders
     this.refreshOrders();
@@ -114,6 +115,24 @@ export class PickToteInductionComponent
     );
 
     this.subscription.push(currentMessageSubscription);
+  }
+
+  preloadDefaultZoneGroup() {
+    let response: Observable<any> = this.iInductionManagerApi.PreferenceIndex();
+    response.subscribe((res: any) => {
+      if (res.data && res.isExecuted) {
+        const values = res.data.imPreference;
+
+        this.selectedZoneGrouping = this.zoneGroupingsList.find(
+          (x) => x.ZoneGroup === values.defaultZoneGroup
+        );
+
+        if (this.selectedZoneGrouping) {
+          this.zoneGroupSelect.value = this.selectedZoneGrouping.Id;
+          this.showChange(this.selectedZoneGrouping.Id);
+        } 
+      }
+    });
   }
 
   ngAfterViewInit(): void {
@@ -180,6 +199,7 @@ export class PickToteInductionComponent
             });
 
             this.zoneList = [];
+
           });
         } else {
           this.global.ShowToastr(
