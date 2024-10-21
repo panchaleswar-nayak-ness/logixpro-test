@@ -208,10 +208,27 @@ export class ZoneGroupsComponent implements OnInit {
     });
     this.rebind();
   }
-
+  isRowDirty(index: number): boolean {
+    const formRow = this.items.at(index) as FormGroup;
+    return formRow.dirty;
+  }
+  
   saveItem(index: number) {
     const formRow = this.form.value.items[index];
-
+    const allItems = this.form.value.items;
+    const duplicateItems = allItems.filter(
+      (item: any) => JSON.stringify(item) === JSON.stringify(formRow)
+    );
+  
+    // Check if there is more than one occurrence of the item in the array
+    if (duplicateItems.length > 1) {
+      this.global.ShowToastr(
+        ToasterType.Error,
+        'Duplicate record found. Please remove duplicates.',
+        ToasterTitle.Error
+      );
+      return; // Prevent the save operation
+    }
     this.iInductionManagerApi
       .SaveZoneGrouping(formRow)
       .subscribe((res: any) => {
@@ -257,4 +274,6 @@ export class ZoneGroupsComponent implements OnInit {
         });
     }
   }
+
+
 }

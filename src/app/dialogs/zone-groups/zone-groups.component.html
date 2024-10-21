@@ -126,6 +126,8 @@
                 color="primary"
                 class="xsm-icon-button"
                 (click)="saveItem(rowIndex)"
+                [disabled]="!isRowDirty(rowIndex)"
+              
               >
                 <mat-icon class="material-symbols-outlined">save</mat-icon>
               </button>
@@ -157,6 +159,7 @@
     mat-flat-button
     class="form-button-submit btn-lg flex-grow-1"
     color="primary"
+    
     (click)="refreshZones()"
   >
     Done
