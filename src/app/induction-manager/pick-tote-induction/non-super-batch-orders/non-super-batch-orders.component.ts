@@ -32,6 +32,7 @@ import { catchError, Observable, throwError } from 'rxjs';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort, Sort } from '@angular/material/sort';
 import { LiveAnnouncer } from '@angular/cdk/a11y';
+import { AuthService } from 'src/app/common/init/auth.service';
 
 @Component({
   selector: 'app-non-super-batch-orders',
@@ -43,16 +44,18 @@ export class NonSuperBatchOrdersComponent implements OnInit, AfterViewInit {
     private _liveAnnouncer: LiveAnnouncer,
     private global: GlobalService,
     private Api: ApiFuntions,
-    public inductionManagerApi: InductionManagerApiService
+    public inductionManagerApi: InductionManagerApiService,
+    private authService: AuthService
   ) {
     this.iInductionManagerApi = inductionManagerApi;
+    this.userData = this.authService.userData();
   }
 
   @ViewChild('table') table: MatTable<any>;
   @ViewChildren(MatInput) toteInputs!: QueryList<MatInput>;
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild('paginator') paginator: MatPaginator;
-
+  userData;
   elementData = [
     {
       orderNumber: 'Zone 1',
@@ -173,7 +176,7 @@ export class NonSuperBatchOrdersComponent implements OnInit, AfterViewInit {
   }
 
   retrieveFilteredNonSuperBatchOrders(values: any) {
-    this.Api.RetrieveNonSuperBatchOrders(values).subscribe((filteredOrders) => {
+    this.Api.RetrieveNonSuperBatchOrders({...values, wsId : this.userData.wsid}).subscribe((filteredOrders) => {
       let response = filteredOrders.data.result;
 
       if (response) {
