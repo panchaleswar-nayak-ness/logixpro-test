@@ -210,44 +210,50 @@ export class ZoneGroupsComponent implements OnInit {
   }
   isRowDirty(index: number): boolean {
     const formRow = this.items.at(index) as FormGroup;
-    return formRow.dirty;
+    return formRow.dirty;  // Only enable save if the row is dirty
   }
   
   saveItem(index: number) {
     const formRow = this.form.value.items[index];
     const allItems = this.form.value.items;
+    
+    // Check for duplicate Zone Group Names before saving
     const duplicateItems = allItems.filter(
-      (item: any) => JSON.stringify(item) === JSON.stringify(formRow)
+      (item: any, i: number) => item.zoneGroupName === formRow.zoneGroupName && i !== index
     );
-  
-    // Check if there is more than one occurrence of the item in the array
-    if (duplicateItems.length > 1) {
+    
+    // If duplicates are found, show an error message and prevent save
+    if (duplicateItems.length > 0) {
       this.global.ShowToastr(
         ToasterType.Error,
-        'Duplicate record found. Please remove duplicates.',
+        'Duplicate Zone Group Name found. Please remove duplicates.',
         ToasterTitle.Error
       );
       return; // Prevent the save operation
     }
-    this.iInductionManagerApi
-      .SaveZoneGrouping(formRow)
-      .subscribe((res: any) => {
-        if (res.data && res.isExecuted) {
-          this.global.ShowToastr(
-            ToasterType.Success,
-            'Your details have been saved',
-            ToasterTitle.Success
-          );
-        } else {
-          this.global.ShowToastr(
-            ToasterType.Error,
-            ToasterMessages.SomethingWentWrong,
-            ToasterTitle.Error
-          );
-        }
-      });
+  
+    // If no duplicates, proceed to save the item
+    this.iInductionManagerApi.SaveZoneGrouping(formRow).subscribe((res: any) => {
+      if (res.data && res.isExecuted) {
+        this.global.ShowToastr(
+          ToasterType.Success,
+          'Your details have been saved',
+          ToasterTitle.Success
+        );
+  
+        // Reset the dirty state after successful save
+        const formGroup = this.items.at(index) as FormGroup;
+        formGroup.markAsPristine();  // Reset dirty state
+        this.rebind();  // Refresh the dataSource
+      } else {
+        this.global.ShowToastr(
+          ToasterType.Error,
+          ToasterMessages.SomethingWentWrong,
+          ToasterTitle.Error
+        );
+      }
+    });
   }
-
   removeItem(index: number) {
     const control = this.form.get('items') as FormArray;
     let valueToRemove = control.value[index];
