@@ -36,20 +36,10 @@ export class PickToteInFilterComponent implements OnInit, OnDestroy {
 
     if (this.data?.ColumnFilter.length > 0)
       this.filters = this.data.ColumnFilter;
-
-    let notifierSubscription = this.global.notifierMessage.subscribe((val) => {
-      if (val) {
-        // this.filters = [];
-      }
-    });
-
-    // this.subscription.push(notifierSubscription);
   }
 
   ngOnDestroy(): void {
-    // this.subscription.forEach((sub) => {
-    //   sub.unsubscribe();
-    // });
+
   }
 
   // Initialize table with empty rows, not based on API response
@@ -107,29 +97,10 @@ export class PickToteInFilterComponent implements OnInit, OnDestroy {
   }
 
   selectionChange(value: any) {
-    // console.log('Selected value:', value);
-    // let filterBySelectedValue = this.apiFilterData.filter(
-    //   (f) => f.alias === value
-    // );
+
   }
 
   applyFilter() {
-    // console.log('selected data : ', this.filters);
-    // this.filters.forEach((filter) => {
-    //   // Find the corresponding API data based on ppField selection
-    //   const apiData = this.apiFilterData.find(
-    //     (api) => api.alias === filter.ppField
-    //   );
-    //   if (apiData) {
-    //     filter.startCharacter = apiData.startCharacter;
-    //     filter.endCharacter = apiData.endCharacter;
-    //     (filter.alias = apiData.alias), (filter.ppField = apiData.ppField);
-    //   } else {
-    //     // Handle the case where ppField does not match any API data
-    //     console.log(`No API data found for ppField: ${filter.ppField}`);
-    //   }
-    // });
-
     this.filters.forEach((value) => {
       let filterBySelectedValue = this.apiFilterData.find(
         (f) => f.alias === value.alias

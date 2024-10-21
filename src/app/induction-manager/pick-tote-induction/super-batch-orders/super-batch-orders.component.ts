@@ -154,7 +154,6 @@ export class SuperBatchOrdersComponent implements OnInit, AfterViewInit {
 
       if (result) {
         this.orderNumberFilter = result.orderNumberFilter
-          // .split(',')
           .map((m: string) =>
             this.global.getTrimmedAndLineBreakRemovedString(m)
           );
