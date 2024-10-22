@@ -1,4 +1,10 @@
-import { AfterViewInit, Component, OnInit } from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  ElementRef,
+  OnInit,
+  ViewChild,
+} from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { SelectZonesComponent } from '../select-zones/select-zones.component';
 import {
@@ -27,6 +33,7 @@ import { MatDialogRef } from '@angular/material/dialog';
 })
 export class ZoneGroupsComponent implements OnInit {
   public iInductionManagerApi: IInductionManagerApiService;
+  public dataSource: any;
   displayedColumns: string[] = [
     // 'select',
     'zoneGroupName',
@@ -34,9 +41,9 @@ export class ZoneGroupsComponent implements OnInit {
     'actions',
   ];
   form: FormGroup;
-  public dataSource: any;
   assignedZonesArray: { zone: string }[] = [{ zone: '' }];
   assignedZones: string = '';
+  initialFormValues: any;
 
   constructor(
     private fb: FormBuilder,
@@ -109,6 +116,9 @@ export class ZoneGroupsComponent implements OnInit {
             let items = this.form.controls['items'] as FormArray;
             items.controls[index].patchValue(f);
           });
+
+          if (!this.initialFormValues)
+            this.initialFormValues = this.form.value.items;
         } else {
           this.global.ShowToastr(
             ToasterType.Error,
@@ -211,20 +221,22 @@ export class ZoneGroupsComponent implements OnInit {
     });
     this.rebind();
   }
+
   isRowDirty(index: number): boolean {
     const formRow = this.items.at(index) as FormGroup;
-    return formRow.dirty;  // Only enable save if the row is dirty
+    return formRow.dirty; // Only enable save if the row is dirty
   }
-  
+
   saveItem(index: number) {
     const formRow = this.form.value.items[index];
     const allItems = this.form.value.items;
-    
+
     // Check for duplicate Zone Group Names before saving
     const duplicateItems = allItems.filter(
-      (item: any, i: number) => item.zoneGroupName === formRow.zoneGroupName && i !== index
+      (item: any, i: number) =>
+        item.zoneGroupName === formRow.zoneGroupName && i !== index
     );
-    
+
     // If duplicates are found, show an error message and prevent save
     if (duplicateItems.length > 0) {
       this.global.ShowToastr(
@@ -234,7 +246,23 @@ export class ZoneGroupsComponent implements OnInit {
       );
       return; // Prevent the save operation
     }
-  
+
+    if (
+      this.initialFormValues &&
+      this.initialFormValues.length > 0 &&
+      this.initialFormValues[index]
+    ) {
+      formRow.oldZoneGroupName = this.initialFormValues[index].zoneGroupName;
+    } else {
+      formRow.oldZoneGroupName = '';
+    }
+
+    if (formRow.selectedZones && formRow.selectedZones.length > 0) {
+      formRow.selectedZones = formRow.selectedZones;
+    } else {
+      formRow.selectedZones = [];
+    }
+
     // If no duplicates, proceed to save the item
     this.iInductionManagerApi.SaveZoneGrouping(formRow).subscribe((res: any) => {
       if (res.data && res.isExecuted) {
@@ -262,6 +290,7 @@ export class ZoneGroupsComponent implements OnInit {
       }
     });
   }
+
   removeItem(index: number) {
     const control = this.form.get('items') as FormArray;
     let valueToRemove = control.value[index];
@@ -288,6 +317,4 @@ export class ZoneGroupsComponent implements OnInit {
         });
     }
   }
-
-
 }
