@@ -150,35 +150,6 @@ export class ZoneGroupsComponent implements OnInit {
       },
     });
 
-  //   dialogRef.afterClosed().subscribe((result) => {
-  //     if (result) {
-  //       let zones = '';
-
-  //       const isSelectedZoneNotEmpty =
-  //         result.selectedRecords.length > 0 &&
-  //         result.selectedRecords.every((e) => e.zone !== '');
-
-  //       if (isSelectedZoneNotEmpty) {
-  //         this.assignedZonesArray = result.selectedRecords;
-  //         for (const element of result.selectedRecords) {
-  //           zones = `${zones} ${element.zone}`;
-  //         }
-  //         this.assignedZones = zones.trim();
-
-  //         this.items.controls[index]
-  //           .get('selectedZones')
-  //           ?.patchValue(this.assignedZonesArray);
-  //         this.items.controls[index]
-  //           .get('selectedZone')
-  //           ?.patchValue(this.assignedZones);
-
-  //         this.assignedZones = '';
-  //         this.assignedZonesArray = [];
-  //       }
-  //     }
-  //   });
-  // }
-
   dialogRef.afterClosed().subscribe((result) => {
     if (result) {
       let zones = '';

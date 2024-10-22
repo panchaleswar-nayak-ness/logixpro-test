@@ -131,7 +131,7 @@ export class SelectZonesComponent implements OnInit {
   }
 
   isAllReadyAssigned() {
-    if (this.alreadyAssignedZones.length == this.elementData.length) {
+    if (this.alreadyAssignedZones?.length == this.elementData.length) {
       return true;
     } else {
       return false;
@@ -262,6 +262,7 @@ export class SelectZonesComponent implements OnInit {
 
     this.iInductionManagerApi.AvailableZone(payLoad).subscribe(
       (res: any) => {
+   
         if (res.data && res.isExecuted) {
           this.zoneDetails = res.data.zoneDetails;
 
@@ -286,9 +287,8 @@ export class SelectZonesComponent implements OnInit {
               available: zoneDetail.available,
             });
           }
-
-          this.preselectZonesBySelectedGroupName();
           this.dataSource = new MatTableDataSource<any>(this.elementData);
+          this.preselectZonesBySelectedGroupName();
           this.selectZones();
         } else {
           this.global.ShowToastr(

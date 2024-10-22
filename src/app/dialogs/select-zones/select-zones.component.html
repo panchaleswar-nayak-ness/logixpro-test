@@ -19,7 +19,7 @@
           <mat-checkbox
             (change)="$event ? toggleAllRows($event) : null"
             [checked]="
-              (selection.hasValue() && isAllSelected()) || isAllReadyAssigned() || AllRecordsChecked()
+              (selection.hasValue() && isAllSelected()) || (isAllReadyAssigned() && isProcessPutAways) || AllRecordsChecked()
             "
             [indeterminate]="selection.hasValue() && !isAllSelected()"
             [aria-label]="checkboxLabel()"

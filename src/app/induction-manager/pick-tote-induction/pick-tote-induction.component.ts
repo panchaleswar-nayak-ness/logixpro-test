@@ -83,7 +83,7 @@ export class PickToteInductionComponent
     OrderNumberFilters: [],
     ColumnFilters: [],
   };
-  subscription: Subscription[];
+  subscription: Subscription[] = [];
 
   ngOnInit(): void {
     this.getZoneGroups();
