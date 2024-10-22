@@ -130,7 +130,7 @@ export class PickToteInductionComponent
         if (this.selectedZoneGrouping) {
           this.zoneGroupSelect.value = this.selectedZoneGrouping.Id;
           this.showChange(this.selectedZoneGrouping.Id);
-        } 
+        }
       }
     });
   }
@@ -199,7 +199,6 @@ export class PickToteInductionComponent
             });
 
             this.zoneList = [];
-
           });
         } else {
           this.global.ShowToastr(
@@ -258,11 +257,11 @@ export class PickToteInductionComponent
       }
     } else if (this.activeTab === TabNames.SuperBatch) {
       if (this.SuperBatchOrdersComponent) {
-        this.SuperBatchOrdersComponent.retrieveFilteredSuperBatchOrders(
-          { FilterResultsRequestParams : {
-              ... this.selectedFilters
-          }}
-        );
+        this.SuperBatchOrdersComponent.retrieveFilteredSuperBatchOrders({
+          FilterResultsRequestParams: {
+            ...this.selectedFilters,
+          },
+        });
       }
     }
   }
