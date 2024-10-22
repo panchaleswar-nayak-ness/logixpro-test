@@ -1,45 +1,45 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { GlobalService } from 'src/app/common/services/global.service';
 import { IInductionManagerApiService } from 'src/app/common/services/induction-manager-api/induction-manager-api-interface';
 import { InductionManagerApiService } from 'src/app/common/services/induction-manager-api/induction-manager-api.service';
 import { PickToteInductionFilter } from '../../models/PickToteInductionModel';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { filter, Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-pick-tote-in-filter',
   templateUrl: './pick-tote-in-filter.component.html',
   styleUrls: ['./pick-tote-in-filter.component.scss'],
 })
-export class PickToteInFilterComponent implements OnInit {
-  public iInductionManagerApi: IInductionManagerApiService;
-  filters: PickToteInductionFilter[] = [];
-  apiFilterData: PickToteInductionFilter[] = [];
-
+export class PickToteInFilterComponent implements OnInit, OnDestroy {
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
     public dialogRef: MatDialogRef<PickToteInFilterComponent>,
     public inductionManagerApi: InductionManagerApiService,
     private global: GlobalService
   ) {
-
     this.iInductionManagerApi = inductionManagerApi;
   }
 
   aliasFilterList = [{ colHeader: '', colDef: '' }];
-  displayedColumns: string[] = [
-    // 'select', 
-    'field', 
-    'fieldValue', 
-    'actions'
-  ];
+  displayedColumns: string[] = ['field', 'fieldValue', 'actions'];
   elementData = [{ field: 'Zone 1' }];
+  public iInductionManagerApi: IInductionManagerApiService;
+  filters: PickToteInductionFilter[] = [];
+  apiFilterData: PickToteInductionFilter[] = [];
+  subscription: Subscription[];
 
   ngOnInit(): void {
     this.GetPickToteInductionFilterData();
     this.initializeRows(); // Initialize table rows independently of the API response
-  
-    if (this.data?.ColumnFilter.length > 0) this.filters = this.data.ColumnFilter;
+
+    if (this.data?.ColumnFilter.length > 0)
+      this.filters = this.data.ColumnFilter;
+  }
+
+  ngOnDestroy(): void {
+
   }
 
   // Initialize table with empty rows, not based on API response
@@ -67,12 +67,13 @@ export class PickToteInFilterComponent implements OnInit {
       endCharacter: 0, // Will be set from API data
       Value: '', // User inputs this
     };
+
     this.filters = [newRow, ...this.filters];
   }
 
   // Method to remove a row
   removeRow(index: number) {
-    if (this.filters.length > 1) {
+    if (this.filters.length >= 1) {
       this.filters.splice(index, 1); // Remove row from the filters array
       this.filters = [...this.filters]; // Trigger change detection
     }
@@ -88,41 +89,31 @@ export class PickToteInFilterComponent implements OnInit {
 
           // Populate aliasFilterList with alias values from API
           this.aliasFilterList = this.apiFilterData.map((item: any) => ({
-            colHeader: item.alias,
+            colHeader: item.ppField,
             colDef: item.alias,
           }));
         }
       });
   }
-  
+
   selectionChange(value: any) {
-    console.log('Selected value:', value);
+
   }
 
   applyFilter() {
-  
-    console.log('selected data : ', this.filters);
-  
-    this.filters.forEach((filter) => {
-      // Find the corresponding API data based on ppField selection
-      const apiData = this.apiFilterData.find(
-        (api) => api.alias === filter.ppField
+    this.filters.forEach((value) => {
+      let filterBySelectedValue = this.apiFilterData.find(
+        (f) => f.alias === value.alias
       );
-      if (apiData) {
-        filter.startCharacter = apiData.startCharacter;
-        filter.endCharacter = apiData.endCharacter;
-        (filter.alias = apiData.alias), (filter.ppField = apiData.ppField);
-      } else {
-        // Handle the case where ppField does not match any API data
-        console.log(`No API data found for ppField: ${filter.ppField}`);
-      }
+      value.ppField = filterBySelectedValue?.ppField;
     });
 
-    this.close();
+    this.dialogRef.close(this.filters);
     // You can now send `finalFilters` to your backend API or use it as needed
   }
 
   close() {
+    this.filters = [];
     this.dialogRef.close(this.filters);
   }
 }

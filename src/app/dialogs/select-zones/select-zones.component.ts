@@ -59,7 +59,7 @@ export class SelectZonesComponent implements OnInit {
   alreadyAssignedZones: any;
   imPreferences: any;
   autoAssignAllZones: any;
-  isNotProcessPutAways: boolean;
+  isProcessPutAways: boolean;
   isPickToteInduction: boolean;
   isAdminPreferences: boolean;
   zoneList: string[];
@@ -76,15 +76,10 @@ export class SelectZonesComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    // this.elementData.length=0;
-    // this.batchID = this.data.batchId;
-    // this.isNewBatch=this.data.isNewBatch;
-    // this.wsid=this.data.wsid;
-
-    this.isNotProcessPutAways = this.router.url
+    this.isProcessPutAways = this.router.url
       .toLowerCase()
       .includes('processputaways');
-    this.btnText = this.isNotProcessPutAways ? 'Continue' : 'Done';
+    this.btnText = this.isProcessPutAways ? 'Continue' : 'Done';
     this.isPickToteInduction = this.router.url
       .toLowerCase()
       .includes('picktoteinduction');
@@ -92,8 +87,18 @@ export class SelectZonesComponent implements OnInit {
       .toLowerCase()
       .includes('adminprefrences');
 
+    this.elementData.length = 0;
+    this.batchID = this.data.batchId;
+    this.username = this.data.userId;
+    this.isNewBatch = this.data.isNewBatch;
+    this.wsid = this.data.wsid;
     this.alreadyAssignedZones = this.data.assignedZones;
     this.getAvailableZones();
+  }
+
+  disableCheckbox(row: { selected: boolean; available: boolean }) {
+    let res = row.selected == false && row.available == false;
+    return res;
   }
 
   selectZone(row: any) {
@@ -125,17 +130,13 @@ export class SelectZonesComponent implements OnInit {
     return selected;
   }
 
-  // isAllReadyAssigned()
-  // {
-  //   if(this.alreadyAssignedZones.length==this.elementData.length)
-  //   {
-  //     return true;
-  //   }
-  //   else
-  //   {
-  //     return false;
-  //   }
-  // }
+  isAllReadyAssigned() {
+    if (this.alreadyAssignedZones?.length == this.elementData.length) {
+      return true;
+    } else {
+      return false;
+    }
+  }
 
   /** Selects all rows if they are not all selected; otherwise clear selection. */
   toggleAllRows($event: any) {
@@ -218,10 +219,14 @@ export class SelectZonesComponent implements OnInit {
       }
     }
 
-    this.dialogRef.close({
-      selectedRecords: selectedRecords,
-      zoneList: this.zoneList,
-    });
+    if (this.isPickToteInduction || this.isAdminPreferences) {
+      this.dialogRef.close({
+        selectedRecords: selectedRecords,
+        zoneList: this.zoneList,
+      });
+    } else {
+      this.dialogRef.close(selectedRecords);
+    }
   }
 
   close() {
@@ -257,6 +262,7 @@ export class SelectZonesComponent implements OnInit {
 
     this.iInductionManagerApi.AvailableZone(payLoad).subscribe(
       (res: any) => {
+   
         if (res.data && res.isExecuted) {
           this.zoneDetails = res.data.zoneDetails;
 
@@ -281,9 +287,8 @@ export class SelectZonesComponent implements OnInit {
               available: zoneDetail.available,
             });
           }
-
-          this.preselectZonesBySelectedGroupName();
           this.dataSource = new MatTableDataSource<any>(this.elementData);
+          this.preselectZonesBySelectedGroupName();
           this.selectZones();
         } else {
           this.global.ShowToastr(
@@ -316,24 +321,26 @@ export class SelectZonesComponent implements OnInit {
   }
 
   selectZones() {
-    if (this.data) {
-      this.zoneList = this.data;
+    if (this.isPickToteInduction || this.isAdminPreferences) {
+      if (this.data) {
+        this.zoneList = this.data;
 
-      this.dataSource.data.forEach((x) => {
-        if (this.data?.assignedZones?.selectedRecords) {
-          var availableZone = this.data.assignedZones.selectedRecords.find(
-            (y) => y.zone === x.zone
-          );
-        } else if (this.data.zoneList) {
-          var availableZone = this.data.zoneList.find((y) => y === x.zone);
-        }
+        this.dataSource.data.forEach((x) => {
+          if (this.data?.assignedZones?.selectedRecords) {
+            var availableZone = this.data.assignedZones.selectedRecords.find(
+              (y) => y.zone === x.zone
+            );
+          } else if (this.data.zoneList) {
+            var availableZone = this.data.zoneList.find((y) => y === x.zone);
+          }
 
-        if (availableZone) {
-          x.selected = true;
-        }
+          if (availableZone) {
+            x.selected = true;
+          }
 
-        x.available = true;
-      });
+          x.available = true;
+        });
+      }
     }
   }
 }

@@ -82,9 +82,15 @@ export class GlobalService {
 
   private messageSource = new BehaviorSubject<any>({});
   currentMessage = this.messageSource.asObservable();
+  private notifier = new BehaviorSubject<boolean>(false);
+  notifierMessage = this.notifier.asObservable();
 
   sendMessage(message: any) {
     this.messageSource.next(message);
+  }
+
+  sendNotifierMessage(message: boolean) {
+    this.notifier.next(message);
   }
 
   getTrimmedAndLineBreakRemovedString(value: string) {

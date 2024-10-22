@@ -263,7 +263,10 @@ export class CrossDockTransactionComponent implements OnInit {
         this.global.ShowToastr(ToasterType.Error, 'Completed Quantity cannot be 0', ToasterTitle.Error);
         return;
       }
-
+      if (this.transactions[this.selectedRow].completedQuantity > this.data.values.transactionQuantity) {
+        this.global.ShowToastr(ToasterType.Error, 'Completed Quantity cannot be greater than the source Put Away', ToasterTitle.Error);
+        return;
+      }
       let dialogRef: any = this.global.OpenDialog(ConfirmationDialogComponent, {
         height: 'auto',
         width: Style.w560px,

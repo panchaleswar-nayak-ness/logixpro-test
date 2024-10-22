@@ -130,6 +130,26 @@ export class ImprefInductionFilterComponent implements OnInit {
   }
   // Save the filter at the specified index
   saveFilter(filter: PickToteInductionFilter): void {
+    debugger
+    const duplicateFilters = this.filters.filter((item: any) => {
+      return (
+        item.ppField===filter.ppField &&
+        item.alias === filter.alias &&
+        item.startCharacter === filter.startCharacter &&
+        item.endCharacter === filter.endCharacter
+      );
+    });
+  
+  
+    // If duplicates exist, show error toast and prevent API call
+    if (duplicateFilters.length > 1) {
+      this.global.ShowToastr(
+        ToasterType.Error,
+        'Duplicate filter found. Please remove duplicates.',
+        ToasterTitle.Error
+      );
+      return; // Stop execution to prevent the save
+    }
     this.iInductionManagerApi.AddPickToteInductionFilter(filter).subscribe(response => {
       if (response.isExecuted) {
         this.GetPickToteInductionFilterData();

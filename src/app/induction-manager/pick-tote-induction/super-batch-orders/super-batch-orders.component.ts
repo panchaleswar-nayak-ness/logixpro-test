@@ -27,6 +27,7 @@ import { MatSort, Sort } from '@angular/material/sort';
 import { MatPaginator } from '@angular/material/paginator';
 import { LiveAnnouncer } from '@angular/cdk/a11y';
 import { MatInput } from '@angular/material/input';
+import { AuthService } from 'src/app/common/init/auth.service';
 
 @Component({
   selector: 'app-super-batch-orders',
@@ -38,15 +39,17 @@ export class SuperBatchOrdersComponent implements OnInit, AfterViewInit {
     private _liveAnnouncer: LiveAnnouncer,
     private global: GlobalService,
     private Api: ApiFuntions,
-    public inductionManagerApi: InductionManagerApiService
+    public inductionManagerApi: InductionManagerApiService,
+    private authService: AuthService
   ) {
     this.iInductionManagerApi = inductionManagerApi;
+    this.userData = this.authService.userData();
   }
 
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild('paginator') paginator: MatPaginator;
   @ViewChildren(MatInput) toteInputs!: QueryList<MatInput>;
-
+  userData;
   displayedColumns: string[] = [
     'itemNumber',
     'priority',
@@ -117,7 +120,6 @@ export class SuperBatchOrdersComponent implements OnInit, AfterViewInit {
     this.updatedPaginator();
     this.updateSorting();
     this.focusFirstInput();
-
   }
 
   updatedPaginator() {
@@ -149,12 +151,16 @@ export class SuperBatchOrdersComponent implements OnInit, AfterViewInit {
     });
 
     dialogRef.afterClosed().subscribe((result: any) => {
-      this.orderNumberFilter = result.orderNumberFilter
-        // .split(',')
-        .map((m: string) => this.global.getTrimmedAndLineBreakRemovedString(m));
 
-      // send the currently selected order number filters to parent component via observable
-      this.global.sendMessage({ orderNumberFilters: this.orderNumberFilter });
+      if (result) {
+        this.orderNumberFilter = result.orderNumberFilter
+          .map((m: string) =>
+            this.global.getTrimmedAndLineBreakRemovedString(m)
+          );
+
+        // send the currently selected order number filters to parent component via observable
+        this.global.sendMessage({ orderNumberFilters: this.orderNumberFilter });
+      }
     });
   }
 
@@ -170,6 +176,7 @@ export class SuperBatchOrdersComponent implements OnInit, AfterViewInit {
     });
 
     dialogRef.afterClosed().subscribe((result: PickToteInductionFilter[]) => {
+   
       if (result) {
         this.filters = result;
 
@@ -180,7 +187,7 @@ export class SuperBatchOrdersComponent implements OnInit, AfterViewInit {
   }
 
   retrieveFilteredSuperBatchOrders(values: any) {
-    this.Api.RetrieveSuperBatchOrders(values).subscribe((filteredOrders) => {
+    this.Api.RetrieveSuperBatchOrders({...values, wsId : this.userData.wsid}).subscribe((filteredOrders) => {
       this.rebind(filteredOrders.data);
     });
   }

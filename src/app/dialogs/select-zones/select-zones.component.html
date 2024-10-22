@@ -19,7 +19,7 @@
           <mat-checkbox
             (change)="$event ? toggleAllRows($event) : null"
             [checked]="
-              (selection.hasValue() && isAllSelected()) || AllRecordsChecked()
+              (selection.hasValue() && isAllSelected()) || (isAllReadyAssigned() && isProcessPutAways) || AllRecordsChecked()
             "
             [indeterminate]="selection.hasValue() && !isAllSelected()"
             [aria-label]="checkboxLabel()"
@@ -36,7 +36,7 @@
               selection.isSelected(row) ||
               (row.selected == false && row.available == false)
             "
-            [disabled]="row.selected == false && row.available == false"
+            [disabled]="disableCheckbox(row)"
             [aria-label]="checkboxLabel(row)"
             color="primary"
             [matTooltip]="
@@ -94,7 +94,7 @@
   </ng-scrollbar>
 </div>
 <div class="d-flex gap-12">
-  <div class="d-flex gap-12" *ngIf="isNotProcessPutAways">
+  <div class="d-flex gap-12" *ngIf="isProcessPutAways">
     <button
       type="submit"
       mat-stroked-button

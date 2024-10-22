@@ -1,4 +1,10 @@
-import { Component, ElementRef, Inject, OnInit, ViewChild } from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  Inject,
+  OnInit,
+  ViewChild,
+} from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MatInput } from '@angular/material/input';
 import { Subscription } from 'rxjs';
@@ -18,28 +24,19 @@ export class FilterOrderNumberComponent implements OnInit {
 
   @ViewChild('myText', { static: true }) myText: ElementRef;
   orderNumberFilter: string[] = [];
-  subscription: Subscription;
+  subscription: Subscription[];
 
   ngOnInit(): void {
-    this.subscription = this.global.currentMessage.subscribe((message) => {
-  
-      if (message) {
-        if (
-          message.orderNumberFilters &&
-          message.orderNumberFilters.length > 0
-        ) {
-          this.orderNumberFilter = message.orderNumberFilters;
-
-          if (this.myText) {
-            this.myText.nativeElement.value = this.orderNumberFilter.join('\n');
-          }
-        }
-      }
-    });
+    
+    this.orderNumberFilter = this.data.OrderNumberFilter;
+    
+    if (this.myText) {
+      this.myText.nativeElement.value = this.orderNumberFilter.join('\n');
+    }
   }
 
   ngOnDestroy(): void {
-    this.subscription.unsubscribe();
+   
   }
 
   onPaste(event: ClipboardEvent) {
@@ -52,6 +49,8 @@ export class FilterOrderNumberComponent implements OnInit {
   onInput(content: string) {
     if (content && content !== '') {
       this.orderNumberFilter = content.split('\n');
+    } else {
+      this.orderNumberFilter = [];
     }
   }
 

@@ -1,4 +1,10 @@
-import { AfterViewInit, Component, OnInit } from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  ElementRef,
+  OnInit,
+  ViewChild,
+} from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { SelectZonesComponent } from '../select-zones/select-zones.component';
 import {
@@ -27,6 +33,7 @@ import { MatDialogRef } from '@angular/material/dialog';
 })
 export class ZoneGroupsComponent implements OnInit {
   public iInductionManagerApi: IInductionManagerApiService;
+  public dataSource: any;
   displayedColumns: string[] = [
     // 'select',
     'zoneGroupName',
@@ -34,9 +41,9 @@ export class ZoneGroupsComponent implements OnInit {
     'actions',
   ];
   form: FormGroup;
-  public dataSource: any;
   assignedZonesArray: { zone: string }[] = [{ zone: '' }];
   assignedZones: string = '';
+  initialFormValues: any;
 
   constructor(
     private fb: FormBuilder,
@@ -59,41 +66,43 @@ export class ZoneGroupsComponent implements OnInit {
     this.rebind();
     this.getZoneGroupings();
   }
-
   getGroupedData(data: any[]) {
-    let groupedData = {};
-
+    let groupedData: { [key: string]: any[] } = {};
+  
     data.forEach((item) => {
       const key = item.zoneGroupName;
-
+  
       if (!groupedData[key]) {
         groupedData[key] = [];
       }
-
-      groupedData[key].push(item.zoneName);
+  
+      groupedData[key].push(item);
     });
-
+  
     return groupedData;
   }
-
+  
   getGroupedZoneGroupings(data: any) {
     let grouped = this.getGroupedData(data);
     let res: any[] = [];
-
+  
     Object.entries(grouped).forEach(function (val: any[], index) {
-      let selZone = val[1].join(' ');
-
+      // Accessing zoneName from each item in the array
+      let selZone = val[1].map((item: any) => item.zoneName).join(' ');
+      let id = val[1][0]?.id || 0;
       res.push({
         available: false,
         selectedZones: '',
         zoneName: '',
+        id: id,
         zoneGroupName: val[0],
         selectedZone: selZone,
       });
     });
-
+  
     return res;
   }
+  
 
   getZoneGroupings() {
     try {
@@ -107,6 +116,9 @@ export class ZoneGroupsComponent implements OnInit {
             let items = this.form.controls['items'] as FormArray;
             items.controls[index].patchValue(f);
           });
+
+          if (!this.initialFormValues)
+            this.initialFormValues = this.form.value.items;
         } else {
           this.global.ShowToastr(
             ToasterType.Error,
@@ -120,7 +132,7 @@ export class ZoneGroupsComponent implements OnInit {
     } catch (error) {}
   }
 
-  openSelectZones(index: string | number) {
+ openSelectZones(index: number) {
     let zoneList: any[] = [];
     let { selectedZone } = this.form.value.items[index];
     selectedZone.split(' ').forEach((val) => {
@@ -138,34 +150,38 @@ export class ZoneGroupsComponent implements OnInit {
       },
     });
 
-    dialogRef.afterClosed().subscribe((result) => {
-      if (result) {
-        let zones = '';
+  dialogRef.afterClosed().subscribe((result) => {
+    if (result) {
+      let zones = '';
 
-        const isSelectedZoneNotEmpty =
-          result.selectedRecords.length > 0 &&
-          result.selectedRecords.every((e) => e.zone !== '');
+      const isSelectedZoneNotEmpty =
+        result.selectedRecords.length > 0 &&
+        result.selectedRecords.every((e) => e.zone !== '');
 
-        if (isSelectedZoneNotEmpty) {
-          this.assignedZonesArray = result.selectedRecords;
-          for (const element of result.selectedRecords) {
-            zones = `${zones} ${element.zone}`;
-          }
-          this.assignedZones = zones.trim();
-
-          this.items.controls[index]
-            .get('selectedZones')
-            ?.patchValue(this.assignedZonesArray);
-          this.items.controls[index]
-            .get('selectedZone')
-            ?.patchValue(this.assignedZones);
-
-          this.assignedZones = '';
-          this.assignedZonesArray = [];
+      if (isSelectedZoneNotEmpty) {
+        this.assignedZonesArray = result.selectedRecords;
+        for (const element of result.selectedRecords) {
+          zones = `${zones} ${element.zone}`;
         }
+        this.assignedZones = zones.trim();
+
+        // Patch the values
+        this.items.controls[index]
+          .get('selectedZones')
+          ?.patchValue(this.assignedZonesArray);
+        this.items.controls[index]
+          .get('selectedZone')
+          ?.patchValue(this.assignedZones);
+
+        // Mark selectedZone as dirty
+        this.items.controls[index].get('selectedZone')?.markAsDirty();
+
+        this.assignedZones = '';
+        this.assignedZonesArray = [];
       }
-    });
-  }
+    }
+  });
+}
 
   refreshZones() {
     this.dialogRef.close({
@@ -175,6 +191,7 @@ export class ZoneGroupsComponent implements OnInit {
 
   createFormGroup(): FormGroup {
     let formGroup = this.fb.group({
+      id: new FormControl(0, []),
       zoneName: new FormControl('', []),
       zoneGroupName: new FormControl('', []),
       selectedZone: new FormControl('', []),
@@ -209,26 +226,73 @@ export class ZoneGroupsComponent implements OnInit {
     this.rebind();
   }
 
+  isRowDirty(index: number): boolean {
+    const formRow = this.items.at(index) as FormGroup;
+    return formRow.dirty; // Only enable save if the row is dirty
+  }
+
   saveItem(index: number) {
     const formRow = this.form.value.items[index];
+    const allItems = this.form.value.items;
 
-    this.iInductionManagerApi
-      .SaveZoneGrouping(formRow)
-      .subscribe((res: any) => {
-        if (res.data && res.isExecuted) {
-          this.global.ShowToastr(
-            ToasterType.Success,
-            'Your details have been saved',
-            ToasterTitle.Success
-          );
-        } else {
-          this.global.ShowToastr(
-            ToasterType.Error,
-            ToasterMessages.SomethingWentWrong,
-            ToasterTitle.Error
-          );
-        }
-      });
+    // Check for duplicate Zone Group Names before saving
+    const duplicateItems = allItems.filter(
+      (item: any, i: number) =>
+        item.zoneGroupName === formRow.zoneGroupName && i !== index
+    );
+
+    // If duplicates are found, show an error message and prevent save
+    if (duplicateItems.length > 0) {
+      this.global.ShowToastr(
+        ToasterType.Error,
+        'Duplicate Zone Group Name found. Please remove duplicates.',
+        ToasterTitle.Error
+      );
+      return; // Prevent the save operation
+    }
+
+    if (
+      this.initialFormValues &&
+      this.initialFormValues.length > 0 &&
+      this.initialFormValues[index]
+    ) {
+      formRow.oldZoneGroupName = this.initialFormValues[index].zoneGroupName;
+    } else {
+      formRow.oldZoneGroupName = '';
+    }
+
+    if (formRow.selectedZones && formRow.selectedZones.length > 0) {
+      formRow.selectedZones = formRow.selectedZones;
+    } else {
+      formRow.selectedZones = [];
+    }
+
+    // If no duplicates, proceed to save the item
+    this.iInductionManagerApi.SaveZoneGrouping(formRow).subscribe((res: any) => {
+      if (res.data && res.isExecuted) {
+        this.global.ShowToastr(
+          ToasterType.Success,
+          'Your details have been saved',
+          ToasterTitle.Success
+        );
+        
+        // Reset the dirty state after successful save
+        const formGroup = this.items.at(index) as FormGroup;
+        formGroup.markAsPristine();  // Reset dirty state
+        let formArray = this.form.controls['items'] as FormArray;
+
+        formGroup.patchValue({ id: res.data }); // Update the id in the form
+      
+        formGroup.value.id = res.data;
+        this.rebind();  // Refresh the dataSource
+      } else {
+        this.global.ShowToastr(
+          ToasterType.Error,
+          ToasterMessages.SomethingWentWrong,
+          ToasterTitle.Error
+        );
+      }
+    });
   }
 
   removeItem(index: number) {
@@ -237,7 +301,7 @@ export class ZoneGroupsComponent implements OnInit {
     control.removeAt(index);
     this.rebind();
 
-    if (valueToRemove.zoneGroupName) {
+    if (valueToRemove.id !== 0) {
       this.iInductionManagerApi
         .RemoveZoneGrouping(valueToRemove.zoneGroupName)
         .subscribe((res: any) => {

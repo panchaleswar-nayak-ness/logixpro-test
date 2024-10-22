@@ -126,8 +126,7 @@
     },
     {
         "path": "/InductionManager/PickToteInduction",
-        "Permission": "Induction Manager",
-        "Permission": "Induction Super Batch"
+        "Permission": "Pick Tote Induction"
     },
     {
         "path": "/InductionManager/ProcessPutAways",
@@ -135,7 +134,7 @@
     },
     {
         "path": "/InductionManager/SuperBatch",
-        "Permission": "Tote Transactions"
+        "Permission": "Induction Super Batch"
     },
     {
         "path": "/OrderManager",

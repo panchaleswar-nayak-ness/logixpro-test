@@ -394,7 +394,7 @@ export class ProcessPutAwaysComponent implements OnInit {
         if (result) {
           let zones = 'Zones:';
           this.assignedZonesArray = result;
-          for (const element of result?.selectedRecords) {
+          for (const element of result) {
             zones = zones + ' ' + element.zone;
           }
           this.assignedZones = zones;
