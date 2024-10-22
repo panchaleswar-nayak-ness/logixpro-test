@@ -59,41 +59,43 @@ export class ZoneGroupsComponent implements OnInit {
     this.rebind();
     this.getZoneGroupings();
   }
-
   getGroupedData(data: any[]) {
-    let groupedData = {};
-
+    let groupedData: { [key: string]: any[] } = {};
+  
     data.forEach((item) => {
       const key = item.zoneGroupName;
-
+  
       if (!groupedData[key]) {
         groupedData[key] = [];
       }
-
-      groupedData[key].push(item.zoneName);
+  
+      groupedData[key].push(item);
     });
-
+  
     return groupedData;
   }
-
+  
   getGroupedZoneGroupings(data: any) {
     let grouped = this.getGroupedData(data);
     let res: any[] = [];
-
+  
     Object.entries(grouped).forEach(function (val: any[], index) {
-      let selZone = val[1].join(' ');
-
+      // Accessing zoneName from each item in the array
+      let selZone = val[1].map((item: any) => item.zoneName).join(' ');
+      let id = val[1][0]?.id || 0;
       res.push({
         available: false,
         selectedZones: '',
         zoneName: '',
+        id: id,
         zoneGroupName: val[0],
         selectedZone: selZone,
       });
     });
-
+  
     return res;
   }
+  
 
   getZoneGroupings() {
     try {
@@ -175,6 +177,7 @@ export class ZoneGroupsComponent implements OnInit {
 
   createFormGroup(): FormGroup {
     let formGroup = this.fb.group({
+      id: new FormControl(0, []),
       zoneName: new FormControl('', []),
       zoneGroupName: new FormControl('', []),
       selectedZone: new FormControl('', []),
@@ -240,10 +243,15 @@ export class ZoneGroupsComponent implements OnInit {
           'Your details have been saved',
           ToasterTitle.Success
         );
-  
+        
         // Reset the dirty state after successful save
         const formGroup = this.items.at(index) as FormGroup;
         formGroup.markAsPristine();  // Reset dirty state
+        let formArray = this.form.controls['items'] as FormArray;
+
+        formGroup.patchValue({ id: res.data }); // Update the id in the form
+      
+        formGroup.value.id = res.data;
         this.rebind();  // Refresh the dataSource
       } else {
         this.global.ShowToastr(
@@ -260,7 +268,7 @@ export class ZoneGroupsComponent implements OnInit {
     control.removeAt(index);
     this.rebind();
 
-    if (valueToRemove.zoneGroupName) {
+    if (valueToRemove.id !== 0) {
       this.iInductionManagerApi
         .RemoveZoneGrouping(valueToRemove.zoneGroupName)
         .subscribe((res: any) => {
