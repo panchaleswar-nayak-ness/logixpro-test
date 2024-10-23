@@ -212,6 +212,7 @@ export class SuperBatchOrdersComponent implements OnInit, AfterViewInit {
       maxToteQuantity: 0,
       maxSuperBatchSize: 0,
       inductionType: 'SuperBatch',
+      wsId : this.userData.wsid
     };
 
     let response: Observable<any> = this.iInductionManagerApi.PreferenceIndex();
