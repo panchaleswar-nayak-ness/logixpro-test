@@ -4,8 +4,9 @@ import { GlobalService } from 'src/app/common/services/global.service';
 import { IInductionManagerApiService } from 'src/app/common/services/induction-manager-api/induction-manager-api-interface';
 import { InductionManagerApiService } from 'src/app/common/services/induction-manager-api/induction-manager-api.service';
 import { PickToteInductionFilter } from '../../models/PickToteInductionModel';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { filter, Subscription } from 'rxjs';
+import { DeleteConfirmationComponent } from 'src/app/admin/dialogs/delete-confirmation/delete-confirmation.component';
 
 @Component({
   selector: 'app-pick-tote-in-filter',
@@ -17,7 +18,8 @@ export class PickToteInFilterComponent implements OnInit, OnDestroy {
     @Inject(MAT_DIALOG_DATA) public data: any,
     public dialogRef: MatDialogRef<PickToteInFilterComponent>,
     public inductionManagerApi: InductionManagerApiService,
-    private global: GlobalService
+    private global: GlobalService,
+    public dialog: MatDialog 
   ) {
     this.iInductionManagerApi = inductionManagerApi;
   }
@@ -71,11 +73,23 @@ export class PickToteInFilterComponent implements OnInit, OnDestroy {
     this.filters = [newRow, ...this.filters];
   }
 
-  // Method to remove a row
   removeRow(index: number) {
     if (this.filters.length >= 1) {
-      this.filters.splice(index, 1); // Remove row from the filters array
-      this.filters = [...this.filters]; // Trigger change detection
+      const dialogRef = this.dialog.open(DeleteConfirmationComponent, {
+        width: '460px',
+        disableClose: true,
+        data: {
+          actionMessage: ` this filter row`,
+          action: 'delete',
+        },
+      });
+  
+      dialogRef.afterClosed().subscribe(result => {
+        if (result === 'Yes') {  // Proceed only if the user confirms
+          this.filters.splice(index, 1); // Remove row from the filters array
+          this.filters = [...this.filters]; // Trigger change detection
+        }
+      });
     }
   }
 

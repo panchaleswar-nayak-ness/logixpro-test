@@ -1,10 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialogRef } from '@angular/material/dialog';
-import { ToasterTitle, ToasterType } from 'src/app/common/constants/strings.constants';
+import { ResponseStrings, ToasterTitle, ToasterType } from 'src/app/common/constants/strings.constants';
 import { GlobalService } from 'src/app/common/services/global.service';
 import { IInductionManagerApiService } from 'src/app/common/services/induction-manager-api/induction-manager-api-interface';
 import { InductionManagerApiService } from 'src/app/common/services/induction-manager-api/induction-manager-api.service';
 import { AddPickToteInductionFilter, PickToteInductionFilter } from 'src/app/induction-manager/models/PickToteInductionModel';
+import { MatDialog } from '@angular/material/dialog';
+import { DeleteConfirmationComponent } from 'src/app/admin/dialogs/delete-confirmation/delete-confirmation.component';
 
 @Component({
   selector: 'app-impref-induction-filter',
@@ -78,10 +80,8 @@ export class ImprefInductionFilterComponent implements OnInit {
   constructor(
     public inductionManagerApi: InductionManagerApiService,
     private global: GlobalService,
-    public dialogRef: MatDialogRef<ImprefInductionFilterComponent> // Inject MatDialogRef here
-
-
-
+    public dialogRef: MatDialogRef<ImprefInductionFilterComponent>, // Inject MatDialogRef here
+    public dialog: MatDialog
   ) {
     this.iInductionManagerApi = inductionManagerApi;
   }
@@ -166,47 +166,68 @@ export class ImprefInductionFilterComponent implements OnInit {
     });
   }
 
-  // Remove the filter at the specified index
   removeFilter(filter: PickToteInductionFilter): void {
-    const index = this.filters.indexOf(filter);
-    if (index !== -1) {
-      this.filters.splice(index, 1);
-      this.filters = [...this.filters]; // Re-assign to a new array reference
-    }
-    if(filter.id >0){
-      this.iInductionManagerApi.DeletePickToteInductionFilter([filter.id]).subscribe((response: any) => {
-        if (response.isExecuted) {
-          this.GetPickToteInductionFilterData();
-          this.global.ShowToastr(
-            ToasterType.Success,
-            'Record have been Deleted',
-            ToasterTitle.Success
-          );
-        }else{
-          this.global.ShowToastr(ToasterType.Error, this.global.globalErrorMsg(), ToasterTitle.Error);
+    const dialogRef = this.dialog.open(DeleteConfirmationComponent, {
+      width: '460px', // Set a custom width for the dialog if needed
+      disableClose: true, // Disable closing by clicking outside
+      data: {
+        actionMessage: ` this filter`,
+        action: 'delete',
+      },
+    });
+  
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result === ResponseStrings.Yes) {
+        const index = this.filters.indexOf(filter);
+        if (index !== -1) {
+          this.filters.splice(index, 1); // Remove locally
+          if (filter.id > 0) { // If filter exists on the server, delete it via API
+            this.iInductionManagerApi.DeletePickToteInductionFilter([filter.id]).subscribe((response: any) => {
+              if (response.isExecuted) {
+                this.GetPickToteInductionFilterData();
+                this.global.ShowToastr(
+                  ToasterType.Success,
+                  'Filter has been deleted',
+                  ToasterTitle.Success
+                );
+              } else {
+                this.global.ShowToastr(ToasterType.Error, this.global.globalErrorMsg(), ToasterTitle.Error);
+              }
+            });
+          }
         }
-      }); 
-    }
-  }
-    
-  removeAllFilters(): void {
-    // Call the API to delete all filters
-    const ids = this.filters.map(filter => filter.id);
-    this.iInductionManagerApi.DeletePickToteInductionFilter(ids).subscribe((response: any) => {
-      if (response.isExecuted) {
-        // Clear the filters array locally
-        this.filters = [];
-        this.global.ShowToastr(
-          ToasterType.Success,
-          'All filters have been removed',
-          ToasterTitle.Success
-        );
-      } else {
-        this.global.ShowToastr(ToasterType.Error, this.global.globalErrorMsg(), ToasterTitle.Error);
       }
     });
   }
+    
+  removeAllFilters(): void {
+    const dialogRef = this.dialog.open(DeleteConfirmationComponent, {
+      width: '460px',
+      disableClose: true,
+      data: {
+        actionMessage: ' all filters',
+        action: 'remove',
+      },
+    });
   
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result === ResponseStrings.Yes) {
+        const ids = this.filters.map(filter => filter.id);
+        this.iInductionManagerApi.DeletePickToteInductionFilter(ids).subscribe((response: any) => {
+          if (response.isExecuted) {
+            this.filters = []; // Clear all filters locally
+            this.global.ShowToastr(
+              ToasterType.Success,
+              'All filters have been deleted',
+              ToasterTitle.Success
+            );
+          } else {
+            this.global.ShowToastr(ToasterType.Error, this.global.globalErrorMsg(), ToasterTitle.Error);
+          }
+        });
+      }
+    });
+  }
   onSubmit(): void {
     this.dialogRef.close(); // This will close the dialog when submit is clicked
     

@@ -24,7 +24,8 @@ import {
   FormArray,
 } from '@angular/forms';
 import { MatCheckboxChange } from '@angular/material/checkbox';
-import { MatDialogRef } from '@angular/material/dialog';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { DeleteConfirmationComponent } from 'src/app/admin/dialogs/delete-confirmation/delete-confirmation.component';
 
 @Component({
   selector: 'app-zone-groups',
@@ -49,7 +50,8 @@ export class ZoneGroupsComponent implements OnInit {
     private fb: FormBuilder,
     private global: GlobalService,
     public inductionManagerApi: InductionManagerApiService,
-    public dialogRef: MatDialogRef<ZoneGroupsComponent>
+    public dialogRef: MatDialogRef<ZoneGroupsComponent>,
+    public dialog: MatDialog 
   ) {
     this.iInductionManagerApi = inductionManagerApi;
 
@@ -234,23 +236,26 @@ export class ZoneGroupsComponent implements OnInit {
   saveItem(index: number) {
     const formRow = this.form.value.items[index];
     const allItems = this.form.value.items;
-
-    // Check for duplicate Zone Group Names before saving
+  
+    // Convert zone group names to lowercase for case-insensitive comparison
+    const formRowZoneGroupNameLower = formRow.zoneGroupName.toLowerCase();
+  
+    // Check for duplicate Zone Group Names (case-insensitive) before saving
     const duplicateItems = allItems.filter(
       (item: any, i: number) =>
-        item.zoneGroupName === formRow.zoneGroupName && i !== index
+        item.zoneGroupName.toLowerCase() === formRowZoneGroupNameLower && i !== index
     );
-
+  
     // If duplicates are found, show an error message and prevent save
     if (duplicateItems.length > 0) {
       this.global.ShowToastr(
         ToasterType.Error,
-        'Duplicate Zone Group Name found. Please remove duplicates.',
+        'Duplicate Zone Group Name found (case-insensitive). Please remove duplicates.',
         ToasterTitle.Error
       );
       return; // Prevent the save operation
     }
-
+  
     if (
       this.initialFormValues &&
       this.initialFormValues.length > 0 &&
@@ -260,13 +265,13 @@ export class ZoneGroupsComponent implements OnInit {
     } else {
       formRow.oldZoneGroupName = '';
     }
-
+  
     if (formRow.selectedZones && formRow.selectedZones.length > 0) {
       formRow.selectedZones = formRow.selectedZones;
     } else {
       formRow.selectedZones = [];
     }
-
+  
     // If no duplicates, proceed to save the item
     this.iInductionManagerApi.SaveZoneGrouping(formRow).subscribe((res: any) => {
       if (res.data && res.isExecuted) {
@@ -280,7 +285,7 @@ export class ZoneGroupsComponent implements OnInit {
         const formGroup = this.items.at(index) as FormGroup;
         formGroup.markAsPristine();  // Reset dirty state
         let formArray = this.form.controls['items'] as FormArray;
-
+  
         formGroup.patchValue({ id: res.data }); // Update the id in the form
       
         formGroup.value.id = res.data;
@@ -298,27 +303,41 @@ export class ZoneGroupsComponent implements OnInit {
   removeItem(index: number) {
     const control = this.form.get('items') as FormArray;
     let valueToRemove = control.value[index];
-    control.removeAt(index);
-    this.rebind();
-
-    if (valueToRemove.id !== 0) {
-      this.iInductionManagerApi
-        .RemoveZoneGrouping(valueToRemove.zoneGroupName)
-        .subscribe((res: any) => {
-          if (res.data && res.isExecuted) {
-            this.global.ShowToastr(
-              ToasterType.Success,
-              'Your details have been deleted',
-              ToasterTitle.Success
-            );
-          } else {
-            this.global.ShowToastr(
-              ToasterType.Error,
-              ToasterMessages.SomethingWentWrong,
-              ToasterTitle.Error
-            );
-          }
-        });
-    }
+  
+    const dialogRef = this.dialog.open(DeleteConfirmationComponent, {
+      width: '460px',
+      disableClose: true,
+      data: {
+        actionMessage: ` the item from the list`,
+        action: 'delete',
+      },
+    });
+  
+    dialogRef.afterClosed().subscribe(result => {
+      if (result === 'Yes') {  // Proceed only if the user confirms
+        control.removeAt(index);
+        this.rebind();
+  
+        if (valueToRemove.id !== 0) {
+          this.iInductionManagerApi
+            .RemoveZoneGrouping(valueToRemove.zoneGroupName)
+            .subscribe((res: any) => {
+              if (res.data && res.isExecuted) {
+                this.global.ShowToastr(
+                  ToasterType.Success,
+                  'Your details have been deleted',
+                  ToasterTitle.Success
+                );
+              } else {
+                this.global.ShowToastr(
+                  ToasterType.Error,
+                  ToasterMessages.SomethingWentWrong,
+                  ToasterTitle.Error
+                );
+              }
+            });
+        }
+      }
+    });
   }
 }
