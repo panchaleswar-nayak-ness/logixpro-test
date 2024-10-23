@@ -130,7 +130,6 @@ export class ImprefInductionFilterComponent implements OnInit {
   }
   // Save the filter at the specified index
   saveFilter(filter: PickToteInductionFilter): void {
-    debugger
     const duplicateFilters = this.filters.filter((item: any) => {
       return (
         item.ppField===filter.ppField &&

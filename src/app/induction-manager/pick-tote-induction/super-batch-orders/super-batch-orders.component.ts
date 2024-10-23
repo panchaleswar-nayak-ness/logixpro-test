@@ -108,13 +108,14 @@ export class SuperBatchOrdersComponent implements OnInit, AfterViewInit {
   rebind(data?: any[]) {
     let mappedData = data?.map((m) => {
       return {
-        itemNumber: m.itemNumber,
-        priority: m.minPriority,
+        itemNumber: m.itemNumber ??  m.itemNumber,
+        priority: m.minPriority ??m.priority,
         quality: m.quality,
-        requiredDate: m.minRequiredDate,
-        totalOrderQty: m.totalQuantity,
+        requiredDate: m.minRequiredDate?? m.requiredDate,
+        totalOrderQty: m.totalQuantity?? m.totalOrderQty,
       };
     });
+   
 
     this.dataSource = new MatTableDataSource(mappedData);
     this.updatedPaginator();
@@ -264,7 +265,6 @@ export class SuperBatchOrdersComponent implements OnInit, AfterViewInit {
               }
 
               console.log(this.dataSource.filteredData);
-
               if (this.dataSource && this.dataSource.filteredData) {
                 let updated = this.dataSource.filteredData.filter(
                   (f) => f.itemNumber !== valueToInduct.itemNumber
