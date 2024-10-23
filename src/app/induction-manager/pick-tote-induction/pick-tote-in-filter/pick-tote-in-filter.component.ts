@@ -22,7 +22,7 @@ export class PickToteInFilterComponent implements OnInit, OnDestroy {
     this.iInductionManagerApi = inductionManagerApi;
   }
 
-  aliasFilterList = [{ colHeader: '', colDef: '' }];
+  aliasFilterList = [{ colHeader: '', colDef: '', startCharacter: 0, endCharacter: 0 }];
   displayedColumns: string[] = ['field', 'fieldValue', 'actions'];
   elementData = [{ field: 'Zone 1' }];
   public iInductionManagerApi: IInductionManagerApiService;
@@ -91,13 +91,19 @@ export class PickToteInFilterComponent implements OnInit, OnDestroy {
           this.aliasFilterList = this.apiFilterData.map((item: any) => ({
             colHeader: item.ppField,
             colDef: item.alias,
+            startCharacter: item.startCharacter,
+            endCharacter: item.endCharacter
           }));
         }
       });
   }
 
-  selectionChange(value: any) {
-
+  selectionChange(value: any, filter: any) {
+    const filterSelected = this.aliasFilterList.find(x => x.colDef === value);
+    if (filterSelected !=null) {
+    filter.startCharacter = filterSelected.startCharacter;
+    filter.endCharacter = filterSelected.endCharacter;
+    }
   }
 
   applyFilter() {

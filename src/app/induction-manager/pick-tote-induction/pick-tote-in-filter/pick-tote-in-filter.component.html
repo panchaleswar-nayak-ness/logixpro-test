@@ -57,7 +57,7 @@
             <mat-select
               class="employees-action"
               [(ngModel)]="filter.alias"
-              (selectionChange)="selectionChange($event.value)"
+              (selectionChange)="selectionChange($event.value, filter)"
             >
               <!-- <mat-option value=""></mat-option> -->
               <mat-option
