@@ -215,13 +215,14 @@ export class CmShippingComponent implements OnInit {
   async completeShipment() {
     let obj: any = { orderNumber: this.orderNumber };
     this.iConsolidationAPI.CompleteShipment(obj).subscribe((res: any) => {
-      if (res?.isExecuted)
+      if (res?.isExecuted) {
         this.global.ShowToastr(
           ToasterType.Success,
           `Order Number: ${this.orderNumber} is marked as Shipping Complete`,
           'Success'
         );
-      else {
+        this.ShippingIndex();
+      } else {
         this.global.ShowToastr(ToasterType.Error, 'An error has occurred', ResponseStrings.Error);
         console.log('CompleteShipment', res.responseMessage);
       }
