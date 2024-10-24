@@ -94,13 +94,20 @@ export class PickToteInductionComponent
 
     let currentMessageSubscription = this.global.currentMessage.subscribe(
       (message) => {
-
         if (message) {
-          if (message.orderNumberFilters) {
-            const uniqueOrderNumberFilters = [
+          if (
+            message.orderNumberFilters &&
+            message.orderNumberFilters.length > 0
+          ) {
+            let uniqueOrderNumberFilters = [
               ...new Set(message.orderNumberFilters),
             ];
+            uniqueOrderNumberFilters = uniqueOrderNumberFilters.filter(
+              (f) => f !== ''
+            );
             this.selectedFilters.OrderNumberFilters = uniqueOrderNumberFilters;
+          } else {
+            this.selectedFilters.OrderNumberFilters = [];
           }
 
           if (message.columnFilters) {
