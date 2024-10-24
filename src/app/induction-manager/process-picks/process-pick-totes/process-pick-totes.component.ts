@@ -50,6 +50,7 @@ export class ProcessPickTotesComponent {
     let payload = {
       "OrderNumber": element.orderNumber
     }
+    
     this.iinductionManagerApi.ValidateOrderNumber(payload).subscribe(res => {
       if (res.data === StringConditions.Invalid) {
         this.global.ShowToastr(ToasterType.Error, ToasterMessages.InvalidOrderNo, ToasterTitle.Error);
