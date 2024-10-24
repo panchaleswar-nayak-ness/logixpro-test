@@ -217,69 +217,78 @@ export class SuperBatchOrdersComponent implements OnInit, AfterViewInit {
     };
 
     let response: Observable<any> = this.iInductionManagerApi.PreferenceIndex();
-    response.subscribe((res: any) => {
-      if (res.data && res.isExecuted) {
-        const values = res.data.imPreference;
+response.subscribe((res: any) => {
+  if (res.data && res.isExecuted) {
+    const values = res.data.imPreference;
 
-        //Pick Tote Induction Settings
-        valueToInduct.maxToteQuantity = values.maximumQuantityperTote;
-        valueToInduct.maxSuperBatchSize = values.defaultSuperBatchSize;
+    // Pick Tote Induction Settings
+    valueToInduct.maxToteQuantity = values.maximumQuantityperTote;
+    valueToInduct.maxSuperBatchSize = values.defaultSuperBatchSize;
 
-        // call api to induct this tote as per PLST-2772
-        if (valueToInduct.toteScanned) {
-          this.Api.PerformSuperBatchOrderInduction(valueToInduct)
-            .pipe(
-              catchError((errResponse) => {
-                // Check if the error is a 400 status
-                if (errResponse.error.status === 400) {
-                  this.global.ShowToastr(
-                    ToasterType.Error,
-                    errResponse.error.responseMessage,
-                    ToasterTitle.Error
-                  );
-                } else {
-                  // Handle other errors
-                  this.global.ShowToastr(
-                    ToasterType.Error,
-                    errResponse.error.responseMessage,
-                    ToasterTitle.Error
-                  );
-                }
-                // Throw the error again if needed, or return an observable
-                return throwError(errResponse);
-              })
-            )
-            .subscribe((innerResponse: any) => {
-              if (innerResponse.data && innerResponse.isExecuted) {
+    // call API to induct this tote as per PLST-2772
+    if (valueToInduct.toteScanned) {
+      this.Api.PerformSuperBatchOrderInduction(valueToInduct)
+        .pipe(
+          catchError((errResponse) => {
+            if (errResponse.error.status === 400) {
+              this.global.ShowToastr(
+                ToasterType.Error,
+                errResponse.error.responseMessage,
+                ToasterTitle.Error
+              );
+            } else {
+              this.global.ShowToastr(
+                ToasterType.Error,
+                errResponse.error.responseMessage,
+                ToasterTitle.Error
+              );
+            }
+            return throwError(errResponse);
+          })
+        )
+        .subscribe((innerResponse: any) => {
+          if (innerResponse.data && innerResponse.isExecuted) {
+            // Display each message in the response
+            if (innerResponse.messages && innerResponse.messages.length > 0) {
+              innerResponse.messages.forEach((message: string) => {
                 this.global.ShowToastr(
-                  ToasterType.Success,
-                  innerResponse.responseMessage,
-                  ToasterTitle.Success
+                  ToasterType.Info,
+                  message,
+                  ToasterTitle.Alert
                 );
-              } else {
-                this.global.ShowToastr(
-                  ToasterType.Error,
-                  innerResponse.responseMessage,
-                  ToasterTitle.Error
-                );
-              }
+              });
+            } else {
+              // Show success message if available
+              this.global.ShowToastr(
+                ToasterType.Success,
+                innerResponse.responseMessage,
+                ToasterTitle.Success
+              );
+            }
+          } else {
+            this.global.ShowToastr(
+              ToasterType.Error,
+              innerResponse.responseMessage,
+              ToasterTitle.Error
+            );
+          }
 
-              console.log(this.dataSource.filteredData);
-              if (this.dataSource && this.dataSource.filteredData) {
-                let updated = this.dataSource.filteredData.filter(
-                  (f) => f.itemNumber !== valueToInduct.itemNumber
-                );
-                this.rebind(updated);
-              }
-            });
-        }
-      } else {
-        this.global.ShowToastr(
-          ToasterType.Error,
-          ToasterMessages.SomethingWentWrong,
-          ToasterTitle.Error
-        );
-      }
-    });
+          console.log(this.dataSource.filteredData);
+          if (this.dataSource && this.dataSource.filteredData) {
+            let updated = this.dataSource.filteredData.filter(
+              (f) => f.itemNumber !== valueToInduct.itemNumber
+            );
+            this.rebind(updated);
+          }
+        });
+    }
+  } else {
+    this.global.ShowToastr(
+      ToasterType.Error,
+      ToasterMessages.SomethingWentWrong,
+      ToasterTitle.Error
+    );
+  }
+});
   }
 }
