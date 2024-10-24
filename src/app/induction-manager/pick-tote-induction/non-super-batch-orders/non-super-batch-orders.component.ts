@@ -179,15 +179,15 @@ export class NonSuperBatchOrdersComponent implements OnInit, AfterViewInit {
       let response = filteredOrders.data.result;
 
       if (response) {
-        let mappedResponse = response.map((m) => {
-          return {
-            orderNumber: m.orderNumber,
-            zone: m.zone,
-            priority: m.priority,
-            requiredDate: m.requiredDate,
-            completedQuantity: m.completedQuantity,
-          };
-        });
+        // let mappedResponse = response.map((m) => {
+        //   return {
+        //     orderNumber: m.orderNumber,
+        //     zone: m.zone,
+        //     priority: m.priority,
+        //     requiredDate: m.requiredDate,
+        //     completedQuantity: m.completedQuantity,
+        //   };
+        // });
 
         this.rebind(response);
       }

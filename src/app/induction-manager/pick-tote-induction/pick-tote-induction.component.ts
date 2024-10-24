@@ -83,6 +83,18 @@ export class PickToteInductionComponent
     OrderNumberFilters: [],
     ColumnFilters: [],
   };
+
+  selectedFiltersSuperBatch: any = {
+    Zones: [],
+    SpecificFilters: {
+      orderNumber: '',
+      toteId: '',
+      splitToggle: false,
+    },
+    OrderNumberFilters: [],
+    ColumnFilters: [],
+  };
+
   subscription: Subscription[] = [];
 
   ngOnInit(): void {
@@ -111,7 +123,13 @@ export class PickToteInductionComponent
           }
 
           if (message.columnFilters) {
-            this.selectedFilters.ColumnFilters = message.columnFilters;
+            
+            if (this.activeTab === TabNames.NonSuperBatch) { 
+              this.selectedFilters.ColumnFilters = message.columnFilters;
+            }
+            else if (this.activeTab === TabNames.SuperBatch) {
+              this.selectedFiltersSuperBatch.ColumnFilters = message.columnFilters;
+            }
           }
 
           this.retrieveOrders();
@@ -175,7 +193,12 @@ export class PickToteInductionComponent
     this.selectedZones = this.zoneList.join(' ');
 
     // Reload the orders based on induction type and selected filters
-    this.selectedFilters.Zones = this.zoneList;
+    if (this.activeTab === TabNames.NonSuperBatch) { 
+      this.selectedFilters.Zones =  this.zoneList ;
+    }
+    else if (this.activeTab === TabNames.SuperBatch) {
+      this.selectedFiltersSuperBatch.Zones =  this.zoneList ;
+    }
 
     this.retrieveOrders();
   }
@@ -237,7 +260,12 @@ export class PickToteInductionComponent
         this.selectedZones = this.zoneList.join(' ');
 
         // Reload the orders based on induction type and selected filters
-        this.selectedFilters.Zones = selectedZoneValues;
+        if (this.activeTab === TabNames.NonSuperBatch) { 
+          this.selectedFilters.Zones = selectedZoneValues;
+        }
+        else if (this.activeTab === TabNames.SuperBatch) {
+          this.selectedFiltersSuperBatch.Zones = selectedZoneValues;
+        }
 
         this.retrieveOrders();
       }
@@ -264,7 +292,7 @@ export class PickToteInductionComponent
       if (this.SuperBatchOrdersComponent) {
         this.SuperBatchOrdersComponent.retrieveFilteredSuperBatchOrders({
           FilterResultsRequestParams: {
-            ...this.selectedFilters,
+            ...this.selectedFiltersSuperBatch,
           },
         });
       }
@@ -274,7 +302,13 @@ export class PickToteInductionComponent
   refreshOrders() {
     // refresh orders in table based on currently selected filters this includes all filters currently selected
     // Reload the orders based on induction type and selected filters
-    this.selectedFilters.Zones = this.zoneList;
+    if (this.activeTab === TabNames.NonSuperBatch) { 
+      this.selectedFilters.Zones = this.zoneList;
+    }
+    else if (this.activeTab === TabNames.SuperBatch) {
+      this.selectedFiltersSuperBatch.Zones = this.zoneList;
+    }
+
     this.retrieveOrders();
   }
 
@@ -301,6 +335,8 @@ export class PickToteInductionComponent
           this.selectedFilters.Zones = [];
           this.selectedFilters.ColumnFilters = [];
           this.selectedFilters.OrderNumberFilters = [];
+          this.selectedFiltersSuperBatch.Zones = [];
+          this.selectedFiltersSuperBatch.ColumnFilters = [];
           this.retrieveOrders();
         }
       }
@@ -308,8 +344,8 @@ export class PickToteInductionComponent
   }
 
   onTabClick(tabChangeEvent: MatTabChangeEvent) {
-    console.log('tabChangeEvent => ', tabChangeEvent);
-    console.log('index => ', tabChangeEvent.index);
+    // console.log('tabChangeEvent => ', tabChangeEvent);
+    // console.log('index => ', tabChangeEvent.index);
 
     if (tabChangeEvent.index === 0) {
       this.activeTab = TabNames.NonSuperBatch;
@@ -318,7 +354,12 @@ export class PickToteInductionComponent
     }
 
     // Reload the orders based on induction type and selected filters
-    this.selectedFilters.Zones = this.zoneList;
+    if (this.activeTab === TabNames.NonSuperBatch) { 
+      this.selectedFilters.Zones = this.zoneList;
+    }
+    else if (this.activeTab === TabNames.SuperBatch) {
+      this.selectedFiltersSuperBatch.Zones = this.zoneList;
+    }
 
     this.retrieveOrders();
   }
