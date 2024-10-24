@@ -94,11 +94,9 @@ export class PickToteInductionComponent
 
     let currentMessageSubscription = this.global.currentMessage.subscribe(
       (message) => {
+
         if (message) {
-          if (
-            message.orderNumberFilters &&
-            message.orderNumberFilters.length > 0
-          ) {
+          if (message.orderNumberFilters) {
             const uniqueOrderNumberFilters = [
               ...new Set(message.orderNumberFilters),
             ];

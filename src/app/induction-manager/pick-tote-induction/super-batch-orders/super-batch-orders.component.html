@@ -10,7 +10,7 @@
         <mat-form-field class="action-dropdown mb-3 w-100" appearance="outline">
           <mat-label>Actions</mat-label>
           <mat-select class="employees-action">
-            <mat-option (click)="filterOrderNum()"
+            <mat-option [disabled]="true"
               >Filter Order Number</mat-option
             >
             <mat-option (click)="openColumnFilter()">Column Filter</mat-option>
