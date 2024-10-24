@@ -370,14 +370,17 @@ export class PickToteInductionComponent
       let valueToInduct: any = {
         orderNumber: this.orderNumber,
         toteId: this.toteId,
-        splitToggle: this.splitToggle,
+        splitToggle: this.splitToggle
       };
-
+  
       if (this.splitToggle) {
         // Fetch the max tote quantity and proceed with induction
         this.getMaxToteQuantity().subscribe(
           (maxToteQuantity: number) => {
-            valueToInduct.maxToteQuantity = maxToteQuantity;
+            // If maxToteQuantity is greater than 0, add it to the request
+            if (maxToteQuantity > 0) {
+              valueToInduct.maxToteQuantity = maxToteQuantity;
+            }
             this.performInduction(valueToInduct);
           },
           (error: any) => {
@@ -394,7 +397,7 @@ export class PickToteInductionComponent
       }
     }
   }
-
+  
   getMaxToteQuantity(): Observable<number> {
     return new Observable<number>((observer) => {
       this.iInductionManagerApi.PreferenceIndex().subscribe(
@@ -410,12 +413,12 @@ export class PickToteInductionComponent
       );
     });
   }
-
+  
   performInduction(valueToInduct: any) {
     this.Api.PerformSpecificOrderInduction(valueToInduct)
       .pipe(
         catchError((errResponse) => {
-          // Check if the error is a 400 status
+          // Handle errors
           if (errResponse.error.status === 400) {
             this.global.ShowToastr(
               ToasterType.Error,
@@ -423,14 +426,12 @@ export class PickToteInductionComponent
               ToasterTitle.Error
             );
           } else {
-            // Handle other errors
             this.global.ShowToastr(
               ToasterType.Error,
               errResponse.error.responseMessage,
               ToasterTitle.Error
             );
           }
-          // Throw the error again if needed, or return an observable
           return throwError(errResponse);
         })
       )
@@ -449,7 +450,6 @@ export class PickToteInductionComponent
             innerResponse.responseMessage,
             ToasterTitle.Error
           );
-          console.log('DevicePreferencesDelete', innerResponse.responseMessage);
         }
       });
   }
