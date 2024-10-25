@@ -74,6 +74,7 @@ export class ImprefInductionFilterComponent implements OnInit {
     { colHeader: 'emergency', colDef: 'Emergency' },
   ];
   filters: PickToteInductionFilter[] = [];
+  
   originalFilters: PickToteInductionFilter[] = [];
 
   public iInductionManagerApi: IInductionManagerApiService;
@@ -88,6 +89,7 @@ export class ImprefInductionFilterComponent implements OnInit {
 
   ngOnInit(): void {
     this.GetPickToteInductionFilterData();
+   
   }
 
   selectionChange(event) {
@@ -95,7 +97,7 @@ export class ImprefInductionFilterComponent implements OnInit {
   }
   // Add a new empty filter
   addFilter(): void {
-    this.filters = [{ id: 0, alias: '', ppField: '', startCharacter: 0, endCharacter: 0 },...this.filters];
+    this.filters = [{ id: 0, alias: '', ppField: '', startCharacter: 1, endCharacter: 0 },...this.filters];
   }
 
   GetPickToteInductionFilterData() {

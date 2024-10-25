@@ -111,6 +111,7 @@ export class NonSuperBatchOrdersComponent implements OnInit, AfterViewInit {
   }
 
   updatedPaginator() {
+   
     if (this.dataSource && this.dataSource.filteredData.length > 0)
       this.dataSource.paginator = this.paginator;
   }
@@ -128,6 +129,7 @@ export class NonSuperBatchOrdersComponent implements OnInit, AfterViewInit {
   }
 
   filterOrderNum() {
+   
     const dialogRef: any = this.global.OpenDialog(FilterOrderNumberComponent, {
       height: DialogConstants.auto,
       width: Style.w560px,
@@ -153,6 +155,7 @@ export class NonSuperBatchOrdersComponent implements OnInit, AfterViewInit {
   }
 
   openColumnFilter() {
+   
     const dialogRef: any = this.global.OpenDialog(PickToteInFilterComponent, {
       height: 'auto',
       width: Style.w786px,
@@ -170,14 +173,19 @@ export class NonSuperBatchOrdersComponent implements OnInit, AfterViewInit {
 
         // send the currently selected column filters to parent component via observable
         this.global.sendMessage({ columnFilters: this.filters });
+       
       }
     });
+   
+      
   }
 
   retrieveFilteredNonSuperBatchOrders(values: any) {
+    debugger
     this.Api.RetrieveNonSuperBatchOrders({...values, wsId : this.userData.wsid}).subscribe((filteredOrders) => {
       let response = filteredOrders.data.result;
-
+      console.log(response);
+      
       if (response) {
         // let mappedResponse = response.map((m) => {
         //   return {
@@ -190,8 +198,12 @@ export class NonSuperBatchOrdersComponent implements OnInit, AfterViewInit {
         // });
 
         this.rebind(response);
+        
       }
+     
+      
     });
+  
   }
 
   focusFirstInput() {
