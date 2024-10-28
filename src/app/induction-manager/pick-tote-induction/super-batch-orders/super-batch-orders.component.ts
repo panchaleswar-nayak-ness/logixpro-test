@@ -108,14 +108,13 @@ export class SuperBatchOrdersComponent implements OnInit, AfterViewInit {
   rebind(data?: any[]) {
     let mappedData = data?.map((m) => {
       return {
-        itemNumber: m.itemNumber ??  m.itemNumber,
-        priority: m.minPriority ??m.priority,
+        itemNumber: m.itemNumber ?? m.itemNumber,
+        priority: m.minPriority ?? m.priority,
         quality: m.quality,
-        requiredDate: m.minRequiredDate?? m.requiredDate,
-        totalOrderQty: m.totalQuantity?? m.totalOrderQty,
+        requiredDate: m.minRequiredDate ?? m.requiredDate,
+        totalOrderQty: m.totalQuantity ?? m.totalOrderQty,
       };
     });
-   
 
     this.dataSource = new MatTableDataSource(mappedData);
     this.updatedPaginator();
@@ -152,15 +151,16 @@ export class SuperBatchOrdersComponent implements OnInit, AfterViewInit {
     });
 
     dialogRef.afterClosed().subscribe((result: any) => {
-
       if (result) {
-        this.orderNumberFilter = result.orderNumberFilter
-          .map((m: string) =>
-            this.global.getTrimmedAndLineBreakRemovedString(m)
-          );
+        this.orderNumberFilter = result.orderNumberFilter.map((m: string) =>
+          this.global.getTrimmedAndLineBreakRemovedString(m)
+        );
 
         // send the currently selected order number filters to parent component via observable
-        this.global.sendMessage({ orderNumberFilters: this.orderNumberFilter });
+        this.global.sendMessage({
+          columnFilters: this.filters,
+          orderNumberFilters: this.orderNumberFilter,
+        });
       }
     });
   }
@@ -177,18 +177,23 @@ export class SuperBatchOrdersComponent implements OnInit, AfterViewInit {
     });
 
     dialogRef.afterClosed().subscribe((result: PickToteInductionFilter[]) => {
-   
       if (result) {
         this.filters = result;
 
         // send the currently selected column filters to parent component via observable
-        this.global.sendMessage({ columnFilters: this.filters });
+        this.global.sendMessage({
+          columnFilters: this.filters,
+          orderNumberFilters: this.orderNumberFilter,
+        });
       }
     });
   }
 
   retrieveFilteredSuperBatchOrders(values: any) {
-    this.Api.RetrieveSuperBatchOrders({...values, wsId : this.userData.wsid}).subscribe((filteredOrders) => {
+    this.Api.RetrieveSuperBatchOrders({
+      ...values,
+      wsId: this.userData.wsid,
+    }).subscribe((filteredOrders) => {
       this.rebind(filteredOrders.data);
     });
   }
@@ -213,82 +218,85 @@ export class SuperBatchOrdersComponent implements OnInit, AfterViewInit {
       maxToteQuantity: 0,
       maxSuperBatchSize: 0,
       inductionType: 'SuperBatch',
-      wsId : this.userData.wsid
+      wsId: this.userData.wsid,
     };
 
     let response: Observable<any> = this.iInductionManagerApi.PreferenceIndex();
-response.subscribe((res: any) => {
-  if (res.data && res.isExecuted) {
-    const values = res.data.imPreference;
+    response.subscribe((res: any) => {
+      if (res.data && res.isExecuted) {
+        const values = res.data.imPreference;
 
-    // Pick Tote Induction Settings
-    valueToInduct.maxToteQuantity = values.maximumQuantityperTote;
-    valueToInduct.maxSuperBatchSize = values.defaultSuperBatchSize;
+        // Pick Tote Induction Settings
+        valueToInduct.maxToteQuantity = values.maximumQuantityperTote;
+        valueToInduct.maxSuperBatchSize = values.defaultSuperBatchSize;
 
-    // call API to induct this tote as per PLST-2772
-    if (valueToInduct.toteScanned) {
-      this.Api.PerformSuperBatchOrderInduction(valueToInduct)
-        .pipe(
-          catchError((errResponse) => {
-            if (errResponse.error.status === 400) {
-              this.global.ShowToastr(
-                ToasterType.Error,
-                errResponse.error.responseMessage,
-                ToasterTitle.Error
-              );
-            } else {
-              this.global.ShowToastr(
-                ToasterType.Error,
-                errResponse.error.responseMessage,
-                ToasterTitle.Error
-              );
-            }
-            return throwError(errResponse);
-          })
-        )
-        .subscribe((innerResponse: any) => {
-          if (innerResponse.data && innerResponse.isExecuted) {
-            // Display each message in the response
-            if (innerResponse.messages && innerResponse.messages.length > 0) {
-              innerResponse.messages.forEach((message: string) => {
+        // call API to induct this tote as per PLST-2772
+        if (valueToInduct.toteScanned) {
+          this.Api.PerformSuperBatchOrderInduction(valueToInduct)
+            .pipe(
+              catchError((errResponse) => {
+                if (errResponse.error.status === 400) {
+                  this.global.ShowToastr(
+                    ToasterType.Error,
+                    errResponse.error.responseMessage,
+                    ToasterTitle.Error
+                  );
+                } else {
+                  this.global.ShowToastr(
+                    ToasterType.Error,
+                    errResponse.error.responseMessage,
+                    ToasterTitle.Error
+                  );
+                }
+                return throwError(errResponse);
+              })
+            )
+            .subscribe((innerResponse: any) => {
+              if (innerResponse.data && innerResponse.isExecuted) {
+                // Display each message in the response
+                if (
+                  innerResponse.messages &&
+                  innerResponse.messages.length > 0
+                ) {
+                  innerResponse.messages.forEach((message: string) => {
+                    this.global.ShowToastr(
+                      ToasterType.Info,
+                      message,
+                      ToasterTitle.Alert
+                    );
+                  });
+                } else {
+                  // Show success message if available
+                  this.global.ShowToastr(
+                    ToasterType.Success,
+                    innerResponse.responseMessage,
+                    ToasterTitle.Success
+                  );
+                }
+              } else {
                 this.global.ShowToastr(
-                  ToasterType.Info,
-                  message,
-                  ToasterTitle.Alert
+                  ToasterType.Error,
+                  innerResponse.responseMessage,
+                  ToasterTitle.Error
                 );
-              });
-            } else {
-              // Show success message if available
-              this.global.ShowToastr(
-                ToasterType.Success,
-                innerResponse.responseMessage,
-                ToasterTitle.Success
-              );
-            }
-          } else {
-            this.global.ShowToastr(
-              ToasterType.Error,
-              innerResponse.responseMessage,
-              ToasterTitle.Error
-            );
-          }
+              }
 
-          console.log(this.dataSource.filteredData);
-          if (this.dataSource && this.dataSource.filteredData) {
-            let updated = this.dataSource.filteredData.filter(
-              (f) => f.itemNumber !== valueToInduct.itemNumber
-            );
-            this.rebind(updated);
-          }
-        });
-    }
-  } else {
-    this.global.ShowToastr(
-      ToasterType.Error,
-      ToasterMessages.SomethingWentWrong,
-      ToasterTitle.Error
-    );
-  }
-});
+              console.log(this.dataSource.filteredData);
+              if (this.dataSource && this.dataSource.filteredData) {
+                let updated = this.dataSource.filteredData.filter(
+                  (f) => f.itemNumber !== valueToInduct.itemNumber
+                );
+                this.rebind(updated);
+              }
+            });
+        }
+      } else {
+        this.global.ShowToastr(
+          ToasterType.Error,
+          ToasterMessages.SomethingWentWrong,
+          ToasterTitle.Error
+        );
+      }
+    });
   }
 }

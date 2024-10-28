@@ -107,11 +107,9 @@ export class NonSuperBatchOrdersComponent implements OnInit, AfterViewInit {
     this.updatedPaginator();
     this.updateSorting();
     this.focusFirstInput();
-
   }
 
   updatedPaginator() {
-   
     if (this.dataSource && this.dataSource.filteredData.length > 0)
       this.dataSource.paginator = this.paginator;
   }
@@ -129,7 +127,6 @@ export class NonSuperBatchOrdersComponent implements OnInit, AfterViewInit {
   }
 
   filterOrderNum() {
-   
     const dialogRef: any = this.global.OpenDialog(FilterOrderNumberComponent, {
       height: DialogConstants.auto,
       width: Style.w560px,
@@ -141,21 +138,21 @@ export class NonSuperBatchOrdersComponent implements OnInit, AfterViewInit {
     });
 
     dialogRef.afterClosed().subscribe((result: any) => {
-
       if (result) {
-        this.orderNumberFilter = result.orderNumberFilter
-          .map((m: string) =>
-            this.global.getTrimmedAndLineBreakRemovedString(m)
-          );
+        this.orderNumberFilter = result.orderNumberFilter.map((m: string) =>
+          this.global.getTrimmedAndLineBreakRemovedString(m)
+        );
 
         // send the currently selected order number filters to parent component via observable
-        this.global.sendMessage({ orderNumberFilters: this.orderNumberFilter });
+        this.global.sendMessage({
+          columnFilters: this.filters,
+          orderNumberFilters: this.orderNumberFilter,
+        });
       }
     });
   }
 
   openColumnFilter() {
-   
     const dialogRef: any = this.global.OpenDialog(PickToteInFilterComponent, {
       height: 'auto',
       width: Style.w786px,
@@ -167,43 +164,28 @@ export class NonSuperBatchOrdersComponent implements OnInit, AfterViewInit {
     });
 
     dialogRef.afterClosed().subscribe((result: PickToteInductionFilter[]) => {
-
       if (result) {
         this.filters = result;
 
         // send the currently selected column filters to parent component via observable
-        this.global.sendMessage({ columnFilters: this.filters });
-       
+        this.global.sendMessage({
+          columnFilters: this.filters,
+          orderNumberFilters: this.orderNumberFilter,
+        });
       }
     });
-   
-      
   }
 
   retrieveFilteredNonSuperBatchOrders(values: any) {
-    debugger
-    this.Api.RetrieveNonSuperBatchOrders({...values, wsId : this.userData.wsid}).subscribe((filteredOrders) => {
+    this.Api.RetrieveNonSuperBatchOrders({
+      ...values,
+      wsId: this.userData.wsid,
+    }).subscribe((filteredOrders) => {
       let response = filteredOrders.data.result;
-      console.log(response);
-      
       if (response) {
-        // let mappedResponse = response.map((m) => {
-        //   return {
-        //     orderNumber: m.orderNumber,
-        //     zone: m.zone,
-        //     priority: m.priority,
-        //     requiredDate: m.requiredDate,
-        //     completedQuantity: m.completedQuantity,
-        //   };
-        // });
-
         this.rebind(response);
-        
       }
-     
-      
     });
-  
   }
 
   focusFirstInput() {

@@ -56,7 +56,7 @@ export class PickToteInductionComponent
   zoneGroupingsList: IZoneGroup[] = [];
   zoneAllGroupingsList: IZoneGroup[] = [];
   selectedZoneGrouping: IZoneGroup | undefined;
-  zoneList: string[];
+  zoneList: string[] = [];
   selectedZones: string = '';
   activeTab: TabNames;
   @ViewChild('zoneGroupSelect') zoneGroupSelect;
@@ -102,7 +102,7 @@ export class PickToteInductionComponent
     this.preloadDefaultZoneGroup();
 
     if (!this.activeTab) this.activeTab = 0; // Default tab active should be non super batch orders
-    this.refreshOrders();
+    // this.refreshOrders();
 
     let currentMessageSubscription = this.global.currentMessage.subscribe(
       (message) => {
@@ -123,12 +123,11 @@ export class PickToteInductionComponent
           }
 
           if (message.columnFilters) {
-            
-            if (this.activeTab === TabNames.NonSuperBatch) { 
+            if (this.activeTab === TabNames.NonSuperBatch) {
               this.selectedFilters.ColumnFilters = message.columnFilters;
-            }
-            else if (this.activeTab === TabNames.SuperBatch) {
-              this.selectedFiltersSuperBatch.ColumnFilters = message.columnFilters;
+            } else if (this.activeTab === TabNames.SuperBatch) {
+              this.selectedFiltersSuperBatch.ColumnFilters =
+                message.columnFilters;
             }
           }
 
@@ -193,11 +192,10 @@ export class PickToteInductionComponent
     this.selectedZones = this.zoneList.join(' ');
 
     // Reload the orders based on induction type and selected filters
-    if (this.activeTab === TabNames.NonSuperBatch) { 
-      this.selectedFilters.Zones =  this.zoneList ;
-    }
-    else if (this.activeTab === TabNames.SuperBatch) {
-      this.selectedFiltersSuperBatch.Zones =  this.zoneList ;
+    if (this.activeTab === TabNames.NonSuperBatch) {
+      this.selectedFilters.Zones = this.zoneList;
+    } else if (this.activeTab === TabNames.SuperBatch) {
+      this.selectedFiltersSuperBatch.Zones = this.zoneList;
     }
 
     this.retrieveOrders();
@@ -260,10 +258,9 @@ export class PickToteInductionComponent
         this.selectedZones = this.zoneList.join(' ');
 
         // Reload the orders based on induction type and selected filters
-        if (this.activeTab === TabNames.NonSuperBatch) { 
+        if (this.activeTab === TabNames.NonSuperBatch) {
           this.selectedFilters.Zones = selectedZoneValues;
-        }
-        else if (this.activeTab === TabNames.SuperBatch) {
+        } else if (this.activeTab === TabNames.SuperBatch) {
           this.selectedFiltersSuperBatch.Zones = selectedZoneValues;
         }
 
@@ -302,10 +299,9 @@ export class PickToteInductionComponent
   refreshOrders() {
     // refresh orders in table based on currently selected filters this includes all filters currently selected
     // Reload the orders based on induction type and selected filters
-    if (this.activeTab === TabNames.NonSuperBatch) { 
+    if (this.activeTab === TabNames.NonSuperBatch) {
       this.selectedFilters.Zones = this.zoneList;
-    }
-    else if (this.activeTab === TabNames.SuperBatch) {
+    } else if (this.activeTab === TabNames.SuperBatch) {
       this.selectedFiltersSuperBatch.Zones = this.zoneList;
     }
 
@@ -354,10 +350,9 @@ export class PickToteInductionComponent
     }
 
     // Reload the orders based on induction type and selected filters
-    if (this.activeTab === TabNames.NonSuperBatch) { 
+    if (this.activeTab === TabNames.NonSuperBatch) {
       this.selectedFilters.Zones = this.zoneList;
-    }
-    else if (this.activeTab === TabNames.SuperBatch) {
+    } else if (this.activeTab === TabNames.SuperBatch) {
       this.selectedFiltersSuperBatch.Zones = this.zoneList;
     }
 
@@ -370,9 +365,9 @@ export class PickToteInductionComponent
       let valueToInduct: any = {
         orderNumber: this.orderNumber,
         toteId: this.toteId,
-        splitToggle: this.splitToggle
+        splitToggle: this.splitToggle,
       };
-  
+
       if (this.splitToggle) {
         // Fetch the max tote quantity and proceed with induction
         this.getMaxToteQuantity().subscribe(
@@ -397,7 +392,7 @@ export class PickToteInductionComponent
       }
     }
   }
-  
+
   getMaxToteQuantity(): Observable<number> {
     return new Observable<number>((observer) => {
       this.iInductionManagerApi.PreferenceIndex().subscribe(
@@ -413,7 +408,7 @@ export class PickToteInductionComponent
       );
     });
   }
-  
+
   performInduction(valueToInduct: any) {
     this.Api.PerformSpecificOrderInduction(valueToInduct)
       .pipe(
