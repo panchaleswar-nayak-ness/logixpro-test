@@ -1,5 +1,11 @@
 import { SelectionModel } from '@angular/cdk/collections';
-import { Component, OnInit, Inject } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  Inject,
+  ViewChild,
+  AfterViewInit,
+} from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { IInductionManagerApiService } from 'src/app/common/services/induction-manager-api/induction-manager-api-interface';
@@ -14,6 +20,7 @@ import {
   StringConditions,
 } from 'src/app/common/constants/strings.constants';
 import { Router } from '@angular/router';
+import { MatCheckbox } from '@angular/material/checkbox';
 
 export interface PeriodicElement {
   zone: string;
@@ -64,6 +71,8 @@ export class SelectZonesComponent implements OnInit {
   isAdminPreferences: boolean;
   zoneList: string[];
   btnText: string;
+  isCheckboxDisabledForToteInduction: boolean = false;
+  selectedElementData: any[] = [];
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
@@ -94,6 +103,23 @@ export class SelectZonesComponent implements OnInit {
     this.wsid = this.data.wsid;
     this.alreadyAssignedZones = this.data.assignedZones;
     this.getAvailableZones();
+
+    if (this.isPickToteInduction) {
+      this.isCheckboxDisabledForToteInduction = true; // Disable header multiselect checkbox     
+    }
+  }
+
+  disableCheckboxForToteInduction(row: {
+    selected: boolean;
+    available: boolean;
+  }) {
+    let res = row.selected == false && row.available === true;
+
+    if (row.selected === true && row.available === true) {
+      res = false;
+    }
+
+    return res;
   }
 
   disableCheckbox(row: { selected: boolean; available: boolean }) {
@@ -262,7 +288,6 @@ export class SelectZonesComponent implements OnInit {
 
     this.iInductionManagerApi.AvailableZone(payLoad).subscribe(
       (res: any) => {
-   
         if (res.data && res.isExecuted) {
           this.zoneDetails = res.data.zoneDetails;
 
@@ -287,9 +312,22 @@ export class SelectZonesComponent implements OnInit {
               available: zoneDetail.available,
             });
           }
+
           this.dataSource = new MatTableDataSource<any>(this.elementData);
-          this.preselectZonesBySelectedGroupName();
+          // this.preselectZonesBySelectedGroupName();
           this.selectZones();
+
+          this.selectedElementData = this.elementData.filter(
+            (f) => f.selected && f.available
+          );
+          // console.log(this.selectedElementData);
+          if(this.selectedElementData && this.selectedElementData.length > 0) {
+            this.elementData.forEach((val, ind)=> {
+              let elem = this.selectedElementData.find((f)=>f.zone === val.zone);
+              console.log(elem);
+            });
+          }
+          
         } else {
           this.global.ShowToastr(
             ToasterType.Error,
@@ -306,19 +344,19 @@ export class SelectZonesComponent implements OnInit {
     );
   }
 
-  private preselectZonesBySelectedGroupName() {
-    if (this.isPickToteInduction || this.isAdminPreferences) {
-      if (this.data.zoneList) {
-        this.data.zoneList.forEach((val) => {
-          let element = this.elementData.find((f) => f.zone === val);
+  // private preselectZonesBySelectedGroupName() {
+  //   if (this.isPickToteInduction || this.isAdminPreferences) {
+  //     if (this.data.zoneList) {
+  //       this.data.zoneList.forEach((val) => {
+  //         let element = this.elementData.find((f) => f.zone === val);
 
-          if (element) {
-            element.selected = true;
-          }
-        });
-      }
-    }
-  }
+  //         if (element) {
+  //           element.selected = true;
+  //         }
+  //       });
+  //     }
+  //   }
+  // }
 
   selectZones() {
     if (this.isPickToteInduction || this.isAdminPreferences) {
@@ -338,7 +376,7 @@ export class SelectZonesComponent implements OnInit {
             x.selected = true;
           }
 
-          x.available = true;
+          x.available = this.isPickToteInduction ? x.selected : true;
         });
       }
     }

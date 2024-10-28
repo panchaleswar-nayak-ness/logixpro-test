@@ -17,9 +17,12 @@
       <ng-container matColumnDef="select">
         <th mat-header-cell *matHeaderCellDef>
           <mat-checkbox
+            [disabled]="isCheckboxDisabledForToteInduction"
             (change)="$event ? toggleAllRows($event) : null"
             [checked]="
-              (selection.hasValue() && isAllSelected()) || (isAllReadyAssigned() && isProcessPutAways) || AllRecordsChecked()
+              (selection.hasValue() && isAllSelected()) ||
+              (isAllReadyAssigned() && isProcessPutAways) ||
+              AllRecordsChecked()
             "
             [indeterminate]="selection.hasValue() && !isAllSelected()"
             [aria-label]="checkboxLabel()"
@@ -28,25 +31,48 @@
           </mat-checkbox>
         </th>
         <td mat-cell *matCellDef="let row">
-          <mat-checkbox
-            (click)="$event.stopPropagation()"
-            (change)="selectZone(row)"
-            [checked]="
-              row.selected ||
-              selection.isSelected(row) ||
-              (row.selected == false && row.available == false)
-            "
-            [disabled]="disableCheckbox(row)"
-            [aria-label]="checkboxLabel(row)"
-            color="primary"
-            [matTooltip]="
-              row.selected == false && row.available == false
-                ? 'Assigned to Another Batch!'
-                : ''
-            "
-            matTooltipPosition="above"
-          >
-          </mat-checkbox>
+          <ng-container *ngIf="isProcessPutAways || isAdminPreferences">
+            <mat-checkbox
+              (click)="$event.stopPropagation()"
+              (change)="selectZone(row)"
+              [checked]="
+                row.selected ||
+                selection.isSelected(row) ||
+                (row.selected == false && row.available == false)
+              "
+              [disabled]="disableCheckbox(row)"
+              [aria-label]="checkboxLabel(row)"
+              color="primary"
+              [matTooltip]="
+                row.selected == false && row.available == false
+                  ? 'Assigned to Another Batch!'
+                  : ''
+              "
+              matTooltipPosition="above"
+            >
+            </mat-checkbox>
+          </ng-container>
+          <ng-container *ngIf="isPickToteInduction">
+            <mat-checkbox
+              (click)="$event.stopPropagation()"
+              (change)="selectZone(row)"
+              [checked]="
+                row.selected ||
+                selection.isSelected(row) ||
+                (row.selected == false && row.available == false)
+              "
+              [disabled]="!row.available"
+              [aria-label]="checkboxLabel(row)"
+              color="primary"
+              [matTooltip]="
+                row.selected == false && row.available == false
+                  ? 'Assigned to Another Batch!'
+                  : ''
+              "
+              matTooltipPosition="above"
+            >
+            </mat-checkbox>
+          </ng-container>
         </td>
       </ng-container>
 
