@@ -7,6 +7,8 @@ import { PickToteInductionFilter } from '../../models/PickToteInductionModel';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { filter, Subscription } from 'rxjs';
 import { DeleteConfirmationComponent } from 'src/app/admin/dialogs/delete-confirmation/delete-confirmation.component';
+import { DialogConstants, Style, UniqueConstants } from 'src/app/common/constants/strings.constants';
+import { ConfirmationDialogComponent } from 'src/app/admin/dialogs/confirmation-dialog/confirmation-dialog.component';
 
 @Component({
   selector: 'app-pick-tote-in-filter',
@@ -139,5 +141,14 @@ export class PickToteInFilterComponent implements OnInit, OnDestroy {
   clearFilters() {
     this.filters = [];
     this.initializeRows(); // Initialize table rows independently of the API response
+    const dialogRef: any = this.global.OpenDialog(ConfirmationDialogComponent, {
+      height: 'auto',
+      width: '560px',
+      autoFocus: DialogConstants.autoFocus,
+      disableClose: true,
+      data: {
+        message: 'Do you want to clear all filters?',
+      },
+    });
   }
 }
