@@ -121,6 +121,15 @@
 
 <div class="d-flex gap-12">
   <button
+  type="submit"
+  mat-flat-button
+  class="button-remove-all-w-stroke bg-white"
+  color="primary"
+  (click)="clearFilters()"
+>
+  Clear
+</button>
+  <button
     type="submit"
     mat-flat-button
     class="form-button-submit btn-lg flex-grow-1"
@@ -128,14 +137,5 @@
     (click)="applyFilter()"
   >
     Apply Filter
-  </button>
-  <button
-    type="submit"
-    mat-flat-button
-    class="button-remove-all-w-stroke bg-white flex-grow-1"
-    color="primary"
-    (click)="clearFilters()"
-  >
-    Clear
-  </button>
+  </button> 
 </div>
