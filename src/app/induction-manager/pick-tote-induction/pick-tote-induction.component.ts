@@ -129,9 +129,17 @@ export class PickToteInductionComponent
               this.selectedFiltersSuperBatch.ColumnFilters =
                 message.columnFilters;
             }
+          } else {
+            this.selectedFilters.ColumnFilters = [];
           }
 
-          this.retrieveOrders();
+          // Only refresh orders if any of these filters was applied from pop up
+          if (
+            message.orderNumberFilters.length > 0 ||
+            message.columnFilters.length > 0
+          ) {
+            this.retrieveOrders();
+          }
         }
       }
     );
@@ -140,8 +148,7 @@ export class PickToteInductionComponent
   }
 
   preloadDefaultZoneGroup() {
-    let response: Observable<any> = this.iInductionManagerApi.PreferenceIndex();
-    response.subscribe((res: any) => {
+    this.iInductionManagerApi.PreferenceIndex().subscribe((res: any) => {
       if (res.data && res.isExecuted) {
         const values = res.data.imPreference;
 
@@ -177,6 +184,7 @@ export class PickToteInductionComponent
   }
 
   showChange(selectedValue: any) {
+    console.log(selectedValue);
     this.selectedZoneGrouping = this.zoneGroupingsList.find(
       (x) => x.Id === selectedValue
     );
@@ -333,6 +341,15 @@ export class PickToteInductionComponent
           this.selectedFilters.OrderNumberFilters = [];
           this.selectedFiltersSuperBatch.Zones = [];
           this.selectedFiltersSuperBatch.ColumnFilters = [];
+
+          if(this.NonSuperBatchOrdersComponent) {
+            this.NonSuperBatchOrdersComponent.clearFilters();
+          }
+
+          if(this.SuperBatchOrdersComponent) {
+            this.NonSuperBatchOrdersComponent.clearFilters();
+          }
+
           this.retrieveOrders();
         }
       }
@@ -340,9 +357,6 @@ export class PickToteInductionComponent
   }
 
   onTabClick(tabChangeEvent: MatTabChangeEvent) {
-    // console.log('tabChangeEvent => ', tabChangeEvent);
-    // console.log('index => ', tabChangeEvent.index);
-
     if (tabChangeEvent.index === 0) {
       this.activeTab = TabNames.NonSuperBatch;
     } else if (tabChangeEvent.index === 1) {

@@ -139,6 +139,12 @@ export class SuperBatchOrdersComponent implements OnInit, AfterViewInit {
     this.updateSorting();
   }
 
+  clearFilters() {
+    console.log('fired from parent to clear order and column filters');
+    this.orderNumberFilter = '';
+    this.filters = [];
+  }
+
   filterOrderNum() {
     const dialogRef: any = this.global.OpenDialog(FilterOrderNumberComponent, {
       height: DialogConstants.auto,
