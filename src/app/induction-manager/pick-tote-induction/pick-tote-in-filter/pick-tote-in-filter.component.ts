@@ -133,7 +133,11 @@ export class PickToteInFilterComponent implements OnInit, OnDestroy {
   }
 
   close() {
-    this.filters = [];
     this.dialogRef.close(this.filters);
+  }
+
+  clearFilters() {
+    this.filters = [];
+    this.initializeRows(); // Initialize table rows independently of the API response
   }
 }
