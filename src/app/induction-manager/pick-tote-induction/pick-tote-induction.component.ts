@@ -184,7 +184,6 @@ export class PickToteInductionComponent
   }
 
   showChange(selectedValue: any) {
-    console.log(selectedValue);
     this.selectedZoneGrouping = this.zoneGroupingsList.find(
       (x) => x.Id === selectedValue
     );
@@ -342,11 +341,11 @@ export class PickToteInductionComponent
           this.selectedFiltersSuperBatch.Zones = [];
           this.selectedFiltersSuperBatch.ColumnFilters = [];
 
-          if(this.NonSuperBatchOrdersComponent) {
+          if (this.NonSuperBatchOrdersComponent) {
             this.NonSuperBatchOrdersComponent.clearFilters();
           }
 
-          if(this.SuperBatchOrdersComponent) {
+          if (this.SuperBatchOrdersComponent) {
             this.NonSuperBatchOrdersComponent.clearFilters();
           }
 

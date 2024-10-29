@@ -106,7 +106,7 @@ export class NonSuperBatchOrdersComponent implements OnInit, AfterViewInit {
     this.dataSource = new MatTableDataSource(data);
     this.updatedPaginator();
     this.updateSorting();
-    this.focusFirstInput();
+    // this.focusFirstInput();
   }
 
   updatedPaginator() {
@@ -203,7 +203,7 @@ export class NonSuperBatchOrdersComponent implements OnInit, AfterViewInit {
     });
   }
 
-  onEnter(element: any) {
+  onEnter(element: any, index: number) {
     const {
       completedQuantity,
       orderNumber,
@@ -224,8 +224,9 @@ export class NonSuperBatchOrdersComponent implements OnInit, AfterViewInit {
       inductionType: 'NonSuperBatch',
     };
 
-    let response: Observable<any> = this.iInductionManagerApi.PreferenceIndex();
-    response.subscribe((res: any) => {
+    this.moveFocusToNextElement(index);
+
+    this.iInductionManagerApi.PreferenceIndex().subscribe((res: any) => {
       if (res.data && res.isExecuted) {
         const values = res.data.imPreference;
 
@@ -287,5 +288,21 @@ export class NonSuperBatchOrdersComponent implements OnInit, AfterViewInit {
         );
       }
     });
+  }
+
+  private moveFocusToNextElement(index: number) {
+    let totes = this.toteInputs.toArray();
+    let totalSize = totes.length;
+    let middleIndex = Math.floor(totalSize / 2);
+    console.log(index, middleIndex);
+
+    if(index >= middleIndex) {
+      if (totes[index + 1]) {
+        totes[index + 1].focus();
+      }
+    }
+    else if(index <= middleIndex) {
+      this.focusFirstInput();
+    }
   }
 }
