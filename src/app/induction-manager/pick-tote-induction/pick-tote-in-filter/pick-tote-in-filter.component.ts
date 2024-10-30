@@ -4,8 +4,11 @@ import { GlobalService } from 'src/app/common/services/global.service';
 import { IInductionManagerApiService } from 'src/app/common/services/induction-manager-api/induction-manager-api-interface';
 import { InductionManagerApiService } from 'src/app/common/services/induction-manager-api/induction-manager-api.service';
 import { PickToteInductionFilter } from '../../models/PickToteInductionModel';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { filter, Subscription } from 'rxjs';
+import { DeleteConfirmationComponent } from 'src/app/admin/dialogs/delete-confirmation/delete-confirmation.component';
+import { DialogConstants, Style, UniqueConstants } from 'src/app/common/constants/strings.constants';
+import { ConfirmationDialogComponent } from 'src/app/admin/dialogs/confirmation-dialog/confirmation-dialog.component';
 
 @Component({
   selector: 'app-pick-tote-in-filter',
@@ -17,12 +20,13 @@ export class PickToteInFilterComponent implements OnInit, OnDestroy {
     @Inject(MAT_DIALOG_DATA) public data: any,
     public dialogRef: MatDialogRef<PickToteInFilterComponent>,
     public inductionManagerApi: InductionManagerApiService,
-    private global: GlobalService
+    private global: GlobalService,
+    public dialog: MatDialog 
   ) {
     this.iInductionManagerApi = inductionManagerApi;
   }
 
-  aliasFilterList = [{ colHeader: '', colDef: '' }];
+  aliasFilterList = [{ colHeader: '', colDef: '', startCharacter: 0, endCharacter: 0 }];
   displayedColumns: string[] = ['field', 'fieldValue', 'actions'];
   elementData = [{ field: 'Zone 1' }];
   public iInductionManagerApi: IInductionManagerApiService;
@@ -71,11 +75,23 @@ export class PickToteInFilterComponent implements OnInit, OnDestroy {
     this.filters = [newRow, ...this.filters];
   }
 
-  // Method to remove a row
   removeRow(index: number) {
     if (this.filters.length >= 1) {
-      this.filters.splice(index, 1); // Remove row from the filters array
-      this.filters = [...this.filters]; // Trigger change detection
+      const dialogRef = this.dialog.open(DeleteConfirmationComponent, {
+        width: '460px',
+        disableClose: true,
+        data: {
+          actionMessage: ` this filter row`,
+          action: 'delete',
+        },
+      });
+  
+      dialogRef.afterClosed().subscribe(result => {
+        if (result === 'Yes') {  // Proceed only if the user confirms
+          this.filters.splice(index, 1); // Remove row from the filters array
+          this.filters = [...this.filters]; // Trigger change detection
+        }
+      });
     }
   }
 
@@ -91,13 +107,19 @@ export class PickToteInFilterComponent implements OnInit, OnDestroy {
           this.aliasFilterList = this.apiFilterData.map((item: any) => ({
             colHeader: item.ppField,
             colDef: item.alias,
+            startCharacter: item.startCharacter,
+            endCharacter: item.endCharacter
           }));
         }
       });
   }
 
-  selectionChange(value: any) {
-
+  selectionChange(value: any, filter: any) {
+    const filterSelected = this.aliasFilterList.find(x => x.colDef === value);
+    if (filterSelected !=null) {
+    filter.startCharacter = filterSelected.startCharacter;
+    filter.endCharacter = filterSelected.endCharacter;
+    }
   }
 
   applyFilter() {
@@ -113,7 +135,20 @@ export class PickToteInFilterComponent implements OnInit, OnDestroy {
   }
 
   close() {
-    this.filters = [];
     this.dialogRef.close(this.filters);
+  }
+
+  clearFilters() {
+    this.filters = [];
+    this.initializeRows(); // Initialize table rows independently of the API response
+    const dialogRef: any = this.global.OpenDialog(ConfirmationDialogComponent, {
+      height: 'auto',
+      width: '560px',
+      autoFocus: DialogConstants.autoFocus,
+      disableClose: true,
+      data: {
+        message: 'Do you want to clear all filters?',
+      },
+    });
   }
 }

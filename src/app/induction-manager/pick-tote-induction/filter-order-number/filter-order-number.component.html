@@ -23,6 +23,7 @@
         <mat-label>Paste Order here</mat-label>
         <textarea
           matInput
+          class="h-120px"
           (paste)="onPaste($event)"
           (input)="onInput(myText.value)"
           #myText
@@ -35,10 +36,19 @@
   <button
     type="submit"
     mat-flat-button
-    class="form-button-submit btn-lg flex-grow-1"
+    class="button-remove-all-w-stroke bg-white"
     color="primary"
-    (click)="applyFilter()"
+    (click)="clearFilters()"
   >
-    Filter
+    Clear
   </button>
+  <button
+  type="submit"
+  mat-flat-button
+  class="form-button-submit btn-lg flex-grow-1"
+  color="primary"
+  (click)="applyFilter()"
+>
+  Apply Filter
+</button>
 </div>

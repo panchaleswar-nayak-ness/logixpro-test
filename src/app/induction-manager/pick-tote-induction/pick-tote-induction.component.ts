@@ -56,7 +56,7 @@ export class PickToteInductionComponent
   zoneGroupingsList: IZoneGroup[] = [];
   zoneAllGroupingsList: IZoneGroup[] = [];
   selectedZoneGrouping: IZoneGroup | undefined;
-  zoneList: string[];
+  zoneList: string[] = [];
   selectedZones: string = '';
   activeTab: TabNames;
   @ViewChild('zoneGroupSelect') zoneGroupSelect;
@@ -83,6 +83,18 @@ export class PickToteInductionComponent
     OrderNumberFilters: [],
     ColumnFilters: [],
   };
+
+  selectedFiltersSuperBatch: any = {
+    Zones: [],
+    SpecificFilters: {
+      orderNumber: '',
+      toteId: '',
+      splitToggle: false,
+    },
+    OrderNumberFilters: [],
+    ColumnFilters: [],
+  };
+
   subscription: Subscription[] = [];
 
   ngOnInit(): void {
@@ -90,7 +102,7 @@ export class PickToteInductionComponent
     this.preloadDefaultZoneGroup();
 
     if (!this.activeTab) this.activeTab = 0; // Default tab active should be non super batch orders
-    this.refreshOrders();
+    // this.refreshOrders();
 
     let currentMessageSubscription = this.global.currentMessage.subscribe(
       (message) => {
@@ -99,17 +111,35 @@ export class PickToteInductionComponent
             message.orderNumberFilters &&
             message.orderNumberFilters.length > 0
           ) {
-            const uniqueOrderNumberFilters = [
+            let uniqueOrderNumberFilters = [
               ...new Set(message.orderNumberFilters),
             ];
+            uniqueOrderNumberFilters = uniqueOrderNumberFilters.filter(
+              (f) => f !== ''
+            );
             this.selectedFilters.OrderNumberFilters = uniqueOrderNumberFilters;
+          } else {
+            this.selectedFilters.OrderNumberFilters = [];
           }
 
           if (message.columnFilters) {
-            this.selectedFilters.ColumnFilters = message.columnFilters;
+            if (this.activeTab === TabNames.NonSuperBatch) {
+              this.selectedFilters.ColumnFilters = message.columnFilters;
+            } else if (this.activeTab === TabNames.SuperBatch) {
+              this.selectedFiltersSuperBatch.ColumnFilters =
+                message.columnFilters;
+            }
+          } else {
+            this.selectedFilters.ColumnFilters = [];
           }
 
-          this.retrieveOrders();
+          // Only refresh orders if any of these filters was applied from pop up
+          if (
+            message.orderNumberFilters.length > 0 ||
+            message.columnFilters.length > 0
+          ) {
+            this.retrieveOrders();
+          }
         }
       }
     );
@@ -118,8 +148,7 @@ export class PickToteInductionComponent
   }
 
   preloadDefaultZoneGroup() {
-    let response: Observable<any> = this.iInductionManagerApi.PreferenceIndex();
-    response.subscribe((res: any) => {
+    this.iInductionManagerApi.PreferenceIndex().subscribe((res: any) => {
       if (res.data && res.isExecuted) {
         const values = res.data.imPreference;
 
@@ -170,7 +199,11 @@ export class PickToteInductionComponent
     this.selectedZones = this.zoneList.join(' ');
 
     // Reload the orders based on induction type and selected filters
-    this.selectedFilters.Zones = this.zoneList;
+    if (this.activeTab === TabNames.NonSuperBatch) {
+      this.selectedFilters.Zones = this.zoneList;
+    } else if (this.activeTab === TabNames.SuperBatch) {
+      this.selectedFiltersSuperBatch.Zones = this.zoneList;
+    }
 
     this.retrieveOrders();
   }
@@ -232,7 +265,11 @@ export class PickToteInductionComponent
         this.selectedZones = this.zoneList.join(' ');
 
         // Reload the orders based on induction type and selected filters
-        this.selectedFilters.Zones = selectedZoneValues;
+        if (this.activeTab === TabNames.NonSuperBatch) {
+          this.selectedFilters.Zones = selectedZoneValues;
+        } else if (this.activeTab === TabNames.SuperBatch) {
+          this.selectedFiltersSuperBatch.Zones = selectedZoneValues;
+        }
 
         this.retrieveOrders();
       }
@@ -259,7 +296,7 @@ export class PickToteInductionComponent
       if (this.SuperBatchOrdersComponent) {
         this.SuperBatchOrdersComponent.retrieveFilteredSuperBatchOrders({
           FilterResultsRequestParams: {
-            ...this.selectedFilters,
+            ...this.selectedFiltersSuperBatch,
           },
         });
       }
@@ -269,7 +306,12 @@ export class PickToteInductionComponent
   refreshOrders() {
     // refresh orders in table based on currently selected filters this includes all filters currently selected
     // Reload the orders based on induction type and selected filters
-    this.selectedFilters.Zones = this.zoneList;
+    if (this.activeTab === TabNames.NonSuperBatch) {
+      this.selectedFilters.Zones = this.zoneList;
+    } else if (this.activeTab === TabNames.SuperBatch) {
+      this.selectedFiltersSuperBatch.Zones = this.zoneList;
+    }
+
     this.retrieveOrders();
   }
 
@@ -296,6 +338,17 @@ export class PickToteInductionComponent
           this.selectedFilters.Zones = [];
           this.selectedFilters.ColumnFilters = [];
           this.selectedFilters.OrderNumberFilters = [];
+          this.selectedFiltersSuperBatch.Zones = [];
+          this.selectedFiltersSuperBatch.ColumnFilters = [];
+
+          if (this.NonSuperBatchOrdersComponent) {
+            this.NonSuperBatchOrdersComponent.clearFilters();
+          }
+
+          if (this.SuperBatchOrdersComponent) {
+            this.NonSuperBatchOrdersComponent.clearFilters();
+          }
+
           this.retrieveOrders();
         }
       }
@@ -303,9 +356,6 @@ export class PickToteInductionComponent
   }
 
   onTabClick(tabChangeEvent: MatTabChangeEvent) {
-    console.log('tabChangeEvent => ', tabChangeEvent);
-    console.log('index => ', tabChangeEvent.index);
-
     if (tabChangeEvent.index === 0) {
       this.activeTab = TabNames.NonSuperBatch;
     } else if (tabChangeEvent.index === 1) {
@@ -313,7 +363,11 @@ export class PickToteInductionComponent
     }
 
     // Reload the orders based on induction type and selected filters
-    this.selectedFilters.Zones = this.zoneList;
+    if (this.activeTab === TabNames.NonSuperBatch) {
+      this.selectedFilters.Zones = this.zoneList;
+    } else if (this.activeTab === TabNames.SuperBatch) {
+      this.selectedFiltersSuperBatch.Zones = this.zoneList;
+    }
 
     this.retrieveOrders();
   }
@@ -331,7 +385,10 @@ export class PickToteInductionComponent
         // Fetch the max tote quantity and proceed with induction
         this.getMaxToteQuantity().subscribe(
           (maxToteQuantity: number) => {
-            valueToInduct.maxToteQuantity = maxToteQuantity;
+            // If maxToteQuantity is greater than 0, add it to the request
+            if (maxToteQuantity > 0) {
+              valueToInduct.maxToteQuantity = maxToteQuantity;
+            }
             this.performInduction(valueToInduct);
           },
           (error: any) => {
@@ -369,7 +426,7 @@ export class PickToteInductionComponent
     this.Api.PerformSpecificOrderInduction(valueToInduct)
       .pipe(
         catchError((errResponse) => {
-          // Check if the error is a 400 status
+          // Handle errors
           if (errResponse.error.status === 400) {
             this.global.ShowToastr(
               ToasterType.Error,
@@ -377,14 +434,12 @@ export class PickToteInductionComponent
               ToasterTitle.Error
             );
           } else {
-            // Handle other errors
             this.global.ShowToastr(
               ToasterType.Error,
               errResponse.error.responseMessage,
               ToasterTitle.Error
             );
           }
-          // Throw the error again if needed, or return an observable
           return throwError(errResponse);
         })
       )
@@ -403,7 +458,6 @@ export class PickToteInductionComponent
             innerResponse.responseMessage,
             ToasterTitle.Error
           );
-          console.log('DevicePreferencesDelete', innerResponse.responseMessage);
         }
       });
   }

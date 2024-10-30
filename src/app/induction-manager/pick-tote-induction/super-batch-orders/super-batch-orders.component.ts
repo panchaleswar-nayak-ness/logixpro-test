@@ -108,18 +108,18 @@ export class SuperBatchOrdersComponent implements OnInit, AfterViewInit {
   rebind(data?: any[]) {
     let mappedData = data?.map((m) => {
       return {
-        itemNumber: m.itemNumber,
-        priority: m.minPriority,
+        itemNumber: m.itemNumber ?? m.itemNumber,
+        priority: m.minPriority ?? m.priority,
         quality: m.quality,
-        requiredDate: m.minRequiredDate,
-        totalOrderQty: m.totalQuantity,
+        requiredDate: m.minRequiredDate ?? m.requiredDate,
+        totalOrderQty: m.totalQuantity ?? m.totalOrderQty,
       };
     });
 
     this.dataSource = new MatTableDataSource(mappedData);
     this.updatedPaginator();
     this.updateSorting();
-    this.focusFirstInput();
+    // this.focusFirstInput();
   }
 
   updatedPaginator() {
@@ -139,6 +139,12 @@ export class SuperBatchOrdersComponent implements OnInit, AfterViewInit {
     this.updateSorting();
   }
 
+  clearFilters() {
+    console.log('fired from parent to clear order and column filters');
+    this.orderNumberFilter = '';
+    this.filters = [];
+  }
+
   filterOrderNum() {
     const dialogRef: any = this.global.OpenDialog(FilterOrderNumberComponent, {
       height: DialogConstants.auto,
@@ -151,15 +157,16 @@ export class SuperBatchOrdersComponent implements OnInit, AfterViewInit {
     });
 
     dialogRef.afterClosed().subscribe((result: any) => {
-
       if (result) {
-        this.orderNumberFilter = result.orderNumberFilter
-          .map((m: string) =>
-            this.global.getTrimmedAndLineBreakRemovedString(m)
-          );
+        this.orderNumberFilter = result.orderNumberFilter.map((m: string) =>
+          this.global.getTrimmedAndLineBreakRemovedString(m)
+        );
 
         // send the currently selected order number filters to parent component via observable
-        this.global.sendMessage({ orderNumberFilters: this.orderNumberFilter });
+        this.global.sendMessage({
+          columnFilters: this.filters,
+          orderNumberFilters: this.orderNumberFilter,
+        });
       }
     });
   }
@@ -176,23 +183,28 @@ export class SuperBatchOrdersComponent implements OnInit, AfterViewInit {
     });
 
     dialogRef.afterClosed().subscribe((result: PickToteInductionFilter[]) => {
-   
       if (result) {
         this.filters = result;
 
         // send the currently selected column filters to parent component via observable
-        this.global.sendMessage({ columnFilters: this.filters });
+        this.global.sendMessage({
+          columnFilters: this.filters,
+          orderNumberFilters: this.orderNumberFilter,
+        });
       }
     });
   }
 
   retrieveFilteredSuperBatchOrders(values: any) {
-    this.Api.RetrieveSuperBatchOrders({...values, wsId : this.userData.wsid}).subscribe((filteredOrders) => {
+    this.Api.RetrieveSuperBatchOrders({
+      ...values,
+      wsId: this.userData.wsid,
+    }).subscribe((filteredOrders) => {
       this.rebind(filteredOrders.data);
     });
   }
 
-  onEnter(element: any) {
+  onEnter(element: any, index: number) {
     const {
       itemNumber,
       priority,
@@ -212,23 +224,24 @@ export class SuperBatchOrdersComponent implements OnInit, AfterViewInit {
       maxToteQuantity: 0,
       maxSuperBatchSize: 0,
       inductionType: 'SuperBatch',
+      wsId: this.userData.wsid,
     };
 
-    let response: Observable<any> = this.iInductionManagerApi.PreferenceIndex();
-    response.subscribe((res: any) => {
+    this.moveFocusToNextElement(index);
+
+    this.iInductionManagerApi.PreferenceIndex().subscribe((res: any) => {
       if (res.data && res.isExecuted) {
         const values = res.data.imPreference;
 
-        //Pick Tote Induction Settings
+        // Pick Tote Induction Settings
         valueToInduct.maxToteQuantity = values.maximumQuantityperTote;
         valueToInduct.maxSuperBatchSize = values.defaultSuperBatchSize;
 
-        // call api to induct this tote as per PLST-2772
+        // call API to induct this tote as per PLST-2772
         if (valueToInduct.toteScanned) {
           this.Api.PerformSuperBatchOrderInduction(valueToInduct)
             .pipe(
               catchError((errResponse) => {
-                // Check if the error is a 400 status
                 if (errResponse.error.status === 400) {
                   this.global.ShowToastr(
                     ToasterType.Error,
@@ -236,24 +249,37 @@ export class SuperBatchOrdersComponent implements OnInit, AfterViewInit {
                     ToasterTitle.Error
                   );
                 } else {
-                  // Handle other errors
                   this.global.ShowToastr(
                     ToasterType.Error,
                     errResponse.error.responseMessage,
                     ToasterTitle.Error
                   );
                 }
-                // Throw the error again if needed, or return an observable
                 return throwError(errResponse);
               })
             )
             .subscribe((innerResponse: any) => {
               if (innerResponse.data && innerResponse.isExecuted) {
-                this.global.ShowToastr(
-                  ToasterType.Success,
-                  innerResponse.responseMessage,
-                  ToasterTitle.Success
-                );
+                // Display each message in the response
+                if (
+                  innerResponse.messages &&
+                  innerResponse.messages.length > 0
+                ) {
+                  innerResponse.messages.forEach((message: string) => {
+                    this.global.ShowToastr(
+                      ToasterType.Info,
+                      message,
+                      ToasterTitle.Alert
+                    );
+                  });
+                } else {
+                  // Show success message if available
+                  this.global.ShowToastr(
+                    ToasterType.Success,
+                    innerResponse.responseMessage,
+                    ToasterTitle.Success
+                  );
+                }
               } else {
                 this.global.ShowToastr(
                   ToasterType.Error,
@@ -263,7 +289,6 @@ export class SuperBatchOrdersComponent implements OnInit, AfterViewInit {
               }
 
               console.log(this.dataSource.filteredData);
-
               if (this.dataSource && this.dataSource.filteredData) {
                 let updated = this.dataSource.filteredData.filter(
                   (f) => f.itemNumber !== valueToInduct.itemNumber
@@ -280,5 +305,21 @@ export class SuperBatchOrdersComponent implements OnInit, AfterViewInit {
         );
       }
     });
+  }
+
+  private moveFocusToNextElement(index: number) {
+    let totes = this.toteInputs.toArray();
+    let totalSize = totes.length;
+    let middleIndex = Math.floor(totalSize / 2);
+    console.log(index, middleIndex);
+
+    if(index >= middleIndex) {
+      if (totes[index + 1]) {
+        totes[index + 1].focus();
+      }
+    }
+    else if(index <= middleIndex) {
+      this.focusFirstInput();
+    }
   }
 }

@@ -55,11 +55,18 @@ export class FilterOrderNumberComponent implements OnInit {
   }
 
   close() {
-    this.orderNumberFilter = [];
     this.dialogRef.close({ orderNumberFilter: this.orderNumberFilter });
   }
 
   applyFilter() {
     this.dialogRef.close({ orderNumberFilter: this.orderNumberFilter });
+  }
+
+  clearFilters() {
+    this.orderNumberFilter = [];
+
+    if (this.myText) { 
+      this.myText.nativeElement.value = '';
+    }
   }
 }

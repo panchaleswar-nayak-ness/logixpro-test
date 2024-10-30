@@ -490,4 +490,24 @@ export class GlobalService {
         document.cookie = name + '=;expires=Thu, 01 Jan 1970 00:00:00 GMT';
     }
   }
+
+  saveState(key, value) {
+    localStorage.setItem(key, this.stringify(value));
+  }
+
+  getState(key) {
+    return this.jsonify(localStorage.getItem(key));
+  }
+
+  removeState(key) {
+    localStorage.removeItem(key);
+  }
+
+  stringify(value) {
+    return JSON.stringify(value);
+  }
+
+  jsonify(value) {
+    return JSON.parse(value);
+  }
 }
