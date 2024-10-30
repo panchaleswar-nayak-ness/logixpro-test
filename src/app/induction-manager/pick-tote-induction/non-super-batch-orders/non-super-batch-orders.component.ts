@@ -205,90 +205,105 @@ export class NonSuperBatchOrdersComponent implements OnInit, AfterViewInit {
 
   onEnter(element: any, index: number) {
     const {
-      completedQuantity,
-      orderNumber,
-      zone,
-      priority,
-      toteScanned,
-      requiredDate,
+        completedQuantity,
+        orderNumber,
+        zone,
+        priority,
+        toteScanned,
+        requiredDate,
     } = element;
 
     var valueToInduct = {
-      orderNumber,
-      zone,
-      priority,
-      requiredDate,
-      completedQuantity,
-      toteScanned,
-      maxToteQuantity: 0,
-      inductionType: 'NonSuperBatch',
+        orderNumber,
+        zone,
+        priority,
+        requiredDate,
+        completedQuantity,
+        toteScanned,
+        maxToteQuantity: 0,
+        inductionType: 'NonSuperBatch',
     };
 
-    this.moveFocusToNextElement(index);
+  
 
     this.iInductionManagerApi.PreferenceIndex().subscribe((res: any) => {
-      if (res.data && res.isExecuted) {
-        const values = res.data.imPreference;
+        if (res.data && res.isExecuted) {
+            const values = res.data.imPreference;
 
-        //Pick Tote Induction Settings
-        valueToInduct.maxToteQuantity = values.maximumQuantityperTote;
-        console.log(valueToInduct);
+            valueToInduct.maxToteQuantity = values.maximumQuantityperTote;
+            console.log(valueToInduct);
 
-        // call api to induct this tote as per PLST-2754
-        if (valueToInduct.toteScanned) {
-          this.Api.PerformNonSuperBatchOrderInduction(valueToInduct)
-            .pipe(
-              catchError((errResponse) => {
-                // Check if the error is a 400 status
-                if (errResponse.error.status === 400) {
-                  this.global.ShowToastr(
-                    ToasterType.Error,
-                    errResponse.error.responseMessage,
-                    ToasterTitle.Error
-                  );
-                } else {
-                  // Handle other errors
-                  this.global.ShowToastr(
-                    ToasterType.Error,
-                    errResponse.error.responseMessage,
-                    ToasterTitle.Error
-                  );
-                }
-                // Throw the error again if needed, or return an observable
-                return throwError(errResponse);
-              })
-            )
-            .subscribe((innerResponse: any) => {
-              if (innerResponse.data && innerResponse.isExecuted) {
-                this.global.ShowToastr(
-                  ToasterType.Success,
-                  innerResponse.responseMessage,
-                  ToasterTitle.Success
-                );
-              } else {
-                this.global.ShowToastr(
-                  ToasterType.Error,
-                  innerResponse.responseMessage,
-                  ToasterTitle.Error
-                );
-              }
+            if (valueToInduct.toteScanned) {
+                this.Api.PerformNonSuperBatchOrderInduction(valueToInduct)
+                    .pipe(
+                        catchError((errResponse) => {
+                            if (errResponse.error.status === 400) {
+                                this.global.ShowToastr(
+                                    ToasterType.Error,
+                                    errResponse.error.responseMessage,
+                                    ToasterTitle.Error
+                                );
+                            } else {
+                                this.global.ShowToastr(
+                                    ToasterType.Error,
+                                    errResponse.error.responseMessage,
+                                    ToasterTitle.Error
+                                );
+                            }
+                            return throwError(errResponse);
+                        })
+                    )
+                    .subscribe((innerResponse: any) => {
+                        if (innerResponse.data && innerResponse.isExecuted) {
+                            this.global.ShowToastr(
+                                ToasterType.Success,
+                                innerResponse.responseMessage,
+                                ToasterTitle.Success
+                            );
+                            // Check for remaining quantity
+                            if (innerResponse.data.remainingQuantity > 0) {
+                                // Update the UI with the remaining quantity
+                                const orderIndex = this.dataSource.filteredData.findIndex(
+                                  (item) => item.orderNumber === orderNumber
+                                );
+                
+                                if (orderIndex !== -1) {
+                                  // Update totalOrderQuantity with remainingQuantity
+                                  this.dataSource.filteredData[orderIndex].completedQuantity =
+                                    innerResponse.data.remainingQuantity;
+                                  element.toteScanned = ''
+                                  // Use setTimeout to focus on the toteScanned input box
+                                
+                                }
 
-              console.log(this.dataSource.filteredData);
-              let updated = this.dataSource.filteredData.filter(
-                (f) => f.orderNumber !== valueToInduct.orderNumber
-              );
-              this.rebind(updated);
-            });
+                                // Retain focus on the current input element for further induction
+                     
+                            } else {
+                                // If no remaining quantity, remove the order row
+                                let updated = this.dataSource.filteredData.filter(
+                                    (f) => f.orderNumber !== valueToInduct.orderNumber
+                                );
+                                this.rebind(updated);
+                                this.moveFocusToNextElement(index);
+                            }
+                        } else {
+                            this.global.ShowToastr(
+                                ToasterType.Error,
+                                innerResponse.responseMessage,
+                                ToasterTitle.Error
+                            );
+                        }
+                    });
+            }
+        } else {
+            this.global.ShowToastr(
+                ToasterType.Error,
+                ToasterMessages.SomethingWentWrong,
+                ToasterTitle.Error
+            );
         }
-      } else {
-        this.global.ShowToastr(
-          ToasterType.Error,
-          ToasterMessages.SomethingWentWrong,
-          ToasterTitle.Error
-        );
-      }
     });
-  }
+}
 
   private moveFocusToNextElement(index: number) {
     let totes = this.toteInputs.toArray();
