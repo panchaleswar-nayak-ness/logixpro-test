@@ -145,7 +145,7 @@
 
 <mat-tab-group dynamicHeight #tabGroup (selectedTabChange)="onTabClick($event)">
   <mat-tab label="Non Super Batch Orders">
-    <app-non-super-batch-orders></app-non-super-batch-orders>
+    <app-non-super-batch-orders [specificInductionSuccess]="specificInductionSuccess"></app-non-super-batch-orders>
   </mat-tab>
   <mat-tab label="Super Batch Orders">
     <app-super-batch-orders></app-super-batch-orders>

@@ -55,9 +55,13 @@ export class NonSuperBatchOrdersComponent implements OnInit, AfterViewInit {
   @ViewChildren(MatInput) toteInputs!: QueryList<MatInput>;
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild('paginator') paginator: MatPaginator;
+  @Input() set specificInductionSuccess(event: EventEmitter<void>) {
+    event.subscribe(() => this.focusFirstInput());
+  }
   userData;
   elementData = [
     {
+      status:true,
       orderNumber: 'Zone 1',
       zone: 'Location 1',
       priority: 'Location 1',
@@ -65,6 +69,7 @@ export class NonSuperBatchOrdersComponent implements OnInit, AfterViewInit {
       totalOrderQty: '5',
     },
     {
+      status:true,
       orderNumber: 'Zone 2',
       zone: 'Location 2',
       priority: 'Location 1',
@@ -72,6 +77,7 @@ export class NonSuperBatchOrdersComponent implements OnInit, AfterViewInit {
       totalOrderQty: '5',
     },
     {
+      status:true,
       orderNumber: 'Zone 3',
       zone: 'Location 3',
       priority: 'Location 1',
@@ -323,24 +329,22 @@ export class NonSuperBatchOrdersComponent implements OnInit, AfterViewInit {
   }
 
 
-  checkOrderStatus(order: any): string {
-    // if (order.isReprocess === false) {
-    //     return 'Open';
-    // } else {
-    //     return 'Re-process';
-    // }
-    return ''
+  checkOrderStatus(isReprocess: any): string {
+    if (isReprocess === false) {
+        return 'Open';
+    } else {
+        return 'Re-process';
+    }
 }
 
 
-getColors(order: any): string {
-  // if ( order.isReprocess === false) {
-  //     return 'background-color: #FFF0D6;color:#4D3B1A';
-  // } 
-  // else {
-  //   return 'background-color:   #F7D0DA;color:#4D0D1D';
+getColors(isReprocess: any): string {
+  if ( isReprocess === false) {
+      return 'background-color: #FFF0D6;color:#4D3B1A';
+  } 
+  else {
+    return 'background-color:   #F7D0DA;color:#4D0D1D';
       
-  // }
-  return ''
+  }
 }
 }

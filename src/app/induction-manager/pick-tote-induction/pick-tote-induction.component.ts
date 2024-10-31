@@ -2,8 +2,10 @@ import {
   AfterViewInit,
   Component,
   ElementRef,
+  EventEmitter,
   OnDestroy,
   OnInit,
+  Output,
   ViewChild,
 } from '@angular/core';
 import {
@@ -67,6 +69,7 @@ export class PickToteInductionComponent
   NonSuperBatchOrdersComponent: NonSuperBatchOrdersComponent;
   @ViewChild(SuperBatchOrdersComponent, { static: true })
   SuperBatchOrdersComponent: SuperBatchOrdersComponent;
+  @Output() specificInductionSuccess = new EventEmitter<void>();
 
   orderNumber: string = '';
   toteId: string = '';
@@ -491,6 +494,7 @@ export class PickToteInductionComponent
             // Clear both order number and tote ID if transactionQty is zero
             this.orderNumber = '';
             this.toteId = '';
+            this.specificInductionSuccess.emit()
         } else {
             // Only clear the tote ID if transactionQty is not zero
             this.toteId = '';
