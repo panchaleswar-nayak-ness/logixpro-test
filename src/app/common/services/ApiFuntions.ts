@@ -2169,5 +2169,13 @@ export class ApiFuntions {
   public DeletePickToteInductionFilter(body: any): Observable<any> {
     return this.ApiBase.Post(`/Induction/removetotefilter/`, body);
   }
+
+
+  public GetTotalTransactionQty(orderNumber: string): Observable<any> {
+    return this.ApiBase.Get(`/Induction/transactionQuantity/${orderNumber}`);
+  }
+
+
+
   
 }

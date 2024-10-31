@@ -95,7 +95,7 @@
             <mat-label><b>Specific Order Induction</b></mat-label>
           </div>
           <div class="row g-2">
-            <div class="col-lg-6">
+            <div class="col-lg-4">
               <mat-form-field
                 class="custom-form-field w-100 col-6"
                 appearance="outline"
@@ -105,19 +105,29 @@
                 #orderNumberInput
                   matInput
                   type="text"
-                  value=""
                   [(ngModel)]="orderNumber"
+                  (keyup.enter)="getTransactionQty()"
                 />
               </mat-form-field>
             </div>
-            <div class="col-lg-6">
+            <div class="col-lg-4">
               <mat-form-field
                 class="custom-form-field w-100 col-6"
                 appearance="outline"
               >
                 <mat-label>Enter Tote</mat-label>
-                <input matInput type="text" value="" [(ngModel)]="toteId"
+                <input #toteIdInput matInput type="text" value="" [(ngModel)]="toteId"
                 (keyup.enter)="onEnter()" />
+              </mat-form-field>
+            </div>
+            <div class="col-lg-4">
+              <mat-form-field
+                class="custom-form-field w-100 col-6"
+                appearance="outline"
+              >
+                <mat-label>Transaction Quantity</mat-label>
+                <input matInput type="number" [(ngModel)]="transactionQty"
+                disabled />
               </mat-form-field>
             </div>
             <div class="col-lg-6">

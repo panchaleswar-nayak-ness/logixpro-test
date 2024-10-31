@@ -81,6 +81,7 @@ export class NonSuperBatchOrdersComponent implements OnInit, AfterViewInit {
   ];
 
   displayedColumns: string[] = [
+    'status',
     'orderNumber',
     'zone',
     'priority',
@@ -320,4 +321,26 @@ export class NonSuperBatchOrdersComponent implements OnInit, AfterViewInit {
       this.focusFirstInput();
     }
   }
+
+
+  checkOrderStatus(order: any): string {
+    // if (order.isReprocess === false) {
+    //     return 'Open';
+    // } else {
+    //     return 'Re-process';
+    // }
+    return ''
+}
+
+
+getColors(order: any): string {
+  // if ( order.isReprocess === false) {
+  //     return 'background-color: #FFF0D6;color:#4D3B1A';
+  // } 
+  // else {
+  //   return 'background-color:   #F7D0DA;color:#4D0D1D';
+      
+  // }
+  return ''
+}
 }

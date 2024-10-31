@@ -322,4 +322,6 @@ export class SuperBatchOrdersComponent implements OnInit, AfterViewInit {
       this.focusFirstInput();
     }
   }
+
+ 
 }

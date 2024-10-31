@@ -62,6 +62,7 @@ export class PickToteInductionComponent
   @ViewChild('zoneGroupSelect') zoneGroupSelect;
   @ViewChild('tabGroup') tabGroup;
   @ViewChild('orderNumberInput') orderNumberInput: ElementRef;
+  @ViewChild('toteIdInput') toteIdInput: ElementRef;
   @ViewChild(NonSuperBatchOrdersComponent, { static: true })
   NonSuperBatchOrdersComponent: NonSuperBatchOrdersComponent;
   @ViewChild(SuperBatchOrdersComponent, { static: true })
@@ -70,6 +71,7 @@ export class PickToteInductionComponent
   orderNumber: string = '';
   toteId: string = '';
   splitToggle: boolean = false;
+  transactionQty:number = 0;
 
   // this is the global filteration object used to refresh and select various filters on the tote induction screen
   // this will be passed to the respective api for loading data in tables based on induction type currently selected
@@ -422,6 +424,45 @@ export class PickToteInductionComponent
     });
   }
 
+  getTransactionQty(){
+    this.Api.GetTotalTransactionQty(this.orderNumber)
+    .pipe(
+      catchError((errResponse) => {
+        this.transactionQty = 0
+        // Handle errors
+        if (errResponse.error.status === 400) {
+          this.global.ShowToastr(
+            ToasterType.Error,
+            errResponse.error.responseMessage,
+            ToasterTitle.Error
+          );
+        } else {
+          this.global.ShowToastr(
+            ToasterType.Error,
+            errResponse.error.responseMessage,
+            ToasterTitle.Error
+          );
+        }
+        return throwError(errResponse);
+      })
+    )
+    .subscribe((innerResponse: any) => {
+      if (innerResponse.data && innerResponse.isExecuted) {
+     this.transactionQty = innerResponse.data.totalQuantity
+       
+     setTimeout(() => {
+      this.toteIdInput.nativeElement.focus();
+    });
+      } else {
+        this.global.ShowToastr(
+          ToasterType.Error,
+          innerResponse.responseMessage,
+          ToasterTitle.Error
+        );
+      }
+    });
+  }
+
   performInduction(valueToInduct: any) {
     this.Api.PerformSpecificOrderInduction(valueToInduct)
       .pipe(
@@ -445,8 +486,17 @@ export class PickToteInductionComponent
       )
       .subscribe((innerResponse: any) => {
         if (innerResponse.data && innerResponse.isExecuted) {
+          this.transactionQty = innerResponse.data.remainingTransactionQuantitySum
+          if (this.transactionQty === 0) {
+            // Clear both order number and tote ID if transactionQty is zero
+            this.orderNumber = '';
+            this.toteId = '';
+        } else {
+            // Only clear the tote ID if transactionQty is not zero
+            this.toteId = '';
+        }
           this.refreshOrders();
-          this.clearToteAndOrderFields();
+                 
           this.global.ShowToastr(
             ToasterType.Success,
             innerResponse.responseMessage,
