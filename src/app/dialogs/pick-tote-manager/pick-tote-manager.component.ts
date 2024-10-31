@@ -469,7 +469,6 @@ export class PickToteManagerComponent implements OnInit {
       this.field_focus.nativeElement.focus();
     }, 500);
   }
-
   getSavedFilters() {
     let paylaod = {
       filter: '',
@@ -477,8 +476,26 @@ export class PickToteManagerComponent implements OnInit {
     this.iInductionManagerApi
       .PickBatchFilterTypeAhead(paylaod)
       .subscribe((res) => {
-        if (res.isExecuted && res.data) {
-          this.savedFilterList = res.data;
+        if (res.isExecuted && res.data.batchDescriptions) {
+          this.savedFilterList = res.data.batchDescriptions;
+          this.pickBatchFilter = res.data.pickBatchFilter;
+          this.pickBatchOrder =  res.data.pickBatchOrder;
+          this.filterData = [];
+          if (!this.pickBatchFilter) {
+            this.onAddFilter(this.filterData);
+        } else {
+          this.savedFilter.patchValue(this.pickBatchFilter[0].description);
+          this.onSavedFilterChange({option:{value:this.pickBatchFilter[0].description}});
+          this.onAddFilter(this.pickBatchFilter);
+        }
+        this.orderByData = [];
+
+          if (!this.pickBatchOrder) {
+            this.onAddOrderBy(this.orderByData);
+          }
+          else{
+              this.onAddOrderBy(this.pickBatchOrder);
+          }
           this.filteredOptions = this.savedFilter.valueChanges.pipe(
             startWith(''),
             map((value) => value),
