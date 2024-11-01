@@ -55,7 +55,7 @@ export class FilterOrderNumberComponent implements OnInit {
   }
 
   close() {
-    this.dialogRef.close({ orderNumberFilter: this.orderNumberFilter });
+    this.dialogRef.close();
   }
 
   applyFilter() {
@@ -68,5 +68,7 @@ export class FilterOrderNumberComponent implements OnInit {
     if (this.myText) { 
       this.myText.nativeElement.value = '';
     }
+
+    this.dialogRef.close({ orderNumberFilter: this.orderNumberFilter });
   }
 }

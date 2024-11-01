@@ -152,15 +152,18 @@ export class NonSuperBatchOrdersComponent implements OnInit, AfterViewInit {
 
     dialogRef.afterClosed().subscribe((result: any) => {
       if (result) {
-        this.orderNumberFilter = result.orderNumberFilter.map((m: string) =>
-          this.global.getTrimmedAndLineBreakRemovedString(m)
-        );
 
-        // send the currently selected order number filters to parent component via observable
-        this.global.sendMessage({
-          columnFilters: this.filters,
-          orderNumberFilters: this.orderNumberFilter,
-        });
+        if(result.orderNumberFilter) {
+          this.orderNumberFilter = result.orderNumberFilter.map((m: string) =>
+            this.global.getTrimmedAndLineBreakRemovedString(m)
+          );
+  
+          // send the currently selected order number filters to parent component via observable
+          this.global.sendMessage({
+            columnFilters: this.filters,
+            orderNumberFilters: this.orderNumberFilter,
+          });
+        }
       }
     });
   }

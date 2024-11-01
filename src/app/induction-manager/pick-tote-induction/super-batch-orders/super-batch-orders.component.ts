@@ -52,6 +52,7 @@ export class SuperBatchOrdersComponent implements OnInit, AfterViewInit {
   userData;
   displayedColumns: string[] = [
     'itemNumber',
+    'zone',
     'priority',
     'quality',
     'requiredDate',
@@ -108,6 +109,7 @@ export class SuperBatchOrdersComponent implements OnInit, AfterViewInit {
   rebind(data?: any[]) {
     let mappedData = data?.map((m) => {
       return {
+        zone: m.zone,
         itemNumber: m.itemNumber ?? m.itemNumber,
         priority: m.minPriority ?? m.priority,
         quality: m.quality,
@@ -157,16 +159,20 @@ export class SuperBatchOrdersComponent implements OnInit, AfterViewInit {
     });
 
     dialogRef.afterClosed().subscribe((result: any) => {
-      if (result) {
-        this.orderNumberFilter = result.orderNumberFilter.map((m: string) =>
-          this.global.getTrimmedAndLineBreakRemovedString(m)
-        );
 
-        // send the currently selected order number filters to parent component via observable
-        this.global.sendMessage({
-          columnFilters: this.filters,
-          orderNumberFilters: this.orderNumberFilter,
-        });
+      if (result) {
+
+        if(result.orderNumberFilter) {
+          this.orderNumberFilter = result.orderNumberFilter.map((m: string) =>
+            this.global.getTrimmedAndLineBreakRemovedString(m)
+          );
+  
+          // send the currently selected order number filters to parent component via observable
+          this.global.sendMessage({
+            columnFilters: this.filters,
+            orderNumberFilters: this.orderNumberFilter,
+          });
+        }
       }
     });
   }
@@ -183,6 +189,7 @@ export class SuperBatchOrdersComponent implements OnInit, AfterViewInit {
     });
 
     dialogRef.afterClosed().subscribe((result: PickToteInductionFilter[]) => {
+
       if (result) {
         this.filters = result;
 

@@ -74,7 +74,7 @@ export class PickToteInductionComponent
   orderNumber: string = '';
   toteId: string = '';
   splitToggle: boolean = false;
-  transactionQty:number = 0;
+  transactionQty: number = 0;
 
   // this is the global filteration object used to refresh and select various filters on the tote induction screen
   // this will be passed to the respective api for loading data in tables based on induction type currently selected
@@ -109,47 +109,64 @@ export class PickToteInductionComponent
     if (!this.activeTab) this.activeTab = 0; // Default tab active should be non super batch orders
     // this.refreshOrders();
 
-    let currentMessageSubscription = this.global.currentMessage.subscribe(
-      (message) => {
-        if (message) {
-          if (
-            message.orderNumberFilters &&
-            message.orderNumberFilters.length > 0
-          ) {
-            let uniqueOrderNumberFilters = [
-              ...new Set(message.orderNumberFilters),
-            ];
-            uniqueOrderNumberFilters = uniqueOrderNumberFilters.filter(
-              (f) => f !== ''
-            );
-            this.selectedFilters.OrderNumberFilters = uniqueOrderNumberFilters;
-          } else {
-            this.selectedFilters.OrderNumberFilters = [];
-          }
-
-          if (message.columnFilters) {
-            if (this.activeTab === TabNames.NonSuperBatch) {
-              this.selectedFilters.ColumnFilters = message.columnFilters;
-            } else if (this.activeTab === TabNames.SuperBatch) {
-              this.selectedFiltersSuperBatch.ColumnFilters =
-                message.columnFilters;
+    if (this.global.currentMessage) {
+      let currentMessageSubscription = this.global.currentMessage.subscribe(
+        (message) => {
+          if (message) {
+            if (
+              message.orderNumberFilters &&
+              message.orderNumberFilters.length > 0
+            ) {
+              let uniqueOrderNumberFilters = [
+                ...new Set(message.orderNumberFilters),
+              ];
+              uniqueOrderNumberFilters = uniqueOrderNumberFilters.filter(
+                (f) => f !== ''
+              );
+              this.selectedFilters.OrderNumberFilters =
+                uniqueOrderNumberFilters;
+            } else {
+              this.selectedFilters.OrderNumberFilters = [];
             }
-          } else {
-            this.selectedFilters.ColumnFilters = [];
-          }
 
-          // Only refresh orders if any of these filters was applied from pop up
-          if (
-            message.orderNumberFilters.length > 0 ||
-            message.columnFilters.length > 0
-          ) {
-            this.retrieveOrders();
+            let defaultRow = JSON.stringify([
+              {
+                id: 0,
+                alias: '',
+                ppField: '',
+                startCharacter: 0,
+                endCharacter: 0,
+                Value: '',
+              },
+            ]);
+            let appliedRows = JSON.stringify(message.columnFilters);
+            let notDefaultRow = defaultRow !== appliedRows;
+            console.log(notDefaultRow);
+
+            if (message.columnFilters && notDefaultRow) {
+              if (this.activeTab === TabNames.NonSuperBatch) {
+                this.selectedFilters.ColumnFilters = message.columnFilters;
+              } else if (this.activeTab === TabNames.SuperBatch) {
+                this.selectedFiltersSuperBatch.ColumnFilters =
+                  message.columnFilters;
+              }
+            } else {
+              this.selectedFilters.ColumnFilters = [];
+            }
+
+            // Only refresh orders if any of these filters was applied from pop up
+            if (
+              message.orderNumberFilters.length > 0 ||
+              message.columnFilters.length > 0
+            ) {
+              this.retrieveOrders();
+            }
           }
         }
-      }
-    );
+      );
 
-    this.subscription.push(currentMessageSubscription);
+      this.subscription.push(currentMessageSubscription);
+    }
   }
 
   preloadDefaultZoneGroup() {
@@ -427,43 +444,43 @@ export class PickToteInductionComponent
     });
   }
 
-  getTransactionQty(){
+  getTransactionQty() {
     this.Api.GetTotalTransactionQty(this.orderNumber)
-    .pipe(
-      catchError((errResponse) => {
-        this.transactionQty = 0
-        // Handle errors
-        if (errResponse.error.status === 400) {
-          this.global.ShowToastr(
-            ToasterType.Error,
-            errResponse.error.responseMessage,
-            ToasterTitle.Error
-          );
+      .pipe(
+        catchError((errResponse) => {
+          this.transactionQty = 0;
+          // Handle errors
+          if (errResponse.error.status === 400) {
+            this.global.ShowToastr(
+              ToasterType.Error,
+              errResponse.error.responseMessage,
+              ToasterTitle.Error
+            );
+          } else {
+            this.global.ShowToastr(
+              ToasterType.Error,
+              errResponse.error.responseMessage,
+              ToasterTitle.Error
+            );
+          }
+          return throwError(errResponse);
+        })
+      )
+      .subscribe((innerResponse: any) => {
+        if (innerResponse.data && innerResponse.isExecuted) {
+          this.transactionQty = innerResponse.data.totalQuantity;
+
+          setTimeout(() => {
+            this.toteIdInput.nativeElement.focus();
+          });
         } else {
           this.global.ShowToastr(
             ToasterType.Error,
-            errResponse.error.responseMessage,
+            innerResponse.responseMessage,
             ToasterTitle.Error
           );
         }
-        return throwError(errResponse);
-      })
-    )
-    .subscribe((innerResponse: any) => {
-      if (innerResponse.data && innerResponse.isExecuted) {
-     this.transactionQty = innerResponse.data.totalQuantity
-       
-     setTimeout(() => {
-      this.toteIdInput.nativeElement.focus();
-    });
-      } else {
-        this.global.ShowToastr(
-          ToasterType.Error,
-          innerResponse.responseMessage,
-          ToasterTitle.Error
-        );
-      }
-    });
+      });
   }
 
   performInduction(valueToInduct: any) {
@@ -489,18 +506,19 @@ export class PickToteInductionComponent
       )
       .subscribe((innerResponse: any) => {
         if (innerResponse.data && innerResponse.isExecuted) {
-          this.transactionQty = innerResponse.data.remainingTransactionQuantitySum
+          this.transactionQty =
+            innerResponse.data.remainingTransactionQuantitySum;
           if (this.transactionQty === 0) {
             // Clear both order number and tote ID if transactionQty is zero
             this.orderNumber = '';
             this.toteId = '';
-            this.specificInductionSuccess.emit()
-        } else {
+            this.specificInductionSuccess.emit();
+          } else {
             // Only clear the tote ID if transactionQty is not zero
             this.toteId = '';
-        }
+          }
           this.refreshOrders();
-                 
+
           this.global.ShowToastr(
             ToasterType.Success,
             innerResponse.responseMessage,

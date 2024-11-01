@@ -4,10 +4,18 @@ import { GlobalService } from 'src/app/common/services/global.service';
 import { IInductionManagerApiService } from 'src/app/common/services/induction-manager-api/induction-manager-api-interface';
 import { InductionManagerApiService } from 'src/app/common/services/induction-manager-api/induction-manager-api.service';
 import { PickToteInductionFilter } from '../../models/PickToteInductionModel';
-import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
+import {
+  MAT_DIALOG_DATA,
+  MatDialog,
+  MatDialogRef,
+} from '@angular/material/dialog';
 import { filter, Subscription } from 'rxjs';
 import { DeleteConfirmationComponent } from 'src/app/admin/dialogs/delete-confirmation/delete-confirmation.component';
-import { DialogConstants, Style, UniqueConstants } from 'src/app/common/constants/strings.constants';
+import {
+  DialogConstants,
+  Style,
+  UniqueConstants,
+} from 'src/app/common/constants/strings.constants';
 import { ConfirmationDialogComponent } from 'src/app/admin/dialogs/confirmation-dialog/confirmation-dialog.component';
 
 @Component({
@@ -21,12 +29,14 @@ export class PickToteInFilterComponent implements OnInit, OnDestroy {
     public dialogRef: MatDialogRef<PickToteInFilterComponent>,
     public inductionManagerApi: InductionManagerApiService,
     private global: GlobalService,
-    public dialog: MatDialog 
+    public dialog: MatDialog
   ) {
     this.iInductionManagerApi = inductionManagerApi;
   }
 
-  aliasFilterList = [{ colHeader: '', colDef: '', startCharacter: 0, endCharacter: 0 }];
+  aliasFilterList = [
+    { colHeader: '', colDef: '', startCharacter: 0, endCharacter: 0 },
+  ];
   displayedColumns: string[] = ['field', 'fieldValue', 'actions'];
   elementData = [{ field: 'Zone 1' }];
   public iInductionManagerApi: IInductionManagerApiService;
@@ -42,9 +52,7 @@ export class PickToteInFilterComponent implements OnInit, OnDestroy {
       this.filters = this.data.ColumnFilter;
   }
 
-  ngOnDestroy(): void {
-
-  }
+  ngOnDestroy(): void {}
 
   // Initialize table with empty rows, not based on API response
   initializeRows() {
@@ -85,9 +93,10 @@ export class PickToteInFilterComponent implements OnInit, OnDestroy {
           action: 'delete',
         },
       });
-  
-      dialogRef.afterClosed().subscribe(result => {
-        if (result === 'Yes') {  // Proceed only if the user confirms
+
+      dialogRef.afterClosed().subscribe((result) => {
+        if (result === 'Yes') {
+          // Proceed only if the user confirms
           this.filters.splice(index, 1); // Remove row from the filters array
           this.filters = [...this.filters]; // Trigger change detection
         }
@@ -108,17 +117,17 @@ export class PickToteInFilterComponent implements OnInit, OnDestroy {
             colHeader: item.ppField,
             colDef: item.alias,
             startCharacter: item.startCharacter,
-            endCharacter: item.endCharacter
+            endCharacter: item.endCharacter,
           }));
         }
       });
   }
 
   selectionChange(value: any, filter: any) {
-    const filterSelected = this.aliasFilterList.find(x => x.colDef === value);
-    if (filterSelected !=null) {
-    filter.startCharacter = filterSelected.startCharacter;
-    filter.endCharacter = filterSelected.endCharacter;
+    const filterSelected = this.aliasFilterList.find((x) => x.colDef === value);
+    if (filterSelected != null) {
+      filter.startCharacter = filterSelected.startCharacter;
+      filter.endCharacter = filterSelected.endCharacter;
     }
   }
 
@@ -135,12 +144,10 @@ export class PickToteInFilterComponent implements OnInit, OnDestroy {
   }
 
   close() {
-    this.dialogRef.close(this.filters);
+    this.dialogRef.close();
   }
 
   clearFilters() {
-    this.filters = [];
-    this.initializeRows(); // Initialize table rows independently of the API response
     const dialogRef: any = this.global.OpenDialog(ConfirmationDialogComponent, {
       height: 'auto',
       width: '560px',
@@ -149,6 +156,15 @@ export class PickToteInFilterComponent implements OnInit, OnDestroy {
       data: {
         message: 'Do you want to clear all filters?',
       },
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+   
+      if (result) {
+        this.filters = [];
+        this.initializeRows(); // Initialize table rows independently of the API response
+        this.dialogRef.close(this.filters);
+      }
     });
   }
 }
