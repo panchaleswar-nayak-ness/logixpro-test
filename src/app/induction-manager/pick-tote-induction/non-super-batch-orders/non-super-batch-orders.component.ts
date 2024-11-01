@@ -276,7 +276,7 @@ export class NonSuperBatchOrdersComponent implements OnInit, AfterViewInit {
                 
                                 if (orderIndex !== -1) {
                                   // Update totalOrderQuantity with remainingQuantity
-                                  this.dataSource.filteredData[orderIndex].completedQuantity =
+                                  this.dataSource.filteredData[orderIndex].transactionQuantity =
                                     innerResponse.data.remainingQuantity;
                                   element.toteScanned = ''
                                   // Use setTimeout to focus on the toteScanned input box
