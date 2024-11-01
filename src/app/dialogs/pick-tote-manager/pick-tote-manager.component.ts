@@ -481,7 +481,7 @@ export class PickToteManagerComponent implements OnInit {
           this.pickBatchFilter = res.data.pickBatchFilter;
           this.pickBatchOrder =  res.data.pickBatchOrder;
           this.filterData = [];
-          if (!this.pickBatchFilter) {
+          if (!this.pickBatchFilter || this.pickBatchFilter.length <=0 ) {
             this.onAddFilter(this.filterData);
         } else {
           this.savedFilter.patchValue(this.pickBatchFilter[0].description);
