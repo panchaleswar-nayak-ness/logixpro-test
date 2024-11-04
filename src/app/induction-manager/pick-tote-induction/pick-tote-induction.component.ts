@@ -156,8 +156,8 @@ export class PickToteInductionComponent
 
             // Only refresh orders if any of these filters was applied from pop up
             if (
-              message.orderNumberFilters.length > 0 ||
-              message.columnFilters.length > 0
+              (message.orderNumberFilters && message.orderNumberFilters.length > 0) ||
+              (message.columnFilters && message.columnFilters.length > 0)
             ) {
               this.retrieveOrders();
             }
