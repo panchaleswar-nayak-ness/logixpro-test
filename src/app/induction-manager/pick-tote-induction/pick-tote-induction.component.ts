@@ -113,6 +113,7 @@ export class PickToteInductionComponent
       let currentMessageSubscription = this.global.currentMessage.subscribe(
         (message) => {
           if (message) {
+     
             if (
               message.orderNumberFilters &&
               message.orderNumberFilters.length > 0
@@ -154,10 +155,9 @@ export class PickToteInductionComponent
               this.selectedFilters.ColumnFilters = [];
             }
 
-            // Only refresh orders if any of these filters was applied from pop up
             if (
-              (message.orderNumberFilters && message.orderNumberFilters.length > 0) ||
-              (message.columnFilters && message.columnFilters.length > 0)
+              (message.orderNumberFilters) ||
+              (message.columnFilters)
             ) {
               this.retrieveOrders();
             }
@@ -230,7 +230,7 @@ export class PickToteInductionComponent
     this.retrieveOrders();
   }
 
-  async getZoneGroups() {
+  getZoneGroups() {
     try {
       this.Api.GetZoneGroupings().subscribe((res: any) => {
         if (res.data && res.isExecuted) {

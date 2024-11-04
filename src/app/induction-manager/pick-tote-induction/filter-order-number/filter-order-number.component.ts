@@ -30,9 +30,9 @@ export class FilterOrderNumberComponent implements OnInit {
     
     this.orderNumberFilter = this.data.OrderNumberFilter;
     
-    if (this.myText) {
-      this.myText.nativeElement.value = this.orderNumberFilter.join('\n');
-    }
+    // if (this.myText) {
+    //   this.myText.nativeElement.value = this.orderNumberFilter.join('\n');
+    // }
   }
 
   ngOnDestroy(): void {
