@@ -64,11 +64,6 @@
               [disabled]="!row.available"
               [aria-label]="checkboxLabel(row)"
               color="primary"
-              [matTooltip]="
-                row.selected == false && row.available == false
-                  ? 'Assigned to Another Batch!'
-                  : ''
-              "
               matTooltipPosition="above"
             >
             </mat-checkbox>
