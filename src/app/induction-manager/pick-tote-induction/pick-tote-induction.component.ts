@@ -342,6 +342,13 @@ export class PickToteInductionComponent
     this.retrieveOrders();
   }
 
+
+  refreshSpecificinput(){
+    this.toteId = '';
+    this.orderNumber='';
+    this.transactionQty=0;
+  }
+
   clearFilters() {
     const dialogRef: any = this.global.OpenDialog(ConfirmationDialogComponent, {
       height: 'auto',

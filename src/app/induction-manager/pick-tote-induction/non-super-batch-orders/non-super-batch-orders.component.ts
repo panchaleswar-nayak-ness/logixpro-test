@@ -113,7 +113,7 @@ export class NonSuperBatchOrdersComponent implements OnInit, AfterViewInit {
     this.dataSource = new MatTableDataSource(data);
     this.updatedPaginator();
     this.updateSorting();
-    // this.focusFirstInput();
+    this.focusFirstInput();
   }
 
   updatedPaginator() {
