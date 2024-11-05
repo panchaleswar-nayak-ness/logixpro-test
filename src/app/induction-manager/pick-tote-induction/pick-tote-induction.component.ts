@@ -278,6 +278,7 @@ export class PickToteInductionComponent
       disableClose: true,
       data: {
         zoneList: this.zoneList,
+        initialZoneList: this.initialZoneList
       },
     });
 
