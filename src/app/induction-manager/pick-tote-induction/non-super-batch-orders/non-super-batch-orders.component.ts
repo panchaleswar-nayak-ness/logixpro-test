@@ -319,13 +319,13 @@ export class NonSuperBatchOrdersComponent implements OnInit, AfterViewInit {
     let totes = this.toteInputs.toArray();
     let totalSize = totes.length;
     let middleIndex = Math.floor(totalSize / 2);
-    console.log(index, middleIndex);
+   
 
-    if(index >= middleIndex) {
+
       if (totes[index + 1]) {
         totes[index + 1].focus();
       }
-    }
+
     else if(index <= middleIndex) {
       this.focusFirstInput();
     }
