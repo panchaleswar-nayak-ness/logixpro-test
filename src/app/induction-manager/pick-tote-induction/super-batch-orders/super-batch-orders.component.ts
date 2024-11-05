@@ -121,7 +121,7 @@ export class SuperBatchOrdersComponent implements OnInit, AfterViewInit {
     this.dataSource = new MatTableDataSource(mappedData);
     this.updatedPaginator();
     this.updateSorting();
-    // this.focusFirstInput();
+     this.focusFirstInput();
   }
 
   updatedPaginator() {
