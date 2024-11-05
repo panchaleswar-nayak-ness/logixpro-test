@@ -365,18 +365,24 @@ export class SelectZonesComponent implements OnInit {
 
         this.dataSource.data.forEach((x) => {
           if (this.data?.assignedZones?.selectedRecords) {
-            var availableZone = this.data.assignedZones.selectedRecords.find(
+            var selectedZone = this.data.assignedZones.selectedRecords.find(
               (y) => y.zone === x.zone
             );
           } else if (this.data.zoneList) {
-            var availableZone = this.data.zoneList.find((y) => y === x.zone);
+            var selectedZone = this.data.zoneList.find((y) => y === x.zone);
           }
 
-          if (availableZone) {
+          if (selectedZone) {
             x.selected = true;
           }
 
           x.available = this.isPickToteInduction ? x.selected : true;
+           if (this.data.initialZoneList && this.isPickToteInduction)   {
+               var available = this.data.initialZoneList.find(z => z === x.zone);
+               if (available) x.available = available;  
+          }
+          
+          
         });
       }
     }

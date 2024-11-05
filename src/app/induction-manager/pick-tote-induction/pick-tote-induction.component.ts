@@ -62,6 +62,7 @@ export class PickToteInductionComponent
   zoneAllGroupingsList: IZoneGroup[] = [];
   selectedZoneGrouping: IZoneGroup | undefined;
   zoneList: string[] = [];
+  initialZoneList: string[] = [];
   selectedZones: string = '';
   activeTab: TabNames;
   @ViewChild('zoneGroupSelect') zoneGroupSelect;
@@ -219,6 +220,7 @@ export class PickToteInductionComponent
     }
 
     this.zoneList = selectedZones.map((zone) => zone.Zone);
+    this.initialZoneList = selectedZones.map((zone) => zone.Zone);
     this.selectedZones = this.zoneList.join(' ');
 
     // Reload the orders based on induction type and selected filters
@@ -255,6 +257,7 @@ export class PickToteInductionComponent
             });
 
             this.zoneList = [];
+            this.initialZoneList = [];
           });
         } else {
           this.global.ShowToastr(
