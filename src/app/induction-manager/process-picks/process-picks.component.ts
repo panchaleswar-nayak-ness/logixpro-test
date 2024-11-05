@@ -379,6 +379,8 @@ export class ProcessPicksComponent implements OnInit {
   }
 
   addingBatch(val: any) {
+    this.resultObj = [];
+    this.allOrders = [];
     if (val === StringConditions.BatchWithID) {
       this.batchWithID = true;
     } else {
@@ -848,6 +850,8 @@ export class ProcessPicksComponent implements OnInit {
           }
         });
     }
+    this.resultObj = [];
+    this.allOrders = [];
   }
 
   async ProcessPickPrintPref(Positions, ToteIDs, OrderNumbers, batchId) {
