@@ -52,6 +52,9 @@ export class PickToteInductionComponent
     public inductionManagerApi: InductionManagerApiService
   ) {
     this.iInductionManagerApi = inductionManagerApi;
+
+    this.getZoneGroups();
+    this.preloadDefaultZoneGroup();
   }
 
   public iInductionManagerApi: IInductionManagerApiService;
@@ -103,8 +106,6 @@ export class PickToteInductionComponent
   subscription: Subscription[] = [];
 
   ngOnInit(): void {
-    this.getZoneGroups();
-    this.preloadDefaultZoneGroup();
 
     if (!this.activeTab) this.activeTab = 0; // Default tab active should be non super batch orders
     // this.refreshOrders();
@@ -142,7 +143,7 @@ export class PickToteInductionComponent
             ]);
             let appliedRows = JSON.stringify(message.columnFilters);
             let notDefaultRow = defaultRow !== appliedRows;
-            console.log(notDefaultRow);
+            // console.log(notDefaultRow);
 
             if (message.columnFilters && notDefaultRow) {
               if (this.activeTab === TabNames.NonSuperBatch) {
