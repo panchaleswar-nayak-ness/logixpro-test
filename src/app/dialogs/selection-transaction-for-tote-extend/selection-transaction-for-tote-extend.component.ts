@@ -819,7 +819,7 @@ export class SelectionTransactionForToteExtendComponent implements OnInit {
         else {
 
           let splitQty = 0;
-          if (this.imPreferences.splitShortPutAway && parseInt(values.toteQty) < parseInt(values.transactionQuantity) && this.data.otid != '') {
+          if (this.imPreferences.splitShortPutAway && this.imPreferences.defaultPutAwayShortQuantity === 'Prompt user on short quantity' && parseInt(values.toteQty) < parseInt(values.transactionQuantity) && this.data.otid != '') {
 
             let dialogRef : any = this.global.OpenDialog(ConfirmationDialogComponent, {
               height: 'auto',
@@ -832,10 +832,22 @@ export class SelectionTransactionForToteExtendComponent implements OnInit {
             });
 
             dialogRef.afterClosed().subscribe((result) => {
-              if (result == ResponseStrings.Yes) splitQty = parseInt(values.transactionQuantity) - parseInt(values.toteQty);
+              if (result == ResponseStrings.Yes) 
+                splitQty = parseInt(values.transactionQuantity) - parseInt(values.toteQty);
+
               this.taskComplete({ splitQty : splitQty, ...values });
             });
-          } else this.taskComplete(values);
+
+          } else if(this.imPreferences.splitShortPutAway && this.imPreferences.defaultPutAwayShortQuantity === 'Split transaction on short quantity') {
+            splitQty = parseInt(values.transactionQuantity) - parseInt(values.toteQty);
+            this.taskComplete({ splitQty : splitQty, ...values });
+
+          } else if(this.imPreferences.splitShortPutAway && this.imPreferences.defaultPutAwayShortQuantity === 'Cancel on short quantity') {
+            this.taskComplete(values);
+
+          } else {
+            this.taskComplete(values);
+          } 
         }
       }
     });

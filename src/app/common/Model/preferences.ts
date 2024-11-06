@@ -116,10 +116,16 @@ interface ImPreference {
     dontAllowOverReceipt: boolean;
     autoAssignAllZones: boolean;
     purchaseOrderRequired: boolean;
+    defaultPutAwayShortQuantity: string;
 }
 
 export interface PickToteSetupIndex {
     countInfo: CountInfo;
     imPreference: ImPreference;
     pickBatches: string[];
+}
+
+export interface PutAwayOption {
+    id: string;
+    name: string;
 }
