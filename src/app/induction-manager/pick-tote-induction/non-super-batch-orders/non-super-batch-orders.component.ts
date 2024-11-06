@@ -109,6 +109,7 @@ export class NonSuperBatchOrdersComponent implements OnInit, AfterViewInit {
   orderNumberFilter: string = '';
   dataSource: MatTableDataSource<any>;
   toteScanned: any;
+  filteredOrderResults = [];
 
   ngOnInit(): void {
     this.customPagination = {
@@ -138,14 +139,11 @@ export class NonSuperBatchOrdersComponent implements OnInit, AfterViewInit {
     this.customPagination.startIndex = e.pageSize * e.pageIndex;
     this.customPagination.endIndex = e.pageSize * e.pageIndex + e.pageSize;
     this.customPagination.recordsPerPage = e.pageSize;
-    this.rebind();
+    this.rebind(this.filteredOrderResults);
   }
 
   updatedPaginator() {
-    setTimeout(() => {
-      if (this.dataSource)
-        this.dataSource.paginator = this.paginator;    
-    });
+    if (this.dataSource) this.dataSource.paginator = this.paginator;
   }
 
   updateSorting() {
@@ -224,6 +222,8 @@ export class NonSuperBatchOrdersComponent implements OnInit, AfterViewInit {
       wsId: this.userData.wsid,
     }).subscribe((filteredOrders) => {
       let response = filteredOrders.data.result;
+      this.filteredOrderResults = response;
+
       if (response) {
         this.rebind(response);
       }

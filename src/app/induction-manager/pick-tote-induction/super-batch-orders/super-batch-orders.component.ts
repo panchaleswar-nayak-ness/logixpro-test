@@ -50,7 +50,7 @@ export class SuperBatchOrdersComponent implements OnInit, AfterViewInit {
   @ViewChild('paginator') paginator: MatPaginator;
   @ViewChildren(MatInput) toteInputs!: QueryList<MatInput>;
   userData;
-  
+
   elementData = [
     {
       itemNumber: 'Zone 1',
@@ -97,6 +97,7 @@ export class SuperBatchOrdersComponent implements OnInit, AfterViewInit {
   orderNumberFilter: string = '';
   dataSource: MatTableDataSource<any>;
   toteScanned: any;
+  filteredOrderResults = [];
 
   ngOnInit(): void {
     this.customPagination = {
@@ -143,16 +144,13 @@ export class SuperBatchOrdersComponent implements OnInit, AfterViewInit {
     this.customPagination.startIndex = e.pageSize * e.pageIndex;
     this.customPagination.endIndex = e.pageSize * e.pageIndex + e.pageSize;
     this.customPagination.recordsPerPage = e.pageSize;
-    this.rebind();
+    this.rebind(this.filteredOrderResults);
   }
-  
+
   updatedPaginator() {
-    setTimeout(() => {
-      if (this.dataSource)
-        this.dataSource.paginator = this.paginator;    
-    });
+    if (this.dataSource) this.dataSource.paginator = this.paginator;
   }
-  
+
   updateSorting() {
     if (this.dataSource && this.dataSource.filteredData.length > 0)
       this.dataSource.sort = this.sort;
