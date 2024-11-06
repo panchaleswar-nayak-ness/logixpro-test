@@ -221,7 +221,7 @@ export class PickToteInductionComponent
 
             if (message.orderNumberFilters || message.columnFilters) {
               console.log('global.currentMessage');
-              // this.retrieveOrders();
+              this.retrieveOrders();
             }
           }
         }
