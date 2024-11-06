@@ -125,12 +125,11 @@ export class NonSuperBatchOrdersComponent implements OnInit, AfterViewInit {
     this.focusFirstInput();
   }
 
-  rebind(data?: any[]) {
+  rebind(data?: any[],isGrid:boolean=false) {
     this.dataSource = new MatTableDataSource(data);
     this.updatedPaginator();
     this.updateSorting();
-
-    if (this.transactionQtyRecieved == 0) {
+    if (this.transactionQtyRecieved == 0 &&isGrid===false) {
       this.focusFirstInput();
     }
   }
@@ -317,7 +316,8 @@ export class NonSuperBatchOrdersComponent implements OnInit, AfterViewInit {
                   let updated = this.dataSource.filteredData.filter(
                     (f) => f.orderNumber !== valueToInduct.orderNumber
                   );
-                  this.rebind(updated);
+          
+                  this.rebind(updated,true);
                   this.moveFocusToNextElement(index);
                 }
               } else {
@@ -340,6 +340,7 @@ export class NonSuperBatchOrdersComponent implements OnInit, AfterViewInit {
   }
 
   private moveFocusToNextElement(index: number) {
+debugger
     let totes = this.toteInputs.toArray();
     let totalSize = totes.length;
     let middleIndex = Math.floor(totalSize / 2);
