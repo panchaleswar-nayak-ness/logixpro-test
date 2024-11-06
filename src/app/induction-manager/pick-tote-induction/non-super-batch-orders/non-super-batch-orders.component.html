@@ -10,7 +10,9 @@
         <mat-form-field class="action-dropdown mb-3 w-100" appearance="outline">
           <mat-label>Actions</mat-label>
           <mat-select class="employees-action">
-            <mat-option (click)="filterOrderNum()">Filter Order Number</mat-option>
+            <mat-option (click)="filterOrderNum()"
+              >Filter Order Number</mat-option
+            >
             <mat-option (click)="openColumnFilter()">Column Filter</mat-option>
           </mat-select>
           <span class="material-symbols-outlined icon-expand-more">
@@ -21,25 +23,47 @@
     </div>
 
     <div class="card br-14 table-responsive borderless px-0">
-      <ng-scrollbar class="mat-table-scrollbar scrollbar-hover-padding count-table-scrollbar h-30v" track="all">
-        <table mat-table #table [dataSource]="dataSource" matSort class="w-100 table-fix"
-          (matSortChange)="announceSortChange($event)">
-
+      <ng-scrollbar
+        class="mat-table-scrollbar scrollbar-hover-padding count-table-scrollbar h-30v"
+        track="all"
+      >
+        <table
+          mat-table
+          #table
+          [dataSource]="dataSource"
+          matSort
+          class="w-100 table-fix"
+          (matSortChange)="announceSortChange($event)"
+        >
           <!-- Order Number Column -->
           <ng-container matColumnDef="status" sticky>
-            <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by status">
+            <th
+              mat-header-cell
+              *matHeaderCellDef
+              mat-sort-header
+              sortActionDescription="Sort by status"
+            >
               Status
             </th>
             <td mat-cell *matCellDef="let element">
-              <div class="d-flex align-items-center ">
-                <span class="br-14  label px-3 f-16" [style]="getColors(element.isReprocess )" >{{checkOrderStatus(element.isReprocess )}}</span>
-              </div> 
+              <div class="d-flex align-items-center">
+                <span
+                  class="br-14 label px-3 f-16"
+                  [style]="getColors(element.isReprocess)"
+                  >{{ checkOrderStatus(element.isReprocess) }}</span
+                >
+              </div>
             </td>
           </ng-container>
 
           <!-- Order Number Column -->
           <ng-container matColumnDef="orderNumber">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by orderNumber">
+            <th
+              mat-header-cell
+              *matHeaderCellDef
+              mat-sort-header
+              sortActionDescription="Sort by orderNumber"
+            >
               Order No.
             </th>
             <td mat-cell *matCellDef="let element">
@@ -49,7 +73,12 @@
 
           <!-- Start Zone Column -->
           <ng-container matColumnDef="zone">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by zone">
+            <th
+              mat-header-cell
+              *matHeaderCellDef
+              mat-sort-header
+              sortActionDescription="Sort by zone"
+            >
               Start Zone
             </th>
             <td mat-cell *matCellDef="let element">{{ element.zone }}</td>
@@ -57,27 +86,40 @@
 
           <!-- Priority Column -->
           <ng-container matColumnDef="priority">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by priority">
+            <th
+              mat-header-cell
+              *matHeaderCellDef
+              mat-sort-header
+              sortActionDescription="Sort by priority"
+            >
               Priority
             </th>
-            <td mat-cell *matCellDef="let element">{{
-              element.priority
-              }}</td>
+            <td mat-cell *matCellDef="let element">{{ element.priority }}</td>
           </ng-container>
 
           <!-- Required Date Column -->
           <ng-container matColumnDef="requiredDate">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by requiredDate">
+            <th
+              mat-header-cell
+              *matHeaderCellDef
+              mat-sort-header
+              sortActionDescription="Sort by requiredDate"
+            >
               Required Date
             </th>
             <td mat-cell *matCellDef="let element">
-              {{ element.requiredDate | date: 'MM/dd/yyyy hh:mm:ss a' }}
+              {{ element.requiredDate | date : "MM/dd/yyyy hh:mm:ss a" }}
             </td>
           </ng-container>
 
           <!-- Total Order Quantity Column -->
           <ng-container matColumnDef="completedQuantity">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by completedQuantity">
+            <th
+              mat-header-cell
+              *matHeaderCellDef
+              mat-sort-header
+              sortActionDescription="Sort by completedQuantity"
+            >
               Total Order Quantity
             </th>
             <td mat-cell *matCellDef="let element">
@@ -94,27 +136,44 @@
                   matInput
                   [(ngModel)]="element.toteScanned"
                   (keyup.enter)="onEnter(element, i)"
-                
                 />
               </mat-form-field>
             </td>
           </ng-container>
 
-          <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
-          <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
-
-          <tr mat-row class="mat-row" *matNoDataRow>
-            <td mat-cell class="mat-cell notify-center-table" [attr.colspan]="displayedColumns.length">
-              No data available in table.
+          <tr class="mat-row" *matNoDataRow>
+            <td
+              class="mat-cell text-center"
+              [attr.colspan]="displayedColumns.length"
+            >
+              No data matching the filter.
             </td>
           </tr>
+          <tr
+            mat-header-row
+            *matHeaderRowDef="displayedColumns; sticky: true"
+          ></tr>
+          <tr
+            mat-row
+            class="table-row"
+            tabindex="1"
+            *matRowDef="let row; columns: displayedColumns"
+          ></tr>
         </table>
       </ng-scrollbar>
     </div>
 
-    <div class="table-pagination d-flex justify-content-start align-items-center">
-      <mat-paginator #paginator [pageSize]="20" [pageSizeOptions]="[5, 10, 20, 100]"
-        showFirstLastButtons></mat-paginator>
+    <div
+      class="table-pagination d-flex justify-content-start align-items-center"
+    >
+      <mat-paginator
+        #paginator
+        [length]="this.customPagination.total"
+        [pageSize]="20"
+        [pageSizeOptions]="[5, 10, 20, 100]"
+        showFirstLastButtons
+        (page)="handlePageEvent($event)"
+      ></mat-paginator>
     </div>
   </mat-card-content>
 </mat-card>

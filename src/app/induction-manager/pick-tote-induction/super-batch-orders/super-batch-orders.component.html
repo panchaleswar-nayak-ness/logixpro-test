@@ -123,19 +123,24 @@
             </td>
           </ng-container>
 
-          <tr mat-header-row
-            *matHeaderRowDef="displayedColumns; sticky: true"
-          ></tr>
-          <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
-
-          <tr mat-row class="mat-row" *matNoDataRow>
-            <td mat-cell
-              class="mat-cell notify-center-table"
+          <tr class="mat-row" *matNoDataRow>
+            <td
+              class="mat-cell text-center"
               [attr.colspan]="displayedColumns.length"
             >
-              No data available in table.
-          </td>
+              No data matching the filter.
+            </td>
           </tr>
+          <tr
+            mat-header-row
+            *matHeaderRowDef="displayedColumns; sticky: true"
+          ></tr>
+          <tr
+            mat-row
+            class="table-row"
+            tabindex="1"
+            *matRowDef="let row; columns: displayedColumns"
+          ></tr>
         </table>
       </ng-scrollbar>
     </div>
@@ -145,9 +150,11 @@
     >
       <mat-paginator
         #paginator
+        [length]="this.customPagination.total"
         [pageSize]="20"
         [pageSizeOptions]="[5, 10, 20, 100]"
         showFirstLastButtons
+        (page)="handlePageEvent($event)"
       ></mat-paginator>
     </div>
   </mat-card-content>
