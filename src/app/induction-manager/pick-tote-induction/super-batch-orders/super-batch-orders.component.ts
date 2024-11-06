@@ -121,7 +121,7 @@ export class SuperBatchOrdersComponent implements OnInit, AfterViewInit {
     this.dataSource = new MatTableDataSource(mappedData);
     this.updatedPaginator();
     this.updateSorting();
-     this.focusFirstInput();
+    this.focusFirstInput();
   }
 
   updatedPaginator() {
@@ -159,14 +159,12 @@ export class SuperBatchOrdersComponent implements OnInit, AfterViewInit {
     });
 
     dialogRef.afterClosed().subscribe((result: any) => {
-
       if (result) {
-
-        if(result.orderNumberFilter) {
+        if (result.orderNumberFilter) {
           this.orderNumberFilter = result.orderNumberFilter.map((m: string) =>
             this.global.getTrimmedAndLineBreakRemovedString(m)
           );
-  
+
           // send the currently selected order number filters to parent component via observable
           this.global.sendMessage({
             columnFilters: this.filters,
@@ -189,7 +187,6 @@ export class SuperBatchOrdersComponent implements OnInit, AfterViewInit {
     });
 
     dialogRef.afterClosed().subscribe((result: PickToteInductionFilter[]) => {
-
       if (result) {
         this.filters = result;
 
@@ -318,17 +315,11 @@ export class SuperBatchOrdersComponent implements OnInit, AfterViewInit {
     let totes = this.toteInputs.toArray();
     let totalSize = totes.length;
     let middleIndex = Math.floor(totalSize / 2);
-  
 
-    
-      if (totes[index + 1]) {
-        totes[index + 1].focus();
-      }
- 
-    else if(index <= middleIndex) {
+    if (totes[index + 1]) {
+      totes[index + 1].focus();
+    } else if (index <= middleIndex) {
       this.focusFirstInput();
     }
   }
-
- 
 }

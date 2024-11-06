@@ -107,7 +107,6 @@ export class PickToteInductionComponent
   subscription: Subscription[] = [];
 
   ngOnInit(): void {
-
     if (!this.activeTab) this.activeTab = 0; // Default tab active should be non super batch orders
     // this.refreshOrders();
 
@@ -115,7 +114,6 @@ export class PickToteInductionComponent
       let currentMessageSubscription = this.global.currentMessage.subscribe(
         (message) => {
           if (message) {
-     
             if (
               message.orderNumberFilters &&
               message.orderNumberFilters.length > 0
@@ -157,10 +155,7 @@ export class PickToteInductionComponent
               this.selectedFilters.ColumnFilters = [];
             }
 
-            if (
-              (message.orderNumberFilters) ||
-              (message.columnFilters)
-            ) {
+            if (message.orderNumberFilters || message.columnFilters) {
               this.retrieveOrders();
             }
           }
@@ -196,6 +191,28 @@ export class PickToteInductionComponent
     this.subscription.forEach((sub) => {
       sub.unsubscribe();
     });
+
+    this.destroyChild();
+  }
+
+  destroyChild() {
+    if (this.NonSuperBatchOrdersComponent) {
+      this.NonSuperBatchOrdersComponent.clearFilters();
+
+      this.global.sendMessage({
+        columnFilters: '',
+        orderNumberFilters: [],
+      });
+    }
+
+    if (this.SuperBatchOrdersComponent) {
+      this.SuperBatchOrdersComponent.clearFilters();
+
+      this.global.sendMessage({
+        columnFilters: '',
+        orderNumberFilters: [],
+      });
+    }
   }
 
   clearToteAndOrderFields() {
@@ -278,7 +295,7 @@ export class PickToteInductionComponent
       disableClose: true,
       data: {
         zoneList: this.zoneList,
-        initialZoneList: this.initialZoneList
+        initialZoneList: this.initialZoneList,
       },
     });
 
@@ -342,11 +359,10 @@ export class PickToteInductionComponent
     this.retrieveOrders();
   }
 
-
-  refreshSpecificinput(){
+  refreshSpecificinput() {
     this.toteId = '';
-    this.orderNumber='';
-    this.transactionQty=0;
+    this.orderNumber = '';
+    this.transactionQty = 0;
   }
 
   clearFilters() {
