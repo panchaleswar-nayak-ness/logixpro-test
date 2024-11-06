@@ -23,7 +23,18 @@ import { SuperBatchOrdersComponent } from './super-batch-orders/super-batch-orde
 import { ConfirmationDialogComponent } from 'src/app/admin/dialogs/confirmation-dialog/confirmation-dialog.component';
 import { PickToteInFilterComponent } from './pick-tote-in-filter/pick-tote-in-filter.component';
 import { FilterOrderNumberComponent } from './filter-order-number/filter-order-number.component';
-import { catchError, Observable, Subscription, throwError } from 'rxjs';
+import {
+  catchError,
+  combineLatest,
+  EMPTY,
+  forkJoin,
+  map,
+  merge,
+  mergeMap,
+  Observable,
+  Subscription,
+  throwError,
+} from 'rxjs';
 import { IInductionManagerApiService } from 'src/app/common/services/induction-manager-api/induction-manager-api-interface';
 import { InductionManagerApiService } from 'src/app/common/services/induction-manager-api/induction-manager-api.service';
 
@@ -52,9 +63,6 @@ export class PickToteInductionComponent
     public inductionManagerApi: InductionManagerApiService
   ) {
     this.iInductionManagerApi = inductionManagerApi;
-
-    this.getZoneGroups();
-    this.preloadDefaultZoneGroup();
   }
 
   public iInductionManagerApi: IInductionManagerApiService;
@@ -107,12 +115,64 @@ export class PickToteInductionComponent
   subscription: Subscription[] = [];
 
   ngOnInit(): void {
+    // this.refreshOrders();
+    // this.getZoneGroups();
+    // this.preloadDefaultZoneGroup();
+
     setTimeout(() => {
       this.orderNumberInput.nativeElement.focus();
     });
-   
-    if (!this.activeTab) this.activeTab = 0; // Default tab active should be non super batch orders
-    // this.refreshOrders();
+
+    forkJoin(
+      this.Api.GetZoneGroupings(),
+      this.iInductionManagerApi.PreferenceIndex()
+    ).subscribe(([zgResponse, piResponse]) => {
+      if (zgResponse.data && zgResponse.isExecuted) {
+        zgResponse.data.forEach((f) => {
+          const existingItem = this.zoneGroupingsList.find(
+            (item) => item.ZoneGroup === f.zoneGroupName
+          );
+
+          if (!existingItem) {
+            this.zoneGroupingsList.push({
+              Id: f.id,
+              ZoneGroup: f.zoneGroupName,
+              Zone: f.zoneName,
+            });
+          }
+
+          this.zoneAllGroupingsList.push({
+            Id: f.id,
+            ZoneGroup: f.zoneGroupName,
+            Zone: f.zoneName,
+          });
+
+          this.zoneList = [];
+          this.initialZoneList = [];
+        });
+      } else {
+        this.global.ShowToastr(
+          ToasterType.Error,
+          ToasterMessages.SomethingWentWrong,
+          ToasterTitle.Error
+        );
+      }
+
+      if (piResponse.data && piResponse.isExecuted) {
+        const values = piResponse.data.imPreference;
+
+        this.selectedZoneGrouping = this.zoneGroupingsList.find(
+          (x) => x.ZoneGroup === values.defaultZoneGroup
+        );
+
+        if (this.selectedZoneGrouping) {
+          this.zoneGroupSelect.value = this.selectedZoneGrouping.Id;
+          this.showChange(this.selectedZoneGrouping.Id);
+        }
+      }
+
+      if (!this.activeTab) this.activeTab = 0; // Default tab active should be non super batch orders
+    });
 
     if (this.global.currentMessage) {
       let currentMessageSubscription = this.global.currentMessage.subscribe(
@@ -160,7 +220,8 @@ export class PickToteInductionComponent
             }
 
             if (message.orderNumberFilters || message.columnFilters) {
-              this.retrieveOrders();
+              console.log('global.currentMessage');
+              // this.retrieveOrders();
             }
           }
         }
@@ -168,24 +229,6 @@ export class PickToteInductionComponent
 
       this.subscription.push(currentMessageSubscription);
     }
-   
-  }
-
-  preloadDefaultZoneGroup() {
-    this.iInductionManagerApi.PreferenceIndex().subscribe((res: any) => {
-      if (res.data && res.isExecuted) {
-        const values = res.data.imPreference;
-
-        this.selectedZoneGrouping = this.zoneGroupingsList.find(
-          (x) => x.ZoneGroup === values.defaultZoneGroup
-        );
-
-        if (this.selectedZoneGrouping) {
-          this.zoneGroupSelect.value = this.selectedZoneGrouping.Id;
-          this.showChange(this.selectedZoneGrouping.Id);
-        }
-      }
-    });
   }
 
   ngAfterViewInit(): void {
@@ -252,6 +295,7 @@ export class PickToteInductionComponent
       this.selectedFiltersSuperBatch.Zones = this.zoneList;
     }
 
+    console.log('showChange');
     this.retrieveOrders();
   }
 
@@ -290,6 +334,23 @@ export class PickToteInductionComponent
         }
       });
     } catch (error) {}
+  }
+
+  preloadDefaultZoneGroup() {
+    this.iInductionManagerApi.PreferenceIndex().subscribe((res: any) => {
+      if (res.data && res.isExecuted) {
+        const values = res.data.imPreference;
+
+        this.selectedZoneGrouping = this.zoneGroupingsList.find(
+          (x) => x.ZoneGroup === values.defaultZoneGroup
+        );
+
+        if (this.selectedZoneGrouping) {
+          this.zoneGroupSelect.value = this.selectedZoneGrouping.Id;
+          this.showChange(this.selectedZoneGrouping.Id);
+        }
+      }
+    });
   }
 
   openSelectZones() {

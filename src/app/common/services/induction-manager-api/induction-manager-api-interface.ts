@@ -1,3 +1,4 @@
+import { Observable } from "rxjs";
 import { AddPickToteInductionFilter } from "src/app/induction-manager/models/PickToteInductionModel";
 
 export interface IInductionManagerApiService {
@@ -31,7 +32,7 @@ export interface IInductionManagerApiService {
 
   CompName();
 
-  PreferenceIndex();
+  PreferenceIndex(): Observable<any>;
 
   GetZoneGroupings();
 
