@@ -340,7 +340,7 @@ export class NonSuperBatchOrdersComponent implements OnInit, AfterViewInit {
   }
 
   private moveFocusToNextElement(index: number) {
-debugger
+
     let totes = this.toteInputs.toArray();
     let totalSize = totes.length;
     let middleIndex = Math.floor(totalSize / 2);
