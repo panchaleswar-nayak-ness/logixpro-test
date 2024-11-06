@@ -147,10 +147,12 @@ export class SuperBatchOrdersComponent implements OnInit, AfterViewInit {
   }
   
   updatedPaginator() {
-    if (this.dataSource && this.dataSource.filteredData.length > 0)
-      this.dataSource.paginator = this.paginator;
+    setTimeout(() => {
+      if (this.dataSource)
+        this.dataSource.paginator = this.paginator;    
+    });
   }
-
+  
   updateSorting() {
     if (this.dataSource && this.dataSource.filteredData.length > 0)
       this.dataSource.sort = this.sort;
