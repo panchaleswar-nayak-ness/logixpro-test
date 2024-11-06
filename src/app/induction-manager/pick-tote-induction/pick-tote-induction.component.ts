@@ -107,6 +107,10 @@ export class PickToteInductionComponent
   subscription: Subscription[] = [];
 
   ngOnInit(): void {
+    setTimeout(() => {
+      this.orderNumberInput.nativeElement.focus();
+    });
+   
     if (!this.activeTab) this.activeTab = 0; // Default tab active should be non super batch orders
     // this.refreshOrders();
 
@@ -164,6 +168,7 @@ export class PickToteInductionComponent
 
       this.subscription.push(currentMessageSubscription);
     }
+   
   }
 
   preloadDefaultZoneGroup() {

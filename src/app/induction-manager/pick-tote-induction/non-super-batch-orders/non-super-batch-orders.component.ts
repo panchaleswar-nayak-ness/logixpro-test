@@ -58,6 +58,7 @@ export class NonSuperBatchOrdersComponent implements OnInit, AfterViewInit {
   @Input() set specificInductionSuccess(event: EventEmitter<void>) {
     event.subscribe(() => this.focusFirstInput());
   }
+  @Input() transactionQtyRecieved:any
   userData;
   elementData = [
     {
@@ -113,7 +114,10 @@ export class NonSuperBatchOrdersComponent implements OnInit, AfterViewInit {
     this.dataSource = new MatTableDataSource(data);
     this.updatedPaginator();
     this.updateSorting();
-    this.focusFirstInput();
+    if(this.transactionQtyRecieved == 0){
+      this.focusFirstInput();
+    }
+
   }
 
   updatedPaginator() {
