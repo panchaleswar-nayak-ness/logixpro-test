@@ -122,7 +122,7 @@ export class SuperBatchOrdersComponent implements OnInit, AfterViewInit {
     });
   }
 
-  rebind(data?: any[]) {
+  rebind(data?: any[],isGrid:boolean=false) {
     let mappedData = data?.map((m) => {
       return {
         zone: m.zone,
@@ -137,7 +137,10 @@ export class SuperBatchOrdersComponent implements OnInit, AfterViewInit {
     this.dataSource = new MatTableDataSource(mappedData);
     this.updatedPaginator();
     this.updateSorting();
-    this.focusFirstInput();
+
+   if (isGrid===false) {
+      this.focusFirstInput();
+    }
   }
 
   handlePageEvent(e: PageEvent) {
@@ -253,7 +256,7 @@ export class SuperBatchOrdersComponent implements OnInit, AfterViewInit {
       wsId: this.userData.wsid,
     };
 
-    this.moveFocusToNextElement(index);
+
 
     this.iInductionManagerApi.PreferenceIndex().subscribe((res: any) => {
       if (res.data && res.isExecuted) {
@@ -265,9 +268,13 @@ export class SuperBatchOrdersComponent implements OnInit, AfterViewInit {
 
         // call API to induct this tote as per PLST-2772
         if (valueToInduct.toteScanned) {
+          element.toteScanned = '';
+          
           this.Api.PerformSuperBatchOrderInduction(valueToInduct)
             .pipe(
+              
               catchError((errResponse) => {
+        
                 if (errResponse.error.status === 400) {
                   this.global.ShowToastr(
                     ToasterType.Error,
@@ -285,8 +292,38 @@ export class SuperBatchOrdersComponent implements OnInit, AfterViewInit {
               })
             )
             .subscribe((innerResponse: any) => {
+            
               if (innerResponse.data && innerResponse.isExecuted) {
-                // Display each message in the response
+             
+                  if (innerResponse.data.remainingQuantity > 0) {
+           
+                    // Update the UI with the remaining quantity
+                    const orderIndex = this.dataSource.filteredData.findIndex(
+                      (item) => item.itemNumber === itemNumber
+                    );
+  
+                    if (orderIndex !== -1) {
+                   
+                      // Update totalOrderQuantity with remainingQuantity
+                      this.dataSource.filteredData[
+                        orderIndex
+                      ].totalOrderQty =
+                        innerResponse.data.remainingQuantity;
+                    
+                      // Use setTimeout to focus on the toteScanned input box
+                    }
+  
+                    // Retain focus on the current input element for further induction
+                  } else {
+                    // If no remaining quantity, remove the order row
+                    let updated = this.dataSource.filteredData.filter(
+                      (f) => f.itemNumber!== valueToInduct.itemNumber
+                    );
+            
+                    this.rebind(updated,true);
+                    this.moveFocusToNextElement(index);
+                  }
+                  
                 if (
                   innerResponse.messages &&
                   innerResponse.messages.length > 0
@@ -298,6 +335,7 @@ export class SuperBatchOrdersComponent implements OnInit, AfterViewInit {
                       ToasterTitle.Alert
                     );
                   });
+                  
                 } else {
                   // Show success message if available
                   this.global.ShowToastr(
@@ -305,6 +343,7 @@ export class SuperBatchOrdersComponent implements OnInit, AfterViewInit {
                     innerResponse.responseMessage,
                     ToasterTitle.Success
                   );
+               
                 }
               } else {
                 this.global.ShowToastr(
@@ -314,13 +353,7 @@ export class SuperBatchOrdersComponent implements OnInit, AfterViewInit {
                 );
               }
 
-              console.log(this.dataSource.filteredData);
-              if (this.dataSource && this.dataSource.filteredData) {
-                let updated = this.dataSource.filteredData.filter(
-                  (f) => f.itemNumber !== valueToInduct.itemNumber
-                );
-                this.rebind(updated);
-              }
+         
             });
         }
       } else {
