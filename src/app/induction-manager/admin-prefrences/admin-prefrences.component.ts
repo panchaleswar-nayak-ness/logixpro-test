@@ -337,7 +337,7 @@ export class AdminPrefrencesComponent implements OnInit {
             dontAllowOverReceipt: values.dontAllowOverReceipt,
             autoAssignAllZones: values.autoAssignAllZones,
             purchaseOrderRequired: values.purchaseOrderRequired,
-            defaultPutAwayShortQuantity: this.isSplitShortPutAwayEnabled === false ? '' : values.defaultPutAwayShortQuantity,
+            defaultPutAwayShortQuantity: this.isSplitShortPutAwayEnabled === false ? 'Prompt user on short quantity' : values.defaultPutAwayShortQuantity,
 
             // Print Settings
             autoPrintCrossDockLabel: values.autoPrintCrossDockLabel,
@@ -432,7 +432,7 @@ export class AdminPrefrencesComponent implements OnInit {
 
         this.isSplitShortPutAwayEnabled = values.splitShortPutAway;
         if(!this.isSplitShortPutAwayEnabled) {
-          this.selectedOption = '';
+          this.selectedOption = 'Prompt user on short quantity';
         }
 
         payLoad = {
