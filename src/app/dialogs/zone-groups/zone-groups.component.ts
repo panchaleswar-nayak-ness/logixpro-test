@@ -280,7 +280,7 @@ export class ZoneGroupsComponent implements OnInit {
           'Your details have been saved',
           ToasterTitle.Success
         );
-        
+        this.initialFormValues[index].zoneGroupName=formRowZoneGroupNameLower;
         // Reset the dirty state after successful save
         const formGroup = this.items.at(index) as FormGroup;
         formGroup.markAsPristine();  // Reset dirty state
