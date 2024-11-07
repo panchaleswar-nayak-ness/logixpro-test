@@ -51,4 +51,49 @@ export class PrintApiService implements IPrintApiService {
     }
     return await this.Api.PrintMarkoutReport(payload);
   }
+
+  public async PrintCrossDockTote(reprocessId, zone: string, toteId: string) {
+    const payload = {
+      wsid: this.userData.wsid,
+      reprocessId: reprocessId,
+      zone: zone,
+      toteId: toteId,
+    };
+    return await this.Api.PrintCrossDockTote(payload);
+  }
+
+  public async PrintCrossDockItem(reprocessId: number, zone: string) {
+    const payload = {
+      wsid: this.userData.wsid,
+      reprocessId: reprocessId,
+      zone: zone,
+    };
+    return await this.Api.PrintCrossDockItem(payload);
+  }
+
+  public async PrintCrossDockToteAuto(OTRecID: bigint, zone: any) {
+    const payload = {
+      wsid: this.userData.wsid,
+      otId: OTRecID,
+      zone: zone,
+    };
+    return await this.Api.PrintCrossDockToteAuto(payload);
+  }
+
+  public async PrintCrossDockItemAuto(OTRecID: bigint, zone: any) {
+    const payload = {
+      wsid: this.userData.wsid,
+      otId: OTRecID,
+      zone: zone,
+    };
+    return await this.Api.PrintCrossDockItemAuto(payload);
+  }
+
+  public async PrintPutAwayItem(otid: number) {
+    const payload = {
+      wsid: this.userData.wsid,
+      otid: otid,
+    };
+    return await this.Api.PrintPutAwayItem(payload);
+  }
 }
