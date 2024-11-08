@@ -94,7 +94,7 @@
                             <th mat-header-cell *matHeaderCellDef > Actions </th>
                             <td mat-cell *matCellDef="let element">
                               <div class="d-flex gap-12 align-items-center">
-                                <button mat-flat-button color="primary" class="xsm-icon-button mb-2" *ngIf="!element.isNew" disabled (click)="print(element)">
+                                <button mat-flat-button color="primary" class="xsm-icon-button mb-2" *ngIf="!element.isNew" [disabled]="element.isNew" (click)="print(element)">
                                   <mat-icon class="material-symbols-outlined" matTooltip="Print Test Page" matTooltipPosition="above">print</mat-icon>
                                 </button>
                                 <button mat-flat-button color="primary" class="xsm-icon-button mb-2" (click)="savePrinter(element)" [disabled]="!isEdited(element)">
@@ -126,4 +126,3 @@
       </mat-sidenav-content>
     </mat-sidenav-container>
     </div>
-    

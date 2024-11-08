@@ -15,10 +15,10 @@ export class PrintApiService implements IPrintApiService {
     this.userData = this.authService.userData();
   }
 
-  public async TestPrint(message: string, printerName: string) {
+  public async TestPrint(message: string, printerAddress: string) {
     const payload = {
-      printerName: printerName,
-      Message: message
+      Message: message,
+      PrintAddress: printerAddress
     }
     return await this.Api.TestPrint(payload);
   }
@@ -102,5 +102,32 @@ export class PrintApiService implements IPrintApiService {
       otid: otid,
     };
     return await this.Api.PrintPutAwayItem(payload);
+  }
+
+  public async PrintOrderStatusReport(orderNumber: string, toteID: string) {
+
+    /*
+      Ident meaning:
+      0: Where Order Number = @OrderNumber
+      1: where ToteID = @ToteID
+      2: where OrderNumber = @OrderNumber and ToteID = @ToteID
+    */
+    var ident = 0;
+    if (toteID != "") {
+      if (orderNumber != "") {
+        ident = 2;
+      } else {
+        ident=1;
+      };
+    };
+
+    const payload = {
+      wsid: this.userData.wsid,
+      orderNumber: orderNumber,
+      toteID: toteID,
+      ident: ident
+    };
+
+    return await this.Api.PrintOrderStatusReport(payload);
   }
 }

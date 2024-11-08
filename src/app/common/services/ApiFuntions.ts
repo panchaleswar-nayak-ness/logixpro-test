@@ -2097,6 +2097,11 @@ export class ApiFuntions {
     return await this.ApiBase.PostAsync(`/print/crossdocktoteauto`, body);
   }
 
+  public async PrintOrderStatusReport(body: any) {
+    return await this.ApiBase.PostAsync(`/print/OrderStatusReport`, body);
+  }
+
+
   //===========markout=============
   public GetMarkoutData(body: MarkoutToteRequest) {
     return this.ApiBase.Get(`/markout/totedata/`, body);
