@@ -15,12 +15,19 @@ export class PrintApiService implements IPrintApiService {
     this.userData = this.authService.userData();
   }
 
+  public async TestPrint(message: string, printerName: string) {
+    const payload = {
+      printerName: printerName,
+      Message: message
+    }
+    return await this.Api.TestPrint(payload);
+  }
+
   public async PrintManualTrans(Id: number) {
     const payload = {
       Wsid: this.userData.wsid,
       User: this.userData.userName,
       Id: Id,
-
     }
     return await this.Api.PrintManualTrans(payload);
   }

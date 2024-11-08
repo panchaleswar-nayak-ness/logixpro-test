@@ -1079,7 +1079,7 @@ export class ApiFuntions {
     return this.ApiBase.Post('/Induction/nonsuperbatchorderinduction', valueToInduct);
   }
   public PerformSuperBatchOrderInduction(valueToInduct: any) {
-    
+
     return this.ApiBase.Post('/Induction/superbatchorderinduction', valueToInduct);
   }
 
@@ -1919,6 +1919,10 @@ export class ApiFuntions {
     return this.ApiBase.Get(`/Admin/reports/export`, body);
   }
 
+  public async TestPrint(body) {
+    return await this.ApiBase.PostAsync(`/print/testprint`, body);
+  }
+
   public async PrintTotes(body) {
     return await this.ApiBase.PostAsync(`/print/totes`, body);
   }
@@ -2177,5 +2181,5 @@ export class ApiFuntions {
 
 
 
-  
+
 }

@@ -1,5 +1,5 @@
 import { Component, OnInit, ElementRef, Renderer2, ViewChildren, QueryList, } from '@angular/core';
-import { DeleteConfirmationComponent } from 'src/app/admin/dialogs/delete-confirmation/delete-confirmation.component'; 
+import { DeleteConfirmationComponent } from 'src/app/admin/dialogs/delete-confirmation/delete-confirmation.component';
 import { AuthService } from 'src/app/common/init/auth.service';
 
 import labels from 'src/app/common/labels/labels.json';
@@ -10,6 +10,7 @@ import { GlobalService } from 'src/app/common/services/global.service';
 import { IGlobalConfigApi } from 'src/app/common/services/globalConfig-api/global-config-api-interface';
 import { GlobalConfigApiService } from 'src/app/common/services/globalConfig-api/global-config-api.service';
 import {StringConditions , ToasterTitle, ToasterType ,ResponseStrings,DialogConstants,Style,UniqueConstants,TableConstant,ColumnDef} from 'src/app/common/constants/strings.constants';
+import {PrintApiService} from "../../common/services/print-api/print-api.service";
 @Component({
   selector: 'app-printers',
   templateUrl: './printers.component.html',
@@ -31,11 +32,12 @@ export class PrintersComponent implements OnInit {
     private Api: ApiFuntions,
     public globalConfigApi: GlobalConfigApiService,
     private authService: AuthService,
-    
-    private renderer: Renderer2, 
+    private printApiService: PrintApiService,
+
+    private renderer: Renderer2,
     private router: Router
-    
-  ) { 
+
+  ) {
     this.iGlobalConfigApi = globalConfigApi;
   }
 
@@ -168,15 +170,15 @@ export class PrintersComponent implements OnInit {
   addNewPrinter() {
     this.addingNew = true;
     this.allPinters.splice(0,0,
-      { 
-        printer: '', 
+      {
+        printer: '',
         currentPrinter: '',
         printerAdd: '',
         currentprinterAdd: '',
-        label: 'Not Able to Print Labels', 
+        label: 'Not Able to Print Labels',
         labelPrinter: 'No',
         currentlabelPrinter: 'No',
-        isNew: true 
+        isNew: true
       }
     );
     this.allPinters = [...this.allPinters];
@@ -191,12 +193,12 @@ export class PrintersComponent implements OnInit {
   }
 
   savePrinter(printer: any) {
-     
+
     if (printer.isNew) {
       let payload = {
         "printerName": printer.printer,
         "printerString": printer.printerAdd,
-        'label': printer.labelPrinter == StringConditions.Yes 
+        'label': printer.labelPrinter == StringConditions.Yes
       };
       this.iGlobalConfigApi.InsertNewPrinter(payload).subscribe((res: any) => {
         if (res.isExecuted) {
@@ -236,7 +238,7 @@ export class PrintersComponent implements OnInit {
   print(printer: any) {
     if (printer.printer.trim() == '' || printer.printerAdd.trim() == '') {
       this.global.ShowToastr(ToasterType.Error,"Must specify name and address to print!", ToasterTitle.Error);
-    } 
+    }
     else {
       let dialogRef2:any = this.global.OpenDialog(ConfirmationDialogComponent, {
         height: 'auto',
@@ -249,7 +251,7 @@ export class PrintersComponent implements OnInit {
       });
       dialogRef2.afterClosed().subscribe((result) => {
         if (result == StringConditions.Yes) {
-          this.global.Print(`FileName:TestPrint|islabel:${printer.labelPrinter == StringConditions.Yes}|PrinterName:${printer.printer}|PrinterAddress:${printer.printerAdd}`,UniqueConstants.Ibl); 
+          this.printApiService.TestPrint("Test Print", printer.printerAdd)
         }
       });
     }
