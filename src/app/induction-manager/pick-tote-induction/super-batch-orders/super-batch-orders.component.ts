@@ -1,6 +1,7 @@
 import {
   AfterViewInit,
   Component,
+  Input,
   OnInit,
   QueryList,
   ViewChild,
@@ -50,6 +51,7 @@ export class SuperBatchOrdersComponent implements OnInit, AfterViewInit {
   @ViewChild('paginator') paginator: MatPaginator;
   @ViewChildren(MatInput) toteInputs!: QueryList<MatInput>;
   userData;
+  @Input() zones: string[] = []; // Accept zones as input
 
   elementData = [
     {
@@ -254,6 +256,8 @@ export class SuperBatchOrdersComponent implements OnInit, AfterViewInit {
       maxSuperBatchSize: 0,
       inductionType: 'SuperBatch',
       wsId: this.userData.wsid,
+      SelectedZones: this.zones // Pass the selected zones
+
     };
 
 
@@ -294,12 +298,11 @@ export class SuperBatchOrdersComponent implements OnInit, AfterViewInit {
             .subscribe((innerResponse: any) => {
             
               if (innerResponse.data && innerResponse.isExecuted) {
-             
                   if (innerResponse.data.remainingQuantity > 0) {
            
                     // Update the UI with the remaining quantity
                     const orderIndex = this.dataSource.filteredData.findIndex(
-                      (item) => item.itemNumber === itemNumber
+                      (item) => (item.itemNumber === itemNumber&& item.priority === valueToInduct.priority)
                     );
   
                     if (orderIndex !== -1) {
@@ -317,11 +320,10 @@ export class SuperBatchOrdersComponent implements OnInit, AfterViewInit {
                   } else {
                     // If no remaining quantity, remove the order row
                     let updated = this.dataSource.filteredData.filter(
-                      (f) => f.itemNumber!== valueToInduct.itemNumber
-                    );
+                      (f) => !(f.itemNumber === valueToInduct.itemNumber && f.priority === valueToInduct.priority)
+                  );
             
                     this.rebind(updated,true);
-                    this.moveFocusToNextElement(index);
                   }
                   
                 if (
@@ -353,7 +355,11 @@ export class SuperBatchOrdersComponent implements OnInit, AfterViewInit {
                 );
               }
 
-         
+            
+              setTimeout(() => {
+                this.moveFocusToNextElement(index);
+              }, 0); 
+          
             });
         }
       } else {
@@ -367,14 +373,19 @@ export class SuperBatchOrdersComponent implements OnInit, AfterViewInit {
   }
 
   private moveFocusToNextElement(index: number) {
+   
     let totes = this.toteInputs.toArray();
-    let totalSize = totes.length;
-    let middleIndex = Math.floor(totalSize / 2);
-
-    if (totes[index + 1]) {
-      totes[index + 1].focus();
-    } else if (index <= middleIndex) {
-      this.focusFirstInput();
+  
+    // Ensure that index + 1 doesn't exceed the length of totes array
+    if (totes[index +1]) {
+      setTimeout(() => {
+        totes[index ].focus();
+      }, 0); // Allow DOM update
+    } else if (totes[0]) {
+      // If there's no next item, loop back to the first item
+      setTimeout(() => {
+        totes[0].focus();
+      }, 0); 
     }
   }
 }

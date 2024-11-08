@@ -148,6 +148,6 @@
     <app-non-super-batch-orders [specificInductionSuccess]="specificInductionSuccess" [transactionQtyRecieved] = "transactionQty"></app-non-super-batch-orders>
   </mat-tab>
   <mat-tab label="Super Batch Orders">
-    <app-super-batch-orders></app-super-batch-orders>
+    <app-super-batch-orders [zones]="selectedFilters.Zones"></app-super-batch-orders>
   </mat-tab>
 </mat-tab-group>
