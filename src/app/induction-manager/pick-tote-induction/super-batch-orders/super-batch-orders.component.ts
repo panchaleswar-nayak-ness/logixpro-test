@@ -79,7 +79,7 @@ export class SuperBatchOrdersComponent implements OnInit, AfterViewInit {
 
   displayedColumns: string[] = [
     'itemNumber',
-    // 'zone',
+    'zone',
     'priority',
     'quality',
     'requiredDate',
