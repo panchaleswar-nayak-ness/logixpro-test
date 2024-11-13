@@ -41,6 +41,7 @@
                   type="text"
                   readonly
                   [(ngModel)]="selectedZones"
+                  [ngModel]="getDisplayZones()"
                 />
                 <span matSuffix>
                   <mat-icon class="unfold_more">unfold_more</mat-icon>
@@ -107,6 +108,7 @@
                   type="text"
                   [(ngModel)]="orderNumber"
                   (keyup.enter)="getTransactionQty()"
+                  (blur)="getTransactionQty()"
                 />
               </mat-form-field>
             </div>

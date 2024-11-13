@@ -577,6 +577,12 @@ export class PickToteInductionComponent
       });
   }
 
+  getDisplayZones(): string {
+    return this.selectedZones?.length > 20
+      ? this.selectedZones.slice(0, 20) + '...'
+      : this.selectedZones;
+  }
+
   performInduction(valueToInduct: any) {
     this.Api.PerformSpecificOrderInduction(valueToInduct)
       .pipe(
