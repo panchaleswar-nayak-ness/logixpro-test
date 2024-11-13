@@ -1,12 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialogRef } from '@angular/material/dialog';
-import { ResponseStrings, ToasterTitle, ToasterType } from 'src/app/common/constants/strings.constants';
+import { DialogConstants, ResponseStrings, Style, ToasterTitle, ToasterType } from 'src/app/common/constants/strings.constants';
 import { GlobalService } from 'src/app/common/services/global.service';
 import { IInductionManagerApiService } from 'src/app/common/services/induction-manager-api/induction-manager-api-interface';
 import { InductionManagerApiService } from 'src/app/common/services/induction-manager-api/induction-manager-api.service';
 import { AddPickToteInductionFilter, PickToteInductionFilter } from 'src/app/induction-manager/models/PickToteInductionModel';
 import { MatDialog } from '@angular/material/dialog';
 import { DeleteConfirmationComponent } from 'src/app/admin/dialogs/delete-confirmation/delete-confirmation.component';
+import { ConfirmationDialogComponent } from 'src/app/admin/dialogs/confirmation-dialog/confirmation-dialog.component';
 
 @Component({
   selector: 'app-impref-induction-filter',
@@ -153,7 +154,8 @@ export class ImprefInductionFilterComponent implements OnInit {
     }
     this.iInductionManagerApi.AddPickToteInductionFilter(filter).subscribe(response => {
       if (response.isExecuted) {
-        this.GetPickToteInductionFilterData();
+        //this.GetPickToteInductionFilterData();
+        filter.id = response.data.id;
         this.originalFilters = JSON.parse(JSON.stringify(this.filters));
         this.global.ShowToastr(
           ToasterType.Success,
@@ -182,11 +184,12 @@ export class ImprefInductionFilterComponent implements OnInit {
       if (result === ResponseStrings.Yes) {
         const index = this.filters.indexOf(filter);
         if (index !== -1) {
-          this.filters.splice(index, 1); // Remove locally
+          this.filters.splice(index, 1);
+          this.filters = [...this.filters]; // Reassign to trigger change detection
           if (filter.id > 0) { // If filter exists on the server, delete it via API
             this.iInductionManagerApi.DeletePickToteInductionFilter([filter.id]).subscribe((response: any) => {
               if (response.isExecuted) {
-                this.GetPickToteInductionFilterData();
+                //this.GetPickToteInductionFilterData();
                 this.global.ShowToastr(
                   ToasterType.Success,
                   'Filter has been deleted',
@@ -231,7 +234,33 @@ export class ImprefInductionFilterComponent implements OnInit {
     });
   }
   onSubmit(): void {
-    this.dialogRef.close(); // This will close the dialog when submit is clicked
-    
+    this.filters.forEach(element => {
+      if (this.isFilterModified(element))
+        this.ConfirmationDialog();
+      else
+        this.dialogRef.close();
+    });
+  }
+
+  
+  async ConfirmationDialog() { 
+    const dialogRef:any = this.global.OpenDialog(ConfirmationDialogComponent, {
+      height: 'auto',
+      width: Style.w560px,
+      data: {
+        message: 'Changes you made may not be saved.',
+        heading: 'Pick Tote Induction Filters'
+      },
+      autoFocus: DialogConstants.autoFocus,
+      disableClose:true,
+    });
+
+    dialogRef.afterClosed().subscribe(async (result) => {
+      if (result === ResponseStrings.Yes) { 
+        this.dialogRef.close(); // This will close the dialog when submit is clicked
+      } else {
+        
+      }
+    });
   }
 }
