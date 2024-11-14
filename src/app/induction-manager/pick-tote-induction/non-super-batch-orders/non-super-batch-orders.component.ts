@@ -33,6 +33,7 @@ import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatSort, Sort } from '@angular/material/sort';
 import { LiveAnnouncer } from '@angular/cdk/a11y';
 import { AuthService } from 'src/app/common/init/auth.service';
+import { ConfirmationDialogComponent } from 'src/app/admin/dialogs/confirmation-dialog/confirmation-dialog.component';
 
 @Component({
   selector: 'app-non-super-batch-orders',
@@ -110,6 +111,7 @@ export class NonSuperBatchOrdersComponent implements OnInit, AfterViewInit {
   dataSource: MatTableDataSource<any>;
   toteScanned: any;
   filteredOrderResults = [];
+  @Output() someEvent = new EventEmitter<string>();
 
   ngOnInit(): void {
     this.customPagination = {
@@ -125,11 +127,11 @@ export class NonSuperBatchOrdersComponent implements OnInit, AfterViewInit {
     this.focusFirstInput();
   }
 
-  rebind(data?: any[],isGrid:boolean=false) {
+  rebind(data?: any[], isGrid: boolean = false) {
     this.dataSource = new MatTableDataSource(data);
     this.updatedPaginator();
     this.updateSorting();
-    if (this.transactionQtyRecieved == 0 &&isGrid===false) {
+    if (this.transactionQtyRecieved == 0 && isGrid === false) {
       this.focusFirstInput();
     }
   }
@@ -157,10 +159,29 @@ export class NonSuperBatchOrdersComponent implements OnInit, AfterViewInit {
     this.updateSorting();
   }
 
+  // clearFilters() {
+  //   console.log('fired from parent to clear order and column filters');
+  //   this.orderNumberFilter = '';
+  //   this.filters = [];
+  // }
+
   clearFilters() {
-    console.log('fired from parent to clear order and column filters');
-    this.orderNumberFilter = '';
-    this.filters = [];
+    const dialogRef: any = this.global.OpenDialog(ConfirmationDialogComponent, {
+      height: 'auto',
+      width: '560px',
+      autoFocus: DialogConstants.autoFocus,
+      disableClose: true,
+      data: {
+        message: 'Do you want to clear all filters?',
+      },
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      // check for confirmation then clear all filters on the screen
+      if (result) {
+        this.someEvent.next('nonsuperbatchfilterclear');
+      }
+    });
   }
 
   filterOrderNum() {
@@ -316,8 +337,8 @@ export class NonSuperBatchOrdersComponent implements OnInit, AfterViewInit {
                   let updated = this.dataSource.filteredData.filter(
                     (f) => f.orderNumber !== valueToInduct.orderNumber
                   );
-          
-                  this.rebind(updated,true);
+
+                  this.rebind(updated, true);
                   this.moveFocusToNextElement(index);
                 }
               } else {
@@ -340,7 +361,6 @@ export class NonSuperBatchOrdersComponent implements OnInit, AfterViewInit {
   }
 
   private moveFocusToNextElement(index: number) {
-
     let totes = this.toteInputs.toArray();
     let totalSize = totes.length;
     let middleIndex = Math.floor(totalSize / 2);

@@ -135,11 +135,13 @@
     <app-non-super-batch-orders
       [specificInductionSuccess]="specificInductionSuccess"
       [transactionQtyRecieved]="transactionQty"
+      (someEvent)="clearNonSuperBatchFilters($event)"
     ></app-non-super-batch-orders>
   </mat-tab>
   <mat-tab label="Super Batch Orders">
     <app-super-batch-orders
       [zones]="selectedFilters.Zones"
+      (someEvent)="clearSuperBatchFilters($event)"
     ></app-super-batch-orders>
   </mat-tab>
 </mat-tab-group>

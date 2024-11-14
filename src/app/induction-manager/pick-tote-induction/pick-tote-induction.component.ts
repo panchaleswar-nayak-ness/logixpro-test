@@ -20,17 +20,9 @@ import { ApiFuntions } from 'src/app/common/services/ApiFuntions';
 import { MatTabChangeEvent } from '@angular/material/tabs';
 import { NonSuperBatchOrdersComponent } from './non-super-batch-orders/non-super-batch-orders.component';
 import { SuperBatchOrdersComponent } from './super-batch-orders/super-batch-orders.component';
-import { ConfirmationDialogComponent } from 'src/app/admin/dialogs/confirmation-dialog/confirmation-dialog.component';
-import { PickToteInFilterComponent } from './pick-tote-in-filter/pick-tote-in-filter.component';
-import { FilterOrderNumberComponent } from './filter-order-number/filter-order-number.component';
 import {
   catchError,
-  combineLatest,
-  EMPTY,
   forkJoin,
-  map,
-  merge,
-  mergeMap,
   Observable,
   Subscription,
   throwError,
@@ -113,12 +105,9 @@ export class PickToteInductionComponent
   };
 
   subscription: Subscription[] = [];
+  parentMsg = '';
 
   ngOnInit(): void {
-    // this.refreshOrders();
-    // this.getZoneGroups();
-    // this.preloadDefaultZoneGroup();
-
     setTimeout(() => {
       this.orderNumberInput.nativeElement.focus();
     });
@@ -431,44 +420,17 @@ export class PickToteInductionComponent
     this.transactionQty = 0;
   }
 
-  clearFilters() {
-    const dialogRef: any = this.global.OpenDialog(ConfirmationDialogComponent, {
-      height: 'auto',
-      width: '560px',
-      autoFocus: DialogConstants.autoFocus,
-      disableClose: true,
-      data: {
-        message: 'Do you want to clear all filters?',
-      },
-    });
+  clearNonSuperBatchFilters($event) {
+    console.log($event);
+    this.selectedFilters.ColumnFilters = [];
+    this.selectedFilters.OrderNumberFilters = [];
+    this.retrieveOrders();
+  }
 
-    dialogRef.afterClosed().subscribe((result) => {
-      // check for confirmation then clear all filters on the screen
-      if (result) {
-        let confirm = result.toLowerCase();
-
-        if (confirm === 'yes') {
-          this.zoneList = [];
-          this.selectedZones = '';
-          this.zoneGroupSelect.value = '';
-          this.selectedFilters.Zones = [];
-          this.selectedFilters.ColumnFilters = [];
-          this.selectedFilters.OrderNumberFilters = [];
-          this.selectedFiltersSuperBatch.Zones = [];
-          this.selectedFiltersSuperBatch.ColumnFilters = [];
-
-          if (this.NonSuperBatchOrdersComponent) {
-            this.NonSuperBatchOrdersComponent.clearFilters();
-          }
-
-          if (this.SuperBatchOrdersComponent) {
-            this.NonSuperBatchOrdersComponent.clearFilters();
-          }
-
-          this.retrieveOrders();
-        }
-      }
-    });
+  clearSuperBatchFilters($event) {
+    console.log($event);
+    this.selectedFiltersSuperBatch.ColumnFilters = [];
+    this.retrieveOrders();
   }
 
   onTabClick(tabChangeEvent: MatTabChangeEvent) {
