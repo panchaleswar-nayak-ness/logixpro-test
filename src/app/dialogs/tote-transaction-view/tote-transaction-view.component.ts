@@ -292,9 +292,7 @@ export class ToteTransactionViewComponent implements OnInit {
   print(type: any) {
     if (type == 'tote-label') {
       if (this.imPreferences.printDirectly) {
-        this.global.Print(
-          `FileName:PrintPrevToteContentsLabel|ToteID:|ZoneLab:${this.zoneLabels}|ID:${this.dataSource?.filteredData[0]?.id}|BatchID:${this.batchID}|TransType:Put Away`
-        );
+        this.printApiService.PrintPrevToteContentsLabel("", this.zoneLabels, "Put Away", this.dataSource?.filteredData[0]?.id, this.batchID);
       } else {
         window.open(
           `/#/report-view?file=FileName:PrintPrevToteContentsLabel|ToteID:|ZoneLab:${this.zoneLabels}|ID:${this.dataSource?.filteredData[0]?.id}|BatchID:${this.batchID}|TransType:Put Away`,
@@ -308,9 +306,7 @@ export class ToteTransactionViewComponent implements OnInit {
       }
     } else if (type == 'item-label') {
       if (this.imPreferences.printDirectly) {
-        for (let item of this.dataSource.data) {
-          this.printApiService.PrintPutAwayItem(item.id);
-        }
+        this.printApiService.PrintPrevToteItemLabel(-1, this.batchID, this.tote);
       } else {
         window.open(
           `/#/report-view?file=FileName:PrintPrevToteItemLabel|ID:-1|BatchID:${this.batchID}|ToteNum:${this.tote}`,
@@ -324,9 +320,7 @@ export class ToteTransactionViewComponent implements OnInit {
       }
     } else if (type == 'tote-contents') {
       if (this.imPreferences.printDirectly) {
-        this.global.Print(
-          `FileName:PrintPrevToteTransViewCont|BatchID:${this.batchID}|ToteNum:${this.tote}`
-        );
+        this.printApiService.PrintPrevToteTransViewCont(this.batchID, this.tote);
       } else {
         window.open(
           `/#/report-view?file=FileName:PrintPrevToteTransViewCont|BatchID:${this.batchID}|ToteNum:${this.tote}`,
@@ -344,9 +338,7 @@ export class ToteTransactionViewComponent implements OnInit {
   printToteLabel() {
     let ID = this.dataSource?.filteredData[0]?.id;
     if (this.imPreferences.printDirectly) {
-      this.global.Print(
-        `FileName:PrintPrevToteItemLabel|ID:${ID}|BatchID:${this.batchID}|ToteNum:${this.tote}`
-      );
+      this.printApiService.PrintPrevToteItemLabel(ID, this.batchID, this.tote);
     } else {
       window.open(
         `/#/report-view?file=FileName:PrintPrevToteItemLabel|ID:${ID}|BatchID:${this.batchID}|ToteNum:${this.tote}`,

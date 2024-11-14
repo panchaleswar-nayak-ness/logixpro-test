@@ -30,6 +30,7 @@ import { SharedService } from 'src/app/common/services/shared.service';
 import { Router } from '@angular/router';
 import { ToasterTitle, ToasterType ,LiveAnnouncerMessage,ResponseStrings,KeyboardKeys, ToasterMessages,DialogConstants,Style,UniqueConstants,StringConditions,ColumnDef } from 'src/app/common/constants/strings.constants';
 import { ApiResponse, ColumnAlias } from 'src/app/common/types/CommonTypes';
+import { PrintApiService} from "../../common/services/print-api/print-api.service";
 
 export interface PeriodicElement {
   position: string;
@@ -149,7 +150,8 @@ export class ProcessPutAwaysComponent implements OnInit {
     public adminApiService: AdminApiService,
     private _liveAnnouncer: LiveAnnouncer,
     private router: Router,
-    private sharedService: SharedService
+    private sharedService: SharedService,
+    private printApiService: PrintApiService
   ) {
     this.iAdminApiService = adminApiService;
     this.iInductionManagerApi = inductionManagerApi;
@@ -284,24 +286,27 @@ export class ProcessPutAwaysComponent implements OnInit {
     this.tote = "";
   }
   print(tote){
-      this.global.Print(`FileName:PrintPrevToteContentsLabel|ToteID:${tote}|BatchID:${this.batchId}|ZoneLabel:''|TransType:TransactionType.PutAway|printDirect:true|ID:-1`,UniqueConstants.Ibl)
+      if(this.imPreferences.printDirectly){
+            this.printApiService.PrintPrevToteContentsLabel(tote, "", "Put Away", -1, this.batchId);
+          }else{
+            window.open(`/#/report-view?file=FileName:PrintPrevToteContentsLabel|ToteID:${tote}|BatchID:${this.batchId}|ZoneLabel:''|TransType:TransactionType.PutAway|printDirect:true|ID:-1`, UniqueConstants._blank, 'width=' + screen.width + ',height=' + screen.height + ',toolbar=0,menubar=0,location=0,status=1,scrollbars=1,resizable=1,left=0,top=0')
+          }
   }
   printToteLoc(){
     if(this.imPreferences.printDirectly){
-
-      this.global.Print(`FileName:PrintPrevToteContentsLabel|ToteID:${this.toteID}|BatchID:${this.batchId}|ZoneLabel:''|TransType:TransactionType.PutAway|printDirect:true|ID:-1`,UniqueConstants.Ibl)
-
+      this.printApiService.PrintPrevToteContentsLabel(this.toteID, "", "Put Away", -1, this.batchId);
     }else{
-
       window.open(`/#/report-view?file=FileName:PrintPrevToteContentsLabel|ToteID:${this.toteID}|BatchID:${this.batchId}|ZoneLabel:''|TransType:TransactionType.PutAway|printDirect:true|ID:-1`, UniqueConstants._blank, 'width=' + screen.width + ',height=' + screen.height + ',toolbar=0,menubar=0,location=0,status=1,scrollbars=1,resizable=1,left=0,top=0')
-
     }
   }
 
   printTotePut(){
     this.clearMatSelectList();
-    this.global.Print(`FileName:PrintOffCarList|BatchID:${this.batchId}`);
-    this.global.Print(`FileName:PrintOffCarList|BatchID:${this.batchId}`);
+    if(this.imPreferences.printDirectly) {
+      this.printApiService.PrintOffCarList(this.batchId);
+    } else {
+      window.open(`/#/report-view?file=FileName:PrintOffCarList|BatchID:${this.batchId}`);
+    }
   }
 
   getCurrentToteID() {
@@ -564,8 +569,7 @@ export class ProcessPutAwaysComponent implements OnInit {
                   if (res.data && res.isExecuted) {
                     if(this.imPreferences.autoPrintPutAwayToteLabels){
                       if(this.imPreferences.printDirectly) {
-                        // TODO: Replace with print controller call
-                        this.global.Print(`FileName:PrintPrevToteContentsLabel|ToteID:-1|ZoneLabel:|TransType:Put Away|ID:-1|BatchID:${this.batchId}`)
+                        this.printApiService.PrintPrevToteContentsLabel("-1", "", "Put Away", -1, this.batchId);
                       }
                       else {
                         window.open(`/#/report-view?file=FileName:PrintPrevToteContentsLabel|ToteID:-1|ZoneLabel:|TransType:Put Away|ID:-1|BatchID:${this.batchId}`, UniqueConstants._blank, 'width=' + screen.width + ',height=' + screen.height + ',toolbar=0,menubar=0,location=0,status=1,scrollbars=1,resizable=1,left=0,top=0')

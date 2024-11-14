@@ -130,4 +130,56 @@ export class PrintApiService implements IPrintApiService {
 
     return await this.Api.PrintOrderStatusReport(payload);
   }
+
+  public async PrintOffCarList(batchID: string) {
+    const payload = {
+          wsid: this.userData.wsid,
+          batchID: batchID,
+        };
+    return await this.Api.PrintOffCarList(payload);
+  }
+
+  public async PrintPrevToteTransViewCont(batchID: string, toteNum: number) {
+    const payload = {
+          wsid: this.userData.wsid,
+          batchID: batchID,
+          toteNum: toteNum
+        };
+    return await this.Api.PrintPrevToteTransViewCont(payload);
+  }
+
+  public async PrintPrevToteItemLabel(ID: number, batchID: string, toteNum: number) {
+    const payload = {
+          wsid: this.userData.wsid,
+          ID: ID,
+          batchID: batchID,
+          toteNum: toteNum
+        };
+    return await this.Api.PrintPrevToteItemLabel(payload);
+  }
+
+  public async PrintPrevToteContentsLabel(toteID: string, zoneLabel: string, transType: string, ID: number, batchID: string) {
+    const payload = {
+          wsid: this.userData.wsid,
+          toteID: toteID,
+          zoneLabel: zoneLabel,
+          transType: transType,
+          ID: ID,
+          batchID: batchID
+        };
+    return await this.Api.PrintPrevToteContentsLabel(payload);
+  }
+
+  public async PrintPrevToteManLabel(toteID: string, Ident: number, fromTote: string, toTote: string, batchID: string) {
+    const payload = {
+          wsid: this.userData.wsid,
+          toteID: toteID,
+          Ident: Ident,
+          fromTote: fromTote,
+          toTote: toTote,
+          batchID: batchID
+        };
+    return await this.Api.PrintPrevToteManLabel(payload);
+  }
+
 }
