@@ -542,8 +542,8 @@ export class PickToteInductionComponent
   }
 
   getDisplayZones(): string {
-    return this.selectedZones?.length > 20
-      ? this.selectedZones.slice(0, 20) + '...'
+    return this.selectedZones?.length > 24
+      ? this.selectedZones.slice(0, 24) + '...'
       : this.selectedZones;
   }
 
