@@ -166,6 +166,16 @@ export class ImprefInductionFilterComponent implements OnInit {
           originalFilter.startCharacter = filter.startCharacter;
           originalFilter.ppField = filter.ppField;
         }
+        else {
+          this.originalFilters.push({
+            Value : filter.Value,
+            alias : filter.alias,
+            endCharacter : filter.endCharacter,
+            startCharacter : filter.startCharacter,
+            ppField : filter.ppField,
+            id: filter.id
+          })
+        }
         this.global.ShowToastr(
           ToasterType.Success,
           'Your details have been updated',
