@@ -506,18 +506,20 @@ export class PickToteInductionComponent
         catchError((errResponse) => {
           this.transactionQty = 0;
           // Handle errors
-          if (errResponse.error.status === 400) {
-            this.global.ShowToastr(
-              ToasterType.Error,
-              errResponse.error.responseMessage,
-              ToasterTitle.Error
-            );
-          } else {
-            this.global.ShowToastr(
-              ToasterType.Error,
-              errResponse.error.responseMessage,
-              ToasterTitle.Error
-            );
+          if(errResponse.error) {
+            if (errResponse.error.status === 400) {
+              this.global.ShowToastr(
+                ToasterType.Error,
+                errResponse.error.responseMessage,
+                ToasterTitle.Error
+              );
+            } else {
+              this.global.ShowToastr(
+                ToasterType.Error,
+                errResponse.error.responseMessage,
+                ToasterTitle.Error
+              );
+            }
           }
           return throwError(errResponse);
         })

@@ -104,6 +104,7 @@ export class SuperBatchOrdersComponent implements OnInit, AfterViewInit {
   toteScanned: any;
   filteredOrderResults = [];
   @Output() someEvent = new EventEmitter<string>();
+  tags: any[] = [];
 
   ngOnInit(): void {
     this.customPagination = {
@@ -112,6 +113,8 @@ export class SuperBatchOrdersComponent implements OnInit, AfterViewInit {
       startIndex: 0,
       endIndex: 10,
     };
+
+    this.getTags();
   }
 
   ngAfterViewInit(): void {
@@ -172,11 +175,18 @@ export class SuperBatchOrdersComponent implements OnInit, AfterViewInit {
     this.updateSorting();
   }
 
-  // clearFilters() {
-  //   console.log('fired from parent to clear order and column filters');
-  //   this.orderNumberFilter = '';
-  //   this.filters = [];
-  // }
+  getTags() {
+    console.log('super batch load tags');
+    console.log(this.filters);
+    this.tags = [];
+
+    if (this.filters && this.filters.length > 0) {
+      this.filters.forEach((f) => {
+        let alias = f.alias?.toString();
+        if (alias) this.tags.push(alias);
+      });
+    }
+  }
 
   clearFilters() {
     const dialogRef: any = this.global.OpenDialog(ConfirmationDialogComponent, {
@@ -192,34 +202,13 @@ export class SuperBatchOrdersComponent implements OnInit, AfterViewInit {
     dialogRef.afterClosed().subscribe((result) => {
       // check for confirmation then clear all filters on the screen
       if (result) {
-        this.someEvent.next('superbatchfilterclear');
-      }
-    });
-  }
-
-  filterOrderNum() {
-    const dialogRef: any = this.global.OpenDialog(FilterOrderNumberComponent, {
-      height: DialogConstants.auto,
-      width: Style.w560px,
-      autoFocus: DialogConstants.autoFocus,
-      data: {
-        OrderNumberFilter: this.orderNumberFilter,
-      },
-      disableClose: true,
-    });
-
-    dialogRef.afterClosed().subscribe((result: any) => {
-      if (result) {
-        if (result.orderNumberFilter) {
-          this.orderNumberFilter = result.orderNumberFilter.map((m: string) =>
-            this.global.getTrimmedAndLineBreakRemovedString(m)
-          );
-
-          // send the currently selected order number filters to parent component via observable
-          this.global.sendMessage({
-            columnFilters: this.filters,
-            orderNumberFilters: this.orderNumberFilter,
-          });
+        if (typeof result === 'boolean') {
+        } else {
+          let confirm = result.toLowerCase();
+          if (confirm) {
+            this.tags = [];
+            this.someEvent.next('superbatchfilterclear');
+          }
         }
       }
     });
@@ -239,6 +228,7 @@ export class SuperBatchOrdersComponent implements OnInit, AfterViewInit {
     dialogRef.afterClosed().subscribe((result: PickToteInductionFilter[]) => {
       if (result) {
         this.filters = result;
+        this.getTags();
 
         // send the currently selected column filters to parent component via observable
         this.global.sendMessage({

@@ -107,11 +107,13 @@ export class NonSuperBatchOrdersComponent implements OnInit, AfterViewInit {
 
   public iInductionManagerApi: IInductionManagerApiService;
   filters: PickToteInductionFilter[] = [];
+  orderNumberFilters: string[] = [];
   orderNumberFilter: string = '';
   dataSource: MatTableDataSource<any>;
   toteScanned: any;
   filteredOrderResults = [];
   @Output() someEvent = new EventEmitter<string>();
+  tags: any[] = [];
 
   ngOnInit(): void {
     this.customPagination = {
@@ -120,6 +122,8 @@ export class NonSuperBatchOrdersComponent implements OnInit, AfterViewInit {
       startIndex: 0,
       endIndex: 10,
     };
+
+    this.getTags();
   }
 
   ngAfterViewInit(): void {
@@ -159,11 +163,21 @@ export class NonSuperBatchOrdersComponent implements OnInit, AfterViewInit {
     this.updateSorting();
   }
 
-  // clearFilters() {
-  //   console.log('fired from parent to clear order and column filters');
-  //   this.orderNumberFilter = '';
-  //   this.filters = [];
-  // }
+  getTags() {
+    console.log('load tags');
+    console.log(this.orderNumberFilters, this.filters);
+    this.tags = [];
+    if (this.orderNumberFilters && this.orderNumberFilters.length > 0) {
+      this.tags.push('Filter Order Number');
+    }
+
+    if (this.filters && this.filters.length > 0) {
+      this.filters.forEach((f) => {
+        let alias = f.alias?.toString();
+        if (alias) this.tags.push(alias);
+      });
+    }
+  }
 
   clearFilters() {
     const dialogRef: any = this.global.OpenDialog(ConfirmationDialogComponent, {
@@ -179,7 +193,14 @@ export class NonSuperBatchOrdersComponent implements OnInit, AfterViewInit {
     dialogRef.afterClosed().subscribe((result) => {
       // check for confirmation then clear all filters on the screen
       if (result) {
-        this.someEvent.next('nonsuperbatchfilterclear');
+        if (typeof result === 'boolean') {
+        } else {
+          let confirm = result.toLowerCase();
+          if (confirm) {
+            this.tags = [];
+            this.someEvent.next('nonsuperbatchfilterclear');
+          }
+        }
       }
     });
   }
@@ -198,14 +219,16 @@ export class NonSuperBatchOrdersComponent implements OnInit, AfterViewInit {
     dialogRef.afterClosed().subscribe((result: any) => {
       if (result) {
         if (result.orderNumberFilter) {
-          this.orderNumberFilter = result.orderNumberFilter.map((m: string) =>
+          this.orderNumberFilters = result.orderNumberFilter.map((m: string) =>
             this.global.getTrimmedAndLineBreakRemovedString(m)
           );
+
+          this.getTags();
 
           // send the currently selected order number filters to parent component via observable
           this.global.sendMessage({
             columnFilters: this.filters,
-            orderNumberFilters: this.orderNumberFilter,
+            orderNumberFilters: this.orderNumberFilters,
           });
         }
       }
@@ -226,6 +249,7 @@ export class NonSuperBatchOrdersComponent implements OnInit, AfterViewInit {
     dialogRef.afterClosed().subscribe((result: PickToteInductionFilter[]) => {
       if (result) {
         this.filters = result;
+        this.getTags();
 
         // send the currently selected column filters to parent component via observable
         this.global.sendMessage({
