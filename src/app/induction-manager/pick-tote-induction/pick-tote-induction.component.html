@@ -53,6 +53,8 @@
                   readonly
                   [(ngModel)]="selectedZones"
                   [ngModel]="getDisplayZones()"
+                  matTooltip="{{ selectedZones }}"
+                  matTooltipPosition="above"
                 />
                 <span matSuffix>
                   <mat-icon class="unfold_more">unfold_more</mat-icon>

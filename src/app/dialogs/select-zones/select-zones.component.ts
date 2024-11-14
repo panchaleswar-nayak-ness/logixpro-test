@@ -165,14 +165,21 @@ export class SelectZonesComponent implements OnInit {
   }
 
   /** Selects all rows if they are not all selected; otherwise clear selection. */
+  /** Selects all rows if they are not all selected; otherwise clear selection. */
   toggleAllRows($event: any) {
-    for (const element of this.elementData) {
-      if (!(!element.selected && !element.available)) {
-        element.selected = $event.checked;
+    const isChecked = $event.checked;
+    
+    // Loop through each element and update the 'selected' state only if it is available
+    this.selectedElementData.forEach(element => {
+      if (element.available) {
+        element.selected = isChecked;
       }
-    }
-    this.dataSource = new MatTableDataSource<any>(this.elementData);
+    });
+  
+    // Update the dataSource to reflect the changes
+    this.dataSource = new MatTableDataSource<any>(this.selectedElementData.filter(element => element.available));
   }
+
 
   /** The label for the checkbox on the passed row */
   checkboxLabel(row?: PeriodicElement): string {
@@ -311,23 +318,25 @@ export class SelectZonesComponent implements OnInit {
               selected: zoneDetail.selected,
               available: zoneDetail.available,
             });
+            
           }
 
-          this.dataSource = new MatTableDataSource<any>(this.elementData);
+       
           // this.preselectZonesBySelectedGroupName();
           this.selectZones();
 
           this.selectedElementData = this.elementData.filter(
-            (f) => f.selected && f.available
+            (f) =>  f.available
           );
           // console.log(this.selectedElementData);
           if(this.selectedElementData && this.selectedElementData.length > 0) {
             this.elementData.forEach((val, ind)=> {
               let elem = this.selectedElementData.find((f)=>f.zone === val.zone);
-              console.log(elem);
+    
             });
+        
           }
-          
+          this.dataSource = new MatTableDataSource<any>( this.selectedElementData );
         } else {
           this.global.ShowToastr(
             ToasterType.Error,
@@ -335,7 +344,6 @@ export class SelectZonesComponent implements OnInit {
             ToasterTitle.Error
           );
 
-          console.log('AvailableZone', res.responseMessage);
         }
       },
       (error) => {
@@ -362,12 +370,13 @@ export class SelectZonesComponent implements OnInit {
     if (this.isPickToteInduction || this.isAdminPreferences) {
       if (this.data) {
         this.zoneList = this.data;
-
         this.dataSource.data.forEach((x) => {
           if (this.data?.assignedZones?.selectedRecords) {
             var selectedZone = this.data.assignedZones.selectedRecords.find(
               (y) => y.zone === x.zone
             );
+
+          
           } else if (this.data.zoneList) {
             var selectedZone = this.data.zoneList.find((y) => y === x.zone);
           }
@@ -379,7 +388,8 @@ export class SelectZonesComponent implements OnInit {
           x.available = this.isPickToteInduction ? x.selected : true;
            if (this.data.initialZoneList && this.isPickToteInduction)   {
                var available = this.data.initialZoneList.find(z => z === x.zone);
-               if (available) x.available = available;  
+              
+               if (available) x.available = true;  
           }
           
           
