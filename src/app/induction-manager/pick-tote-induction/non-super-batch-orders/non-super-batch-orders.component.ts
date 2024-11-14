@@ -198,6 +198,9 @@ export class NonSuperBatchOrdersComponent implements OnInit, AfterViewInit {
           let confirm = result.toLowerCase();
           if (confirm) {
             this.tags = [];
+            this.orderNumberFilter = '';
+            this.orderNumberFilters = [];
+            this.filters = [];
             this.someEvent.next('nonsuperbatchfilterclear');
           }
         }

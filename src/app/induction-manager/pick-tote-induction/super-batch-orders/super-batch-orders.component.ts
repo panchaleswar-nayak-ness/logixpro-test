@@ -207,6 +207,7 @@ export class SuperBatchOrdersComponent implements OnInit, AfterViewInit {
           let confirm = result.toLowerCase();
           if (confirm) {
             this.tags = [];
+            this.filters = [];
             this.someEvent.next('superbatchfilterclear');
           }
         }
