@@ -156,7 +156,16 @@ export class ImprefInductionFilterComponent implements OnInit {
       if (response.isExecuted) {
         //this.GetPickToteInductionFilterData();
         filter.id = response.data.id;
-        this.originalFilters = JSON.parse(JSON.stringify(this.filters));
+        //this.originalFilters = JSON.parse(JSON.stringify(this.filters));
+        let originalFilter = this.originalFilters.find(x => x.id === response.data.id);
+        if ( originalFilter)
+        {
+          originalFilter.Value = filter.Value;
+          originalFilter.alias = filter.alias;
+          originalFilter.endCharacter= filter.endCharacter;
+          originalFilter.startCharacter = filter.startCharacter;
+          originalFilter.ppField = filter.ppField;
+        }
         this.global.ShowToastr(
           ToasterType.Success,
           'Your details have been updated',
@@ -234,12 +243,16 @@ export class ImprefInductionFilterComponent implements OnInit {
     });
   }
   onSubmit(): void {
+    let isConfirmationRequired = false;
     this.filters.forEach(element => {
-      if (this.isFilterModified(element))
+      if (this.isFilterModified(element)) {
+        isConfirmationRequired = true;
+      }
+    });
+      if (isConfirmationRequired)
         this.ConfirmationDialog();
       else
         this.dialogRef.close();
-    });
   }
 
   
