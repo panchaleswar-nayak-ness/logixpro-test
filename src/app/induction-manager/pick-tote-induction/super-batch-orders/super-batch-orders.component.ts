@@ -53,6 +53,7 @@ export class SuperBatchOrdersComponent implements OnInit, AfterViewInit {
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild('paginator') paginator: MatPaginator;
   @ViewChildren(MatInput) toteInputs!: QueryList<MatInput>;
+
   userData;
   @Input() zones: string[] = []; // Accept zones as input
 
@@ -270,6 +271,9 @@ export class SuperBatchOrdersComponent implements OnInit, AfterViewInit {
       maxSuperBatchSize: 0,
       inductionType: 'SuperBatch',
       wsId: this.userData.wsid,
+      filterResultsRequestParams: {
+        ColumnFilters:  this.filters
+      },
       SelectedZones: this.zones, // Pass the selected zones
     };
 
