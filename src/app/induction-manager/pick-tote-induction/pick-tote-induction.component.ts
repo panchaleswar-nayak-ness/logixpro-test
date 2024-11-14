@@ -234,8 +234,6 @@ export class PickToteInductionComponent
 
   destroyChild() {
     if (this.NonSuperBatchOrdersComponent) {
-      this.NonSuperBatchOrdersComponent.clearFilters();
-
       this.global.sendMessage({
         columnFilters: '',
         orderNumberFilters: [],
@@ -243,8 +241,6 @@ export class PickToteInductionComponent
     }
 
     if (this.SuperBatchOrdersComponent) {
-      this.SuperBatchOrdersComponent.clearFilters();
-
       this.global.sendMessage({
         columnFilters: '',
         orderNumberFilters: [],
