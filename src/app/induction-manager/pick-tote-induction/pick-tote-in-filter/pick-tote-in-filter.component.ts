@@ -14,6 +14,8 @@ import { DeleteConfirmationComponent } from 'src/app/admin/dialogs/delete-confir
 import {
   DialogConstants,
   Style,
+  ToasterTitle,
+  ToasterType,
   UniqueConstants,
 } from 'src/app/common/constants/strings.constants';
 import { ConfirmationDialogComponent } from 'src/app/admin/dialogs/confirmation-dialog/confirmation-dialog.component';
@@ -131,7 +133,26 @@ export class PickToteInFilterComponent implements OnInit, OnDestroy {
     }
   }
 
-  applyFilter() {
+  applyFilter() {  
+  // Check for duplicate alias values
+  const aliasSet = new Set();
+  const duplicateAlias = this.filters.some((filter) => {
+    if (aliasSet.has(filter.alias)) {
+      return true; // Duplicate found
+    }
+    aliasSet.add(filter.alias);
+    return false;
+  });
+
+  if (duplicateAlias) {
+    this.global.ShowToastr(
+      ToasterType.Error,
+      'Duplicate filter found. Please remove duplicates.',
+      ToasterTitle.Error
+    );
+    return;
+  }
+
     this.filters.forEach((value) => {
       let filterBySelectedValue = this.apiFilterData.find(
         (f) => f.alias === value.alias

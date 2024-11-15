@@ -105,7 +105,10 @@ export class SuperBatchOrdersComponent implements OnInit, AfterViewInit {
   toteScanned: any;
   filteredOrderResults = [];
   @Output() someEvent = new EventEmitter<string>();
-  tags: any[] = [];
+  tags: {
+    alias? : string,
+    value? : string
+  }[] = [];
 
   ngOnInit(): void {
     this.customPagination = {
@@ -177,14 +180,13 @@ export class SuperBatchOrdersComponent implements OnInit, AfterViewInit {
   }
 
   getTags() {
-    console.log('super batch load tags');
     console.log(this.filters);
     this.tags = [];
 
     if (this.filters && this.filters.length > 0) {
       this.filters.forEach((f) => {
         let alias = f.alias?.toString();
-        if (alias) this.tags.push(alias);
+        if (alias) this.tags.push({ alias: f.alias, value: f.Value });
       });
     }
   }
@@ -345,6 +347,7 @@ export class SuperBatchOrdersComponent implements OnInit, AfterViewInit {
                   innerResponse.messages.length > 0
                 ) {
                   innerResponse.messages.forEach((message: string) => {
+                    alert('1');
                     this.global.ShowToastr(
                       ToasterType.Info,
                       message,

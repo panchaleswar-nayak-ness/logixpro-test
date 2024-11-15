@@ -113,7 +113,10 @@ export class NonSuperBatchOrdersComponent implements OnInit, AfterViewInit {
   toteScanned: any;
   filteredOrderResults = [];
   @Output() someEvent = new EventEmitter<string>();
-  tags: any[] = [];
+  tags: {
+    alias? : string,
+    value? : string
+  }[] = [];
 
   ngOnInit(): void {
     this.customPagination = {
@@ -164,17 +167,18 @@ export class NonSuperBatchOrdersComponent implements OnInit, AfterViewInit {
   }
 
   getTags() {
-    console.log('load tags');
     console.log(this.orderNumberFilters, this.filters);
     this.tags = [];
     if (this.orderNumberFilters && this.orderNumberFilters.length > 0) {
-      this.tags.push('Filter Order Number');
+      this.orderNumberFilters.forEach((o) => {
+        this.tags.push({ alias: 'Filter Order Number', value: o });
+      });
     }
 
     if (this.filters && this.filters.length > 0) {
       this.filters.forEach((f) => {
         let alias = f.alias?.toString();
-        if (alias) this.tags.push(alias);
+        if (alias) this.tags.push({ alias: f.alias, value: f.Value });
       });
     }
   }
@@ -257,7 +261,7 @@ export class NonSuperBatchOrdersComponent implements OnInit, AfterViewInit {
         // send the currently selected column filters to parent component via observable
         this.global.sendMessage({
           columnFilters: this.filters,
-          orderNumberFilters: this.orderNumberFilter,
+          orderNumberFilters: this.orderNumberFilters,
         });
       }
     });

@@ -131,8 +131,17 @@ export class ImprefInductionFilterComponent implements OnInit {
       filter.endCharacter !== originalFilter.endCharacter
     );
   }
-  // Save the filter at the specified index
-  saveFilter(filter: PickToteInductionFilter): void {
+
+  saveValidation(filter: PickToteInductionFilter) {
+    if (!filter.alias || !filter.ppField) {
+      this.global.ShowToastr(
+        ToasterType.Error,
+        'Alias or Field cannot be blank.',
+        ToasterTitle.Error
+      );
+      return false;
+    }
+    
     const duplicateFilters = this.filters.filter((item: any) => {
       return (
         item.ppField===filter.ppField &&
@@ -141,7 +150,7 @@ export class ImprefInductionFilterComponent implements OnInit {
         item.endCharacter === filter.endCharacter
       );
     });
-  
+    
   
     // If duplicates exist, show error toast and prevent API call
     if (duplicateFilters.length > 1) {
@@ -150,8 +159,13 @@ export class ImprefInductionFilterComponent implements OnInit {
         'Duplicate filter found. Please remove duplicates.',
         ToasterTitle.Error
       );
-      return; // Stop execution to prevent the save
+      return false; // Stop execution to prevent the save
     }
+    return true;
+  }
+  // Save the filter at the specified index
+  saveFilter(filter: PickToteInductionFilter): void {
+    if (!this.saveValidation(filter)) return;
     this.iInductionManagerApi.AddPickToteInductionFilter(filter).subscribe(response => {
       if (response.isExecuted) {
         //this.GetPickToteInductionFilterData();
