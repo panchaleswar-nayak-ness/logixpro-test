@@ -7,9 +7,9 @@
     <div class="d-flex justify-content-center bg-white ">
       <div class="mb-3  w-100 ">
         <mat-form-field class="custom-form-field w-100 pt-2" appearance="outline">
-          <mat-label>Next Batch Order Number</mat-label>
-          <input matInput appInputSpacesPrevent type="text" [(ngModel)]="nextOrderNumber" value="{{nextOrderNumber}}">
-          <button matSuffix *ngIf="nextOrderNumber" class="clear-btn"  (click)="nextOrderNumber=''"><mat-icon class="text-20 text-chrome-600">cancel</mat-icon></button>
+          <mat-label>Next Batch ID</mat-label>
+          <input matInput appInputSpacesPrevent type="text" [(ngModel)]="nextBatchID" value="{{nextBatchID}}">
+          <button matSuffix *ngIf="nextBatchID" class="clear-btn"  (click)="nextBatchID=''"><mat-icon class="text-20 text-chrome-600">cancel</mat-icon></button>
         </mat-form-field>
       </div>
     </div>

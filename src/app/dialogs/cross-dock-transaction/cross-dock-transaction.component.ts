@@ -26,6 +26,7 @@ import {
   UniqueConstants
 } from 'src/app/common/constants/strings.constants';
 import {forkJoin} from "rxjs";
+import {PrintApiService} from "../../common/services/print-api/print-api.service";
 
 @Component({
   selector: 'app-cross-dock-transaction',
@@ -66,7 +67,8 @@ export class CrossDockTransactionComponent implements OnInit {
     public dialogRef: MatDialogRef<CrossDockTransactionComponent>,
     public inductionManagerApi: InductionManagerApiService,
     @Inject(MAT_DIALOG_DATA) public data: any,
-    private global: GlobalService
+    private global: GlobalService,
+    private printApiService: PrintApiService
   ) {
     this.iInductionManagerApi = inductionManagerApi;
   }
@@ -342,8 +344,8 @@ export class CrossDockTransactionComponent implements OnInit {
 
   AutoPrintLabels() {
     if (this.imPreferences.printDirectly) {
-      const printTote$ = this.iInductionManagerApi.PrintCrossDockToteAuto(this.OTRecID, this.zone);
-      const printItem$ = this.iInductionManagerApi.PrintCrossDockItemAuto(this.OTRecID, this.zone);
+      const printTote$ = this.printApiService.PrintCrossDockToteAuto(this.OTRecID, this.zone);
+      const printItem$ = this.printApiService.PrintCrossDockItemAuto(this.OTRecID, this.zone);
       forkJoin({
         printTote: printTote$,
         printItem: printItem$
@@ -458,7 +460,7 @@ export class CrossDockTransactionComponent implements OnInit {
   print(type: string) {
     if (type == 'printtotelabel') {
       if (this.imPreferences.printDirectly) {
-        this.iInductionManagerApi.PrintCrossDockTote(this.selectedRowObj.id, this.zone, this.selectedRowObj.toteID);
+        return this.printApiService.PrintCrossDockTote(this.selectedRowObj.id, this.zone, this.selectedRowObj.toteID);
       } else {
         window.open(
           `/#/report-view?file=FileName:PrintCrossDock|RPID:${this.selectedRowObj.id}|ZoneLabel:${this.zone}|ToteID:${this.selectedRowObj.toteID}`,
@@ -472,7 +474,7 @@ export class CrossDockTransactionComponent implements OnInit {
       }
     } else {
       if (this.imPreferences.printDirectly) {
-        this.iInductionManagerApi.PrintCrossDockItem(this.selectedRowObj.id, this.zone);
+        return this.printApiService.PrintCrossDockItem(this.selectedRowObj.id, this.zone);
       } else {
         window.open(
           `/#/report-view?file=FileName:PrintCrossDock|RPID:${this.selectedRowObj.id}|ZoneLabel:${this.zone}|ToteID:`,
@@ -485,5 +487,6 @@ export class CrossDockTransactionComponent implements OnInit {
         );
       }
     }
+    return;
   }
 }

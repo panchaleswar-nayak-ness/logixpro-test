@@ -22,6 +22,7 @@ import { AppNames, AppRoutes, RouteNames, RouteUpdateMenu } from 'src/app/common
 import { CurrentTabDataService } from 'src/app/admin/inventory-master/current-tab-data-service';
 import { ConfirmationDialogComponent } from 'src/app/admin/dialogs/confirmation-dialog/confirmation-dialog.component';
 import moment from 'moment';
+import { PrintApiService } from 'src/app/common/services/print-api/print-api.service'; 
 
 @Component({
   selector: 'app-tran-order-list',
@@ -237,7 +238,8 @@ export class TranOrderListComponent implements OnInit, AfterViewInit {
     public router: Router,
     private contextMenuService: TableContextMenuService,
     private filterService: ContextMenuFiltersService,
-    private currentTabDataService: CurrentTabDataService
+    private currentTabDataService: CurrentTabDataService,
+    private printApiService: PrintApiService
   ) {
     this.filterService.filterString = "";
     this.iAdminApiService = adminApiService;
@@ -732,7 +734,11 @@ export class TranOrderListComponent implements OnInit, AfterViewInit {
   }
 
   printReport() {
-    this.global.Print(`FileName:printOSReport|OrderNum:${this.orderNo}|ToteID:|Identifier:0`)
+   
+    return this.printApiService.PrintOrderStatusReport(this.orderNo, this.toteId);
+
+
+    //this.global.Print(`FileName:printOSReport|OrderNum:${this.orderNo}|ToteID:|Identifier:0`)
   }
 
   previewReport() {

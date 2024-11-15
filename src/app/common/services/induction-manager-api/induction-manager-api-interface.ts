@@ -1,3 +1,4 @@
+import { Observable } from "rxjs";
 import { AddPickToteInductionFilter } from "src/app/induction-manager/models/PickToteInductionModel";
 
 export interface IInductionManagerApiService {
@@ -31,12 +32,12 @@ export interface IInductionManagerApiService {
 
   CompName();
 
-  PreferenceIndex();
+  PreferenceIndex(): Observable<any>;
 
   GetZoneGroupings();
 
   SaveZoneGrouping(valueToSave);
-  
+
   RemoveZoneGrouping(valueToRemove);
 
   PickBatchFilterRename(payload: any);
@@ -172,17 +173,6 @@ export interface IInductionManagerApiService {
   DeleteSerialNumber(payload: any);
 
   DynamicMethod(payload: any, url: string);
-
-  PrintCrossDockTote(reprocessId: number, zone: string, toteId: string);
-
-  PrintCrossDockItem(reprocessId: number, zone: string);
-
-  PrintPutAwayItem(otid: number);
-
-  PrintCrossDockToteAuto(OTRecID: bigint, zone);
-
-  PrintCrossDockItemAuto(OTRecID: bigint, zone);
-
   AddPickToteInductionFilter(payloadParams: AddPickToteInductionFilter);
   GetPickToteInductionFilter();
   DeletePickToteInductionFilter(paramname: number[]);

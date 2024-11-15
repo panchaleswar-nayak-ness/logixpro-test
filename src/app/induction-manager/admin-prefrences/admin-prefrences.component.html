@@ -460,6 +460,35 @@
                 </mat-form-field>
               </div>
             </div>
+
+            <div class="col-xl-4">
+              <div class="d-flex gap-12 mb-2">
+                <mat-form-field
+                  class="custom-form-field w-100 shorting"
+                  appearance="outline"
+                >
+                <mat-label>Default Put Away Short Quantity</mat-label>
+                <mat-select
+                  formControlName="defaultPutAwayShortQuantity"
+                  (selectionChange)="updatePreferences(1)"
+                  [(ngModel)]="selectedOption"
+                  [disabled]="!isSplitShortPutAwayEnabled" 
+                >
+                  <ng-container *ngIf="isSplitShortPutAwayEnabled">
+                    <mat-option
+                      *ngFor="let st of defaultPutAwayShortQuantity"
+                      value="{{ st.id }}"
+                    >
+                      {{ st.name }}
+                    </mat-option>
+                  </ng-container>
+              </mat-select>
+                    <span class="material-symbols-outlined icon-expand-more">
+                    expand_more
+                  </span>
+                </mat-form-field>
+              </div>
+            </div>
           </div>
         </mat-card-content>
       </mat-card>

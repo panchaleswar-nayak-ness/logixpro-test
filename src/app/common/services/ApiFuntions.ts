@@ -1079,7 +1079,7 @@ export class ApiFuntions {
     return this.ApiBase.Post('/Induction/nonsuperbatchorderinduction', valueToInduct);
   }
   public PerformSuperBatchOrderInduction(valueToInduct: any) {
-    
+
     return this.ApiBase.Post('/Induction/superbatchorderinduction', valueToInduct);
   }
 
@@ -1919,6 +1919,10 @@ export class ApiFuntions {
     return this.ApiBase.Get(`/Admin/reports/export`, body);
   }
 
+  public async TestPrint(body) {
+    return await this.ApiBase.PostAsync(`/print/testprint`, body);
+  }
+
   public async PrintTotes(body) {
     return await this.ApiBase.PostAsync(`/print/totes`, body);
   }
@@ -2093,6 +2097,68 @@ export class ApiFuntions {
     return await this.ApiBase.PostAsync(`/print/crossdocktoteauto`, body);
   }
 
+  public async PrintOrderStatusReport(body: any) {
+    return await this.ApiBase.PostAsync(`/print/OrderStatusReport`, body);
+  }
+
+  public async PrintBatchManagerReport(body: any) {
+    return await this.ApiBase.PostAsync(`/print/BatchManagerReport`, body);
+  }
+
+  public async PrintBatchManagerItemLabel(body: any) {
+    return await this.ApiBase.PostAsync(`/print/BatchManagerItemLabel`, body);
+  }
+
+  public async PrintBatchManagerToteLabel(body: any) {
+    return await this.ApiBase.PostAsync(`/print/BatchManagerToteLabel`, body);
+  }
+
+  public async PrintBulkTraveler(body: any) {
+    return await this.ApiBase.PostAsync(`/print/BulkTransactionsTraveler`, body);
+  }
+
+  public async ProcessPickPrintPickTote(body: any) {
+    return await this.ApiBase.PostAsync(`/print/ProcessPickPrintPickTote`, body);
+  }
+
+  public async ProcessPickPrintPickItemLabel(body: any) {
+    return await this.ApiBase.PostAsync(`/print/ProcessPickPrintPickItemLabel`, body);
+  }
+
+  public async ProcessPickPrintPickList(body: any) {
+    return await this.ApiBase.PostAsync(`/print/ProcessPickPrintPickList`, body);
+  }
+
+  public async ProcessPickPrintPickToteAuto(body: any) {
+    return await this.ApiBase.PostAsync(`/print/ProcessPickPrintPickToteAuto`, body);
+  }
+
+  public async ProcessPickPrintPickListAuto(body: any) {
+    return await this.ApiBase.PostAsync(`/print/ProcessPickPrintPickListAuto`, body);
+  }
+
+  public async ProcessPickPrintBatchToteLabel(body: any) {
+    return await this.ApiBase.PostAsync(`/print/ProcessPickPrintBatchToteLabel`, body);
+  }
+
+  public async ProcessPickPrintBatchItemLabel(body: any) {
+    return await this.ApiBase.PostAsync(`/print/ProcessPickPrintBatchItemLabel`, body);
+  }
+
+  public async ProcessPickPrintBatchPickList(body: any) {
+    return await this.ApiBase.PostAsync(`/print/ProcessPickPrintBatchPickList`, body);
+  }
+
+  public async ProcessPickPrintCaseLabel(body: any) {
+    return await this.ApiBase.PostAsync(`/print/ProcessPickPrintCaseLabel`, body);
+  }
+
+  public async ProcessPickPrintBatchList(body: any) {
+    return await this.ApiBase.PostAsync(`/print/ProcessPickPrintBatchList`, body);
+  }
+
+
+
   //===========markout=============
   public GetMarkoutData(body: MarkoutToteRequest) {
     return this.ApiBase.Get(`/markout/totedata/`, body);
@@ -2169,5 +2235,29 @@ export class ApiFuntions {
   public DeletePickToteInductionFilter(body: any): Observable<any> {
     return this.ApiBase.Post(`/Induction/removetotefilter/`, body);
   }
-  
+
+  public GetTotalTransactionQty(orderNumber: string): Observable<any> {
+    return this.ApiBase.Get(`/Induction/transactionQuantity/${orderNumber}`);
+  }
+
+  async PrintOffCarList(body:{wsid: any; batchID: string}) {
+    return await this.ApiBase.PostAsync(`/print/offcarlist`, body);
+  }
+
+  async PrintPrevToteTransViewCont(body:{wsid: any; batchID: string, toteNum: number}) {
+    return await this.ApiBase.PostAsync(`/print/prevtotetransviewcont`, body);
+  }
+
+  async PrintPrevToteItemLabel(body:{wsid: any; ID: number, batchID: string, toteNum: number}) {
+    return await this.ApiBase.PostAsync(`/print/prevtoteitemlabel`, body);
+  }
+
+  async PrintPrevToteContentsLabel(body:{wsid: any; toteID: string, zoneLabel: string, transType: string, ID: number, batchID: string}) {
+    return await this.ApiBase.PostAsync(`/print/prevtotecontentslabel`, body);
+  }
+
+  async PrintPrevToteManLabel(body:{wsid: any; toteID: string, Ident: number, fromTote: string, toTote: string, batchID: string}) {
+    return await this.ApiBase.PostAsync(`/print/prevtotemanlabel`, body);
+  }
+
 }

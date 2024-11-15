@@ -25,6 +25,7 @@ import { PickRemainingComponent } from '../pick-remaining/pick-remaining.compone
 import { SpinnerService } from 'src/app/common/init/spinner.service';
 import { SharedService } from 'src/app/common/services/shared.service';
 import { MatTooltip } from '@angular/material/tooltip';
+import { PrintApiService } from 'src/app/common/services/print-api/print-api.service';
 
 @Component({
   selector: 'app-verify-bulk',
@@ -62,6 +63,7 @@ export class VerifyBulkComponent implements OnInit {
     private global: GlobalService,
     private spinnerService: SpinnerService,
     private sharedService: SharedService,
+    private printApiService: PrintApiService
   ) {
     this.iBulkProcessApiService = bulkProcessApiService;
     this.iAdminApiService = adminApiService;
@@ -452,6 +454,11 @@ export class VerifyBulkComponent implements OnInit {
     this.iAdminApiService.PrintTotes(orderNumber, toteId, transactionType, index);
   }
 
+
+  printBulkTraveler() {
+    let transIDs = this.orderLines.filteredData.map(o => o['id']);
+    this.printApiService.PrintBulkTraveler(transIDs);
+  }
 
   @ViewChild('tooltip') tooltip: MatTooltip;
 

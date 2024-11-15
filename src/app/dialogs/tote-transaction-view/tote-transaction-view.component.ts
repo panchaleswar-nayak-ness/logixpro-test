@@ -14,11 +14,12 @@ import { AlertConfirmationComponent } from '../alert-confirmation/alert-confirma
 import { BatchDeleteComponent } from '../batch-delete/batch-delete.component';
 import { MarkToteFullComponent } from '../mark-tote-full/mark-tote-full.component';
 import labels from 'src/app/common/labels/labels.json';
-import { PageEvent } from '@angular/material/paginator'; 
+import { PageEvent } from '@angular/material/paginator';
 import { GlobalService } from 'src/app/common/services/global.service';
 import { IInductionManagerApiService } from 'src/app/common/services/induction-manager-api/induction-manager-api-interface';
 import { InductionManagerApiService } from 'src/app/common/services/induction-manager-api/induction-manager-api.service';
 import {  ToasterTitle ,ToasterType,DialogConstants,Style,Column,UniqueConstants,ColumnDef,StringConditions} from 'src/app/common/constants/strings.constants';
+import {PrintApiService} from "../../common/services/print-api/print-api.service";
 
 @Component({
   selector: 'app-tote-transaction-view',
@@ -50,9 +51,10 @@ export class ToteTransactionViewComponent implements OnInit {
   public iInductionManagerApi: IInductionManagerApiService;
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
-    public dialogRef: MatDialogRef<any>, 
-    private global: GlobalService, 
-    public inductionManagerApi: InductionManagerApiService
+    public dialogRef: MatDialogRef<any>,
+    private global: GlobalService,
+    public inductionManagerApi: InductionManagerApiService,
+    private printApiService: PrintApiService
   ) {
     this.iInductionManagerApi = inductionManagerApi;
   }
@@ -290,9 +292,7 @@ export class ToteTransactionViewComponent implements OnInit {
   print(type: any) {
     if (type == 'tote-label') {
       if (this.imPreferences.printDirectly) {
-        this.global.Print(
-          `FileName:PrintPrevToteContentsLabel|ToteID:|ZoneLab:${this.zoneLabels}|ID:${this.dataSource?.filteredData[0]?.id}|BatchID:${this.batchID}|TransType:Put Away`
-        );
+        this.printApiService.PrintPrevToteContentsLabel("", this.zoneLabels, "Put Away", this.dataSource?.filteredData[0]?.id, this.batchID);
       } else {
         window.open(
           `/#/report-view?file=FileName:PrintPrevToteContentsLabel|ToteID:|ZoneLab:${this.zoneLabels}|ID:${this.dataSource?.filteredData[0]?.id}|BatchID:${this.batchID}|TransType:Put Away`,
@@ -306,9 +306,7 @@ export class ToteTransactionViewComponent implements OnInit {
       }
     } else if (type == 'item-label') {
       if (this.imPreferences.printDirectly) {
-        for (let item of this.dataSource.data) {
-          this.iInductionManagerApi.PrintPutAwayItem(item.id);
-        }
+        this.printApiService.PrintPrevToteItemLabel(-1, this.batchID, this.tote);
       } else {
         window.open(
           `/#/report-view?file=FileName:PrintPrevToteItemLabel|ID:-1|BatchID:${this.batchID}|ToteNum:${this.tote}`,
@@ -322,9 +320,7 @@ export class ToteTransactionViewComponent implements OnInit {
       }
     } else if (type == 'tote-contents') {
       if (this.imPreferences.printDirectly) {
-        this.global.Print(
-          `FileName:PrintPrevToteTransViewCont|BatchID:${this.batchID}|ToteNum:${this.tote}`
-        );
+        this.printApiService.PrintPrevToteTransViewCont(this.batchID, this.tote);
       } else {
         window.open(
           `/#/report-view?file=FileName:PrintPrevToteTransViewCont|BatchID:${this.batchID}|ToteNum:${this.tote}`,
@@ -342,9 +338,7 @@ export class ToteTransactionViewComponent implements OnInit {
   printToteLabel() {
     let ID = this.dataSource?.filteredData[0]?.id;
     if (this.imPreferences.printDirectly) {
-      this.global.Print(
-        `FileName:PrintPrevToteItemLabel|ID:${ID}|BatchID:${this.batchID}|ToteNum:${this.tote}`
-      );
+      this.printApiService.PrintPrevToteItemLabel(ID, this.batchID, this.tote);
     } else {
       window.open(
         `/#/report-view?file=FileName:PrintPrevToteItemLabel|ID:${ID}|BatchID:${this.batchID}|ToteNum:${this.tote}`,

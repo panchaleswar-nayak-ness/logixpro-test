@@ -87,7 +87,7 @@ export class SideNavComponent implements OnInit {
     { icon: 'arrow_back', title: 'Admin', route: '/InductionManager', class: UniqueConstants.backClass, permission: AppPermissions.InductionManager },
     { icon: ' directions_alt', title: 'Inventory Map', route: '/InductionManager/Admin/InventoryMap', permission: 'Tote Inventory Map' },
     { icon: ' dashboard ', title: 'Inventory ', route: '/InductionManager/Admin/InventoryMaster', permission:'Tote Inventory'},
-    { icon: ' inventory_2 ', title: 'Tote Transaction Manager ', route: '/InductionManager/Admin/ToteTransactionManager', permission: 'Tote Transactions' },
+    { icon: ' inventory_2 ', title: 'Tote Transaction Manager ', route: '/InductionManager/Admin/ToteTransactionManager', permission: 'Tote Transaction Manager' },
     { icon: 'ads_click   ', title: 'Manual Transactions ', route: '/InductionManager/Admin/ManualTransactions', permission: 'Tote Manual Transactions' },
     { icon: 'elevator   ', title: 'Tote Manager ', route: '/InductionManager/Admin/ImToteManager', permission: 'Tote Manager'},
     { icon: 'post_add ', title: 'Transaction Journal ', route: '/InductionManager/Admin/TransactionJournal', permission: 'Tote Transaction Journal'},

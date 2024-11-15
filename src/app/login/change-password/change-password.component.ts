@@ -34,12 +34,12 @@ export class ChangePasswordComponent implements OnInit {
       new_password: ['',  [
         Validators.required,
         Validators.minLength(7),
-        Validators.pattern(/^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]+$/),
+        Validators.pattern(/^(?=.*[0-9])(?=.*[!@#$%^&*()_\-+={[}\]|\\:;"'<>,.?/~`])[a-zA-Z0-9!@#$%^&*()_\-+={[}\]|\\:;"'<>,.?/~`]{7,}$/),
       ]],
       confirm_password: ['',  [
         Validators.required,
         Validators.minLength(7),
-        Validators.pattern(/^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]+$/),
+        Validators.pattern(/^(?=.*[0-9])(?=.*[!@#$%^&*()_\-+={[}\]|\\:;"'<>,.?/~`])[a-zA-Z0-9!@#$%^&*()_\-+={[}\]|\\:;"'<>,.?/~`]{7,}$/),
       ]]
     }, { validator: this.passwordMatchValidator });
   }

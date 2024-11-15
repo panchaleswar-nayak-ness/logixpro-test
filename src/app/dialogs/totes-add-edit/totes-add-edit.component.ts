@@ -27,6 +27,7 @@ import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.ser
 import { IInductionManagerApiService } from 'src/app/common/services/induction-manager-api/induction-manager-api-interface';
 import { InductionManagerApiService } from 'src/app/common/services/induction-manager-api/induction-manager-api.service';
 import {  ToasterTitle ,ResponseStrings,ToasterType,ToasterMessages,DialogConstants,UniqueConstants,Style,TableConstant,ColumnDef} from 'src/app/common/constants/strings.constants';
+import { PrintApiService} from "../../common/services/print-api/print-api.service";
 
 export interface PeriodicElement {
   name: string;
@@ -50,7 +51,7 @@ export interface ToteElement {
   styleUrls: ['./totes-add-edit.component.scss'],
 })
 export class TotesAddEditComponent implements OnInit {
-  
+
   elementData: PeriodicElement[] = [
     { position: 1, name: 'Hydrogen', weight: 1.0079, symbol: 'H' },
   ];
@@ -152,10 +153,7 @@ export class TotesAddEditComponent implements OnInit {
       batch = ' ';
     }
 
-    this.global.Print(
-      `FileName:PrintPrevToteManLabel|ToteID:${ToteID}|Ident:${ident}|FromTote:${sTote}|ToTote:${eTote}|BatchID:${batch}`,
-      UniqueConstants.Ibl
-    );
+    this.printApiService.PrintPrevToteManLabel(ToteID, ident, sTote, eTote, batch);
   }
   printRange() {
     let ident = 1;
@@ -165,9 +163,7 @@ export class TotesAddEditComponent implements OnInit {
     let eTote = this.toTote;
 
     if (this.imPreferences.printDirectly) {
-      this.global.Print(
-        `FileName:PrintPrevToteManLabel|ToteID:${ToteID}|Ident:${ident}|FromTote:${sTote}|ToTote:${eTote}|BatchID:${batch}`
-      );
+      this.printApiService.PrintPrevToteManLabel(ToteID, ident, sTote, eTote, batch);
     } else {
       window.open(
         `/#/report-view?file=FileName:PrintPrevToteManLabel|ToteID:${ToteID}|Ident:${ident}|FromTote:${sTote}|ToTote:${eTote}|BatchID:${batch}`,
@@ -446,12 +442,13 @@ export class TotesAddEditComponent implements OnInit {
   constructor(
     public dialogRef: MatDialogRef<TotesAddEditComponent>,
     public inductionManagerApi: InductionManagerApiService,
-    public adminApiService: AdminApiService, 
+    public adminApiService: AdminApiService,
     private location: Location,
     private renderer: Renderer2,
     @Inject(MAT_DIALOG_DATA) public data: any,
-    private authService: AuthService, 
-    private global: GlobalService
+    private authService: AuthService,
+    private global: GlobalService,
+    public printApiService: PrintApiService
   ) {
     this.iAdminApiService = adminApiService;
     let pathArr = this.location.path().split('/');

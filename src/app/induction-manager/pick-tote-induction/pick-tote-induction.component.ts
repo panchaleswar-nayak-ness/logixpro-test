@@ -2,8 +2,10 @@ import {
   AfterViewInit,
   Component,
   ElementRef,
+  EventEmitter,
   OnDestroy,
   OnInit,
+  Output,
   ViewChild,
 } from '@angular/core';
 import {
@@ -18,12 +20,17 @@ import { ApiFuntions } from 'src/app/common/services/ApiFuntions';
 import { MatTabChangeEvent } from '@angular/material/tabs';
 import { NonSuperBatchOrdersComponent } from './non-super-batch-orders/non-super-batch-orders.component';
 import { SuperBatchOrdersComponent } from './super-batch-orders/super-batch-orders.component';
-import { ConfirmationDialogComponent } from 'src/app/admin/dialogs/confirmation-dialog/confirmation-dialog.component';
-import { PickToteInFilterComponent } from './pick-tote-in-filter/pick-tote-in-filter.component';
-import { FilterOrderNumberComponent } from './filter-order-number/filter-order-number.component';
-import { catchError, Observable, Subscription, throwError } from 'rxjs';
+import {
+  catchError,
+  forkJoin,
+  Observable,
+  Subscription,
+  throwError,
+} from 'rxjs';
 import { IInductionManagerApiService } from 'src/app/common/services/induction-manager-api/induction-manager-api-interface';
 import { InductionManagerApiService } from 'src/app/common/services/induction-manager-api/induction-manager-api.service';
+import { AuthService } from 'src/app/common/init/auth.service';
+import { UserSession } from 'src/app/common/types/CommonTypes';
 
 interface IZoneGroup {
   Id: number;
@@ -47,9 +54,11 @@ export class PickToteInductionComponent
   constructor(
     private global: GlobalService,
     private Api: ApiFuntions,
-    public inductionManagerApi: InductionManagerApiService
+    public inductionManagerApi: InductionManagerApiService,
+    private authService: AuthService
   ) {
     this.iInductionManagerApi = inductionManagerApi;
+    this.userData = this.authService.userData();
   }
 
   public iInductionManagerApi: IInductionManagerApiService;
@@ -57,20 +66,25 @@ export class PickToteInductionComponent
   zoneAllGroupingsList: IZoneGroup[] = [];
   selectedZoneGrouping: IZoneGroup | undefined;
   zoneList: string[] = [];
+  initialZoneList: string[] = [];
   selectedZones: string = '';
   activeTab: TabNames;
   @ViewChild('zoneGroupSelect') zoneGroupSelect;
   @ViewChild('tabGroup') tabGroup;
   @ViewChild('orderNumberInput') orderNumberInput: ElementRef;
+  @ViewChild('toteIdInput') toteIdInput: ElementRef;
   @ViewChild(NonSuperBatchOrdersComponent, { static: true })
   NonSuperBatchOrdersComponent: NonSuperBatchOrdersComponent;
   @ViewChild(SuperBatchOrdersComponent, { static: true })
   SuperBatchOrdersComponent: SuperBatchOrdersComponent;
+  @Output() specificInductionSuccess = new EventEmitter<void>();
 
   orderNumber: string = '';
   toteId: string = '';
   splitToggle: boolean = false;
+  transactionQty: number = 0;
 
+  userData : UserSession;
   // this is the global filteration object used to refresh and select various filters on the tote induction screen
   // this will be passed to the respective api for loading data in tables based on induction type currently selected
   selectedFilters: any = {
@@ -96,61 +110,50 @@ export class PickToteInductionComponent
   };
 
   subscription: Subscription[] = [];
+  parentMsg = '';
 
   ngOnInit(): void {
-    this.getZoneGroups();
-    this.preloadDefaultZoneGroup();
+    setTimeout(() => {
+      this.orderNumberInput.nativeElement.focus();
+    });
 
-    if (!this.activeTab) this.activeTab = 0; // Default tab active should be non super batch orders
-    // this.refreshOrders();
+    forkJoin(
+      this.Api.GetZoneGroupings(),
+      this.iInductionManagerApi.PreferenceIndex()
+    ).subscribe(([zgResponse, piResponse]) => {
+      if (zgResponse.data && zgResponse.isExecuted) {
+        zgResponse.data.forEach((f) => {
+          const existingItem = this.zoneGroupingsList.find(
+            (item) => item.ZoneGroup === f.zoneGroupName
+          );
 
-    let currentMessageSubscription = this.global.currentMessage.subscribe(
-      (message) => {
-        if (message) {
-          if (
-            message.orderNumberFilters &&
-            message.orderNumberFilters.length > 0
-          ) {
-            let uniqueOrderNumberFilters = [
-              ...new Set(message.orderNumberFilters),
-            ];
-            uniqueOrderNumberFilters = uniqueOrderNumberFilters.filter(
-              (f) => f !== ''
-            );
-            this.selectedFilters.OrderNumberFilters = uniqueOrderNumberFilters;
-          } else {
-            this.selectedFilters.OrderNumberFilters = [];
+          if (!existingItem) {
+            this.zoneGroupingsList.push({
+              Id: f.id,
+              ZoneGroup: f.zoneGroupName,
+              Zone: f.zoneName,
+            });
           }
 
-          if (message.columnFilters) {
-            if (this.activeTab === TabNames.NonSuperBatch) {
-              this.selectedFilters.ColumnFilters = message.columnFilters;
-            } else if (this.activeTab === TabNames.SuperBatch) {
-              this.selectedFiltersSuperBatch.ColumnFilters =
-                message.columnFilters;
-            }
-          } else {
-            this.selectedFilters.ColumnFilters = [];
-          }
+          this.zoneAllGroupingsList.push({
+            Id: f.id,
+            ZoneGroup: f.zoneGroupName,
+            Zone: f.zoneName,
+          });
 
-          // Only refresh orders if any of these filters was applied from pop up
-          if (
-            message.orderNumberFilters.length > 0 ||
-            message.columnFilters.length > 0
-          ) {
-            this.retrieveOrders();
-          }
-        }
+          this.zoneList = [];
+          this.initialZoneList = [];
+        });
+      } else {
+        this.global.ShowToastr(
+          ToasterType.Error,
+          ToasterMessages.SomethingWentWrong,
+          ToasterTitle.Error
+        );
       }
-    );
 
-    this.subscription.push(currentMessageSubscription);
-  }
-
-  preloadDefaultZoneGroup() {
-    this.iInductionManagerApi.PreferenceIndex().subscribe((res: any) => {
-      if (res.data && res.isExecuted) {
-        const values = res.data.imPreference;
+      if (piResponse.data && piResponse.isExecuted) {
+        const values = piResponse.data.imPreference;
 
         this.selectedZoneGrouping = this.zoneGroupingsList.find(
           (x) => x.ZoneGroup === values.defaultZoneGroup
@@ -161,7 +164,65 @@ export class PickToteInductionComponent
           this.showChange(this.selectedZoneGrouping.Id);
         }
       }
+
+      if (!this.activeTab) this.activeTab = 0; // Default tab active should be non super batch orders
     });
+
+    if (this.global.currentMessage) {
+      let currentMessageSubscription = this.global.currentMessage.subscribe(
+        (message) => {
+          if (message) {
+            if (
+              message.orderNumberFilters &&
+              message.orderNumberFilters.length > 0
+            ) {
+              let uniqueOrderNumberFilters = [
+                ...new Set(message.orderNumberFilters),
+              ];
+              uniqueOrderNumberFilters = uniqueOrderNumberFilters.filter(
+                (f) => f !== ''
+              );
+              this.selectedFilters.OrderNumberFilters =
+                uniqueOrderNumberFilters;
+            } else {
+              this.selectedFilters.OrderNumberFilters = [];
+            }
+
+            let defaultRow = JSON.stringify([
+              {
+                id: 0,
+                alias: '',
+                ppField: '',
+                startCharacter: 0,
+                endCharacter: 0,
+                Value: '',
+              },
+            ]);
+            let appliedRows = JSON.stringify(message.columnFilters);
+            let notDefaultRow = defaultRow !== appliedRows;
+            // console.log(notDefaultRow);
+
+            if (message.columnFilters && notDefaultRow) {
+              if (this.activeTab === TabNames.NonSuperBatch) {
+                this.selectedFilters.ColumnFilters = message.columnFilters;
+              } else if (this.activeTab === TabNames.SuperBatch) {
+                this.selectedFiltersSuperBatch.ColumnFilters =
+                  message.columnFilters;
+              }
+            } else {
+              this.selectedFilters.ColumnFilters = [];
+            }
+
+            if (message.orderNumberFilters || message.columnFilters) {
+              console.log('global.currentMessage');
+              this.retrieveOrders();
+            }
+          }
+        }
+      );
+
+      this.subscription.push(currentMessageSubscription);
+    }
   }
 
   ngAfterViewInit(): void {
@@ -172,6 +233,24 @@ export class PickToteInductionComponent
     this.subscription.forEach((sub) => {
       sub.unsubscribe();
     });
+
+    this.destroyChild();
+  }
+
+  destroyChild() {
+    if (this.NonSuperBatchOrdersComponent) {
+      this.global.sendMessage({
+        columnFilters: '',
+        orderNumberFilters: [],
+      });
+    }
+
+    if (this.SuperBatchOrdersComponent) {
+      this.global.sendMessage({
+        columnFilters: '',
+        orderNumberFilters: [],
+      });
+    }
   }
 
   clearToteAndOrderFields() {
@@ -196,6 +275,7 @@ export class PickToteInductionComponent
     }
 
     this.zoneList = selectedZones.map((zone) => zone.Zone);
+    this.initialZoneList = selectedZones.map((zone) => zone.Zone);
     this.selectedZones = this.zoneList.join(' ');
 
     // Reload the orders based on induction type and selected filters
@@ -205,10 +285,11 @@ export class PickToteInductionComponent
       this.selectedFiltersSuperBatch.Zones = this.zoneList;
     }
 
+    console.log('showChange');
     this.retrieveOrders();
   }
 
-  async getZoneGroups() {
+  getZoneGroups() {
     try {
       this.Api.GetZoneGroupings().subscribe((res: any) => {
         if (res.data && res.isExecuted) {
@@ -232,6 +313,7 @@ export class PickToteInductionComponent
             });
 
             this.zoneList = [];
+            this.initialZoneList = [];
           });
         } else {
           this.global.ShowToastr(
@@ -244,6 +326,23 @@ export class PickToteInductionComponent
     } catch (error) {}
   }
 
+  preloadDefaultZoneGroup() {
+    this.iInductionManagerApi.PreferenceIndex().subscribe((res: any) => {
+      if (res.data && res.isExecuted) {
+        const values = res.data.imPreference;
+
+        this.selectedZoneGrouping = this.zoneGroupingsList.find(
+          (x) => x.ZoneGroup === values.defaultZoneGroup
+        );
+
+        if (this.selectedZoneGrouping) {
+          this.zoneGroupSelect.value = this.selectedZoneGrouping.Id;
+          this.showChange(this.selectedZoneGrouping.Id);
+        }
+      }
+    });
+  }
+
   openSelectZones() {
     const dialogRef: any = this.global.OpenDialog(SelectZonesComponent, {
       height: 'auto',
@@ -252,6 +351,7 @@ export class PickToteInductionComponent
       disableClose: true,
       data: {
         zoneList: this.zoneList,
+        initialZoneList: this.initialZoneList,
       },
     });
 
@@ -297,6 +397,7 @@ export class PickToteInductionComponent
         this.SuperBatchOrdersComponent.retrieveFilteredSuperBatchOrders({
           FilterResultsRequestParams: {
             ...this.selectedFiltersSuperBatch,
+            wsId: this.userData.wsid,
           },
         });
       }
@@ -315,44 +416,23 @@ export class PickToteInductionComponent
     this.retrieveOrders();
   }
 
-  clearFilters() {
-    const dialogRef: any = this.global.OpenDialog(ConfirmationDialogComponent, {
-      height: 'auto',
-      width: '560px',
-      autoFocus: DialogConstants.autoFocus,
-      disableClose: true,
-      data: {
-        message: 'Do you want to clear all filters?',
-      },
-    });
+  refreshSpecificinput() {
+    this.toteId = '';
+    this.orderNumber = '';
+    this.transactionQty = 0;
+  }
 
-    dialogRef.afterClosed().subscribe((result) => {
-      // check for confirmation then clear all filters on the screen
-      if (result) {
-        let confirm = result.toLowerCase();
+  clearNonSuperBatchFilters($event) {
+    console.log($event);
+    this.selectedFilters.ColumnFilters = [];
+    this.selectedFilters.OrderNumberFilters = [];
+    this.retrieveOrders();
+  }
 
-        if (confirm === 'yes') {
-          this.zoneList = [];
-          this.selectedZones = '';
-          this.zoneGroupSelect.value = '';
-          this.selectedFilters.Zones = [];
-          this.selectedFilters.ColumnFilters = [];
-          this.selectedFilters.OrderNumberFilters = [];
-          this.selectedFiltersSuperBatch.Zones = [];
-          this.selectedFiltersSuperBatch.ColumnFilters = [];
-
-          if (this.NonSuperBatchOrdersComponent) {
-            this.NonSuperBatchOrdersComponent.clearFilters();
-          }
-
-          if (this.SuperBatchOrdersComponent) {
-            this.NonSuperBatchOrdersComponent.clearFilters();
-          }
-
-          this.retrieveOrders();
-        }
-      }
-    });
+  clearSuperBatchFilters($event) {
+    console.log($event);
+    this.selectedFiltersSuperBatch.ColumnFilters = [];
+    this.retrieveOrders();
   }
 
   onTabClick(tabChangeEvent: MatTabChangeEvent) {
@@ -422,6 +502,53 @@ export class PickToteInductionComponent
     });
   }
 
+  getTransactionQty() {
+    this.Api.GetTotalTransactionQty(this.orderNumber)
+      .pipe(
+        catchError((errResponse) => {
+          this.transactionQty = 0;
+          // Handle errors
+          if(errResponse.error) {
+            if (errResponse.error.status === 400) {
+              this.global.ShowToastr(
+                ToasterType.Error,
+                errResponse.error.responseMessage,
+                ToasterTitle.Error
+              );
+            } else {
+              this.global.ShowToastr(
+                ToasterType.Error,
+                errResponse.error.responseMessage,
+                ToasterTitle.Error
+              );
+            }
+          }
+          return throwError(errResponse);
+        })
+      )
+      .subscribe((innerResponse: any) => {
+        if (innerResponse.data && innerResponse.isExecuted) {
+          this.transactionQty = innerResponse.data.totalQuantity;
+
+          setTimeout(() => {
+            this.toteIdInput.nativeElement.focus();
+          });
+        } else {
+          this.global.ShowToastr(
+            ToasterType.Error,
+            innerResponse.responseMessage,
+            ToasterTitle.Error
+          );
+        }
+      });
+  }
+
+  getDisplayZones(): string {
+    return this.selectedZones?.length > 24
+      ? this.selectedZones.slice(0, 24) + '...'
+      : this.selectedZones;
+  }
+
   performInduction(valueToInduct: any) {
     this.Api.PerformSpecificOrderInduction(valueToInduct)
       .pipe(
@@ -445,8 +572,19 @@ export class PickToteInductionComponent
       )
       .subscribe((innerResponse: any) => {
         if (innerResponse.data && innerResponse.isExecuted) {
+          this.transactionQty =
+            innerResponse.data.remainingTransactionQuantitySum;
+          if (this.transactionQty === 0) {
+            // Clear both order number and tote ID if transactionQty is zero
+            this.orderNumber = '';
+            this.toteId = '';
+            this.specificInductionSuccess.emit();
+          } else {
+            // Only clear the tote ID if transactionQty is not zero
+            this.toteId = '';
+          }
           this.refreshOrders();
-          this.clearToteAndOrderFields();
+
           this.global.ShowToastr(
             ToasterType.Success,
             innerResponse.responseMessage,

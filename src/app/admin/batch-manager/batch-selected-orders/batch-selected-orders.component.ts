@@ -20,7 +20,8 @@ import { ConfirmationDialogComponent } from '../../dialogs/confirmation-dialog/c
 import { GlobalService } from 'src/app/common/services/global.service';
 import { IAdminApiService } from 'src/app/common/services/admin-api/admin-api-interface';
 import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.service';
-import { ConfirmationHeadings, ConfirmationMessages, DialogConstants, LiveAnnouncerMessage, ResponseStrings, StringConditions, ToasterTitle, ToasterType ,Style,UniqueConstants} from 'src/app/common/constants/strings.constants';
+import { ConfirmationHeadings, ConfirmationMessages, DialogConstants, LiveAnnouncerMessage, ResponseStrings, StringConditions, ToasterTitle, ToasterType, Style, UniqueConstants } from 'src/app/common/constants/strings.constants';
+import { PrintApiService } from 'src/app/common/services/print-api/print-api.service'; 
 
 @Component({
   selector: 'app-batch-selected-orders',
@@ -53,7 +54,7 @@ export class BatchSelectedOrdersComponent implements OnInit {
       this.addRemoveAll.emit();
     }
   }
-  public nextOrderNumber: any;
+  public nextBatchID: any;
   public batchID: any;
   @Output() removeOrderEmitter = new EventEmitter<any>();
   @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -66,7 +67,8 @@ export class BatchSelectedOrdersComponent implements OnInit {
     private _liveAnnouncer: LiveAnnouncer,
     private authService: AuthService,
     public adminApiService: AdminApiService,
-    private sharedService: SharedService
+    private sharedService: SharedService,
+    private printApiService: PrintApiService
   ) {
     this.iAdminApiService = adminApiService;
   }
@@ -102,7 +104,7 @@ export class BatchSelectedOrdersComponent implements OnInit {
       this.isAutoBatch = changes['isAutoBatch'][StringConditions.currentValue];
     }
     this.batchManagerSettings.map((batchSetting) => {
-      this.nextOrderNumber = batchSetting.batchID;
+      this.nextBatchID = batchSetting.batchID;
       this.pickToTotes = JSON.parse(batchSetting.pickToTotes.toLowerCase());
       this.nextToteID = batchSetting.nextToteID;
     });
@@ -134,7 +136,8 @@ export class BatchSelectedOrdersComponent implements OnInit {
           this.batchOrderDataTable._data._value.forEach(element => {
             ordersArr.push(element.orderNumber)
           });
-          this.global.Print(`FileName:PrintBatchReport|TransType:${this.transType}|Orders:${ordersArr.length > 0 ? ordersArr : ''}|BatchID:${this.nextOrderNumber}`)
+          this.printApiService.PrintBatchManagerReport(ordersArr, this.nextBatchID, this.transType)
+          //this.global.Print(`FileName:PrintBatchReport|TransType:${this.transType}|Orders:${ordersArr.length > 0 ? ordersArr : ''}|BatchID:${this.nextOrderNumber}`)
         }
       });
     } else {
@@ -154,7 +157,8 @@ export class BatchSelectedOrdersComponent implements OnInit {
           this.batchOrderDataTable._data._value.forEach(element => {
             ordersArr.push(element.orderNumber)
           });
-          this.global.Print(`FileName:PrintBatchLabel|TransType:${this.transType}|Orders:${ordersArr.length > 0 ? ordersArr : ''}`, UniqueConstants.Ibl)
+          this.printApiService.PrintBatchManagerItemLabel(ordersArr, this.nextBatchID, this.transType)
+          //this.global.Print(`FileName:PrintBatchLabel|TransType:${this.transType}|Orders:${ordersArr.length > 0 ? ordersArr : ''}`, UniqueConstants.Ibl)
         }
       });
     }
@@ -178,8 +182,8 @@ export class BatchSelectedOrdersComponent implements OnInit {
     let paylaod = {
       batch: iBactchData,
       nextBatchID:
-        this.nextOrderNumber != this.batchID
-          ? this.nextOrderNumber
+        this.nextBatchID != this.batchID
+          ? this.nextBatchID
           : this.batchID,
       transType: this.type,
     };
@@ -208,7 +212,7 @@ export class BatchSelectedOrdersComponent implements OnInit {
   }
 
   createBatchDialog() {
-    if (this.nextOrderNumber === '') {
+    if (this.nextBatchID === '') {
       const dialogRef: any = this.global.OpenDialog(AlertConfirmationComponent, {
         height: DialogConstants.auto,
         width: Style.w786px,
@@ -244,6 +248,7 @@ export class BatchSelectedOrdersComponent implements OnInit {
           transType: this.transType,
           nextToteID: this.nextToteID,
           selectedOrderList: this.batchOrderDataTable['_data']['_value'],
+          batchid: this.nextBatchID
         },
       });
       dialogRef.afterClosed().subscribe((result) => {

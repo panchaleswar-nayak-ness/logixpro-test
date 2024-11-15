@@ -1,12 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialogRef } from '@angular/material/dialog';
-import { ResponseStrings, ToasterTitle, ToasterType } from 'src/app/common/constants/strings.constants';
+import { DialogConstants, ResponseStrings, Style, ToasterTitle, ToasterType } from 'src/app/common/constants/strings.constants';
 import { GlobalService } from 'src/app/common/services/global.service';
 import { IInductionManagerApiService } from 'src/app/common/services/induction-manager-api/induction-manager-api-interface';
 import { InductionManagerApiService } from 'src/app/common/services/induction-manager-api/induction-manager-api.service';
 import { AddPickToteInductionFilter, PickToteInductionFilter } from 'src/app/induction-manager/models/PickToteInductionModel';
 import { MatDialog } from '@angular/material/dialog';
 import { DeleteConfirmationComponent } from 'src/app/admin/dialogs/delete-confirmation/delete-confirmation.component';
+import { ConfirmationDialogComponent } from 'src/app/admin/dialogs/confirmation-dialog/confirmation-dialog.component';
 
 @Component({
   selector: 'app-impref-induction-filter',
@@ -130,8 +131,17 @@ export class ImprefInductionFilterComponent implements OnInit {
       filter.endCharacter !== originalFilter.endCharacter
     );
   }
-  // Save the filter at the specified index
-  saveFilter(filter: PickToteInductionFilter): void {
+
+  saveValidation(filter: PickToteInductionFilter) {
+    if (!filter.alias || !filter.ppField) {
+      this.global.ShowToastr(
+        ToasterType.Error,
+        'Alias or Field cannot be blank.',
+        ToasterTitle.Error
+      );
+      return false;
+    }
+    
     const duplicateFilters = this.filters.filter((item: any) => {
       return (
         item.ppField===filter.ppField &&
@@ -140,7 +150,7 @@ export class ImprefInductionFilterComponent implements OnInit {
         item.endCharacter === filter.endCharacter
       );
     });
-  
+    
   
     // If duplicates exist, show error toast and prevent API call
     if (duplicateFilters.length > 1) {
@@ -149,12 +159,37 @@ export class ImprefInductionFilterComponent implements OnInit {
         'Duplicate filter found. Please remove duplicates.',
         ToasterTitle.Error
       );
-      return; // Stop execution to prevent the save
+      return false; // Stop execution to prevent the save
     }
+    return true;
+  }
+  // Save the filter at the specified index
+  saveFilter(filter: PickToteInductionFilter): void {
+    if (!this.saveValidation(filter)) return;
     this.iInductionManagerApi.AddPickToteInductionFilter(filter).subscribe(response => {
       if (response.isExecuted) {
-        this.GetPickToteInductionFilterData();
-        this.originalFilters = JSON.parse(JSON.stringify(this.filters));
+        //this.GetPickToteInductionFilterData();
+        filter.id = response.data.id;
+        //this.originalFilters = JSON.parse(JSON.stringify(this.filters));
+        let originalFilter = this.originalFilters.find(x => x.id === response.data.id);
+        if ( originalFilter)
+        {
+          originalFilter.Value = filter.Value;
+          originalFilter.alias = filter.alias;
+          originalFilter.endCharacter= filter.endCharacter;
+          originalFilter.startCharacter = filter.startCharacter;
+          originalFilter.ppField = filter.ppField;
+        }
+        else {
+          this.originalFilters.push({
+            Value : filter.Value,
+            alias : filter.alias,
+            endCharacter : filter.endCharacter,
+            startCharacter : filter.startCharacter,
+            ppField : filter.ppField,
+            id: filter.id
+          })
+        }
         this.global.ShowToastr(
           ToasterType.Success,
           'Your details have been updated',
@@ -182,11 +217,12 @@ export class ImprefInductionFilterComponent implements OnInit {
       if (result === ResponseStrings.Yes) {
         const index = this.filters.indexOf(filter);
         if (index !== -1) {
-          this.filters.splice(index, 1); // Remove locally
+          this.filters.splice(index, 1);
+          this.filters = [...this.filters]; // Reassign to trigger change detection
           if (filter.id > 0) { // If filter exists on the server, delete it via API
             this.iInductionManagerApi.DeletePickToteInductionFilter([filter.id]).subscribe((response: any) => {
               if (response.isExecuted) {
-                this.GetPickToteInductionFilterData();
+                //this.GetPickToteInductionFilterData();
                 this.global.ShowToastr(
                   ToasterType.Success,
                   'Filter has been deleted',
@@ -231,7 +267,37 @@ export class ImprefInductionFilterComponent implements OnInit {
     });
   }
   onSubmit(): void {
-    this.dialogRef.close(); // This will close the dialog when submit is clicked
-    
+    let isConfirmationRequired = false;
+    this.filters.forEach(element => {
+      if (this.isFilterModified(element)) {
+        isConfirmationRequired = true;
+      }
+    });
+      if (isConfirmationRequired)
+        this.ConfirmationDialog();
+      else
+        this.dialogRef.close();
+  }
+
+  
+  async ConfirmationDialog() { 
+    const dialogRef:any = this.global.OpenDialog(ConfirmationDialogComponent, {
+      height: 'auto',
+      width: Style.w560px,
+      data: {
+        message: 'Changes you made may not be saved.',
+        heading: 'Pick Tote Induction Filters'
+      },
+      autoFocus: DialogConstants.autoFocus,
+      disableClose:true,
+    });
+
+    dialogRef.afterClosed().subscribe(async (result) => {
+      if (result === ResponseStrings.Yes) { 
+        this.dialogRef.close(); // This will close the dialog when submit is clicked
+      } else {
+        
+      }
+    });
   }
 }

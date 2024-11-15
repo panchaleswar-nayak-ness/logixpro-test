@@ -3,6 +3,7 @@ import { ApiFuntions } from '../ApiFuntions';
 import { AuthService } from 'src/app/common/init/auth.service';
 import { IInductionManagerApiService } from './induction-manager-api-interface';
 import { AddPickToteInductionFilter } from 'src/app/induction-manager/models/PickToteInductionModel';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -13,7 +14,6 @@ export class InductionManagerApiService implements IInductionManagerApiService {
   constructor(private Api: ApiFuntions, private authService: AuthService) {
     this.userData = this.authService.userData();
   }
-
   public getPickBatchTransactionTable(body: any) {
     const payload = {
       username: this.userData.username,
@@ -123,7 +123,7 @@ export class InductionManagerApiService implements IInductionManagerApiService {
     return this.Api.RemoveZoneGrouping(valueToRemove);
   }
 
-  public PreferenceIndex() {
+  public PreferenceIndex(): Observable<any> {
     return this.Api.PreferenceIndex();
   }
 
@@ -720,50 +720,6 @@ export class InductionManagerApiService implements IInductionManagerApiService {
     return this.Api.DynamicMethod(payload, url);
   }
 
-  public PrintCrossDockTote(reprocessId, zone: string, toteId: string) {
-    const payload = {
-      wsid: this.userData.wsid,
-      reprocessId: reprocessId,
-      zone: zone,
-      toteId: toteId,
-    };
-    return this.Api.PrintCrossDockTote(payload);
-  }
-
-  public PrintCrossDockItem(reprocessId: number, zone: string) {
-    const payload = {
-      wsid: this.userData.wsid,
-      reprocessId: reprocessId,
-      zone: zone,
-    };
-    return this.Api.PrintCrossDockItem(payload);
-  }
-
-  PrintCrossDockToteAuto(OTRecID: bigint, zone: any) {
-    const payload = {
-      wsid: this.userData.wsid,
-      otId: OTRecID,
-      zone: zone,
-    };
-    return this.Api.PrintCrossDockToteAuto(payload);
-  }
-
-  PrintCrossDockItemAuto(OTRecID: bigint, zone: any) {
-    const payload = {
-      wsid: this.userData.wsid,
-      otId: OTRecID,
-      zone: zone,
-    };
-    return this.Api.PrintCrossDockItemAuto(payload);
-  }
-
-  public PrintPutAwayItem(otid: number) {
-    const payload = {
-      wsid: this.userData.wsid,
-      otid: otid,
-    };
-    return this.Api.PrintPutAwayItem(payload);
-  }
   public AddPickToteInductionFilter(payload: AddPickToteInductionFilter) {
     return this.Api.AddPickToteInductionFilter(payload);
   }
@@ -776,5 +732,5 @@ export class InductionManagerApiService implements IInductionManagerApiService {
     return this.Api.DeletePickToteInductionFilter(paramname);
   }
 
-  
+
 }

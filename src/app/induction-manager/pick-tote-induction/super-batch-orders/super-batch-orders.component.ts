@@ -1,7 +1,10 @@
 import {
   AfterViewInit,
   Component,
+  EventEmitter,
+  Input,
   OnInit,
+  Output,
   QueryList,
   ViewChild,
   ViewChildren,
@@ -24,10 +27,11 @@ import { InductionManagerApiService } from 'src/app/common/services/induction-ma
 import { IInductionManagerApiService } from 'src/app/common/services/induction-manager-api/induction-manager-api-interface';
 import { catchError, Observable, throwError } from 'rxjs';
 import { MatSort, Sort } from '@angular/material/sort';
-import { MatPaginator } from '@angular/material/paginator';
+import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { LiveAnnouncer } from '@angular/cdk/a11y';
 import { MatInput } from '@angular/material/input';
 import { AuthService } from 'src/app/common/init/auth.service';
+import { ConfirmationDialogComponent } from 'src/app/admin/dialogs/confirmation-dialog/confirmation-dialog.component';
 
 @Component({
   selector: 'app-super-batch-orders',
@@ -49,15 +53,9 @@ export class SuperBatchOrdersComponent implements OnInit, AfterViewInit {
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild('paginator') paginator: MatPaginator;
   @ViewChildren(MatInput) toteInputs!: QueryList<MatInput>;
+
   userData;
-  displayedColumns: string[] = [
-    'itemNumber',
-    'priority',
-    'quality',
-    'requiredDate',
-    'totalOrderQty',
-    'toteScanned',
-  ];
+  @Input() zones: string[] = []; // Accept zones as input
 
   elementData = [
     {
@@ -83,13 +81,45 @@ export class SuperBatchOrdersComponent implements OnInit, AfterViewInit {
     },
   ];
 
+  displayedColumns: string[] = [
+    'itemNumber',    
+    'priority',
+    'quality',
+    'requiredDate',
+    'numberOfOrders',
+    'totalOrderQty',
+    'toteScanned',
+  ];
+
+  customPagination: any = {
+    total: '',
+    recordsPerPage: 10,
+    startIndex: 0,
+    endIndex: 10,
+  };
+
   public iInductionManagerApi: IInductionManagerApiService;
   filters: PickToteInductionFilter[] = [];
   orderNumberFilter: string = '';
   dataSource: MatTableDataSource<any>;
   toteScanned: any;
+  filteredOrderResults = [];
+  @Output() someEvent = new EventEmitter<string>();
+  tags: {
+    alias? : string,
+    value? : string
+  }[] = [];
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.customPagination = {
+      total: '',
+      recordsPerPage: 10,
+      startIndex: 0,
+      endIndex: 10,
+    };
+
+    this.getTags();
+  }
 
   ngAfterViewInit(): void {
     this.updatedPaginator();
@@ -105,26 +135,37 @@ export class SuperBatchOrdersComponent implements OnInit, AfterViewInit {
     });
   }
 
-  rebind(data?: any[]) {
+  rebind(data?: any[], isGrid: boolean = false) {
     let mappedData = data?.map((m) => {
       return {
+        zone: m.zone,
         itemNumber: m.itemNumber ?? m.itemNumber,
         priority: m.minPriority ?? m.priority,
         quality: m.quality,
         requiredDate: m.minRequiredDate ?? m.requiredDate,
         totalOrderQty: m.totalQuantity ?? m.totalOrderQty,
+        numberOfOrders: m.numberOfOrders
       };
     });
 
     this.dataSource = new MatTableDataSource(mappedData);
     this.updatedPaginator();
     this.updateSorting();
-    // this.focusFirstInput();
+
+    if (isGrid === false) {
+      this.focusFirstInput();
+    }
+  }
+
+  handlePageEvent(e: PageEvent) {
+    this.customPagination.startIndex = e.pageSize * e.pageIndex;
+    this.customPagination.endIndex = e.pageSize * e.pageIndex + e.pageSize;
+    this.customPagination.recordsPerPage = e.pageSize;
+    this.rebind(this.filteredOrderResults);
   }
 
   updatedPaginator() {
-    if (this.dataSource && this.dataSource.filteredData.length > 0)
-      this.dataSource.paginator = this.paginator;
+    if (this.dataSource) this.dataSource.paginator = this.paginator;
   }
 
   updateSorting() {
@@ -139,34 +180,41 @@ export class SuperBatchOrdersComponent implements OnInit, AfterViewInit {
     this.updateSorting();
   }
 
-  clearFilters() {
-    console.log('fired from parent to clear order and column filters');
-    this.orderNumberFilter = '';
-    this.filters = [];
+  getTags() {
+    console.log(this.filters);
+    this.tags = [];
+
+    if (this.filters && this.filters.length > 0) {
+      this.filters.forEach((f) => {
+        let alias = f.alias?.toString();
+        if (alias) this.tags.push({ alias: f.alias, value: f.Value });
+      });
+    }
   }
 
-  filterOrderNum() {
-    const dialogRef: any = this.global.OpenDialog(FilterOrderNumberComponent, {
-      height: DialogConstants.auto,
-      width: Style.w560px,
+  clearFilters() {
+    const dialogRef: any = this.global.OpenDialog(ConfirmationDialogComponent, {
+      height: 'auto',
+      width: '560px',
       autoFocus: DialogConstants.autoFocus,
-      data: {
-        OrderNumberFilter: this.orderNumberFilter,
-      },
       disableClose: true,
+      data: {
+        message: 'Do you want to clear all filters?',
+      },
     });
 
-    dialogRef.afterClosed().subscribe((result: any) => {
+    dialogRef.afterClosed().subscribe((result) => {
+      // check for confirmation then clear all filters on the screen
       if (result) {
-        this.orderNumberFilter = result.orderNumberFilter.map((m: string) =>
-          this.global.getTrimmedAndLineBreakRemovedString(m)
-        );
-
-        // send the currently selected order number filters to parent component via observable
-        this.global.sendMessage({
-          columnFilters: this.filters,
-          orderNumberFilters: this.orderNumberFilter,
-        });
+        if (typeof result === 'boolean') {
+        } else {
+          let confirm = result.toLowerCase();
+          if (confirm) {
+            this.tags = [];
+            this.filters = [];
+            this.someEvent.next('superbatchfilterclear');
+          }
+        }
       }
     });
   }
@@ -185,6 +233,7 @@ export class SuperBatchOrdersComponent implements OnInit, AfterViewInit {
     dialogRef.afterClosed().subscribe((result: PickToteInductionFilter[]) => {
       if (result) {
         this.filters = result;
+        this.getTags();
 
         // send the currently selected column filters to parent component via observable
         this.global.sendMessage({
@@ -225,9 +274,12 @@ export class SuperBatchOrdersComponent implements OnInit, AfterViewInit {
       maxSuperBatchSize: 0,
       inductionType: 'SuperBatch',
       wsId: this.userData.wsid,
+      filterResultsRequestParams: {
+        ColumnFilters:  this.filters,
+        Zones: this.zones
+      },
+      SelectedZones: this.zones, // Pass the selected zones
     };
-
-    this.moveFocusToNextElement(index);
 
     this.iInductionManagerApi.PreferenceIndex().subscribe((res: any) => {
       if (res.data && res.isExecuted) {
@@ -239,6 +291,8 @@ export class SuperBatchOrdersComponent implements OnInit, AfterViewInit {
 
         // call API to induct this tote as per PLST-2772
         if (valueToInduct.toteScanned) {
+          element.toteScanned = '';
+
           this.Api.PerformSuperBatchOrderInduction(valueToInduct)
             .pipe(
               catchError((errResponse) => {
@@ -260,24 +314,55 @@ export class SuperBatchOrdersComponent implements OnInit, AfterViewInit {
             )
             .subscribe((innerResponse: any) => {
               if (innerResponse.data && innerResponse.isExecuted) {
-                // Display each message in the response
-                if (
-                  innerResponse.messages &&
-                  innerResponse.messages.length > 0
-                ) {
-                  innerResponse.messages.forEach((message: string) => {
-                    this.global.ShowToastr(
-                      ToasterType.Info,
-                      message,
-                      ToasterTitle.Alert
-                    );
-                  });
+                if (innerResponse.data.remainingQuantity > 0) {
+                  // Update the UI with the remaining quantity
+                  const orderIndex = this.dataSource.filteredData.findIndex(
+                    (item) =>
+                      item.itemNumber === itemNumber &&
+                      item.priority === valueToInduct.priority
+                  );
+
+                  if (orderIndex !== -1) {
+                    // Update totalOrderQuantity with remainingQuantity
+                    this.dataSource.filteredData[orderIndex].totalOrderQty =
+                      innerResponse.data.remainingQuantity;
+
+                    // Use setTimeout to focus on the toteScanned input box
+                  }
+
+                  // Retain focus on the current input element for further induction
                 } else {
-                  // Show success message if available
+                  // If no remaining quantity, remove the order row
+                  let updated = this.dataSource.filteredData.filter(
+                    (f) =>
+                      !(
+                        f.itemNumber === valueToInduct.itemNumber &&
+                        f.priority === valueToInduct.priority
+                      )
+                  );
+
+                  this.rebind(updated, true);
+                }
+
+                // Success message if all item are successfully
+                if (
+                  innerResponse?.data?.inductedOrders?.length > 0 &&
+                  innerResponse?.data?.notInductedOrders?.length === 0
+                ) {
                   this.global.ShowToastr(
                     ToasterType.Success,
                     innerResponse.responseMessage,
                     ToasterTitle.Success
+                  );
+                }
+
+                if (
+                  innerResponse?.data?.notInductedOrders?.length > 0
+                ) {
+                  this.global.ShowToastr(
+                    ToasterType.Info,
+                    `Orders: ${innerResponse?.data?.notInductedOrders.join(', ')} skipped due to exceeding tote capacity, max batch size, or the max tote quantity`,
+                    ToasterTitle.Alert
                   );
                 }
               } else {
@@ -288,13 +373,9 @@ export class SuperBatchOrdersComponent implements OnInit, AfterViewInit {
                 );
               }
 
-              console.log(this.dataSource.filteredData);
-              if (this.dataSource && this.dataSource.filteredData) {
-                let updated = this.dataSource.filteredData.filter(
-                  (f) => f.itemNumber !== valueToInduct.itemNumber
-                );
-                this.rebind(updated);
-              }
+              setTimeout(() => {
+                this.moveFocusToNextElement(index);
+              }, 0);
             });
         }
       } else {
@@ -309,17 +390,17 @@ export class SuperBatchOrdersComponent implements OnInit, AfterViewInit {
 
   private moveFocusToNextElement(index: number) {
     let totes = this.toteInputs.toArray();
-    let totalSize = totes.length;
-    let middleIndex = Math.floor(totalSize / 2);
-    console.log(index, middleIndex);
 
-    if(index >= middleIndex) {
-      if (totes[index + 1]) {
-        totes[index + 1].focus();
-      }
-    }
-    else if(index <= middleIndex) {
-      this.focusFirstInput();
+    // Ensure that index + 1 doesn't exceed the length of totes array
+    if (totes[index + 1]) {
+      setTimeout(() => {
+        totes[index].focus();
+      }, 0); // Allow DOM update
+    } else if (totes[0]) {
+      // If there's no next item, loop back to the first item
+      setTimeout(() => {
+        totes[0].focus();
+      }, 0);
     }
   }
 }

@@ -111,9 +111,12 @@ export class ItemSetupComponent implements OnInit {
   }
 
   cellQuantityChange() {
-    if(parseInt(this.itemSetup.controls['maximumQuantity'].value) < parseInt(this.itemSetup.controls['minimumQuantity'].value)) this.itemSetup.controls['minimumQuantity'].setValue(this.itemSetup.controls['maximumQuantity'].value);
-    else if(parseInt(this.itemSetup.controls['bulkMaximumQuantity'].value) < parseInt(this.itemSetup.controls['bulkMinimumQuantity'].value)) this.itemSetup.controls['bulkMinimumQuantity'].setValue(this.itemSetup.controls['bulkMaximumQuantity'].value);
-    else if(parseInt(this.itemSetup.controls['cfMaximumQuantity'].value) < parseInt(this.itemSetup.controls['cfMinimumQuantity'].value)) this.itemSetup.controls['cfMinimumQuantity'].setValue(this.itemSetup.controls['cfMaximumQuantity'].value);
+    if(parseInt(this.itemSetup.controls['maximumQuantity'].value) < parseInt(this.itemSetup.controls['minimumQuantity'].value))
+      this.itemSetup.controls['minimumQuantity'].setValue(this.itemSetup.controls['maximumQuantity'].value);
+    else if(parseInt(this.itemSetup.controls['bulkMaximumQuantity'].value) < parseInt(this.itemSetup.controls['bulkMinimumQuantity'].value))
+      this.itemSetup.controls['bulkMinimumQuantity'].setValue(this.itemSetup.controls['bulkMaximumQuantity'].value);
+    else if(parseInt(this.itemSetup.controls['cfMaximumQuantity'].value) < parseInt(this.itemSetup.controls['cfMinimumQuantity'].value))
+      this.itemSetup.controls['cfMinimumQuantity'].setValue(this.itemSetup.controls['cfMaximumQuantity'].value);
   }
 
   handleInputChange(event: any) {

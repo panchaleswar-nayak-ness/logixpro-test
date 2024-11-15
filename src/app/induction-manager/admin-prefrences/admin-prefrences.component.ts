@@ -25,6 +25,7 @@ import {
 import { ZoneGroupsComponent } from 'src/app/dialogs/zone-groups/zone-groups.component';
 import { ImprefInductionFilterComponent } from 'src/app/dialogs/impref-induction-filter/impref-induction-filter.component';
 import { MatSlideToggleChange } from '@angular/material/slide-toggle';
+import { PutAwayOption } from 'src/app/common/Model/preferences'; 
 
 @Component({
   selector: 'app-admin-prefrences',
@@ -79,6 +80,7 @@ export class AdminPrefrencesComponent implements OnInit {
       dontAllowOverReceipt: new FormControl(false, Validators.compose([])),
       autoAssignAllZones: new FormControl(false, Validators.compose([])),
       purchaseOrderRequired: new FormControl(false, Validators.compose([])),
+      defaultPutAwayShortQuantity: new FormControl('', Validators.compose([])),
 
       // Print Settings
       autoPrintCrossDockLabel: new FormControl(false, Validators.compose([])),
@@ -197,6 +199,21 @@ export class AdminPrefrencesComponent implements OnInit {
     },
   ];
 
+  defaultPutAwayShortQuantity: PutAwayOption[] = [
+    {
+      id: 'Split transaction on short quantity',
+      name: 'Split transaction on short quantity',
+    },
+    {
+      id: 'Cancel on short quantity',
+      name: 'Cancel on short quantity',
+    },
+    {
+      id: 'Prompt user on short quantity',
+      name: 'Prompt user on short quantity',
+    },
+  ];
+
   defaultPutAwayScanTypeList: any = [
     {
       id: 'Any',
@@ -243,6 +260,8 @@ export class AdminPrefrencesComponent implements OnInit {
   public iInductionManagerApi: IInductionManagerApiService;
   public userData: any;
   trackIndIsDisable = false;
+  isSplitShortPutAwayEnabled: boolean = false;
+  selectedOption: string = '';
 
   ngOnInit(): void {
     this.userData = this.authService.userData();
@@ -273,6 +292,8 @@ export class AdminPrefrencesComponent implements OnInit {
             this.preferencesForm.get('inductionLocation')?.disable();
             this.trackIndIsDisable = true;
           }
+
+          this.isSplitShortPutAwayEnabled = values.splitShortPutAway;
 
           this.preferencesForm.patchValue({
             // System Settings
@@ -316,6 +337,7 @@ export class AdminPrefrencesComponent implements OnInit {
             dontAllowOverReceipt: values.dontAllowOverReceipt,
             autoAssignAllZones: values.autoAssignAllZones,
             purchaseOrderRequired: values.purchaseOrderRequired,
+            defaultPutAwayShortQuantity: this.isSplitShortPutAwayEnabled === false ? 'Prompt user on short quantity' : values.defaultPutAwayShortQuantity,
 
             // Print Settings
             autoPrintCrossDockLabel: values.autoPrintCrossDockLabel,
@@ -407,6 +429,12 @@ export class AdminPrefrencesComponent implements OnInit {
       let payLoad = {};
       let endPoint = '';
       if (type == 1) {
+
+        this.isSplitShortPutAwayEnabled = values.splitShortPutAway;
+        if(!this.isSplitShortPutAwayEnabled) {
+          this.selectedOption = 'Prompt user on short quantity';
+        }
+
         payLoad = {
           AutoPickOrder: values.autoPickOrderSelection,
           OrderSort: values.orderSort,
@@ -422,6 +450,7 @@ export class AdminPrefrencesComponent implements OnInit {
           PickBatchQuant: values.pickBatchQuantity,
           DefCells: values.defaultCells,
           SplitShortPut: values.splitShortPutAway,
+          DefaultPutAwayShortQuantity: this.isSplitShortPutAwayEnabled === false ? '' : values.defaultPutAwayShortQuantity,
           SelIfOne: values.selectIfOne,
           PutInductScreen: values.putAwayInductionScreen,
           ValTote: values.validateTotes,

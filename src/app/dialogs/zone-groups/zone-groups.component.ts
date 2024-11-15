@@ -9,6 +9,8 @@ import { MatTableDataSource } from '@angular/material/table';
 import { SelectZonesComponent } from '../select-zones/select-zones.component';
 import {
   DialogConstants,
+  ResponseStrings,
+  Style,
   ToasterMessages,
   ToasterTitle,
   ToasterType,
@@ -26,6 +28,7 @@ import {
 import { MatCheckboxChange } from '@angular/material/checkbox';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { DeleteConfirmationComponent } from 'src/app/admin/dialogs/delete-confirmation/delete-confirmation.component';
+import { ConfirmationDialogComponent } from 'src/app/admin/dialogs/confirmation-dialog/confirmation-dialog.component';
 
 @Component({
   selector: 'app-zone-groups',
@@ -186,11 +189,47 @@ export class ZoneGroupsComponent implements OnInit {
 }
 
   refreshZones() {
-    this.dialogRef.close({
-      confirm: true,
-    });
+    let isConfirmationRequired = false;
+    
+    for (let index = 0; index < this.items.length; index++) {      
+      const formRow = this.items.at(index) as FormGroup;
+      if (formRow.dirty)
+      {
+        isConfirmationRequired = true;
+        break;
+      }
+    }
+
+      if (isConfirmationRequired)
+        this.ConfirmationDialog();
+      else
+        this.dialogRef.close({
+          confirm: true,
+        });
   }
 
+  
+  async ConfirmationDialog() { 
+    const dialogRef:any = this.global.OpenDialog(ConfirmationDialogComponent, {
+      height: 'auto',
+      width: Style.w560px,
+      data: {
+        message: 'Changes you made may not be saved.',
+        heading: 'Zone Group'
+      },
+      autoFocus: DialogConstants.autoFocus,
+      disableClose:true,
+    });
+
+    dialogRef.afterClosed().subscribe(async (result) => {
+      if (result === ResponseStrings.Yes) { 
+        this.dialogRef.close(); // This will close the dialog when submit is clicked
+      } else {
+        
+      }
+    });
+  }
+  
   createFormGroup(): FormGroup {
     let formGroup = this.fb.group({
       id: new FormControl(0, []),
@@ -280,6 +319,9 @@ export class ZoneGroupsComponent implements OnInit {
           'Your details have been saved',
           ToasterTitle.Success
         );
+
+        if (this.initialFormValues[index])
+          this.initialFormValues[index].zoneGroupName=formRowZoneGroupNameLower;
         
         // Reset the dirty state after successful save
         const formGroup = this.items.at(index) as FormGroup;

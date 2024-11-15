@@ -29,10 +29,11 @@ import { MatInput } from '@angular/material/input';
 import { InductionManagerApiService } from 'src/app/common/services/induction-manager-api/induction-manager-api.service';
 import { IInductionManagerApiService } from 'src/app/common/services/induction-manager-api/induction-manager-api-interface';
 import { catchError, Observable, throwError } from 'rxjs';
-import { MatPaginator } from '@angular/material/paginator';
+import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatSort, Sort } from '@angular/material/sort';
 import { LiveAnnouncer } from '@angular/cdk/a11y';
 import { AuthService } from 'src/app/common/init/auth.service';
+import { ConfirmationDialogComponent } from 'src/app/admin/dialogs/confirmation-dialog/confirmation-dialog.component';
 
 @Component({
   selector: 'app-non-super-batch-orders',
@@ -55,9 +56,14 @@ export class NonSuperBatchOrdersComponent implements OnInit, AfterViewInit {
   @ViewChildren(MatInput) toteInputs!: QueryList<MatInput>;
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild('paginator') paginator: MatPaginator;
+  @Input() set specificInductionSuccess(event: EventEmitter<void>) {
+    event.subscribe(() => this.focusFirstInput());
+  }
+  @Input() transactionQtyRecieved: any;
   userData;
   elementData = [
     {
+      status: true,
       orderNumber: 'Zone 1',
       zone: 'Location 1',
       priority: 'Location 1',
@@ -65,6 +71,7 @@ export class NonSuperBatchOrdersComponent implements OnInit, AfterViewInit {
       totalOrderQty: '5',
     },
     {
+      status: true,
       orderNumber: 'Zone 2',
       zone: 'Location 2',
       priority: 'Location 1',
@@ -72,6 +79,7 @@ export class NonSuperBatchOrdersComponent implements OnInit, AfterViewInit {
       totalOrderQty: '5',
     },
     {
+      status: true,
       orderNumber: 'Zone 3',
       zone: 'Location 3',
       priority: 'Location 1',
@@ -81,6 +89,7 @@ export class NonSuperBatchOrdersComponent implements OnInit, AfterViewInit {
   ];
 
   displayedColumns: string[] = [
+    'status',
     'orderNumber',
     'zone',
     'priority',
@@ -89,29 +98,61 @@ export class NonSuperBatchOrdersComponent implements OnInit, AfterViewInit {
     'toteScanned',
   ];
 
+  customPagination: any = {
+    total: '',
+    recordsPerPage: 10,
+    startIndex: 0,
+    endIndex: 10,
+  };
+
   public iInductionManagerApi: IInductionManagerApiService;
   filters: PickToteInductionFilter[] = [];
+  orderNumberFilters: string[] = [];
   orderNumberFilter: string = '';
   dataSource: MatTableDataSource<any>;
   toteScanned: any;
+  filteredOrderResults = [];
+  @Input() zones: string[] = []; // Accept zones as input
+  @Output() someEvent = new EventEmitter<string>();
+  tags: {
+    alias? : string,
+    value? : string
+  }[] = [];
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.customPagination = {
+      total: '',
+      recordsPerPage: 10,
+      startIndex: 0,
+      endIndex: 10,
+    };
+
+    this.getTags();
+  }
 
   ngAfterViewInit(): void {
     this.updatedPaginator();
     this.focusFirstInput();
   }
 
-  rebind(data?: any[]) {
+  rebind(data?: any[], isGrid: boolean = false) {
     this.dataSource = new MatTableDataSource(data);
     this.updatedPaginator();
     this.updateSorting();
-    // this.focusFirstInput();
+    if (this.transactionQtyRecieved == 0 && isGrid === false) {
+      this.focusFirstInput();
+    }
+  }
+
+  handlePageEvent(e: PageEvent) {
+    this.customPagination.startIndex = e.pageSize * e.pageIndex;
+    this.customPagination.endIndex = e.pageSize * e.pageIndex + e.pageSize;
+    this.customPagination.recordsPerPage = e.pageSize;
+    this.rebind(this.filteredOrderResults);
   }
 
   updatedPaginator() {
-    if (this.dataSource && this.dataSource.filteredData.length > 0)
-      this.dataSource.paginator = this.paginator;
+    if (this.dataSource) this.dataSource.paginator = this.paginator;
   }
 
   updateSorting() {
@@ -126,10 +167,48 @@ export class NonSuperBatchOrdersComponent implements OnInit, AfterViewInit {
     this.updateSorting();
   }
 
+  getTags() {
+    console.log(this.orderNumberFilters, this.filters);
+    this.tags = [];
+    if (this.orderNumberFilters && this.orderNumberFilters.length > 0) {
+        this.tags.push({ alias: 'Filter Order Number', value: '' });      
+    }
+
+    if (this.filters && this.filters.length > 0) {
+      this.filters.forEach((f) => {
+        let alias = f.alias?.toString();
+        if (alias) this.tags.push({ alias: f.alias, value: f.Value });
+      });
+    }
+  }
+
   clearFilters() {
-    console.log('fired from parent to clear order and column filters');
-    this.orderNumberFilter = '';
-    this.filters = [];
+    const dialogRef: any = this.global.OpenDialog(ConfirmationDialogComponent, {
+      height: 'auto',
+      width: '560px',
+      autoFocus: DialogConstants.autoFocus,
+      disableClose: true,
+      data: {
+        message: 'Do you want to clear all filters?',
+      },
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      // check for confirmation then clear all filters on the screen
+      if (result) {
+        if (typeof result === 'boolean') {
+        } else {
+          let confirm = result.toLowerCase();
+          if (confirm) {
+            this.tags = [];
+            this.orderNumberFilter = '';
+            this.orderNumberFilters = [];
+            this.filters = [];
+            this.someEvent.next('nonsuperbatchfilterclear');
+          }
+        }
+      }
+    });
   }
 
   filterOrderNum() {
@@ -145,15 +224,19 @@ export class NonSuperBatchOrdersComponent implements OnInit, AfterViewInit {
 
     dialogRef.afterClosed().subscribe((result: any) => {
       if (result) {
-        this.orderNumberFilter = result.orderNumberFilter.map((m: string) =>
-          this.global.getTrimmedAndLineBreakRemovedString(m)
-        );
+        if (result.orderNumberFilter) {
+          this.orderNumberFilters = result.orderNumberFilter.map((m: string) =>
+            this.global.getTrimmedAndLineBreakRemovedString(m)
+          );
 
-        // send the currently selected order number filters to parent component via observable
-        this.global.sendMessage({
-          columnFilters: this.filters,
-          orderNumberFilters: this.orderNumberFilter,
-        });
+          this.getTags();
+
+          // send the currently selected order number filters to parent component via observable
+          this.global.sendMessage({
+            columnFilters: this.filters,
+            orderNumberFilters: this.orderNumberFilters,
+          });
+        }
       }
     });
   }
@@ -172,11 +255,12 @@ export class NonSuperBatchOrdersComponent implements OnInit, AfterViewInit {
     dialogRef.afterClosed().subscribe((result: PickToteInductionFilter[]) => {
       if (result) {
         this.filters = result;
+        this.getTags();
 
         // send the currently selected column filters to parent component via observable
         this.global.sendMessage({
           columnFilters: this.filters,
-          orderNumberFilters: this.orderNumberFilter,
+          orderNumberFilters: this.orderNumberFilters,
         });
       }
     });
@@ -188,6 +272,8 @@ export class NonSuperBatchOrdersComponent implements OnInit, AfterViewInit {
       wsId: this.userData.wsid,
     }).subscribe((filteredOrders) => {
       let response = filteredOrders.data.result;
+      this.filteredOrderResults = response;
+
       if (response) {
         this.rebind(response);
       }
@@ -205,119 +291,135 @@ export class NonSuperBatchOrdersComponent implements OnInit, AfterViewInit {
 
   onEnter(element: any, index: number) {
     const {
-        completedQuantity,
-        orderNumber,
-        zone,
-        priority,
-        toteScanned,
-        requiredDate,
+      completedQuantity,
+      orderNumber,
+      zone,
+      priority,
+      toteScanned,
+      requiredDate,
     } = element;
 
     var valueToInduct = {
-        orderNumber,
-        zone,
-        priority,
-        requiredDate,
-        completedQuantity,
-        toteScanned,
-        maxToteQuantity: 0,
-        inductionType: 'NonSuperBatch',
+      orderNumber,
+      zone,
+      priority,
+      requiredDate,
+      completedQuantity,
+      toteScanned,
+      maxToteQuantity: 0,
+      inductionType: 'NonSuperBatch',
+      filterResultsRequestParams: {
+        ColumnFilters:  this.filters,
+        OrderNumberFilters: this.orderNumberFilters,
+        Zones: this.zones,
+      },
     };
 
-  
-
     this.iInductionManagerApi.PreferenceIndex().subscribe((res: any) => {
-        if (res.data && res.isExecuted) {
-            const values = res.data.imPreference;
+      if (res.data && res.isExecuted) {
+        const values = res.data.imPreference;
 
-            valueToInduct.maxToteQuantity = values.maximumQuantityperTote;
-            console.log(valueToInduct);
+        valueToInduct.maxToteQuantity = values.maximumQuantityperTote;
+        console.log(valueToInduct);
 
-            if (valueToInduct.toteScanned) {
-                this.Api.PerformNonSuperBatchOrderInduction(valueToInduct)
-                    .pipe(
-                        catchError((errResponse) => {
-                            if (errResponse.error.status === 400) {
-                                this.global.ShowToastr(
-                                    ToasterType.Error,
-                                    errResponse.error.responseMessage,
-                                    ToasterTitle.Error
-                                );
-                            } else {
-                                this.global.ShowToastr(
-                                    ToasterType.Error,
-                                    errResponse.error.responseMessage,
-                                    ToasterTitle.Error
-                                );
-                            }
-                            return throwError(errResponse);
-                        })
-                    )
-                    .subscribe((innerResponse: any) => {
-                        if (innerResponse.data && innerResponse.isExecuted) {
-                            this.global.ShowToastr(
-                                ToasterType.Success,
-                                innerResponse.responseMessage,
-                                ToasterTitle.Success
-                            );
-                            // Check for remaining quantity
-                            if (innerResponse.data.remainingQuantity > 0) {
-                                // Update the UI with the remaining quantity
-                                const orderIndex = this.dataSource.filteredData.findIndex(
-                                  (item) => item.orderNumber === orderNumber
-                                );
-                
-                                if (orderIndex !== -1) {
-                                  // Update totalOrderQuantity with remainingQuantity
-                                  this.dataSource.filteredData[orderIndex].completedQuantity =
-                                    innerResponse.data.remainingQuantity;
-                                  element.toteScanned = ''
-                                  // Use setTimeout to focus on the toteScanned input box
-                                
-                                }
+        if (valueToInduct.toteScanned) {
+          this.Api.PerformNonSuperBatchOrderInduction(valueToInduct)
+            .pipe(
+              catchError((errResponse) => {
+                if (errResponse.error.status === 400) {
+                  this.global.ShowToastr(
+                    ToasterType.Error,
+                    errResponse.error.responseMessage,
+                    ToasterTitle.Error
+                  );
+                } else {
+                  this.global.ShowToastr(
+                    ToasterType.Error,
+                    errResponse.error.responseMessage,
+                    ToasterTitle.Error
+                  );
+                }
+                return throwError(errResponse);
+              })
+            )
+            .subscribe((innerResponse: any) => {
+              if (innerResponse.data && innerResponse.isExecuted) {
+                this.global.ShowToastr(
+                  ToasterType.Success,
+                  innerResponse.responseMessage,
+                  ToasterTitle.Success
+                );
+                // Check for remaining quantity
+                if (innerResponse.data.remainingQuantity > 0) {
+                  // Update the UI with the remaining quantity
+                  const orderIndex = this.dataSource.filteredData.findIndex(
+                    (item) => item.orderNumber === orderNumber
+                  );
 
-                                // Retain focus on the current input element for further induction
-                     
-                            } else {
-                                // If no remaining quantity, remove the order row
-                                let updated = this.dataSource.filteredData.filter(
-                                    (f) => f.orderNumber !== valueToInduct.orderNumber
-                                );
-                                this.rebind(updated);
-                                this.moveFocusToNextElement(index);
-                            }
-                        } else {
-                            this.global.ShowToastr(
-                                ToasterType.Error,
-                                innerResponse.responseMessage,
-                                ToasterTitle.Error
-                            );
-                        }
-                    });
-            }
-        } else {
-            this.global.ShowToastr(
-                ToasterType.Error,
-                ToasterMessages.SomethingWentWrong,
-                ToasterTitle.Error
-            );
+                  if (orderIndex !== -1) {
+                    // Update totalOrderQuantity with remainingQuantity
+                    this.dataSource.filteredData[
+                      orderIndex
+                    ].transactionQuantity =
+                      innerResponse.data.remainingQuantity;
+                    element.toteScanned = '';
+                    // Use setTimeout to focus on the toteScanned input box
+                  }
+
+                  // Retain focus on the current input element for further induction
+                } else {
+                  // If no remaining quantity, remove the order row
+                  let updated = this.dataSource.filteredData.filter(
+                    (f) => f.orderNumber !== valueToInduct.orderNumber
+                  );
+
+                  this.rebind(updated, true);
+                  this.moveFocusToNextElement(index);
+                }
+              } else {
+                this.global.ShowToastr(
+                  ToasterType.Error,
+                  innerResponse.responseMessage,
+                  ToasterTitle.Error
+                );
+              }
+            });
         }
+      } else {
+        this.global.ShowToastr(
+          ToasterType.Error,
+          ToasterMessages.SomethingWentWrong,
+          ToasterTitle.Error
+        );
+      }
     });
-}
+  }
 
   private moveFocusToNextElement(index: number) {
     let totes = this.toteInputs.toArray();
     let totalSize = totes.length;
     let middleIndex = Math.floor(totalSize / 2);
-    console.log(index, middleIndex);
 
-    if(index >= middleIndex) {
-      if (totes[index + 1]) {
-        totes[index + 1].focus();
-      }
-    }
-    else if(index <= middleIndex) {
+    if (totes[index + 1]) {
+      totes[index + 1].focus();
+    } else if (index <= middleIndex) {
       this.focusFirstInput();
+    }
+  }
+
+  checkOrderStatus(isReprocess: any): string {
+    if (isReprocess === false) {
+      return 'Open';
+    } else {
+      return 'Re-process';
+    }
+  }
+
+  getColors(isReprocess: any): string {
+    if (isReprocess === false) {
+      return 'background-color: #FFF0D6;color:#4D3B1A';
+    } else {
+      return 'background-color:   #F7D0DA;color:#4D0D1D';
     }
   }
 }
