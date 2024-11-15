@@ -7,6 +7,7 @@ import { GlobalService } from 'src/app/common/services/global.service';
 import { AuthService } from 'src/app/common/init/auth.service';
 import { IInductionManagerApiService } from 'src/app/common/services/induction-manager-api/induction-manager-api-interface';
 import { InductionManagerApiService } from 'src/app/common/services/induction-manager-api/induction-manager-api.service';
+import { PrintApiService } from 'src/app/common/services/print-api/print-api.service';
 
 @Component({
   selector: 'app-process-pick-totes',
@@ -29,6 +30,7 @@ export class ProcessPickTotesComponent {
   constructor(private global: GlobalService,
     private authService: AuthService,
     public inductionManagerApi: InductionManagerApiService,
+    private printApiService: PrintApiService,
     private router: Router) {
     this.iinductionManagerApi = inductionManagerApi;
     this.userData = this.authService.userData();
@@ -95,8 +97,7 @@ export class ProcessPickTotesComponent {
       orderNumberList.push(row.orderNumber)
 
       if (this.imPreferences.printDirectly) {
-        await this.global.Print(`FileName:PrintPrevIMPickToteLabelButt|Positions:${positionList}|ToteIDs:${toteList}|OrderNums:${orderNumberList}`, UniqueConstants.Ibl);
-
+        this.printApiService.ProcessPickPrintPickTote(positionList, toteList, orderNumberList, this.batchID);
       } else {
         window.open(`/#/report-view?file=FileName:PrintPrevIMPickToteLabelButt|Positions:${positionList}|ToteIDs:${toteList}|OrderNums:${orderNumberList}`, UniqueConstants._blank, 'width=' + screen.width + ',height=' + screen.height + ',toolbar=0,menubar=0,location=0,status=1,scrollbars=1,resizable=1,left=0,top=0')
 
@@ -126,7 +127,7 @@ export class ProcessPickTotesComponent {
       orderNumberList.push(row.orderNumber)
 
       if (this.imPreferences.printDirectly) {
-        await this.global.Print(`FileName:PrintPrevIMPickItemLabel|Positions:${positionList}|ToteIDs:${toteList}|OrderNums:${orderNumberList}|BatchID:${this.batchID}|WSID:${this.userData.wsid}`, UniqueConstants.Ibl);
+        this.printApiService.ProcessPickPrintPickItemLabel(positionList, toteList, orderNumberList, this.batchID);
       } else {
         window.open(`/#/report-view?file=FileName:PrintPrevIMPickItemLabel|Positions:${positionList}|ToteIDs:${toteList}|OrderNums:${orderNumberList}|BatchID:${this.batchID}|WSID:${this.userData.wsid}`, UniqueConstants._blank, 'width=' + screen.width + ',height=' + screen.height + ',toolbar=0,menubar=0,location=0,status=1,scrollbars=1,resizable=1,left=0,top=0')
       }

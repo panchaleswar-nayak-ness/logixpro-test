@@ -10,6 +10,7 @@ import {IBulkProcessApiService} from 'src/app/common/services/bulk-process-api/b
 import {BulkProcessApiService} from 'src/app/common/services/bulk-process-api/bulk-process-api.service';
 import {HttpStatusCode} from '@angular/common/http';
 import {AssignToteToOrderDto} from "../../../common/Model/bulk-transactions";
+import { PrintApiService } from 'src/app/common/services/print-api/print-api.service';
 
 @Component({
   selector: 'app-bm-toteid-entry',
@@ -24,6 +25,7 @@ export class BmToteidEntryComponent implements OnInit {
   BulkProcess: any = false;
   view: string;
   autoPrintPickToteLabels: boolean;
+  batchid: any;
   public iAdminApiService: IAdminApiService;
   public iBulkProcessApiService: IBulkProcessApiService;
   constructor(
@@ -33,6 +35,7 @@ export class BmToteidEntryComponent implements OnInit {
     private global: GlobalService,
     public adminApiService: AdminApiService,
     private authService: AuthService,
+    private printApiService: PrintApiService
   ) {
     this.selectedList = data.selectedOrderList;
     this.iAdminApiService = adminApiService;
@@ -41,6 +44,7 @@ export class BmToteidEntryComponent implements OnInit {
     this.BulkProcess = data.BulkProcess;
     this.view = data.view;
     this.autoPrintPickToteLabels = data.autoPrintPickToteLabels;
+    this.batchid = data.batchid;
   }
 
   ngOnInit(): void {
@@ -70,12 +74,26 @@ export class BmToteidEntryComponent implements OnInit {
   printAllToteLabels() {
     let orderNumbers = this.selectedList.map(o =>o['orderNumber']);
     let toteIds = this.selectedList.map(o => o['toteId']);
-    this.iAdminApiService.PrintTotes(orderNumbers, toteIds,this.data.type);
+    let positions = this.selectedList.map(o => o['toteNumber']);
+
+    if (this.view == 'batchmanager') {
+      this.printApiService.PrintBatchManagerToteLabel(positions, toteIds, orderNumbers, this.batchid);
+    } else {
+      this.iAdminApiService.PrintTotes(orderNumbers, toteIds, this.data.type);
+    }
+
   }
   printTote(index) {
-    let orderNumber = [this.selectedList[index]['toteId']];
+    let orderNumber = [this.selectedList[index]['orderNumber']];
     let toteId = [this.selectedList[index]['toteId']];
-    this.iAdminApiService.PrintTotes(orderNumber, toteId, this.data.type, index);
+    let position = [this.selectedList[index]['toteNumber']];
+
+    if (this.view == 'batchmanager') {
+      this.printApiService.PrintBatchManagerToteLabel(position, toteId, orderNumber, this.batchid);
+    } else {
+      this.iAdminApiService.PrintTotes(orderNumber, toteId, this.data.type, index);
+    }
+
   }
   removeToteID(index) {
     if(this.view != 'batch' && this.view != 'tote'){

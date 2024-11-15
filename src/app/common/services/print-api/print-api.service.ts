@@ -182,4 +182,156 @@ export class PrintApiService implements IPrintApiService {
     return await this.Api.PrintPrevToteManLabel(payload);
   }
 
+
+  public async PrintBatchManagerReport(orderNumbers: Array<string>, batchID: string, transType: string) {
+    const payload = {
+      wsid: this.userData.wsid,
+      orderNumbers: orderNumbers,
+      batchID: batchID,
+      transType: transType
+    }
+
+    return await this.Api.PrintBatchManagerReport(payload);
+  }
+
+  public async PrintBatchManagerItemLabel(orderNumbers: Array<string>, batchID: string, transType: string) {
+    const payload = {
+      wsid: this.userData.wsid,
+      orderNumbers: orderNumbers,
+      batchID: batchID,
+      transType: transType
+    }
+
+    return await this.Api.PrintBatchManagerItemLabel(payload);
+  }
+
+  public async PrintBatchManagerToteLabel(positions: Array<number>, toteIDs: Array<string>, orderNumbers: Array<string>, batchID: string) {
+    const payload = {
+      wsid: this.userData.wsid,
+      positions: positions,
+      toteIDs: toteIDs,
+      orderNumbers: orderNumbers,
+      batchID: batchID,
+    }
+
+    return await this.Api.PrintBatchManagerToteLabel(payload);
+  }
+
+  public async PrintBulkTraveler(transIDs: Array<number>) {
+    const payload = {
+      wsid: this.userData.wsid,
+      transIDs: transIDs
+    }
+
+    return await this.Api.PrintBulkTraveler(payload);
+  }
+
+  public async ProcessPickPrintPickTote(positions: Array<number>, toteIDs: Array<string>, orderNumbers: Array<string>, batchID: string) {
+    const payload = {
+      wsid: this.userData.wsid,
+      positions: positions,
+      toteIDs: toteIDs,
+      orderNumbers: orderNumbers,
+      batchID: batchID,
+    }
+
+    return await this.Api.ProcessPickPrintPickTote(payload);
+  }
+
+
+  public async ProcessPickPrintPickItemLabel(positions: Array<number>, toteIDs: Array<string>, orderNumbers: Array<string>, batchID: string) {
+    const payload = {
+      wsid: this.userData.wsid,
+      positions: positions,
+      toteIDs: toteIDs,
+      orderNumbers: orderNumbers,
+      batchID: batchID,
+    }
+
+    return await this.Api.ProcessPickPrintPickItemLabel(payload);
+  }
+
+
+  public async ProcessPickPrintPickList(positions: Array<number>, toteIDs: Array<string>, orderNumbers: Array<string>, batchID: string) {
+    const payload = {
+      wsid: this.userData.wsid,
+      positions: positions,
+      toteIDs: toteIDs,
+      orderNumbers: orderNumbers,
+      batchID: batchID,
+    }
+
+    return await this.Api.ProcessPickPrintPickList(payload);
+  }
+
+  public async ProcessPickPrintPickToteAuto(positions: Array<number>, toteIDs: Array<string>, orderNumbers: Array<string>, batchID: string) {
+    const payload = {
+      wsid: this.userData.wsid,
+      positions: positions,
+      toteIDs: toteIDs,
+      orderNumbers: orderNumbers,
+      batchID: batchID,
+    }
+
+    return await this.Api.ProcessPickPrintPickToteAuto(payload);
+  }
+
+  public async ProcessPickPrintPickListAuto(positions: Array<number>, toteIDs: Array<string>, orderNumbers: Array<string>, batchID: string) {
+    const payload = {
+      wsid: this.userData.wsid,
+      positions: positions,
+      toteIDs: toteIDs,
+      orderNumbers: orderNumbers,
+      batchID: batchID,
+    }
+
+    return await this.Api.ProcessPickPrintPickListAuto(payload);
+  }
+
+
+  public async ProcessPickPrintBatchToteLabel(batchID: string) {
+    const payload = {
+      wsid: this.userData.wsid,
+      batchID: batchID
+    }
+
+    return await this.Api.ProcessPickPrintBatchToteLabel(payload);
+  }
+
+  public async ProcessPickPrintBatchItemLabel(batchID: string) {
+    const payload = {
+      wsid: this.userData.wsid,
+      batchID: batchID
+    }
+
+    return await this.Api.ProcessPickPrintBatchItemLabel(payload);
+  }
+
+  public async ProcessPickPrintBatchPickList(batchID: string) {
+    const payload = {
+      wsid: this.userData.wsid,
+      batchID: batchID
+    }
+
+    return await this.Api.ProcessPickPrintBatchPickList(payload);
+  }
+
+  public async ProcessPickPrintCaseLabel(batchID: string) {
+    const payload = {
+      wsid: this.userData.wsid,
+      batchID: batchID
+    }
+
+    return await this.Api.ProcessPickPrintCaseLabel(payload);
+  }
+
+  public async ProcessPickPrintBatchList(batchID: string) {
+    const payload = {
+      wsid: this.userData.wsid,
+      batchID: batchID
+    }
+
+    return await this.Api.ProcessPickPrintBatchList(payload);
+  }
+
 }

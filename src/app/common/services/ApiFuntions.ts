@@ -2101,6 +2101,63 @@ export class ApiFuntions {
     return await this.ApiBase.PostAsync(`/print/OrderStatusReport`, body);
   }
 
+  public async PrintBatchManagerReport(body: any) {
+    return await this.ApiBase.PostAsync(`/print/BatchManagerReport`, body);
+  }
+
+  public async PrintBatchManagerItemLabel(body: any) {
+    return await this.ApiBase.PostAsync(`/print/BatchManagerItemLabel`, body);
+  }
+
+  public async PrintBatchManagerToteLabel(body: any) {
+    return await this.ApiBase.PostAsync(`/print/BatchManagerToteLabel`, body);
+  }
+
+  public async PrintBulkTraveler(body: any) {
+    return await this.ApiBase.PostAsync(`/print/BulkTransactionsTraveler`, body);
+  }
+
+  public async ProcessPickPrintPickTote(body: any) {
+    return await this.ApiBase.PostAsync(`/print/ProcessPickPrintPickTote`, body);
+  }
+
+  public async ProcessPickPrintPickItemLabel(body: any) {
+    return await this.ApiBase.PostAsync(`/print/ProcessPickPrintPickItemLabel`, body);
+  }
+
+  public async ProcessPickPrintPickList(body: any) {
+    return await this.ApiBase.PostAsync(`/print/ProcessPickPrintPickList`, body);
+  }
+
+  public async ProcessPickPrintPickToteAuto(body: any) {
+    return await this.ApiBase.PostAsync(`/print/ProcessPickPrintPickToteAuto`, body);
+  }
+
+  public async ProcessPickPrintPickListAuto(body: any) {
+    return await this.ApiBase.PostAsync(`/print/ProcessPickPrintPickListAuto`, body);
+  }
+
+  public async ProcessPickPrintBatchToteLabel(body: any) {
+    return await this.ApiBase.PostAsync(`/print/ProcessPickPrintBatchToteLabel`, body);
+  }
+
+  public async ProcessPickPrintBatchItemLabel(body: any) {
+    return await this.ApiBase.PostAsync(`/print/ProcessPickPrintBatchItemLabel`, body);
+  }
+
+  public async ProcessPickPrintBatchPickList(body: any) {
+    return await this.ApiBase.PostAsync(`/print/ProcessPickPrintBatchPickList`, body);
+  }
+
+  public async ProcessPickPrintCaseLabel(body: any) {
+    return await this.ApiBase.PostAsync(`/print/ProcessPickPrintCaseLabel`, body);
+  }
+
+  public async ProcessPickPrintBatchList(body: any) {
+    return await this.ApiBase.PostAsync(`/print/ProcessPickPrintBatchList`, body);
+  }
+
+
 
   //===========markout=============
   public GetMarkoutData(body: MarkoutToteRequest) {

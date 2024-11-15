@@ -22,6 +22,7 @@ import { ConfirmationDialogComponent } from 'src/app/admin/dialogs/confirmation-
 import { GlobalService } from 'src/app/common/services/global.service';
 import { IInductionManagerApiService } from 'src/app/common/services/induction-manager-api/induction-manager-api-interface';
 import { InductionManagerApiService } from 'src/app/common/services/induction-manager-api/induction-manager-api.service';
+import { PrintApiService } from 'src/app/common/services/print-api/print-api.service';
 import {
   StringConditions,
   ToasterMessages,
@@ -79,7 +80,8 @@ export class ProcessPicksComponent implements OnInit {
     private dialog: MatDialog,
     private authService: AuthService,
     public router: Router,
-    public inductionManagerApi: InductionManagerApiService
+    public inductionManagerApi: InductionManagerApiService,
+    private printApiService: PrintApiService
   ) {
     this.iinductionManagerApi = inductionManagerApi;
   }
@@ -129,12 +131,11 @@ export class ProcessPicksComponent implements OnInit {
         );
       } else {
         if (this.imPreferences.printDirectly) {
-          await this.global.Print(
-            `FileName:PrintPrevIMPickItemLabel|Positions:${PositionList}|ToteIDs:${ToteList}|OrderNums:${OrderList}|BatchID:${this.batchID}|WSID:${this.userData.wsid}`
-          );
+          this.printApiService.ProcessPickPrintPickTote(PositionList, ToteList, OrderList, this.batchID);
+
         } else {
           window.open(
-            `/#/report-view?file=FileName:PrintPrevIMPickItemLabel|Positions:${PositionList}|ToteIDs:${ToteList}|OrderNums:${OrderList}|BatchID:${this.batchID}|WSID:${this.userData.wsid}`,
+            `/#/report-view?file=FileName:PrintPrevIMPickToteLabelButt|Positions:${PositionList}|ToteIDs:${ToteList}|OrderNums:${OrderList}`,
             UniqueConstants._blank,
             'width=' +
             screen.width +
@@ -143,11 +144,6 @@ export class ProcessPicksComponent implements OnInit {
             ',toolbar=0,menubar=0,location=0,status=1,scrollbars=1,resizable=1,left=0,top=0'
           );
         }
-
-        await this.global.Print(
-          `FileName:PrintPrevIMPickToteLabelButt|Positions:${PositionList}|ToteIDs:${ToteList}|OrderNums:${OrderList}`,
-          UniqueConstants.Ibl
-        );
       }
     }
     if (type === 'PrintPickLabel') {
@@ -171,12 +167,10 @@ export class ProcessPicksComponent implements OnInit {
         );
       } else {
         if (this.imPreferences.printDirectly) {
-          await this.global.Print(
-            `FileName:PrintPrevIMPickList|Positions:${PositionList}|ToteIDs:${ToteList}|OrderNums:${OrderList}|BatchID:${this.batchID}`
-          );
+          this.printApiService.ProcessPickPrintPickItemLabel(PositionList, ToteList, OrderList, this.batchID);
         } else {
           window.open(
-            `/#/report-view?file=FileName:PrintPrevIMPickList|Positions:${PositionList}|ToteIDs:${ToteList}|OrderNums:${OrderList}|BatchID:${this.batchID}`,
+            `/#/report-view?file=FileName:PrintPrevIMPickItemLabel|Positions:${PositionList}|ToteIDs:${ToteList}|OrderNums:${OrderList}|BatchID:${this.batchID}|WSID:${this.userData.wsid}`,
             UniqueConstants._blank,
             'width=' +
             screen.width +
@@ -185,11 +179,6 @@ export class ProcessPicksComponent implements OnInit {
             ',toolbar=0,menubar=0,location=0,status=1,scrollbars=1,resizable=1,left=0,top=0'
           );
         }
-
-        await this.global.Print(
-          `FileName:PrintPrevIMPickItemLabel|Positions:${PositionList}|ToteIDs:${ToteList}|OrderNums:${OrderList}|BatchID:${this.batchID}|WSID:${this.userData.wsid}`,
-          UniqueConstants.Ibl
-        );
       }
     }
     if (type === 'PrintPickList') {
@@ -206,9 +195,7 @@ export class ProcessPicksComponent implements OnInit {
           ToasterTitle.Error
         );
       } else if (this.imPreferences.printDirectly) {
-        await this.global.Print(
-          `FileName:PrintPrevIMPickList|Positions:${PositionList}|ToteIDs:${ToteList}|OrderNums:${OrderList}|BatchID:${this.batchID}`
-        );
+        this.printApiService.ProcessPickPrintPickList(PositionList, ToteList, OrderList, this.batchID);
       } else {
         window.open(
           `/#/report-view?file=FileName:PrintPrevIMPickList|Positions:${PositionList}|ToteIDs:${ToteList}|OrderNums:${OrderList}|BatchID:${this.batchID}`,
@@ -860,10 +847,7 @@ export class ProcessPicksComponent implements OnInit {
       let _isAnyWindowOpen = false;
       if (this.imPreferences.autoPrintPickToteLabels) {
         if (this.imPreferences.printDirectly) {
-          await this.global.Print(
-            `FileName:PrintPrevPickToteLabel|Positions:${Positions}|ToteIDs:${ToteIDs}|OrderNums:${OrderNumbers}|BatchID:${batchId}`,
-            UniqueConstants.Ibl
-          );
+          this.printApiService.ProcessPickPrintPickToteAuto(Positions, ToteIDs, OrderNumbers, batchId);
         } else {
           _isAnyWindowOpen = true;
           _isWindowClosed = await this.previewWindow(
@@ -872,9 +856,7 @@ export class ProcessPicksComponent implements OnInit {
         }
         if (this.imPreferences.autoPrintOffCarouselPickList) {
           if (this.imPreferences.printDirectly) {
-            await this.global.Print(
-              `FileName:PrintPrevOffCarPickList|Positions:${Positions}|ToteIDs:${ToteIDs}|OrderNums:${OrderNumbers}`
-            );
+            this.printApiService.ProcessPickPrintPickListAuto(Positions, ToteIDs, OrderNumbers, batchId);
           } else if (_isWindowClosed) {
             _isAnyWindowOpen = true;
             _isWindowClosed = await this.previewWindow(
@@ -884,9 +866,7 @@ export class ProcessPicksComponent implements OnInit {
         }
       } else if (this.imPreferences.autoPrintOffCarouselPickList) {
         if (this.imPreferences.printDirectly) {
-          await this.global.Print(
-            `FileName:PrintPrevOffCarPickList|Positions:${Positions}|ToteIDs:${ToteIDs}|OrderNums:${OrderNumbers}`
-          );
+          this.printApiService.ProcessPickPrintPickListAuto(Positions, ToteIDs, OrderNumbers, batchId);
         } else {
           _isAnyWindowOpen = true;
           _isWindowClosed = await this.previewWindow(
@@ -895,10 +875,7 @@ export class ProcessPicksComponent implements OnInit {
         }
       } else if (this.imPreferences.autoPrintCaseLabel) {
         if (this.imPreferences.printDirectly) {
-          await this.global.Print(
-            `FileName:PrintPrevInZoneCaseLabel|BatchID:${batchId}`,
-            UniqueConstants.Ibl
-          );
+          this.printApiService.ProcessPickPrintCaseLabel(batchId);
         } else if (_isAnyWindowOpen) {
           if (_isWindowClosed) {
             window.open(

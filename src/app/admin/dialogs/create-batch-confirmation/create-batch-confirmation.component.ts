@@ -21,7 +21,7 @@ export class CreateBatchConfirmationComponent implements OnInit {
   transType: any;
   selectedList: any;
   nextToteID: any;
-
+  batchid: any;
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
     public dialogRef: MatDialogRef<CreateBatchConfirmationComponent>,
@@ -33,6 +33,7 @@ export class CreateBatchConfirmationComponent implements OnInit {
     this.transType = this.data.transType;
     this.selectedList = this.data.selectedOrderList;
     this.nextToteID = this.data.nextToteID;
+    this.batchid = this.data.batchid;
   }
   createBatch() {
     if (this.pickToTotes) {
@@ -60,7 +61,9 @@ export class CreateBatchConfirmationComponent implements OnInit {
       data: {
         selectedOrderList: this.selectedList,
         nextToteID: this.nextToteID,
-        type: this.transType
+        type: this.transType,
+        view: 'batchmanager',
+        batchid: this.batchid
       }
     });
     dialogRefTote.afterClosed().subscribe((result) => {
