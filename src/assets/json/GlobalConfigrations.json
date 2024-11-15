@@ -201,8 +201,7 @@
     },
     {
         "path": "/InductionManager/Admin/ToteTransactionManager",
-        "Permission": "Induction Manager",
-        "Permission": "Tote Transactions"
+        "Permission": "Tote Transaction Manager"
     },
     {
         "path": "/InductionManager/Admin/ImToteManager",
