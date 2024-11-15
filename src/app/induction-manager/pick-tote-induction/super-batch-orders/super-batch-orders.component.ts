@@ -343,24 +343,25 @@ export class SuperBatchOrdersComponent implements OnInit, AfterViewInit {
                   this.rebind(updated, true);
                 }
 
+                // Success message if all item are successfully
                 if (
-                  innerResponse.messages &&
-                  innerResponse.messages.length > 0
+                  innerResponse?.data?.inductedOrders?.length > 0 &&
+                  innerResponse?.data?.notInductedOrders?.length === 0
                 ) {
-                  innerResponse.messages.forEach((message: string) => {
-                    // alert('1');
-                    this.global.ShowToastr(
-                      ToasterType.Info,
-                      message,
-                      ToasterTitle.Alert
-                    );
-                  });
-                } else {
-                  // Show success message if available
                   this.global.ShowToastr(
                     ToasterType.Success,
                     innerResponse.responseMessage,
                     ToasterTitle.Success
+                  );
+                }
+
+                if (
+                  innerResponse?.data?.notInductedOrders?.length > 0
+                ) {
+                  this.global.ShowToastr(
+                    ToasterType.Info,
+                    `Orders: ${innerResponse?.data?.notInductedOrders.join(', ')} skipped due to exceeding tote capacity, max batch size, or the max tote quantity`,
+                    ToasterTitle.Alert
                   );
                 }
               } else {
