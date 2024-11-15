@@ -170,9 +170,7 @@ export class NonSuperBatchOrdersComponent implements OnInit, AfterViewInit {
     console.log(this.orderNumberFilters, this.filters);
     this.tags = [];
     if (this.orderNumberFilters && this.orderNumberFilters.length > 0) {
-      this.orderNumberFilters.forEach((o) => {
-        this.tags.push({ alias: 'Filter Order Number', value: o });
-      });
+        this.tags.push({ alias: 'Filter Order Number', value: '' });      
     }
 
     if (this.filters && this.filters.length > 0) {

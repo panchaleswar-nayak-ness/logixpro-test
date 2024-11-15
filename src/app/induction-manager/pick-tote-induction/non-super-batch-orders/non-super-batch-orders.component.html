@@ -26,7 +26,8 @@
       <mat-label class="mb-1"><b>Applied Filters:</b></mat-label>
       <ng-container>
         <div class="text-center" *ngFor="let tag of tags">          
-          <div class="text-center"> <span class="label label-gray px-2 f-14 mb-1">{{tag.alias}}:&nbsp;<b>{{tag.value}}</b></span></div>
+          <div class="text-center" *ngIf="tag.value"> <span class="label label-gray px-2 f-14 mb-1">{{tag.alias}}:&nbsp;<b>{{tag.value}}</b></span></div>
+          <div class="text-center" *ngIf="!tag.value"> <span class="label label-gray px-2 f-14 mb-1">{{tag.alias}}</span></div>
         </div>
       </ng-container>
       <div class="text-center">

@@ -82,10 +82,10 @@ export class SuperBatchOrdersComponent implements OnInit, AfterViewInit {
   ];
 
   displayedColumns: string[] = [
-    'itemNumber',
-    'zone',
+    'itemNumber',    
     'priority',
     'quality',
+    'numberOfOrders',
     'requiredDate',
     'totalOrderQty',
     'toteScanned',
@@ -144,6 +144,7 @@ export class SuperBatchOrdersComponent implements OnInit, AfterViewInit {
         quality: m.quality,
         requiredDate: m.minRequiredDate ?? m.requiredDate,
         totalOrderQty: m.totalQuantity ?? m.totalOrderQty,
+        numberOfOrders: m.numberOfOrders
       };
     });
 
