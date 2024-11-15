@@ -53,7 +53,6 @@ export class SuperBatchOrdersComponent implements OnInit, AfterViewInit {
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild('paginator') paginator: MatPaginator;
   @ViewChildren(MatInput) toteInputs!: QueryList<MatInput>;
-  private lastFocusedIndex: number | null = null;
 
   userData;
   @Input() zones: string[] = []; // Accept zones as input
@@ -315,14 +314,12 @@ export class SuperBatchOrdersComponent implements OnInit, AfterViewInit {
               if (innerResponse.data && innerResponse.isExecuted) {
                 if (innerResponse.data.remainingQuantity > 0) {
                   // Update the UI with the remaining quantity
-          
                   const orderIndex = this.dataSource.filteredData.findIndex(
                     (item) =>
                       item.itemNumber === itemNumber &&
-                      item.priority === valueToInduct.priority&&    item.quality===valueToInduct.quality
-
+                      item.priority === valueToInduct.priority
                   );
-          
+
                   if (orderIndex !== -1) {
                     // Update totalOrderQuantity with remainingQuantity
                     this.dataSource.filteredData[orderIndex].totalOrderQty =
@@ -338,8 +335,7 @@ export class SuperBatchOrdersComponent implements OnInit, AfterViewInit {
                     (f) =>
                       !(
                         f.itemNumber === valueToInduct.itemNumber &&
-                        f.priority === valueToInduct.priority &&   f.quality===valueToInduct.quality
-
+                        f.priority === valueToInduct.priority
                       )
                   );
 
@@ -351,44 +347,27 @@ export class SuperBatchOrdersComponent implements OnInit, AfterViewInit {
                   innerResponse.messages.length > 0
                 ) {
                   innerResponse.messages.forEach((message: string) => {
+                    // alert('1');
                     this.global.ShowToastr(
                       ToasterType.Info,
                       message,
-                      ToasterTitle.Alert,
-                      undefined, // Pass undefined for the timeout if you want the default behavior
-                      () => {
-                          if (this.lastFocusedIndex !== null) {
-                            this.moveFocusToNextElement(this.lastFocusedIndex);
-                          }
-                      }
-                  );
+                      ToasterTitle.Alert
+                    );
                   });
                 } else {
                   // Show success message if available
                   this.global.ShowToastr(
                     ToasterType.Success,
                     innerResponse.responseMessage,
-                    ToasterTitle.Success,
-                    undefined, // Pass undefined for the timeout if you want the default behavior
-                    () => {
-                        if (this.lastFocusedIndex !== null) {
-                            this.moveFocusToNextElement(this.lastFocusedIndex);
-                        }
-                    }
-                );
+                    ToasterTitle.Success
+                  );
                 }
               } else {
                 this.global.ShowToastr(
                   ToasterType.Error,
                   innerResponse.responseMessage,
-                  ToasterTitle.Error,
-                  undefined, // Pass undefined for the timeout if you want the default behavior
-                  () => {
-                      if (this.lastFocusedIndex !== null) {
-                          this.moveFocusToNextElement(this.lastFocusedIndex);
-                      }
-                  }
-              );
+                  ToasterTitle.Error
+                );
               }
 
               setTimeout(() => {
@@ -406,19 +385,19 @@ export class SuperBatchOrdersComponent implements OnInit, AfterViewInit {
     });
   }
 
-
-private moveFocusToNextElement(index: number) {
+  private moveFocusToNextElement(index: number) {
     let totes = this.toteInputs.toArray();
-    if (totes[index ]) {
-        setTimeout(() => {
-            totes[index].focus();
-            this.lastFocusedIndex = index ; // Store the last focused index
-        }, 0);
+
+    // Ensure that index + 1 doesn't exceed the length of totes array
+    if (totes[index + 1]) {
+      setTimeout(() => {
+        totes[index].focus();
+      }, 0); // Allow DOM update
     } else if (totes[0]) {
-        setTimeout(() => {
-            totes[0].focus();
-            this.lastFocusedIndex = 0; // Store the last focused index
-        }, 0);
+      // If there's no next item, loop back to the first item
+      setTimeout(() => {
+        totes[0].focus();
+      }, 0);
     }
-}
+  }
 }
