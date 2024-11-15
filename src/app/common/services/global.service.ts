@@ -98,28 +98,33 @@ export class GlobalService {
   }
 
   ShowToastr(
-    type?: any,
+    type: any,
     msg: string | null = null,
     title?: string,
     timeOut?: number,
-    positionClass?: string
-  ) {
-    if (this.lastMessage === msg) return; // Do nothing if the message is the same
+    onClickCallback?: () => void  // Make sure it's the fifth parameter
+) {
+    if (this.lastMessage === msg) return;
 
-    if (!timeOut) timeOut = type == ToasterType.Success ? 2000 : 5000;
+    if (!timeOut) timeOut = type === ToasterType.Success ? 2000 : 5000;
 
-    this.toastr[type](msg, title || 'Success!', {
-      positionClass: positionClass || 'toast-bottom-right',
-      timeOut: timeOut,
+    const toast = this.toastr[type](msg, title || 'Success!', {
+        positionClass: 'toast-bottom-right',
+        timeOut: timeOut,
     });
-    // Update the lastMessage with the current message
-    this.lastMessage = msg;
 
-    // Reset lastMessage when the toast disappears
+    // Trigger callback on toast click
+    if (onClickCallback) {
+        toast.onTap.subscribe(() => {
+            onClickCallback();
+        });
+    }
+
+    // Reset lastMessage when toast disappears
     setTimeout(() => {
-      this.resetLastMessage();
+        this.resetLastMessage();
     }, timeOut);
-  }
+}
 
   private resetLastMessage() {
     this.lastMessage = null;
