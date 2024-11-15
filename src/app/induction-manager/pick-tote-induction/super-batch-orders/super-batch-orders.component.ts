@@ -85,8 +85,8 @@ export class SuperBatchOrdersComponent implements OnInit, AfterViewInit {
     'itemNumber',    
     'priority',
     'quality',
-    'numberOfOrders',
     'requiredDate',
+    'numberOfOrders',
     'totalOrderQty',
     'toteScanned',
   ];

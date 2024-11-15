@@ -92,14 +92,6 @@
             <td mat-cell *matCellDef="let element">{{ element.quality }}</td>
           </ng-container>
 
-          <!-- Start Zone Column -->
-          <ng-container matColumnDef="numberOfOrders">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by numberOfOrders">
-              Number of Orders
-            </th>
-            <td mat-cell *matCellDef="let element">{{ element.numberOfOrders }}</td>
-          </ng-container>
-          
           <!-- Total Order Quantity Column -->
           <ng-container matColumnDef="totalOrderQty">
             <th mat-header-cell
@@ -128,7 +120,14 @@
             </td>
           </ng-container>
 
-
+          <!-- Start Zone Column -->
+          <ng-container matColumnDef="numberOfOrders">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by numberOfOrders">
+              Number of Orders
+            </th>
+            <td mat-cell *matCellDef="let element">{{ element.numberOfOrders }}</td>
+          </ng-container>
+          
           <!-- Tote Scanned Column -->
           <ng-container matColumnDef="toteScanned">
             <th mat-header-cell *matHeaderCellDef>Tote Scanned</th>
