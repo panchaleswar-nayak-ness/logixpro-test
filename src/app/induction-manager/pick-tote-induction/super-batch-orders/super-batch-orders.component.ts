@@ -275,7 +275,8 @@ export class SuperBatchOrdersComponent implements OnInit, AfterViewInit {
       inductionType: 'SuperBatch',
       wsId: this.userData.wsid,
       filterResultsRequestParams: {
-        ColumnFilters:  this.filters
+        ColumnFilters:  this.filters,
+        Zones: this.zones
       },
       SelectedZones: this.zones, // Pass the selected zones
     };

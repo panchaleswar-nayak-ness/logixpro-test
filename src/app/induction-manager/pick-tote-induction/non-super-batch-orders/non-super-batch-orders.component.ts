@@ -112,6 +112,7 @@ export class NonSuperBatchOrdersComponent implements OnInit, AfterViewInit {
   dataSource: MatTableDataSource<any>;
   toteScanned: any;
   filteredOrderResults = [];
+  @Input() zones: string[] = []; // Accept zones as input
   @Output() someEvent = new EventEmitter<string>();
   tags: {
     alias? : string,
@@ -307,6 +308,11 @@ export class NonSuperBatchOrdersComponent implements OnInit, AfterViewInit {
       toteScanned,
       maxToteQuantity: 0,
       inductionType: 'NonSuperBatch',
+      filterResultsRequestParams: {
+        ColumnFilters:  this.filters,
+        OrderNumberFilters: this.orderNumberFilters,
+        Zones: this.zones,
+      },
     };
 
     this.iInductionManagerApi.PreferenceIndex().subscribe((res: any) => {
