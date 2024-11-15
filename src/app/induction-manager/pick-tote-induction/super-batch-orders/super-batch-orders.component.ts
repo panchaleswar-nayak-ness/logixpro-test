@@ -347,7 +347,7 @@ export class SuperBatchOrdersComponent implements OnInit, AfterViewInit {
                   innerResponse.messages.length > 0
                 ) {
                   innerResponse.messages.forEach((message: string) => {
-                    alert('1');
+                    // alert('1');
                     this.global.ShowToastr(
                       ToasterType.Info,
                       message,

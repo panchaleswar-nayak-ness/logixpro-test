@@ -29,6 +29,8 @@ import {
 } from 'rxjs';
 import { IInductionManagerApiService } from 'src/app/common/services/induction-manager-api/induction-manager-api-interface';
 import { InductionManagerApiService } from 'src/app/common/services/induction-manager-api/induction-manager-api.service';
+import { AuthService } from 'src/app/common/init/auth.service';
+import { UserSession } from 'src/app/common/types/CommonTypes';
 
 interface IZoneGroup {
   Id: number;
@@ -52,9 +54,11 @@ export class PickToteInductionComponent
   constructor(
     private global: GlobalService,
     private Api: ApiFuntions,
-    public inductionManagerApi: InductionManagerApiService
+    public inductionManagerApi: InductionManagerApiService,
+    private authService: AuthService
   ) {
     this.iInductionManagerApi = inductionManagerApi;
+    this.userData = this.authService.userData();
   }
 
   public iInductionManagerApi: IInductionManagerApiService;
@@ -80,6 +84,7 @@ export class PickToteInductionComponent
   splitToggle: boolean = false;
   transactionQty: number = 0;
 
+  userData : UserSession;
   // this is the global filteration object used to refresh and select various filters on the tote induction screen
   // this will be passed to the respective api for loading data in tables based on induction type currently selected
   selectedFilters: any = {
@@ -392,6 +397,7 @@ export class PickToteInductionComponent
         this.SuperBatchOrdersComponent.retrieveFilteredSuperBatchOrders({
           FilterResultsRequestParams: {
             ...this.selectedFiltersSuperBatch,
+            wsId: this.userData.wsid,
           },
         });
       }
