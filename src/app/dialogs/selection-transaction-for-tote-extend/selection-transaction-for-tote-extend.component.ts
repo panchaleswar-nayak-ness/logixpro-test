@@ -605,10 +605,10 @@ export class SelectionTransactionForToteExtendComponent implements OnInit {
         this.global.ShowToastr(ToasterType.Error,'This item is date sensitive. You must provide an expiration date.', ToasterTitle.Error);
         return false;
       }
-      if (this.blindInductionReason && !this.toteForm.get('blindInduct')?.value) {
+      if (this.blindInductionReason && !this.toteForm.get('blindInduct')?.value && this.blindInductOptions.length > 0) {
         this.global.ShowToastr(ToasterType.Error, 'No reason code selected. Please select a reason code for this induction.', ToasterTitle.Error);
         return false;
-    }
+      }
     }
 
     if (this.toteForm.getRawValue().fifo && val.fifoDate.toLowerCase() == 'expiration date' && !val.expirationDate) {
