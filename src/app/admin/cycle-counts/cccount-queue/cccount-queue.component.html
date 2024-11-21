@@ -15,9 +15,10 @@
                 </div>
                 <mat-form-field class="action-dropdown d-block" appearance="outline">
                   <mat-label>Actions</mat-label>
-                  <mat-select #matRef class="employees-action">
+                  <mat-select #matRef class="employees-action" (selectionChange)="onActionChange($event)">
                     <mat-option value="0">Set import field mappings</mat-option>
                     <mat-option value="1">Import Discrepancies</mat-option>
+                    <mat-option value="2">Import Count Batches</mat-option>
                   </mat-select>
                   <span class="material-symbols-outlined icon-expand-more">
                     expand_more

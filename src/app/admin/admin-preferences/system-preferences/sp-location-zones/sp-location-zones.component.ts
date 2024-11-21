@@ -9,7 +9,6 @@ import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.ser
 import { GlobalService } from 'src/app/common/services/global.service';
 import { zoneType, ToasterMessages, ToasterType ,ToasterTitle,ResponseStrings,DialogConstants,UniqueConstants,TableConstant,Style} from 'src/app/common/constants/strings.constants';
 
-
 @Component({
   selector: 'app-sp-location-zones',
   templateUrl: './sp-location-zones.component.html',
@@ -56,6 +55,12 @@ export class SpLocationZonesComponent implements OnInit {
       name: 'allocable',
       property: 'allocable',
     },
+    {
+      label: 'Clear Whole Location',
+      name: 'clearwholelocation',
+      property: 'clearwholelocation',
+    },
+
   ];
   formFields = [
     { label: 'Label1', ngModel: 'i.label1' },
@@ -63,6 +68,7 @@ export class SpLocationZonesComponent implements OnInit {
     { label: 'Label3', ngModel: 'i.label3' },
     { label: 'Label4', ngModel: 'i.label4' },
   ];
+  
   public userData: any;
   public zone: any;
   public newLocationVal = '';
@@ -109,6 +115,7 @@ export class SpLocationZonesComponent implements OnInit {
   }
 
   zoneChange(zone: any, check, type?) {
+  
     if (!check) {
       if (type === zoneType.carousel) {
         if (zone.carousel) {
@@ -203,7 +210,7 @@ export class SpLocationZonesComponent implements OnInit {
       this.conflictCheck(zone);
     }
   else {
-      return;
+      return;  
     }
   }
 
@@ -216,6 +223,7 @@ export class SpLocationZonesComponent implements OnInit {
           zone.ID = i + 1;
           if (zone.carousel && zone.zone != '') {
             this.parentZones.push(zone.zone);
+
           }
           this.locationzone.push(zone);
         });
@@ -267,9 +275,10 @@ export class SpLocationZonesComponent implements OnInit {
           if (res.isExecuted) {
             this.getLocationZones();
             this.global.ShowToastr(
-              ToasterType.Success,
+               ToasterType.Success,
               'Deleted successfully',
-              ToasterTitle.Success
+               ToasterTitle.Success
+
             );
           } else {
             this.global.ShowToastr(
@@ -284,7 +293,7 @@ export class SpLocationZonesComponent implements OnInit {
     });
   }
 
-  alterParentZones(add, item) {
+  alterParentZones(add, item) { 
     if (add && item != '') {
       let parentzone = this.parentZones;
       const isNumberExist = (item, parentzone) => {
@@ -301,6 +310,7 @@ export class SpLocationZonesComponent implements OnInit {
 
   addNewLocation() {
     this.newLocation = true;
+
   }
 
   newLocationValue() {

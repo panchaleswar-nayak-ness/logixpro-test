@@ -165,12 +165,14 @@ import {BpNumberSelectionComponent} from './dialogs/bp-number-selection/bp-numbe
 import {OrderDetailsComponent} from './dialogs/order-details/order-details.component';
 import { ZoneGroupsComponent } from './dialogs/zone-groups/zone-groups.component';
 import { ImprefInductionFilterComponent } from './dialogs/impref-induction-filter/impref-induction-filter.component';
+import { ImportCountBatchesComponent } from './admin/cycle-counts/import-count-batches/import-count-batches.component';
 
 // import { MarkoutComponent } from './markout/markout.component';
 
 @NgModule({
   declarations: [
     AppComponent,
+   
     LoginComponent,
     ChangePasswordComponent,
     SelectZonesComponent,
@@ -194,6 +196,7 @@ import { ImprefInductionFilterComponent } from './dialogs/impref-induction-filte
     AlertConfirmationComponent,
     UserFieldsComponent,
     ChooseLocationComponent,
+   
     InputFilterComponent,
     MinReelQtyComponent,
     TransactionQtyEditComponent,

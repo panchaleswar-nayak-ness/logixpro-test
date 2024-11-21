@@ -1,0 +1,159 @@
+<div class="d-flex justify-content-between align-items-center mb-3">
+  <div class="w-98px"></div>
+  <h1 class="m-0 text-center" mat-dialog-title>Import Count Batches</h1>
+  <button
+    mat-icon-button
+    class="close-button dialog-close-button-fix"
+    (click)="close()"
+  >
+    <mat-icon class="close-icon">close</mat-icon>
+  </button>
+</div>
+
+<div class="d-xl-flex d-lg-block align-items-center gap-12">
+<div class="d-flex align-items-center gap-3 px-3 py-2 action-row">
+  <!-- Import Type Dropdown -->
+  <mat-form-field class="action-dropdown d-block mt-3 mt-xl-0 mt-sm-3"  appearance="outline">
+    <mat-label>Import Type</mat-label>
+    <mat-select [(value)]="selectedImportType" placeholder="Import Type">
+      <mat-option *ngFor="let type of importTypes" [value]="type">{{ type }}</mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <!-- Filter By Dropdown -->
+  <mat-form-field class="action-dropdown" appearance="outline">
+    <mat-label>Filter By</mat-label>
+    <mat-select [(value)]="selectedFilterBy" (selectionChange)="onFilterByChange()">
+      <mat-option *ngFor="let filter of filterOptions" [value]="filter">{{ filter }}</mat-option>
+    </mat-select>
+  </mat-form-field>
+</div>
+
+<!-- Conditionally display file UI when "Spreadsheet" is selected -->
+<div
+  class="d-flex align-items-center gap-2"
+  *ngIf="selectedFilterBy === 'Spreadsheet'"
+>
+  <span class="uploaded-file">Spreadsheet.xls</span>
+  <button mat-icon-button color="warn" (click)="removeFile()">
+    <mat-icon>close</mat-icon>
+  </button>
+  <button mat-flat-button color="primary" class="confirm-button" (click)="confirmImport()">
+    Confirm
+  </button>
+</div>
+</div>
+
+
+
+
+
+
+<div class="card br-14 table-responsive borderless px-3 py-2 mb-3">
+  <ng-scrollbar class="mat-table-scrollbar h-60v">
+    <table mat-table [dataSource]="dataSource" class="w-100 organized-table">
+      <!-- Item Number -->
+      <ng-container matColumnDef="itemNumber">
+        <th mat-header-cell *matHeaderCellDef class="table-header">Item Number</th>
+        <td mat-cell *matCellDef="let element" class="table-cell">
+          {{ element.itemNumber }}
+        </td>
+      </ng-container>
+
+      <!-- Description -->
+      <ng-container matColumnDef="description">
+        <th mat-header-cell *matHeaderCellDef class="table-header">Description</th>
+        <td mat-cell *matCellDef="let element" class="table-cell">
+          {{ element.description }}
+        </td>
+      </ng-container>
+
+      <!-- Location Quantity -->
+      <ng-container matColumnDef="locationQuantity">
+        <th mat-header-cell *matHeaderCellDef class="table-header">Location Qty</th>
+        <td mat-cell *matCellDef="let element" class="table-cell">
+          {{ element.locationQuantity }}
+        </td>
+      </ng-container>
+
+      <!-- UM -->
+      <ng-container matColumnDef="um">
+        <th mat-header-cell *matHeaderCellDef class="table-header">UM</th>
+        <td mat-cell *matCellDef="let element" class="table-cell">
+          {{ element.um }}
+        </td>
+      </ng-container>
+
+      <!-- Warehouse -->
+      <ng-container matColumnDef="warehouse">
+        <th mat-header-cell *matHeaderCellDef class="table-header">Warehouse</th>
+        <td mat-cell *matCellDef="let element" class="table-cell">
+          {{ element.warehouse }}
+        </td>
+      </ng-container>
+
+      <!-- Locations -->
+      <ng-container matColumnDef="locations">
+        <th mat-header-cell *matHeaderCellDef class="table-header">Locations</th>
+        <td mat-cell *matCellDef="let element" class="table-cell">
+          {{ element.locations }}
+        </td>
+      </ng-container>
+
+      <!-- Velocity Code -->
+      <ng-container matColumnDef="velocityCode">
+        <th mat-header-cell *matHeaderCellDef class="table-header">Velocity Code</th>
+        <td mat-cell *matCellDef="let element" class="table-cell">
+          {{ element.velocityCode }}
+        </td>
+      </ng-container>
+
+      <!-- Cell Size -->
+      <ng-container matColumnDef="cellSize">
+        <th mat-header-cell *matHeaderCellDef class="table-header">Cell Size</th>
+        <td mat-cell *matCellDef="let element" class="table-cell">
+          {{ element.cellSize }}
+        </td>
+      </ng-container>
+
+      <!-- Serial Number -->
+      <ng-container matColumnDef="serialNumber">
+        <th mat-header-cell *matHeaderCellDef class="table-header">Serial Number</th>
+        <td mat-cell *matCellDef="let element" class="table-cell">
+          {{ element.serialNumber }}
+        </td>
+      </ng-container>
+
+      <!-- Lot Number -->
+      <ng-container matColumnDef="lotNumber">
+        <th mat-header-cell *matHeaderCellDef class="table-header">Lot Number</th>
+        <td mat-cell *matCellDef="let element" class="table-cell">
+          {{ element.lotNumber }}
+        </td>
+      </ng-container>
+
+      <!-- Expiration Date -->
+      <ng-container matColumnDef="expirationDate">
+        <th mat-header-cell *matHeaderCellDef class="table-header">Expiration Date</th>
+        <td mat-cell *matCellDef="let element" class="table-cell">
+          {{ element.expirationDate }}
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+    </table>
+  </ng-scrollbar>
+</div>
+
+<div class="d-flex justify-content-end gap-3 mt-9">
+  <button
+    mat-flat-button
+    class="form-button-submit btn-lg"
+    color="primary"
+    (click)="importToQueue()"
+  >
+    Import to Queue
+  </button>
+  
+</div>

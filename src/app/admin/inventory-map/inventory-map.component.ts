@@ -293,6 +293,7 @@ export class InventoryMapComponent implements OnInit {
       filterLoc: this.filterLoc
     };
   }
+  
   getContentData(){
     this.iAdminApiService.getInventoryMap(this.payload).pipe(takeUntil(this.onDestroy$)).subscribe((res: any) => {
       this.itemList =  res.data?.inventoryMaps?.map((arr => {
@@ -626,9 +627,7 @@ export class InventoryMapComponent implements OnInit {
     this.initializeApi();
     this.getContentData();
 
-
   }
-
 
   getFloatLabelValue(): FloatLabelType {
     return this.floatLabelControl.value ?? 'auto';
