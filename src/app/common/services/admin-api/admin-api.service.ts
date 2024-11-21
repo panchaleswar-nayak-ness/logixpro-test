@@ -2033,15 +2033,6 @@ export class AdminApiService implements IAdminApiService {
     return this.Api.PrintPutAwayItem(payload);
   }
 
-  public AddOpenTransaction(body: any) {
-    const payload = {
-      ...body
-    }
-    return this.Api.AddOpenTransaction(payload);
-  }
-
-
-
   public AddCompleteTransaction(body: any) {
     const payload = {
       ...body
