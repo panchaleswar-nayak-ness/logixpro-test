@@ -1,10 +1,10 @@
 <div class="container-fluid p-0  h-auto">
     <div class="row g-3">
-        <div class="col-xl-5">
+        <div class="col-xl-4">
             <app-markout-search (toteIdEmitter)="handleToteId($event)" (viewChangeEmitter)="viewChange($event)"
                 [toteDataResponse]="toteDataResponse" [toteId]="toteId" [isBlossomComplete]="isBlossomComplete"></app-markout-search>
         </div>
-        <div class="col-xl-7">
+        <div class="col-xl-8">
             <app-markout-status [toteDataResponse]="toteDataResponse"></app-markout-status>
         </div>
         <div class="col-xl-12">

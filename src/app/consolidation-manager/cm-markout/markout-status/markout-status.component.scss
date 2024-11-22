@@ -1,3 +1,7 @@
 .flex-1{
     flex:1
 }
+::ng-deep .not-inducted-status{
+    background-color: var(--clr-chrome-50);
+    color: var(--clr-chrome-900)
+}

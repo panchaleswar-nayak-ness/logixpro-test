@@ -18,6 +18,7 @@ export class MarkoutStatusComponent implements OnInit {
     { title: 'Short', value: '0', colorClass: 'Open-card' },
     { title: 'Ship Short', value: '0', colorClass: 'label-blue2' },
     { title: 'Complete', value: '0', colorClass: 'Compete-cart' },
+    { title: 'Not Inducted', value: '0', colorClass: 'not-inducted-status' }
   ];
 
   @Input() toteDataResponse: ToteDataResponse;
@@ -45,6 +46,9 @@ export class MarkoutStatusComponent implements OnInit {
         .length.toString();
       this.info[1].value = this.toteDataResponse.data
         .filter((element) => (element.status == 'Missed'))
+        .length.toString();
+        this.info[1].value = this.toteDataResponse.data
+        .filter((element) => (element.status == 'Not Inducted'))
         .length.toString();
         this.isBlossomed = this.toteDataResponse.blossomCount > 0;
     }
