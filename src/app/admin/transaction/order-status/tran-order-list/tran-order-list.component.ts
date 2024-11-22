@@ -350,13 +350,18 @@ export class TranOrderListComponent implements OnInit, AfterViewInit {
           });
 
           console.log(res.data?.orderStatus);
-          /// Enable disable the Put Away - Complete Order button 
+          /// Enable disable the Put Away - Complete Order button
           if (
-            res.data?.orderStatus.every((e: { transactionType: string; }) => e.transactionType === 'Put Away')
+            res.data?.orderStatus.every(
+              (e: any) =>
+                e.transactionType === 'Put Away' &&
+                e.completedDate === '' &&
+                e.completedBy === '' &&
+                e.completedQuantity === '0'
+            )
           ) {
             this.isOrderCompleted = false;
-          }
-          else{
+          } else {
             this.isOrderCompleted = true;
           }
 
