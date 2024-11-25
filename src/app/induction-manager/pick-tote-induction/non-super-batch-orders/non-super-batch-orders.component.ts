@@ -297,6 +297,7 @@ export class NonSuperBatchOrdersComponent implements OnInit, AfterViewInit {
       priority,
       toteScanned,
       requiredDate,
+      transactionQuantity,
     } = element;
 
     var valueToInduct = {
@@ -307,6 +308,7 @@ export class NonSuperBatchOrdersComponent implements OnInit, AfterViewInit {
       completedQuantity,
       toteScanned,
       maxToteQuantity: 0,
+      transactionQuantity,
       inductionType: 'NonSuperBatch',
       filterResultsRequestParams: {
         ColumnFilters:  this.filters,
