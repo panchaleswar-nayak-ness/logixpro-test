@@ -47,7 +47,7 @@ export class MarkoutStatusComponent implements OnInit {
       this.info[1].value = this.toteDataResponse.data
         .filter((element) => (element.status == 'Missed'))
         .length.toString();
-        this.info[1].value = this.toteDataResponse.data
+        this.info[5].value = this.toteDataResponse.data
         .filter((element) => (element.status == 'Not Inducted'))
         .length.toString();
         this.isBlossomed = this.toteDataResponse.blossomCount > 0;

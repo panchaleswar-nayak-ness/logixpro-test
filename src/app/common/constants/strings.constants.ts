@@ -453,6 +453,7 @@ export const markoutdisplayedColumns = {
     ShortQty: 'shortQty',
     ToteQty: 'toteQty',
     actions: 'actions',
+    CompletedDate:'completedDate',
     TotalQty: 'totalQty'
 }
 
