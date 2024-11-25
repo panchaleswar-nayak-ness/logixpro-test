@@ -56,9 +56,9 @@ export class SpLocationZonesComponent implements OnInit {
       property: 'allocable',
     },
     {
-      label: 'Clear Whole Location',
-      name: 'clearwholelocation',
-      property: 'clearwholelocation',
+      label: 'Allow Clear Whole Location',
+      name: 'allowClearWholeLocation',
+      property: 'allowClearWholeLocation',
     },
 
   ];

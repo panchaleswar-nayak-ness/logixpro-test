@@ -119,7 +119,7 @@ export interface InventoryMapDataStructure {
 export class AddInvMapLocationComponent implements OnInit {
   addInvMapLocation: FormGroup<InventoryMapFormData>;
   clearInvMapLocation: FormGroup;
-  clearwholelocation: boolean = false;
+  allowClearWholeLocation: boolean = false;
   buttonColor: 'primary' | 'warn' = 'warn';
 isButtonDisabled: boolean = true;
   locZoneList: any[] = [];
@@ -266,8 +266,8 @@ isButtonDisabled: boolean = true;
 
     this.getLocationZones();
 
-    this.addInvMapLocation.get('clearwholelocation')?.valueChanges.subscribe(value => {
-      this.clearwholelocation = value === 'true'; 
+    this.addInvMapLocation.get('allowClearWholeLocation')?.valueChanges.subscribe(value => {
+      this.allowClearWholeLocation = value === 'true'; 
     });
 
     this.searchItemNumbers = this.getDetailInventoryMapData.itemNumber;
@@ -306,8 +306,8 @@ getLocationZones() {
       // Find the object that matches the specified zone
       const matchingLocation = res.data.find((location) => location.zone === this.zone);
 
-      // Set button color and disabled state based on `clearwholelocation` value
-      if (matchingLocation && matchingLocation.clearwholelocation) {
+      // Set button color and disabled state based on `allowClearWholeLocation` value
+      if (matchingLocation && matchingLocation.allowClearWholeLocation) {
         this.buttonColor = 'primary';
         this.isButtonDisabled = false;
       } else {
