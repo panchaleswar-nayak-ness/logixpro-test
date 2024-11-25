@@ -2255,5 +2255,11 @@ export class ApiFuntions {
   async PrintPrevToteManLabel(body:{wsid: any; toteID: string, Ident: number, fromTote: string, toTote: string, batchID: string}) {
     return await this.ApiBase.PostAsync(`/print/prevtotemanlabel`, body);
   }
+  async PrintPrevOffCarListTote(body:{wsid: any; toteID: string, transType: string}) {
+    return await this.ApiBase.PostAsync(`/print/offcarlisttote`, body);
+  }
+  async PrintPrevToteContent(body:{wsid: any; toteID: string, zoneLabel: string, transType: string}) {
+    return await this.ApiBase.PostAsync(`/print/totecontentslist`, body);
+  }
 
 }

@@ -333,5 +333,23 @@ export class PrintApiService implements IPrintApiService {
 
     return await this.Api.ProcessPickPrintBatchList(payload);
   }
+  public async ProcessOffCarListTote(toteID: string, transType: string) {
+    const payload = {
+      wsid: this.userData.wsid,
+      toteID: toteID,
+      transType: transType
+    }
 
+    return await this.Api.PrintPrevOffCarListTote(payload);
+  }
+  public async ProcessToteContent(toteID: string, zoneLabel: string, transType: string) {
+    const payload = {
+      wsid: this.userData.wsid,
+      toteID: toteID,
+      zoneLabel: zoneLabel,
+      transType: transType
+    }
+
+    return await this.Api.PrintPrevToteContent(payload);
+  }
 }

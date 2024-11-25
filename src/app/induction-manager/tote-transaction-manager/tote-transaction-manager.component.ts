@@ -24,6 +24,7 @@ import {
   TableConstant,
   ColumnDef,
 } from 'src/app/common/constants/strings.constants';
+import { PrintApiService} from "../../common/services/print-api/print-api.service";
 @Component({
   selector: 'app-tote-transaction-manager',
   templateUrl: './tote-transaction-manager.component.html',
@@ -93,7 +94,8 @@ export class ToteTransactionManagerComponent implements OnInit {
     private contextMenuService: TableContextMenuService,
     private authService: AuthService,
     public inductionManagerApi: InductionManagerApiService,
-    private filterService: ContextMenuFiltersService
+    private filterService: ContextMenuFiltersService,
+    private printApiService: PrintApiService
   ) {
     this.filterService.filterString = '';
     this.userData = this.authService.userData();
@@ -285,47 +287,21 @@ export class ToteTransactionManagerComponent implements OnInit {
     switch (type) {
       case 'printCarouselList':
         if (this.imPreferences.printDirectly) {
-          this.global.Print(
-            `FileName:PrintPrevOffCarList|ToteID:${row.toteId}|TransType:${row.transactionType}`
-          );
-        } else {
-          window.open(
-            `/#/report-view?file=FileName:PrintPrevOffCarList|ToteID:${row.toteId}|TransType:${row.transactionType}`,
-            UniqueConstants._blank,
-            'width=' +
-              screen.width +
-              ',height=' +
-              screen.height +
-              ',toolbar=0,menubar=0,location=0,status=1,scrollbars=1,resizable=1,left=0,top=0'
-          );
+          this.printApiService.ProcessOffCarListTote(row.toteId, row.transactionType);
         }
         break;
-      case 'printTotelContents':
-        this.printOrOpenWindow(type, row);
+      case 'printToteContents':
+        if (this.imPreferences.printDirectly) {
+          this.printApiService.ProcessToteContent(row.toteId, row.zone, row.transactionType);
+        }
         break;
       case 'printToteLabels':
-        this.printOrOpenWindow(type, row);
+        if (this.imPreferences.printDirectly) {
+          this.printApiService.PrintPrevToteContentsLabel(row.toteId, row.Zone, row.transactionType, -2, '');
+        }
         break;
       default:
         break;
-    }
-  }
-
-  printOrOpenWindow(type, row) {
-    if (this.imPreferences.printDirectly) {
-      this.global.Print(
-        `FileName:PrintPrevToteContents|ToteID:${row.toteId}|ZoneLab:${row.zoneLabel}|TransType:${row.transactionType}`
-      );
-    } else {
-      window.open(
-        `/#/report-view?file=FileName:PrintPrevToteContents|ToteID:${row.toteId}|ZoneLab:${row.zoneLabel}|TransType:${row.transactionType}`,
-        UniqueConstants._blank,
-        'width=' +
-          screen.width +
-          ',height=' +
-          screen.height +
-          ',toolbar=0,menubar=0,location=0,status=1,scrollbars=1,resizable=1,left=0,top=0'
-      );
     }
   }
 
