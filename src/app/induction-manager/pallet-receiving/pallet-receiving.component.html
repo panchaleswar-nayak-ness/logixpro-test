@@ -9,25 +9,59 @@
                 </div>
                 <div class="row">
                     <div class="col-xl-4">
+                        <!-- <mat-form-field class="custom-form-field w-100 __grab_cursor mb-3" appearance="outline">
+                            <mat-label>Tote ID</mat-label>
+                            <input (keydown.shift.enter)="$event.preventDefault()" matInput type="text" maxlength="50" formControlName="toteID" #autoFocusField [(ngModel)]="toteIDCrossBtn"> 
+                            <button matSuffix *ngIf="toteIDCrossBtn" class="clear-btn" (click)=" toteIDCrossBtn='' " ><mat-icon class="text-20 text-chrome-600">cancel</mat-icon></button>  
+                        </mat-form-field> -->
+
                         <mat-form-field class="custom-form-field w-100 __grab_cursor mb-3" appearance="outline">
                             <mat-label>Tote ID</mat-label>
-                            <input matInput type="text" maxlength="50" formControlName="toteID" #autoFocusField [(ngModel)]="toteIDCrossBtn">
-                            <button matSuffix *ngIf="toteIDCrossBtn" class="clear-btn" (click)=" toteIDCrossBtn='' " ><mat-icon class="text-20 text-chrome-600">cancel</mat-icon></button>  
-                        </mat-form-field>
+                            <input 
+                              (keydown.shift.enter)="$event.preventDefault()" 
+                              matInput 
+                              type="text" 
+                              maxlength="50" 
+                              formControlName="toteID" 
+                              (input)="toteIDCrossBtn = processForm.get('toteID')?.value">
+                              
+                            <button 
+                              matSuffix 
+                              *ngIf="toteIDCrossBtn" 
+                              class="clear-btn" 
+                              (click)="clearToteID()">
+                              <mat-icon class="text-20 text-chrome-600">cancel</mat-icon>
+                            </button>  
+                          </mat-form-field>
+
                     </div>
                     <div class="col-xl-4">
                         <mat-form-field class="custom-form-field w-100 __grab_cursor mb-3" appearance="outline" >
                             <mat-label>Item No.</mat-label>
-                            <input matInput  type="text" maxlength="50" formControlName="itemNo" [(ngModel)]="itemNoCrossBtn">
+                            <input matInput  type="text" maxlength="50" formControlName="itemNo" [(ngModel)]="itemNoCrossBtn" (keypress)="openST($event)">      
                             <button matSuffix *ngIf="itemNoCrossBtn" class="clear-btn" (click)=" itemNoCrossBtn='' " ><mat-icon class="text-20 text-chrome-600">cancel</mat-icon></button> 
                         </mat-form-field>
                     </div>
                     <div class="col-xl-4">
                         <mat-form-field class="custom-form-field w-100 __grab_cursor mb-3" appearance="outline">
                             <mat-label>Quantity</mat-label>
-                            <input [NumbersOnly]="true" matInput type="number"  formControlName="quantity" >
+                            <input [NumbersOnly]="true" matInput type="number" formControlName="quantity" #quantityInput>
                         </mat-form-field>
                     </div>
+                    <div class="col-xl-4">
+                        <mat-form-field class="custom-form-field w-100 mb-2" appearance="outline">
+                          <mat-label>Lot Number</mat-label>
+                          <input formControlName="lotNumber" (keydown.shift.enter)="$event.preventDefault()" matInput type="text">
+                        </mat-form-field>
+                      </div>
+                      <div class="col-xl-4">
+                        <mat-form-field class="custom-form-field w-100 mb-0" appearance="outline">
+                          <mat-label>Expiration Date</mat-label>
+                            <input matInput [matDatepicker]="expirationDate" (keydown.shift.enter)="$event.preventDefault()" formControlName="expirationDate" name="expirationDate">
+                        <mat-datepicker-toggle matSuffix [for]="expirationDate" ngDefaultControl></mat-datepicker-toggle>
+                        <mat-datepicker #expirationDate></mat-datepicker>
+                        </mat-form-field>
+                      </div>
                 </div>
 
             </mat-card-content>

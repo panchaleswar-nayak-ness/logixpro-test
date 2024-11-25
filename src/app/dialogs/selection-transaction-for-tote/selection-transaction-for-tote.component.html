@@ -29,7 +29,7 @@
 </div>
 <div class="card p-4 mb-3 list-row-seperator">
     <div class="mb-3 list-item" *ngFor="let col of transactionTable; let indexOfelement=index;">
-      <mat-radio-button color="primary" (click)="selectOrder(col.id,itemNumber, col)">
+      <mat-radio-button color="primary" (click)="openFrom === 'pallet receiving' ? selectedData(col.id, itemNumber, col.lotNumber, col.transactionQuantity, col.expirationDate ) : selectOrder(col.id,itemNumber, col)">
           <div class="card-header-title">Order {{col.orderNumber}}</div>
       </mat-radio-button>
       <div class="d-flex align-items-center flex-wrap gap-12 my-3 ps-4">
@@ -49,7 +49,7 @@
     <button mat-stroked-button color="primary" class="btn-lg" [style]="showBtnNewPutAwayForSameSKU ? '' : 'flex:1'" (click)="refresh()">
         Refresh
     </button>
-    <button *ngIf="showBtnNewPutAwayForSameSKU"  mat-flat-button color="primary" class="btn-lg flex-grow-1" (click)="openSelectionExtendDialogue()">
+    <button *ngIf="showBtnNewPutAwayForSameSKU"  mat-flat-button color="primary" class="btn-lg flex-grow-1" (click)="openFrom === 'pallet receiving' ? closeAllDialogue() : openSelectionExtendDialogue()">
         New Put Away For Same SKU
     </button>
 </div>
