@@ -10,6 +10,7 @@ import { ICommonApi } from 'src/app/common/services/common-api/common-api-interf
 import { CommonApiService } from 'src/app/common/services/common-api/common-api.service';
 import { GlobalService } from 'src/app/common/services/global.service';
 import { ToasterTitle, ToasterType ,ToasterMessages,TableConstant,ColumnDef,UniqueConstants,StringConditions} from 'src/app/common/constants/strings.constants';
+import { format, parse } from 'date-fns';
 
 @Component({
   selector: 'app-reprocess-transaction-detail',
@@ -108,6 +109,10 @@ export class ReprocessTransactionDetailComponent implements OnInit {
   }
 
   editTransaction() { 
+
+    this.expDate = this.expDate !== '' ? format(new Date(this.expDate), "yyyy-MM-dd'T'HH:mm:ss.SSS") : '';
+    this.reqDate = this.reqDate != '' ? format(new Date(this.reqDate), "yyyy-MM-dd'T'HH:mm:ss.SSS") : '';
+
     let payload = {
       "id": this.transactionID,
       "oldValues": [
@@ -117,14 +122,13 @@ export class ReprocessTransactionDetailComponent implements OnInit {
         this.editTransactionForm.get(ColumnDef.UnitOfMeasure)?.value,
         this.editTransactionForm.get(TableConstant.SerialNumber)?.value,
         this.editTransactionForm.get(TableConstant.LotNumber)?.value?.toString(),
-        // this.dayIncrement(this.expDate),
+        this.expDate,
         this.editTransactionForm.get(ColumnDef.Revision)?.value,
         this.editTransactionForm.get(TableConstant.Notes)?.value,
         this.editTransactionForm.get("userField1")?.value,
         this.editTransactionForm.get(ColumnDef.userField2)?.value,
         this.editTransactionForm.get(ColumnDef.HostTransactionId)?.value,
-        // this.dayIncrement(this.reqDate),
-
+        this.reqDate,
         this.editTransactionForm.get(TableConstant.BatchPickID)?.value,
         this.editTransactionForm.get(TableConstant.LineNumber)?.value?.toString(),
         this.editTransactionForm.get(TableConstant.LineSequence)?.value?.toString(),
@@ -188,10 +192,10 @@ export class ReprocessTransactionDetailComponent implements OnInit {
 
   onDateChange(event: any, fromExpDate = ""): void {
     if ((fromExpDate !== "")) {
-      this.expDate = new Date(event).toISOString();
+      this.expDate = format(new Date(event), "yyyy-MM-dd'T'HH:mm:ss.SSSxxx");
     }
     else {
-      this.reqDate = new Date(event).toISOString();
+      this.reqDate = format(new Date(event), "yyyy-MM-dd'T'HH:mm:ss.SSSxxx");
     }
 
   }
@@ -206,24 +210,24 @@ export class ReprocessTransactionDetailComponent implements OnInit {
         if (res.data && res.isExecuted) {
           let finalExpiryDate, finalReqDate;
           try {
-            if (res.data[0].expirationDate != '') {
-              finalExpiryDate = new Date(res.data[0].expirationDate);
+
+            const reqDate = res.data[0].requiredDate;
+            const expDate = res.data[0].expirationDate;
+
+            finalExpiryDate = parse(expDate, 'dd/MM/yyyy hh:mm:ss a', new Date());
+            finalReqDate = parse(reqDate, 'dd/MM/yyyy hh:mm:ss a', new Date());
+
+            if (this.isValidDate(finalExpiryDate)) {
+              this.expDate = this.isValidDate(finalExpiryDate) ? finalExpiryDate.toISOString() : '';
 
             }
-            if (res.data[0].requiredDate != '') {
-              finalReqDate = new Date(res.data[0].requiredDate);
 
-
+            if (this.isValidDate(finalReqDate)) {
+              this.reqDate = this.isValidDate(finalReqDate) ? finalReqDate.toISOString() : '';
             }
 
-            this.expDate = finalExpiryDate ? finalExpiryDate.toISOString() : '';
-            this.reqDate = finalReqDate ? finalReqDate.toISOString() : '';
           }
           catch (e) { }
-
-          this.expDate = this.expDate != "1900-01-01T19:31:48.000Z" ? this.expDate : " ";
-          this.reqDate = this.reqDate != "1900-01-01T19:31:48.000Z" ? this.reqDate : " ";
-
 
           if (!res.data[0].label) { this.label = false; } else { this.label = true; }
           if (res.data[0].emergency == StringConditions.False) { this.emergency = false; } else { this.emergency = true; }
@@ -280,7 +284,21 @@ export class ReprocessTransactionDetailComponent implements OnInit {
     } else {
       return '';
     }
-
-
   }
+
+  isValidDate(date: any) {
+    // Check for falsy values like '', null, undefined
+    if (!date) return false;
+  
+    // Convert to a Date object if it's not already one
+    const parsedDate = new Date(date);
+  
+    // Check if the date is valid
+    if (isNaN(parsedDate.getTime())) return false;
+  
+    // Check if the date is not 01-01-1970
+    const epochDate = new Date('1970-01-01T00:00:00Z');
+    return parsedDate.getTime() !== epochDate.getTime();
+  }
+  
 }
