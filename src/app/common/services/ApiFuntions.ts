@@ -364,6 +364,11 @@ export class ApiFuntions {
     return this.ApiBase.Get('/Admin/ccqueue', Body);
   }
 
+  public GetImportBatchCount(Body: any): Observable<any> {
+    return this.ApiBase.Get('/Admin/importbatchcounts', Body);
+  }
+
+
   public GetMoveItemsTable(Body: any): Observable<any> {
     return this.ApiBase.Get('/Admin/moveitems', Body);
   }
