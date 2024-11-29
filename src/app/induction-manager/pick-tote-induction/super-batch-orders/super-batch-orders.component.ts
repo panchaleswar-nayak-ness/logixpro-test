@@ -314,8 +314,10 @@ export class SuperBatchOrdersComponent implements OnInit, AfterViewInit {
             )
             .subscribe((innerResponse: any) => {
               if (innerResponse.data && innerResponse.isExecuted) {
-                if (innerResponse.data.remainingQuantity > 0) {
+                if (innerResponse.data.remainingQuantity > 0 &&innerResponse.data.notInductedOrders.length>1) {
                   // Update the UI with the remaining quantity
+
+                  
                   const orderIndex = this.dataSource.filteredData.findIndex(
                     (item) =>
                       item.itemNumber === itemNumber &&
@@ -326,7 +328,8 @@ export class SuperBatchOrdersComponent implements OnInit, AfterViewInit {
                     // Update totalOrderQuantity with remainingQuantity
                     this.dataSource.filteredData[orderIndex].totalOrderQty =
                       innerResponse.data.remainingQuantity;
-
+                      this.dataSource.filteredData[orderIndex].numberOfOrders= innerResponse.data.notInductedOrders.length;
+                    
                     // Use setTimeout to focus on the toteScanned input box
                   }
 

@@ -457,8 +457,9 @@ export class PickToteInductionComponent
     if (this.orderNumber && this.toteId) {
       let valueToInduct: any = {
         orderNumber: this.orderNumber,
-        toteId: this.toteId,
+        toteScanned: this.toteId,
         splitToggle: this.splitToggle,
+        transactionQuantity:this.transactionQty
       };
 
       if (this.splitToggle) {
@@ -573,7 +574,8 @@ export class PickToteInductionComponent
       .subscribe((innerResponse: any) => {
         if (innerResponse.data && innerResponse.isExecuted) {
           this.transactionQty =
-            innerResponse.data.remainingTransactionQuantitySum;
+            innerResponse.data.remainingQuantity;
+
           if (this.transactionQty === 0) {
             // Clear both order number and tote ID if transactionQty is zero
             this.orderNumber = '';

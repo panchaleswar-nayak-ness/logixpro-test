@@ -1071,8 +1071,9 @@ export class ApiFuntions {
 
   public PerformSpecificOrderInduction(valueToInduct: {
     orderNumber: string;
-    toteId: string;
+    toteScanned: string;
     splitToggle: boolean;
+    transactionQuantity:number;
   }) {
     return this.ApiBase.Post(
       '/Induction/performspecificorderinduction',
