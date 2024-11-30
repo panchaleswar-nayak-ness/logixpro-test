@@ -370,9 +370,9 @@ export class SuperBatchOrdersComponent implements OnInit, AfterViewInit {
                 }
               } else {
                 this.global.ShowToastr(
-                  ToasterType.Error,
+                  ToasterType.Info,
                   innerResponse.responseMessage,
-                  ToasterTitle.Error
+                  ToasterTitle.Alert
                 );
               }
 

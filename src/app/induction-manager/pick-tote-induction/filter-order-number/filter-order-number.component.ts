@@ -25,6 +25,8 @@ export class FilterOrderNumberComponent implements OnInit {
   @ViewChild('myText', { static: true }) myText: ElementRef;
   orderNumberFilter: string[] = [];
   subscription: Subscription[];
+  isFilterByOrderNumbers: boolean = true; // Default selection
+  orderRange: { lowerBound: string; upperBound: string } = { lowerBound: '', upperBound: '' };
 
   ngOnInit(): void {
     
@@ -59,16 +61,48 @@ export class FilterOrderNumberComponent implements OnInit {
   }
 
   applyFilter() {
-    this.dialogRef.close({ orderNumberFilter: this.orderNumberFilter });
+    const isRangeValid = this.orderRange.lowerBound && this.orderRange.upperBound;
+    const isRangeOrdered = this.orderRange.lowerBound <= this.orderRange.upperBound;
+  
+    if (this.isFilterByOrderNumbers) {
+      // Reset order range and return selected order number filters
+      this.orderRange = { lowerBound: '', upperBound: '' };
+      this.dialogRef.close({ orderNumberFilter: this.orderNumberFilter });
+      return;
+    }
+  
+    if (!isRangeValid) {
+      this.global.ShowToastr(
+        'info',
+        'Both Lower Bound and Upper Bound must be filled before applying the filter.',
+        'Info'
+      );
+      return;
+    }
+  
+    if (!isRangeOrdered) {
+      this.global.ShowToastr(
+        'info',
+        'Lower Bound cannot be greater than Upper Bound. Please adjust the range.',
+        'Info'
+      );
+      return;
+    }
+  
+    // Clear order numbers and pass the valid range
+    this.orderNumberFilter = [];
+    this.dialogRef.close({ orderRange: this.orderRange });
   }
 
   clearFilters() {
     this.orderNumberFilter = [];
+    this.orderRange = { lowerBound: '', upperBound: '' };
 
-    if (this.myText) { 
+
+    if (this.myText) {
       this.myText.nativeElement.value = '';
     }
 
-    this.dialogRef.close({ orderNumberFilter: this.orderNumberFilter });
+    this.dialogRef.close({ orderRange:null, orderNumberFilter:null });
   }
 }

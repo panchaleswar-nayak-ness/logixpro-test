@@ -13,22 +13,47 @@
 </div>
 <div class="label-blue3 p-3 d-flex br-8 mb-3">
   <mat-icon class="material-symbols-outlined">info</mat-icon>
-  <span class="ps-2 w-100">This is used to copy and paste orders</span>
+  <span class="ps-2 w-100">
+    {{ isFilterByOrderNumbers ? "This is used to copy and paste orders" : "Filter orders by entering a range of partial Order Numbers (e.g., 'AA' to 'AC')." }}
+  </span>
 </div>
 
 <div class="card-body">
   <div class="container">
     <div class="row">
-      <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline">
-        <mat-label>Paste Order here</mat-label>
-        <textarea
-          matInput
-          class="h-120px"
-          (paste)="onPaste($event)"
-          (input)="onInput(myText.value)"
-          #myText
-        ></textarea>
-      </mat-form-field>
+      <!-- Radio Buttons -->
+      <div class="d-flex align-items-center mb-4">
+        <mat-radio-group [(ngModel)]="isFilterByOrderNumbers">
+          <mat-radio-button [value]="true">Filter by Order Numbers</mat-radio-button>
+          <mat-radio-button [value]="false">Filter by Order Range</mat-radio-button>
+        </mat-radio-group>
+      </div>
+
+      <!-- Filter by Order Numbers (Textarea) -->
+      <div *ngIf="isFilterByOrderNumbers">
+        <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline">
+          <mat-label>Paste Order here</mat-label>
+          <textarea
+            matInput
+            class="h-120px"
+            (paste)="onPaste($event)"
+            (input)="onInput(myText.value)"
+            #myText
+          ></textarea>
+        </mat-form-field>
+      </div>
+
+      <!-- Filter by Order Range (Two Inputs) -->
+      <div *ngIf="!isFilterByOrderNumbers" class="d-flex gap-2">
+        <mat-form-field class="custom-form-field w-50 mb-3" appearance="outline">
+          <mat-label>Lower Bound</mat-label>
+          <input matInput [(ngModel)]="orderRange.lowerBound" />
+        </mat-form-field>
+        <mat-form-field class="custom-form-field w-50 mb-3" appearance="outline">
+          <mat-label>Upper Bound</mat-label>
+          <input matInput [(ngModel)]="orderRange.upperBound" />
+        </mat-form-field>
+      </div>
     </div>
   </div>
 </div>
@@ -43,12 +68,12 @@
     Clear
   </button>
   <button
-  type="submit"
-  mat-flat-button
-  class="form-button-submit btn-lg flex-grow-1"
-  color="primary"
-  (click)="applyFilter()"
->
-  Apply Filter
-</button>
+    type="submit"
+    mat-flat-button
+    class="form-button-submit btn-lg flex-grow-1"
+    color="primary"
+    (click)="applyFilter()"
+  >
+    Apply Filter
+  </button>
 </div>

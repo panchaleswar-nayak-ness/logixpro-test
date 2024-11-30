@@ -96,6 +96,10 @@ export class PickToteInductionComponent
     },
     OrderNumberFilters: [],
     ColumnFilters: [],
+    orderRange:{ 
+        lowerBound: '', 
+        upperBound: ''
+      }
   };
 
   selectedFiltersSuperBatch: any = {
@@ -172,6 +176,9 @@ export class PickToteInductionComponent
       let currentMessageSubscription = this.global.currentMessage.subscribe(
         (message) => {
           if (message) {
+            if(message.orderRange){
+              this.selectedFilters.orderRange=message.orderRange
+            }
             if (
               message.orderNumberFilters &&
               message.orderNumberFilters.length > 0
@@ -186,6 +193,7 @@ export class PickToteInductionComponent
                 uniqueOrderNumberFilters;
             } else {
               this.selectedFilters.OrderNumberFilters = [];
+        
             }
 
             let defaultRow = JSON.stringify([
@@ -242,6 +250,7 @@ export class PickToteInductionComponent
       this.global.sendMessage({
         columnFilters: '',
         orderNumberFilters: [],
+        orderRange:null
       });
     }
 
@@ -390,7 +399,10 @@ export class PickToteInductionComponent
       if (this.NonSuperBatchOrdersComponent) {
         this.NonSuperBatchOrdersComponent.retrieveFilteredNonSuperBatchOrders(
           this.selectedFilters
+          
         );
+    
+
       }
     } else if (this.activeTab === TabNames.SuperBatch) {
       if (this.SuperBatchOrdersComponent) {
@@ -426,6 +438,7 @@ export class PickToteInductionComponent
     console.log($event);
     this.selectedFilters.ColumnFilters = [];
     this.selectedFilters.OrderNumberFilters = [];
+    this.selectedFilters.orderRange = { lowerBound: '', upperBound: '' };
     this.retrieveOrders();
   }
 

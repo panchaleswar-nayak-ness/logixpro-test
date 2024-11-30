@@ -109,6 +109,8 @@ export class NonSuperBatchOrdersComponent implements OnInit, AfterViewInit {
   filters: PickToteInductionFilter[] = [];
   orderNumberFilters: string[] = [];
   orderNumberFilter: string = '';
+  orderRange: { lowerBound: string; upperBound: string } = { lowerBound: '', upperBound: '' };
+
   dataSource: MatTableDataSource<any>;
   toteScanned: any;
   filteredOrderResults = [];
@@ -127,7 +129,7 @@ export class NonSuperBatchOrdersComponent implements OnInit, AfterViewInit {
       endIndex: 10,
     };
 
-    this.getTags();
+   
   }
 
   ngAfterViewInit(): void {
@@ -167,20 +169,6 @@ export class NonSuperBatchOrdersComponent implements OnInit, AfterViewInit {
     this.updateSorting();
   }
 
-  getTags() {
-    console.log(this.orderNumberFilters, this.filters);
-    this.tags = [];
-    if (this.orderNumberFilters && this.orderNumberFilters.length > 0) {
-        this.tags.push({ alias: 'Filter Order Number', value: '' });      
-    }
-
-    if (this.filters && this.filters.length > 0) {
-      this.filters.forEach((f) => {
-        let alias = f.alias?.toString();
-        if (alias) this.tags.push({ alias: f.alias, value: f.Value });
-      });
-    }
-  }
 
   clearFilters() {
     const dialogRef: any = this.global.OpenDialog(ConfirmationDialogComponent, {
@@ -221,26 +209,20 @@ export class NonSuperBatchOrdersComponent implements OnInit, AfterViewInit {
       },
       disableClose: true,
     });
-
+  
     dialogRef.afterClosed().subscribe((result: any) => {
-      if (result) {
-        if (result.orderNumberFilter) {
-          this.orderNumberFilters = result.orderNumberFilter.map((m: string) =>
-            this.global.getTrimmedAndLineBreakRemovedString(m)
-          );
-
-          this.getTags();
-
-          // send the currently selected order number filters to parent component via observable
-          this.global.sendMessage({
-            columnFilters: this.filters,
-            orderNumberFilters: this.orderNumberFilters,
-          });
-        }
+      if (!result) return;
+     
+      if (result.orderNumberFilter) {
+        this.applyOrderNumberFilter(result.orderNumberFilter);
+      } else if (result.orderRange) {
+        this.applyOrderRangeFilter(result.orderRange);
+      } else {
+        this.clearAllFilters();
       }
     });
   }
-
+  
   openColumnFilter() {
     const dialogRef: any = this.global.OpenDialog(PickToteInFilterComponent, {
       height: 'auto',
@@ -255,7 +237,10 @@ export class NonSuperBatchOrdersComponent implements OnInit, AfterViewInit {
     dialogRef.afterClosed().subscribe((result: PickToteInductionFilter[]) => {
       if (result) {
         this.filters = result;
-        this.getTags();
+        this.filters.forEach((filter) => {
+          const alias = filter.alias?.toString();
+          if (alias) this.updateTag(alias,'');
+        });
 
         // send the currently selected column filters to parent component via observable
         this.global.sendMessage({
@@ -412,7 +397,69 @@ export class NonSuperBatchOrdersComponent implements OnInit, AfterViewInit {
       this.focusFirstInput();
     }
   }
+  private applyOrderNumberFilter(orderNumberFilter: string[]) {
+    this.orderNumberFilters = orderNumberFilter.map((m: string) =>
+      this.global.getTrimmedAndLineBreakRemovedString(m)
+    );
+  
+    // Clear range-related data
+    this.orderRange = { lowerBound: '', upperBound: '' };
+  
+    // Update tags: Remove range tag and add/ensure order number tag
+    this.tags = this.tags.filter(tag => tag.alias !== 'Filter Order Number (Range)');
+    this.updateTag('Filter Order Number', '');
+  
+    this.global.sendMessage({
+      columnFilters: this.filters,
+      orderNumberFilters: this.orderNumberFilters,
+      orderRange: { lowerBound: '', upperBound: '' },
+    });
+  }
+  
+  private applyOrderRangeFilter(orderRange: { lowerBound: string; upperBound: string }) {
+    this.orderRange = orderRange;
+  
+    // Clear order number-related data
+    this.orderNumberFilters = [];
+  
+    // Update tags: Remove order number tag and add/ensure range tag
+    this.tags = this.tags.filter(tag => tag.alias !== 'Filter Order Number');
+    this.updateTag('Filter Order Number (Range)', `From ${orderRange.lowerBound} to ${orderRange.upperBound}`);
+  
+    this.global.sendMessage({
+      columnFilters: this.filters,
+      orderNumberFilters: [],
+      orderRange: this.orderRange,
+    });
+  }
+  private clearAllFilters() {
+   
+    this.orderNumberFilters = [];
+    this.orderRange = { lowerBound: '', upperBound: '' };
+  
+    // Remove all related tags
+    this.tags = this.tags.filter(
+      tag => tag.alias !== 'Filter Order Number' && tag.alias !== 'Filter Order Number (Range)'
+    );
+  
+    this.global.sendMessage({
+      columnFilters: this.filters,
+      orderNumberFilters: [],
+      orderRange: { lowerBound: '', upperBound: '' },
+    });
+  }
 
+  private updateTag(alias: string, value: string) {
+    const existingTagIndex = this.tags.findIndex(tag => tag.alias === alias);
+  
+    if (existingTagIndex !== -1) {
+      // Update existing tag
+      this.tags[existingTagIndex].value = value;
+    } else {
+      // Add new tag
+      this.tags.push({ alias, value });
+    }
+  }
   checkOrderStatus(isReprocess: any): string {
     if (isReprocess === false) {
       return 'Open';
