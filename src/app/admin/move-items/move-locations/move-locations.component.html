@@ -14,10 +14,11 @@
                 <div class="search-box">
 
 
-                    <mat-form-field class="w-100 bg-white br-8" appearance="fill"
+                    <mat-form-field class="w-100 bg-white br-8" appearance="outline"
                         [floatLabel]="getFloatLabelValue()" [hideRequiredMarker]="hideRequiredControl.value">
                         <span class="material-symbols-outlined icon-search"> search </span>
-                        <input type="text" placeholder="Item No." aria-label="Number" matInput autoFocus
+                        <mat-label replacePlaceholder [replacePlaceHolder]="placeholders.itemNumber" [fallbackPlaceHolder]="placeholders.itemNumberFallback"> </mat-label>
+                        <input type="text" aria-label="Number" matInput autoFocus
                             [(ngModel)]='itemNo' maxlength="255" [matAutocomplete]="auto"
                             (ngModelChange)="itemNumberSearch()">
                             <button matSuffix *ngIf="itemNo != ''" class="clear-btn" (click)="clearItemNum()"><mat-icon class="text-20 text-chrome-600">cancel</mat-icon></button>
@@ -83,7 +84,7 @@
                                 <td  (contextmenu)="onContextMenu($event, element.goldenZone, 'Velocity Code')"  [class.selected]="element.isSelected" mat-cell *matCellDef="let element">{{element.goldenZone}}</td>
                             </ng-container>
                             <ng-container matColumnDef="itemNumber">
-                                <th mat-header-cell mat-sort-header *matHeaderCellDef> Item Number </th>
+                                <th mat-header-cell mat-sort-header *matHeaderCellDef replacePlaceholder [replacePlaceHolder]="placeholders.itemNumber" [fallbackPlaceHolder]="placeholders.itemNumberFallback"> Item Number </th>
                                 <td (contextmenu)="onContextMenu($event, element.itemNumber, 'Item Number')"  [class.selected]="element.isSelected" mat-cell *matCellDef="let element">{{element.itemNumber}}</td>
                             </ng-container>
                             <ng-container matColumnDef="description">
@@ -148,7 +149,7 @@
                                 <td (contextmenu)="onContextMenu($event, element.revision, 'Revision')" [class.selected]="element.isSelected" mat-cell *matCellDef="let element">{{element.revision}}</td>
                             </ng-container>
                             <ng-container matColumnDef="unitOfMeasure">
-                                <th mat-header-cell mat-sort-header *matHeaderCellDef> Unit of Measure</th>
+                                <th mat-header-cell mat-sort-header *matHeaderCellDef replacePlaceholder [replacePlaceHolder]="placeholders.unitOfMeasure" [fallbackPlaceHolder]="placeholders.unitOfMeasureFallback"> UM </th>
                                 <td (contextmenu)="onContextMenu($event, element.unitOfMeasure, 'Unit of Measure')" [class.selected]="element.isSelected" mat-cell *matCellDef="let element">{{element.unitOfMeasure}}</td>
                             </ng-container>
                             <ng-container matColumnDef="maximumQuantity">
@@ -161,11 +162,11 @@
                                 <td (contextmenu)="onContextMenu($event, element.putAwayDate, 'Put Away Date')" [class.selected]="element.isSelected" mat-cell *matCellDef="let element">{{element.putAwayDate}}</td>
                             </ng-container>
                             <ng-container matColumnDef="userField1">
-                                <th mat-header-cell mat-sort-header *matHeaderCellDef>User Field1 </th>
+                                <th mat-header-cell mat-sort-header *matHeaderCellDef replacePlaceholder [replacePlaceHolder]="placeholders.userField1" [fallbackPlaceHolder]="placeholders.userField1Fallback"> UF1</th>
                                 <td (contextmenu)="onContextMenu($event, element.userField1, 'User Field1')" [class.selected]="element.isSelected" mat-cell *matCellDef="let element">{{element.userField1}}</td>
                             </ng-container>
                             <ng-container matColumnDef="userField2">
-                                <th mat-header-cell mat-sort-header *matHeaderCellDef> User Field2 </th>
+                                <th mat-header-cell mat-sort-header *matHeaderCellDef replacePlaceholder [replacePlaceHolder]="placeholders.userField2" [fallbackPlaceHolder]="placeholders.userField2Fallback"> UF2 </th>
                                 <td (contextmenu)="onContextMenu($event, element.userField2, 'User Field2')" [class.selected]="element.isSelected" mat-cell *matCellDef="let element">{{element.userField2}}</td>
                             </ng-container>
                             <ng-container matColumnDef="masterLocation">
@@ -241,7 +242,7 @@
                                 <td (contextmenu)="onContextMenu($event, element.goldenZone, 'Velocity Code')" [class.selected]="element.isSelected" mat-cell *matCellDef="let element">{{element.goldenZone}}</td>
                             </ng-container>
                             <ng-container matColumnDef="itemNumber">
-                                <th mat-header-cell mat-sort-header *matHeaderCellDef> Item Number </th>
+                                <th mat-header-cell mat-sort-header *matHeaderCellDef replacePlaceholder [replacePlaceHolder]="placeholders.itemNumber" [fallbackPlaceHolder]="placeholders.itemNumberFallback"> Item Number </th>
                                 <td (contextmenu)="onContextMenu($event, element.itemNumber, 'Item Number')" [class.selected]="element.isSelected" mat-cell *matCellDef="let element">{{element.itemNumber}}</td>
                             </ng-container>
                             <ng-container matColumnDef="description">
@@ -306,7 +307,7 @@
                                 <td (contextmenu)="onContextMenu($event, element.revision, 'Revision')" [class.selected]="element.isSelected" mat-cell *matCellDef="let element">{{element.revision}}</td>
                             </ng-container>
                             <ng-container matColumnDef="unitOfMeasure">
-                                <th mat-header-cell mat-sort-header *matHeaderCellDef> Unit of Measure</th>
+                                <th mat-header-cell mat-sort-header *matHeaderCellDef replacePlaceholder [replacePlaceHolder]="placeholders.unitOfMeasure" [fallbackPlaceHolder]="placeholders.unitOfMeasureFallback"> UM </th>
                                 <td (contextmenu)="onContextMenu($event, element.unitOfMeasure, 'Unit of Measure')" [class.selected]="element.isSelected" mat-cell *matCellDef="let element">{{element.unitOfMeasure}}</td>
                             </ng-container>
                             <ng-container matColumnDef="maximumQuantity">
@@ -319,11 +320,11 @@
                                 <td (contextmenu)="onContextMenu($event, element.putAwayDate, 'Put Away Date')" [class.selected]="element.isSelected" mat-cell *matCellDef="let element">{{element.putAwayDate}}</td>
                             </ng-container>
                             <ng-container matColumnDef="userField1">
-                                <th mat-header-cell mat-sort-header *matHeaderCellDef>User Field1 </th>
+                                <th mat-header-cell mat-sort-header *matHeaderCellDef replacePlaceholder [replacePlaceHolder]="placeholders.userField1" [fallbackPlaceHolder]="placeholders.userField1Fallback"> UF1 </th>
                                 <td (contextmenu)="onContextMenu($event, element.userField1, 'User Field1')" [class.selected]="element.isSelected" mat-cell *matCellDef="let element">{{element.userField1}}</td>
                             </ng-container>
                             <ng-container matColumnDef="userField2">
-                                <th mat-header-cell mat-sort-header *matHeaderCellDef> User Field2 </th>
+                                <th mat-header-cell mat-sort-header *matHeaderCellDef replacePlaceholder [replacePlaceHolder]="placeholders.userField2" [fallbackPlaceHolder]="placeholders.userField2Fallback"> UF2 </th>
                                 <td (contextmenu)="onContextMenu($event, element.userField2, 'User Field2')" [class.selected]="element.isSelected" mat-cell *matCellDef="let element">{{element.userField2}}</td>
                             </ng-container>
                             <ng-container matColumnDef="masterLocation">

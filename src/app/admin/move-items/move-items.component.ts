@@ -14,43 +14,11 @@ import { ICommonApi } from 'src/app/common/services/common-api/common-api-interf
 import { CommonApiService } from 'src/app/common/services/common-api/common-api.service';
 import { GlobalService } from 'src/app/common/services/global.service';
 import { TableContextMenuService } from 'src/app/common/globalComponents/table-context-menu-component/table-context-menu.service';
-import { DialogConstants, ToasterTitle, ToasterType ,ResponseStrings,Column,zoneType,ColumnDef,TableConstant,Style,UniqueConstants,FilterColumnName,StringConditions, ConfirmationMessages, ConfirmationHeadings} from 'src/app/common/constants/strings.constants';
+import { DialogConstants, ToasterTitle, ToasterType ,ResponseStrings,Column,zoneType,ColumnDef,TableConstant,Style,UniqueConstants,FilterColumnName,StringConditions, ConfirmationMessages, ConfirmationHeadings, Placeholders} from 'src/app/common/constants/strings.constants';
 import { ContextMenuFiltersService } from 'src/app/common/init/context-menu-filters.service';
 import { ConfirmationDialogComponent } from '../dialogs/confirmation-dialog/confirmation-dialog.component';
 import { MatTab } from '@angular/material/tabs';
 import { MoveLocationsComponent } from './move-locations/move-locations.component';
-
-const TRNSC_DATA = [
-  { colHeader: TableConstant.WareHouse, colDef: ColumnDef.Warehouse },
-  { colHeader: 'locationNumber', colDef: 'Location Number' },
-  { colHeader: UniqueConstants.goldenZone, colDef: 'Golden Zone' },
-  { colHeader: 'itemNumber', colDef: Column.ItemNumber },
-  { colHeader: UniqueConstants.Description, colDef: Column.Description },
-  { colHeader: 'itemQuantity', colDef: 'Item Quantity' },
-  { colHeader: 'quantityAllocatedPick', colDef: 'Quantity Allocated Pick' },
-  { colHeader: 'quantityAllocatedPutAway', colDef: 'Quantity Allocated Put Away' },
-  { colHeader: TableConstant.zone, colDef: ColumnDef.Zone },
-  { colHeader: zoneType.carousel, colDef: TableConstant.Carousel },
-  { colHeader: Column.Row, colDef: TableConstant.Row },
-  { colHeader: TableConstant.shelf, colDef: TableConstant.shelf },
-  { colHeader: ColumnDef.Bin, colDef: TableConstant.Bin },
-  { colHeader: UniqueConstants.cellSize, colDef: 'Cell Size' },
-  { colHeader: TableConstant.LotNumber, colDef: 'Serial Lot Number' },
-  { colHeader: TableConstant.SerialNumber, colDef: ColumnDef.SerialNumber },
-  { colHeader: ColumnDef.ExpirationDate, colDef: TableConstant.ExpirationDate },
-  { colHeader: ColumnDef.Revision, colDef: TableConstant.Revision },
-  { colHeader: ColumnDef.UnitOfMeasure, colDef: FilterColumnName.unitOfMeasure },
-  { colHeader: 'maximumQuantity', colDef: 'Maximum Quantity' },
-  { colHeader: 'putAwayDate', colDef: 'Put Away Date' },
-  { colHeader: ColumnDef.userField1, colDef: TableConstant.UserField1 },
-  { colHeader: ColumnDef.userField2, colDef: TableConstant.UserField2 },
-  { colHeader: 'masterLocation', colDef: 'Master Location' },
-  { colHeader: 'dateSensitive', colDef: 'Date Sensitive' },
-  { colHeader: 'dedicated', colDef: 'Dedicated' },
-  { colHeader: 'masterInvMapID', colDef: 'Master Inv Map ID' },
-  { colHeader: 'minQuantity', colDef: 'Min Quantity' },
-  { colHeader: 'invMapID', colDef: 'Inv Map ID' },
-];
 
 @Component({
   selector: 'app-move-items',
@@ -58,6 +26,7 @@ const TRNSC_DATA = [
   styleUrls: ['./move-items.component.scss'],
 })
 export class MoveItemsComponent implements OnInit {
+  placeholders = Placeholders;
   isActiveTrigger:boolean =false;
   paginator: MatPaginator;
   paginatorTo: MatPaginator;
@@ -152,6 +121,39 @@ export class MoveItemsComponent implements OnInit {
 
   public iCommonAPI : ICommonApi;
   
+  fieldMappings = JSON.parse(localStorage.getItem('fieldMappings') ?? '{}');
+  TRNSC_DATA = [
+    { colHeader: TableConstant.WareHouse, colDef: ColumnDef.Warehouse },
+    { colHeader: 'locationNumber', colDef: 'Location Number' },
+    { colHeader: UniqueConstants.goldenZone, colDef: 'Golden Zone' },
+    { colHeader: 'itemNumber', colDef: this.fieldMappings?.itemNumber || this.placeholders.itemNumberFallback },
+    { colHeader: UniqueConstants.Description, colDef: Column.Description },
+    { colHeader: 'itemQuantity', colDef: 'Item Quantity' },
+    { colHeader: 'quantityAllocatedPick', colDef: 'Quantity Allocated Pick' },
+    { colHeader: 'quantityAllocatedPutAway', colDef: 'Quantity Allocated Put Away' },
+    { colHeader: TableConstant.zone, colDef: ColumnDef.Zone },
+    { colHeader: zoneType.carousel, colDef: TableConstant.Carousel },
+    { colHeader: Column.Row, colDef: TableConstant.Row },
+    { colHeader: TableConstant.shelf, colDef: TableConstant.shelf },
+    { colHeader: ColumnDef.Bin, colDef: TableConstant.Bin },
+    { colHeader: UniqueConstants.cellSize, colDef: 'Cell Size' },
+    { colHeader: TableConstant.LotNumber, colDef: 'Serial Lot Number' },
+    { colHeader: TableConstant.SerialNumber, colDef: ColumnDef.SerialNumber },
+    { colHeader: ColumnDef.ExpirationDate, colDef: TableConstant.ExpirationDate },
+    { colHeader: ColumnDef.Revision, colDef: TableConstant.Revision },
+    { colHeader: ColumnDef.UnitOfMeasure, colDef: FilterColumnName.unitOfMeasure },
+    { colHeader: 'maximumQuantity', colDef: 'Maximum Quantity' },
+    { colHeader: 'putAwayDate', colDef: 'Put Away Date' },
+    { colHeader: ColumnDef.userField1, colDef: TableConstant.UserField1 },
+    { colHeader: ColumnDef.userField2, colDef: TableConstant.UserField2 },
+    { colHeader: 'masterLocation', colDef: 'Master Location' },
+    { colHeader: 'dateSensitive', colDef: 'Date Sensitive' },
+    { colHeader: 'dedicated', colDef: 'Dedicated' },
+    { colHeader: 'masterInvMapID', colDef: 'Master Inv Map ID' },
+    { colHeader: 'minQuantity', colDef: 'Min Quantity' },
+    { colHeader: 'invMapID', colDef: 'Inv Map ID' },
+  ];
+
   constructor(
     public commonAPI : CommonApiService,
     private authService : AuthService,

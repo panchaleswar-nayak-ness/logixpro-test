@@ -13,7 +13,7 @@ import { IAdminApiService } from 'src/app/common/services/admin-api/admin-api-in
 import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.service';
 import { GlobalService } from 'src/app/common/services/global.service';
 import { TableContextMenuService } from 'src/app/common/globalComponents/table-context-menu-component/table-context-menu.service';
-import {ToasterTitle, ToasterType ,ResponseStrings,Column,DialogConstants,StringConditions,UniqueConstants,Style,TableConstant,ColumnDef} from 'src/app/common/constants/strings.constants';
+import {ToasterTitle, ToasterType ,ResponseStrings,Column,DialogConstants,StringConditions,UniqueConstants,Style,TableConstant,ColumnDef, Placeholders} from 'src/app/common/constants/strings.constants';
 import { Toast } from 'ngx-toastr';
 import { ContextMenuFiltersService } from 'src/app/common/init/context-menu-filters.service';
 
@@ -23,6 +23,7 @@ import { ContextMenuFiltersService } from 'src/app/common/init/context-menu-filt
   styleUrls: ['./de-allocate-orders.component.scss']
 })
 export class DeAllocateOrdersComponent implements OnInit {
+  placeholders = Placeholders;
   pageLength=0;
   ELEMENT_DATA_1: any[] =[
     {order_no: '1202122'},

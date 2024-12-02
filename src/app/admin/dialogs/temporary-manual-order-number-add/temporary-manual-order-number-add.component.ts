@@ -10,7 +10,7 @@ import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.ser
 import { ICommonApi } from 'src/app/common/services/common-api/common-api-interface';
 import { CommonApiService } from 'src/app/common/services/common-api/common-api.service';
 import { GlobalService } from 'src/app/common/services/global.service';
-import { ToasterTitle, ToasterType, TransactionType ,UniqueConstants} from 'src/app/common/constants/strings.constants';
+import { Placeholders, ToasterTitle, ToasterType, TransactionType ,UniqueConstants} from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-temporary-manual-order-number-add',
@@ -18,6 +18,7 @@ import { ToasterTitle, ToasterType, TransactionType ,UniqueConstants} from 'src/
   styleUrls: ['./temporary-manual-order-number-add.component.scss'],
 })
 export class TemporaryManualOrderNumberAddComponent implements OnInit {
+  placeholders = Placeholders;
   @ViewChild('ord_nmb') ord_nmb: ElementRef;
   floatLabelControl: any = new FormControl('auto' as FloatLabelType);
   floatLabelControlItem: any = new FormControl(UniqueConstants.item as FloatLabelType);

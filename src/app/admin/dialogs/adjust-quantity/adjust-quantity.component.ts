@@ -10,7 +10,7 @@ import { CommonApiService } from 'src/app/common/services/common-api/common-api.
 import { IAdminApiService } from 'src/app/common/services/admin-api/admin-api-interface';
 import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.service';
 import { GlobalService } from 'src/app/common/services/global.service';
-import { ToasterTitle, ToasterType } from 'src/app/common/constants/strings.constants';
+import { Placeholders, ToasterTitle, ToasterType } from 'src/app/common/constants/strings.constants';
 import { Subject, debounceTime, distinctUntilChanged } from 'rxjs';
 
 
@@ -62,7 +62,7 @@ export class AdjustQuantityComponent implements OnInit {
 
  searchReasonValue: any = '';
  searchReasonByInput: any = new Subject<string>();
- 
+ placeholders = Placeholders;
 
  public iCommonAPI : ICommonApi;
 

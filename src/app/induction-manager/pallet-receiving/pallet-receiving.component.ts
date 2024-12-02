@@ -6,7 +6,7 @@ import { AlertConfirmationComponent } from 'src/app/dialogs/alert-confirmation/a
 import { IInductionManagerApiService } from 'src/app/common/services/induction-manager-api/induction-manager-api-interface';
 import { GlobalService } from 'src/app/common/services/global.service';
 import { InductionManagerApiService } from 'src/app/common/services/induction-manager-api/induction-manager-api.service';
-import { ToasterMessages, ToasterTitle, ResponseStrings, KeyboardKeys, ToasterType, showNotificationHeading, UniqueConstants, showNotificationMessage ,DialogConstants,Style} from 'src/app/common/constants/strings.constants';
+import { ToasterMessages, ToasterTitle, ResponseStrings, KeyboardKeys, ToasterType, showNotificationHeading, UniqueConstants, showNotificationMessage ,DialogConstants,Style, Placeholders} from 'src/app/common/constants/strings.constants';
 import { SelectionTransactionForToteComponent } from 'src/app/dialogs/selection-transaction-for-tote/selection-transaction-for-tote.component';
 import { ConfirmationDialogComponent } from 'src/app/admin/dialogs/confirmation-dialog/confirmation-dialog.component';
 import { MatTableDataSource } from '@angular/material/table';
@@ -30,6 +30,7 @@ export class PalletReceivingComponent implements OnInit {
   userData;
   toteIDCrossBtn;
   itemNoCrossBtn;
+  placeholders = Placeholders;
   public iInductionManagerApi:IInductionManagerApiService;
   @ViewChild('autoFocusField') searchBoxField: ElementRef;
   formValues: any;

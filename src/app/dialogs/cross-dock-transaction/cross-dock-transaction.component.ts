@@ -18,6 +18,7 @@ import {
 import {InductionManagerApiService} from 'src/app/common/services/induction-manager-api/induction-manager-api.service';
 import {
   DialogConstants,
+  Placeholders,
   ResponseStrings,
   Style,
   ToasterMessages,
@@ -34,6 +35,7 @@ import {PrintApiService} from "../../common/services/print-api/print-api.service
   styleUrls: ['./cross-dock-transaction.component.scss'],
 })
 export class CrossDockTransactionComponent implements OnInit {
+  placeholders = Placeholders;
   @ViewChild('completefocus') completefocus: ElementRef;
   public itemWhse;
   public userId;

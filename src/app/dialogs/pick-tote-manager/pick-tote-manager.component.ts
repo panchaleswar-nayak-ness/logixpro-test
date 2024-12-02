@@ -26,7 +26,7 @@ import { MatSort } from '@angular/material/sort';
 import { IInductionManagerApiService } from 'src/app/common/services/induction-manager-api/induction-manager-api-interface';
 import { InductionManagerApiService } from 'src/app/common/services/induction-manager-api/induction-manager-api.service';
 import { GlobalService } from 'src/app/common/services/global.service';
-import {  TableConstant ,ToasterTitle,ResponseStrings,Column,ToasterType,zoneType,DialogConstants,ColumnDef,UniqueConstants,Style,StringConditions} from 'src/app/common/constants/strings.constants';
+import {  TableConstant ,ToasterTitle,ResponseStrings,Column,ToasterType,zoneType,DialogConstants,ColumnDef,UniqueConstants,Style,StringConditions, Placeholders} from 'src/app/common/constants/strings.constants';
 
 export interface PeriodicElement {
   name: string;
@@ -40,6 +40,7 @@ export interface PeriodicElement {
   styleUrls: ['./pick-tote-manager.component.scss'],
 })
 export class PickToteManagerComponent implements OnInit {
+  placeholders = Placeholders;
   ELEMENT_DATA: PeriodicElement[] = [
     { position: 1, name: 'Hydrogen', weight: 1.0079, symbol: 'H' },
     { position: 1, name: 'Hydrogen', weight: 1.0079, symbol: 'H' },
