@@ -12,7 +12,7 @@ import { ColumnSequenceDialogComponent } from '../../dialogs/column-sequence-dia
 import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.service';
 import { IAdminApiService } from 'src/app/common/services/admin-api/admin-api-interface';
 import { GlobalService } from 'src/app/common/services/global.service';
-import { DialogConstants, TableName, ToasterMessages, ToasterTitle, ToasterType ,Column,TableConstant,UniqueConstants,ColumnDef, Placeholders} from 'src/app/common/constants/strings.constants';
+import { DialogConstants, TableName, ToasterMessages, ToasterTitle, ToasterType ,Column,TableConstant,UniqueConstants,ColumnDef} from 'src/app/common/constants/strings.constants';
 import { RouteNames } from 'src/app/common/constants/menu.constants';
 
 @Component({
@@ -21,28 +21,25 @@ import { RouteNames } from 'src/app/common/constants/menu.constants';
   styleUrls: ['./reprocessed-transaction.component.scss'],
 })
 export class ReprocessedTransactionComponent implements OnInit {
-  placeholders = Placeholders;
-  fieldMappings = JSON.parse(localStorage.getItem('fieldMappings') ?? '{}');
-
   TRNSC_DATA = [
-    { colHeader: TableConstant.ImportDate, colDef: 'Import Date' , colTitle: 'Import Date' },
-    { colHeader: TableConstant.ImportBy, colDef: 'Import By', colTitle: 'Import By' },
-    { colHeader: 'importFileName', colDef: 'Import Filename', colTitle: 'Import Filename' },
-    { colHeader: TableConstant.transactionType, colDef: TableConstant.TransactionType, colTitle: TableConstant.TransactionType },
-    { colHeader: UniqueConstants.OrderNumber, colDef: Column.OrderNumber, colTitle: Column.OrderNumber },
-    { colHeader: TableConstant.LineNumber, colDef: 'Line Number', colTitle: 'Line Number' },
-    { colHeader: 'itemNumber', colDef: Column.ItemNumber, colTitle: this.fieldMappings?.itemNumber || this.placeholders.itemNumberFallback },
-    { colHeader: TableConstant.LotNumber, colDef: Column.LotNumber, colTitle: Column.LotNumber },
-    { colHeader: ColumnDef.ExpirationDate, colDef: TableConstant.ExpirationDate, colTitle: TableConstant.ExpirationDate },
-    { colHeader: TableConstant.SerialNumber, colDef: ColumnDef.SerialNumber, colTitle: ColumnDef.SerialNumber },
-    { colHeader: ColumnDef.TransactionQuantity, colDef: TableConstant.TransactionQuantity, colTitle: TableConstant.TransactionQuantity },
-    { colHeader: 'reasonMessage', colDef: 'Reason Message', colTitle: 'Reason Message' },
-    { colHeader: 'reason', colDef: 'Reason', colTitle: 'Reason' },
-    { colHeader: 'dateStamp', colDef: 'Date Stamp', colTitle: 'Date Stamp' },
-    { colHeader: 'nameStamp', colDef: 'Name Stamp', colTitle: 'Name Stamp' },
-    { colHeader: 'reprocessDate', colDef: 'ReProcess Date', colTitle: 'ReProcess Date' },
-    { colHeader: 'reprocessBy', colDef: 'ReProcess By', colTitle: 'ReProcess By' },
-    { colHeader: 'reprocessType', colDef: 'ReProcess Type', colTitle: 'ReProcess Type' },
+    { colHeader: TableConstant.ImportDate, colDef: 'Import Date' },
+    { colHeader: TableConstant.ImportBy, colDef: 'Import By' },
+    { colHeader: 'importFileName', colDef: 'Import Filename' },
+    { colHeader: TableConstant.transactionType, colDef: TableConstant.TransactionType },
+    { colHeader: UniqueConstants.OrderNumber, colDef: Column.OrderNumber },
+    { colHeader: TableConstant.LineNumber, colDef: 'Line Number' },
+    { colHeader: 'itemNumber', colDef: Column.ItemNumber },
+    { colHeader: TableConstant.LotNumber, colDef: Column.LotNumber },
+    { colHeader: ColumnDef.ExpirationDate, colDef: TableConstant.ExpirationDate },
+    { colHeader: TableConstant.SerialNumber, colDef: ColumnDef.SerialNumber },
+    { colHeader: ColumnDef.TransactionQuantity, colDef: TableConstant.TransactionQuantity },
+    { colHeader: 'reasonMessage', colDef: 'Reason Message' },
+    { colHeader: 'reason', colDef: 'Reason' },
+    { colHeader: 'dateStamp', colDef: 'Date Stamp' },
+    { colHeader: 'nameStamp', colDef: 'Name Stamp' },
+    { colHeader: 'reprocessDate', colDef: 'ReProcess Date' },
+    { colHeader: 'reprocessBy', colDef: 'ReProcess By' },
+    { colHeader: 'reprocessType', colDef: 'ReProcess Type' },
   ];
   public columnValues: any = [];
   public userData: any;

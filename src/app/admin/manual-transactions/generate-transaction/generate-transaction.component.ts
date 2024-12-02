@@ -25,7 +25,6 @@ import {ICommonApi} from 'src/app/common/services/common-api/common-api-interfac
 import {PrintApiService} from "../../../common/services/print-api/print-api.service";
 import {
   DialogConstants,
-  Placeholders,
   StringConditions,
   Style,
   ToasterTitle,
@@ -91,7 +90,6 @@ export class GenerateTransactionComponent implements OnInit {
   isLocation = false;
   emergency = false;
   isQuantityConfirmation: boolean;
-  placeholders = Placeholders;
   public iAdminApiService: IAdminApiService;
   public iCommonAPI: ICommonApi;
 

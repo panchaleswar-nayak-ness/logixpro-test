@@ -9,7 +9,7 @@ import { SharedService } from 'src/app/common/services/shared.service';
 import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.service';
 import { IAdminApiService } from 'src/app/common/services/admin-api/admin-api-interface';
 import { GlobalService } from 'src/app/common/services/global.service';
-import { Column, Placeholders, ToasterTitle, ToasterType } from 'src/app/common/constants/strings.constants';
+import { Column, ToasterTitle, ToasterType } from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-open-transaction-filters',
@@ -20,7 +20,6 @@ export class OpenTransactionFiltersComponent implements OnInit {
   @Output() nextScreen = new EventEmitter<string>();
   @Output() eventChange = new EventEmitter<Event>();
 
-  placeholders = Placeholders;
   floatLabelControl = new FormControl('auto' as FloatLabelType);
   hideRequiredControl = new FormControl(false);
   searchDeb = new Subject<string>();

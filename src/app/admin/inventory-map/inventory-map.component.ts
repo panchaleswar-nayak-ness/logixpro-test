@@ -29,7 +29,6 @@ import { DialogConstants, StringConditions, ToasterMessages, ToasterTitle, Toast
 import { RouteUpdateMenu } from 'src/app/common/constants/menu.constants';
 import { AppNames, AppRoutes, } from 'src/app/common/constants/menu.constants';
 import { ContextMenuFiltersService } from 'src/app/common/init/context-menu-filters.service';
-import { Placeholders } from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-inventory-map',
@@ -38,45 +37,42 @@ import { Placeholders } from 'src/app/common/constants/strings.constants';
 })
 
 export class InventoryMapComponent implements OnInit {
-  placeholders = Placeholders;
-  fieldMappings = JSON.parse(localStorage.getItem('fieldMappings') ?? '{}');
-    
    INVMAP_DATA = [
-    { colHeader: "locationID", colDef: "Alternate Light", colTitle: "Alternate Light" },
-    { colHeader: "bin", colDef: "Bin", colTitle: "Bin" },
-    { colHeader: "carousel", colDef: "Carousel", colTitle: "Carousel" },
-    { colHeader: "cellSize", colDef: "Cell Size", colTitle: "Cell Size" },
-    { colHeader: "dateSensitive", colDef: "Date Sensitive", colTitle: "Date Sensitive" },
-    { colHeader: "dedicated", colDef: "Dedicated", colTitle: "Dedicated" },
-    { colHeader: "description", colDef: "Description", colTitle: "Description" },
-    { colHeader: "expirationDate", colDef: "Expiration Date", colTitle: "Expiration Date" },
-    { colHeader: "invMapID", colDef: "Inv Map ID", colTitle: "Inv Map ID" },
-    { colHeader: "itemNumber", colDef: "Item Number", colTitle: this.fieldMappings?.itemNumber || this.placeholders.itemNumberFallback },
-    { colHeader: "itemQuantity", colDef: "Item Quantity", colTitle: "Item Quantity" },
-    { colHeader: "laserX", colDef: "Laser X", colTitle: "Laser X" },
-    { colHeader: "laserY", colDef: "Laser Y", colTitle: "Laser Y" },
-    { colHeader: "location", colDef: "Location", colTitle: "Location" },
-    { colHeader: "locationNumber", colDef: "Location Number", colTitle: "Location Number" },
-    { colHeader: "lotNumber", colDef: "Lot Number", colTitle: "Lot Number" },
-    { colHeader: "masterInvMapID", colDef: "Master Inv Map ID", colTitle: "Master Inv Map ID" },
-    { colHeader: "masterLocation", colDef: "Master Location", colTitle: "Master Location" },
-    { colHeader: "maxQuantity", colDef: "Maximum Quantity", colTitle: "Maximum Quantity" },
-    { colHeader: "minQuantity", colDef: "Min Quantity", colTitle: "Min Quantity" },
-    { colHeader: "putAwayDate", colDef: "Put Away Date", colTitle: "Put Away Date" },
-    { colHeader: "quantityAllocatedPick", colDef: "Quantity Allocated Pick", colTitle: "Quantity Allocated Pick" },
-    { colHeader: "quantityAllocatedPutAway", colDef: "Quantity Allocated Put Away", colTitle: "Quantity Allocated Put Away" },
-    { colHeader: "revision", colDef: "Revision", colTitle: "Revision" },
-    { colHeader: "row", colDef: "Row", colTitle: "Row" },
-    { colHeader: "serialNumber", colDef: "Serial Number", colTitle: "Serial Number" },
-    { colHeader: "shelf", colDef: "Shelf", colTitle: "Shelf" },
-    { colHeader: "unitOfMeasure", colDef: "Unit of Measure", colTitle: this.fieldMappings?.unitOfMeasure || this.placeholders.unitOfMeasureFallback },
-    { colHeader: "userField1", colDef: "User Field1", colTitle: this.fieldMappings?.userField1 || this.placeholders.userField1Fallback },
-    { colHeader: "userField2", colDef: "User Field2", colTitle: this.fieldMappings?.userField2 || this.placeholders.userField2Fallback },
-    { colHeader: "goldenZone", colDef: "Velocity Code", colTitle: "Velocity Code" },
-    { colHeader: "warehouse", colDef: "Warehouse", colTitle: "Warehouse" },
-    { colHeader: "zone", colDef: "Zone", colTitle: "Zone" },
+    { colHeader: "locationID", colDef: "Alternate Light" },
+    { colHeader: "bin", colDef: "Bin" },
+    { colHeader: "carousel", colDef: "Carousel" },
+    { colHeader: "cellSize", colDef: "Cell Size" },
+    { colHeader: "dateSensitive", colDef: "Date Sensitive" },
+    { colHeader: "dedicated", colDef: "Dedicated" },
+    { colHeader: "description", colDef: "Description" },
+    { colHeader: "expirationDate", colDef: "Expiration Date" },
+   
+    { colHeader: "invMapID", colDef: "Inv Map ID" },
+    { colHeader: "itemNumber", colDef: "Item Number" },
+    { colHeader: "itemQuantity", colDef: "Item Quantity" },
+    { colHeader: "laserX", colDef: "Laser X" },
+    { colHeader: "laserY", colDef: "Laser Y" },
+    { colHeader: "location", colDef: "Location" },
+    { colHeader: "locationNumber", colDef: "Location Number" },
+    { colHeader: "lotNumber", colDef: "Lot Number" },
+    { colHeader: "masterInvMapID", colDef: "Master Inv Map ID" },
+    { colHeader: "masterLocation", colDef: "Master Location" },
+    { colHeader: "maxQuantity", colDef: "Maximum Quantity" },
+    { colHeader: "minQuantity", colDef: "Min Quantity" },
+    { colHeader: "putAwayDate", colDef: "Put Away Date" },
+    { colHeader: "quantityAllocatedPick", colDef: "Quantity Allocated Pick" },
+    { colHeader: "quantityAllocatedPutAway", colDef: "Quantity Allocated Put Away" },
+    { colHeader: "revision", colDef: "Revision" },
+    { colHeader: "row", colDef: "Row" },
+    { colHeader: "serialNumber", colDef: "Serial Number" },
+    { colHeader: "shelf", colDef: "Shelf" },
+    { colHeader: "unitOfMeasure", colDef: "Unit of Measure" },
+    { colHeader: "userField1", colDef: "User Field1" },
+    { colHeader: "userField2", colDef: "User Field2" },
+    { colHeader: "goldenZone", colDef: "Velocity Code" },
+    { colHeader: "warehouse", colDef: "Warehouse" },
+    { colHeader: "zone", colDef: "Zone" },
   ];
-
   onDestroy$: Subject<boolean> = new Subject();
   hideRequiredControl = new FormControl(false);
   floatLabelControl = new FormControl('auto' as FloatLabelType);

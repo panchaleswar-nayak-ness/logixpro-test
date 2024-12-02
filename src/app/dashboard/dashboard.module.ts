@@ -1,4 +1,4 @@
-import { NgModule, APP_INITIALIZER, NO_ERRORS_SCHEMA } from '@angular/core';
+import { NgModule } from '@angular/core';
 import { BrowserModule } from "@angular/platform-browser";
 import { CommonModule } from '@angular/common';
 import { ToastrModule } from 'ngx-toastr'; 
@@ -8,8 +8,6 @@ import { SideNavComponent } from './side-nav/side-nav.component';
 import { MainComponent } from './main/main.component';
 import { MaterialModule } from '../material-module';
 import { GeneralModule } from '../gen-module';
-import { FieldMappingService } from '../common/services/field-mapping/field-mapping.service';
-import { initializeFieldMappings } from '../common/services/field-mappings-initializer/field-mappings-initializer.service';
 
 @NgModule({
   declarations: [
@@ -34,17 +32,7 @@ import { initializeFieldMappings } from '../common/services/field-mappings-initi
       }
     })
   ],
-  providers: [
-    FieldMappingService,
-    {
-      provide: APP_INITIALIZER,
-      useFactory: initializeFieldMappings,
-      deps: [FieldMappingService],
-      multi: true,
-    },
-],
-schemas: [NO_ERRORS_SCHEMA],
-exports:[
+  exports:[
     HeaderComponent,
     SideNavComponent,
   ]

@@ -7,7 +7,7 @@ import labels from 'src/app/common/labels/labels.json';
 import { IInductionManagerApiService } from 'src/app/common/services/induction-manager-api/induction-manager-api-interface';
 import { InductionManagerApiService } from 'src/app/common/services/induction-manager-api/induction-manager-api.service';
 import { GlobalService } from 'src/app/common/services/global.service';
-import { StringConditions, ToasterMessages, ToasterTitle, ToasterType ,Column,zoneType,DialogConstants,Style,TableConstant,UniqueConstants,ColumnDef, Placeholders} from 'src/app/common/constants/strings.constants';
+import { StringConditions, ToasterMessages, ToasterTitle, ToasterType ,Column,zoneType,DialogConstants,Style,TableConstant,UniqueConstants,ColumnDef} from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-complete-pick-batch',
@@ -32,7 +32,6 @@ export class CompletePickBatchComponent{
   startRow:number = 0;
   endRow:number = 10;
   totalTransactions: number = 0;
-  placeholders = Placeholders;
 
   constructor(
     private global:GlobalService,

@@ -9,7 +9,7 @@ import { IAdminApiService } from 'src/app/common/services/admin-api/admin-api-in
 import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.service';
 import { ICommonApi } from 'src/app/common/services/common-api/common-api-interface';
 import { CommonApiService } from 'src/app/common/services/common-api/common-api.service';
-import {  Placeholders, UniqueConstants } from 'src/app/common/constants/strings.constants';
+import {  UniqueConstants } from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-set-item-location',
@@ -17,7 +17,6 @@ import {  Placeholders, UniqueConstants } from 'src/app/common/constants/strings
   styleUrls: ['./set-item-location.component.scss'],
 })
 export class SetItemLocationComponent implements OnInit {
-  placeholders = Placeholders;
   @ViewChild('itm_nmb') itm_nmb: ElementRef;
   itemNumber;
   floatLabelControl: any = new FormControl(UniqueConstants.item as FloatLabelType);

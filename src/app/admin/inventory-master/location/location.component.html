@@ -91,7 +91,7 @@
 
 
       <ng-container matColumnDef="unitOfMeasure">
-        <th mat-header-cell mat-sort-header  *matHeaderCellDef replacePlaceholder [replacePlaceHolder]="placeholders.unitOfMeasure" [fallbackPlaceHolder]="placeholders.unitOfMeasureFallback">UM</th>
+        <th mat-header-cell mat-sort-header  *matHeaderCellDef>Unit Of Measure</th>
         <td mat-cell *matCellDef="let element" [ngClass]="{'quarantineColor': element.warehouse.includes('Quarantine')}"> {{element.unitOfMeasure}} </td>
       </ng-container>
 

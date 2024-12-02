@@ -71,7 +71,7 @@
                             #autoOrder="matAutocomplete" (optionSelected)="orderSelected()">
                             <h6 class="card-header matAutoCompHeader ">
                                 <span class="w-140px">Order Number</span> <span class="w-200px">Date</span>
-                                <span class="w-160px">Transaction Type</span> <span class="w-140px" replacePlaceholder [replacePlaceHolder]="placeholders.itemNumber" [fallbackPlaceHolder]="placeholders.itemNumberFallback">Item Number</span> <span class="w-180px">Transaction Quantity</span>
+                                <span class="w-160px">Transaction Type</span> <span class="w-140px">Item Number</span> <span class="w-180px">Transaction Quantity</span>
                             </h6>
                             <mat-option class="matAutoCompTableContent" *ngFor="let option of orderList"
                                 [value]="option.orderNumber">
@@ -88,13 +88,13 @@
                 <span class="bg-tertiary-900 d-none d-lg-flex mb-3 spacer-style"></span>
                 <div class="d-flex w-100 mb-3 flex-grow-1">
                     <mat-form-field class="w-100 bg-white" appearance="outline">
-                        <mat-label replacePlaceholder [replacePlaceHolder]="placeholders.itemNumber" [fallbackPlaceHolder]="placeholders.itemNumberFallback">Item Number</mat-label>
+                        <mat-label>{{fieldNames?.itemNumber}}</mat-label>
                         <input type="text" maxlength="50" matInput [matAutocomplete]="auto" [(ngModel)]="itemNumber" class="ps-0">
                         <button matSuffix *ngIf="itemNumber" class="clear-btn"  (click)="itemNumber=''"><mat-icon class="text-20 text-chrome-600">cancel</mat-icon></button>
                         <mat-autocomplete class="card custom-scroll" panelWidth="auto" autoActiveFirstOption
                             #auto="matAutocomplete" (optionSelected)="listSelected()">
                             <h6 class="card-header matAutoCompHeader ">
-                                <span class="w-140px" replacePlaceholder [replacePlaceHolder]="placeholders.itemNumber" [fallbackPlaceHolder]="placeholders.itemNumberFallback">Item Number</span> <span class="searchColumn w-200px">Date</span>
+                                <span class="w-140px">Item Number</span> <span class="searchColumn w-200px">Date</span>
                                 <span class="w-140px">Transaction Type</span> <span class="w-140px">Order Number</span> <span class="w-180px">Transaction
                                     Quantity</span>
                             </h6>
