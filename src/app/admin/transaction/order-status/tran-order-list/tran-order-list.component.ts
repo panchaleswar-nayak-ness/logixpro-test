@@ -354,10 +354,7 @@ export class TranOrderListComponent implements OnInit, AfterViewInit {
           if (
             res.data?.orderStatus.every(
               (e: any) =>
-                e.transactionType === 'Put Away' &&
-                e.completedDate === '' &&
-                e.completedBy === '' &&
-                e.completedQuantity === '0'
+                e.transactionType === 'Put Away' 
             )
           ) {
             this.isOrderCompleted = false;
