@@ -18,12 +18,12 @@
   </span>
 </div>
 
-<div class="card-body">
-  <div class="container">
+<div class="card-body minHeight" >
+  <div>
     <div class="row">
       <!-- Radio Buttons -->
       <div class="d-flex align-items-center mb-4">
-        <mat-radio-group [(ngModel)]="isFilterByOrderNumbers">
+        <mat-radio-group [(ngModel)]="isFilterByOrderNumbers" color="primary" class="d-flex align-items-center gap-12 flex-wrap">
           <mat-radio-button [value]="true">Filter by Order Numbers</mat-radio-button>
           <mat-radio-button [value]="false">Filter by Order Range</mat-radio-button>
         </mat-radio-group>

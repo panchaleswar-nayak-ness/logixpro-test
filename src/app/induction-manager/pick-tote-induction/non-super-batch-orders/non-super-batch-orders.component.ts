@@ -202,6 +202,7 @@ export class NonSuperBatchOrdersComponent implements OnInit, AfterViewInit {
   filterOrderNum() {
     const dialogRef: any = this.global.OpenDialog(FilterOrderNumberComponent, {
       height: DialogConstants.auto,
+      minHeight:'480px',
       width: Style.w560px,
       autoFocus: DialogConstants.autoFocus,
       data: {
@@ -307,7 +308,7 @@ export class NonSuperBatchOrdersComponent implements OnInit, AfterViewInit {
         const values = res.data.imPreference;
 
         valueToInduct.maxToteQuantity = values.maximumQuantityperTote;
-        console.log(valueToInduct);
+     
 
         if (valueToInduct.toteScanned) {
           this.Api.PerformNonSuperBatchOrderInduction(valueToInduct)

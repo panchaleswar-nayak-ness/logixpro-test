@@ -295,6 +295,7 @@ export class SuperBatchOrdersComponent implements OnInit, AfterViewInit {
 
           this.Api.PerformSuperBatchOrderInduction(valueToInduct)
             .pipe(
+              
               catchError((errResponse) => {
                 if (errResponse.error.status === 400) {
                   this.global.ShowToastr(
@@ -364,15 +365,15 @@ export class SuperBatchOrdersComponent implements OnInit, AfterViewInit {
                 ) {
                   this.global.ShowToastr(
                     ToasterType.Info,
-                    `Orders: ${innerResponse?.data?.notInductedOrders.join(', ')} skipped due to exceeding tote capacity, max batch size, or the max tote quantity`,
-                    ToasterTitle.Alert
+                    'Some orders were skipped as they exceed the allowed tote capacity,maximuum batch size or tote quantity',
+                    ToasterTitle.Info
                   );
                 }
               } else {
                 this.global.ShowToastr(
                   ToasterType.Info,
                   innerResponse.responseMessage,
-                  ToasterTitle.Alert
+                  ToasterTitle.Info
                 );
               }
 
