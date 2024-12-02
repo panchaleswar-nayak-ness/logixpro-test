@@ -6,7 +6,7 @@ import {
   Input,
   SimpleChanges,
   EventEmitter,
-  Output
+  Output,
 } from '@angular/core';
 import { MatSort, Sort } from '@angular/material/sort';
 import { MatPaginator } from '@angular/material/paginator';
@@ -19,8 +19,21 @@ import { SharedService } from 'src/app/common/services/shared.service';
 import { IAdminApiService } from 'src/app/common/services/admin-api/admin-api-interface';
 import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.service';
 import { GlobalService } from 'src/app/common/services/global.service';
-import { DialogConstants, LiveAnnouncerMessage, ToasterTitle, ToasterType, localStorageKeys ,StringConditions,UniqueConstants, KeyboardKeys, Style} from 'src/app/common/constants/strings.constants';
-import { AppPermissions, AppRoutes } from 'src/app/common/constants/menu.constants';
+import {
+  DialogConstants,
+  LiveAnnouncerMessage,
+  ToasterTitle,
+  ToasterType,
+  localStorageKeys,
+  StringConditions,
+  UniqueConstants,
+  KeyboardKeys,
+  Style,
+} from 'src/app/common/constants/strings.constants';
+import {
+  AppPermissions,
+  AppRoutes,
+} from 'src/app/common/constants/menu.constants';
 import { AlertConfirmationComponent } from 'src/app/dialogs/alert-confirmation/alert-confirmation.component';
 
 @Component({
@@ -29,7 +42,6 @@ import { AlertConfirmationComponent } from 'src/app/dialogs/alert-confirmation/a
   styleUrls: ['./batch-order-list.component.scss'],
 })
 export class BatchOrderListComponent implements OnInit {
-
   private subscription: Subscription = new Subscription();
   batchOrderDataTable: any;
   toteNumber: number = 1;
@@ -41,6 +53,17 @@ export class BatchOrderListComponent implements OnInit {
     this.batchOrderDataTable = new MatTableDataSource(val);
     this.batchOrderDataTable.paginator = this.paginator;
     this.batchOrderDataTable.sort = this.sort;
+
+    this.batchOrderDataTable.sortingDataAccessor = (
+      row: any,
+      columnName: string
+    ) => {
+      if (columnName === 'status') {
+        return this.checkOrderStatus(row);
+      } else {
+        return '';
+      }
+    };
   }
   @Input()
   set transTypeEvent(event: Event) {
@@ -57,7 +80,7 @@ export class BatchOrderListComponent implements OnInit {
   fixedTote = 1;
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
-  orderNumberLookup:string;
+  orderNumberLookup: string;
 
   constructor(
     private sharedService: SharedService,
@@ -93,13 +116,13 @@ export class BatchOrderListComponent implements OnInit {
   }
 
   appendMax() {
-    let dataLength = this.batchOrderDataTable['_data']['_value'].length
+    let dataLength = this.batchOrderDataTable['_data']['_value'].length;
     this.max = parseInt(this.extraField) - this.selectedOrderLength;
     if (this.max > dataLength) {
-      this.max = dataLength
+      this.max = dataLength;
     }
     for (let index = 0; index < this.max; index++) {
-      this.addOrders(this.batchOrderDataTable['_data']['_value'][index])
+      this.addOrders(this.batchOrderDataTable['_data']['_value'][index]);
     }
   }
 
@@ -111,26 +134,29 @@ export class BatchOrderListComponent implements OnInit {
     }
   }
 
-  orderNumberLookupFun(e:any){
-    if (e.key === KeyboardKeys.Enter && this.orderNumberLookup != "") {
-      let lookup = this.batchOrderDataTable.filteredData.filter((x:any) => x.orderNumber.toLowerCase() == this.orderNumberLookup.toLowerCase());
-      if(lookup?.length > 0){
+  orderNumberLookupFun(e: any) {
+    if (e.key === KeyboardKeys.Enter && this.orderNumberLookup != '') {
+      let lookup = this.batchOrderDataTable.filteredData.filter(
+        (x: any) =>
+          x.orderNumber.toLowerCase() == this.orderNumberLookup.toLowerCase()
+      );
+      if (lookup?.length > 0) {
         this.addOrders(lookup[0]);
-      }
-      else{
+      } else {
         this.global.OpenDialog(AlertConfirmationComponent, {
           height: 'auto',
           width: Style.w560px,
           data: {
-            message: 'The entered order was not found within the order selection list table display.',
+            message:
+              'The entered order was not found within the order selection list table display.',
             heading: 'Order Not Found',
-            disableCancel:true
+            disableCancel: true,
           },
           autoFocus: DialogConstants.autoFocus,
-          disableClose:true
+          disableClose: true,
         });
       }
-      this.orderNumberLookup = "";
+      this.orderNumberLookup = '';
     }
   }
 
@@ -150,8 +176,10 @@ export class BatchOrderListComponent implements OnInit {
   }
 
   openView(element) {
-    let userRights = JSON.parse(localStorage.getItem(localStorageKeys.UserRights) ?? '');
-    let permissions = userRights.includes(AppPermissions.OrderStatus)
+    let userRights = JSON.parse(
+      localStorage.getItem(localStorageKeys.UserRights) ?? ''
+    );
+    let permissions = userRights.includes(AppPermissions.OrderStatus);
     if (permissions) {
       this.router.navigate([]).then(() => {
         window.open(
@@ -167,20 +195,21 @@ export class BatchOrderListComponent implements OnInit {
   switchToOS(order, transType) {
     let payload = {
       order: order,
-      transType: transType
+      transType: transType,
     };
-    this.iAdminApiService
-      .DetailView(payload)
-      .subscribe((res: any) => {
-        const { data, isExecuted } = res;
-        if (isExecuted && data.length > 0) {
-          this.openBatchViewDetail(data);
-        }
-        else {
-          this.global.ShowToastr(ToasterType.Error, this.global.globalErrorMsg(), ToasterTitle.Error);
-          console.log("DetailView", res.responseMessage);
-        }
-      });
+    this.iAdminApiService.DetailView(payload).subscribe((res: any) => {
+      const { data, isExecuted } = res;
+      if (isExecuted && data.length > 0) {
+        this.openBatchViewDetail(data);
+      } else {
+        this.global.ShowToastr(
+          ToasterType.Error,
+          this.global.globalErrorMsg(),
+          ToasterTitle.Error
+        );
+        console.log('DetailView', res.responseMessage);
+      }
+    });
   }
 
   openBatchViewDetail(detailData?): void {
@@ -197,23 +226,19 @@ export class BatchOrderListComponent implements OnInit {
   }
 
   checkOrderStatus(order: any): string {
+
     if (order.isReprocess === false) {
-        return 'Open';
+      return 'Open';
     } else {
-        return 'Re-process';
+      return 'Re-process';
     }
-}
-
-
-getColors(order: any): string {
-  if ( order.isReprocess === false) {
-      return 'background-color: #FFF0D6;color:#4D3B1A';
-  } 
-  else {
-    return 'background-color:   #F7D0DA;color:#4D0D1D';
-      
   }
-}
 
-
+  getColors(order: any): string {
+    if (order.isReprocess === false) {
+      return 'background-color: #FFF0D6;color:#4D3B1A';
+    } else {
+      return 'background-color:   #F7D0DA;color:#4D0D1D';
+    }
+  }
 }
