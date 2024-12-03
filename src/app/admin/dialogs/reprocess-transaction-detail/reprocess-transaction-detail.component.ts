@@ -10,6 +10,7 @@ import { ICommonApi } from 'src/app/common/services/common-api/common-api-interf
 import { CommonApiService } from 'src/app/common/services/common-api/common-api.service';
 import { GlobalService } from 'src/app/common/services/global.service';
 import { ToasterTitle, ToasterType ,ToasterMessages,TableConstant,ColumnDef,UniqueConstants,StringConditions} from 'src/app/common/constants/strings.constants';
+import { format, parse } from 'date-fns';
 
 @Component({
   selector: 'app-reprocess-transaction-detail',
@@ -108,6 +109,23 @@ export class ReprocessTransactionDetailComponent implements OnInit {
   }
 
   editTransaction() { 
+
+    // this.expDate = this.expDate !== '' ? format(new Date(this.expDate), "yyyy-MM-dd'T'HH:mm:ss.SSSxxx") : '';
+    // this.reqDate = this.reqDate !== '' ? format(new Date(this.reqDate), "yyyy-MM-dd'T'HH:mm:ss.SSSxxx") : '';
+
+    let finalExpiryDate = new Date(this.expDate);
+    let finalReqDate = new Date(this.reqDate);
+
+    if (this.isValidDate(finalExpiryDate)) {
+      // this.expDate = this.isValidDate(finalExpiryDate) ? finalExpiryDate.toISOString() : '';
+      this.expDate = this.expDate !== '' ? format(new Date(this.expDate), "yyyy-MM-dd'T'HH:mm:ss.SSSxxx") : '';
+    }
+
+    if (this.isValidDate(finalReqDate)) {
+      // this.reqDate = this.isValidDate(finalReqDate) ? finalReqDate.toISOString() : '';
+      this.reqDate = this.reqDate !== '' ? format(new Date(this.reqDate), "yyyy-MM-dd'T'HH:mm:ss.SSSxxx") : '';
+    }
+
     let payload = {
       "id": this.transactionID,
       "oldValues": [
@@ -117,14 +135,13 @@ export class ReprocessTransactionDetailComponent implements OnInit {
         this.editTransactionForm.get(ColumnDef.UnitOfMeasure)?.value,
         this.editTransactionForm.get(TableConstant.SerialNumber)?.value,
         this.editTransactionForm.get(TableConstant.LotNumber)?.value?.toString(),
-        this.dayIncrement(this.expDate),
+        this.expDate,
         this.editTransactionForm.get(ColumnDef.Revision)?.value,
         this.editTransactionForm.get(TableConstant.Notes)?.value,
         this.editTransactionForm.get("userField1")?.value,
         this.editTransactionForm.get(ColumnDef.userField2)?.value,
         this.editTransactionForm.get(ColumnDef.HostTransactionId)?.value,
-        this.dayIncrement(this.reqDate),
-
+        this.reqDate,
         this.editTransactionForm.get(TableConstant.BatchPickID)?.value,
         this.editTransactionForm.get(TableConstant.LineNumber)?.value?.toString(),
         this.editTransactionForm.get(TableConstant.LineSequence)?.value?.toString(),
@@ -188,10 +205,10 @@ export class ReprocessTransactionDetailComponent implements OnInit {
 
   onDateChange(event: any, fromExpDate = ""): void {
     if ((fromExpDate !== "")) {
-      this.expDate = new Date(event).toISOString();
+      this.expDate = format(new Date(event), "yyyy-MM-dd'T'HH:mm:ss.SSSxxx");
     }
     else {
-      this.reqDate = new Date(event).toISOString();
+      this.reqDate = format(new Date(event), "yyyy-MM-dd'T'HH:mm:ss.SSSxxx");
     }
 
   }
@@ -202,71 +219,73 @@ export class ReprocessTransactionDetailComponent implements OnInit {
       history: false,
     }
     this.iAdminApiService.TransactionByID(payload).subscribe(
-      {next: (res: any) => {
-        if (res.data && res.isExecuted) {
-          let finalExpiryDate, finalReqDate;
-          try {
-            if (res.data[0].expirationDate != '') {
-              finalExpiryDate = new Date(res.data[0].expirationDate);
+      {
+        next: (res: any) => {
+          if (res.data && res.isExecuted) {
+            try {
+
+              const reqDate = res.data[0].requiredDate;
+              const expDate = res.data[0].expirationDate;
+
+              // finalExpiryDate = parse(expDate, 'dd/MM/yyyy hh:mm:ss a', new Date());
+              let finalExpiryDate = new Date(expDate);
+              // finalReqDate = parse(reqDate, 'dd/MM/yyyy hh:mm:ss a', new Date());
+              let finalReqDate = new Date(reqDate);
+
+              if (this.isValidDate(finalExpiryDate)) {
+                this.expDate = this.isValidDate(finalExpiryDate) ? finalExpiryDate.toISOString() : '';
+              }
+
+              if (this.isValidDate(finalReqDate)) {
+                this.reqDate = this.isValidDate(finalReqDate) ? finalReqDate.toISOString() : '';
+              }
 
             }
-            if (res.data[0].requiredDate != '') {
-              finalReqDate = new Date(res.data[0].requiredDate);
+            catch (e) { }
+
+            if (!res.data[0].label) { this.label = false; } else { this.label = true; }
+            if (res.data[0].emergency == StringConditions.False) { this.emergency = false; } else { this.emergency = true; }
+            
+            this.editTransactionForm.patchValue({
+              'transactionQuantity': res.data[0].transactionQuantity,
+              'unitOfMeasure': res.data[0].unitOfMeasure,
+              "serialNumber": res.data[0].serialNumber,
+              "lotNumber": res.data[0].lotNumber,
+              'expirationDate': this.expDate != "1900-01-01T19:31:48.000Z" ? this.expDate : " ",
+              "revision": res.data[0].revision,
+              'notes': res.data[0].notes,
+              "userField1": res.data[0].userField1,
+              "userField2": res.data[0].userField2,
+              "hostTransactionID": res.data[0].hostTransactionID,
+              "requiredDate": this.reqDate != "1900-01-01T19:31:48.000Z" ? this.reqDate : " ",
+              'batchPickID': res.data[0].batchPickID,
+              "lineNumber": res.data[0].lineNumber,
+              'lineSequence': res.data[0].lineSequence,
+              'priority': res.data[0].priority,
+              'label': this.label.toString(),
+              "emergency": this.emergency.toString(),
+              "wareHouse": res.data[0].wareHouse,
+              "orderNumber": res.data[0].orderNumber,
+              "itemNumber": res.data[0].itemNumber,
+              "transactionType": res.data[0].transactionType,
+              'importDate': res.data[0].importDate,
+              "importBy": res.data[0].importBy,
+              "zone": res.data[0].zone,
+              'carousel': res.data[0].carousel,
+              'row': res.data[0].row,
+              "shelf": res.data[0].shelf,
+              "bin": res.data[0].bin,
+              "reason": res.data[0].reason,
+              "reasonMessage": res.data[0].reasonMessage,
+              "description": res.data[0].description
+            });
 
 
-            }
-
-            this.expDate = finalExpiryDate ? finalExpiryDate.toISOString() : '';
-            this.reqDate = finalReqDate ? finalReqDate.toISOString() : '';
+          } else {
+            this.global.ShowToastr(ToasterType.Error,ToasterMessages.SomethingWentWrong, ToasterTitle.Error);
+            console.log("TransactionByID",res.responseMessage);
           }
-          catch (e) { }
-
-          this.expDate = this.expDate != "1900-01-01T19:31:48.000Z" ? this.expDate : " ";
-          this.reqDate = this.reqDate != "1900-01-01T19:31:48.000Z" ? this.reqDate : " ";
-
-
-          if (!res.data[0].label) { this.label = false; } else { this.label = true; }
-          if (res.data[0].emergency == StringConditions.False) { this.emergency = false; } else { this.emergency = true; }
-          this.editTransactionForm.patchValue({
-            'transactionQuantity': res.data[0].transactionQuantity,
-            'unitOfMeasure': res.data[0].unitOfMeasure,
-            "serialNumber": res.data[0].serialNumber,
-            "lotNumber": res.data[0].lotNumber,
-            'expirationDate': this.expDate != "1900-01-01T19:31:48.000Z" ? this.expDate : " ",
-            "revision": res.data[0].revision,
-            'notes': res.data[0].notes,
-            "userField1": res.data[0].userField1,
-            "userField2": res.data[0].userField2,
-            "hostTransactionID": res.data[0].hostTransactionID,
-            "requiredDate": this.reqDate != "1900-01-01T19:31:48.000Z" ? this.reqDate : " ",
-            'batchPickID': res.data[0].batchPickID,
-            "lineNumber": res.data[0].lineNumber,
-            'lineSequence': res.data[0].lineSequence,
-            'priority': res.data[0].priority,
-            'label': this.label.toString(),
-            "emergency": this.emergency.toString(),
-            "wareHouse": res.data[0].wareHouse,
-            "orderNumber": res.data[0].orderNumber,
-            "itemNumber": res.data[0].itemNumber,
-            "transactionType": res.data[0].transactionType,
-            'importDate': res.data[0].importDate,
-            "importBy": res.data[0].importBy,
-            "zone": res.data[0].zone,
-            'carousel': res.data[0].carousel,
-            'row': res.data[0].row,
-            "shelf": res.data[0].shelf,
-            "bin": res.data[0].bin,
-            "reason": res.data[0].reason,
-            "reasonMessage": res.data[0].reasonMessage,
-            "description": res.data[0].description
-          });
-
-
-        } else {
-          this.global.ShowToastr(ToasterType.Error,ToasterMessages.SomethingWentWrong, ToasterTitle.Error);
-          console.log("TransactionByID",res.responseMessage);
-        }
-      },
+        },
       }
     );
   }
@@ -280,7 +299,21 @@ export class ReprocessTransactionDetailComponent implements OnInit {
     } else {
       return '';
     }
-
-
   }
+
+  isValidDate(date: any) {
+    // Check for falsy values like '', null, undefined
+    if (!date) return false;
+  
+    // Convert to a Date object if it's not already one
+    const parsedDate = new Date(date);
+  
+    // Check if the date is valid
+    if (isNaN(parsedDate.getTime())) return false;
+  
+    // Check if the date is not 01-01-1970
+    const epochDate = new Date('1970-01-01T00:00:00Z');
+    return parsedDate.getTime() !== epochDate.getTime();
+  }
+  
 }

@@ -187,6 +187,8 @@ import { LookupHotPickComponent } from './admin-preferences/system-preferences/s
 import { LookupHotPutAwayComponent } from './admin-preferences/system-preferences/sp-lookup-lists/lookup-hot-put-away/lookup-hot-put-away.component';
 import { LookupHotMoveComponent } from './admin-preferences/system-preferences/sp-lookup-lists/lookup-hot-move/lookup-hot-move.component';
 import { LookupBlindInductionComponent } from './admin-preferences/system-preferences/sp-lookup-lists/lookup-blind-induction/lookup-blind-induction.component';
+import { ImportCountBatchesComponent } from './cycle-counts/import-count-batches/import-count-batches.component';
+import { FilterItemNumbersComponentCycleCount } from './cycle-counts/filter-item-numbers_cycle_count/filter-item-numbers_cycle_count.component';
 
 @NgModule({
     declarations: [
@@ -232,6 +234,8 @@ import { LookupBlindInductionComponent } from './admin-preferences/system-prefer
         CreateTransactionComponent,
         CountQueueComponent,
         ImportFieldMappingComponent,
+        ImportCountBatchesComponent,
+        FilterItemNumbersComponentCycleCount,
         ReelTrackingComponent,
         ScanCodesComponent,
         LocationAssignmentComponent,

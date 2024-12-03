@@ -306,6 +306,15 @@ export class AdminApiService implements IAdminApiService {
     return this.Api.GetCCQueue(payload);
   }
 
+  public GetImportBatchCount(body: any) {
+    const payload = {
+      username: this.userData.userName,
+      wsid: this.userData.wsid,
+      ...body
+    }
+    return this.Api.GetImportBatchCount(payload);
+  }
+
   public GetMoveItemsTable(body: any) {
     const payload = {
       username: this.userData.userName,
@@ -2032,15 +2041,6 @@ export class AdminApiService implements IAdminApiService {
     }
     return this.Api.PrintPutAwayItem(payload);
   }
-
-  public AddOpenTransaction(body: any) {
-    const payload = {
-      ...body
-    }
-    return this.Api.AddOpenTransaction(payload);
-  }
-
-
 
   public AddCompleteTransaction(body: any) {
     const payload = {

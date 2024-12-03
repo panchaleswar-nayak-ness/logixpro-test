@@ -1,5 +1,5 @@
 import { Component, OnInit, Inject } from '@angular/core';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { SelectionTransactionForToteExtendComponent } from '../selection-transaction-for-tote-extend/selection-transaction-for-tote-extend.component';
 import { ConfirmationDialogComponent } from 'src/app/admin/dialogs/confirmation-dialog/confirmation-dialog.component';
 import { IInductionManagerApiService } from 'src/app/common/services/induction-manager-api/induction-manager-api-interface';
@@ -44,13 +44,21 @@ export class SelectionTransactionForToteComponent implements OnInit {
   lowerBound : number = 1;
   upperBound : number = 5; 
   blindInductionReason:boolean = false
+  openFrom: string = '';
+  toteQuantity: any;
+  expirationDate: any;
+  transactionQuantity: any;
 
   showBtnNewPutAwayForSameSKU : boolean = true;
   
   public iInductionManagerApi: IInductionManagerApiService;
   public iAdminApiService : IAdminApiService;
+  formControlName: any;
+  processForm: any;
+  val: any;
 
   constructor(
+    private dialog: MatDialog ,
     private global: GlobalService,
     public inductionManagerApi: InductionManagerApiService,
     public dialogRef: MatDialogRef<SelectionTransactionForToteComponent>,
@@ -75,6 +83,25 @@ export class SelectionTransactionForToteComponent implements OnInit {
     this.zone = this.data.zones;
     this.batchID = this.data.batchID;
     this.fieldNames = this.data.propFields;
+    this.openFrom = this.data.openFrom;
+  }
+
+  closeAllDialogue() {
+  this.dialogRef.close(false);
+  }
+
+  selectedData(id, itemNumber, lotNumber, transactionQuantity, expirationDate) {
+  // this.dialogRef.close(true);
+ 
+  this.dialogRef.close({
+    refreshdata: true,
+    id: id,               // Replace `someId` with the actual variable or value for `id`
+    itemNumber: itemNumber,  // Replace `someItemNumber` with the actual variable or value for `itemNumber`
+    lotNumber: lotNumber,
+    quantity: transactionQuantity,
+    expirationDate: expirationDate,
+
+  });
   }
 
   refresh() {
@@ -148,6 +175,14 @@ export class SelectionTransactionForToteComponent implements OnInit {
   
       dialogRef.afterClosed().subscribe((res) => { if (res) this.dialogRef.close(res); });
     }
+
+
+
+
+
+  
+
+   
   }
 
   rightClick() {

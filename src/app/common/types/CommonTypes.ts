@@ -37,6 +37,7 @@ export interface OpenTransactions {
     lotNumber: string,
     hostTransactionID: string,
     transactionQuantity: number,
+    expirationDate: string,
     serialNumber: string,
     location: string,
     userField1: string,

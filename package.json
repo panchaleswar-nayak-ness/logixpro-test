@@ -31,6 +31,7 @@
     "bootstrap": "^5.2.0",
     "datatables.net-bs5": "^1.11.3",
     "datatables.net-dt": "^1.11.3",
+    "date-fns": "^2.29.3",
     "echarts": "^5.5.1",
     "jquery": "^3.6.0",
     "jspdf": "^2.5.1",
@@ -40,6 +41,7 @@
     "ngx-toastr": "^15.2.1",
     "rxjs": "~7.5.0",
     "tslib": "^2.3.0",
+    "xlsx": "^0.18.5",
     "zone.js": "~0.11.4"
   },
   "devDependencies": {

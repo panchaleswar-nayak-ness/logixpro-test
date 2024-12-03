@@ -936,7 +936,8 @@ async clearBatchData(){
               defaultPutAwayQuantity: this.processPutAwayIndex.imPreference.defaultPutAwayQuantity,
               autoForwardReplenish: this.processPutAwayIndex.imPreference.autoForwardReplenish,
               imPreference: this.processPutAwayIndex.imPreference,
-              propFields:this.fieldNames
+              propFields:this.fieldNames,
+              openFrom: 'process put-away'
             }
           });
           dialogRef.afterClosed().subscribe((result) => {
@@ -1023,7 +1024,8 @@ async clearBatchData(){
           defaultPutAwayQuantity: this.processPutAwayIndex.imPreference.defaultPutAwayQuantity,
           autoForwardReplenish: this.processPutAwayIndex.imPreference.autoForwardReplenish,
           imPreference: this.processPutAwayIndex.imPreference,
-          propFields:this.fieldNames
+          propFields:this.fieldNames,
+          openFrom: 'process put-away'
         }
       });
 

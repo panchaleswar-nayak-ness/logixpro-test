@@ -3,6 +3,7 @@ import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dial
 import { CellSizeComponent } from '../cell-size/cell-size.component';
 import { VelocityCodeComponent } from '../velocity-code/velocity-code.component';
 import { WarehouseComponent } from '../warehouse/warehouse.component';
+
 import {
   AbstractControl,
   FormBuilder,
@@ -28,6 +29,12 @@ import { GlobalService } from 'src/app/common/services/global.service';
 import { Subject, debounceTime, distinctUntilChanged } from 'rxjs';
 import { FloatLabelType } from '@angular/material/form-field';
 import { DialogConstants, ToasterTitle, ToasterType ,zoneType,ColumnDef,Column,TableConstant,UniqueConstants,StringConditions} from 'src/app/common/constants/strings.constants';
+import { ConfirmationDialogComponent } from '../confirmation-dialog/confirmation-dialog.component';
+
+
+
+
+
 
 type InventoryMapFormData = {
   location: FormControl<string | null>;
@@ -112,10 +119,14 @@ export interface InventoryMapDataStructure {
 export class AddInvMapLocationComponent implements OnInit {
   addInvMapLocation: FormGroup<InventoryMapFormData>;
   clearInvMapLocation: FormGroup;
-
+  allowClearWholeLocation: boolean = false;
+  buttonColor: 'primary' | 'warn' = 'warn';
+isButtonDisabled: boolean = true;
   locZoneList: any[] = [];
   itemNumberList: any[] = [];
   zoneList: any[] = [];
+  locationzone: any = []; 
+  duplicateLocationZone: any = [];
   filteredOptions: Observable<any[]>;
   filteredItemNum: Observable<any[]>;
   itemDescription: any;
@@ -236,7 +247,8 @@ export class AddInvMapLocationComponent implements OnInit {
 
   ngOnInit(): void {
     this.userData = this.authService.userData();
-    this.fieldNames=this.data?.fieldName;
+    this.fieldNames = this.data?.fieldName;
+
     if (this.data.detailData) {
       this.getDetailInventoryMapData = this.data.detailData;
       this.zone = this.getDetailInventoryMapData.zone;
@@ -249,43 +261,65 @@ export class AddInvMapLocationComponent implements OnInit {
       this.unitOFMeasure = this.getDetailInventoryMapData.unitOfMeasure;
       this.updateItemNumber();
     }
+
     this.initializeDataSet();
+
+    this.getLocationZones();
+
+    this.addInvMapLocation.get('allowClearWholeLocation')?.valueChanges.subscribe(value => {
+      this.allowClearWholeLocation = value === 'true'; 
+    });
+
     this.searchItemNumbers = this.getDetailInventoryMapData.itemNumber;
 
-
     this.iAdminApiService.getLocZTypeInvMap({}).subscribe((res) => {
-      if(res.isExecuted && res.data)
-      {
-        this.locZoneList = res.data; 
-      this.filteredOptions = this.addInvMapLocation.controls[TableConstant.Location].valueChanges.pipe(
-        startWith(''),
-        map(value => this.filterLocalZoneList(value || '')),
-      );
-
-      }
-      else {
+      if (res.isExecuted && res.data) {
+        this.locZoneList = res.data;
+        this.filteredOptions = this.addInvMapLocation.controls[TableConstant.Location].valueChanges.pipe(
+          startWith(''),
+          map(value => this.filterLocalZoneList(value || ''))
+        );
+      } else {
         this.global.ShowToastr(ToasterType.Error, this.global.globalErrorMsg(), ToasterTitle.Error);
-        console.log("getLocZTypeInvMap",res.responseMessage);
-
+        console.log("getLocZTypeInvMap", res.responseMessage);
 
       }
-
-
     });
-      this.searchByShipVia
+
+    this.searchByShipVia
       .pipe(debounceTime(400), distinctUntilChanged())
       .subscribe(() => {
         this.autocompleteSearchColumn();
       });
 
-      this.searchByShipName
+    this.searchByShipName
       .pipe(debounceTime(400), distinctUntilChanged())
       .subscribe(() => {
         this.autocompleteSearchColumnShipName();
       });
+}
 
+parentZones: any = [];
+getLocationZones() {
+  this.iAdminApiService.LocationZone().subscribe((res) => {
+    if (res.isExecuted && res.data) {
+      // Find the object that matches the specified zone
+      const matchingLocation = res.data.find((location) => location.zone === this.zone);
 
-  }
+      // Set button color and disabled state based on `allowClearWholeLocation` value
+      if (matchingLocation && matchingLocation.allowClearWholeLocation) {
+        this.buttonColor = 'primary';
+        this.isButtonDisabled = false;
+      } else {
+        this.buttonColor = 'warn';
+        this.isButtonDisabled = true;
+      }
+    } else {
+      this.global.ShowToastr(ToasterType.Error, this.global.globalErrorMsg(), ToasterTitle.Error);
+      console.log('LocationZone', res.responseMessage);
+    }
+  });
+}
 
   ngAfterViewInit() {
     if(this.router.url == '/OrderManager/InventoryMap'){
@@ -319,25 +353,70 @@ export class AddInvMapLocationComponent implements OnInit {
   onClearFieldDisable(): boolean {
     return !this.searchItemNumbers;
   }
+ 
   clearFields() {
-    this.addInvMapLocation.patchValue({
-      'item': '',
-      "description":'',
-      'maxQuantity': '0',
-      'minQuantity': '0',
-      'putAwayDate': '',
-      'serialNumber': '',
-      'lotNumber': '',
-      'revision': '',
-      'expirationDate': '',
-      'userField1': '',
-      'userField2': '',
-    });
-    this.itemDescription = "";
-    this.unitOFMeasure = '';
-    this.itemNumberList = [];
+    const quantityAllocatedPick = this.addInvMapLocation.get('quantityAllocatedPick')?.value ?? 0;
+    const quantityAllocatedPutAway = this.addInvMapLocation.get('quantityAllocatedPutAway')?.value ?? 0;
+  
+    if (+quantityAllocatedPick > 0 || +quantityAllocatedPutAway > 0) {
+      const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
+        width: '400px',
+        data: {
+          message: 'Quantity Allocated Pick or Quantity Allocated Put Away has a value greater than zero. You cannot proceed with Clear Whole Location.',
+          showOkButton: true,
+          showCancelButton: false, // Optional, retain for clarity
+          hideCancel: true // Pass this to hide the cancel button
+        }
+      });
+  
+      dialogRef.afterClosed().subscribe(() => {
+        // Do nothing; clear functionality is blocked.
+      });
+    } else {
+      this.performClear();
+      this.clearFieldsAndSubmit();
+      // this. adjustQuantity();
+      
+    }
   }
 
+
+  clearFieldsAndSubmit() {
+    // Clear specific fields except for 'zone'
+    this.addInvMapLocation.patchValue({
+      carousel: null,
+      row: null,
+      shelf: null,
+      bin: null,
+    });
+  
+    // Call onSubmit with the updated form
+    this.onSubmit(this.addInvMapLocation);
+  }
+
+// Extracted field clearing logic for reuse
+performClear() {
+  this.addInvMapLocation.patchValue({
+    item: '',
+    description: '',
+    maxQuantity: '0',
+    minQuantity: '0',
+    putAwayDate: '',
+    serialNumber: '',
+    lotNumber: '',
+    revision: '',
+    expirationDate: '',
+    userField1: '',
+    userField2: '',
+      carousel: '',
+      row: '',
+      shelf: '',
+      bin: '',
+  });
+  this.itemDescription = '';
+  this.unitOFMeasure = '';
+  this.itemNumberList = [];
+}
   adjustQuantity() {
     if(this.addInvMapLocation.value.item == '') return;
     if(this.getDetailInventoryMapData.itemNumber == ''){
@@ -459,85 +538,117 @@ export class AddInvMapLocationComponent implements OnInit {
     if(min > max){
       this.addInvMapLocation.get("minQuantity")?.setValue("");
     }
-
-
   }
 
   onMaxChange() {
     this.addInvMapLocation.get("minQuantity")?.setValue("0");
   }
 
-
-
   onchangeItemNumber() {
     let value = this.addInvMapLocation.controls[TableConstant.zone].value + this.addInvMapLocation.controls[zoneType.carousel].value + this.addInvMapLocation.controls[Column.Row].value + this.addInvMapLocation.controls[TableConstant.shelf].value + this.addInvMapLocation.controls[ColumnDef.Bin].value;
     this.addInvMapLocation.controls['locationNumber'].setValue(value);
   }
-  onSubmit(form: FormGroup<InventoryMapFormData>) {
-    let invMapIDs={
-      invMapID:this.getDetailInventoryMapData.invMapID,
-      masterInvMapID:this.getDetailInventoryMapData.masterInvMapID
-    }
-      this.clickSubmit = true;
-        if (this.clickSubmit) {
-          if (this.data.detailData) {
-            this.clickSubmit = false;
-            if(!this.zoneChecker(form.value.zone, form.value.location)){
-              this.global.ShowToastr(ToasterType.Error,"Zone and Location need to be set via the dropdown in order to save.", ToasterTitle.Warning);
-              return
-            }
-            if(this.warehouseSensitive && form.value.warehouse == ''){
-              this.global.ShowToastr(ToasterType.Error,"The selected item is warehouse sensitive.  Please set a warehouse to continue.", ToasterTitle.Warning);
-              return
-            }
-            if(this.dateSensitive && form.value.dateSensitive){
-              this.global.ShowToastr(ToasterType.Error,"Item is date sensitive. Please set date sensitive before saving.", ToasterTitle.Warning);
-              return
-            }
-            this.iAdminApiService.updateInventoryMap(form.value,invMapIDs).subscribe((res) => {
-              this.clickSubmit = true;
-                if (res.isExecuted) {
-                  this.global.ShowToastr(ToasterType.Success,"Your details have been updated", ToasterTitle.Success);
-                  this.dialog.closeAll()
-                }
-                else {
-                  this.global.ShowToastr(ToasterType.Error, this.global.globalErrorMsg(), ToasterTitle.Error);
-                  console.log("updateInventoryMap",res.responseMessage);
-                }
-            });
-          } else {
-            this.clickSubmit = false;
-            if(!this.zoneChecker(form.value.zone, form.value.location)){
-              this.global.ShowToastr(ToasterType.Error,"Zone and Location need to be set via the dropdown in order to save.", ToasterTitle.Warning);
-              return
-            }
-            if(this.warehouseSensitive && form.value.warehouse == ''){
-              this.global.ShowToastr(ToasterType.Error,"The selected item is warehouse sensitive.  Please set a warehouse to continue.", ToasterTitle.Warning);
-              return
-            }
-            if(this.dateSensitive && form.value.dateSensitive){
-              this.global.ShowToastr(ToasterType.Error,"Item is date sensitive. Please set date sensitive before saving.", ToasterTitle.Warning );
-              return
-            }
-            
-            this.iAdminApiService.createInventoryMap(form.getRawValue()).subscribe((res) => {
-              this.clickSubmit = true;
-              if (res.isExecuted) {
-                this.global.ShowToastr(ToasterType.Success,"Your details have been added", ToasterTitle.Success);
-                this.dialog.closeAll()
-              }
 
-              else {
+onSubmit(form: FormGroup<InventoryMapFormData>) {
+  const invMapIDs = {
+    invMapID: this.getDetailInventoryMapData.invMapID,
+    masterInvMapID: this.getDetailInventoryMapData.masterInvMapID,
+  };
 
-                this.global.ShowToastr(ToasterType.Error, this.global.globalErrorMsg(), ToasterTitle.Error);
-                console.log("createInventoryMap",res.responseMessage);
+  this.clickSubmit = true;
 
-              }
-            });
-          }
+  if (this.clickSubmit) {
+    this.clickSubmit = false;
+
+    if (this.data.detailData) {
+      // Update mode
+      if (!this.zoneChecker(form.value.zone, form.value.location)) {
+        this.global.ShowToastr(
+            ToasterType.Error,
+           "Zone and Location need to be set via the dropdown in order to save.",
+           ToasterTitle.Warning
+        );
+        return;
+      }
+      if (this.warehouseSensitive && !form.value.warehouse) {
+        this.global.ShowToastr(
+          ToasterType.Error,
+          "The selected item is warehouse sensitive. Please set a warehouse to continue.",
+          ToasterTitle.Warning
+        );
+        return;
+      }
+      if (this.dateSensitive && form.value.dateSensitive) {
+        this.global.ShowToastr(
+          ToasterType.Error,
+          "Item is date sensitive. Please set date sensitive before saving.",
+          ToasterTitle.Warning
+        );
+        return;
+      }
+
+      // API call for updating inventory map
+      this.iAdminApiService.updateInventoryMap(form.getRawValue(), invMapIDs).subscribe((res) => {
+        this.clickSubmit = true;
+
+        if (res.isExecuted) {
+          this.global.ShowToastr(
+            ToasterType.Success,
+            "Your details have been updated",
+            ToasterTitle.Success
+          );
+          this.dialog.closeAll();
+        } else {
+          this.global.ShowToastr(ToasterType.Error, this.global.globalErrorMsg(), ToasterTitle.Error);
+          console.log("updateInventoryMap", res.responseMessage);
         }
+      });
+    } else {
+      // Create mode
+      if (!this.zoneChecker(form.value.zone, form.value.location)) {
+        this.global.ShowToastr(
+          ToasterType.Error,
+          "Zone and Location need to be set via the dropdown in order to save.",
+          ToasterTitle.Warning
+        );
+        return;
+      }
+      if (this.warehouseSensitive && !form.value.warehouse) {
+        this.global.ShowToastr(
+          ToasterType.Error,
+          "The selected item is warehouse sensitive. Please set a warehouse to continue.",
+          ToasterTitle.Warning
+        );
+        return;
+      }
+      if (this.dateSensitive && form.value.dateSensitive) {
+        this.global.ShowToastr(
+          ToasterType.Error,
+          "Item is date sensitive. Please set date sensitive before saving.",
+          ToasterTitle.Warning
+        );
+        return;
+      }
 
+      // API call for creating inventory map
+      this.iAdminApiService.createInventoryMap(form.getRawValue()).subscribe((res) => {
+        this.clickSubmit = true;
+
+        if (res.isExecuted) {
+          this.global.ShowToastr(
+            ToasterType.Success,
+            "Your details have been added",
+            ToasterTitle.Success
+          );
+          this.dialog.closeAll();
+        } else {
+          this.global.ShowToastr(ToasterType.Error, this.global.globalErrorMsg(), ToasterTitle.Error);
+          console.log("createInventoryMap", res.responseMessage);
+        }
+      });
+    }
   }
+}
 
   itemNumberFocusOut() {
     if(this.itemNumberList && this.itemNumberList.length > 0){
@@ -767,3 +878,8 @@ export class AddInvMapLocationComponent implements OnInit {
     this.searchByShipName.unsubscribe();
   }
 }
+
+
+
+
+

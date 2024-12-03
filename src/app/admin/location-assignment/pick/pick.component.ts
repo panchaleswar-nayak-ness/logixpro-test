@@ -180,7 +180,6 @@ export class PickComponent implements OnInit {
 
   Search() {
     this.tableData1 = new MatTableDataSource([]);
-    this.tableData2 = new MatTableDataSource([]);
     this.GetLocationAssignmentPickTable(true);
   }
 

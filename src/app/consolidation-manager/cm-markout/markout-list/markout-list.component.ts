@@ -44,6 +44,7 @@ export class MarkoutListComponent implements OnInit {
     markoutdisplayedColumns.TransQty,
     markoutdisplayedColumns.CompQty,
     markoutdisplayedColumns.ShortQty,
+    markoutdisplayedColumns.CompletedDate,
     markoutdisplayedColumns.actions,
   ];
   public iMarkoutApiService: IMarkoutApiService;

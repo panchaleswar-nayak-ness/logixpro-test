@@ -38,6 +38,7 @@ export interface IAdminApiService
       RemoveccQueueAll() ;
       CreateCountRecords() ;
       GetCCQueue(payload : any);
+      GetImportBatchCount(payload : any);
       GetMoveItemsTable(payload : any);
       CreateMoveTransactions(payload : any);
       MoveNow(payload : any);
@@ -182,7 +183,6 @@ export interface IAdminApiService
     OrderItemsTable(payload : any);
     DeAllocateOrder(payload : any) ; 
     SaveTransaction(payload : any);
-    AddOpenTransaction(paylaod : any);
     AddCompleteTransaction(payload : any);
     ReprocessTransactionDelete(payload : any);
     deleteInventoryMap(payload : any); 

@@ -48,12 +48,18 @@ export class MarkoutSearchComponent implements OnInit {
     this.toteDataResponse = new ToteDataResponse();
   }
 
+  labelText: string = "Order No.";
+
   ngOnChanges(changes: SimpleChanges) {
+  
     if (
       changes['toteDataResponse'] &&
       changes['toteDataResponse']['currentValue']
     ) {
-      this.orderNumber = this.toteDataResponse.data[0]?.orderNumber || "";
+      this.orderNumber = this.toteDataResponse.batchPickId
+        ? this.toteDataResponse.batchPickId 
+        : this.toteDataResponse.data[0]?.orderNumber || "";
+        this.labelText = this.toteDataResponse.batchPickId ? "BatchPick ID" : "Order No.";
     }
     if (
       changes['toteId'] &&

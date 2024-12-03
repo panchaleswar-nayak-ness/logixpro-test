@@ -364,6 +364,11 @@ export class ApiFuntions {
     return this.ApiBase.Get('/Admin/ccqueue', Body);
   }
 
+  public GetImportBatchCount(Body: any): Observable<any> {
+    return this.ApiBase.Get('/Admin/importbatchcounts', Body);
+  }
+
+
   public GetMoveItemsTable(Body: any): Observable<any> {
     return this.ApiBase.Get('/Admin/moveitems', Body);
   }
@@ -1066,8 +1071,9 @@ export class ApiFuntions {
 
   public PerformSpecificOrderInduction(valueToInduct: {
     orderNumber: string;
-    toteId: string;
+    toteScanned: string;
     splitToggle: boolean;
+    transactionQuantity:number;
   }) {
     return this.ApiBase.Post(
       '/Induction/performspecificorderinduction',
@@ -2200,10 +2206,6 @@ export class ApiFuntions {
     return await this.ApiBase.PostAsync(`/print/putawayitem`, body);
   }
 
-  public AddOpenTransaction(body) {
-    return this.ApiBase.Post(`/Admin/addopentransaction`, body);
-  }
-
   public AddCompleteTransaction(body) {
     return this.ApiBase.Post(`/Admin/addcompletetransaction`, body);
   }
@@ -2258,6 +2260,12 @@ export class ApiFuntions {
 
   async PrintPrevToteManLabel(body:{wsid: any; toteID: string, Ident: number, fromTote: string, toTote: string, batchID: string}) {
     return await this.ApiBase.PostAsync(`/print/prevtotemanlabel`, body);
+  }
+  async PrintPrevOffCarListTote(body:{wsid: any; toteID: string, transType: string}) {
+    return await this.ApiBase.PostAsync(`/print/offcarlisttote`, body);
+  }
+  async PrintPrevToteContent(body:{wsid: any; toteID: string, zoneLabel: string, transType: string}) {
+    return await this.ApiBase.PostAsync(`/print/totecontentslist`, body);
   }
 
 }

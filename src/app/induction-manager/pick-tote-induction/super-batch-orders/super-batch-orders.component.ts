@@ -295,6 +295,7 @@ export class SuperBatchOrdersComponent implements OnInit, AfterViewInit {
 
           this.Api.PerformSuperBatchOrderInduction(valueToInduct)
             .pipe(
+              
               catchError((errResponse) => {
                 if (errResponse.error.status === 400) {
                   this.global.ShowToastr(
@@ -314,8 +315,10 @@ export class SuperBatchOrdersComponent implements OnInit, AfterViewInit {
             )
             .subscribe((innerResponse: any) => {
               if (innerResponse.data && innerResponse.isExecuted) {
-                if (innerResponse.data.remainingQuantity > 0) {
+                if (innerResponse.data.remainingQuantity > 0 &&innerResponse.data.notInductedOrders.length>1) {
                   // Update the UI with the remaining quantity
+
+                  
                   const orderIndex = this.dataSource.filteredData.findIndex(
                     (item) =>
                       item.itemNumber === itemNumber &&
@@ -326,7 +329,8 @@ export class SuperBatchOrdersComponent implements OnInit, AfterViewInit {
                     // Update totalOrderQuantity with remainingQuantity
                     this.dataSource.filteredData[orderIndex].totalOrderQty =
                       innerResponse.data.remainingQuantity;
-
+                      this.dataSource.filteredData[orderIndex].numberOfOrders= innerResponse.data.notInductedOrders.length;
+                    
                     // Use setTimeout to focus on the toteScanned input box
                   }
 
@@ -361,15 +365,15 @@ export class SuperBatchOrdersComponent implements OnInit, AfterViewInit {
                 ) {
                   this.global.ShowToastr(
                     ToasterType.Info,
-                    `Orders: ${innerResponse?.data?.notInductedOrders.join(', ')} skipped due to exceeding tote capacity, max batch size, or the max tote quantity`,
-                    ToasterTitle.Alert
+                    'Some orders were skipped as they exceed the allowed tote capacity,maximuum batch size or tote quantity',
+                    ToasterTitle.Info
                   );
                 }
               } else {
                 this.global.ShowToastr(
-                  ToasterType.Error,
+                  ToasterType.Info,
                   innerResponse.responseMessage,
-                  ToasterTitle.Error
+                  ToasterTitle.Info
                 );
               }
 

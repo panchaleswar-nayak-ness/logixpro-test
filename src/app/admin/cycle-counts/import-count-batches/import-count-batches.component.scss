@@ -1,0 +1,52 @@
+.mat-column-select {
+  word-wrap: break-word !important;
+  white-space: unset !important;
+  flex: 0 0 60px !important;
+  width: 60px !important;
+  overflow-wrap: break-word;
+
+  word-break: break-word;
+
+  -ms-hyphens: auto;
+  -moz-hyphens: auto;
+  -webkit-hyphens: auto;
+  hyphens: auto;
+}
+.mat-column-locationdesc {
+  word-wrap: break-word !important;
+  white-space: unset !important;
+  flex: 0 0 40% !important;
+  width: 40% !important;
+  overflow-wrap: break-word;
+
+  word-break: break-word;
+
+  -ms-hyphens: auto;
+  -moz-hyphens: auto;
+  -webkit-hyphens: auto;
+  hyphens: auto;
+}
+.h-60v{
+      height: 60vh;
+}
+ .w-48px{
+  width: 48px;
+}
+.action-row {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 16px;
+}
+
+.action-dropdown {
+  flex: 1;
+  min-width: 200px;
+}
+
+.uploaded-file {
+  font-size: 14px;
+  font-weight: 500;
+  margin-right: 8px;
+  color: #333;
+}

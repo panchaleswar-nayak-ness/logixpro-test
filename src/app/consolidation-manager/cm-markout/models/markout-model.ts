@@ -32,6 +32,7 @@ export class ToteDataResponse
     toteStatus: string;
     markoutStatus: string;
     blossomCount: number;
+    batchPickId: string
 }
 
 export class ToteData

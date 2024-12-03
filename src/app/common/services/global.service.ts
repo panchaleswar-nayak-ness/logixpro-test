@@ -97,6 +97,10 @@ export class GlobalService {
     return value ? value.replace(/[\r\n]+/g, ' ').trim() : '';
   }
 
+  getFormattedTransactionType(value: string) {
+    return value.split(' ').join('').toLowerCase();
+  }
+
   ShowToastr(
     type?: any,
     msg: string | null = null,

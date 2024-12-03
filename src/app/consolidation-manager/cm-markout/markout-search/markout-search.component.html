@@ -1,7 +1,7 @@
 <mat-card class="mat-elevation-z g-card h-100">
   <mat-card-content>
     <div class=" d-block d-xl-flex justify-content-between align-items-center flex-wrap">
-      <h2 class=" card-header-title d-flex align-items-center mb-2">
+      <h2 class=" card-header-title d-flex align-items-center mb-2 me-2">
         <div class="mat-icon-wrap me-3">
           <span class="material-symbols-outlined">
             rule
@@ -9,8 +9,8 @@
         </div>
         <span>Markout</span>
       </h2>
-      <div class="">
-        <mat-form-field class="action-dropdown mb-2 flex-1 w-100" appearance="outline">
+      <div class="d-flex">
+        <mat-form-field class="action-dropdown mb-2 m-action-d-d" appearance="outline">
           <mat-label>Actions</mat-label>
           <mat-select class="employees-action" (selectionChange)="emitSelectedValue($event.value)">
             <mat-option (click)="blossomtotedialog(blossomType.Blossom)"
@@ -57,7 +57,7 @@
 
                 <mat-form-field class="custom-form-field w-100 __grab_cursor" appearance="outline"
                   [floatLabel]="getFloatLabelValue()">
-                  <mat-label>Order No.</mat-label>
+                  <mat-label>{{ labelText }}.</mat-label>
                   <input type="text" aria-label="Number" matInput [(ngModel)]='orderNumber' disabled>
                 </mat-form-field>
 
