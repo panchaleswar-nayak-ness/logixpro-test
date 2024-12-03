@@ -60,9 +60,19 @@ export class BatchOrderListComponent implements OnInit {
     ) => {
       if (columnName === 'status') {
         return this.checkOrderStatus(row);
-      } else {
-        return '';
       }
+      else if (columnName === 'orderNumber') {
+        return row.orderNumber;
+      }
+      else if (columnName === 'countOfOrderNumber') {
+        return row.countOfOrderNumber;
+      }
+      else if (columnName === 'minOfPriority') {
+        return row.minOfPriority;
+      }
+      //  else {
+      //   return '';
+      // }
     };
   }
   @Input()
