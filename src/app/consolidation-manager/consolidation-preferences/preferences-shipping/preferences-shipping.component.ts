@@ -13,7 +13,7 @@ import { Subject, debounceTime, distinctUntilChanged } from 'rxjs';
 import { IConsolidationApi } from 'src/app/common/services/consolidation-api/consolidation-api-interface';
 import { ConsolidationApiService } from 'src/app/common/services/consolidation-api/consolidation-api.service';
 import { GlobalService } from 'src/app/common/services/global.service';
-import { CMShippingPreferences, ToasterMessages, ToasterTitle, ToasterType ,StringConditions,DialogConstants,Style, Placeholders} from 'src/app/common/constants/strings.constants';
+import { CMShippingPreferences, ToasterMessages, ToasterTitle, ToasterType ,StringConditions,DialogConstants,Style} from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-preferences-shipping',
@@ -21,7 +21,6 @@ import { CMShippingPreferences, ToasterMessages, ToasterTitle, ToasterType ,Stri
   styleUrls: ['./preferences-shipping.component.scss'],
 })
 export class PreferencesShippingComponent implements OnInit {
-  placeholders = Placeholders;
   shippingForm: FormGroup;
   selectionShipping: boolean = false;
   selectionPacking: boolean = false;

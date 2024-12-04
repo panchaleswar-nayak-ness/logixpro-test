@@ -37,8 +37,8 @@
                     </div>
                     <div class="col-xl-4">
                         <mat-form-field class="custom-form-field w-100 __grab_cursor mb-3" appearance="outline" >
-                            <mat-label replacePlaceholder [replacePlaceHolder]="placeholders.itemNumber" [fallbackPlaceHolder]="placeholders.itemNumberFallback">Item Number</mat-label>
-                            <input matInput  type="text" maxlength="50" formControlName="itemNo" [(ngModel)]="itemNoCrossBtn" (keypress)="openST($event)">
+                            <mat-label>Item No.</mat-label>
+                            <input matInput  type="text" maxlength="50" formControlName="itemNo" [(ngModel)]="itemNoCrossBtn" (keypress)="openST($event)">      
                             <button matSuffix *ngIf="itemNoCrossBtn" class="clear-btn" (click)=" itemNoCrossBtn='' " ><mat-icon class="text-20 text-chrome-600">cancel</mat-icon></button> 
                         </mat-form-field>
                     </div>

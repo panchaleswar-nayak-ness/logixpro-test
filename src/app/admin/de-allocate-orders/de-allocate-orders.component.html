@@ -85,7 +85,7 @@
                             <mat-label>{{chooseSearchType}}</mat-label>
                             <mat-select class="employees-action" [(ngModel)]="chooseSearchType"
                                 (ngModelChange)="check($event)" [disabled]="step == 'transaction'">
-                                <mat-option value="Item Number" replacePlaceholder [replacePlaceHolder]="placeholders.itemNumber" [fallbackPlaceHolder]="placeholders.itemNumberFallback">Item Number</mat-option>
+                                <mat-option value="Item Number">Item No.</mat-option>
                                 <mat-option value="Order Number">Order No.</mat-option>
                             </mat-select>
                             <span class="material-symbols-outlined icon-expand-more">
@@ -203,7 +203,9 @@
                                 </ng-container>
 
                                 <ng-container matColumnDef="item_no">
-                                    <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription replacePlaceholder [replacePlaceHolder]="placeholders.itemNumber" [fallbackPlaceHolder]="placeholders.itemNumberFallback"> Item Number </th>
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription> Item
+                                        Number
+                                    </th>
                                     <td mat-cell *matCellDef="let element"
                                         (contextmenu)="onContextMenu($event, element.itemNumber, 'Item Number')">
                                         {{element.itemNumber}} </td>
@@ -237,7 +239,9 @@
                                 </ng-container>
 
                                 <ng-container matColumnDef="unitOfMeasure">
-                                    <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription replacePlaceholder [replacePlaceHolder]="placeholders.unitOfMeasure" [fallbackPlaceHolder]="placeholders.unitOfMeasureFallback"> UM </th>
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription> Unit of
+                                        Measure
+                                    </th>
                                     <td mat-cell *matCellDef="let element"
                                         (contextmenu)="onContextMenu($event, element.unitOfMeasure, 'Unit of Measure')">
                                         {{element.unitOfMeasure}} </td>

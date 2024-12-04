@@ -2,7 +2,7 @@ import { Component, EventEmitter, Input, OnInit, Output, SimpleChanges, ViewChil
 import { FormGroup } from '@angular/forms';
 import { PageEvent } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
-import {  TableConstant ,UniqueConstants,Column,ColumnDef, Placeholders} from 'src/app/common/constants/strings.constants';
+import {  TableConstant ,UniqueConstants,Column,ColumnDef} from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-location',
@@ -10,7 +10,6 @@ import {  TableConstant ,UniqueConstants,Column,ColumnDef, Placeholders} from 's
   styleUrls: ['./location.component.scss']
 })
 export class LocationComponent implements OnInit {
-  placeholders = Placeholders;
   @Input() fieldNameDetails: any;
   currentDir=UniqueConstants.Asc;
   nextDir='desc';

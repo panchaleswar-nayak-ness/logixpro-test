@@ -162,7 +162,7 @@
                     <table mat-table class="custom-table table-fix" #table [dataSource]="dataSource" matSort (matSortChange)="sortChange($event)">
                         
                         <ng-container class="d-table-row"[matColumnDef]="col.colDef" *ngFor="let col of displayedColumns; let indexOfelement=index;">
-                            <th class="header" mat-header-cell *matHeaderCellDef mat-sort-header (sortActionDescription)="indexOfelement">{{ col.colTitle }} </th>
+                            <th class="header" mat-header-cell *matHeaderCellDef mat-sort-header (sortActionDescription)="indexOfelement">{{ col.colDef }} </th>
                             <td *matCellDef="let element"
                             (dblclick)="col.colDef == 'Item Number' && viewInInventoryMaster(element)"
                                 (contextmenu)="onContextMenu($event, element[col.colHeader], col.colDef)" mat-cell class="table-cell-style"

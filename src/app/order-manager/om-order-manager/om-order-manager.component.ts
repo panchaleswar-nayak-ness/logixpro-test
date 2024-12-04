@@ -19,7 +19,7 @@ import { IOrderManagerAPIService } from 'src/app/common/services/orderManager-ap
 import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.service';
 import { IAdminApiService } from 'src/app/common/services/admin-api/admin-api-interface';
 import { TableContextMenuService } from 'src/app/common/globalComponents/table-context-menu-component/table-context-menu.service';
-import { Case, Column, KeyboardKeys, StringConditions, ToasterMessages, ToasterTitle, ToasterType,DialogConstants,TableConstant,ColumnDef,Style,UniqueConstants,FilterColumnName, Placeholders} from 'src/app/common/constants/strings.constants';
+import { Case, Column, KeyboardKeys, StringConditions, ToasterMessages, ToasterTitle, ToasterType,DialogConstants,TableConstant,ColumnDef,Style,UniqueConstants,FilterColumnName} from 'src/app/common/constants/strings.constants';
 import { RouteNames, AppPermissions } from 'src/app/common/constants/menu.constants';
 import { DatePipe } from '@angular/common';
 import { ContextMenuFiltersService } from 'src/app/common/init/context-menu-filters.service';
@@ -125,7 +125,6 @@ export class OmOrderManagerComponent implements OnInit {
 
   public iOrderManagerApi :  IOrderManagerAPIService;
   public iAdminApiService: IAdminApiService;
-  placeholders = Placeholders;
 
   constructor(
     public orderManagerApi  : OrderManagerApiService,

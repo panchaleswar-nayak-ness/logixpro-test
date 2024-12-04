@@ -3,7 +3,7 @@ import { MAT_DIALOG_DATA,   MatDialogRef } from '@angular/material/dialog';
 import { OmChangesConfirmationComponent } from '../om-changes-confirmation/om-changes-confirmation.component';
 import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
 import { GlobalService } from 'src/app/common/services/global.service';
-import {  StringConditions ,DialogConstants, Placeholders} from 'src/app/common/constants/strings.constants';
+import {  StringConditions ,DialogConstants} from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-om-update-record',
@@ -11,7 +11,6 @@ import {  StringConditions ,DialogConstants, Placeholders} from 'src/app/common/
   styleUrls: ['./om-update-record.component.scss']
 })
 export class OmUpdateRecordComponent implements OnInit {
-  placeholders = Placeholders;
   @ViewChild('ordFocus') ordFocus: ElementRef
   orderForm   : FormGroup;
 

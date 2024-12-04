@@ -5,7 +5,7 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSort, Sort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { Order, OrderLine } from 'src/app/common/Model/bulk-transactions';
-import { LiveAnnouncerMessage, Placeholders } from 'src/app/common/constants/strings.constants';
+import { LiveAnnouncerMessage } from 'src/app/common/constants/strings.constants';
 
 interface MatDialogData {
   from : string,
@@ -18,7 +18,6 @@ interface MatDialogData {
 })
 export class OrderDetailsComponent implements OnInit, AfterViewInit {
 
-  placeholders = Placeholders;
   ordNum: string;
   transType: string;
   ordersDisplayedColumns: string[] = ["location", "itemNumber", "description", "transactionQuantity", 

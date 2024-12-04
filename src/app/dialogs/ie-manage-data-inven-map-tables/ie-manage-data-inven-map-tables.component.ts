@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import {  zoneType ,TableConstant,ColumnDef, Placeholders} from 'src/app/common/constants/strings.constants';
+import {  zoneType ,TableConstant,ColumnDef} from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-ie-manage-data-inven-map-tables',
@@ -7,7 +7,6 @@ import {  zoneType ,TableConstant,ColumnDef, Placeholders} from 'src/app/common/
   styleUrls: ['./ie-manage-data-inven-map-tables.component.scss'],
 })
 export class IeManageDataInvenMapTablesComponent {
-  placeholders = Placeholders;
   elementData: any[] = [{ inv_map_id: '1202122' }];
   displayedColumns: string[] = [
     'inv_map_id',

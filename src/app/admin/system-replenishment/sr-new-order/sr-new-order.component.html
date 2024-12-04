@@ -46,7 +46,7 @@
                 <mat-form-field class="action-dropdown d-xl-flex d-block w-30" appearance="outline">
                     <mat-label>Action</mat-label>
                     <mat-select #openActionDropDown class="employees-action" (selectionChange)="openAction($event)">
-                        <mat-option value="1" [disabled]="tableData.length == 0 && !isfilterApplied" (click)="actionChange('1')">Filter <span replacePlaceholder [replacePlaceHolder]="placeholders.itemNumber" [fallbackPlaceHolder]="placeholders.itemNumberFallback">Item Number</span></mat-option>
+                        <mat-option value="1" [disabled]="tableData.length == 0 && !isfilterApplied" (click)="actionChange('1')">Filter Item No.</mat-option>
                         <mat-option value="2" (click)="actionChange('2')">Print</mat-option>
                         <mat-option value="3" [disabled]="!this.newOrderListCreated" (click)="viewAllItems()">View All Items</mat-option>
                         <mat-option value="4" [disabled]="!this.newOrderListCreated" (click)="viewSelectedItems()">View Selected Items</mat-option>
@@ -66,7 +66,7 @@
                 <table class="w-100 table-borderless" mat-table [dataSource]="filteredTableData" matSort (matSortChange)="announceSortChange($event)">
 
                     <ng-container matColumnDef="Item Number">
-                        <th mat-header-cell *matHeaderCellDef mat-sort-header replacePlaceholder [replacePlaceHolder]="placeholders.itemNumber" [fallbackPlaceHolder]="placeholders.itemNumberFallback"> Item Number </th>
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header> Item No. </th>
                         <td (dblclick)="viewItemInInventoryMaster(seletedRecord)" mat-cell *matCellDef="let seletedRecord" (contextmenu)="onContextMenu($event, seletedRecord.itemNumber, 'Item Number')"> {{seletedRecord.itemNumber}} </td>
                     </ng-container>
 

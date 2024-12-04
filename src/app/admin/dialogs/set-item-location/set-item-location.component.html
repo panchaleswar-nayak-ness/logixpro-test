@@ -14,12 +14,12 @@
             <ng-container *ngIf="this.itemInvalid">
                 <div class="label-red p-3 d-flex br-8 mb-3">
                     <mat-icon class="material-symbols-outlined">notification_important</mat-icon>
-                    <span class="ps-2 w-100"><span  replacePlaceholder [replacePlaceHolder]="placeholders.itemNumber" [fallbackPlaceHolder]="placeholders.itemNumberFallback">Item Number</span> Not Found</span>
+                    <span class="ps-2 w-100">Item No. Not Found</span>
                 </div>
             </ng-container>
             <mat-form-field class="custom-form-field w-100" appearance="outline" [floatLabel]="getFloatLabelValue()"
                 [hideRequiredMarker]="hideRequiredControlItem.value">
-                <mat-label replacePlaceholder [replacePlaceHolder]="placeholders.itemNumber" [fallbackPlaceHolder]="placeholders.itemNumberFallback">Item Number</mat-label>
+                <mat-label>Item Number</mat-label>
                 <input #itm_nmb type="text" placeholder="Search" aria-label="Number" matInput [(ngModel)]="itemNumber" (focusout)="onFocusOutEvent($event)"
                     [matAutocomplete]="item" (ngModelChange)="this.searchByItemNumber.next($event)">
                     <button matSuffix *ngIf="itemNumber" class="clear-btn"  (click)="itemNumber=''"><mat-icon class="text-20 text-chrome-600">cancel</mat-icon></button>

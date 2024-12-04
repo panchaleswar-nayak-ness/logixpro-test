@@ -19,7 +19,7 @@
             <ng-scrollbar track="all" class="mat-table-scrollbar h-390px">
                 <table class="w-100 table-borderless" mat-table #matSort3="matSort" matSort [dataSource]="kitItemsList">
                     <ng-container matColumnDef="ItemNumber">
-                        <th mat-header-cell *matHeaderCellDef replacePlaceholder [replacePlaceHolder]="placeholders.itemNumber" [fallbackPlaceHolder]="placeholders.itemNumberFallback"> Item Number</th>
+                        <th mat-header-cell *matHeaderCellDef> Item Number</th>
                         <td mat-cell *matCellDef="let element">
                             <mat-form-field class="custom-form-field w-100" class="padding-right-15" appearance="outline"
                                 (click)="openAddItemNumDialog(element)">
@@ -103,7 +103,7 @@
 <ng-template #additemNumber>
     <div class="d-flex justify-content-between mb-4 align-items-center">
         <div class="width-480"></div>
-        <h1 class="m-0" mat-dialog-title replacePlaceholder [replacePlaceHolder]="placeholders.itemNumber" [fallbackPlaceHolder]="placeholders.itemNumberFallback">Item Number</h1>
+        <h1 class="m-0" mat-dialog-title>Item Number</h1>
 
         <button mat-icon-button class="close-button dialog-close-button-fix" (click)="closeDialog()">
             <mat-icon class="close-icon">close</mat-icon>
@@ -121,9 +121,8 @@
                         <button matSuffix *ngIf="dialogItemNumberDisplay" class="clear-btn"  (click)="dialogItemNumberDisplay=''"><mat-icon class="text-20 text-chrome-600">cancel</mat-icon></button>
                     <mat-autocomplete class="card custom-scroll" #searchauto="matAutocomplete"
                         (optionSelected)="onSearchSelect($event)" [displayWith]="displayFn">
-                        <h6 class="card-header matAutoCompHeader ">
-                            <span class="width-140" replacePlaceholder [replacePlaceHolder]="placeholders.itemNumber" [fallbackPlaceHolder]="placeholders.itemNumberFallback">Item Number</span> 
-                            <span class="width-140">Description</span></h6>
+                        <h6 class="card-header matAutoCompHeader "><span class="width-140">Item No.</span> <span
+                                class="width-140">Description</span></h6>
                         <mat-option *ngFor="let option of searchList" [value]="option" class="matAutoCompTableContent">
                             <div class="loc_option">
                                 <span class="searchColumn" class="width-140">{{option?.itemNumber}}</span> <span

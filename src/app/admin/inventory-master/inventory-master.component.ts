@@ -23,7 +23,7 @@ import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.ser
 import { GlobalService } from 'src/app/common/services/global.service';
 import { QuarantineDialogComponent } from '../dialogs/quarantine-dialog/quarantine-dialog.component';
 import { UnquarantineDialogComponent } from '../dialogs/unquarantine-dialog/unquarantine-dialog.component';
-import { ToasterTitle,ResponseStrings,ToasterType,KeyboardKeys,StringConditions,Column,DialogConstants,Style,UniqueConstants, Placeholders} from 'src/app/common/constants/strings.constants';
+import { ToasterTitle,ResponseStrings,ToasterType,KeyboardKeys,StringConditions,Column,DialogConstants,Style,UniqueConstants} from 'src/app/common/constants/strings.constants';
 import { AppNames } from 'src/app/common/constants/menu.constants'; 
 import { ContextMenuFiltersService } from 'src/app/common/init/context-menu-filters.service';
 
@@ -33,9 +33,6 @@ import { ContextMenuFiltersService } from 'src/app/common/init/context-menu-filt
   styleUrls: ['./inventory-master.component.scss']
 })
 export class InventoryMasterComponent implements OnInit {
-  placeholders = Placeholders;
-  fieldMappings = JSON.parse(localStorage.getItem('fieldMappings') ?? '{}');
-
   @ViewChild('matRef') matRef: MatSelect;
   public textLabel: any = 'Details';
   tabIndex: any = 0;
@@ -236,7 +233,6 @@ ContextMenu($event:any){
     if(!paramName) {
       if(this.searchValue != ''){
         this.getInventory(true,this.searchValue);
-        this.columns = this.fieldMappings;
         this.OSFieldFilterNames();
       } else {
         initialValue = await this.getInitialItem();
@@ -798,9 +794,9 @@ ContextMenu($event:any){
 
   viewLocations() {
     this.RecordSavedItem();
-    if (this.setVal) this.router.navigate(['/OrderManager/InventoryMap'], { state: { colHeader: 'itemNumber', colDef: this.fieldMappings?.itemNumber || this.placeholders.itemNumberFallback, searchValue: this.currentPageItemNo } });
-    else if (this.spliUrl[1] == AppNames.InductionManager) this.router.navigate(['/InductionManager/Admin/InventoryMap'], { state: { colHeader: 'itemNumber', colDef: this.fieldMappings?.itemNumber || this.placeholders.itemNumberFallback, searchValue: this.currentPageItemNo } });
-    else this.router.navigate(['/admin/inventoryMap'], { state: { colHeader: 'itemNumber', colDef: this.fieldMappings?.itemNumber || this.placeholders.itemNumberFallback, searchValue: this.currentPageItemNo } });
+    if (this.setVal) this.router.navigate(['/OrderManager/InventoryMap'], { state: { colHeader: 'itemNumber', colDef: Column.ItemNumber, searchValue: this.currentPageItemNo } });
+    else if (this.spliUrl[1] == AppNames.InductionManager) this.router.navigate(['/InductionManager/Admin/InventoryMap'], { state: { colHeader: 'itemNumber', colDef: Column.ItemNumber, searchValue: this.currentPageItemNo } });
+    else this.router.navigate(['/admin/inventoryMap'], { state: { colHeader: 'itemNumber', colDef: Column.ItemNumber, searchValue: this.currentPageItemNo } });
   }
 
   handleFocusOut() {
