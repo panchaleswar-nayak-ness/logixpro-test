@@ -9,7 +9,9 @@
     <div class="row">
         <div class="col-xl-8 offset-xl-2">
             <div class="d-flex align-items-center justify-content-center flex-wrap gap-12 mb-3">
-                <div class="text-center"> <span class="label label-gray px-2 f-14 mb-1">Item No.:&nbsp;<b>{{itemWhse}}</b></span></div>
+                <div class="text-center"> <span class="label label-gray px-2 f-14 mb-1">
+                    <span replacePlaceholder [replacePlaceHolder]="placeholders.itemNumber" [fallbackPlaceHolder]="placeholders.itemNumberFallback">Item Number</span>:&nbsp;<b>{{itemWhse}}</b></span>
+                </div>
                 <div class="text-center"> <span class="label label-gray px-2 f-14 mb-1">Description:&nbsp;<b>{{description}}</b></span></div>
                 <div class="text-center"> <span class="label label-gray px-2 f-14 mb-1">Backorder Total:&nbsp;<b>{{backOrderTotal}}</b></span></div>
                 <div class="text-center"> <span class="label label-gray px-2 f-14 mb-1">Allocated Total:&nbsp;<b>{{allocatedTotal}}</b></span></div>

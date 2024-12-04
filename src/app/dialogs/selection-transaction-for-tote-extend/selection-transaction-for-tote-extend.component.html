@@ -166,7 +166,7 @@
       <div class="row">
         <div class="col-xl-3">
           <mat-form-field class="custom-form-field w-100 mb-2 mat-form-field-disabled" appearance="outline">
-            <mat-label>{{fieldNames?.itemNumber}}</mat-label>
+            <mat-label replacePlaceholder [replacePlaceHolder]="placeholders.itemNumber" [fallbackPlaceHolder]="placeholders.itemNumberFallback">Item Number</mat-label>
             <input formControlName="itemNumber" #itemNum (keydown.shift.enter)="$event.preventDefault()" matInput
               type="text" readonly>
           </mat-form-field>
@@ -187,7 +187,7 @@
         </div>
         <div class="col-xl-3">
           <mat-form-field class="custom-form-field w-100 mb-2 mat-form-field-disabled" appearance="outline">
-            <mat-label>Unit Of Measure</mat-label>
+            <mat-label replacePlaceholder [replacePlaceHolder]="placeholders.unitOfMeasure" [fallbackPlaceHolder]="placeholders.unitOfMeasureFallback"> UM </mat-label>
             <input formControlName="unitOfMeasure" (keydown.shift.enter)="$event.preventDefault()" matInput type="text"
               readonly>
           </mat-form-field>

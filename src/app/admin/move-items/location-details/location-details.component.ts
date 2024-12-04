@@ -1,5 +1,5 @@
 import { Component, Input, ElementRef, ViewChild, Output, EventEmitter } from '@angular/core';
-import { StringConditions } from 'src/app/common/constants/strings.constants';
+import { Placeholders, StringConditions } from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-location-details',
@@ -15,6 +15,7 @@ export class LocationDetailsComponent {
   @Input() isDedicated : boolean = false;
   @Input() tableType : string = StringConditions.MoveFrom;
   stringConditions = StringConditions;
+  placeholders = Placeholders;
   
   @Input() moveFromDedicated : string = '';
   @Input() from_warehouse : string = '';

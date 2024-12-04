@@ -2,7 +2,7 @@ import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { FloatLabelType } from '@angular/material/form-field';
 import { MatTab, MatTabChangeEvent } from '@angular/material/tabs';
-import { ToasterTitle, ToasterType } from 'src/app/common/constants/strings.constants';
+import { Placeholders, ToasterTitle, ToasterType } from 'src/app/common/constants/strings.constants';
 import { TableContextMenuService } from 'src/app/common/globalComponents/table-context-menu-component/table-context-menu.service';
 import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.service';
 import { GlobalService } from 'src/app/common/services/global.service';
@@ -18,6 +18,7 @@ export class MoveLocationsComponent {
   hideRequiredControl = new FormControl(false);
   selectedWarehouse: string = 'ALL';
   warehouses: string[] = [];
+  placeholders = Placeholders;
   @Input() itemSelected : boolean = false; 
   @Input() itemNo : string = "";
   @Input() viewAll : boolean = false;

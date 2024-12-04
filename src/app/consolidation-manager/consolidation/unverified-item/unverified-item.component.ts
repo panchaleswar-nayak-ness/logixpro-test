@@ -3,7 +3,7 @@ import {Component, ElementRef, EventEmitter, Input, OnInit, Output, SimpleChange
 import {MatPaginator} from '@angular/material/paginator';
 import {MatSort, Sort} from '@angular/material/sort';
 import {debounceTime, distinctUntilChanged, Subject} from 'rxjs';
-import {LiveAnnouncerMessage} from 'src/app/common/constants/strings.constants';
+import {LiveAnnouncerMessage, Placeholders} from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-unverified-item',
@@ -33,6 +33,7 @@ export class UnverifiedItemComponent implements OnInit {
   @Output() row = new EventEmitter<any>();
 
   searchByItem: any = new Subject<string>();
+  placeholders = Placeholders;
 
   @ViewChild('itemNumberInput') itemNumberInput: ElementRef;
   @ViewChild('paginator') paginator: MatPaginator;

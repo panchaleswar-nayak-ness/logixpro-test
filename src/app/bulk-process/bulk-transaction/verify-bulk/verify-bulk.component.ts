@@ -12,7 +12,7 @@ import {
   WorkStationSetupResponse
 } from 'src/app/common/Model/bulk-transactions';
 import { SetTimeout } from 'src/app/common/constants/numbers.constants';
-import { DialogConstants, ResponseStrings, Style, ToasterMessages, ToasterTitle, ToasterType } from 'src/app/common/constants/strings.constants';
+import { DialogConstants, Placeholders, ResponseStrings, Style, ToasterMessages, ToasterTitle, ToasterType } from 'src/app/common/constants/strings.constants';
 import { IAdminApiService } from 'src/app/common/services/admin-api/admin-api-interface';
 import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.service';
 import { IBulkProcessApiService } from 'src/app/common/services/bulk-process-api/bulk-process-api-interface';
@@ -33,6 +33,7 @@ import { PrintApiService } from 'src/app/common/services/print-api/print-api.ser
   styleUrls: ['./verify-bulk.component.scss']
 })
 export class VerifyBulkComponent implements OnInit {
+  placeholders = Placeholders;
   @Output() back = new EventEmitter<any>();
   @Input() orderLines: any = [];
   // TODO: BulkPreferences contains workstationPreferences which we are already getting below

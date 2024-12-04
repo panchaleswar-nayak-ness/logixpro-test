@@ -13,6 +13,7 @@ import { MatTable, MatTableDataSource } from '@angular/material/table';
 import {
   DialogConstants,
   LiveAnnouncerMessage,
+  Placeholders,
   Style,
   ToasterMessages,
   ToasterTitle,
@@ -50,6 +51,7 @@ export class SuperBatchOrdersComponent implements OnInit, AfterViewInit {
     this.userData = this.authService.userData();
   }
 
+  placeholders = Placeholders;
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild('paginator') paginator: MatPaginator;
   @ViewChildren(MatInput) toteInputs!: QueryList<MatInput>;

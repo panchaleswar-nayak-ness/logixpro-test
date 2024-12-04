@@ -185,7 +185,7 @@
                         </div>
                         <div class="col-xl-3">
                             <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline">
-                                <mat-label>{{fieldNames?.itemNumber}}</mat-label>
+                                <mat-label replacePlaceholder [replacePlaceHolder]="placeholders.itemNumber" [fallbackPlaceHolder]="placeholders.itemNumberFallback">Item Number</mat-label>
                                 <input formControlName="itemNumber" matInput type="text" value="Label">
                             </mat-form-field>
                         </div>
