@@ -59,7 +59,7 @@ export class MarkoutSearchComponent implements OnInit {
       this.orderNumber = this.toteDataResponse.batchPickId
         ? this.toteDataResponse.batchPickId 
         : this.toteDataResponse.data[0]?.orderNumber || "";
-        this.labelText = this.toteDataResponse.batchPickId ? "BatchPick ID" : "Order No.";
+        this.labelText = this.toteDataResponse.batchPickId ? "Super Batch ID" : "Order No.";
     }
     if (
       changes['toteId'] &&
