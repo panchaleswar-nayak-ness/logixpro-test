@@ -25,9 +25,15 @@
     <div class="d-flex align-items-center flex-wrap pb-2 gap-12">
       <mat-label class="mb-1"><b>Applied Filters:</b></mat-label>
       <ng-container>
-        <div class="text-center" *ngFor="let tag of tags">          
-          <div class="text-center" *ngIf="tag.value"> <span class="label label-gray px-2 f-14 mb-1">{{tag.alias}}:&nbsp;<b>{{tag.value}}</b></span></div>
-          <div class="text-center" *ngIf="!tag.value"> <span class="label label-gray px-2 f-14 mb-1">{{tag.alias}}</span></div>
+        <div class="text-center" *ngFor="let tag of tags">
+          <div class="text-center" *ngIf="tag.value">
+            <span class="label label-gray px-2 f-14 mb-1"
+              >{{ tag.alias }}:&nbsp;<b>{{ tag.value }}</b></span
+            >
+          </div>
+          <div class="text-center" *ngIf="!tag.value">
+            <span class="label label-gray px-2 f-14 mb-1">{{ tag.alias }}</span>
+          </div>
         </div>
       </ng-container>
       <div class="text-center">
@@ -69,8 +75,8 @@
               <div class="d-flex align-items-center">
                 <span
                   class="br-14 label px-3 f-16"
-                  [style]="getColors(element.isReprocess)"
-                  >{{ checkOrderStatus(element.isReprocess) }}</span
+                  [style]="element.statusCss"
+                  >{{ element.status }}</span
                 >
               </div>
             </td>

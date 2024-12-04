@@ -50,31 +50,12 @@ export class BatchOrderListComponent implements OnInit {
   max: any;
   selectedOrderLength: any = 0;
   @Input() set orderListData(val: any) {
+    this.checkIsReProcessAndAddStatusField(val);
     this.batchOrderDataTable = new MatTableDataSource(val);
     this.batchOrderDataTable.paginator = this.paginator;
     this.batchOrderDataTable.sort = this.sort;
-
-    this.batchOrderDataTable.sortingDataAccessor = (
-      row: any,
-      columnName: string
-    ) => {
-      if (columnName === 'status') {
-        return this.checkOrderStatus(row);
-      }
-      else if (columnName === 'orderNumber') {
-        return row.orderNumber;
-      }
-      else if (columnName === 'countOfOrderNumber') {
-        return row.countOfOrderNumber;
-      }
-      else if (columnName === 'minOfPriority') {
-        return row.minOfPriority;
-      }
-      //  else {
-      //   return '';
-      // }
-    };
   }
+
   @Input()
   set transTypeEvent(event: Event) {
     if (event) {
@@ -101,6 +82,23 @@ export class BatchOrderListComponent implements OnInit {
     private global: GlobalService
   ) {
     this.iAdminApiService = adminApiService;
+  }
+
+  private checkIsReProcessAndAddStatusField(data: any[] | undefined) {
+    // Add status field on provided data set to be displayed on material table
+    // This will ensure that status field sortig works as expected
+
+    if (data && data.length > 0) {
+      data.forEach((m) => {
+        if (m.isReprocess === false) {
+          m.status = 'Re-process';
+          m.statusCss = 'background-color: #FFF0D6;color:#4D3B1A';
+        } else {
+          m.status = 'Open';
+          m.statusCss = 'background-color: #F7D0DA;color:#4D0D1D';
+        }
+      });
+    }
   }
 
   ngOnInit(): void {
@@ -233,22 +231,5 @@ export class BatchOrderListComponent implements OnInit {
 
   ngOnDestroy() {
     this.subscription.unsubscribe();
-  }
-
-  checkOrderStatus(order: any): string {
-
-    if (order.isReprocess === false) {
-      return 'Open';
-    } else {
-      return 'Re-process';
-    }
-  }
-
-  getColors(order: any): string {
-    if (order.isReprocess === false) {
-      return 'background-color: #FFF0D6;color:#4D3B1A';
-    } else {
-      return 'background-color:   #F7D0DA;color:#4D0D1D';
-    }
   }
 }
