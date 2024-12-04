@@ -240,7 +240,7 @@ export class NonSuperBatchOrdersComponent implements OnInit, AfterViewInit {
         this.filters = result;
         this.filters.forEach((filter) => {
           const alias = filter.alias?.toString();
-          if (alias) this.updateTag(alias,'');
+          if (alias) this.updateTag(alias,filter.Value!);
         });
 
         // send the currently selected column filters to parent component via observable
