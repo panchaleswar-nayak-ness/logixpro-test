@@ -6,7 +6,7 @@ import { DeleteConfirmationComponent } from '../delete-confirmation/delete-confi
 import { ICommonApi } from 'src/app/common/services/common-api/common-api-interface';
 import { CommonApiService } from 'src/app/common/services/common-api/common-api.service';
 import { GlobalService } from 'src/app/common/services/global.service';
-import { ToasterTitle, ToasterType ,ResponseStrings,DialogConstants,Style} from 'src/app/common/constants/strings.constants';
+import { ToasterTitle, ToasterType ,ResponseStrings,DialogConstants,Style, Placeholders} from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-unit-measure',
@@ -14,6 +14,7 @@ import { ToasterTitle, ToasterType ,ResponseStrings,DialogConstants,Style} from 
   styleUrls: ['./unit-measure.component.scss']
 })
 export class UnitMeasureComponent implements OnInit {
+  placeholders = Placeholders;
   @ViewChildren('unit_name', { read: ElementRef }) unit_name: QueryList<ElementRef>;
   public unitOfMeasure_list: any;
   enableButton=[{index:-1,value:true,IsSelected:false}];

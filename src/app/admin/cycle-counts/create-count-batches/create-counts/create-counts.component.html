@@ -14,7 +14,7 @@
                     <mat-label>Count Type</mat-label>
                     <mat-select [(ngModel)]="selection" #matRef class="employees-action" value="location" (selectionChange)="resetVal()" (valueChange)="checkvalue($event)">
                         <mat-option value="LocationRange">Locations Range</mat-option>
-                        <mat-option value="ItemNumber">Item Number</mat-option>
+                        <mat-option value="ItemNumber" replacePlaceholder [replacePlaceHolder]="placeholders.itemNumber" [fallbackPlaceHolder]="placeholders.itemNumberFallback">Item Number</mat-option>
                         <mat-option value="Description">Description</mat-option>
                         <mat-option value="Category">Category</mat-option>
                         <mat-option value="NotCountedSince">Not Counted Since</mat-option>
@@ -90,7 +90,7 @@
                         <mat-form-field [floatLabel]="getFloatLabelValue()"
                         [hideRequiredMarker]="hideRequiredControl.value"
                         class="custom-form-field w-100  mb-2" appearance="outline">
-                        <mat-label>From Item Number</mat-label>
+                        <mat-label>From <span replacePlaceholder [replacePlaceHolder]="placeholders.itemNumber" [fallbackPlaceHolder]="placeholders.itemNumberFallback">Item Number</span></mat-label>
                         <input [matAutocomplete]="fromItem" (ngModelChange)="this.fromItemTA.next($event)"
                             formControlName="fromItem" matInput class=" " type="text"
                             maxlength="50" [(ngModel)]="fromItemCrossbtn">
@@ -106,7 +106,7 @@
                         <mat-form-field [floatLabel]="getFloatLabelValue()"
                         [hideRequiredMarker]="hideRequiredControl.value"
                         class="custom-form-field w-100  mb-2" appearance="outline">
-                        <mat-label>To Item Number</mat-label>
+                        <mat-label>To <span replacePlaceholder [replacePlaceHolder]="placeholders.itemNumber" [fallbackPlaceHolder]="placeholders.itemNumberFallback">Item Number</span></mat-label>
                         <input [matAutocomplete]="toItem" (ngModelChange)="this.toItemTA.next($event)"
                             formControlName="toItem" matInput class=" " type="text"
                             maxlength="50" [(ngModel)]="toItemCrossbtn">
@@ -293,7 +293,7 @@
                         <td mat-cell *matCellDef="let element" [matTooltip]="element.itemQuantity"   matTooltipPosition="above" [matTooltipDisabled]="element.itemQuantity && element.itemQuantity.length>=12?false:true"> {{element.itemQuantity}} </td>
                     </ng-container>
                     <ng-container matColumnDef="unitofMeasure">
-                        <th mat-header-cell *matHeaderCellDef mat-sort-header> Unit Of Measure </th>
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header replacePlaceholder [replacePlaceHolder]="placeholders.unitOfMeasure" [fallbackPlaceHolder]="placeholders.unitOfMeasureFallback"> UM </th>
                         <td mat-cell *matCellDef="let element" [matTooltip]="element.unitofMeasure"   matTooltipPosition="above" [matTooltipDisabled]="element.unitofMeasure && element.unitofMeasure.length>=12?false:true"> {{element.unitofMeasure}} </td>
                     </ng-container>
                     <ng-container matColumnDef="warehouse">

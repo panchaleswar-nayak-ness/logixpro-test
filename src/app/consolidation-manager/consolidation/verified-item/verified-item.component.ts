@@ -2,7 +2,7 @@ import { LiveAnnouncer } from '@angular/cdk/a11y';
 import { Component, EventEmitter, Input,Output, ViewChild } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort, Sort } from '@angular/material/sort';
-import {  LiveAnnouncerMessage } from 'src/app/common/constants/strings.constants';
+import {  LiveAnnouncerMessage, Placeholders } from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-verified-item',
@@ -18,6 +18,8 @@ export class VerifiedItemComponent  {
   @Output()  unverifyAllEmit = new EventEmitter<any>();  
   @ViewChild('paginator') paginator: MatPaginator; 
   @ViewChild('sort') sort: MatSort;
+
+  placeholders = Placeholders;
 
   constructor(
     private liveAnnouncer: LiveAnnouncer

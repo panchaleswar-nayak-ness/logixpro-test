@@ -20,7 +20,7 @@ import { IOrderManagerAPIService } from 'src/app/common/services/orderManager-ap
 import { IAdminApiService } from 'src/app/common/services/admin-api/admin-api-interface';
 import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.service';
 import { TableContextMenuService } from 'src/app/common/globalComponents/table-context-menu-component/table-context-menu.service';
-import {  ToasterTitle ,LiveAnnouncerMessage,ResponseStrings,Column,ToasterType,DialogConstants,TableConstant,ColumnDef,Style,UniqueConstants,FilterColumnName,StringConditions} from 'src/app/common/constants/strings.constants';
+import {  ToasterTitle ,LiveAnnouncerMessage,ResponseStrings,Column,ToasterType,DialogConstants,TableConstant,ColumnDef,Style,UniqueConstants,FilterColumnName,StringConditions, Placeholders} from 'src/app/common/constants/strings.constants';
 import { ContextMenuFiltersService } from 'src/app/common/init/context-menu-filters.service';
 
 @Component({
@@ -29,6 +29,7 @@ import { ContextMenuFiltersService } from 'src/app/common/init/context-menu-filt
   styleUrls: ['./om-create-orders.component.scss']
 })
 export class OmCreateOrdersComponent implements OnInit {
+  placeholders = Placeholders;
   omPreferences: any;
   @ViewChild('ordfocus') ordfocus: ElementRef;
   displayedColumns: any[] = [];

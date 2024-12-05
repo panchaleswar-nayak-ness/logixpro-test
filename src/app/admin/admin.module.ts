@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { APP_INITIALIZER, NgModule, NO_ERRORS_SCHEMA } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { AdminRoutingModule } from './admin-routing.module'; 
 import { AdminComponent } from './admin.component';
@@ -187,8 +187,24 @@ import { LookupHotPickComponent } from './admin-preferences/system-preferences/s
 import { LookupHotPutAwayComponent } from './admin-preferences/system-preferences/sp-lookup-lists/lookup-hot-put-away/lookup-hot-put-away.component';
 import { LookupHotMoveComponent } from './admin-preferences/system-preferences/sp-lookup-lists/lookup-hot-move/lookup-hot-move.component';
 import { LookupBlindInductionComponent } from './admin-preferences/system-preferences/sp-lookup-lists/lookup-blind-induction/lookup-blind-induction.component';
+import { FieldMappingService } from '../common/services/field-mapping/field-mapping.service';
+import { initializeFieldMappings } from '../common/services/field-mappings-initializer/field-mappings-initializer.service'; 
 import { ImportCountBatchesComponent } from './cycle-counts/import-count-batches/import-count-batches.component';
 import { FilterItemNumbersComponentCycleCount } from './cycle-counts/filter-item-numbers_cycle_count/filter-item-numbers_cycle_count.component';
+import { AuthService } from '../common/init/auth.service';
+
+export function initializeApp(authService: AuthService, fieldMappingService: FieldMappingService) {
+    return (): Promise<any> => {
+      return new Promise((resolve) => {
+        if (authService.IsloggedIn()) {
+          // Initialize field mappings if the user is logged in
+          initializeFieldMappings(fieldMappingService)();
+        }
+        resolve(null);
+      });
+    };
+  }
+
 
 @NgModule({
     declarations: [
@@ -396,6 +412,17 @@ import { FilterItemNumbersComponentCycleCount } from './cycle-counts/filter-item
             }
         }),
         SharedComponentsModule,
-    ]
+    ],
+    providers: [
+        FieldMappingService,
+        AuthService,
+        {
+            provide: APP_INITIALIZER,
+            useFactory: initializeApp,
+            deps: [AuthService, FieldMappingService],
+            multi: true,
+        },
+    ],
+    schemas: [NO_ERRORS_SCHEMA],
 })
 export class AdminModule { }

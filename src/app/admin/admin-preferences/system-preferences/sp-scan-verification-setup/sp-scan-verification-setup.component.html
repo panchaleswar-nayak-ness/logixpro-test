@@ -71,14 +71,14 @@
                                         <mat-label>Expiration Date</mat-label>
                                         <mat-select class="employees-action" placeholder="Actions">
                                             <mat-option value="Expiration Date">Expiration Date</mat-option>
-                                            <mat-option value="Item Number">Item Number</mat-option>
+                                            <mat-option value="Item Number" replacePlaceholder [replacePlaceHolder]="placeholders.itemNumber" [fallbackPlaceHolder]="placeholders.itemNumberFallback">Item Number</mat-option>
                                             <mat-option value="Location Number">Location Number</mat-option>
                                             <mat-option value="Lot Number">Lot Number</mat-option>
                                             <mat-option value="Serial Number">Serial Number</mat-option>
                                             <mat-option value="Supplier Item ID">Supplier Item ID</mat-option>
                                             <mat-option value="Tote ID">Tote ID</mat-option>
-                                            <mat-option value="User Field1">User Field1</mat-option>
-                                            <mat-option value="User Field2">User Field2</mat-option>
+                                            <mat-option value="User Field1" replacePlaceholder [replacePlaceHolder]="placeholders.userField1" [fallbackPlaceHolder]="placeholders.userField1Fallback"> UF1 </mat-option>
+                                            <mat-option value="User Field2" replacePlaceholder [replacePlaceHolder]="placeholders.userField2" [fallbackPlaceHolder]="placeholders.userField2Fallback"> UF2 </mat-option>
                                         </mat-select>
                                         <span class="material-symbols-outlined icon-expand-more">
                                             expand_more
@@ -222,7 +222,7 @@
                         <td [class.selected]="element.isSelected" mat-cell *matCellDef="let element">aaa</td>
                     </ng-container>
                     <ng-container matColumnDef="itemNumber">
-                        <th mat-header-cell mat-sort-header *matHeaderCellDef>Item Number</th>
+                        <th mat-header-cell mat-sort-header *matHeaderCellDef replacePlaceholder [replacePlaceHolder]="placeholders.itemNumber" [fallbackPlaceHolder]="placeholders.itemNumberFallback">Item Number</th>
                         <td [class.selected]="element.isSelected" mat-cell *matCellDef="let element">aaa</td>
                     </ng-container>
                     <ng-container matColumnDef="description">

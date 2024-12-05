@@ -12,7 +12,7 @@ import { IAdminApiService } from 'src/app/common/services/admin-api/admin-api-in
 import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.service';
 import { ICommonApi } from 'src/app/common/services/common-api/common-api-interface';
 import { CommonApiService } from 'src/app/common/services/common-api/common-api.service';
-import {  ToasterTitle ,ResponseStrings,ToasterType,DialogConstants,Style,UniqueConstants,Column} from 'src/app/common/constants/strings.constants';
+import {  ToasterTitle ,ResponseStrings,ToasterType,DialogConstants,Style,UniqueConstants,Column, Placeholders} from 'src/app/common/constants/strings.constants';
 import { TableContextMenuService } from 'src/app/common/globalComponents/table-context-menu-component/table-context-menu.service';
 import { ContextMenuFiltersService } from 'src/app/common/init/context-menu-filters.service';
 
@@ -23,6 +23,7 @@ import { ContextMenuFiltersService } from 'src/app/common/init/context-menu-filt
 })
 export class KitItemComponent implements OnInit, OnChanges {
 
+  placeholders = Placeholders;
   displayedColumns: string[] = ['ItemNumber', Column.Description, 'SpecialFeatures', 'KitQuantity','Actions'];
 
   @Input() kitItem: FormGroup;

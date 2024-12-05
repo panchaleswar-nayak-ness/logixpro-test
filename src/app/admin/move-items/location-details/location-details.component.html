@@ -66,7 +66,7 @@
 
             <mat-form-field class="custom-form-field  w-100 mb-2"
                 appearance="outline">
-                <mat-label>Item Number</mat-label>
+                <mat-label replacePlaceholder [replacePlaceHolder]="placeholders.itemNumber" [fallbackPlaceHolder]="placeholders.itemNumberFallback"> </mat-label>
                 <input disabled [(ngModel)]="from_itemNo"  type="text" matInput maxlength="255">
             </mat-form-field>
 
@@ -121,7 +121,7 @@
 
             <mat-form-field class="custom-form-field  w-100 mb-2"
                 appearance="outline">
-                <mat-label>Item Number</mat-label>
+                <mat-label replacePlaceholder [replacePlaceHolder]="placeholders.itemNumber" [fallbackPlaceHolder]="placeholders.itemNumberFallback"> </mat-label>
                 <input disabled [(ngModel)]="to_itemNo" type="text" matInput maxlength="255">
             </mat-form-field>
 

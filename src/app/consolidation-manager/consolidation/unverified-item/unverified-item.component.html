@@ -65,7 +65,7 @@
             <ng-scrollbar track="all" class="mat-table-scrollbar h-400">
                 <table class="w-100 table-borderless" mat-table #matSort="matSort" matSort [dataSource]="unverifiedItems" (matSortChange)="announceSortChange($event)">
                     <ng-container matColumnDef="itemNumber"   [style.visibility]="isItemVisible ? 'visible' : 'hidden'"  >
-                        <th mat-header-cell *matHeaderCellDef mat-sort-header > Item No. </th>
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header replacePlaceholder [replacePlaceHolder]="placeholders.itemNumber" [fallbackPlaceHolder]="placeholders.itemNumberFallback"> Item Number </th>
                         <td mat-cell *matCellDef="let element" >{{element.itemNumber}}</td>
                     </ng-container>
                     <ng-container matColumnDef="supplierItemID" [style.visibility]="isSupplyVisible ? 'visible' : 'hidden'">
@@ -89,7 +89,7 @@
                         <td mat-cell *matCellDef="let element">{{element.serialNumber}}</td>
                     </ng-container>
                     <ng-container matColumnDef="userField1">
-                        <th mat-header-cell *matHeaderCellDef mat-sort-header> User Field 1 </th>
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header replacePlaceholder [replacePlaceHolder]="placeholders.userField1" [fallbackPlaceHolder]="placeholders.userField1Fallback"> UF1 </th>
                         <td mat-cell *matCellDef="let element; ">{{element.userField1}}</td>
                     </ng-container>
                     <ng-container matColumnDef="lineStatus" sticky>

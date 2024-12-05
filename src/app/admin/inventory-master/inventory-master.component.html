@@ -39,11 +39,11 @@
                   <div class="search-box mb-3 mb-xl-0 w-100" >
                     <mat-form-field class="w-100 bg-white br-14" appearance="fill">
                       <span class="material-symbols-outlined icon-search">search</span>
-                      <input #alertInput [matAutocomplete]="searchauto" type="text" placeholder="Item No." aria-label="Search" matInput (blur)="handleFocusOut()" (keydown.enter)="$event.preventDefault();" (keyup)="getSearchList($event)" [value]="searchValue" maxlength="50" #autoFocusField>
+                      <input #alertInput [matAutocomplete]="searchauto" type="text" replacePlaceholder [replacePlaceHolder]="placeholders.itemNumber" [fallbackPlaceHolder]="placeholders.itemNumberFallback" placeholder="Item Number" aria-label="Search" matInput (blur)="handleFocusOut()" (keydown.enter)="$event.preventDefault();" (keyup)="getSearchList($event)" [value]="searchValue" maxlength="50" #autoFocusField>
                       <button matSuffix *ngIf="searchValue" class="clear-btn"  (click)="searchValue = ''"><mat-icon class="text-20 text-chrome-600">cancel</mat-icon></button>
                       <mat-autocomplete class="card custom-scroll panel-custom-scroll" #searchauto="matAutocomplete" (optionSelected)="onSearchSelect($event)">
                         <h6 class="card-header matAutoCompHeader stickyHeader ps-4"> 
-                          <span class="width-30">Item No./Supp No./Supp Code</span> 
+                          <span class="width-30"><span replacePlaceholder [replacePlaceHolder]="placeholders.itemNumber" [fallbackPlaceHolder]="placeholders.itemNumberFallback">Item Number</span>/Supp No./Supp Code</span> 
                           <span class="width-30">Description</span> 
                           <span class="width-20">Category</span> 
                           <span class="width-20">Sub Category</span>

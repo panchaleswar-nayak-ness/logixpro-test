@@ -6,7 +6,7 @@ import labels from 'src/app/common/labels/labels.json';
 import { GlobalService } from 'src/app/common/services/global.service';
 import { IInductionManagerApiService } from 'src/app/common/services/induction-manager-api/induction-manager-api-interface';
 import { InductionManagerApiService } from 'src/app/common/services/induction-manager-api/induction-manager-api.service';
-import { ToasterTitle, ToasterType ,DialogConstants,TableConstant,ColumnDef,UniqueConstants} from 'src/app/common/constants/strings.constants';
+import { ToasterTitle, ToasterType ,DialogConstants,TableConstant,ColumnDef,UniqueConstants, Placeholders} from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-super-batch',
@@ -32,6 +32,7 @@ export class SuperBatchComponent implements OnInit {
   isConfirmSuperBatch:boolean=false;
   itemNum : any;
   selectedOption:any;
+  placeholders = Placeholders;
   @ViewChild('batchOrderConfirmation') batchOrderConfirmation: TemplateRef<any>;
 
   constructor(

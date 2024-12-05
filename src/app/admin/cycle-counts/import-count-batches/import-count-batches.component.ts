@@ -11,6 +11,7 @@ import { AuthService } from 'src/app/common/init/auth.service';
 import {  FilterItemNumbersComponentCycleCount } from '../filter-item-numbers_cycle_count/filter-item-numbers_cycle_count.component';
 import * as XLSX from 'xlsx';
 import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.service';
+import { Placeholders } from 'src/app/common/constants/strings.constants';
 
 export interface PeriodicElement {
   invMapID:number;
@@ -51,6 +52,7 @@ export interface DialogData {
 export class ImportCountBatchesComponent implements OnInit {
 
   dataSource = new MatTableDataSource<PeriodicElement>();
+  placeholders = Placeholders;
   displayedColumns: string[] = [
     'itemNumber',
     'description',
