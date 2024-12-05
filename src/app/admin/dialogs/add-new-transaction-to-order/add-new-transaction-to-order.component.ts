@@ -11,7 +11,7 @@ import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.ser
 import { ICommonApi } from 'src/app/common/services/common-api/common-api-interface';
 import { CommonApiService } from 'src/app/common/services/common-api/common-api.service';
 import { GlobalService } from 'src/app/common/services/global.service';
-import { ToasterTitle, ToasterType ,DialogConstants,Style,Column,UniqueConstants, Placeholders} from 'src/app/common/constants/strings.constants';
+import { ToasterTitle, ToasterType ,DialogConstants,Style,Column,UniqueConstants} from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-add-new-transaction-to-order',
@@ -19,7 +19,6 @@ import { ToasterTitle, ToasterType ,DialogConstants,Style,Column,UniqueConstants
   styleUrls: ['./add-new-transaction-to-order.component.scss'],
 })
 export class AddNewTransactionToOrderComponent implements OnInit {
-  placeholders = Placeholders;
   @ViewChild('item_num') item_num: ElementRef;
   orderNumber;
   quantity=0;

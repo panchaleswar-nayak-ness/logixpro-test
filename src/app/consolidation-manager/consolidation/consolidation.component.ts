@@ -31,7 +31,6 @@ import {
   ConfirmationMessages,
   DialogConstants,
   LiveAnnouncerMessage,
-  Placeholders,
   ResponseStrings,
   StringConditions,
   Style,
@@ -58,7 +57,6 @@ export class ConsolidationComponent implements OnInit {
   @ViewChild('stagePaginator') stagePaginator: MatPaginator;
   @ViewChild('autoFocusField') searchBoxField: ElementRef;
 
-  placeholders = Placeholders;
   public startSelectFilter: any;
   public startSelectFilterLabel: any;
   packListSort: any;
@@ -97,8 +95,6 @@ export class ConsolidationComponent implements OnInit {
   verifiedItemsColumns: string[] = ['itemNumber', 'lineStatus', 'supplierItemID', TableConstant.LineNumber, TableConstant.completedQuantity, ColumnDef.ToteID, TableConstant.SerialNumber, ColumnDef.userField1, ColumnDef.Actions];
   verifiedItems = new MatTableDataSource<any>([]);
 
-  fieldMappings = JSON.parse(localStorage.getItem('fieldMappings') ?? '{}');
-
   filterOption: any = [
     {key: '0', value: 'Any Code'},
     {key: '1', value: Column.ItemNumber},
@@ -106,7 +102,7 @@ export class ConsolidationComponent implements OnInit {
     {key: '2', value: 'Supplier Item ID'},
     {key: '8', value: ColumnDef.SerialNumber},
     {key: '6', value: Column.ToteID},
-    {key: '9', value: this.fieldMappings?.userField1 || this.placeholders.userField1Fallback},
+    {key: '9', value: 'User Field 1'},
   ];
 
   hideRow = true;

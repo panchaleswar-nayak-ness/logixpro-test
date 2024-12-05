@@ -13,7 +13,7 @@ import { IAdminApiService } from 'src/app/common/services/admin-api/admin-api-in
 import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.service';
 import { IInductionManagerApiService } from 'src/app/common/services/induction-manager-api/induction-manager-api-interface';
 import { InductionManagerApiService } from 'src/app/common/services/induction-manager-api/induction-manager-api.service';
-import {  Placeholders, ToasterTitle ,ToasterType} from 'src/app/common/constants/strings.constants';
+import {  ToasterTitle ,ToasterType} from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-reprocess-transaction-detail-view',
@@ -21,7 +21,6 @@ import {  Placeholders, ToasterTitle ,ToasterType} from 'src/app/common/constant
   styleUrls: ['./reprocess-transaction-detail-view.component.scss'],
 })
 export class ReprocessTransactionDetailViewComponent implements OnInit {
-  placeholders = Placeholders;
   @ViewChild('fieldFocus') fieldFocus: ElementRef;
   itemID: any;
   userData: any;

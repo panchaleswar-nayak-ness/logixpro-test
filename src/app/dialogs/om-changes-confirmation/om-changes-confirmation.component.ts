@@ -6,7 +6,7 @@ import { GlobalService } from 'src/app/common/services/global.service';
 import { AuthService } from 'src/app/common/init/auth.service'; 
 import { OrderManagerApiService } from 'src/app/common/services/orderManager-api/order-manager-api.service';
 import { IOrderManagerAPIService } from 'src/app/common/services/orderManager-api/order-manager-api-interface';
-import {  ToasterTitle ,ToasterType,UniqueConstants,TableConstant, Placeholders} from 'src/app/common/constants/strings.constants';
+import {  ToasterTitle ,ToasterType,UniqueConstants,TableConstant} from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-om-changes-confirmation',
@@ -15,7 +15,6 @@ import {  ToasterTitle ,ToasterType,UniqueConstants,TableConstant, Placeholders}
 })
 export class OmChangesConfirmationComponent implements OnInit {
 
-  placeholders = Placeholders;
   public userData: any;
 
   orderForm   : FormGroup;

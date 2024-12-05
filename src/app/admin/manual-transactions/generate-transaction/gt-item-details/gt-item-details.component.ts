@@ -5,7 +5,7 @@ import { AddNotesComponent } from 'src/app/admin/dialogs/add-notes/add-notes.com
 import { SupplierItemIdComponent } from 'src/app/admin/dialogs/supplier-item-id/supplier-item-id.component';
 import { UnitMeasureComponent } from 'src/app/admin/dialogs/unit-measure/unit-measure.component';
 import { UserFieldsEditComponent } from 'src/app/admin/dialogs/user-fields-edit/user-fields-edit.component';
-import { DialogConstants ,Placeholders,Style} from 'src/app/common/constants/strings.constants';
+import { DialogConstants ,Style} from 'src/app/common/constants/strings.constants';
 import { ICommonApi } from 'src/app/common/services/common-api/common-api-interface';
 import { CommonApiService } from 'src/app/common/services/common-api/common-api.service';
 import { GlobalService } from 'src/app/common/services/global.service';
@@ -35,7 +35,6 @@ constructor(private global:GlobalService, public commonAPI : CommonApiService, )
 
 invMapIDget: any ="";
 isInvalid = false;
-placeholders = Placeholders;
 public iCommonAPI : ICommonApi;
 
 openAction: any;

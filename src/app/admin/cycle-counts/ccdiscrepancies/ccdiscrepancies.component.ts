@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
-import { UniqueConstants, ColumnDef, Placeholders} from 'src/app/common/constants/strings.constants';
+import { UniqueConstants, ColumnDef} from 'src/app/common/constants/strings.constants';
 import { AppRoutes } from 'src/app/common/constants/menu.constants';
 
 
@@ -26,7 +26,6 @@ const ELEMENT_DATA: PeriodicElement[] = [
 })
 export class CCDiscrepanciesComponent{
 
-  placeholders = Placeholders;
   displayedColumns: string[] = [UniqueConstants.position, 'name', 'weight', 'symbol', 'ex', 'srno', ColumnDef.Action];
   tableData = ELEMENT_DATA;
 

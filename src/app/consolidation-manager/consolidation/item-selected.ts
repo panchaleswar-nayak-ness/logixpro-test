@@ -5,7 +5,7 @@ import { Component, Inject, OnInit } from "@angular/core";
 import { IConsolidationApi } from "src/app/common/services/consolidation-api/consolidation-api-interface";
 import { ConsolidationApiService } from "src/app/common/services/consolidation-api/consolidation-api.service";
 import { GlobalService } from "src/app/common/services/global.service";
-import {  Column ,ToasterTitle,ToasterType,ColumnDef,UniqueConstants, Placeholders} from 'src/app/common/constants/strings.constants';
+import {  Column ,ToasterTitle,ToasterType,ColumnDef,UniqueConstants} from 'src/app/common/constants/strings.constants';
 
 @Component({
     template: ''
@@ -13,7 +13,6 @@ import {  Column ,ToasterTitle,ToasterType,ColumnDef,UniqueConstants, Placeholde
 
 export class ItemSelected implements OnInit {
 
-    placeholders = Placeholders;
     public startSelectFilter: any;
     public itemSelectTable: any;
     public tabledata1: any;
@@ -24,13 +23,12 @@ export class ItemSelected implements OnInit {
 
     userData: any;
 
-    fieldMappings = JSON.parse(localStorage.getItem('fieldMappings') ?? '{}');
     filterOptionarr :any= [
         {key: '1', value: Column.ItemNumber},
         {key: '2', value: 'Supplier Item ID'},
         {key: '10', value: Column.LotNumber},
         {key: '8', value: ColumnDef.SerialNumber},
-        {key: '9', value: this.fieldMappings?.userField1 || this.placeholders.userField1Fallback},
+        {key: '9', value: 'User Field 1'},
         {key: '0', value: 'Any Code'},
         {key: '6', value: Column.ToteID},
       ];

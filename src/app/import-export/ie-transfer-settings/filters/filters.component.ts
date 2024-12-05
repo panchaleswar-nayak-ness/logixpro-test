@@ -1,5 +1,5 @@
 import { Component, EventEmitter,Output } from '@angular/core';
-import {  Placeholders, UniqueConstants } from 'src/app/common/constants/strings.constants';
+import {  UniqueConstants } from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-filters',
@@ -7,7 +7,6 @@ import {  Placeholders, UniqueConstants } from 'src/app/common/constants/strings
   styleUrls: ['./filters.component.scss']
 })
 export class FiltersComponent {
-  placeholders = Placeholders;
 
   ELEMENT_DATA: any[] =[
     {trans_type: '10A'},

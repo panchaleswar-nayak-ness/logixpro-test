@@ -4,7 +4,7 @@ import { AuthService } from '../../../../common/init/auth.service';
 import { IAdminApiService } from 'src/app/common/services/admin-api/admin-api-interface';
 import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.service';
 import { GlobalService } from 'src/app/common/services/global.service';
-import { Placeholders, StringConditions, ToasterTitle, ToasterType } from 'src/app/common/constants/strings.constants';
+import { StringConditions, ToasterTitle, ToasterType } from 'src/app/common/constants/strings.constants';
 import { CurrentTabDataService } from 'src/app/admin/inventory-master/current-tab-data-service';
 
 @Component({
@@ -13,7 +13,6 @@ import { CurrentTabDataService } from 'src/app/admin/inventory-master/current-ta
   styleUrls: ['./tran-in-reprocess.component.scss']
 })
 export class TranInReprocessComponent implements OnInit {
-  placeholders = Placeholders;
   selectedOption = "reprocess";
   reasonFilter = "none";
 

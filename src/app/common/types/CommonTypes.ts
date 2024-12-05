@@ -131,19 +131,3 @@ export interface CmPreferences {
     autoPrintMarkoutReport: boolean;
     defaultViewType: string;
   }
-
-  export interface FieldMappingModel {
-    itemNumber: string;
-    unitOfMeasure: string;
-    userField1: string;
-    userField2: string;
-    userField3: string;
-    userField4: string;
-    userField5: string;
-    userField6: string;
-    userField7: string;
-    userField8: string;
-    userField9: string;
-    userField10: string;
-  }
-  

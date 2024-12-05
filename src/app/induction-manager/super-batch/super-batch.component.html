@@ -14,14 +14,13 @@
                                     <mat-radio-group  [(ngModel)]="selectedOption" class="d-flex flex-wrap" (change)="onChangeBatch($event)">
                                         <mat-radio-button class="me-4 my-2" color="primary" value="Order" checked>Order Number</mat-radio-button>
                                         <mat-radio-button class="me-4 my-2" color="primary" value="Tote">Tote ID</mat-radio-button>
-                                        <mat-radio-button class="me-4 my-2" color="primary" value="Item"><span  replacePlaceholder [replacePlaceHolder]="placeholders.itemNumber" [fallbackPlaceHolder]="placeholders.itemNumberFallback">Item Number</span></mat-radio-button>
+                                        <mat-radio-button class="me-4 my-2" color="primary" value="Item">Item Number</mat-radio-button>
                                     </mat-radio-group>
                                     <div class="ps-xl-3 flex-1">
                                         <mat-form-field class="action-dropdown w-100" appearance="outline"
                                             *ngIf="!isItemNumber">
-                                            <mat-label replacePlaceholder [replacePlaceHolder]="placeholders.itemNumber" [fallbackPlaceHolder]="placeholders.itemNumberFallback">Item Number</mat-label>
-                                            <mat-select class="me-4" replacePlaceholder [replacePlaceHolder]="placeholders.itemNumber" 
-                                            [fallbackPlaceHolder]="placeholders.itemNumberFallback"
+                                            <mat-label>Item No.</mat-label>
+                                            <mat-select class="me-4" placeholder="Item No."
                                                 (selectionChange)="onItemSelectChange($event)">
                                                 <mat-option></mat-option>
                                                 <mat-option *ngFor="let item of itemNumbers"

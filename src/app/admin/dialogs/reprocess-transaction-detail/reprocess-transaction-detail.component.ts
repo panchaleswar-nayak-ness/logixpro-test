@@ -9,7 +9,7 @@ import { IAdminApiService } from 'src/app/common/services/admin-api/admin-api-in
 import { ICommonApi } from 'src/app/common/services/common-api/common-api-interface';
 import { CommonApiService } from 'src/app/common/services/common-api/common-api.service';
 import { GlobalService } from 'src/app/common/services/global.service';
-import { ToasterTitle, ToasterType ,ToasterMessages,TableConstant,ColumnDef,UniqueConstants,StringConditions, Placeholders} from 'src/app/common/constants/strings.constants';
+import { ToasterTitle, ToasterType ,ToasterMessages,TableConstant,ColumnDef,UniqueConstants,StringConditions} from 'src/app/common/constants/strings.constants';
 import { format, parse } from 'date-fns';
 
 @Component({
@@ -18,7 +18,6 @@ import { format, parse } from 'date-fns';
   styleUrls: ['./reprocess-transaction-detail.component.scss']
 })
 export class ReprocessTransactionDetailComponent implements OnInit {
-  placeholders = Placeholders;
   @ViewChild('trans_qty') trans_qty: ElementRef;
   isHistory: any;
 
