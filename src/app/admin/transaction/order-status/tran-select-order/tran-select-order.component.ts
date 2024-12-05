@@ -135,6 +135,7 @@ export class TranSelectOrderComponent implements OnInit {
   }
 
   selectOrderByTote() {
+
     if (this.totalLinesOrder > 0) {
 
       this.sharedService.updateFilterByTote({
@@ -223,10 +224,13 @@ export class TranSelectOrderComponent implements OnInit {
   }
 
   getNextItemNo(event: any) {
-    this.searchControl.setValue(event.target.value, {emitEvent: true}); // Update the value of the FormControl
-    if(event.target.value == ''){
-      this.resetLines();
-      this.columnSelect = '';
+
+    if(event.code !== 'CapsLock') {
+      this.searchControl.setValue(event.target.value, {emitEvent: true}); // Update the value of the FormControl
+      if(event.target.value == ''){
+        this.resetLines();
+        this.columnSelect = '';
+      }
     }
   }
 
