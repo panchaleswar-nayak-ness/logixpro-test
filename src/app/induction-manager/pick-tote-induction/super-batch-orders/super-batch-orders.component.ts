@@ -220,7 +220,6 @@ export class SuperBatchOrdersComponent implements OnInit, AfterViewInit {
       }
     });
   }
-
   openColumnFilter() {
     const dialogRef: any = this.global.OpenDialog(PickToteInFilterComponent, {
       height: 'auto',
