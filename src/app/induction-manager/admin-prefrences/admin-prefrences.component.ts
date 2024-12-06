@@ -21,6 +21,7 @@ import {
   ColumnDef,
   DialogConstants,
   Style,
+  Placeholders,
 } from 'src/app/common/constants/strings.constants';
 import { ZoneGroupsComponent } from 'src/app/dialogs/zone-groups/zone-groups.component';
 import { ImprefInductionFilterComponent } from 'src/app/dialogs/impref-induction-filter/impref-induction-filter.component';
@@ -33,6 +34,7 @@ import { PutAwayOption } from 'src/app/common/Model/preferences';
   styleUrls: ['./admin-prefrences.component.scss'],
 })
 export class AdminPrefrencesComponent implements OnInit {
+  placeholders = Placeholders;
   constructor(
     private authService: AuthService,
     public inductionManagerApi: InductionManagerApiService,

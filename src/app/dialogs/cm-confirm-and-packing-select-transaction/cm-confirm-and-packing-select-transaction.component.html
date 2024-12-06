@@ -29,7 +29,7 @@
                 <td mat-cell *matCellDef="let element" (click)="ConfPackSelectTableClick(element.sT_ID)">{{element.sT_ID}}</td>
             </ng-container>
             <ng-container matColumnDef="itemNumber">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header> Item Number </th>
+                <th mat-header-cell *matHeaderCellDef mat-sort-header replacePlaceholder [replacePlaceHolder]="placeholders.itemNumber" [fallbackPlaceHolder]="placeholders.itemNumberFallback"> Item Number </th>
                 <td mat-cell *matCellDef="let element" (click)="ConfPackSelectTableClick(element.sT_ID)">{{element.itemNumber}}</td>
             </ng-container>
             <ng-container matColumnDef="lineNumber">

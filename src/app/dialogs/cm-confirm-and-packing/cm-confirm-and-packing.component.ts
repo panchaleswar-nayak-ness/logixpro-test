@@ -13,7 +13,7 @@ import { Router } from '@angular/router';
 import { GlobalService } from 'src/app/common/services/global.service';
 import { IConsolidationApi } from 'src/app/common/services/consolidation-api/consolidation-api-interface';
 import { ConsolidationApiService } from 'src/app/common/services/consolidation-api/consolidation-api.service';
-import {  LiveAnnouncerMessage ,ResponseStrings,KeyboardKeys,StringConditions,ToasterTitle,ToasterType,DialogConstants,Style,TableConstant,ColumnDef,UniqueConstants} from 'src/app/common/constants/strings.constants';
+import {  LiveAnnouncerMessage ,ResponseStrings,KeyboardKeys,StringConditions,ToasterTitle,ToasterType,DialogConstants,Style,TableConstant,ColumnDef,UniqueConstants, Placeholders} from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-cm-confirm-and-packing',
@@ -21,6 +21,7 @@ import {  LiveAnnouncerMessage ,ResponseStrings,KeyboardKeys,StringConditions,To
   styleUrls: ['./cm-confirm-and-packing.component.scss']
 })
 export class CmConfirmAndPackingComponent implements OnInit {
+  placeholders = Placeholders;
   @ViewChild('orderFocus') orderFocus: ElementRef;
   orderNumber:any ;
   preferencesData:any;

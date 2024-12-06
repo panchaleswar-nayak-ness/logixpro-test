@@ -44,7 +44,7 @@ import {
   Style,
   UniqueConstants,
   FilterColumnName,
-  localStorageKeys,
+  localStorageKeys, Placeholders,
 } from 'src/app/common/constants/strings.constants';
 import {
   AppNames,
@@ -63,6 +63,7 @@ import { PrintApiService } from 'src/app/common/services/print-api/print-api.ser
   styleUrls: ['./tran-order-list.component.scss'],
 })
 export class TranOrderListComponent implements OnInit, AfterViewInit {
+  placeholders = Placeholders;
   public columnValues: any = [];
 
   public Order_Table_Config = [

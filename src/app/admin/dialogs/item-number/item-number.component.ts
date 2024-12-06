@@ -2,7 +2,7 @@ import { Component, OnInit, Inject, ViewChild, ElementRef } from '@angular/core'
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { ItemNumUpdateConfirmationComponent } from '../item-num-update-confirmation/item-num-update-confirmation.component';
 import { GlobalService } from 'src/app/common/services/global.service';
-import { StringConditions ,Style} from 'src/app/common/constants/strings.constants';
+import { Placeholders, StringConditions ,Style} from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-item-number',
@@ -10,7 +10,7 @@ import { StringConditions ,Style} from 'src/app/common/constants/strings.constan
   styleUrls: ['./item-number.component.scss']
 })
 export class ItemNumberComponent implements OnInit {
-
+  placeholders = Placeholders;
   @ViewChild('itm_nmb') itmNmb: ElementRef;
 
   addItem : boolean = true;

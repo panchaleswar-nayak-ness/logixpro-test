@@ -35,6 +35,7 @@ import { ConfirmationDialogComponent } from '../confirmation-dialog/confirmation
 
 
 
+import { Placeholders } from 'src/app/common/constants/strings.constants';
 
 type InventoryMapFormData = {
   location: FormControl<string | null>;
@@ -211,6 +212,7 @@ isButtonDisabled: boolean = true;
   isInputDisabled:boolean=false;
   public iCommonAPI : ICommonApi;
 
+  placeholders = Placeholders;
 
   constructor(
     public commonAPI : CommonApiService,

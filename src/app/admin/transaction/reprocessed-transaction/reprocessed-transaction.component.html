@@ -41,7 +41,7 @@
 
                     <ng-container class="d-table-row" [matColumnDef]="col.colDef" *ngFor="let col of displayedColumns; let indexOfelement=index;">
                         <th class="header reprocessed-header-custom" mat-header-cell *matHeaderCellDef mat-sort-header (sortActionDescription)="indexOfelement">
-                            {{ col.colDef }}
+                            {{ col.colTitle }}
                         </th>
 
                         <td *matCellDef="let element"  mat-cell class="reprocessed-cell-custom" #tooltip="matTooltip"
