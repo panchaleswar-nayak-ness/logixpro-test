@@ -119,6 +119,7 @@ export class NonSuperBatchOrdersComponent implements OnInit, AfterViewInit {
   filteredOrderResults = [];
   @Input() zones: string[] = []; // Accept zones as input
   @Output() someEvent = new EventEmitter<string>();
+  
   tags: {
     alias?: string;
     value?: string;
@@ -154,12 +155,15 @@ export class NonSuperBatchOrdersComponent implements OnInit, AfterViewInit {
     // This will ensure that status field sortig works as expected
 
     if (data && data.length > 0) {
+      
       data.forEach((m) => {
         if (m.isReprocess === false) {
-          m.status = 'Re-process';
-          m.statusCss = 'background-color: #FFF0D6;color:#4D3B1A';
-        } else {
           m.status = 'Open';
+          m.statusCss = 'background-color: #FFF0D6;color:#4D3B1A';
+
+       
+        } else {
+          m.status = 'Re-process';
           m.statusCss = 'background-color: #F7D0DA;color:#4D0D1D';
         }
       });
@@ -238,17 +242,15 @@ export class NonSuperBatchOrdersComponent implements OnInit, AfterViewInit {
 
     dialogRef.afterClosed().subscribe((result: any) => {
       if (!result) return;
-
       if (result.orderNumberFilter) {
         this.applyOrderNumberFilter(result.orderNumberFilter);
       } else if (result.orderRange) {
         this.applyOrderRangeFilter(result.orderRange);
       } else {
-        this.clearAllFilters();
+        this.clearAllFilters(result.isFilterByOrderNumbers);
       }
     });
   }
-
   openColumnFilter() {
     const dialogRef: any = this.global.OpenDialog(PickToteInFilterComponent, {
       height: 'auto',
@@ -259,16 +261,32 @@ export class NonSuperBatchOrdersComponent implements OnInit, AfterViewInit {
       },
       disableClose: true,
     });
-
-    dialogRef.afterClosed().subscribe((result: PickToteInductionFilter[]) => {
+  
+    dialogRef.afterClosed().subscribe((result: any) => {
+     
       if (result) {
-        this.filters = result;
+
+        this.filters = result.filters || []; // Assign filters from the result
+        const removedAliases = result.removedAliases || []; // Handle removed aliases if needed
+        if(this.filters.length<=0){
+            // Remove all related tags
+        this.tags = this.tags.filter(
+        (tag) =>
+          tag.alias == 'Filter Order Number' || tag.alias === 'Filter Order Number (Range)'
+
+      );
+        }
+        if (removedAliases.length > 0) {
+          // Filter out the removed aliases from tags
+          this.tags = this.tags.filter(tag => !removedAliases.includes(tag.alias));
+        }
+  
         this.filters.forEach((filter) => {
           const alias = filter.alias?.toString();
-          if (alias) this.updateTag(alias,filter.Value!);
+          if (alias) this.updateTag(alias, filter.Value!);
         });
-
-        // send the currently selected column filters to parent component via observable
+  
+        // Send updated filters to parent component
         this.global.sendMessage({
           columnFilters: this.filters,
           orderNumberFilters: this.orderNumberFilters,
@@ -427,18 +445,16 @@ export class NonSuperBatchOrdersComponent implements OnInit, AfterViewInit {
     );
 
     // Clear range-related data
-    this.orderRange = { lowerBound: '', upperBound: '' };
 
     // Update tags: Remove range tag and add/ensure order number tag
-    this.tags = this.tags.filter(
-      (tag) => tag.alias !== 'Filter Order Number (Range)'
-    );
+ 
     this.updateTag('Filter Order Number', '');
 
     this.global.sendMessage({
       columnFilters: this.filters,
       orderNumberFilters: this.orderNumberFilters,
-      orderRange: { lowerBound: '', upperBound: '' },
+      orderRange: this.orderRange,
+
     });
   }
 
@@ -448,11 +464,9 @@ export class NonSuperBatchOrdersComponent implements OnInit, AfterViewInit {
   }) {
     this.orderRange = orderRange;
 
-    // Clear order number-related data
-    this.orderNumberFilters = [];
 
-    // Update tags: Remove order number tag and add/ensure range tag
-    this.tags = this.tags.filter((tag) => tag.alias !== 'Filter Order Number');
+
+ 
     this.updateTag(
       'Filter Order Number (Range)',
       `From ${orderRange.lowerBound} to ${orderRange.upperBound}`
@@ -460,30 +474,50 @@ export class NonSuperBatchOrdersComponent implements OnInit, AfterViewInit {
 
     this.global.sendMessage({
       columnFilters: this.filters,
-      orderNumberFilters: [],
       orderRange: this.orderRange,
+      orderNumberFilters: this.orderNumberFilters,
+
     });
   }
 
-  private clearAllFilters() {
-    this.orderNumberFilters = [];
-    this.orderRange = { lowerBound: '', upperBound: '' };
-
-    // Remove all related tags
-    this.tags = this.tags.filter(
-      (tag) =>
-        tag.alias !== 'Filter Order Number' &&
-        tag.alias !== 'Filter Order Number (Range)'
-    );
-
-    this.global.sendMessage({
-      columnFilters: this.filters,
-      orderNumberFilters: [],
-      orderRange: { lowerBound: '', upperBound: '' },
-    });
+  private clearAllFilters(isFilterByOrderNumbers:boolean) {
+    if(isFilterByOrderNumbers){
+      this.orderNumberFilters = [];
+      console.log(this.tags)
+   
+  
+      // Remove all related tags
+      this.tags = this.tags.filter(
+        (tag) =>
+          tag.alias !== 'Filter Order Number' 
+      );
+  
+      this.global.sendMessage({
+        columnFilters: this.filters,
+        orderNumberFilters: [],
+        orderRange:this.orderRange,
+      });
+    }
+    else{
+      this.orderRange = { lowerBound: '', upperBound: '' };
+  
+      // Remove all related tags
+      this.tags = this.tags.filter(
+        (tag) =>
+          tag.alias !== 'Filter Order Number (Range)'
+      );
+  
+      this.global.sendMessage({
+        columnFilters: this.filters,
+        orderNumberFilters:  this.orderNumberFilters,
+        orderRange: { lowerBound: '', upperBound: '' },
+      });
+    }
+  
   }
 
   private updateTag(alias: string, value: string) {
+
     const existingTagIndex = this.tags.findIndex((tag) => tag.alias === alias);
 
     if (existingTagIndex !== -1) {

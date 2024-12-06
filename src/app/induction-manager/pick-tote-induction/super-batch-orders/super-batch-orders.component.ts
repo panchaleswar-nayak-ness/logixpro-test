@@ -232,16 +232,33 @@ export class SuperBatchOrdersComponent implements OnInit, AfterViewInit {
       disableClose: true,
     });
 
-    dialogRef.afterClosed().subscribe((result: PickToteInductionFilter[]) => {
+    dialogRef.afterClosed().subscribe((result: any) => {
       if (result) {
-        this.filters = result;
-        this.getTags();
+        this.filters = result.filters;
+        if(this.filters==undefined){
+          this.filters=[]
+        }
+        const removedAliases = result.removedAliases || []; // Handle removed aliases if needed
+        if(!this.filters){
+          // Remove all related tags
+           this.tags = []
+        }
+        if (removedAliases.length > 0) {
+          // Filter out the removed aliases from tags
+          this.tags = this.tags.filter(tag => !removedAliases.includes(tag.alias));
+        }
+        if(this.filters)
+        {
+          this.getTags();
 
-        // send the currently selected column filters to parent component via observable
+          // send the currently selected column filters to parent component via observable
+        
+        }
         this.global.sendMessage({
           columnFilters: this.filters,
           orderNumberFilters: this.orderNumberFilter,
         });
+   
       }
     });
   }
