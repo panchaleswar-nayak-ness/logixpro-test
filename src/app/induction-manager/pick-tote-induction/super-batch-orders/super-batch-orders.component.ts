@@ -383,7 +383,7 @@ export class SuperBatchOrdersComponent implements OnInit, AfterViewInit {
                 ) {
                   this.global.ShowToastr(
                     ToasterType.Info,
-                    'Some orders were skipped as they exceed the allowed tote capacity,maximuum batch size or tote quantity',
+                    `Some orders were skipped as they exceed the maximum batch size: ${valueToInduct.maxSuperBatchSize} or Max quantity Per Tote: ${valueToInduct.maxToteQuantity}`,
                     ToasterTitle.Info
                   );
                 }
