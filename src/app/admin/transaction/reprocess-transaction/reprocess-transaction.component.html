@@ -127,7 +127,7 @@
                                     *ngFor="let col of displayedColumns; let indexOfelement=index;">
                                     <th class="header header-custom-style" mat-header-cell *cdkHeaderCellDef mat-sort-header
                                         (sortActionDescription)="indexOfelement">
-                                        {{ col.colDef }}
+                                        {{ col.colTitle }}
                                     </th>
                                     <td *matCellDef="let element; let i = index" class="cell-custom-style"
                                     (dblclick)="col.colDef == 'Item Number' && viewInInventoryMaster(element)"

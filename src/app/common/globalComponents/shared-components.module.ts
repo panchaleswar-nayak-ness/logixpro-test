@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { TableContextMenuComponentComponent } from './table-context-menu-component/table-context-menu-component.component';
 import { GeneralModule } from 'src/app/gen-module';
@@ -34,6 +34,7 @@ import { ReplacePlaceholderDirective } from '../init/replace-placeholder/replace
     CommonModule,
     GeneralModule,
     MaterialModule
-  ]
+  ],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA] ,
 })
 export class SharedComponentsModule { }

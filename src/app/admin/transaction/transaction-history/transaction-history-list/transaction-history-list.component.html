@@ -45,7 +45,7 @@
                     <ng-container [matColumnDef]="col.colDef" class="d-table-row" *ngFor="let col of displayedColumns; let indexOfelement=index;">
                         <th class="header transaction-header-cell" mat-header-cell *matHeaderCellDef mat-sort-header
                             (sortActionDescription)="indexOfelement">
-                            {{ col.colDef }}
+                            {{ col.colTitle }}
                         </th>
                         <td mat-cell *matCellDef="let element"
                         (dblclick)="col.colDef == 'Item Number' && viewInInventoryMaster(element)"
