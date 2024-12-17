@@ -271,8 +271,10 @@ export class ConsolidationComponent implements OnInit {
           this.unverifiedItems.paginator = this.unverifiedItemsPaginator;
           this.verifiedItems.paginator = this.verifiedItemsPaginator;
           this.stageTable.paginator = this.stagePaginator;
+          this.typeValue = res.data.orderNumber;
+
           let payload = {
-            "orderNumber": curValue
+            "orderNumber": this.typeValue
           }
           this.IconsolidationAPI.ShippingButtSet(payload).subscribe((res: any) => {
             if (res.isExecuted) {
