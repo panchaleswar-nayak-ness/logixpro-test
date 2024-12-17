@@ -23,7 +23,7 @@ import { CmToteIdUpdateModalComponent } from '../cm-tote-id-update-modal/cm-tote
 import { GlobalService } from 'src/app/common/services/global.service';
 import { ConsolidationApiService } from 'src/app/common/services/consolidation-api/consolidation-api.service';
 import { IConsolidationApi } from 'src/app/common/services/consolidation-api/consolidation-api-interface';
-import {  ToasterTitle ,LiveAnnouncerMessage,ResponseStrings,ToasterType,KeyboardKeys,ToasterMessages,DialogConstants,Style,TableConstant,ColumnDef,UniqueConstants} from 'src/app/common/constants/strings.constants';
+import {  ToasterTitle ,LiveAnnouncerMessage,ResponseStrings,ToasterType,KeyboardKeys,ToasterMessages,DialogConstants,Style,TableConstant,ColumnDef,UniqueConstants, Placeholders} from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-cm-shipping-transaction',
@@ -31,6 +31,7 @@ import {  ToasterTitle ,LiveAnnouncerMessage,ResponseStrings,ToasterType,Keyboar
   styleUrls: ['./cm-shipping-transaction.component.scss'],
 })
 export class CmShippingTransactionComponent implements OnInit {
+  placeholders = Placeholders;
   @ViewChild('toteIdUpdate') toteIdUpdate: ElementRef;
   public userData: any;
 

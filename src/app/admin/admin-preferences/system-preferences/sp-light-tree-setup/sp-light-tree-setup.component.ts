@@ -1,5 +1,5 @@
 import { Component} from '@angular/core';
-import {  TableConstant } from 'src/app/common/constants/strings.constants';
+import {  Placeholders, TableConstant } from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-sp-light-tree-setup',
@@ -7,6 +7,7 @@ import {  TableConstant } from 'src/app/common/constants/strings.constants';
   styleUrls: ['./sp-light-tree-setup.component.scss']
 })
 export class SpLightTreeSetupComponent{
+  placeholders = Placeholders;
 
   ELEMENT_DATA: any[] = [
     {shelf: '12', alternate_light_positions_no: '22' },

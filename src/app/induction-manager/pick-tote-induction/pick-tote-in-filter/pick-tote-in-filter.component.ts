@@ -45,6 +45,7 @@ export class PickToteInFilterComponent implements OnInit, OnDestroy {
   filters: PickToteInductionFilter[] = [];
   apiFilterData: PickToteInductionFilter[] = [];
   subscription: Subscription[];
+  removedAliases: string[] = [];
 
   ngOnInit(): void {
     this.GetPickToteInductionFilterData();
@@ -98,6 +99,11 @@ export class PickToteInFilterComponent implements OnInit, OnDestroy {
 
       dialogRef.afterClosed().subscribe((result) => {
         if (result === 'Yes') {
+          const removedAlias = this.filters[index].alias; // Get the alias of the row being removed
+
+          if (removedAlias) {
+            this.removedAliases.push(removedAlias); // Add the alias to the removedAliases list
+          }
           // Proceed only if the user confirms
           this.filters.splice(index, 1); // Remove row from the filters array
           this.filters = [...this.filters]; // Trigger change detection
@@ -133,35 +139,39 @@ export class PickToteInFilterComponent implements OnInit, OnDestroy {
     }
   }
 
-  applyFilter() {  
-  // Check for duplicate alias values
-  const aliasSet = new Set();
-  const duplicateAlias = this.filters.some((filter) => {
-    if (aliasSet.has(filter.alias)) {
-      return true; // Duplicate found
+  applyFilter() {
+    // Check for duplicate alias values
+    const aliasSet = new Set();
+    const duplicateAlias = this.filters.some((filter) => {
+      if (aliasSet.has(filter.alias)) {
+        return true; // Duplicate found
+      }
+      aliasSet.add(filter.alias);
+      return false;
+    });
+  
+    if (duplicateAlias) {
+      this.global.ShowToastr(
+        ToasterType.Error,
+        'Duplicate filter found. Please remove duplicates.',
+        ToasterTitle.Error
+      );
+      return;
     }
-    aliasSet.add(filter.alias);
-    return false;
-  });
-
-  if (duplicateAlias) {
-    this.global.ShowToastr(
-      ToasterType.Error,
-      'Duplicate filter found. Please remove duplicates.',
-      ToasterTitle.Error
-    );
-    return;
-  }
-
+  
+    // Assign `ppField` based on selected alias
     this.filters.forEach((value) => {
-      let filterBySelectedValue = this.apiFilterData.find(
+      const filterBySelectedValue = this.apiFilterData.find(
         (f) => f.alias === value.alias
       );
       value.ppField = filterBySelectedValue?.ppField;
     });
-
-    this.dialogRef.close(this.filters);
-    // You can now send `finalFilters` to your backend API or use it as needed
+  
+    // Close dialog and send multiple results as an object
+    this.dialogRef.close({
+      filters: this.filters,
+      removedAliases: this.removedAliases,
+    });
   }
 
   close() {

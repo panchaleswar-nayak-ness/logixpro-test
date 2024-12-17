@@ -10,7 +10,7 @@ import { debounceTime, distinctUntilChanged, Subject } from 'rxjs';
 import { IAdminApiService } from '../common/services/admin-api/admin-api-interface';
 import { AdminApiService } from '../common/services/admin-api/admin-api.service';
 import { GlobalService } from '../common/services/global.service';
-import {  LiveAnnouncerMessage ,ResponseStrings,Column,ToasterTitle,ToasterType,TableConstant,UniqueConstants,ColumnDef} from 'src/app/common/constants/strings.constants';
+import {  LiveAnnouncerMessage ,ResponseStrings,Column,ToasterTitle,ToasterType,TableConstant,UniqueConstants,ColumnDef, Placeholders} from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-admin',
@@ -18,6 +18,7 @@ import {  LiveAnnouncerMessage ,ResponseStrings,Column,ToasterTitle,ToasterType,
   styleUrls: ['./admin.component.scss'],
 })
 export class AdminComponent implements OnInit {
+  placeholders = Placeholders;
   public columnValues: any = [];
   public dataSource: any = new MatTableDataSource();
   public userData: any;

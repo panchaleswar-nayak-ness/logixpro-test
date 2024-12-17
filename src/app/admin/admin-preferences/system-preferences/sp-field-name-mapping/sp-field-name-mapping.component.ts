@@ -5,6 +5,7 @@ import { IAdminApiService } from 'src/app/common/services/admin-api/admin-api-in
 import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.service';
 import { ToasterTitle, ToasterType } from 'src/app/common/constants/strings.constants';
 import { ApiResponse, ColumnAlias } from 'src/app/common/types/CommonTypes';
+import { FieldMappingService } from 'src/app/common/services/field-mapping/field-mapping.service';
 
 @Component({
   selector: 'app-sp-field-name-mapping',
@@ -18,7 +19,8 @@ export class SpFieldNameMappingComponent implements OnInit {
   constructor(
     public authService: AuthService, 
     private global : GlobalService,
-    public adminApiService: AdminApiService
+    public adminApiService: AdminApiService,
+    private fieldMappingService: FieldMappingService
   ) {
     this.iAdminApiService = adminApiService;
     this.emptyColumns();
@@ -73,7 +75,10 @@ export class SpFieldNameMappingComponent implements OnInit {
       ]
     };
     this.iAdminApiService.FieldNameSave(payload).subscribe((res: any) => {
-      if(res) this.OSFieldFilterNames();
+      if(res) {
+        this.OSFieldFilterNames();
+        this.fieldMappingService.loadFieldMappings();
+      }
       else {
         this.global.ShowToastr(ToasterType.Error, this.global.globalErrorMsg(), ToasterTitle.Error);
         console.log("FieldNameSave",res.responseMessage);

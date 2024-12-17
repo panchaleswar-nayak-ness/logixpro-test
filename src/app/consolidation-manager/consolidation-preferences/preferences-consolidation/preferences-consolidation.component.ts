@@ -4,7 +4,7 @@ import { AuthService } from 'src/app/common/init/auth.service';
 import { ConsolidationApiService } from 'src/app/common/services/consolidation-api/consolidation-api.service';
 import { IConsolidationApi } from 'src/app/common/services/consolidation-api/consolidation-api-interface';
 import { GlobalService } from 'src/app/common/services/global.service';
-import { CMConsolidationPreferences, ToasterMessages, ToasterTitle, ToasterType ,StringConditions} from 'src/app/common/constants/strings.constants';
+import { CMConsolidationPreferences, ToasterMessages, ToasterTitle, ToasterType ,StringConditions, Placeholders} from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-preferences-consolidation',
@@ -14,6 +14,7 @@ import { CMConsolidationPreferences, ToasterMessages, ToasterTitle, ToasterType 
 
 export class PreferencesConsolidationComponent {
 
+  placeholders = Placeholders;
   filtersForm: FormGroup;
   @Input() pref: any;
   userData: any;

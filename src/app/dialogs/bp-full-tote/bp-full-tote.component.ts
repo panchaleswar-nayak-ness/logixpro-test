@@ -1,5 +1,5 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { DialogConstants, ResponseStrings, Style } from 'src/app/common/constants/strings.constants';
+import { DialogConstants, Placeholders, ResponseStrings, Style } from 'src/app/common/constants/strings.constants';
 import { GlobalService } from 'src/app/common/services/global.service';
 import { BpNumberSelectionComponent } from '../bp-number-selection/bp-number-selection.component';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
@@ -17,6 +17,7 @@ import { ConfirmationDialogComponent } from 'src/app/admin/dialogs/confirmation-
 })
 export class BpFullToteComponent implements OnInit {
 
+  placeholders = Placeholders;
   NextToteID: any;
   public iBulkProcessApiService: IBulkProcessApiService;
   constructor(

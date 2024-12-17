@@ -44,7 +44,7 @@ import {
   Style,
   UniqueConstants,
   FilterColumnName,
-  localStorageKeys,
+  localStorageKeys, Placeholders,
 } from 'src/app/common/constants/strings.constants';
 import {
   AppNames,
@@ -63,6 +63,7 @@ import { PrintApiService } from 'src/app/common/services/print-api/print-api.ser
   styleUrls: ['./tran-order-list.component.scss'],
 })
 export class TranOrderListComponent implements OnInit, AfterViewInit {
+  placeholders = Placeholders;
   public columnValues: any = [];
 
   public Order_Table_Config = [
@@ -353,8 +354,7 @@ export class TranOrderListComponent implements OnInit, AfterViewInit {
           /// Enable disable the Put Away - Complete Order button
           if (
             res.data?.orderStatus.every(
-              (e: any) =>
-                e.transactionType === 'Put Away' 
+              (e: any) => e.transactionType === 'Put Away'
             )
           ) {
             this.isOrderCompleted = false;
@@ -362,8 +362,11 @@ export class TranOrderListComponent implements OnInit, AfterViewInit {
             this.isOrderCompleted = true;
           }
 
+          this.checkIsReProcessAndAddStatusField(res.data?.orderStatus);
           this.dataSource = new MatTableDataSource(res.data?.orderStatus);
-          // this.checkOrderStatus(res);
+          this.dataSource.paginator = this.paginator;
+          this.dataSource.sort = this.sort;
+
           this.columnValues = res.data?.orderStatusColSequence;
           this.customPagination.total = res.data?.totalRecords;
           this.getOrderForTote = res?.data?.orderStatus[0]?.orderNumber;
@@ -420,6 +423,30 @@ export class TranOrderListComponent implements OnInit, AfterViewInit {
       },
       error: (error) => {},
     });
+  }
+
+  private checkIsReProcessAndAddStatusField(data: any[] | undefined) {
+    // Add status field on provided data set to be displayed on material table
+    // This will ensure that status field sortig works as expected
+
+    if (data && data.length > 0) {
+      data.forEach((m) => {
+        if (
+          m.tableType.toLowerCase() === 'open' &&
+          m.completedDate == '' &&
+          m.fileFrom.toLowerCase() == 'open'
+        ) {
+          m.status = 'Open';
+          m.statusCss = 'background-color: #FFF0D6;color:#4D3B1A';
+        } else if (m.completedDate !== '') {
+          m.status = 'Completed';
+          m.statusCss = 'background-color: #C8E2D8;color:#114D35';
+        } else if (m.fileFrom.toLowerCase() !== 'open') {
+          m.status = 'Re-process';
+          m.statusCss = 'background-color: #F7D0DA;color:#4D0D1D';
+        }
+      });
+    }
   }
 
   autoComplete($event) {
@@ -563,32 +590,6 @@ export class TranOrderListComponent implements OnInit, AfterViewInit {
     else return;
   }
 
-  getStatus(element) {
-    if (
-      element.tableType.toLowerCase() === 'open' &&
-      element.completedDate == '' &&
-      element.fileFrom.toLowerCase() == 'open'
-    )
-      return 'Open';
-    else if (element.completedDate != '') return 'Completed';
-    else if (element.fileFrom.toLowerCase() != 'open') return 'Re-process';
-    else return;
-  }
-
-  getColor(element) {
-    if (
-      element.tableType.toLowerCase() === 'open' &&
-      element.completedDate == '' &&
-      element.fileFrom.toLowerCase() == 'open'
-    )
-      return 'background-color: #FFF0D6;color:#4D3B1A';
-    else if (element.completedDate != '')
-      return 'background-color: #C8E2D8;color:#114D35';
-    else if (element.fileFrom.toLowerCase() != 'open')
-      return 'background-color: #F7D0DA;color:#4D0D1D';
-    else return;
-  }
-
   getColumnsData() {
     this.getContentData();
   }
@@ -651,9 +652,12 @@ export class TranOrderListComponent implements OnInit, AfterViewInit {
   }
 
   announceSortChange(sortState: Sort) {
-    if (sortState.direction)
+    if (sortState.direction) {
       this._liveAnnouncer.announce(`Sorted ${sortState.direction}ending`);
-    else this._liveAnnouncer.announce(LiveAnnouncerMessage.SortingCleared);
+    } else {
+      this._liveAnnouncer.announce(LiveAnnouncerMessage.SortingCleared);
+    }
+    console.log(sortState);
     this.dataSource.sort = this.sort;
   }
 

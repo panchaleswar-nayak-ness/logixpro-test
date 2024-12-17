@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { TableContextMenuComponentComponent } from './table-context-menu-component/table-context-menu-component.component';
 import { GeneralModule } from 'src/app/gen-module';
@@ -8,9 +8,11 @@ import { InfoCardComponentComponent } from './info-card-component/info-card-comp
 import { ColumnFilterComponentComponent } from './column-filter-component/column-filter-component.component';
 import { SortPipe } from 'src/app/common/init/sort.pipe';
 import { StatsCircleComponent } from './stats-circle/stats-circle.component';
+import { ReplacePlaceholderDirective } from '../init/replace-placeholder/replace-placeholder.directive';
 
 @NgModule({
   declarations: [
+    ReplacePlaceholderDirective,
     TableContextMenuComponentComponent,
     IconHeadingComponentComponent,
     InfoCardComponentComponent,
@@ -20,6 +22,7 @@ import { StatsCircleComponent } from './stats-circle/stats-circle.component';
     StatsCircleComponent
   ],
   exports: [
+    ReplacePlaceholderDirective,
     TableContextMenuComponentComponent,
     IconHeadingComponentComponent,
     StatsCircleComponent,
@@ -31,6 +34,7 @@ import { StatsCircleComponent } from './stats-circle/stats-circle.component';
     CommonModule,
     GeneralModule,
     MaterialModule
-  ]
+  ],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA] ,
 })
 export class SharedComponentsModule { }

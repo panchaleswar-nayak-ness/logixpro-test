@@ -59,7 +59,7 @@ export class MarkoutSearchComponent implements OnInit {
       this.orderNumber = this.toteDataResponse.batchPickId
         ? this.toteDataResponse.batchPickId 
         : this.toteDataResponse.data[0]?.orderNumber || "";
-        this.labelText = this.toteDataResponse.batchPickId ? "BatchPick ID" : "Order No.";
+        this.labelText = this.toteDataResponse.batchPickId ? "Super Batch ID" : "Order No.";
     }
     if (
       changes['toteId'] &&
@@ -71,6 +71,9 @@ export class MarkoutSearchComponent implements OnInit {
 
   viewChange(){
     this.viewChangeEmitter.emit(this.selectedView);
+    if((this.selectedView == 'View by Tote' || this.selectedView == 'View by Order') && this.toteId != "" ){
+      this.toteIdEmitter.emit({ toteId: this.toteId, viewType: this.selectedView });
+    }
   }
 
   emitSelectedValue(viewType: string) {
@@ -87,7 +90,8 @@ export class MarkoutSearchComponent implements OnInit {
   }
 
   emitToteId() {
-    this.toteIdEmitter.emit({ toteId: this.toteId, viewType: this.selectedView });
+    if(this.toteId != "")
+      this.toteIdEmitter.emit({ toteId: this.toteId, viewType: this.selectedView });
   }
 
   getFloatLabelValue(): FloatLabelType {

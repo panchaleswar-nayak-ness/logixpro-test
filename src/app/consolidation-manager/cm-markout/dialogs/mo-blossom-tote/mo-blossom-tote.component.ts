@@ -4,6 +4,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import {
   BlossomType,
   DialogConstants,
+  Placeholders,
   ResponseStrings,
   Style,
   ToasterTitle,
@@ -23,6 +24,7 @@ import { BlossomToteRecords, MarkoutBlossomTotenRequest, ToteData } from '../../
 })
 export class MoBlossomToteComponent implements OnInit {
 
+  placeholders = Placeholders;
   public iMarkoutApiService: IMarkoutApiService;
   toteId: string = '';
   markoutlistdataSource: MatTableDataSource<ToteData>;

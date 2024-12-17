@@ -65,7 +65,7 @@
     color="primary"
     (click)="clearFilters()"
   >
-    Clear
+    {{ isFilterByOrderNumbers ? 'Clear By Order Number' : 'Clear By Order Range' }}
   </button>
   <button
     type="submit"

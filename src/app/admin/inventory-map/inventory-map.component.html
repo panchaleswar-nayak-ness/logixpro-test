@@ -47,7 +47,7 @@
               <table mat-table class="custom-table table-fix" #table [dataSource]="dataSource" matSort (matSortChange)="announceSortChange($event)" >
 
                 <ng-container matColumnDef="{{col.colDef}}" *ngFor="let col of displayedColumns; let indexOfelement=index;">
-                  <th class="header container-table-header" mat-header-cell  *matHeaderCellDef mat-sort-header >{{ col.colDef === 'User Field1' ? fieldNames && fieldNames.userField1 : col.colDef === 'User Field2' ? fieldNames && fieldNames.userField2:col.colDef }}</th>
+                  <th class="header container-table-header" mat-header-cell  *matHeaderCellDef mat-sort-header >{{ col.colTitle }}</th>
                   <td class="container-table-data" mat-cell *matCellDef="let element" 
                   (dblclick)="col.colDef == 'Item Number' && viewInInventoryMaster(element)"
                   (contextmenu)=" onContextMenu($event,  element[col.colHeader], col.colDef)"  

@@ -46,7 +46,7 @@
             class="custom-table table-fix w-100">
 
             <ng-container matColumnDef="itemNumber">
-                <th mat-header-cell *matHeaderCellDef>Item No.</th>
+                <th mat-header-cell *matHeaderCellDef replacePlaceholder [replacePlaceHolder]="placeholders.itemNumber" [fallbackPlaceHolder]="placeholders.itemNumberFallback">Item Number</th>
                 <td mat-cell *matCellDef="let element">{{element?.itemNumber}} </td>
             </ng-container>
 

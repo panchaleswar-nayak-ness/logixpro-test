@@ -1,16 +1,30 @@
 <mat-card class="mat-elevation-z g-card h-100">
   <mat-card-content>
-    <div class="row d-block d-xl-flex justify-content-between align-items-center mb-3 flex-wrap">
+    <div
+      class="row d-block d-xl-flex justify-content-between align-items-center mb-3 flex-wrap"
+    >
       <h2 class="col card-header-title d-flex align-items-center mb-3">
         <div class="mat-icon-wrap me-3">
-          <span class="material-symbols-outlined">
-            filter_frames
-          </span>
+          <span class="material-symbols-outlined"> filter_frames </span>
         </div>
         <span>Select Order</span>
       </h2>
       <div class="col-xxl-4">
-        <button (click)="deleteOrder()" *ngIf="authService.UserPermissonByFuncName('Order Status Delete')" [disabled]="totalLinesOrder == 0 || !(authService.UserPermissonByFuncName('Order Status Delete'))" mat-flat-button color="warn" class="btn-regular w-100 mb-3" [ngClass]="{'disabled-button' : totalLinesOrder == 0, 'delete-button' : totalLinesOrder > 0 }">
+        <button
+          (click)="deleteOrder()"
+          *ngIf="authService.UserPermissonByFuncName('Order Status Delete')"
+          [disabled]="
+            totalLinesOrder == 0 ||
+            !authService.UserPermissonByFuncName('Order Status Delete')
+          "
+          mat-flat-button
+          color="warn"
+          class="btn-regular w-100 mb-3"
+          [ngClass]="{
+            'disabled-button': totalLinesOrder == 0,
+            'delete-button': totalLinesOrder > 0
+          }"
+        >
           Delete Order
         </button>
       </div>
@@ -19,51 +33,89 @@
     <div class="row">
       <div class="col-xxl-9">
         <div class="d-xl-flex gap-12 align-items-center">
-          <mat-form-field class="action-dropdown mb-3 w-100 flex-1" appearance="outline">
+          <mat-form-field
+            class="action-dropdown mb-3 w-100 flex-1"
+            appearance="outline"
+          >
             <mat-label>Select</mat-label>
-            <mat-select class="employees-action" [(ngModel)]="columnSelect" (selectionChange)="actionDialog($event.value)">
-              <mat-option selected value="Order Number">
-                Order No.
-              </mat-option>
-              <mat-option value="Tote ID">
-                Tote ID
-              </mat-option>
+            <mat-select
+              class="employees-action"
+              [(ngModel)]="columnSelect"
+              (selectionChange)="actionDialog($event.value)"
+            >
+              <mat-option selected value="Order Number"> Order No. </mat-option>
+              <mat-option value="Tote ID"> Tote ID </mat-option>
             </mat-select>
             <span class="material-symbols-outlined icon-expand-more">
               expand_more
             </span>
           </mat-form-field>
-          
+
           <span class="v-br mb-3 d-xl-block d-none">-</span>
 
           <div class="d-flex g-mini-search-box mb-3 flex-grow-1 min-width-40px">
-            <mat-form-field class="w-100 bg-white br-8 min-w-20px" appearance="fill" [floatLabel]="getFloatLabelValue()" [hideRequiredMarker]="hideRequiredControl.value">
+            <mat-form-field
+              class="w-100 bg-white br-8 min-w-20px"
+              appearance="fill"
+              [floatLabel]="getFloatLabelValue()"
+              [hideRequiredMarker]="hideRequiredControl.value"
+            >
               <span class="material-symbols-outlined icon-search">
                 Search
               </span>
-              <input  (keyup.enter)="selectOrderByTote()" (keyup)="getNextItemNo($event)" type="text" placeholder="Search" aria-label="Number" matInput [disabled]="!columnSelect" [(ngModel)]='searchField' [matAutocomplete]="auto">
-                <button matSuffix *ngIf="searchField" class="clear-btn"  (click)="searchField = ''; clear()"><mat-icon class="text-20 text-chrome-600">cancel</mat-icon></button>
-              <mat-autocomplete class="card custom-scroll panel-custom-scroll d-table" #auto="matAutocomplete">
-
+              <input
+                (keyup.enter)="selectOrderByTote()"
+                (keyup)="getNextItemNo($event)"
+                type="text"
+                placeholder="Search"
+                aria-label="Number"
+                matInput
+                [disabled]="!columnSelect"
+                [(ngModel)]="searchField"
+                [matAutocomplete]="auto"
+              />
+              <button
+                matSuffix
+                *ngIf="searchField"
+                class="clear-btn"
+                (click)="searchField = ''; clear()"
+              >
+                <mat-icon class="text-20 text-chrome-600">cancel</mat-icon>
+              </button>
+              <mat-autocomplete
+                class="card custom-scroll panel-custom-scroll d-table"
+                #auto="matAutocomplete"
+              >
                 <ng-container *ngIf="columnSelect == 'Order Number'">
-                  <h6 class="card-header matAutoCompHeader stickyHeader"> 
-                    <span class="order-no-col px-2">Order Number</span> 
+                  <h6 class="card-header matAutoCompHeader stickyHeader">
+                    <span class="order-no-col px-2">Order Number</span>
                     <span class="com-date-col px-2">Completed Date</span>
                   </h6>
-                  <mat-option *ngFor="let option of searchAutocompleteList" [value]="option.orderNumber" (click)="searchData(option)" class="matAutoCompTableContent">
+                  <mat-option
+                    *ngFor="let option of searchAutocompleteList"
+                    [value]="option.orderNumber"
+                    (click)="searchData(option)"
+                    class="matAutoCompTableContent"
+                  >
                     <div class="loc_option">
-                      <span class="order-no-col px-2">{{option.orderNumber}}</span>
-                      <span class="com-date-col px-2">{{option.completedDate}}</span>
+                      <span class="order-no-col px-2">{{
+                        option.orderNumber
+                      }}</span>
+                      <span class="com-date-col px-2">{{
+                        option.completedDate
+                      }}</span>
                     </div>
                   </mat-option>
                 </ng-container>
 
                 <ng-container *ngIf="columnSelect == 'Tote ID'">
-                  <mat-option *ngFor="let option of searchAutocompleteList" [value]="option">
-                    {{option}}
+                  <mat-option
+                    *ngFor="let option of searchAutocompleteList"
+                    [value]="option"
+                  >
+                    {{ option }}
                   </mat-option>
                 </ng-container>
-
               </mat-autocomplete>
             </mat-form-field>
           </div>
@@ -71,7 +123,12 @@
       </div>
 
       <div class="col-xxl-3">
-        <button (click)="clear()" mat-flat-button color="primary" class="button-remove-all-w-stroke w-100 mb-3 text-pure-white">
+        <button
+          (click)="clear()"
+          mat-flat-button
+          color="primary"
+          class="button-remove-all-w-stroke w-100 mb-3 text-pure-white"
+        >
           Clear
         </button>
       </div>
@@ -79,21 +136,30 @@
 
     <div class="row align-items-center mb-2">
       <div class="col-md-12">
-        <div class="d-flex justify-content-between align-items-center ">
+        <div class="d-flex justify-content-between align-items-center">
           <div>
             <h2 class="mb-2 mt-3 d-flex align-items-center f-16">
-              <b>Lines</b> 
-              <mat-checkbox [checked]="filterByTote" (change)="checkFilter($event.checked)" class="example-margin custom-checkbox ms-3" color="primary">Filter Info by Tote</mat-checkbox>
+              <b>Lines</b>
+              <mat-checkbox
+                [checked]="filterByTote"
+                (change)="checkFilter($event.checked)"
+                class="example-margin custom-checkbox ms-3"
+                color="primary"
+                >Filter Info by Tote</mat-checkbox
+              >
             </h2>
           </div>
-
         </div>
       </div>
     </div>
 
-    <div class="row d-flex justify-content-between align-items-center ">
-      <div *ngFor="let info of info" class="col-md-4 ">
-        <app-info-card-component title={{info.title}} value={{info.value}} colorClass={{info.colorClass}}></app-info-card-component>
+    <div class="row d-flex justify-content-between align-items-center">
+      <div *ngFor="let info of info" class="col-md-4">
+        <app-info-card-component
+          title="{{ info.title }}"
+          value="{{ info.value }}"
+          colorClass="{{ info.colorClass }}"
+        ></app-info-card-component>
       </div>
     </div>
   </mat-card-content>

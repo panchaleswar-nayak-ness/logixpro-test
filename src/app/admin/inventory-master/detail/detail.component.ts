@@ -12,7 +12,7 @@ import { CurrentTabDataService } from '../current-tab-data-service';
 import { IAdminApiService } from 'src/app/common/services/admin-api/admin-api-interface';
 import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.service';
 import { GlobalService } from 'src/app/common/services/global.service';
-import { DialogConstants, StringConditions, ToasterMessages, ToasterTitle, ToasterType, Style,UniqueConstants } from 'src/app/common/constants/strings.constants';
+import { DialogConstants, StringConditions, ToasterMessages, ToasterTitle, ToasterType, Style,UniqueConstants, Placeholders } from 'src/app/common/constants/strings.constants';
 import { AppNames } from 'src/app/common/constants/menu.constants';
 import { TableContextMenuService } from 'src/app/common/globalComponents/table-context-menu-component/table-context-menu.service';
 import { ContextMenuFiltersService } from 'src/app/common/init/context-menu-filters.service';
@@ -40,6 +40,7 @@ export class DetailComponent implements OnInit {
   }
 
   public setVal: boolean = false;
+  placeholders = Placeholders;
   spliUrl;
 
   constructor(

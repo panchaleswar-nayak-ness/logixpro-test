@@ -517,7 +517,9 @@ export class PickToteInductionComponent
   }
 
   getTransactionQty() {
-    this.Api.GetTotalTransactionQty(this.orderNumber)
+    if(this.orderNumber && this.orderNumber !== '') {
+
+      this.Api.GetTotalTransactionQty(this.orderNumber)
       .pipe(
         catchError((errResponse) => {
           this.transactionQty = 0;
@@ -555,6 +557,7 @@ export class PickToteInductionComponent
           );
         }
       });
+    }
   }
 
   getDisplayZones(): string {

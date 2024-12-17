@@ -30,7 +30,7 @@
                                             <span class="list-label zone-list-label d-flex align-items-center">
                                                 <mat-icon class="me-2" matTooltip="Drag"
                                                     matTooltipPosition="left" cdkDragHandle>drag_indicator</mat-icon>
-                                                <span>{{item}}</span>
+                                                <span id="grid-listing" replacePlaceholder>{{item}}</span>
                                             </span>
                                             <button (click)="addArr(indexOfelement)" mat-icon-button
                                                 aria-label="Add Function" matTooltip="Add" matTooltipPosition="right">
@@ -62,7 +62,7 @@
                                             <span class="list-label zone-list-label d-flex align-items-center">
                                                 <mat-icon class="me-2" matTooltip="Drag"
                                                     matTooltipPosition="left" cdkDragHandle>drag_indicator</mat-icon>
-                                                <span>{{item}}</span>
+                                                <span id="grid-listing" replacePlaceholder>{{item}}</span>
                                             </span>
                                             <button (click)="remove(indexOfelement)" mat-icon-button
                                                 aria-label="Remove Function" matTooltip="Remove" matTooltipPosition="right">

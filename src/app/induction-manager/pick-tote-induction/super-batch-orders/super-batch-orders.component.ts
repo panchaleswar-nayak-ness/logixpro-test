@@ -13,6 +13,7 @@ import { MatTable, MatTableDataSource } from '@angular/material/table';
 import {
   DialogConstants,
   LiveAnnouncerMessage,
+  Placeholders,
   Style,
   ToasterMessages,
   ToasterTitle,
@@ -50,6 +51,7 @@ export class SuperBatchOrdersComponent implements OnInit, AfterViewInit {
     this.userData = this.authService.userData();
   }
 
+  placeholders = Placeholders;
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild('paginator') paginator: MatPaginator;
   @ViewChildren(MatInput) toteInputs!: QueryList<MatInput>;
@@ -218,7 +220,6 @@ export class SuperBatchOrdersComponent implements OnInit, AfterViewInit {
       }
     });
   }
-
   openColumnFilter() {
     const dialogRef: any = this.global.OpenDialog(PickToteInFilterComponent, {
       height: 'auto',
@@ -230,16 +231,33 @@ export class SuperBatchOrdersComponent implements OnInit, AfterViewInit {
       disableClose: true,
     });
 
-    dialogRef.afterClosed().subscribe((result: PickToteInductionFilter[]) => {
+    dialogRef.afterClosed().subscribe((result: any) => {
       if (result) {
-        this.filters = result;
-        this.getTags();
+        this.filters = result.filters;
+        if(this.filters==undefined){
+          this.filters=[]
+        }
+        const removedAliases = result.removedAliases || []; // Handle removed aliases if needed
+        if(!this.filters){
+          // Remove all related tags
+           this.tags = []
+        }
+        if (removedAliases.length > 0) {
+          // Filter out the removed aliases from tags
+          this.tags = this.tags.filter(tag => !removedAliases.includes(tag.alias));
+        }
+        if(this.filters)
+        {
+          this.getTags();
 
-        // send the currently selected column filters to parent component via observable
+          // send the currently selected column filters to parent component via observable
+        
+        }
         this.global.sendMessage({
           columnFilters: this.filters,
           orderNumberFilters: this.orderNumberFilter,
         });
+   
       }
     });
   }
@@ -365,7 +383,7 @@ export class SuperBatchOrdersComponent implements OnInit, AfterViewInit {
                 ) {
                   this.global.ShowToastr(
                     ToasterType.Info,
-                    'Some orders were skipped as they exceed the allowed tote capacity,maximuum batch size or tote quantity',
+                    `Some orders were skipped as they exceed the maximum batch size: ${valueToInduct.maxSuperBatchSize} or Max quantity Per Tote: ${valueToInduct.maxToteQuantity}`,
                     ToasterTitle.Info
                   );
                 }

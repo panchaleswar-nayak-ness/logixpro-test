@@ -66,7 +66,7 @@ export class FilterOrderNumberComponent implements OnInit {
   
     if (this.isFilterByOrderNumbers) {
       // Reset order range and return selected order number filters
-      this.orderRange = { lowerBound: '', upperBound: '' };
+   
       this.dialogRef.close({ orderNumberFilter: this.orderNumberFilter });
       return;
     }
@@ -89,20 +89,26 @@ export class FilterOrderNumberComponent implements OnInit {
       return;
     }
   
-    // Clear order numbers and pass the valid range
-    this.orderNumberFilter = [];
+   
     this.dialogRef.close({ orderRange: this.orderRange });
   }
 
   clearFilters() {
-    this.orderNumberFilter = [];
-    this.orderRange = { lowerBound: '', upperBound: '' };
+    if (this.isFilterByOrderNumbers) {
+      // Clear the Order Numbers filter
+      if (this.myText) {
+        this.myText.nativeElement.value = '';
+      }
+  
+      this.dialogRef.close({orderNumberFilter: null,isFilterByOrderNumbers:this.isFilterByOrderNumbers});
 
-
-    if (this.myText) {
-      this.myText.nativeElement.value = '';
+    } else {
+      // Clear the Order Range filter
+      this.dialogRef.close({ orderRange:null,isFilterByOrderNumbers:this.isFilterByOrderNumbers  });
     }
+   
 
-    this.dialogRef.close({ orderRange:null, orderNumberFilter:null });
+
+    
   }
 }
