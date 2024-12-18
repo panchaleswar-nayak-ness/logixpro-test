@@ -1,4 +1,4 @@
-import { Component, OnInit, Inject, EventEmitter, Output } from '@angular/core';
+import { Component, OnInit, Inject, EventEmitter, Output, ViewChild,ChangeDetectorRef  } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 
@@ -11,7 +11,11 @@ import { AuthService } from 'src/app/common/init/auth.service';
 import {  FilterItemNumbersComponentCycleCount } from '../filter-item-numbers_cycle_count/filter-item-numbers_cycle_count.component';
 import * as XLSX from 'xlsx';
 import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.service';
-import { Placeholders } from 'src/app/common/constants/strings.constants';
+import { FormControl, FormGroup } from '@angular/forms';
+import { MatSort } from '@angular/material/sort';
+import { MatPaginator } from '@angular/material/paginator';
+import { ConfirmationDialogComponent } from '../../dialogs/confirmation-dialog/confirmation-dialog.component';
+import { MatSelect } from '@angular/material/select';
 
 export interface PeriodicElement {
   invMapID:number;
@@ -44,6 +48,7 @@ export interface DialogData {
   filterOptions?: string[];
   isEditable?: boolean;
 }
+
 @Component({
   selector: 'app-import-count-batches',
   templateUrl: './import-count-batches.component.html',
@@ -52,7 +57,6 @@ export interface DialogData {
 export class ImportCountBatchesComponent implements OnInit {
 
   dataSource = new MatTableDataSource<PeriodicElement>();
-  placeholders = Placeholders;
   displayedColumns: string[] = [
     'itemNumber',
     'description',
@@ -69,19 +73,40 @@ export class ImportCountBatchesComponent implements OnInit {
   selectedTabIndex: number = 0;
   @Output() countsUpdated = new EventEmitter<string>();
   @Output() eventChange = new EventEmitter<Event>(); 
+  @ViewChild(MatSort) sort: MatSort;
+  @ViewChild(MatPaginator) paginator: MatPaginator;
   dataSourcee: PeriodicElement[] = [];
+  filtersForm: FormGroup;
+  isDataAvailable: boolean = false;
 
-
+  
   importTypes: string[] = ['Location', 'ItemNumber'];
-  filterOptions: string[] = ['Spreadsheet', 'ItemNumber'];
+  filterOptions: string[] = []; 
+
+
+ // Add a getter for formatted importTypes
+ get formattedImportTypes(): string[] {
+  return this.importTypes.map(type => 
+    type.replace(/([a-z0-9])([A-Z])/g, '$1 $2') // Adds space between camelCase words
+  );
+}
+
+// Add a getter for formatted filterOptions
+get formattedFilterOptions(): string[] {
+  return this.filterOptions.map(option => 
+    option.replace(/([a-z0-9])([A-Z])/g, '$1 $2') // Adds space between camelCase words
+  );
+}
+
+removeSpacesFromString(value: string): string {
+  return value.replace(/\s+/g, ''); // Remove all spaces
+}
 
   selectedImportType: string = '';
+  filterData: string = '';
+  commaSeparatedItemss: string = '';
   selectedFilterBy: string = '';
-
-
   uploadedFileName: string | null = null;
-  
-
   customPagination: Pagination = {
     total: '',
     recordsPerPage: 10,
@@ -96,12 +121,14 @@ export class ImportCountBatchesComponent implements OnInit {
 
   public iAdminApiService: IAdminApiService;
   constructor(
+    private cdRef: ChangeDetectorRef,
     public Api: ApiFuntions,
     private authService: AuthService,
     public global:GlobalService, 
     private dialog: MatDialog,
     public adminApiService: AdminApiService,
     @Inject(MAT_DIALOG_DATA) public data: DialogData,
+
     public dialogRef: MatDialogRef<ImportCountBatchesComponent>
   ) {
     this.iAdminApiService = adminApiService;
@@ -109,10 +136,15 @@ export class ImportCountBatchesComponent implements OnInit {
 
 
   ngOnInit(): void {
-    
+   
     this.dataSource.data = [];
+
+    this.filtersForm = new FormGroup({
+      includeEmpty: new FormControl(false),  
+      includeOther: new FormControl(false)   
+    });
   }
-  
+
   
   toggleRowSelection(row: PeriodicElement): void {
     console.log('Row selection toggled:', row);
@@ -128,19 +160,58 @@ export class ImportCountBatchesComponent implements OnInit {
   }
 
   onImportTypeChange(): void {
+   
     this.selectedFilterBy = '';
-  }
-
-  onFilterByChange(fileInput: HTMLInputElement): void {
-    if (this.selectedFilterBy === 'Spreadsheet') {
-      fileInput.click(); 
-    } else if (this.selectedFilterBy === 'ItemNumber') {
-      this.uploadedFileName = ''; 
-      this.openFilterItemNumbersDialog();
+    
+   
+   if (this.selectedImportType === 'Item Number') {
+      this.filterOptions = ['Spreadsheet', 'Item Number'];
+    }
+    else  if (this.selectedImportType === 'Location') {
+      this.filterOptions = ['Spreadsheet', 'Location'];
+      
+    }  else {
+      this.filterOptions = [];
     }
   }
+  onFilterByChange(fileInput: HTMLInputElement): void {
+    
+  if (this.selectedFilterBy === 'Spreadsheet') {
+ 
+
+   
+    fileInput.value = ''; // Reset the input
+    fileInput.click(); // Open the file dialog
+  } else if (this.selectedFilterBy === 'Item Number') {
+    this.uploadedFileName = ''; 
+    this.openFilterItemNumbersDialog();
+  } else if (this.selectedFilterBy === 'Location') {
+    this.filtersForm.reset({
+      includeEmpty: false,
+      includeOther: false
+    });
+
+    
+    this.cdRef.detectChanges();
+
+   
+    this.uploadedFileName = ''; 
+
+    this.openFilterItemNumbersDialog();
+  }
+}
+
   
 
+  onChangeDemo(e: any, type: string): void {
+    if (type === 'empty') {
+      this.filtersForm.controls['includeEmpty'].setValue(e.checked);
+    } else if (type === 'other') {
+      this.filtersForm.controls['includeOther'].setValue(e.checked);
+    }
+
+    this.confirmImport(true);
+  }
 
   onFileSelect(event: Event): void {
     const input = event.target as HTMLInputElement;
@@ -156,6 +227,7 @@ export class ImportCountBatchesComponent implements OnInit {
   
 
   removeFile(): void {
+   
     this.uploadedFileName = null;
     this.onImportTypeChange();
     const fileInput = document.querySelector('input[type="file"]') as HTMLInputElement;
@@ -164,90 +236,164 @@ export class ImportCountBatchesComponent implements OnInit {
     }
   }
   
-  confirmImport(): void {
+  confirmImport(skipDialog: boolean = false): void {
     if (!this.uploadedFileName) {
-      this.global.ShowToastr(ToasterType.Error, "No file uploaded.", ToasterTitle.Error);
-      return;
-    }
-  
-    const fileInput = document.querySelector('input[type="file"]') as HTMLInputElement;
-  
-    if (fileInput?.files?.length) {
-      const file = fileInput.files[0];
-      const reader = new FileReader();
-  
-      // Read the Excel file
-      reader.onload = (e: ProgressEvent<FileReader>) => {
-        const result = e.target?.result as ArrayBuffer;
-        const data = new Uint8Array(result);
-        const workbook = XLSX.read(data, { type: 'array' });
-  
-        // Assuming the first sheet contains the data
-        const sheetName = workbook.SheetNames[0];
-        const sheet = workbook.Sheets[sheetName];
-  
-        // Convert sheet to JSON with header
-        const excelData: (string | number | null)[][] = XLSX.utils.sheet_to_json(sheet, { header: 1 });
-  
-        // Flatten and filter the data to get non-null, non-empty items
-        const itemsArray: string[] = excelData
-          .flat()
-          .filter((item) => item !== null && item !== '') as string[];
-  
-        const commaSeparatedItems = itemsArray.join(',');
-        console.log("Values from Excel:", commaSeparatedItems);
-  
-        // Define payload type
-        const payload: { items: string; importBy: string } = {
-          items: commaSeparatedItems,
-          importBy: this.selectedImportType,
-        };
-  
-        this.iAdminApiService.GetImportBatchCount(payload).subscribe(
-          (res: { isExecuted: boolean; data: any[]; responseMessage: string }) => {
-            console.log('API Response:', res);
-            if (res.isExecuted) {
-              if (res.data && res.data.length > 0) {
-                // Map the response data to the table
-                this.updateTableData(res.data);
-                console.log('Data updated successfully.');
-              } else {
-                // Handle empty data array
-                this.global.ShowToastr(ToasterTitle.Warning, "No data available.", ToasterTitle.Warning);
-                console.log('No data found in the API response.');
-              }
-            } else {
-              this.global.ShowToastr(ToasterType.Error, res.responseMessage, ToasterTitle.Error);
-              console.log('API Error Response:', res.responseMessage);
-            }
-          },
-          (err: Error) => {
-            console.error('Error importing batch count:', err);
-            this.global.ShowToastr(ToasterType.Error, 'Failed to import data.', ToasterTitle.Error);
-          }
-        );
+      const includeEmpty = this.filtersForm.value.includeEmpty;
+      const includeOther = this.filtersForm.value.includeOther;
+      const filterdata = this.filterData;  // Ensure you have the correct filter data here
+      const payload: { items: string; importBy: string, includeEmpty: boolean, includeOther: boolean } = {
+        items: filterdata,  // Pass filterdata instead of commaSeparatedItems
+        importBy: this.selectedImportType,
+        includeEmpty: includeEmpty,
+        includeOther: includeOther
       };
   
-      reader.readAsArrayBuffer(file);
-    } else {
-      this.global.ShowToastr(ToasterType.Error, "No file found.", ToasterTitle.Error);
+      this.iAdminApiService.GetImportBatchCount(payload).subscribe(
+        (res: { isExecuted: boolean; data: any; responseMessage: string }) => {
+          console.log('API Response:', res);
+  
+          if (res.isExecuted) {
+            // Directly handle item2 data if it exists
+            if (res.data && res.data.item2 && res.data.item2.length > 0) {
+              this.updateTableData(res.data.item2);  // Update the table with item2 data
+              console.log('Data updated successfully.');
+            } else {
+              
+            }
+          } else {
+            this.global.ShowToastr(ToasterType.Error, res.responseMessage, ToasterTitle.Error);
+            console.log('API Error Response:', res.responseMessage);
+          }
+        },
+        (err: Error) => {
+          console.error('Error importing batch count:', err);
+          this.global.ShowToastr(ToasterType.Error, 'Failed to import data.', ToasterTitle.Error);
+        }
+      );
+      return; 
     }
+    
+    const fileInput = document.querySelector('input[type="file"]') as HTMLInputElement;
+
+  if (fileInput?.files?.length) {
+    const file = fileInput.files[0];
+    const reader = new FileReader();
+
+    reader.onload = (e: ProgressEvent<FileReader>) => {
+      const result = e.target?.result as ArrayBuffer;
+      const data = new Uint8Array(result);
+      const workbook = XLSX.read(data, { type: 'array' });
+
+      const sheetName = workbook.SheetNames[0];
+      const sheet = workbook.Sheets[sheetName];
+
+      const excelData: (string | number | null)[][] = XLSX.utils.sheet_to_json(sheet, { header: 1 });
+
+      const itemsArray: string[] = excelData
+        .flat()
+        .filter((item) => item !== null && item !== '') as string[];
+
+      const commaSeparatedItems = itemsArray.join(',');
+
+      const includeEmpty = this.filtersForm.value.includeEmpty;
+      const includeOther = this.filtersForm.value.includeOther;
+
+      const payload: { items: string; importBy: string, includeEmpty: boolean, includeOther: boolean } = {
+        items: commaSeparatedItems,
+        importBy: this.selectedImportType,
+        includeEmpty: includeEmpty,
+        includeOther: includeOther
+      };
+
+      this.iAdminApiService.GetImportBatchCount(payload).subscribe(
+        (res: { isExecuted: boolean; data: any; responseMessage: string }) => {
+          console.log('API Response:', res);
+
+          if (res.isExecuted) {
+          
+            if (res.data && res.data.item1 && res.data.item1.length > 0 && !skipDialog) {
+              let heading = '';
+              let message = '';
+              
+             
+              if (this.selectedImportType === 'Location') {
+                heading = 'Location(s) Not Found';
+                message = `The following location(s) were not found in the system [${res.data.item1.join(', ')}]`;
+               
+            } else if (this.selectedImportType === 'Item Number') {
+                heading = 'Item(s) Not Found';
+                message = `The following item(s) were not found in the system [${res.data.item1.join(', ')}]`;
+              
+            }
+            
+              const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
+                width: '560px',
+                data: {
+                  heading: heading,
+                  message: message,
+                  buttonFields: false,
+                  threeButtons: false,
+                  singleButton: true,
+                  customButtonText: false,
+                  btn1Text: 'Ok',
+                  hideCancel: true
+                }
+              });
+
+              dialogRef.afterClosed().subscribe(() => {
+                console.log('Dialog closed, proceeding with import.');
+             
+                if (res.data && res.data.item2 && res.data.item2.length > 0) {
+                  this.updateTableData(res.data.item2);  
+                  console.log('Data updated successfully.');
+                } else {
+                 
+                }
+              });
+            } else if (res.data && res.data.item2 && res.data.item2.length > 0) {
+            
+              this.updateTableData(res.data.item2);
+              console.log('Data updated successfully without dialog.');
+            } else {
+              this.global.ShowToastr(ToasterType.Error, "No item2 data found.", ToasterTitle.Error);
+              console.log('No item2 data found in the API response.');
+            }
+          } else {
+            this.global.ShowToastr(ToasterType.Error, res.responseMessage, ToasterTitle.Error);
+            console.log('API Error Response:', res.responseMessage);
+          }
+        },
+        (err: Error) => {
+          console.error('Error importing batch count:', err);
+          this.global.ShowToastr(ToasterType.Error, 'Failed to import data.', ToasterTitle.Error);
+        }
+      );
+    };
+
+    reader.readAsArrayBuffer(file);
+  } else {
+    this.global.ShowToastr(ToasterType.Error, "No file found.", ToasterTitle.Error);
+  }
   }
   
   
-  openFilterItemNumbersDialog(): void {
+openFilterItemNumbersDialog(): void {
     const dialogRef = this.dialog.open(FilterItemNumbersComponentCycleCount, {
       width: '600px',
+      
       data: { 
-        selectedImporttType: this.selectedImportType 
+        selectedImporttType: this.selectedImportType ?? "",
+          
       },
     });
   
     dialogRef.afterClosed().subscribe((result) => {
-      if (result && result.responseData) {
-        console.log('Filtered Item Numbers Response Data:', result.responseData);
-     
-        this.updateTableData(result.responseData);
+      this.selectedFilterBy = '';
+      if (result && result.responseData && result.filterData) {
+          console.log('Filtered Item Numbers Response Data:', result.responseData);
+         console.log('Filtered Data:', result.filterData);
+          this.filterData=result.filterData;
+         this.updateTableData(result.responseData);
       }
     });
   }
@@ -261,7 +407,7 @@ export class ImportCountBatchesComponent implements OnInit {
       locationQuantity: Number(item.itemQuantity), 
       um: item.unitOfMeasure,
       warehouse: item.wareHouse || '',
-      locations: item.generatedLocation,
+      locations: item.location,
       velocityCode: item.cfVelocity || '',
       cellSize: item.cellSize,
       serialNumber: item.serialNumber,
@@ -270,7 +416,8 @@ export class ImportCountBatchesComponent implements OnInit {
     }));
     this.dataSource.data = mappedData;
   }
-  
+
+
 
   insertCCQueue(ids: any) {
     const payLoad = {
@@ -351,4 +498,5 @@ export class ImportCountBatchesComponent implements OnInit {
     }
 
 }
+
 }
