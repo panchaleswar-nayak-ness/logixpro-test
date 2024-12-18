@@ -365,7 +365,7 @@ export class ApiFuntions {
   }
 
   public GetImportBatchCount(Body: any): Observable<any> {
-    return this.ApiBase.Get('/Admin/importbatchcounts', Body);
+    return this.ApiBase.Post('/Admin/importbatchcounts', Body);
   }
 
 
@@ -1071,9 +1071,8 @@ export class ApiFuntions {
 
   public PerformSpecificOrderInduction(valueToInduct: {
     orderNumber: string;
-    toteScanned: string;
+    toteId: string;
     splitToggle: boolean;
-    transactionQuantity:number;
   }) {
     return this.ApiBase.Post(
       '/Induction/performspecificorderinduction',

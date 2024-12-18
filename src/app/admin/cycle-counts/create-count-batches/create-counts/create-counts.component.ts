@@ -95,6 +95,7 @@ export class CCBCreateCountsComponent implements OnInit {
   edate: any = new Date();
   notCountSince: any = new Date();
 
+
   displayedColumns: string[] = [
     'itemNumber',
     UniqueConstants.Description,
@@ -151,6 +152,22 @@ constructor(
       costStart: new FormControl(''),
       costEnd: new FormControl(''),
       warehouse: new FormControl(''),
+
+      pickedStartLocation: new FormControl(new Date()) ,
+      pickedEndLocation: new FormControl(new Date()),
+      SortByPickCountLocation: new FormControl(false),
+      MaxCycleCountsLocation: new FormControl(),
+      IncludeHotPickLocation: new FormControl(false),
+      IncludeHotMoveLocation: new FormControl(false),
+      IncludeReplenishmentLocation: new FormControl(false),
+
+      PutAwayStartLocation: new FormControl(new Date()) ,
+      PutAwayEndLocation: new FormControl(new Date()),
+      SortByPutAwayCountLocation: new FormControl(false),
+      MaxCycleCountsPutAwayLocation: new FormControl(),
+      IncludeHotPutAwayLocation: new FormControl(false),
+      IncludeHotMovePutAwayLocation: new FormControl(false),
+      IncludeReplenishmentPutAwayLocation: new FormControl(false),
     });
 
     this.completeDate = new Date();
@@ -185,7 +202,7 @@ constructor(
   onChangeDemo(e:any, type:any) {
     if (type === 'empty') {
       this.filtersForm.controls['includeEmpty'].setValue(e.checked);
-    } else {
+    } else  if(type === 'other'){
       this.filtersForm.controls['includeOther'].setValue(e.checked);
     }
     this.fillData();
@@ -193,7 +210,7 @@ constructor(
   ngOnInit(): void {
     this.userData = this.authService.userData();
     this.getWareAndCurOrd();
-
+    
     this.searchField
       .pipe(debounceTime(500), distinctUntilChanged())
       .subscribe((value) => {
@@ -301,9 +318,8 @@ constructor(
     this.filtersForm.controls['costStart'].setValue('');
     this.filtersForm.controls['costEnd'].setValue('');
     this.filtersForm.controls[TableConstant.WareHouse].setValue('');
-
-    
     this.fillData();
+
   }
   getTypeAheads(type) {
     if (type === Column.Description) {
@@ -571,6 +587,45 @@ constructor(
         costStart: this.filtersForm.value.costStart || "",
         costEnd: this.filtersForm.value.costEnd || "",
         warehouseFilter: this.warehouse,
+      //add these parameters for pick by location date range.
+        pickedStartLocation:
+        this.filtersForm.value.pickedStartLocation === '' ||
+        this.filtersForm.value.pickedStartLocation === null
+        ? new Date()
+        : this.filtersForm.value.pickedStartLocation,
+        pickedEndLocation:
+        this.filtersForm.value.pickedEndLocation === '' ||
+        this.filtersForm.value.pickedEndLocation === null
+        ? new Date()
+        : this.filtersForm.value.pickedEndLocation,
+
+        SortByPickCountLocation: this.filtersForm.value.SortByPickCountLocation,
+        IncludeHotPickLocation: this.filtersForm.value.IncludeHotPickLocation,           
+        IncludeHotMoveLocation: this.filtersForm.value.IncludeHotMoveLocation,           
+        IncludeReplenishmentLocation: this.filtersForm.value.IncludeReplenishmentLocation,           
+        MaxCycleCountsLocation: this.filtersForm.value.MaxCycleCountsLocation
+        ? this.filtersForm.value.MaxCycleCountsLocation
+        : 0,
+
+             //add these parameters for put away by location date range.
+             PutAwayStartLocation:
+             this.filtersForm.value.PutAwayStartLocation === '' ||
+             this.filtersForm.value.PutAwayStartLocation === null
+             ? new Date()
+             : this.filtersForm.value.PutAwayStartLocation,
+             PutAwayEndLocation:
+             this.filtersForm.value.PutAwayEndLocation === '' ||
+             this.filtersForm.value.PutAwayEndLocation === null
+             ? new Date()
+             : this.filtersForm.value.PutAwayEndLocation,
+     
+             SortByPutAwayCountLocation: this.filtersForm.value.SortByPutAwayCountLocation,
+             IncludeHotPutAwayLocation: this.filtersForm.value.IncludeHotPutAwayLocation,           
+             IncludeHotMovePutAwayLocation: this.filtersForm.value.IncludeHotMovePutAwayLocation,           
+             IncludeReplenishmentPutAwayLocation: this.filtersForm.value.IncludeReplenishmentPutAwayLocation,           
+             MaxCycleCountsPutAwayLocation: this.filtersForm.value.MaxCycleCountsPutAwayLocation
+             ? this.filtersForm.value.MaxCycleCountsPutAwayLocation
+             : 0,
       } ;  
     this.iAdminApiService.BatchResultTable(queryData).subscribe(
       (res: any) => {
@@ -763,5 +818,9 @@ constructor(
     else{
       this.location = false;
     }
+  }
+
+  handleInputChange(event){
+    this.fillData();
   }
 }

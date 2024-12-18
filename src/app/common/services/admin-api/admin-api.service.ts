@@ -1556,6 +1556,7 @@ export class AdminApiService implements IAdminApiService {
       ...body
     }
     return this.Api.quarantineInventoryMap(payload);
+
   }
 
   public unQuarantineInventoryMap(body: any) {

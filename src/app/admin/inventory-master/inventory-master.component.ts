@@ -798,9 +798,9 @@ ContextMenu($event:any){
 
   viewLocations() {
     this.RecordSavedItem();
-    if (this.setVal) this.router.navigate(['/OrderManager/InventoryMap'], { state: { colHeader: 'itemNumber', colDef: this.fieldMappings?.itemNumber || this.placeholders.itemNumberFallback, searchValue: this.currentPageItemNo } });
-    else if (this.spliUrl[1] == AppNames.InductionManager) this.router.navigate(['/InductionManager/Admin/InventoryMap'], { state: { colHeader: 'itemNumber', colDef: this.fieldMappings?.itemNumber || this.placeholders.itemNumberFallback, searchValue: this.currentPageItemNo } });
-    else this.router.navigate(['/admin/inventoryMap'], { state: { colHeader: 'itemNumber', colDef: this.fieldMappings?.itemNumber || this.placeholders.itemNumberFallback, searchValue: this.currentPageItemNo } });
+    if (this.setVal) this.router.navigate(['/OrderManager/InventoryMap'], { state: { colHeader: 'itemNumber', colDef: 'Item Number', searchValue: this.currentPageItemNo } });
+    else if (this.spliUrl[1] == AppNames.InductionManager) this.router.navigate(['/InductionManager/Admin/InventoryMap'], { state: { colHeader: 'itemNumber', colDef: 'Item Number', searchValue: this.currentPageItemNo } });
+    else this.router.navigate(['/admin/inventoryMap'], { state: { colHeader: 'itemNumber', colDef: 'Item Number', searchValue: this.currentPageItemNo } });
   }
 
   handleFocusOut() {
