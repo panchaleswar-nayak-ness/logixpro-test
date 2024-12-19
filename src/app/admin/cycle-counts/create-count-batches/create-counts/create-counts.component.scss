@@ -79,8 +79,9 @@ table{
   .mat-Insert_Into_Queue-style{
     flex: 1;
   }
+  .custom-form-field {
+    .mat-input-element[type=datetime-local]::after{
+      content: none;
 
-
-  
-
-
+    }
+}

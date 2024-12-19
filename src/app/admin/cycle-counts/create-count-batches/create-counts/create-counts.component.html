@@ -47,10 +47,10 @@
                 </mat-form-field>
             </div>
             
-            <form *ngIf="selection === 'PickedLocationRange'" [formGroup]="filtersForm" class="col mb-2">
+            <form *ngIf="selection === 'PickedLocationRange'" [formGroup]="filtersForm" class="col">
                 <div class="row">
                     <div class="col-xl-6">
-                        <mat-form-field class="custom-form-field w-100  mb-3" appearance="outline">
+                        <mat-form-field class="custom-form-field w-100  mb-2" appearance="outline">
                             <mat-label>From Date</mat-label>
                             <input matInput type="datetime-local"
                                 (ngModelChange)="this.searchField.next($event)"
@@ -59,7 +59,7 @@
                         </mat-form-field>
                     </div>
                     <div class="col-xl-6">
-                        <mat-form-field class="custom-form-field w-100  mb-3" appearance="outline">
+                        <mat-form-field class="custom-form-field w-100  mb-2" appearance="outline">
                             <mat-label>To Date</mat-label>
                             <input matInput type="datetime-local"
                                 (ngModelChange)="this.searchField.next($event)"
@@ -70,10 +70,10 @@
                 </div>
             </form>
             
-            <form *ngIf="selection === 'PutAwayLocationRange'" [formGroup]="filtersForm" class="col mb-2">
+            <form *ngIf="selection === 'PutAwayLocationRange'" [formGroup]="filtersForm" class="col">
                 <div class="row">
                     <div class="col-xl-6">
-                        <mat-form-field class="custom-form-field w-100  mb-3" appearance="outline">
+                        <mat-form-field class="custom-form-field w-100  mb-2" appearance="outline">
                             <mat-label>From Date</mat-label>
                             <input matInput type="datetime-local"
                                 (ngModelChange)="this.searchField.next($event)"
@@ -82,7 +82,7 @@
                         </mat-form-field>
                     </div>
                     <div class="col-xl-6">
-                        <mat-form-field class="custom-form-field w-100  mb-3" appearance="outline">
+                        <mat-form-field class="custom-form-field w-100  mb-2" appearance="outline">
                             <mat-label>To Date</mat-label>
                             <input matInput type="datetime-local"
                                 (ngModelChange)="this.searchField.next($event)"
@@ -94,10 +94,10 @@
             </form>
         
             
-            <form *ngIf="selection === 'PickedRange'" [formGroup]="filtersForm" class="col mb-2">
+            <form *ngIf="selection === 'PickedRange'" [formGroup]="filtersForm" class="col">
                 <div class="row">
                     <div class="col">
-                        <mat-form-field class="custom-form-field w-100  mb-3" appearance="outline">
+                        <mat-form-field class="custom-form-field w-100  mb-2" appearance="outline">
                             <mat-label>From Date</mat-label>
                             <input matInput type="datetime-local" (ngModelChange)="this.searchField.next($event)"
                                 formControlName="pickedStart" id="completionDate" [ngModel]="localCompleteDate"
@@ -105,7 +105,7 @@
                         </mat-form-field>
                     </div>
                     <div class="col">
-                        <mat-form-field class="custom-form-field w-100  mb-3" appearance="outline">
+                        <mat-form-field class="custom-form-field w-100  mb-2" appearance="outline">
                             <mat-label>To Date</mat-label>
                             <input matInput type="datetime-local" (ngModelChange)="this.searchField.next($event)"
                                 formControlName="pickedEnd" [ngModel]="localCompleteDate"
@@ -114,10 +114,10 @@
                     </div>
                 </div>
             </form>
-            <form *ngIf="selection === 'PutAwayRange'" [formGroup]="filtersForm" class="col mb-2">
+            <form *ngIf="selection === 'PutAwayRange'" [formGroup]="filtersForm" class="col">
                 <div class="row">
                     <div class="col">
-                        <mat-form-field class="custom-form-field w-100  mb-3" appearance="outline">
+                        <mat-form-field class="custom-form-field w-100  mb-2" appearance="outline">
                             <mat-label>From Date</mat-label>
                             <input matInput type="datetime-local" (ngModelChange)="this.searchField.next($event)" formControlName="putStart"
                             [ngModel] = "localCompleteDate"
@@ -125,7 +125,7 @@
                         </mat-form-field>
                     </div>
                     <div class="col">
-                        <mat-form-field class="custom-form-field w-100  mb-3" appearance="outline">
+                        <mat-form-field class="custom-form-field w-100  mb-2" appearance="outline">
                             <mat-label>To Date</mat-label>
                             <input matInput type="datetime-local" (ngModelChange)="this.searchField.next($event)" formControlName="putEnd"
                             [ngModel] = "localCompleteDate"
@@ -328,13 +328,8 @@
                             <mat-checkbox (change)="setPickChecks($event,'Replenishment')" formControlName="PickIncludeReplenishment"
                             class="example-margin custom-checkbox mb-2" color="primary" >Include Replenishment
                           </mat-checkbox>
-                          
-                        
-                        
                     </div>
-                    
                     </div>
-                    
                 </ng-container>
 
                 <!-- search by Pick Location Date Range -->
@@ -344,7 +339,7 @@
                             <mat-checkbox (change)="setPickChecksLocation($event,'SortPicks')"
                                 formControlName="SortByPickCountLocation" class="example-margin custom-checkbox mb-2"
                                 color="primary">SORT BY LOCATIONS WITH MOST PICKS</mat-checkbox>
-                            <div class="col-xl-4">
+                            <div class="col-xl-3">
                                 <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline">
                                     <mat-label>Enter Number of Locations</mat-label>
                                     <input (keyup)="handleInputChange($event)" [NumbersOnly]="true" matInput type="text"
@@ -372,7 +367,7 @@
                             <mat-checkbox (change)="setPutChecksLocation($event,'SortPicks')"
                                 formControlName="SortByPutAwayCountLocation" class="example-margin custom-checkbox mb-2"
                                 color="primary">SORT BY LOCATIONS WITH MOST PUT AWAY</mat-checkbox>
-                            <div class="col-xl-4">
+                            <div class="col-xl-3">
                                 <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline">
                                     <mat-label>Enter Number of Locations</mat-label>
                                     <input (keyup)="handleInputChange($event)" [NumbersOnly]="true" matInput type="text"
@@ -461,7 +456,7 @@
                         </mat-form-field>
                     </div>
                 </ng-container>
-
+                <ng-container *ngSwitchCase="'LocationRange'">
                 <div class="col-xl-6">
                     <div class="d-flex flex-wrap gap-12 px-3">
                         <mat-checkbox (change)="onChangeDemo($event,'empty')" formControlName="includeEmpty"
@@ -475,6 +470,7 @@
                             Locations?</mat-checkbox>
                     </div>
                 </div>
+            </ng-container>
             </div>
 
         </form>
