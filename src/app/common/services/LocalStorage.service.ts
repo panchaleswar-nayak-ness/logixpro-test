@@ -9,7 +9,6 @@ export class LocalStorageService {
 
   SetCountPickChecks(e: any, type: any): any[] {
 
-    debugger
     let LoggedInUserData: any = localStorage.getItem('user'); // Logged-in user data
     let LoggedInUserName: any = (JSON.parse(LoggedInUserData)).userName;  // Get current login user name from Logged-in user data
     let AllPickChecks: any = localStorage.getItem('CountPickChecks'); // Pick Checks Data for all users
@@ -94,7 +93,6 @@ export class LocalStorageService {
 
   SetCountPutChecks(e: any, type: any): any[] {
 
-    debugger
     let LoggedInUserData: any = localStorage.getItem('user'); // Logged-in user data
     let LoggedInUserName: any = (JSON.parse(LoggedInUserData)).userName;  // Get current login user name from Logged-in user data
     let AllPutChecks: any = localStorage.getItem('CountPutChecks'); // Pick Checks Data for all users
@@ -178,7 +176,6 @@ export class LocalStorageService {
   }
 
   clearLocalStorage(): void {
-    debugger
     // Get the total number of keys in localStorage   
     const totalKeys: number = localStorage.length;
 
