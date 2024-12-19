@@ -471,40 +471,40 @@ export const BlossomType = {
 
 export const Placeholders = {
     itemNumber: '{{itemNumber}}',
-    itemNumberFallback: 'Item Number / Item No / SKU',
-    
+    itemNumberFallback: 'Item Number',
+
     unitOfMeasure: '{{unitOfMeasure}}',
     unitOfMeasureFallback: 'Unit Of Measure',
-    
+
     userField1: '{{userField1}}',
     userField1Fallback: 'User Field 1',
-    
+
     userField2: '{{userField2}}',
     userField2Fallback: 'User Field 2',
-    
+
     userField3: '{{userField3}}',
     userField3Fallback: 'User Field 3',
-    
+
     userField4: '{{userField4}}',
     userField4Fallback: 'User Field 4',
-    
+
     userField5: '{{userField5}}',
     userField5Fallback: 'User Field 5',
-    
+
     userField6: '{{userField6}}',
     userField6Fallback: 'User Field 6',
-    
+
     userField7: '{{userField7}}',
     userField7Fallback: 'User Field 7',
-    
+
     userField8: '{{userField8}}',
     userField8Fallback: 'User Field 8',
-    
+
     userField9: '{{userField9}}',
     userField9Fallback: 'User Field 9',
-    
+
     userField10: '{{userField10}}',
     userField10Fallback: 'User Field 10',
-    
+
   };
 
