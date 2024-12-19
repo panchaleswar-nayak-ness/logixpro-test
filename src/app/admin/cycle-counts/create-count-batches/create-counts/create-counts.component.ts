@@ -339,6 +339,9 @@ constructor(
   resetVal() {
     this.setPickChecks(null,null)
     this.setPutChecks(null,null)
+    this.setPickChecksLocation(null,null);
+    this.setPutChecksLocation(null,null);
+    
     this.filtersForm.controls['fromLocation'].setValue('');
     this.filtersForm.controls['toLocation'].setValue('');
     this.filtersForm.controls[UniqueConstants.Description].setValue('');
@@ -908,6 +911,25 @@ constructor(
     this.filtersForm.controls['PutIncludeSortPicks'].setValue(updatedValues[3]);
     this.fillData();
 }
+setPickChecksLocation(e:any, type:any)
+{
+  let updatedValues=this.localstorageService.SetCountPickChecksLocation(e,type);
+  this.filtersForm.controls['IncludeHotPickLocation'].setValue(updatedValues[0]);
+  this.filtersForm.controls['IncludeHotMoveLocation'].setValue(updatedValues[1]);
+  this.filtersForm.controls['IncludeReplenishmentLocation'].setValue(updatedValues[2]);
+  this.filtersForm.controls['SortByPickCountLocation'].setValue(updatedValues[3]);
+  this.fillData();
+}
+setPutChecksLocation(e:any, type:any)
+{
+  let updatedValues=this.localstorageService.SetCountPutChecksLocation(e,type);
+  this.filtersForm.controls['IncludeHotPutAwayLocation'].setValue(updatedValues[0]);
+  this.filtersForm.controls['IncludeHotMovePutAwayLocation'].setValue(updatedValues[1]);
+  this.filtersForm.controls['IncludeReplenishmentPutAwayLocation'].setValue(updatedValues[2]);
+  this.filtersForm.controls['SortByPutAwayCountLocation'].setValue(updatedValues[3]);
+  this.fillData();
+}
+
 handleInputChange(event){
   this.fillData();
 }

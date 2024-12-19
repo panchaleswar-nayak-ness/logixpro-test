@@ -341,7 +341,7 @@
                 <ng-container *ngSwitchCase="'PickedLocationRange'">
                     <div class="col-xl-12">
                         <div class="d-flex flex-wrap gap-12 px-3 align-items-center">
-                            <mat-checkbox (change)="onChangeDemo($event,'PickedLocationRange')"
+                            <mat-checkbox (change)="setPickChecksLocation($event,'SortPicks')"
                                 formControlName="SortByPickCountLocation" class="example-margin custom-checkbox mb-2"
                                 color="primary">SORT BY LOCATIONS WITH MOST PICKS</mat-checkbox>
                             <div class="col-xl-4">
@@ -351,13 +351,13 @@
                                         formControlName="MaxCycleCountsLocation" maxlength="9">
                                 </mat-form-field>
                             </div>
-                            <mat-checkbox (change)="onChangeDemo($event,'PickedLocationRange')"
+                            <mat-checkbox (change)="setPickChecksLocation($event,'Pick')"
                                 formControlName="IncludeHotPickLocation" class="example-margin custom-checkbox mb-2"
                                 color="primary">Include Hot Pick</mat-checkbox>
-                            <mat-checkbox (change)="onChangeDemo($event,'PickedLocationRange')"
+                            <mat-checkbox (change)="setPickChecksLocation($event,'Move')"
                                 formControlName="IncludeHotMoveLocation" class="example-margin custom-checkbox mb-2"
                                 color="primary">Include Hot Move </mat-checkbox>
-                            <mat-checkbox (change)="onChangeDemo($event,'PickedLocationRange')"
+                            <mat-checkbox (change)="setPickChecksLocation($event,'Replenishment')"
                                 formControlName="IncludeReplenishmentLocation"
                                 class="example-margin custom-checkbox mb-2" color="primary">Include
                                 Replenishment</mat-checkbox>
@@ -369,7 +369,7 @@
                 <ng-container *ngSwitchCase="'PutAwayLocationRange'">
                     <div class="col-xl-12">
                         <div class="d-flex flex-wrap gap-12 px-3 align-items-center">
-                            <mat-checkbox (change)="onChangeDemo($event,'PutAwayLocationRange')"
+                            <mat-checkbox (change)="setPutChecksLocation($event,'SortPicks')"
                                 formControlName="SortByPutAwayCountLocation" class="example-margin custom-checkbox mb-2"
                                 color="primary">SORT BY LOCATIONS WITH MOST PUT AWAY</mat-checkbox>
                             <div class="col-xl-4">
@@ -379,13 +379,13 @@
                                         formControlName="MaxCycleCountsPutAwayLocation" maxlength="9">
                                 </mat-form-field>
                             </div>
-                            <mat-checkbox (change)="onChangeDemo($event,'PutAwayLocationRange')"
+                            <mat-checkbox (change)="setPutChecksLocation($event,'Pick')"
                                 formControlName="IncludeHotPutAwayLocation" class="example-margin custom-checkbox mb-2"
                                 color="primary">Include Hot Put Away</mat-checkbox>
-                            <mat-checkbox (change)="onChangeDemo($event,'PutAwayLocationRange')"
+                            <mat-checkbox (change)="setPutChecksLocation($event,'Move')"
                                 formControlName="IncludeHotMovePutAwayLocation" class="example-margin custom-checkbox mb-2"
                                 color="primary">Include Hot Move </mat-checkbox>
-                            <mat-checkbox (change)="onChangeDemo($event,'PutAwayLocationRange')"
+                            <mat-checkbox (change)="setPutChecksLocation($event,'Replenishment')"
                                 formControlName="IncludeReplenishmentPutAwayLocation"
                                 class="example-margin custom-checkbox mb-2" color="primary">Include
                                 Replenishment</mat-checkbox>
