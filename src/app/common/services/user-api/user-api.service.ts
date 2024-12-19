@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { ApiFuntions } from '../ApiFuntions';
 import { AuthService } from 'src/app/common/init/auth.service';
 import { IUserAPIService } from './user-api-interface';
+import { LocalStorageService } from 'src/app/common/services/LocalStorage.service';
 
 @Injectable({
   providedIn: 'root'
@@ -12,7 +13,8 @@ export class UserApiService implements IUserAPIService {
 
   constructor(
     private Api : ApiFuntions,
-    private authService : AuthService
+    private authService : AuthService,
+    private localstorageService:LocalStorageService
   ) { }
 
   Logout() {
@@ -21,7 +23,7 @@ export class UserApiService implements IUserAPIService {
       username: this.userData.userName,
       wsid: this.userData.wsid
     }
-    localStorage.clear();
+    this.localstorageService.clearLocalStorage();
     return this.Api.Logout(payload);
   }
 

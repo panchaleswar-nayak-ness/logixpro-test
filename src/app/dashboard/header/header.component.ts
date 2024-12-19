@@ -17,6 +17,7 @@ import { IUserAPIService } from 'src/app/common/services/user-api/user-api-inter
 import { UserApiService } from 'src/app/common/services/user-api/user-api.service';
 import {  ToasterTitle,ToasterType,DialogConstants} from 'src/app/common/constants/strings.constants';
 import { AppNames, AppRoutes, } from 'src/app/common/constants/menu.constants';
+import { LocalStorageService } from 'src/app/common/services/LocalStorage.service';
 
 export interface ITheme {
   name : string
@@ -63,7 +64,8 @@ export class HeaderComponent {
     private titleService: Title,
     private breakpointObserver: BreakpointObserver,
     private global:GlobalService,
-    private stylesService: StylesService
+    private stylesService: StylesService,
+    private localstorageService:LocalStorageService
   ) {
     this.checkCurState(); 
     this.iGlobalConfigApi = globalConfigApi;
@@ -249,12 +251,15 @@ export class HeaderComponent {
     }    
   }
 
-  logout(){     
+  logout(){ 
+    debugger    
     if(this.authService.isConfigUser()){
       this.iGlobalConfigApi.configLogout().subscribe((res:any) => {
         if (res.isExecuted) 
         {
-          localStorage.clear();
+          //this.clearLocalStorageExcept('CountPickChecks')
+          //localStorage.clear();
+          this.localstorageService.clearLocalStorage();
           window.location.href = "/#/globalconfig"; 
         }
         else 
@@ -318,4 +323,8 @@ export class HeaderComponent {
     this.stylesService.setStylesheet(stylesheet);
   }
  
+   // Function to remove all items from localStorage except the specific item
+ 
+
+  
 }

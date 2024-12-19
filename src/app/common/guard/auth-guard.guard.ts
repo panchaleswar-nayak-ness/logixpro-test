@@ -7,6 +7,7 @@ import { HttpClient } from '@angular/common/http'
 import { Location } from '@angular/common';
 import { CurrentTabDataService } from '../../admin/inventory-master/current-tab-data-service';
 import { SharedService } from '../services/shared.service';
+import { LocalStorageService } from 'src/app/common/services/LocalStorage.service';
 
 
 @Injectable({ providedIn: 'root' })
@@ -17,7 +18,8 @@ export class AuthGuardGuard implements CanActivate {
     private activatedRoute:ActivatedRoute,
     public authService: AuthService, private http: HttpClient, private location: Location,
     private currentTabDataService:CurrentTabDataService,
-    private sharedService: SharedService
+    private sharedService: SharedService,
+    private localstorageService:LocalStorageService
   ) {
 
   }
@@ -94,7 +96,8 @@ export class AuthGuardGuard implements CanActivate {
     } else if (!this.ConfigJson?.length && this.authService.IsloggedIn()) {
       return true;
     }
-    localStorage.clear();
+    //localStorage.clear();
+    this.localstorageService.clearLocalStorage();
     window.location.href = '/#/login';
     return false;
   }

@@ -17,6 +17,7 @@ import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.ser
 import { ICommonApi } from 'src/app/common/services/common-api/common-api-interface';
 import { CommonApiService } from 'src/app/common/services/common-api/common-api.service';
 import { ToasterTitle, ToasterType ,LiveAnnouncerMessage,ResponseStrings,StringConditions,ToasterMessages,DialogConstants,UniqueConstants,Column,Style,ColumnDef,TableConstant, Placeholders} from 'src/app/common/constants/strings.constants';
+import { LocalStorageService } from 'src/app/common/services/LocalStorage.service';
 
 @Component({
   selector: 'app-ccb-create-counts',
@@ -83,6 +84,8 @@ export class CCBCreateCountsComponent implements OnInit {
   categoryTA = new Subject<string>();
   beginCostTA = new Subject<string>();
   endCostTA = new Subject<string>();
+  PickMaxCycleCountsTA = new Subject<string>();
+  PutMaxCycleCountsTA = new Subject<string>();
   @Output() countsUpdated = new EventEmitter<string>();
   // variables for mat-sort and mat-paginator with viewChild
   @ViewChild(MatSort) sort: MatSort;
@@ -127,8 +130,10 @@ constructor(
     private authService: AuthService,
     public global:GlobalService,
     private liveAnnouncer: LiveAnnouncer,
-    public adminApiService: AdminApiService
+    public adminApiService: AdminApiService,
+    private localstorageService:LocalStorageService
   ) {
+
     this.iAdminApiService = adminApiService;
     this.iCommonAPI = commonAPI;
     
@@ -147,8 +152,18 @@ constructor(
       pickedStart: new FormControl(new Date())    ,
       pickedStartTime: new FormControl(new Date()),
       pickedEnd: new FormControl(new Date()),
+      IncludeHotPick: new FormControl(true),
+      PickIncludeHotMove: new FormControl(true),
+      PickIncludeReplenishment: new FormControl(true),
+      PickIncludeSortPicks: new FormControl(false),
+      PickMaxCycleCounts: new FormControl(''),
       putStart: new FormControl(new Date()),
       putEnd: new FormControl(new Date()),
+      IncludeHotPut: new FormControl(true),
+      PutIncludeHotMove: new FormControl(true),
+      PutIncludeReplenishment: new FormControl(true),
+      PutIncludeSortPicks: new FormControl(false),
+      PutMaxCycleCounts: new FormControl(''),
       costStart: new FormControl(''),
       costEnd: new FormControl(''),
       warehouse: new FormControl(''),
@@ -170,6 +185,10 @@ constructor(
       IncludeReplenishmentPutAwayLocation: new FormControl(false),
     });
 
+    this.SetDateFormat();
+  }
+
+  SetDateFormat(){
     this.completeDate = new Date();
     const offsetMs = this.completeDate.getTimezoneOffset() * 60 * 1000;
     const msLocal =  this.completeDate.getTime() - offsetMs;
@@ -180,7 +199,6 @@ constructor(
     //var test = "2023-09-25T19:48:18.932Z" //  2023-09-25T19:39:19.932Z
     this.localCompleteDate=isoLocal.substring(0, isoLocal.length - 8);
   }
-
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['updateTable'][StringConditions.currentValue]) {
       this.resetVal();
@@ -200,13 +218,16 @@ constructor(
     this.eventChange.emit(obj);
   }
   onChangeDemo(e:any, type:any) {
+    
     if (type === 'empty') {
       this.filtersForm.controls['includeEmpty'].setValue(e.checked);
     } else  if(type === 'other'){
       this.filtersForm.controls['includeOther'].setValue(e.checked);
     }
+    
     this.fillData();
   }
+  
   ngOnInit(): void {
     this.userData = this.authService.userData();
     this.getWareAndCurOrd();
@@ -285,6 +306,20 @@ constructor(
         this.getTypeAheads('EndCost');
         this.fillData();
       });
+    this.PickMaxCycleCountsTA
+      .pipe(debounceTime(500), distinctUntilChanged())
+      .subscribe((value) => {
+        
+        //this.getTypeAheads('BeginCost');
+        this.fillData();
+      });  
+    this.PutMaxCycleCountsTA
+      .pipe(debounceTime(500), distinctUntilChanged())
+      .subscribe((value) => {
+        
+        //this.getTypeAheads('BeginCost');
+        this.fillData();
+      });    
   }
 
   onSelFunc(item, event: any) {
@@ -302,6 +337,8 @@ constructor(
   }
 
   resetVal() {
+    this.setPickChecks(null,null)
+    this.setPutChecks(null,null)
     this.filtersForm.controls['fromLocation'].setValue('');
     this.filtersForm.controls['toLocation'].setValue('');
     this.filtersForm.controls[UniqueConstants.Description].setValue('');
@@ -310,14 +347,12 @@ constructor(
     this.filtersForm.controls['fromItem'].setValue('');
     this.filtersForm.controls['toItem'].setValue('');
     this.filtersForm.controls['notCounted'].setValue(new Date());
-    this.filtersForm.controls['pickedStart'].setValue(new Date());
-    this.filtersForm.controls['pickedEnd'].setValue(new Date());
     this.filtersForm.controls['putStart'].setValue(new Date());
-    this.filtersForm.controls['pickedStart'].setValue(new Date());
     this.filtersForm.controls['putEnd'].setValue(new Date());
     this.filtersForm.controls['costStart'].setValue('');
     this.filtersForm.controls['costEnd'].setValue('');
     this.filtersForm.controls[TableConstant.WareHouse].setValue('');
+    this.SetDateFormat();
     this.fillData();
 
   }
@@ -512,13 +547,23 @@ constructor(
           ? new Date()
           : this.filtersForm.value.notCounted,
       pickedStart:
-        this.filtersForm.value.pickedStart === ''
-          ? new Date()
-          : this.filtersForm.value.pickedStart,
+      this.filtersForm.value.pickedStart === '' ||
+      this.filtersForm.value.pickedStart === undefined ||
+      this.filtersForm.value.pickedStart === null
+        ? new Date()
+        : this.filtersForm.value.pickedStart,
       pickedEnd:
-        this.filtersForm.value.pickedEnd === ''
+        this.filtersForm.value.pickedEnd === '' ||
+        this.filtersForm.value.pickedEnd === undefined 
           ? new Date()
           : this.filtersForm.value.pickedEnd,
+      IncludeHotPick: this.filtersForm.value.IncludeHotPick,
+      PickIncludeHotMove: this.filtersForm.value.PickIncludeHotMove,
+      PickIncludeReplenishment: this.filtersForm.value.PickIncludeReplenishment,
+      PickIncludeSortPicks: this.filtersForm.value.PickIncludeSortPicks,
+      PickMaxCycleCounts: this.filtersForm.value.PickMaxCycleCounts
+        ? this.filtersForm.value.PickMaxCycleCounts
+        : '',   
       putStart:
         this.filtersForm.value.putStart === ''
           ? new Date()
@@ -527,6 +572,13 @@ constructor(
         this.filtersForm.value.putEnd === ''
           ? new Date()
           : this.filtersForm.value.putEnd,
+      IncludeHotPut: this.filtersForm.value.IncludeHotPut,
+      PutIncludeHotMove: this.filtersForm.value.PutIncludeHotMove,
+      PutIncludeReplenishment: this.filtersForm.value.PutIncludeReplenishment,
+      PutIncludeSortPicks: this.filtersForm.value.PutIncludeSortPicks,
+      PutMaxCycleCounts: this.filtersForm.value.PutMaxCycleCounts
+        ? this.filtersForm.value.PutMaxCycleCounts
+        : '',   
       costStart: this.filtersForm.value.costStart || "",
       costEnd: this.filtersForm.value.costEnd || "",
       warehouseFilter: this.warehouse,
@@ -566,14 +618,23 @@ constructor(
             : this.filtersForm.value.notCounted,
         pickStart:
           this.filtersForm.value.pickedStart === '' ||
+          this.filtersForm.value.pickedStart === undefined ||
           this.filtersForm.value.pickedStart === null
             ? new Date()
             : this.filtersForm.value.pickedStart,
         pickEnd:
           this.filtersForm.value.pickedEnd === '' ||
+          this.filtersForm.value.pickedEnd === undefined ||
           this.filtersForm.value.pickedEnd === null
             ? new Date() 
             : this.filtersForm.value.pickedEnd,
+        IncludeHotPick: this.filtersForm.value.IncludeHotPick,
+        PickIncludeHotMove: this.filtersForm.value.PickIncludeHotMove,
+        PickIncludeReplenishment: this.filtersForm.value.PickIncludeReplenishment,
+        PickIncludeSortPicks: this.filtersForm.value.PickIncludeSortPicks,
+        PickMaxCycleCounts: this.filtersForm.value.PickMaxCycleCounts
+          ? this.filtersForm.value.PickMaxCycleCounts
+          : '',
         putAwayStart:
           this.filtersForm.value.putStart === '' ||
           this.filtersForm.value.putStart === null
@@ -584,6 +645,13 @@ constructor(
           this.filtersForm.value.putEnd === null
             ? new Date()
             : this.filtersForm.value.putEnd,
+        IncludeHotPut: this.filtersForm.value.IncludeHotPut,
+        PutIncludeHotMove: this.filtersForm.value.PutIncludeHotMove,
+        PutIncludeReplenishment: this.filtersForm.value.PutIncludeReplenishment,
+        PutIncludeSortPicks: this.filtersForm.value.PutIncludeSortPicks,
+        PutMaxCycleCounts: this.filtersForm.value.PutMaxCycleCounts
+              ? this.filtersForm.value.PutMaxCycleCounts
+              : '',    
         costStart: this.filtersForm.value.costStart || "",
         costEnd: this.filtersForm.value.costEnd || "",
         warehouseFilter: this.warehouse,
@@ -810,6 +878,8 @@ constructor(
     this.categoryTA.unsubscribe();
     this.beginCostTA.unsubscribe();
     this.endCostTA.unsubscribe();
+    this.PickMaxCycleCountsTA.unsubscribe();
+    this.PutMaxCycleCountsTA.unsubscribe();
   }
   checkvalue(event){
     if(event != 'LocationRange'){ 
@@ -819,8 +889,26 @@ constructor(
       this.location = false;
     }
   }
-
-  handleInputChange(event){
+  
+  setPickChecks(e:any, type:any)
+  {
+    let updatedValues=this.localstorageService.SetCountPickChecks(e,type);
+    this.filtersForm.controls['IncludeHotPick'].setValue(updatedValues[0]);
+    this.filtersForm.controls['PickIncludeHotMove'].setValue(updatedValues[1]);
+    this.filtersForm.controls['PickIncludeReplenishment'].setValue(updatedValues[2]);
+    this.filtersForm.controls['PickIncludeSortPicks'].setValue(updatedValues[3]);
     this.fillData();
   }
+  setPutChecks(e:any, type:any)
+  {
+    let updatedValues=this.localstorageService.SetCountPutChecks(e,type);
+    this.filtersForm.controls['IncludeHotPut'].setValue(updatedValues[0]);
+    this.filtersForm.controls['PutIncludeHotMove'].setValue(updatedValues[1]);
+    this.filtersForm.controls['PutIncludeReplenishment'].setValue(updatedValues[2]);
+    this.filtersForm.controls['PutIncludeSortPicks'].setValue(updatedValues[3]);
+    this.fillData();
+}
+handleInputChange(event){
+  this.fillData();
+}
 }
