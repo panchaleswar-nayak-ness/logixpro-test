@@ -20,6 +20,8 @@ import { IInductionManagerApiService } from 'src/app/common/services/induction-m
 import { InductionManagerApiService } from 'src/app/common/services/induction-manager-api/induction-manager-api.service';
 import {  ToasterTitle ,ToasterType,DialogConstants,Style,Column,UniqueConstants,ColumnDef,StringConditions} from 'src/app/common/constants/strings.constants';
 import {PrintApiService} from "../../common/services/print-api/print-api.service";
+import { IAdminApiService } from 'src/app/common/services/admin-api/admin-api-interface';
+import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.service';
 
 @Component({
   selector: 'app-tote-transaction-view',
@@ -49,14 +51,17 @@ export class ToteTransactionViewComponent implements OnInit {
   zoneLabels: any;
   imPreferences: any;
   public iInductionManagerApi: IInductionManagerApiService;
+  public iAdminApiService : IAdminApiService;
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
     public dialogRef: MatDialogRef<any>,
     private global: GlobalService,
     public inductionManagerApi: InductionManagerApiService,
+    public adminApiService: AdminApiService,
     private printApiService: PrintApiService
   ) {
     this.iInductionManagerApi = inductionManagerApi;
+    this.iAdminApiService = adminApiService;
   }
 
   ngOnInit(): void {
@@ -349,6 +354,16 @@ export class ToteTransactionViewComponent implements OnInit {
           screen.height +
           ',toolbar=0,menubar=0,location=0,status=1,scrollbars=1,resizable=1,left=0,top=0'
       );
+    }
+  }
+
+  printItemLabel() {
+    let OTID = this.dataSource?.filteredData[0]?.id;
+    if (!this.imPreferences.printDirectly) {
+      window.open(`/#/report-view?file=FileName:PrintPutAwayItemLabels|OTID:${OTID}`, UniqueConstants._blank, 'width=' + screen.width + ',height=' + screen.height + ',toolbar=0,menubar=0,location=0,status=1,scrollbars=1,resizable=1,left=0,top=0');
+    }
+    else {
+        this.iAdminApiService.PrintPutAwayItemLabels(OTID);
     }
   }
 
