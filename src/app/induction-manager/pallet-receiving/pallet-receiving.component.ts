@@ -274,12 +274,18 @@ clearToteID() {
     }
 
     selectedValues(id, itemNumber, lotNumber, transactionQuantity, expirationDate) {   
+
+      const [day, month, year] = expirationDate.split(' ')[0].split('/'); // Split date part
+      const time = expirationDate.split(' ')[1] + ' ' + expirationDate.split(' ')[2]; // Handle time
+      
+      expirationDate = new Date(`${month}/${day}/${year} ${time}`);
+
       this.processForm.reset({
         toteID: this.processForm.value.toteID, 
         itemNo: itemNumber,
         lotNumber: lotNumber,
         quantity: transactionQuantity,
-        expirationDate: new Date(expirationDate),
+        expirationDate: expirationDate,
         id: id,
         orgQty: transactionQuantity,
       });
