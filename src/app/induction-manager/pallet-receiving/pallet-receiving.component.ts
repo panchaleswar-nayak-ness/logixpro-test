@@ -14,6 +14,7 @@ import { ApiResponse, ColumnAlias } from 'src/app/common/types/CommonTypes';
 import { IAdminApiService } from 'src/app/common/services/admin-api/admin-api-interface';
 import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.service';
 import { MatPaginator } from '@angular/material/paginator';
+import { format, parse } from 'date-fns';
 
 export interface PeriodicElement {
   position: string;
@@ -115,6 +116,12 @@ export class PalletReceivingComponent implements OnInit {
         console.log("ColumnAlias", res.responseMessage);
       }
     })
+  }
+  onDateChange(event: any, fromExpDate = ""): void {
+    if ((fromExpDate !== "")) {
+      this['expirationDate'] = format(new Date(event), "yyyy-MM-dd'T'HH:mm:ss.SSSxxx");
+    }
+
   }
   
   getCurrentToteID() {
@@ -274,6 +281,12 @@ clearToteID() {
     }
 
     selectedValues(id, itemNumber, lotNumber, transactionQuantity, expirationDate) {   
+
+      // const [day, month, year] = expirationDate.split(' ')[0].split('/'); // Split date part
+      // const time = expirationDate.split(' ')[1] + ' ' + expirationDate.split(' ')[2]; // Handle time
+      
+      // expirationDate = new Date(`${month}/${day}/${year} ${time}`);
+
       this.processForm.reset({
         toteID: this.processForm.value.toteID, 
         itemNo: itemNumber,
@@ -287,12 +300,18 @@ clearToteID() {
     }
 
     savePallet(split: boolean) {
+debugger
+      let finalExpiryDate = new Date(this['expirationDate']);
+      if (this.isValidDate(finalExpiryDate)) {
+        this['expirationDate'] = this['expirationDate'] !== '' ? format(new Date(this['expirationDate']), "yyyy-MM-dd'T'HH:mm:ss.SSSxxx") : '';
+      }
+
       const payload = {
         toteId: this.processForm.value.toteID,
         itemNumber: this.processForm.value.itemNo,
         quantity: this.processForm.value.quantity,
         lotNumber: this.processForm.value.lotNumber,
-        expirationDate: this.processForm.value.expirationDate,
+        ExpirationDate: this['expirationDate'],
         id: this.processForm.value.id,
         split: split, // Assuming `split` is defined elsewhere in your component
       };
@@ -419,6 +438,21 @@ clearToteID() {
     });
   }
 
+  isValidDate(date: any) {
+    // Check for falsy values like '', null, undefined
+    if (!date) return false;
+  
+    // Convert to a Date object if it's not already one
+    const parsedDate = new Date(date);
+  
+    // Check if the date is valid
+    if (isNaN(parsedDate.getTime())) return false;
+  
+    // Check if the date is not 01-01-1970
+    const epochDate = new Date('1970-01-01T00:00:00Z');
+    return parsedDate.getTime() !== epochDate.getTime();
+  }
+
   showNotification(heading, message) {
     const dialogRef:any = this.global.OpenDialog(AlertConfirmationComponent, {
       height: 'auto',
@@ -433,6 +467,7 @@ clearToteID() {
     });
     dialogRef.afterClosed().subscribe((result) => {});
   }
+
   ngAfterViewInit() {
     this.searchBoxField?.nativeElement.focus();
   }

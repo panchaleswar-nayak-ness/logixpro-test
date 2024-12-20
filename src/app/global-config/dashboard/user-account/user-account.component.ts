@@ -10,6 +10,7 @@ import { GlobalConfigApiService } from 'src/app/common/services/globalConfig-api
 import { GlobalService } from 'src/app/common/services/global.service';
 import { ToasterTitle, ToasterType } from 'src/app/common/constants/strings.constants';
 import { AppPermissions } from 'src/app/common/constants/menu.constants';
+import { LocalStorageService } from 'src/app/common/services/LocalStorage.service';
 @Component({
   selector: 'app-user-account',
   templateUrl: './user-account.component.html',
@@ -23,7 +24,8 @@ export class UserAccountComponent implements OnInit {
     
     private router: Router,
     public globalConfigApi: GlobalConfigApiService,
-    private global: GlobalService
+    private global: GlobalService,
+    private localstorageService:LocalStorageService
   ) {
     this.iGlobalConfigApi = globalConfigApi;
   }
@@ -92,7 +94,8 @@ export class UserAccountComponent implements OnInit {
             console.log("changeGlobalAccount",res.responseMessage);
           }
           this.getMenuData();
-          localStorage.clear();
+          //localStorage.clear();
+          this.localstorageService.clearLocalStorage();
           this.router.navigate(['/globalconfig']);
         },
         error: (error) => {

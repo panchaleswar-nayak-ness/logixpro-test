@@ -20,7 +20,7 @@ import { BaseService } from 'src/app/common/services/base-service.service';
 import { ValidWorkstation, ApiResponse } from 'src/app/common/types/CommonTypes';
 import { LinkedResource } from 'src/app/common/services/base-service.service';
 import { AppInfo, App, AppData, AppLicense, AppNameByWorkstationResponse } from 'src/app/dashboard/main/main.component';
-
+import { LocalStorageService } from 'src/app/common/services/LocalStorage.service';
 type Version = {version: string};
 
 @Component({
@@ -56,7 +56,8 @@ export class LoginComponent {
     private auth: AuthService, 
     private sharedService: SharedService,
     public dialog: MatDialog,
-    private apiBase: BaseService
+    private apiBase: BaseService,
+    private localstorageService:LocalStorageService
   ) { 
     this.iGlobalConfigApi = globalConfigApi;
     this.iUserApi = userApi;
@@ -209,7 +210,8 @@ export class LoginComponent {
   ngOnInit() {
     this.version = packJSON.version;
     let lastRoute: any = localStorage.getItem('LastRoute') ? localStorage.getItem('LastRoute') : "";
-    localStorage.clear();
+    //localStorage.clear();
+    this.localstorageService.clearLocalStorage();
     if(lastRoute != "" && lastRoute != "login"){
       localStorage.setItem('LastRoute', lastRoute);
     }
