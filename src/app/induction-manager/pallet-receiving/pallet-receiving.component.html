@@ -57,7 +57,7 @@
                       <div class="col-xl-4">
                         <mat-form-field class="custom-form-field w-100 mb-0" appearance="outline">
                           <mat-label>Expiration Date</mat-label>
-                            <input matInput [matDatepicker]="expirationDate" (keydown.shift.enter)="$event.preventDefault()" formControlName="expirationDate" name="expirationDate">
+                            <input matInput [matDatepicker]="expirationDate" (keydown.shift.enter)="$event.preventDefault()" formControlName="expirationDate" name="expirationDate" (dateChange)="onDateChange($event.value,'1')">
                         <mat-datepicker-toggle matSuffix [for]="expirationDate" ngDefaultControl></mat-datepicker-toggle>
                         <mat-datepicker #expirationDate></mat-datepicker>
                         </mat-form-field>
