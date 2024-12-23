@@ -176,7 +176,7 @@ constructor(
       IncludeHotMoveLocation: new FormControl(false),
       IncludeReplenishmentLocation: new FormControl(false),
 
-      PutAwayStartLocation: new FormControl(new Date()) ,
+     PutAwayStartLocation: new FormControl(new Date()) ,
       PutAwayEndLocation: new FormControl(new Date()),
       SortByPutAwayCountLocation: new FormControl(false),
       MaxCycleCountsPutAwayLocation: new FormControl(),
@@ -188,17 +188,21 @@ constructor(
     this.SetDateFormat();
   }
 
-  SetDateFormat(){
-    this.completeDate = new Date();
+  SetDateFormat() {
+    this.completeDate = new Date(); // Get the current date and time
+    this.completeDate.setHours(0, 0, 0, 0); // Set the time to 12:00 AM
+  
     const offsetMs = this.completeDate.getTimezoneOffset() * 60 * 1000;
-    const msLocal =  this.completeDate.getTime() - offsetMs;
+    const msLocal = this.completeDate.getTime() - offsetMs;
     const dateLocal = new Date(msLocal);
+  
     const iso = dateLocal.toISOString();
-    const isoLocal = iso.slice(0, 19)+".932Z";
-
-    //var test = "2023-09-25T19:48:18.932Z" //  2023-09-25T19:39:19.932Z
-    this.localCompleteDate=isoLocal.substring(0, isoLocal.length - 8);
+    const isoLocal = iso.slice(0, 19) + ".932Z";
+  
+    // Remove unnecessary parts and format for `datetime-local`
+    this.localCompleteDate = isoLocal.substring(0, 16); // Format to 'yyyy-MM-ddTHH:mm'
   }
+  
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['updateTable'][StringConditions.currentValue]) {
       this.resetVal();
