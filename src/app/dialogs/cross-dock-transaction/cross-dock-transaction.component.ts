@@ -267,11 +267,12 @@ export class CrossDockTransactionComponent implements OnInit {
         this.global.ShowToastr(ToasterType.Error, 'Completed Quantity cannot be 0', ToasterTitle.Error);
         return;
       }
-      console.log("Below data is available to validate against:");
-      console.log(this.data.values);
-      console.log('Validating that Completed Quantity [' + this.transactions[this.selectedRow].completedQuantity + '] is less than than available quantity (toteQty) [' + this.data.values.toteQty + ']');
-      if (this.transactions[this.selectedRow].completedQuantity > this.data.values.toteQty) {
-        this.global.ShowToastr(ToasterType.Error, 'Completed Quantity cannot be greater than the source Put Away', ToasterTitle.Error);
+      if (this.transactions[this.selectedRow].completedQuantity > this.data.values.transactionQuantity) {
+        this.global.ShowToastr(ToasterType.Error, 'Completed Quantity cannot be greater than the source Put Away\'s Transaction Quantity', ToasterTitle.Error);
+        return;
+      }
+      if (this.transactions[this.selectedRow].completedQuantity > this.transactions[this.selectedRow].transactionQuantity) {
+        this.global.ShowToastr(ToasterType.Error, 'Completed Quantity cannot be greater than the target Pick\'s Transaction Quantity', ToasterTitle.Error);
         return;
       }
       let dialogRef: any = this.global.OpenDialog(ConfirmationDialogComponent, {
