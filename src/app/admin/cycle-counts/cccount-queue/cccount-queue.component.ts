@@ -49,9 +49,9 @@ export class CCCountQueueComponent {
 
   onActionChange(event: any): void {
     const selectedValue = event.value;
-    console.log('Selected Value:', selectedValue); // Debug line
+    console.log('Selected Value:', selectedValue); 
 
-    if (selectedValue === '2') { // Value 2 corresponds to "Import Count Batches"
+    if (selectedValue === '2') { 
       this.openImportCountBatchesDialog();
     }
   }
@@ -68,10 +68,10 @@ export class CCCountQueueComponent {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      // Reset the mat-select value to ensure the next click can trigger the dialog again
-      this.matRef.value = null;  // Reset the selected value of mat-select
+    
+      this.matRef.value = null;  
 
-      // Handle dialog close result if needed
+     
     });
   }
 }

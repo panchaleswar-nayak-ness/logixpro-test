@@ -30,11 +30,6 @@ import { Subject, debounceTime, distinctUntilChanged } from 'rxjs';
 import { FloatLabelType } from '@angular/material/form-field';
 import { DialogConstants, ToasterTitle, ToasterType ,zoneType,ColumnDef,Column,TableConstant,UniqueConstants,StringConditions} from 'src/app/common/constants/strings.constants';
 import { ConfirmationDialogComponent } from '../confirmation-dialog/confirmation-dialog.component';
-
-
-
-
-
 import { Placeholders } from 'src/app/common/constants/strings.constants';
 
 type InventoryMapFormData = {
@@ -532,15 +527,15 @@ performClear() {
 
   onclearFields(form: FormGroup<InventoryMapFormData>) {
     this.iAdminApiService.updateInventoryMapClearWholeLocation(form.getRawValue()).subscribe(res => {
-        // Initially, check if the operation was executed successfully and if there's a specific condition to handle
+      
         if (res.isExecuted && res.data.pickPutAwayCount > 0) {
-            // Open the dialog to notify the user that the operation cannot proceed
+            
             const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
               width: '560px',
                 data: {
                     message: 'Quantity Allocated Pick or Quantity Allocated Put Away has a value greater than zero. You cannot proceed with Clear Whole Location.',
                     showOkButton: true,
-                    hideCancel: true  // Hide the cancel button directly
+                    hideCancel: true  
                 }
             });
 

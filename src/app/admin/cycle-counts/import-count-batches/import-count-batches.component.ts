@@ -1,7 +1,6 @@
 import { Component, OnInit, Inject, EventEmitter, Output, ViewChild,ChangeDetectorRef  } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-
 import { MatDialog } from '@angular/material/dialog';
 import { IAdminApiService } from 'src/app/common/services/admin-api/admin-api-interface';
 import { ToasterMessages, ToasterTitle, ToasterType } from 'src/app/common/constants/strings.constants';
@@ -16,7 +15,6 @@ import { FormControl, FormGroup } from '@angular/forms';
 import { MatSort } from '@angular/material/sort';
 import { MatPaginator,PageEvent } from '@angular/material/paginator';
 import { ConfirmationDialogComponent } from '../../dialogs/confirmation-dialog/confirmation-dialog.component';
-import { MatSelect } from '@angular/material/select';
 import { Router } from '@angular/router';
 import { AppRoutes } from 'src/app/common/constants/menu.constants';
 
@@ -44,7 +42,7 @@ export interface Pagination {
 
 export interface SortColumn {
   columnIndex: number;
-  sortOrder: 'asc' | 'desc'; // Use union type for better type safety
+  sortOrder: 'asc' | 'desc'; 
 }
 export interface DialogData {
   selectedImportType: string;
@@ -145,7 +143,6 @@ removeSpacesFromString(value: string): string {
   ngOnInit(): void {
    
     this.dataSource.data = [];
-
     this.filtersForm = new FormGroup({
       includeEmpty: new FormControl(false),  
       includeOther: new FormControl(false)   
@@ -243,13 +240,10 @@ removeSpacesFromString(value: string): string {
     this.onImportTypeChange();
     const fileInput = document.querySelector('input[type="file"]') as HTMLInputElement;
     if (fileInput) {
-      fileInput.value = ''; // Reset the file input
+      fileInput.value = '';
     }
-  
-    // Clear the table data
-    this.dataSource.data = [];
-    // Optionally, if you want to refresh the paginator as well
-    if (this.paginator) {
+     this.dataSource.data = [];
+     if (this.paginator) {
       this.paginator.firstPage();
     }
   }
@@ -272,9 +266,9 @@ removeSpacesFromString(value: string): string {
           console.log('API Response:', res);
   
           if (res.isExecuted) {
-            // Directly handle item2 data if it exists
+          
             if (res.data && res.data.item2 && res.data.item2.length > 0) {
-              this.updateTableData(res.data.item2);  // Update the table with item2 data
+              this.updateTableData(res.data.item2);  
               console.log('Data updated successfully.');
             } else {
               
