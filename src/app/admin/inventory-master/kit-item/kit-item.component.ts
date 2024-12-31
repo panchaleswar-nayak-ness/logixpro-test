@@ -22,7 +22,8 @@ import { ContextMenuFiltersService } from 'src/app/common/init/context-menu-filt
   styleUrls: ['./kit-item.component.scss']
 })
 export class KitItemComponent implements OnInit, OnChanges {
-
+  fieldMappings = JSON.parse(localStorage.getItem('fieldMappings') ?? '{}');
+  itemNumber: string = this.fieldMappings.itemNumber;
   placeholders = Placeholders;
   displayedColumns: string[] = ['ItemNumber', Column.Description, 'SpecialFeatures', 'KitQuantity','Actions'];
 

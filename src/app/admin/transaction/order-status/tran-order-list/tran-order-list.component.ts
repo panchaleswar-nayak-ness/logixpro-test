@@ -64,8 +64,9 @@ import { PrintApiService } from 'src/app/common/services/print-api/print-api.ser
 })
 export class TranOrderListComponent implements OnInit, AfterViewInit {
   placeholders = Placeholders;
+  fieldMappings = JSON.parse(localStorage.getItem('fieldMappings') ?? '{}');
   public columnValues: any = [];
-
+  itemNumber: string = this.fieldMappings.itemNumber;
   public Order_Table_Config = [
     { colHeader: 'status', colDef: 'Status' },
     {

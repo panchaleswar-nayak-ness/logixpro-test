@@ -24,6 +24,7 @@ import { ContextMenuFiltersService } from 'src/app/common/init/context-menu-filt
 })
 export class DeAllocateOrdersComponent implements OnInit {
   placeholders = Placeholders;
+  fieldMappings = JSON.parse(localStorage.getItem('fieldMappings') ?? '{}');
   pageLength=0;
   ELEMENT_DATA_1: any[] =[
     {order_no: '1202122'},
@@ -51,7 +52,7 @@ export class DeAllocateOrdersComponent implements OnInit {
   @ViewChild('matRefAction') matRefAction: MatSelect;
 
   public userData: any;
-  public itemNumber:any = '';
+  public itemNumber:any = this.fieldMappings.itemNumber;
   public orderNumber = '';
   public chooseSearchType:any;
   public TypeValue:any;

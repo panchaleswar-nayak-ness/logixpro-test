@@ -23,7 +23,8 @@ import { DialogConstants, ToasterTitle, ToasterType, TransactionType ,Style,Colu
   styleUrls: ['./generate-order.component.scss'],
 })
 export class GenerateOrderComponent implements OnInit {
-
+  fieldMappings = JSON.parse(localStorage.getItem('fieldMappings') ?? '{}');
+  itemNumber: string = this.fieldMappings.itemNumber;
   placeholders = Placeholders;
   @ViewChild('autoFocusField') searchBoxField: ElementRef;
   @ViewChild('SelectOrderComponentComponent') SelectOrderComponentComponent: SelectOrderComponentComponent;

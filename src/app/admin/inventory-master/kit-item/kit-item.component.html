@@ -19,7 +19,7 @@
             <ng-scrollbar track="all" class="mat-table-scrollbar h-390px">
                 <table class="w-100 table-borderless" mat-table #matSort3="matSort" matSort [dataSource]="kitItemsList">
                     <ng-container matColumnDef="ItemNumber">
-                        <th mat-header-cell *matHeaderCellDef replacePlaceholder [replacePlaceHolder]="placeholders.itemNumber" [fallbackPlaceHolder]="placeholders.itemNumberFallback"> Item Number</th>
+                        <th mat-header-cell *matHeaderCellDef > {{itemNumber}} </th>
                         <td mat-cell *matCellDef="let element">
                             <mat-form-field class="custom-form-field w-100" class="padding-right-15" appearance="outline"
                                 (click)="openAddItemNumDialog(element)">
