@@ -14,9 +14,11 @@ import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.ser
 import { Placeholders } from 'src/app/common/constants/strings.constants';
 import { FormControl, FormGroup } from '@angular/forms';
 import { MatSort } from '@angular/material/sort';
-import { MatPaginator } from '@angular/material/paginator';
+import { MatPaginator,PageEvent } from '@angular/material/paginator';
 import { ConfirmationDialogComponent } from '../../dialogs/confirmation-dialog/confirmation-dialog.component';
 import { MatSelect } from '@angular/material/select';
+import { Router } from '@angular/router';
+import { AppRoutes } from 'src/app/common/constants/menu.constants';
 
 export interface PeriodicElement {
   invMapID:number;
@@ -80,8 +82,9 @@ export class ImportCountBatchesComponent implements OnInit {
   dataSourcee: PeriodicElement[] = [];
   filtersForm: FormGroup;
   isDataAvailable: boolean = false;
+  pageEvent: PageEvent;
 
-  
+
   importTypes: string[] = ['Location', 'ItemNumber'];
   filterOptions: string[] = []; 
 
@@ -106,6 +109,7 @@ removeSpacesFromString(value: string): string {
 
   selectedImportType: string = '';
   filterData: string = '';
+  dependVal: string = '';
   commaSeparatedItemss: string = '';
   selectedFilterBy: string = '';
   uploadedFileName: string | null = null;
@@ -123,6 +127,7 @@ removeSpacesFromString(value: string): string {
 
   public iAdminApiService: IAdminApiService;
   constructor(
+    private router: Router,
     private cdRef: ChangeDetectorRef,
     public Api: ApiFuntions,
     private authService: AuthService,
@@ -161,49 +166,50 @@ removeSpacesFromString(value: string): string {
     this.countsUpdated.emit('next');
   }
 
+   handlePageEvent(e: PageEvent) {
+      this.pageEvent = e;
+      this.customPagination.startIndex = e.pageSize * e.pageIndex;
+      this.customPagination.endIndex = e.pageSize * e.pageIndex + e.pageSize;
+      this.customPagination.recordsPerPage = e.pageSize;
+    
+    }
+
   onImportTypeChange(): void {
    
     this.selectedFilterBy = '';
     
-   
    if (this.selectedImportType === 'Item Number') {
+      this.dependVal = 'Item Number';
       this.filterOptions = ['Spreadsheet', 'Item Number'];
     }
     else  if (this.selectedImportType === 'Location') {
+      this.dependVal = 'Location';
       this.filterOptions = ['Spreadsheet', 'Location'];
-      
     }  else {
-      this.filterOptions = [];
+       this.filterOptions = [];
     }
   }
-  onFilterByChange(fileInput: HTMLInputElement): void {
-    
-  if (this.selectedFilterBy === 'Spreadsheet') {
- 
 
-   
-    fileInput.value = ''; // Reset the input
-    fileInput.click(); // Open the file dialog
-  } else if (this.selectedFilterBy === 'Item Number') {
+  onFilterByChange(fileInput: HTMLInputElement): void {
+  if (this.selectedFilterBy === 'Spreadsheet') {
+      fileInput.value = '';
+      fileInput.click(); 
+
+  } else if (this.dependVal === 'Item Number') {
     this.uploadedFileName = ''; 
     this.openFilterItemNumbersDialog();
-  } else if (this.selectedFilterBy === 'Location') {
+  } else if (this.dependVal === 'Location') {
     this.filtersForm.reset({
       includeEmpty: false,
       includeOther: false
     });
 
-    
-    this.cdRef.detectChanges();
-
-   
     this.uploadedFileName = ''; 
 
     this.openFilterItemNumbersDialog();
   }
 }
 
-  
 
   onChangeDemo(e: any, type: string): void {
     if (type === 'empty') {
@@ -217,26 +223,37 @@ removeSpacesFromString(value: string): string {
 
   onFileSelect(event: Event): void {
     const input = event.target as HTMLInputElement;
-    if (input?.files?.length) {
+    if (input.files && input.files.length > 0) {
       this.uploadedFileName = input.files[0].name;
     } else {
+      this.selectedFilterBy = '';
       this.uploadedFileName = null;
+     
     }
   }
+
+ 
   updateQueCountEvent(obj) {
     this.eventChange.emit(obj);
   }
-  
+
 
   removeFile(): void {
-   
     this.uploadedFileName = null;
     this.onImportTypeChange();
     const fileInput = document.querySelector('input[type="file"]') as HTMLInputElement;
     if (fileInput) {
-      fileInput.value = ''; 
+      fileInput.value = ''; // Reset the file input
+    }
+  
+    // Clear the table data
+    this.dataSource.data = [];
+    // Optionally, if you want to refresh the paginator as well
+    if (this.paginator) {
+      this.paginator.firstPage();
     }
   }
+
   
   confirmImport(skipDialog: boolean = false): void {
     if (!this.uploadedFileName) {
@@ -320,11 +337,11 @@ removeSpacesFromString(value: string): string {
              
               if (this.selectedImportType === 'Location') {
                 heading = 'Location(s) Not Found';
-                message = `The following location(s) were not found in the system [${res.data.item1.join(', ')}]`;
+                message = `The following numbers do not exist [${res.data.item1.join(', ')}]`;
                
             } else if (this.selectedImportType === 'Item Number') {
                 heading = 'Item(s) Not Found';
-                message = `The following item(s) were not found in the system [${res.data.item1.join(', ')}]`;
+                message = `The following numbers do not exist [${res.data.item1.join(', ')}]`;
               
             }
             
@@ -357,7 +374,7 @@ removeSpacesFromString(value: string): string {
               this.updateTableData(res.data.item2);
               console.log('Data updated successfully without dialog.');
             } else {
-              this.global.ShowToastr(ToasterType.Error, "No item2 data found.", ToasterTitle.Error);
+              
               console.log('No item2 data found in the API response.');
             }
           } else {
@@ -417,8 +434,9 @@ openFilterItemNumbersDialog(): void {
       expirationDate: item.expirationDate || ''
     }));
     this.dataSource.data = mappedData;
+    this.dataSource.paginator = this.paginator;
+    this.dataSource.sort = this.sort;
   }
-
 
 
   insertCCQueue(ids: any) {
@@ -433,6 +451,8 @@ openFilterItemNumbersDialog(): void {
           this.nextStep();
           this.updateQueCountEvent(res.data);
           this.close();
+          this.router.navigate([AppRoutes.AdminCreateCountBatches], { queryParams: { selectedIndex: 2 } });
+
         } else {
           
           this.global.ShowToastr(ToasterType.Error,ToasterMessages.SomethingWentWrong, ToasterTitle.Error);
@@ -474,7 +494,9 @@ openFilterItemNumbersDialog(): void {
                   if (curriter == finaliter) {
                     if (invMapIDs.length > 0) {
                       this.insertCCQueue(invMapIDs);
+                     
                       this.close();
+                     
                     } else {
                       this.dataSourcee = [];
                       this.selectedTabIndex = 1;

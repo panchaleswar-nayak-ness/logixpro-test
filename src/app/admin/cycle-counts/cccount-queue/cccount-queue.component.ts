@@ -58,7 +58,8 @@ export class CCCountQueueComponent {
 
   openImportCountBatchesDialog(): void {
     const dialogRef = this.dialog.open(ImportCountBatchesComponent, {
-      width: '1400px',
+      height: 'auto',
+      width: '1280px',
       autoFocus: DialogConstants.autoFocus,
       disableClose: true,
       data: {

@@ -132,6 +132,7 @@ export interface IAdminApiService
       getItemNumDetail(payload : any);
       getLocZTypeInvMap(payload : any);
       updateInventoryMap(payload : any, mapID? : any)
+      updateInventoryMapClearWholeLocation(payload : any, mapID? : any)
        // check api call 
       createInventoryMap(payload : any)
       GetLocAssCountTable();

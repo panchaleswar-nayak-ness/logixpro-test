@@ -357,31 +357,10 @@ getLocationZones() {
   }
  
   clearFields() {
-    const quantityAllocatedPick = this.addInvMapLocation.get('quantityAllocatedPick')?.value ?? 0;
-    const quantityAllocatedPutAway = this.addInvMapLocation.get('quantityAllocatedPutAway')?.value ?? 0;
-  
-    if (+quantityAllocatedPick > 0 || +quantityAllocatedPutAway > 0) {
-      const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
-        width: '400px',
-        data: {
-          message: 'Quantity Allocated Pick or Quantity Allocated Put Away has a value greater than zero. You cannot proceed with Clear Whole Location.',
-          showOkButton: true,
-          showCancelButton: false, // Optional, retain for clarity
-          hideCancel: true // Pass this to hide the cancel button
-        }
-      });
-  
-      dialogRef.afterClosed().subscribe(() => {
-        // Do nothing; clear functionality is blocked.
-      });
-    } else {
-      this.performClear();
-      this.clearFieldsAndSubmit();
-      // this. adjustQuantity();
-      
-    }
-  }
 
+    this.onclearFields(this.addInvMapLocation);
+    
+  }
 
   clearFieldsAndSubmit() {
     // Clear specific fields except for 'zone'
@@ -550,6 +529,53 @@ performClear() {
     let value = this.addInvMapLocation.controls[TableConstant.zone].value + this.addInvMapLocation.controls[zoneType.carousel].value + this.addInvMapLocation.controls[Column.Row].value + this.addInvMapLocation.controls[TableConstant.shelf].value + this.addInvMapLocation.controls[ColumnDef.Bin].value;
     this.addInvMapLocation.controls['locationNumber'].setValue(value);
   }
+
+  onclearFields(form: FormGroup<InventoryMapFormData>) {
+    this.iAdminApiService.updateInventoryMapClearWholeLocation(form.getRawValue()).subscribe(res => {
+        // Initially, check if the operation was executed successfully and if there's a specific condition to handle
+        if (res.isExecuted && res.data.pickPutAwayCount > 0) {
+            // Open the dialog to notify the user that the operation cannot proceed
+            const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
+              width: '560px',
+                data: {
+                    message: 'Quantity Allocated Pick or Quantity Allocated Put Away has a value greater than zero. You cannot proceed with Clear Whole Location.',
+                    showOkButton: true,
+                    hideCancel: true  // Hide the cancel button directly
+                }
+            });
+
+            dialogRef.afterClosed().subscribe(() => {
+                console.log('Dialog closed due to count restriction');
+            });
+        } else if (res.isExecuted && res.data.pickPutAwayCount === 0) {
+          
+            console.log('Clear operation can proceed', res);
+
+            // Further handling based on response details like `dynamic`, `mapID`, `adjustMade`
+            if (res.data.adjustMade === 'Yes') {
+                console.log('Adjustment was made during the clear operation:', res.data);
+            } else {
+                console.log('No adjustment needed or was made:', res.data);
+            }
+
+            // You can also handle different messages or actions based on whether `dynamic` is true or false
+            if (res.data.dynamic) {
+                console.log('Dynamic clearing was involved.');
+            } else {
+                console.log('Non-dynamic clearing process.');
+            } this.dialogRef.close();
+        } else {
+            // Handle cases where the operation did not execute as expected
+            console.log('Clear operation did not execute properly:', res);
+            if (res.responseMessage) {
+                console.log('Response message from server:', res.responseMessage);
+            }
+        }
+    }, error => {
+        console.error('An error occurred:', error);
+    });
+}
+
 
 onSubmit(form: FormGroup<InventoryMapFormData>) {
   const invMapIDs = {
@@ -817,8 +843,6 @@ onSubmit(form: FormGroup<InventoryMapFormData>) {
     this.autoFillLocNumber = this.zone + this.carousel + this.row + this.shelf + this.bin;
 
   }
-
-
 
   dialogClose() {
     this.dialogRef.close(DialogConstants.close);

@@ -85,10 +85,10 @@ export class FilterItemNumbersComponentCycleCount implements OnInit {
           // Set the heading and message based on import type
           if (this.importtype === 'Location') {
             heading = 'Location(s) Not Found';
-            message = `The following location(s) were not found in the system: [${res.data.item1.join(', ')}]`;
+            message = `The following numbers do not exist [${res.data.item1.join(', ')}]`;
           } else if (this.importtype === 'Item Number') {
             heading = 'Item(s) Not Found';
-            message = `The following item(s) were not found in the system: [${res.data.item1.join(', ')}]`;
+            message = `The following numbers do not exist [${res.data.item1.join(', ')}]`;
           }
   
           // Open the confirmation dialog with the item1 message
@@ -108,6 +108,7 @@ export class FilterItemNumbersComponentCycleCount implements OnInit {
   
           // After the dialog is closed, proceed with checking item2
           dialogRef.afterClosed().subscribe(() => {
+             this.dialogRef.close();
             // Step 6: Check if item2 exists and update table data
             if (res.data.item2 && res.data.item2.length > 0) {
               // Map the response data to the table format
@@ -115,14 +116,14 @@ export class FilterItemNumbersComponentCycleCount implements OnInit {
                 invMapID: item.invMapID,
                 itemNumber: item.itemNumber,
                 description: item.description.trim(), // Trim spaces if necessary
-                locationQuantity: item.itemQuantity,
-                um: item.unitOfMeasure,
-                warehouse: item.wareHouse || 'N/A', // Handle empty values with default 'N/A'
-                locations: item.generatedLocation,
-                velocityCode: item.cellSize,
+                itemQuantity: item.itemQuantity,
+                unitOfMeasure: item.unitOfMeasure,
+                wareHouse: item.wareHouse || 'N/A', // Handle empty values with default 'N/A'
+                generatedLocation: item.generatedLocation,
                 cellSize: item.cellSize,
                 serialNumber: item.serialNumber,
                 lotNumber: item.lotNumber,
+                location: item.location,
                 expirationDate: item.expirationDate || 'N/A', // Handle empty values with default 'N/A'
               }));
   
@@ -143,17 +144,17 @@ export class FilterItemNumbersComponentCycleCount implements OnInit {
             // Map the response data to the table format
             const tableData = res.data.item2.map((item: any) => ({
               invMapID: item.invMapID,
-              itemNumber: item.itemNumber,
-              description: item.description.trim(), // Trim spaces if necessary
-              locationQuantity: item.itemQuantity,
-              um: item.unitOfMeasure,
-              warehouse: item.wareHouse || 'N/A', // Handle empty values with default 'N/A'
-              locations: item.generatedLocation,
-              velocityCode: item.cellSize,
-              cellSize: item.cellSize,
-              serialNumber: item.serialNumber,
-              lotNumber: item.lotNumber,
-              expirationDate: item.expirationDate || 'N/A', // Handle empty values with default 'N/A'
+                itemNumber: item.itemNumber,
+                description: item.description.trim(), // Trim spaces if necessary
+                itemQuantity: item.itemQuantity,
+                unitOfMeasure: item.unitOfMeasure,
+                wareHouse: item.wareHouse || 'N/A', // Handle empty values with default 'N/A'
+                generatedLocation: item.generatedLocation,
+                cellSize: item.cellSize,
+                serialNumber: item.serialNumber,
+                lotNumber: item.lotNumber,
+                location: item.location,
+                expirationDate: item.expirationDate || 'N/A', // Handle empty values with default 'N/A'
             }));
   
             // Step 8: Set the table data directly without dialog
@@ -169,7 +170,7 @@ export class FilterItemNumbersComponentCycleCount implements OnInit {
         }
       } else {
         // Step 9: Handle error case
-        this.global.ShowToastr('error', res.responseMessage, 'Error');
+     
         console.log('FiltersItemNumInsert Error:', res.responseMessage);
       }
     });

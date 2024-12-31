@@ -23,11 +23,11 @@
   <div class="col-xl-3">
     <!-- Filter By Dropdown -->
 
-    
     <mat-form-field class="action-dropdown w-100" appearance="outline">
       <mat-label>Filter By</mat-label>
-      <mat-select [(value)]="selectedFilterBy" (selectionChange)="onFilterByChange(fileInput)" [disabled]="!selectedImportType">
-        <mat-option *ngFor="let filter of formattedFilterOptions" [value]="filter">{{ filter }}</mat-option>
+      <mat-select [(value)]="selectedFilterBy" [disabled]="!selectedImportType">
+        <mat-option (click)="onFilterByChange(fileInput)" value="Spreadsheet">Spreadsheet</mat-option>
+        <mat-option (click)="onFilterByChange(fileInput)" >{{dependVal}}</mat-option>
       </mat-select>
       <span class="material-symbols-outlined icon-expand-more">expand_more</span>
     </mat-form-field>
@@ -58,7 +58,6 @@
   >
 
 
-
   </div>
  
 
@@ -84,55 +83,55 @@
 
 
 <div>
-<div class="card br-14 table-responsive table-borderless borderless  mb-3">
-  <ng-scrollbar class="mat-table-scrollbar h-60v">
-    <table mat-table [dataSource]="dataSource" class="w-100">
+
+<div class="card br-14 table-responsive borderless cardBorder mb-3">
+  <ng-scrollbar class="mat-table-scrollbar h-50v">
+    <table class="w-100 table-borderless" mat-table [dataSource]="dataSource" matSort>
       <!-- Item Number -->
+     
       <ng-container matColumnDef="itemNumber">
-        <th mat-header-cell *matHeaderCellDef class="table-header">Item No.</th>
-        <td mat-cell *matCellDef="let element" class="table-cell" [matTooltip]="element.itemNumber"   matTooltipPosition="above" [matTooltipDisabled]="element.itemNumber && element.itemNumber.length>=12?false:true" >
-          {{ element.itemNumber }}
-        </td>
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Item No </th>
+        <td mat-cell *matCellDef="let element" [matTooltip]="element.itemNumber"   matTooltipPosition="above" [matTooltipDisabled]="element.itemNumber && element.itemNumber.length>=12?false:true"> {{element.itemNumber}} </td>
       </ng-container>
-
-      <!-- Description -->
-      
-      
-
+  <!-- Description -->
       <ng-container matColumnDef="description">
-        <th mat-header-cell *matHeaderCellDef class="table-header">Description</th>
-        <td mat-cell *matCellDef="let element" class="table-cell" [matTooltip]="element.description"   matTooltipPosition="above" [matTooltipDisabled]="element.description && element.description.length>=12?false:true" >
-          {{ element.description }}
-        </td>
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Description </th>
+        <td mat-cell *matCellDef="let element" [matTooltip]="element.description"   matTooltipPosition="above" [matTooltipDisabled]="element.description && element.description.length>=15?false:true"> {{element.description}} </td>
       </ng-container>
 
+    
       <!-- Location Quantity -->
       <ng-container matColumnDef="locationQuantity">
-        <th mat-header-cell *matHeaderCellDef class="table-header">Location Qty</th>
-        <td mat-cell *matCellDef="let element" class="table-cell">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Location Qty</th>
+        <td mat-cell *matCellDef="let element" [matTooltip]="element.locationQuantity"   matTooltipPosition="above" [matTooltipDisabled]="element.locationQuantity && element.locationQuantity.length>=15?false:true">
           {{ element.locationQuantity }}
         </td>
       </ng-container>
 
       <!-- UM -->
       <ng-container matColumnDef="um">
+<<<<<<< Updated upstream
         <th mat-header-cell *matHeaderCellDef class="table-header" replacePlaceholder [replacePlaceHolder]="placeholders.unitOfMeasure" [fallbackPlaceHolder]="placeholders.unitOfMeasureFallback"> UM </th>
         <td mat-cell *matCellDef="let element" class="table-cell">
+=======
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>UM</th>
+        <td mat-cell *matCellDef="let element" [matTooltip]="element.um"   matTooltipPosition="above" [matTooltipDisabled]="element.um && element.um.length>=15?false:true">
+>>>>>>> Stashed changes
           {{ element.um }}
         </td>
       </ng-container>
 
       <!-- Warehouse -->
       <ng-container matColumnDef="warehouse">
-        <th mat-header-cell *matHeaderCellDef class="table-header">Warehouse</th>
-        <td mat-cell *matCellDef="let element" class="table-cell">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Warehouse</th>
+        <td mat-cell *matCellDef="let element" [matTooltip]="element.warehouse"   matTooltipPosition="above" [matTooltipDisabled]="element.warehouse && element.warehouse.length>=15?false:true">
           {{ element.warehouse }}
         </td>
       </ng-container>
 
       <!-- Locations -->
       <ng-container matColumnDef="locations">
-        <th mat-header-cell *matHeaderCellDef class="table-header">Location</th>
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Location</th>
         <td mat-cell *matCellDef="let element" class="table-cell" [matTooltip]="element.locations"   matTooltipPosition="above" [matTooltipDisabled]="element.locations && element.locations.length>=12?false:true" >
           {{ element.locations }}
         </td>
@@ -140,40 +139,42 @@
 
       <!-- Velocity Code -->
       <ng-container matColumnDef="velocityCode">
-        <th mat-header-cell *matHeaderCellDef class="table-header">Velocity Code</th>
-        <td mat-cell *matCellDef="let element" class="table-cell">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Velocity Code</th>
+        <td mat-cell *matCellDef="let element" class="table-cell" [matTooltip]="element.velocityCode"   matTooltipPosition="above" [matTooltipDisabled]="element.velocityCode && element.velocityCode.length>=12?false:true" >
+
           {{ element.velocityCode }}
         </td>
       </ng-container>
 
       <!-- Cell Size -->
       <ng-container matColumnDef="cellSize">
-        <th mat-header-cell *matHeaderCellDef class="table-header">Cell Size</th>
-        <td mat-cell *matCellDef="let element" class="table-cell">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Cell Size</th>
+        <td mat-cell *matCellDef="let element" class="table-cell" [matTooltip]="element.cellSize"   matTooltipPosition="above" [matTooltipDisabled]="element.cellSize && element.cellSize.length>=12?false:true" >
+
           {{ element.cellSize }}
         </td>
       </ng-container>
 
       <!-- Serial Number -->
       <ng-container matColumnDef="serialNumber">
-        <th mat-header-cell *matHeaderCellDef class="table-header">Serial No.</th>
-        <td mat-cell *matCellDef="let element" class="table-cell">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Serial No.</th>
+        <td mat-cell *matCellDef="let element" class="table-cell" [matTooltip]="element.serialNumber"   matTooltipPosition="above" [matTooltipDisabled]="element.serialNumber && element.serialNumber.length>=12?false:true" >
           {{ element.serialNumber }}
         </td>
       </ng-container>
 
       <!-- Lot Number -->
       <ng-container matColumnDef="lotNumber">
-        <th mat-header-cell *matHeaderCellDef class="table-header">Lot No.</th>
-        <td mat-cell *matCellDef="let element" class="table-cell">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Lot No.</th>
+        <td mat-cell *matCellDef="let element" class="table-cell" [matTooltip]="element.lotNumber"   matTooltipPosition="above" [matTooltipDisabled]="element.lotNumber && element.lotNumber.length>=12?false:true" >
           {{ element.lotNumber }}
         </td>
       </ng-container>
 
       <!-- Expiration Date -->
       <ng-container matColumnDef="expirationDate">
-        <th mat-header-cell *matHeaderCellDef class="table-header">Expiration Date</th>
-        <td mat-cell *matCellDef="let element" class="table-cell">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Exp Date</th>
+        <td mat-cell *matCellDef="let element" class="table-cell" [matTooltip]="element.expirationDate"   matTooltipPosition="above" [matTooltipDisabled]="element.expirationDate && element.expirationDate.length>=12?false:true" >
           {{ element.expirationDate }}
         </td>
       </ng-container>
@@ -189,8 +190,18 @@
     </table>
 
   </ng-scrollbar>
+
+</div>
+<div class="d-flex justify-content-between bg-white mb-3">
+  <div class="table-pagination d-flex justify-content-start">
+      <mat-paginator [length]="this.customPagination.total" showFirstLastButtons [pageSize]="10"
+          [pageSizeOptions]="[10, 20, 100]" (page)="handlePageEvent($event)"></mat-paginator>
+  </div>
 </div>
 </div>
+
+
+
 <div class="d-flex justify-content-end gap-3 mt-9">
   <button
     mat-flat-button
