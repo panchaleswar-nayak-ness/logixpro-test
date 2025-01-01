@@ -237,7 +237,7 @@
                                 </ng-container>
 
                                 <ng-container matColumnDef="unitOfMeasure">
-                                    <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription replacePlaceholder [replacePlaceHolder]="placeholders.unitOfMeasure" [fallbackPlaceHolder]="placeholders.unitOfMeasureFallback"> UM </th>
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription replacePlaceholder [replacePlaceHolder]="placeholders.unitOfMeasure" [fallbackPlaceHolder]="placeholders.unitOfMeasureFallback"> {{UnitOfMeasure}} </th>
                                     <td mat-cell *matCellDef="let element"
                                         (contextmenu)="onContextMenu($event, element.unitOfMeasure, 'Unit of Measure')">
                                         {{element.unitOfMeasure}} </td>

@@ -26,8 +26,9 @@ const ELEMENT_DATA: PeriodicElement[] = [
   styleUrls: ['./cccount-queue.component.scss']
 })
 export class CCCountQueueComponent {
+  fieldMappings = JSON.parse(localStorage.getItem('fieldMappings') ?? '{}');
+  ItemNumber: string = this.fieldMappings.itemNumber;
   @ViewChild('matRef') matRef!: MatSelect; // Reference for mat-select
-
   displayedColumns: string[] = [UniqueConstants.position, 'name', 'weight', 'symbol', 'ex', 'srno', ColumnDef.Action];
   tableData = ELEMENT_DATA;
 

@@ -39,6 +39,8 @@ import { GtItemDetailsComponent } from './gt-item-details/gt-item-details.compon
   styleUrls: ['./generate-transaction.component.scss'],
 })
 export class GenerateTransactionComponent implements OnInit {
+  fieldMappings = JSON.parse(localStorage.getItem('fieldMappings') ?? '{}');
+  LabelItemNumber: string = this.fieldMappings.itemNumber;
   @ViewChild('openAction') openAction: MatSelect;
   @ViewChild('publicSearchBox') searchBoxField: ElementRef;
   @ViewChild(GtItemDetailsComponent) gtitemcomponent!: GtItemDetailsComponent;

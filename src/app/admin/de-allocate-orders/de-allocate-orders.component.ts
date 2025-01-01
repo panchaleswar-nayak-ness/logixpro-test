@@ -25,6 +25,7 @@ import { ContextMenuFiltersService } from 'src/app/common/init/context-menu-filt
 export class DeAllocateOrdersComponent implements OnInit {
   placeholders = Placeholders;
   fieldMappings = JSON.parse(localStorage.getItem('fieldMappings') ?? '{}');
+  UnitOfMeasure: string = this.fieldMappings.unitOfMeasure;
   pageLength=0;
   ELEMENT_DATA_1: any[] =[
     {order_no: '1202122'},

@@ -14,6 +14,8 @@ import { ToasterTitle, ToasterType ,ResponseStrings,DialogConstants,Style, Place
   styleUrls: ['./unit-measure.component.scss']
 })
 export class UnitMeasureComponent implements OnInit {
+  fieldMappings = JSON.parse(localStorage.getItem('fieldMappings') ?? '{}');
+  UnitOfMeasure: string = this.fieldMappings.unitOfMeasure;
   placeholders = Placeholders;
   @ViewChildren('unit_name', { read: ElementRef }) unit_name: QueryList<ElementRef>;
   public unitOfMeasure_list: any;

@@ -25,6 +25,9 @@ import { LocalStorageService } from 'src/app/common/services/LocalStorage.servic
   styleUrls: ['./create-counts.component.scss'],
 })
 export class CCBCreateCountsComponent implements OnInit {
+  fieldMappings = JSON.parse(localStorage.getItem('fieldMappings') ?? '{}');
+  ItemNumber: string = this.fieldMappings.itemNumber;
+  UnitOfMeasure: string = this.fieldMappings.unitOfMeasure;
   placeholders = Placeholders;
   public userData: any;
   @ViewChild('matRefAction') matRefAction: MatSelect;

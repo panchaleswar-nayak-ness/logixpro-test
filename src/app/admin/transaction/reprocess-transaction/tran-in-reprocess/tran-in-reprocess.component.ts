@@ -13,6 +13,8 @@ import { CurrentTabDataService } from 'src/app/admin/inventory-master/current-ta
   styleUrls: ['./tran-in-reprocess.component.scss']
 })
 export class TranInReprocessComponent implements OnInit {
+  fieldMappings = JSON.parse(localStorage.getItem('fieldMappings') ?? '{}');
+  LabelitemNumber: string = this.fieldMappings.itemNumber;
   placeholders = Placeholders;
   selectedOption = "reprocess";
   reasonFilter = "none";

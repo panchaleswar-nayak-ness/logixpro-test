@@ -10,6 +10,8 @@ import { Placeholders, StringConditions ,Style} from 'src/app/common/constants/s
   styleUrls: ['./item-number.component.scss']
 })
 export class ItemNumberComponent implements OnInit {
+  fieldMappings = JSON.parse(localStorage.getItem('fieldMappings') ?? '{}');
+  LabelitemNumber: string = this.fieldMappings.itemNumber;
   placeholders = Placeholders;
   @ViewChild('itm_nmb') itmNmb: ElementRef;
 
@@ -26,18 +28,22 @@ export class ItemNumberComponent implements OnInit {
     if(this.data.fromPutaways){
       this.addItem = true;
       this.data.description="";
+      this.LabelitemNumber='Add New '+this.LabelitemNumber
     }
     else if(this.data.fromInventoryMaster)
     {
       this.data.itemNumber = "";
       this.data.description = "";
+      this.LabelitemNumber='Add New '+this.LabelitemNumber
     }
     else if (this.data.addItem) {
       this.addItem = true;
       this.data.itemNumber="";
       this.data.description="";
+      this.LabelitemNumber='Add New '+this.LabelitemNumber
     } 
     else {
+      this.LabelitemNumber='Edit '+this.LabelitemNumber
       this.addItem = false;
     }   
      

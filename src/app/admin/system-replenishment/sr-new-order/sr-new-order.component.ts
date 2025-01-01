@@ -25,6 +25,8 @@ import { ContextMenuFiltersService } from 'src/app/common/init/context-menu-filt
   styleUrls: ['./sr-new-order.component.scss']
 })
 export class SrNewOrderComponent implements OnInit {
+  fieldMappings = JSON.parse(localStorage.getItem('fieldMappings') ?? '{}');
+  itemNumber: string = this.fieldMappings.itemNumber;
   placeholders = Placeholders;
   @ViewChild('openActionDropDown') openActionDropDown: MatSelect;
   @Input() tabIndex:any;
@@ -56,7 +58,7 @@ export class SrNewOrderComponent implements OnInit {
     { value: 'Available Qty', viewValue: 'Available Qty', sortValue: '6', key: 'availableQuantity', colDef: 'Available Qty' },
     { value: 'Case Qty', viewValue: 'Case Qty', sortValue: '8', key: 'caseQuantity', colDef: 'Case Qty' },
     { value: Column.Description, viewValue: Column.Description, sortValue: '1', key: UniqueConstants.Description, colDef: Column.Description },
-    { value: Column.ItemNumber, viewValue: Column.ItemNumber, sortValue: '0', key: 'itemNumber', colDef: Column.ItemNumber },
+    { value: Column.ItemNumber, viewValue: this.itemNumber, sortValue: '0', key: 'itemNumber', colDef: Column.ItemNumber },
     { value: 'Replenish', viewValue: 'Replenish', sortValue: '10', key: 'replenish', colDef: 'Replenish' },
     { value: 'Replenish Exists', viewValue: 'Replenish Exists', sortValue: '11', key: 'replenishExists', colDef: 'Replenish Exists' },
     { value: 'Replenishment Level', viewValue: 'Replenishment Level', sortValue: '5', key: 'replenishmentLevel', colDef: 'Replenishment Level' },

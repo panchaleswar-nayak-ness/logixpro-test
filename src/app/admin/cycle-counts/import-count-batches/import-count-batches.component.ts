@@ -56,7 +56,9 @@ export interface DialogData {
   styleUrls: ['./import-count-batches.component.scss'],
 })
 export class ImportCountBatchesComponent implements OnInit {
-
+  fieldMappings = JSON.parse(localStorage.getItem('fieldMappings') ?? '{}');
+  ItemNumber: string = this.fieldMappings.itemNumber;
+  UnitOfMeasure: string = this.fieldMappings.unitOfMeasure;
   dataSource = new MatTableDataSource<PeriodicElement>();
   placeholders = Placeholders;
   displayedColumns: string[] = [
@@ -83,7 +85,7 @@ export class ImportCountBatchesComponent implements OnInit {
   pageEvent: PageEvent;
 
 
-  importTypes: string[] = ['Location', 'ItemNumber'];
+  importTypes: string[] = ['Location', this.ItemNumber];
   filterOptions: string[] = []; 
 
 
@@ -175,9 +177,9 @@ removeSpacesFromString(value: string): string {
    
     this.selectedFilterBy = '';
     
-   if (this.selectedImportType === 'Item Number') {
-      this.dependVal = 'Item Number';
-      this.filterOptions = ['Spreadsheet', 'Item Number'];
+   if (this.selectedImportType === this.ItemNumber) {
+      this.dependVal = this.ItemNumber;
+      this.filterOptions = ['Spreadsheet', this.ItemNumber];
     }
     else  if (this.selectedImportType === 'Location') {
       this.dependVal = 'Location';
@@ -192,7 +194,7 @@ removeSpacesFromString(value: string): string {
       fileInput.value = '';
       fileInput.click(); 
 
-  } else if (this.dependVal === 'Item Number') {
+  } else if (this.dependVal === this.ItemNumber) {
     this.uploadedFileName = ''; 
     this.openFilterItemNumbersDialog();
   } else if (this.dependVal === 'Location') {
@@ -333,7 +335,7 @@ removeSpacesFromString(value: string): string {
                 heading = 'Location(s) Not Found';
                 message = `The following numbers do not exist [${res.data.item1.join(', ')}]`;
                
-            } else if (this.selectedImportType === 'Item Number') {
+            } else if (this.selectedImportType === this.ItemNumber) {
                 heading = 'Item(s) Not Found';
                 message = `The following numbers do not exist [${res.data.item1.join(', ')}]`;
               

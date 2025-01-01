@@ -13,6 +13,8 @@ import { Column, DialogConstants, Mode, ToasterTitle, ToasterType ,Style,UniqueC
   styleUrls: ['./open-transaction-data-table.component.scss'],
 })
 export class OpenTransactionDataTableComponent implements OnInit {
+  fieldMappings = JSON.parse(localStorage.getItem('fieldMappings') ?? '{}');
+  FieldItemNumber: string = this.fieldMappings.itemNumber;
   placeholders = Placeholders;
   displayedColumns: string[] = [
     UniqueConstants.OrderNumber,

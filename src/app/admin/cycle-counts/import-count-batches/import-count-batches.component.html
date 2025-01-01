@@ -90,7 +90,7 @@
       <!-- Item Number -->
      
       <ng-container matColumnDef="itemNumber">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header> Item No </th>
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> {{ItemNumber}} </th>
         <td mat-cell *matCellDef="let element" [matTooltip]="element.itemNumber"   matTooltipPosition="above" [matTooltipDisabled]="element.itemNumber && element.itemNumber.length>=12?false:true"> {{element.itemNumber}} </td>
       </ng-container>
   <!-- Description -->
@@ -110,7 +110,7 @@
 
       <!-- UM -->
       <ng-container matColumnDef="um">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header>UM</th>
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> {{UnitOfMeasure}} </th>
         <td mat-cell *matCellDef="let element" [matTooltip]="element.um"   matTooltipPosition="above" [matTooltipDisabled]="element.um && element.um.length>=15?false:true">
           {{ element.um }}
         </td>

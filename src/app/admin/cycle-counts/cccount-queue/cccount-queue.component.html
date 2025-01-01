@@ -44,7 +44,7 @@
 
           <table class="w-100 table-borderless bodertable" mat-table [dataSource]="tableData" matSort>
             <ng-container matColumnDef="position">
-              <th mat-header-cell *matHeaderCellDef> Item No. </th>
+              <th mat-header-cell *matHeaderCellDef> {{ItemNumber}} </th>
               <td mat-cell *matCellDef="let element"> {{element.position}} </td>
             </ng-container>
 

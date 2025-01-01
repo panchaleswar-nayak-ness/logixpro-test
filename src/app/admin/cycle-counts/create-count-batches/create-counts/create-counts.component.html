@@ -481,7 +481,7 @@
                 <table class="w-100 table-borderless" mat-table [dataSource]="dataSource" matSort
                     (matSortChange)="announceSortChange($event)">
                     <ng-container matColumnDef="itemNumber">
-                        <th mat-header-cell *matHeaderCellDef mat-sort-header> Item No </th>
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header> {{ItemNumber}} </th>
                         <td mat-cell *matCellDef="let element" [matTooltip]="element.itemNumber"
                             matTooltipPosition="above"
                             [matTooltipDisabled]="element.itemNumber && element.itemNumber.length>=12?false:true">
@@ -502,9 +502,7 @@
                             {{element.itemQuantity}} </td>
                     </ng-container>
                     <ng-container matColumnDef="unitofMeasure">
-                        <th mat-header-cell *matHeaderCellDef mat-sort-header replacePlaceholder
-                            [replacePlaceHolder]="placeholders.unitOfMeasure"
-                            [fallbackPlaceHolder]="placeholders.unitOfMeasureFallback"> UM </th>
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header> {{UnitOfMeasure}} </th>
                         <td mat-cell *matCellDef="let element" [matTooltip]="element.unitofMeasure"
                             matTooltipPosition="above"
                             [matTooltipDisabled]="element.unitofMeasure && element.unitofMeasure.length>=12?false:true">

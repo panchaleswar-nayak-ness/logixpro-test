@@ -17,6 +17,8 @@ import {  Placeholders, UniqueConstants } from 'src/app/common/constants/strings
   styleUrls: ['./set-item-location.component.scss'],
 })
 export class SetItemLocationComponent implements OnInit {
+  fieldMappings = JSON.parse(localStorage.getItem('fieldMappings') ?? '{}');
+  LabelItemNumber: string = this.fieldMappings.itemNumber;
   placeholders = Placeholders;
   @ViewChild('itm_nmb') itm_nmb: ElementRef;
   itemNumber;

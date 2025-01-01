@@ -31,7 +31,7 @@
                                 <h6 class="card-header matAutoCompHeader ">
                                     <span class="w-140px">Order Number</span> 
                                     <span class="w-140px">Trans. Type</span> 
-                                    <span class="w-140px" replacePlaceholder [replacePlaceHolder]="placeholders.itemNumber" [fallbackPlaceHolder]="placeholders.itemNumberFallback">Item Number</span> 
+                                    <span class="w-140px" replacePlaceholder [replacePlaceHolder]="placeholders.itemNumber" [fallbackPlaceHolder]="placeholders.itemNumberFallback">{{LabelItemNumber}}</span> 
                                     <span class="w-140px">Trans. Quantity</span></h6>
 
                                 <mat-option *ngFor="let option of searchAutocompleteList" [value]="option.orderNumber"
