@@ -14,6 +14,17 @@ import {  Placeholders, ToasterTitle ,ToasterType} from 'src/app/common/constant
   styleUrls: ['./om-user-field-data.component.scss']
 })
 export class OmUserFieldDataComponent implements OnInit {
+  fieldMappings = JSON.parse(localStorage.getItem('fieldMappings') ?? '{}');
+  UserField1:string = this.fieldMappings.userField1;
+  UserField2:string = this.fieldMappings.userField2;
+  UserField3:string = this.fieldMappings.userField3;
+  UserField4:string = this.fieldMappings.userField4;
+  UserField5:string = this.fieldMappings.userField5;
+  UserField6:string = this.fieldMappings.userField6;
+  UserField7:string = this.fieldMappings.userField7;
+  UserField8:string = this.fieldMappings.userField8;
+  UserField9:string = this.fieldMappings.userField9;
+  UserField10:string = this.fieldMappings.userField10;
   @ViewChild('userFocus') userFocus: ElementRef;
   userData: any;
   userFieldData: any;

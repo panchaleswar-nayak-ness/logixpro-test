@@ -37,15 +37,15 @@
                         <mat-option value="Required Date">Required Date</mat-option>
                         <mat-option value="Sub Category">Sub Category</mat-option>
                         <mat-option value="Supplier Item ID">Supplier Item ID</mat-option>
-                        <mat-option value="UF1" replacePlaceholder [replacePlaceHolder]="placeholders.userField1" [fallbackPlaceHolder]="placeholders.userField1Fallback"> UF1 </mat-option>
-                        <mat-option value="UF2" replacePlaceholder [replacePlaceHolder]="placeholders.userField2" [fallbackPlaceHolder]="placeholders.userField2Fallback"> UF2 </mat-option>
-                        <mat-option value="UF3" replacePlaceholder [replacePlaceHolder]="placeholders.userField3" [fallbackPlaceHolder]="placeholders.userField3Fallback"> UF3 </mat-option>
-                        <mat-option value="UF4" replacePlaceholder [replacePlaceHolder]="placeholders.userField4" [fallbackPlaceHolder]="placeholders.userField4Fallback"> UF4 </mat-option>
-                        <mat-option value="UF5" replacePlaceholder [replacePlaceHolder]="placeholders.userField5" [fallbackPlaceHolder]="placeholders.userField5Fallback"> UF5 </mat-option>
-                        <mat-option value="UF6" replacePlaceholder [replacePlaceHolder]="placeholders.userField6" [fallbackPlaceHolder]="placeholders.userField6Fallback"> UF6 </mat-option>
-                        <mat-option value="UF7" replacePlaceholder [replacePlaceHolder]="placeholders.userField7" [fallbackPlaceHolder]="placeholders.userField7Fallback"> UF7 </mat-option>
-                        <mat-option value="UF8" replacePlaceholder [replacePlaceHolder]="placeholders.userField8" [fallbackPlaceHolder]="placeholders.userField8Fallback"> UF8 </mat-option>
-                        <mat-option value="UF9" replacePlaceholder [replacePlaceHolder]="placeholders.userField9" [fallbackPlaceHolder]="placeholders.userField9Fallback"> UF9 </mat-option>
+                        <mat-option value="UF1" replacePlaceholder [replacePlaceHolder]="placeholders.userField1" [fallbackPlaceHolder]="placeholders.userField1Fallback"> {{UserField1}} </mat-option>
+                        <mat-option value="UF2" replacePlaceholder [replacePlaceHolder]="placeholders.userField2" [fallbackPlaceHolder]="placeholders.userField2Fallback"> {{UserField2}} </mat-option>
+                        <mat-option value="UF3" replacePlaceholder [replacePlaceHolder]="placeholders.userField3" [fallbackPlaceHolder]="placeholders.userField3Fallback"> {{UserField3}} </mat-option>
+                        <mat-option value="UF4" replacePlaceholder [replacePlaceHolder]="placeholders.userField4" [fallbackPlaceHolder]="placeholders.userField4Fallback"> {{UserField4}} </mat-option>
+                        <mat-option value="UF5" replacePlaceholder [replacePlaceHolder]="placeholders.userField5" [fallbackPlaceHolder]="placeholders.userField5Fallback"> {{UserField5}} </mat-option>
+                        <mat-option value="UF6" replacePlaceholder [replacePlaceHolder]="placeholders.userField6" [fallbackPlaceHolder]="placeholders.userField6Fallback"> {{UserField6}} </mat-option>
+                        <mat-option value="UF7" replacePlaceholder [replacePlaceHolder]="placeholders.userField7" [fallbackPlaceHolder]="placeholders.userField7Fallback"> {{UserField7}} </mat-option>
+                        <mat-option value="UF8" replacePlaceholder [replacePlaceHolder]="placeholders.userField8" [fallbackPlaceHolder]="placeholders.userField8Fallback"> {{UserField8}} </mat-option>
+                        <mat-option value="UF9" replacePlaceholder [replacePlaceHolder]="placeholders.userField9" [fallbackPlaceHolder]="placeholders.userField9Fallback"> {{UserField9}} </mat-option>
                         <mat-option value="Warehouse">Warehouse</mat-option>
                     </mat-select>
                     <span class="material-symbols-outlined icon-expand-more text-20">
@@ -197,7 +197,7 @@
                 <table class="w-100 table-borderless" mat-table matSort [dataSource]="orderTable" (matSortChange)="announceSortChange($event)">                                                        
 
                     <ng-container *ngFor="let col of allColumns; let i = index;" matColumnDef="{{col.colDef}}">
-                        <th mat-header-cell *matHeaderCellDef mat-sort-header> {{col.colDef}} </th>
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header> {{col.colHeader}} </th>
 
                         <td mat-cell *matCellDef="let element" (contextmenu)="onContextMenu($event,  element[col.colHeader], col.colDef)">
                             <div *ngIf="col.colDef != 'Transaction Type'"

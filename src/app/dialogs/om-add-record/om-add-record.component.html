@@ -81,7 +81,7 @@
                 </div>
                 <div class="col-xl-4">
                     <mat-form-field class="w-100 custom-form-field mb-3" appearance="outline">
-                        <mat-label replacePlaceholder [replacePlaceHolder]="placeholders.itemNumber" [fallbackPlaceHolder]="placeholders.itemNumberFallback"> Item Number </mat-label>
+                        <mat-label replacePlaceholder [replacePlaceHolder]="placeholders.itemNumber" [fallbackPlaceHolder]="placeholders.itemNumberFallback"> {{ItemNumber}} </mat-label>
                         <input type="text" aria-label="Search" matInput [(ngModel)]="this.oTTempUpdatePayload.itemNumber"
                             (keyup)="searchItem()" [matAutocomplete]="searchauto" maxlength="50" (focusout)="itemNumberFocusOut($event)" maxlength="50"
                             (focus)="focusinmethod()" (focusout)="focusoutmethod()">
@@ -90,7 +90,7 @@
                             <h6 class="card-header matAutoCompHeader ">
                                 <span class="w-140" replacePlaceholder [replacePlaceHolder]="placeholders.itemNumber" [fallbackPlaceHolder]="placeholders.itemNumberFallback"> Item Number </span> 
                                 <span class="w-140">Description</span>
-                                <span  class="w-140" replacePlaceholder [replacePlaceHolder]="placeholders.unitOfMeasure" [fallbackPlaceHolder]="placeholders.unitOfMeasureFallback"> UM </span>
+                                <span  class="w-140" replacePlaceholder [replacePlaceHolder]="placeholders.unitOfMeasure" [fallbackPlaceHolder]="placeholders.unitOfMeasureFallback"> {{UnitOfMeasure}} </span>
                             </h6>
                             <mat-option *ngFor="let option of itemNumberSearchList" [value]="option.itemNumber" class="matAutoCompTableContent">
                                 <div class="loc_option" (click)="selectItemNumber(option,$event)" >
@@ -161,7 +161,7 @@
                 </div>
                 <div class="col-xl-4">
                     <mat-form-field class="w-100 custom-form-field mb-3" appearance="outline">
-                        <mat-label replacePlaceholder [replacePlaceHolder]="placeholders.unitOfMeasure" [fallbackPlaceHolder]="placeholders.unitOfMeasureFallback"> UM </mat-label>
+                        <mat-label replacePlaceholder [replacePlaceHolder]="placeholders.unitOfMeasure" [fallbackPlaceHolder]="placeholders.unitOfMeasureFallback"> {{UnitOfMeasure}} </mat-label>
                         <input type="text" aria-label="Search" matInput [(ngModel)]="this.oTTempUpdatePayload.unitofMeasure" disabled maxlength="50">
                     </mat-form-field>
                 </div>
@@ -234,19 +234,19 @@
             <div class="row">
                 <div class="col-xl-4">
                     <mat-form-field class="w-100 custom-form-field mb-3" appearance="outline">
-                        <mat-label replacePlaceholder [replacePlaceHolder]="placeholders.userField1" [fallbackPlaceHolder]="placeholders.userField1Fallback"> UF1 </mat-label>
+                        <mat-label replacePlaceholder [replacePlaceHolder]="placeholders.userField1" [fallbackPlaceHolder]="placeholders.userField1Fallback"> {{UserField1}} </mat-label>
                         <input type="text" aria-label="Search" matInput [(ngModel)]="this.oTTempUpdatePayload.userField1" maxlength="255">
                     </mat-form-field>
                 </div>
                 <div class="col-xl-4">
                     <mat-form-field class="w-100 custom-form-field mb-3" appearance="outline">
-                        <mat-label replacePlaceholder [replacePlaceHolder]="placeholders.userField2" [fallbackPlaceHolder]="placeholders.userField2Fallback"> UF2 </mat-label>
+                        <mat-label replacePlaceholder [replacePlaceHolder]="placeholders.userField2" [fallbackPlaceHolder]="placeholders.userField2Fallback"> {{UserField2}} </mat-label>
                         <input type="text" aria-label="Search" matInput [(ngModel)]="this.oTTempUpdatePayload.userField2" maxlength="255">
                     </mat-form-field>
                 </div>
                 <div class="col-xl-4">
                     <mat-form-field class="w-100 custom-form-field mb-3" appearance="outline">
-                        <mat-label replacePlaceholder [replacePlaceHolder]="placeholders.userField3" [fallbackPlaceHolder]="placeholders.userField3Fallback"> UF3 </mat-label>
+                        <mat-label replacePlaceholder [replacePlaceHolder]="placeholders.userField3" [fallbackPlaceHolder]="placeholders.userField3Fallback"> {{UserField3}} </mat-label>
                         <input type="text" aria-label="Search" matInput [(ngModel)]="this.oTTempUpdatePayload.userField3" maxlength="255">
                     </mat-form-field>
                 </div>
@@ -255,19 +255,19 @@
             <div class="row">
                 <div class="col-xl-4">
                     <mat-form-field class="w-100 custom-form-field mb-3" appearance="outline">
-                        <mat-label replacePlaceholder [replacePlaceHolder]="placeholders.userField4" [fallbackPlaceHolder]="placeholders.userField4Fallback"> UF4 </mat-label>
+                        <mat-label replacePlaceholder [replacePlaceHolder]="placeholders.userField4" [fallbackPlaceHolder]="placeholders.userField4Fallback"> {{UserField4}} </mat-label>
                         <input type="text" aria-label="Search" matInput [(ngModel)]="this.oTTempUpdatePayload.userField4" maxlength="255">
                     </mat-form-field>
                 </div>
                 <div class="col-xl-4">
                     <mat-form-field class="w-100 custom-form-field mb-3" appearance="outline">
-                        <mat-label replacePlaceholder [replacePlaceHolder]="placeholders.userField5" [fallbackPlaceHolder]="placeholders.userField5Fallback"> UF5 </mat-label>
+                        <mat-label replacePlaceholder [replacePlaceHolder]="placeholders.userField5" [fallbackPlaceHolder]="placeholders.userField5Fallback"> {{UserField5}} </mat-label>
                         <input type="text" aria-label="Search" matInput [(ngModel)]="this.oTTempUpdatePayload.userField5" maxlength="255">
                     </mat-form-field>
                 </div>
                 <div class="col-xl-4">
                     <mat-form-field class="w-100 custom-form-field mb-3" appearance="outline">
-                        <mat-label replacePlaceholder [replacePlaceHolder]="placeholders.userField6" [fallbackPlaceHolder]="placeholders.userField6Fallback"> UF6 </mat-label>
+                        <mat-label replacePlaceholder [replacePlaceHolder]="placeholders.userField6" [fallbackPlaceHolder]="placeholders.userField6Fallback"> {{UserField6}} </mat-label>
                         <input type="text" aria-label="Search" matInput [(ngModel)]="this.oTTempUpdatePayload.userField6" maxlength="255">
                     </mat-form-field>
                 </div>
@@ -276,19 +276,19 @@
             <div class="row">
                 <div class="col-xl-4">
                     <mat-form-field class="w-100 custom-form-field mb-3" appearance="outline">
-                        <mat-label replacePlaceholder [replacePlaceHolder]="placeholders.userField7" [fallbackPlaceHolder]="placeholders.userField7Fallback"> UF7 </mat-label>
+                        <mat-label replacePlaceholder [replacePlaceHolder]="placeholders.userField7" [fallbackPlaceHolder]="placeholders.userField7Fallback"> {{UserField7}} </mat-label>
                         <input type="text" aria-label="Search" matInput [(ngModel)]="this.oTTempUpdatePayload.userField7" maxlength="255">
                     </mat-form-field>
                 </div>
                 <div class="col-xl-4">
                     <mat-form-field class="w-100 custom-form-field mb-3" appearance="outline">
-                        <mat-label replacePlaceholder [replacePlaceHolder]="placeholders.userField8" [fallbackPlaceHolder]="placeholders.userField8Fallback"> UF8 </mat-label>
+                        <mat-label replacePlaceholder [replacePlaceHolder]="placeholders.userField8" [fallbackPlaceHolder]="placeholders.userField8Fallback"> {{UserField8}} </mat-label>
                         <input type="text" aria-label="Search" matInput [(ngModel)]="this.oTTempUpdatePayload.userField8" maxlength="255">
                     </mat-form-field>
                 </div>
                 <div class="col-xl-4">
                     <mat-form-field class="w-100 custom-form-field mb-3" appearance="outline">
-                        <mat-label replacePlaceholder [replacePlaceHolder]="placeholders.userField9" [fallbackPlaceHolder]="placeholders.userField9Fallback"> UF9 </mat-label>
+                        <mat-label replacePlaceholder [replacePlaceHolder]="placeholders.userField9" [fallbackPlaceHolder]="placeholders.userField9Fallback"> {{UserField9}} </mat-label>
                         <input type="text" aria-label="Search" matInput [(ngModel)]="this.oTTempUpdatePayload.userField9" maxlength="255">
                     </mat-form-field>
                 </div>
@@ -297,7 +297,7 @@
             <div class="row">
                 <div class="col-xl-4">
                     <mat-form-field class="w-100 custom-form-field mb-3" appearance="outline">
-                        <mat-label replacePlaceholder [replacePlaceHolder]="placeholders.userField10" [fallbackPlaceHolder]="placeholders.userField10Fallback"> UF10 </mat-label>
+                        <mat-label replacePlaceholder [replacePlaceHolder]="placeholders.userField10" [fallbackPlaceHolder]="placeholders.userField10Fallback"> {{UserField10}} </mat-label>
                         <input type="text" aria-label="Search" matInput [(ngModel)]="this.oTTempUpdatePayload.userField10" maxlength="255">
                     </mat-form-field>
                 </div>

@@ -30,6 +30,19 @@ import { ContextMenuFiltersService } from 'src/app/common/init/context-menu-filt
   styleUrls: ['./om-order-manager.component.scss']
 })
 export class OmOrderManagerComponent implements OnInit {
+  fieldMappings = JSON.parse(localStorage.getItem('fieldMappings') ?? '{}');
+  itemNumber: string = this.fieldMappings.itemNumber;
+  UnitOfMeasure: string = this.fieldMappings.unitOfMeasure;
+  UserField1:string = this.fieldMappings.userField1;
+  UserField2:string = this.fieldMappings.userField2;
+  UserField3:string = this.fieldMappings.userField3;
+  UserField4:string = this.fieldMappings.userField4;
+  UserField5:string = this.fieldMappings.userField5;
+  UserField6:string = this.fieldMappings.userField6;
+  UserField7:string = this.fieldMappings.userField7;
+  UserField8:string = this.fieldMappings.userField8;
+  UserField9:string = this.fieldMappings.userField9;
+  UserField10:string = this.fieldMappings.userField10;
   omPreferences:any;
   
   public userData: any;
@@ -59,52 +72,52 @@ export class OmOrderManagerComponent implements OnInit {
   totalRecords:any;
   isActiveTrigger:boolean =false;
   allColumns : any = [
-    { colHeader: TableConstant.transactionType, colDef: TableConstant.TransactionType },
-    { colHeader: UniqueConstants.OrderNumber, colDef: Column.OrderNumber },
-    { colHeader: UniqueConstants.Priority, colDef: "Priority" },
-    { colHeader: ColumnDef.RequiredDate, colDef: "Required Date" },
-    { colHeader: ColumnDef.userField1, colDef: TableConstant.UserField1 },
-    { colHeader: ColumnDef.userField2, colDef: TableConstant.UserField2 },
-    { colHeader: ColumnDef.userField3, colDef: "User Field3" },
-    { colHeader: ColumnDef.userField4, colDef: "User Field4" },
-    { colHeader: ColumnDef.userField5, colDef: "User Field5" },
-    { colHeader: ColumnDef.userField6, colDef: "User Field6" },
-    { colHeader: ColumnDef.userField7, colDef: "User Field7" },
-    { colHeader: ColumnDef.userField8, colDef: "User Field8" },
-    { colHeader: ColumnDef.userField9, colDef: "User Field9" },
-    { colHeader: ColumnDef.userField10, colDef: "User Field10" },
-    { colHeader: "itemNumber", colDef: Column.ItemNumber },
-    { colHeader: UniqueConstants.Description, colDef: Column.Description },
-    { colHeader: TableConstant.LineNumber, colDef: "Line Number" },
-    { colHeader: ColumnDef.TransactionQuantity, colDef: TableConstant.TransactionQuantity },
-    { colHeader: "allocatedPicks", colDef: "Allocated Picks" },
-    { colHeader: "allocatedPuts", colDef: "Allocated Puts" },
-    { colHeader: "availableQuantity", colDef: "Available Quantity" },
-    { colHeader: "stockQuantity", colDef: "Stock Quantity" },
-    { colHeader: TableConstant.WareHouse, colDef: ColumnDef.Warehouse },
-    { colHeader: TableConstant.zone, colDef: ColumnDef.Zone },
-    { colHeader: TableConstant.LineSequence, colDef: "Line Sequence" },
-    { colHeader: ColumnDef.ToteID, colDef: Column.ToteID },
-    { colHeader: "toteNumber", colDef: "Tote Number" },
-    { colHeader: ColumnDef.UnitOfMeasure, colDef: FilterColumnName.unitOfMeasure },
-    { colHeader: TableConstant.BatchPickID, colDef: ColumnDef.BatchPickID },
-    { colHeader: "category", colDef: "Category" },
-    { colHeader: "subCategory", colDef: "Sub Category" },
-    { colHeader: TableConstant.ImportBy, colDef: "Import By" },
-    { colHeader: TableConstant.ImportDate, colDef: "Import Date" },
-    { colHeader: "importFilename", colDef: "Import Filename" },
-    { colHeader: ColumnDef.ExpirationDate, colDef: TableConstant.ExpirationDate },
-    { colHeader: TableConstant.LotNumber, colDef: Column.LotNumber },
-    { colHeader: TableConstant.SerialNumber, colDef: ColumnDef.SerialNumber },
-    { colHeader: TableConstant.Notes, colDef: "Notes" },
-    { colHeader: ColumnDef.Revision, colDef: TableConstant.Revision },
-    { colHeader: "supplierItemID", colDef: "Supplier Item ID" },
-    { colHeader: "id", colDef: "ID" },
-    { colHeader: ColumnDef.HostTransactionId, colDef: TableConstant.HostTransactionID },
-    { colHeader: UniqueConstants.emergency, colDef: ColumnDef.Emergency },
-    { colHeader: TableConstant.Location, colDef: Column.Location },
-    { colHeader: TableConstant.label, colDef: "Label" },
-    { colHeader: Column.cell, colDef: TableConstant.Cell },
+    { colHeader: "Transaction Type", colDef: TableConstant.TransactionType },
+    { colHeader: "Order Number", colDef: Column.OrderNumber },
+    { colHeader: "Priority", colDef: "Priority" },
+    { colHeader: "Required Date", colDef: "Required Date" },
+    { colHeader: this.UserField1, colDef: TableConstant.UserField1 },
+    { colHeader: this.UserField2, colDef: TableConstant.UserField2 },
+    { colHeader: this.UserField3, colDef: "User Field3" },
+    { colHeader: this.UserField4, colDef: "User Field4" },
+    { colHeader: this.UserField5, colDef: "User Field5" },
+    { colHeader: this.UserField6, colDef: "User Field6" },
+    { colHeader: this.UserField7, colDef: "User Field7" },
+    { colHeader: this.UserField8, colDef: "User Field8" },
+    { colHeader: this.UserField9, colDef: "User Field9" },
+    { colHeader: this.UserField10, colDef: "User Field10" },
+    { colHeader: this.itemNumber, colDef: Column.ItemNumber },
+    { colHeader: "Description", colDef: Column.Description },
+    { colHeader: "LineNumber", colDef: "Line Number" },
+    { colHeader: "TransactionQuantity", colDef: TableConstant.TransactionQuantity },
+    { colHeader: "Allocated Picks", colDef: "Allocated Picks" },
+    { colHeader: "Allocated Puts", colDef: "Allocated Puts" },
+    { colHeader: "Available Quantity", colDef: "Available Quantity" },
+    { colHeader: "Stock Quantity", colDef: "Stock Quantity" },
+    { colHeader: "Warehouse", colDef: ColumnDef.Warehouse },
+    { colHeader: "Zone", colDef: ColumnDef.Zone },
+    { colHeader: "Line Sequence", colDef: "Line Sequence" },
+    { colHeader: "Tote ID", colDef: Column.ToteID },
+    { colHeader: "Tote Number", colDef: "Tote Number" },
+    { colHeader: this.UnitOfMeasure, colDef: FilterColumnName.unitOfMeasure },
+    { colHeader: "Batch Pick ID", colDef: ColumnDef.BatchPickID },
+    { colHeader: "Category", colDef: "Category" },
+    { colHeader: "Sub Category", colDef: "Sub Category" },
+    { colHeader: "Import By", colDef: "Import By" },
+    { colHeader: "Import Date", colDef: "Import Date" },
+    { colHeader: "Import Filename", colDef: "Import Filename" },
+    { colHeader: "Expiration Date", colDef: TableConstant.ExpirationDate },
+    { colHeader: "Lot Number", colDef: Column.LotNumber },
+    { colHeader: "Serial Number", colDef: ColumnDef.SerialNumber },
+    { colHeader: "Notes", colDef: "Notes" },
+    { colHeader: "Revision", colDef: TableConstant.Revision },
+    { colHeader: "Supplier Item ID", colDef: "Supplier Item ID" },
+    { colHeader: "ID", colDef: "ID" },
+    { colHeader: "Host Transaction ID", colDef: TableConstant.HostTransactionID },
+    { colHeader: "Emergency", colDef: ColumnDef.Emergency },
+    { colHeader: "Location", colDef: Column.Location },
+    { colHeader: "Label", colDef: "Label" },
+    { colHeader: "Cell", colDef: TableConstant.Cell },
   ];
   displayedColumns  : string[] = []; 
   orderTable        : any = new MatTableDataSource([]); 

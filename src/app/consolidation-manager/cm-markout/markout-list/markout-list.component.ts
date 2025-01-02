@@ -37,6 +37,8 @@ import { MoBlossomToteComponent } from '../../../consolidation-manager/cm-markou
 })
 export class MarkoutListComponent implements OnInit {
 
+  fieldMappings = JSON.parse(localStorage.getItem('fieldMappings') ?? '{}');
+  ItemNumber: string = this.fieldMappings.itemNumber;
   placeholders = Placeholders;
   displayedColumns: string[] = [
     markoutdisplayedColumns.Status,
