@@ -527,40 +527,79 @@ performClear() {
 
   onclearFields(form: FormGroup<InventoryMapFormData>) {
     this.iAdminApiService.updateInventoryMapClearWholeLocation(form.getRawValue()).subscribe(res => {
-      
         if (res.isExecuted && res.data.pickPutAwayCount > 0) {
-            
             const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
-              width: '560px',
+                width: '560px',
                 data: {
-                    message: 'Quantity Allocated Pick or Quantity Allocated Put Away has a value greater than zero. You cannot proceed with Clear Whole Location.',
+                    message: 'Clear Whole Location cannot proceed because the Allocated Pick or Allocated Put Away quantity is greater than zero.',
                     showOkButton: true,
-                    hideCancel: true  
+                    hideCancel: true
                 }
             });
 
             dialogRef.afterClosed().subscribe(() => {
                 console.log('Dialog closed due to count restriction');
+                this.dialog.closeAll();
             });
         } else if (res.isExecuted && res.data.pickPutAwayCount === 0) {
-          
-            console.log('Clear operation can proceed', res);
+            const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
+                width: '560px',
+                data: {
+                    message: 'Clear Whole Location. Click OK to clear all Inventory Map records matching Location Number (Zone + Carousal + Row + Shelf + Bin) Criteria!',
+                    showOkButton: true,
+                    hideCancel: true
+                }
+            });
 
-            // Further handling based on response details like `dynamic`, `mapID`, `adjustMade`
-            if (res.data.adjustMade === 'Yes') {
-                console.log('Adjustment was made during the clear operation:', res.data);
-            } else {
-                console.log('No adjustment needed or was made:', res.data);
-            }
+            dialogRef.afterClosed().subscribe(result => {
+              
+                    console.log('Proceeding with clearing operation:', res);
+                    this.dialog.closeAll();
 
-            // You can also handle different messages or actions based on whether `dynamic` is true or false
-            if (res.data.dynamic) {
-                console.log('Dynamic clearing was involved.');
-            } else {
-                console.log('Non-dynamic clearing process.');
-            } this.dialogRef.close();
+                    if (res.data.adjustMade === 'Yes') {
+
+                      
+                        // const adjustMadeDialog = this.dialog.open(ConfirmationDialogComponent, {
+                        //     width: '560px',
+                        //     data: {
+                        //         title: 'Clear Whole Location | Adjustment Made',
+                        //         message: 'Clear Whole Location has been performed successfully.',
+                        //         showOkButton: true,
+                        //         hideCancel: true
+                        //     }
+                        // });
+
+                        // adjustMadeDialog.afterClosed().subscribe(() => {
+                        //     console.log('Adjustment made confirmation dialog closed.');
+                        //     this.dialog.closeAll();
+                        // });
+                    } else {
+                        // const noAdjustDialog = this.dialog.open(ConfirmationDialogComponent, {
+                        //     width: '560px',
+                        //     data: {
+                        //         title: 'Clear Whole Location | No Adjustment Made',
+                        //         message: 'There is no item in these locations or the quantity entered is equal to the current quantity at the locations.',
+                        //         showOkButton: true,
+                        //         hideCancel: true
+                        //     }
+                        // });
+
+                        // noAdjustDialog.afterClosed().subscribe(() => {
+                        //     console.log('No adjustment confirmation dialog closed.');
+                        //     this.dialog.closeAll();
+                        // });
+                    }
+
+                    if (res.data.dynamic) {
+                        console.log('Dynamic clearing was involved.');
+                    } else {
+                        console.log('Non-dynamic clearing process.');
+                    }
+
+                    this.dialogRef.close();
+                
+            });
         } else {
-            // Handle cases where the operation did not execute as expected
             console.log('Clear operation did not execute properly:', res);
             if (res.responseMessage) {
                 console.log('Response message from server:', res.responseMessage);
@@ -570,6 +609,8 @@ performClear() {
         console.error('An error occurred:', error);
     });
 }
+
+
 
 
 onSubmit(form: FormGroup<InventoryMapFormData>) {
