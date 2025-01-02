@@ -183,7 +183,6 @@ isButtonDisabled: boolean = true;
     velocity: ''
   };
 
-
   clickSubmit: boolean = true;
   headerLable: any;
   userData: any;
@@ -300,7 +299,7 @@ parentZones: any = [];
 getLocationZones() {
   this.iAdminApiService.LocationZone().subscribe((res) => {
     if (res.isExecuted && res.data) {
-      // Find the object that matches the specified zone
+     
       const matchingLocation = res.data.find((location) => location.zone === this.zone);
 
       // Set button color and disabled state based on `allowClearWholeLocation` value
@@ -358,7 +357,7 @@ getLocationZones() {
   }
 
   clearFieldsAndSubmit() {
-    // Clear specific fields except for 'zone'
+   
     this.addInvMapLocation.patchValue({
       carousel: null,
       row: null,
@@ -366,11 +365,11 @@ getLocationZones() {
       bin: null,
     });
   
-    // Call onSubmit with the updated form
+  
     this.onSubmit(this.addInvMapLocation);
   }
 
-// Extracted field clearing logic for reuse
+
 performClear() {
   this.addInvMapLocation.patchValue({
     item: '',
@@ -609,8 +608,6 @@ performClear() {
         console.error('An error occurred:', error);
     });
 }
-
-
 
 
 onSubmit(form: FormGroup<InventoryMapFormData>) {
