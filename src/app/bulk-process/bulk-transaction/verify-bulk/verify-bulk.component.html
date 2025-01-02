@@ -48,7 +48,7 @@
                     (ngModelChange)="Search($event)" [(ngModel)]="SearchString" (keyup.enter)="addItem()"
                     #autoFocusField />
                   <input type="text" class="suggest autocomplete" name="suggest1" [value]="suggestion" matInput
-                    [placeholder]="SearchString ? '' : 'Search by Item No'" />
+                    [placeholder]="SearchString ? '' : itemNumber" />
                   <button matSuffix class="clear-btn" (click)="ClearSearch()" *ngIf="SearchString.length > 0"><mat-icon
                       class="text-22 text-chrome-600  d-flex align-items-center">cancel</mat-icon></button>
                   <mat-autocomplete #auto1="matAutocomplete" (optionSelected)="addItem($event)" #autocompleteMesaage>
@@ -88,7 +88,7 @@
                   <td mat-cell *matCellDef="let element">{{element.orderNumber}} </td>
                 </ng-container>
                 <ng-container matColumnDef="ItemNo">
-                  <th mat-header-cell *matHeaderCellDef replacePlaceholder [replacePlaceHolder]="placeholders.itemNumber" [fallbackPlaceHolder]="placeholders.itemNumberFallback"> Item Number </th>
+                  <th mat-header-cell *matHeaderCellDef> {{itemNumber}} </th>
                   <td mat-cell *matCellDef="let element">{{element.itemNumber}} </td>
                 </ng-container>
 

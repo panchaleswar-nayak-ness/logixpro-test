@@ -33,6 +33,8 @@ import { PrintApiService } from 'src/app/common/services/print-api/print-api.ser
   styleUrls: ['./verify-bulk.component.scss']
 })
 export class VerifyBulkComponent implements OnInit {
+  fieldMappings = JSON.parse(localStorage.getItem('fieldMappings') ?? '{}');
+  itemNumber: string = this.fieldMappings.itemNumber;
   placeholders = Placeholders;
   @Output() back = new EventEmitter<any>();
   @Input() orderLines: any = [];

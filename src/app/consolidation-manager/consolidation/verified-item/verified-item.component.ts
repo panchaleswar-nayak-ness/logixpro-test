@@ -10,7 +10,9 @@ import {  LiveAnnouncerMessage, Placeholders } from 'src/app/common/constants/st
   styleUrls: ['./verified-item.component.scss']
 })
 export class VerifiedItemComponent  {
-
+  fieldMappings = JSON.parse(localStorage.getItem('fieldMappings') ?? '{}');
+  itemNumber: string = this.fieldMappings.itemNumber;
+  userField1: string = this.fieldMappings.userField1;
   @Input() verifiedItemsColumns:any;  
   @Input() verifiedItems:any;  
   @Input() unverifyBtn:any;  
