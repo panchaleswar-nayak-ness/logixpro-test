@@ -353,15 +353,22 @@
           [color]="buttonColor"
           class="form-button-submit btn-lg"
           (click)="clearFields()"
-          *ngIf="myroute1"
+           *ngIf="myroute1"
           [disabled]="isValidClearLocation()"
         >
           Clear
         </button>
+
+
+      <button type="submit"  class="form-button-submit btn-lg"  [disabled]="isButtonDisabled" (click)="clearWholeLocation()"  mat-stroked-button class="restore-to-default-btn form-button-submit btn-lg m-1 m-xl-0 " color="primary"
+      matTooltip="This will clear all items and quantities from all locations that share the same Zone, Carousel, Row, Shelf, and Bin"
+      matTooltipPosition="above">
+        Clear Whole Location</button>
+
         <button
           type="submit"
           mat-flat-button
-          class="form-button-submit btn-lg w-100"
+          class="form-button-submit btn-lg flex-grow-1 flex-basis-0"
           color="primary"
           *ngIf="myroute2"
           (click)="onSubmit(addInvMapLocation)"
@@ -370,17 +377,6 @@
           Save Changes
         </button>
         
-        <button
-        type="button"
-        mat-flat-button
-        [color]="buttonColor"
-        class="form-button-submit btn-lg w-50"
-        (click)="clearFields()"
-        [disabled]="isButtonDisabled"
-      >
-        Clear Whole Location
-      </button>
-
       </div>
       
 </mat-dialog-actions>

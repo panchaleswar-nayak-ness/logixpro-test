@@ -29,8 +29,9 @@ import { GlobalService } from 'src/app/common/services/global.service';
 import { Subject, debounceTime, distinctUntilChanged } from 'rxjs';
 import { FloatLabelType } from '@angular/material/form-field';
 import { DialogConstants, ToasterTitle, ToasterType ,zoneType,ColumnDef,Column,TableConstant,UniqueConstants,StringConditions} from 'src/app/common/constants/strings.constants';
-import { ConfirmationDialogComponent } from '../confirmation-dialog/confirmation-dialog.component';
+
 import { Placeholders } from 'src/app/common/constants/strings.constants';
+import { ConfirmationDialogComponent } from '../confirmation-dialog/confirmation-dialog.component';
 
 type InventoryMapFormData = {
   location: FormControl<string | null>;
@@ -354,7 +355,12 @@ getLocationZones() {
  
   clearFields() {
 
-    this.onclearFields(this.addInvMapLocation);
+  }
+
+
+  clearWholeLocation() {
+
+    this.onclearWholeLocation(this.addInvMapLocation);
     
   }
 
@@ -526,89 +532,83 @@ performClear() {
     this.addInvMapLocation.controls['locationNumber'].setValue(value);
   }
 
-  onclearFields(form: FormGroup<InventoryMapFormData>) {
-    this.iAdminApiService.updateInventoryMapClearWholeLocation(form.getRawValue()).subscribe(res => {
-        if (res.isExecuted && res.data.pickPutAwayCount > 0) {
-            const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
-                width: '560px',
-                data: {
-                    message: 'Clear Whole Location cannot proceed because the Allocated Pick or Allocated Put Away quantity is greater than zero.',
-                    showOkButton: true,
-                    hideCancel: true
-                }
-            });
+  onclearWholeLocation(form: FormGroup<InventoryMapFormData>) {
+    const quantityAllocatedPick = this.addInvMapLocation.get('quantityAllocatedPick')?.value ?? 0;
+    const quantityAllocatedPutAway = this.addInvMapLocation.get('quantityAllocatedPutAway')?.value ?? 0;
 
-            dialogRef.afterClosed().subscribe(() => {
-                console.log('Dialog closed due to count restriction');
-                this.dialog.closeAll();
-            });
-        } else if (res.isExecuted && res.data.pickPutAwayCount === 0) {
-            const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
-                width: '560px',
-                data: {
-                    message: 'Clear Whole Location. Click OK to clear all Inventory Map records matching Location Number (Zone + Carousal + Row + Shelf + Bin) Criteria!',
-                    showOkButton: true,
-                    hideCancel: true
-                }
-            });
-
-            dialogRef.afterClosed().subscribe(result => {
-              
-                    console.log('Proceeding with clearing operation:', res);
-                    this.dialog.closeAll();
-
-                    if (res.data.adjustMade === 'Yes') {
-
-                      
-                        // const adjustMadeDialog = this.dialog.open(ConfirmationDialogComponent, {
-                        //     width: '560px',
-                        //     data: {
-                        //         title: 'Clear Whole Location | Adjustment Made',
-                        //         message: 'Clear Whole Location has been performed successfully.',
-                        //         showOkButton: true,
-                        //         hideCancel: true
-                        //     }
-                        // });
-
-                        // adjustMadeDialog.afterClosed().subscribe(() => {
-                        //     console.log('Adjustment made confirmation dialog closed.');
-                        //     this.dialog.closeAll();
-                        // });
-                    } else {
-                        // const noAdjustDialog = this.dialog.open(ConfirmationDialogComponent, {
-                        //     width: '560px',
-                        //     data: {
-                        //         title: 'Clear Whole Location | No Adjustment Made',
-                        //         message: 'There is no item in these locations or the quantity entered is equal to the current quantity at the locations.',
-                        //         showOkButton: true,
-                        //         hideCancel: true
-                        //     }
-                        // });
-
-                        // noAdjustDialog.afterClosed().subscribe(() => {
-                        //     console.log('No adjustment confirmation dialog closed.');
-                        //     this.dialog.closeAll();
-                        // });
-                    }
-
-                    if (res.data.dynamic) {
-                        console.log('Dynamic clearing was involved.');
-                    } else {
-                        console.log('Non-dynamic clearing process.');
-                    }
-
-                    this.dialogRef.close();
-                
-            });
-        } else {
-            console.log('Clear operation did not execute properly:', res);
-            if (res.responseMessage) {
-                console.log('Response message from server:', res.responseMessage);
+    // Check if there are allocated quantities
+    if (+quantityAllocatedPick > 0 || +quantityAllocatedPutAway > 0) {
+        const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
+            width: '560px',
+            data: {
+                message: 'Clear Whole Location cannot proceed because the Allocated Pick or Allocated Put Away quantity is greater than zero.',
+                showOkButton: true,
+                hideCancel: true
             }
-        }
-    }, error => {
-        console.error('An error occurred:', error);
-    });
+        });
+
+        dialogRef.afterClosed().subscribe(() => {
+            console.log('Dialog closed due to count restriction');
+            this.dialog.closeAll();
+        });
+    } else {
+        // Show confirmation dialog before API call
+        const clearDialogRef = this.dialog.open(ConfirmationDialogComponent, {
+            width: '560px',
+            data: {
+                heading: 'Clear Whole Location',
+                message: 'Click OK to clear all Inventory Map records matching Location Number (Zone + Carousal + Row + Shelf + Bin) Criteria!',
+                showOkButton: true,
+                hideCancel: false
+            }
+        });
+
+        clearDialogRef.afterClosed().subscribe((clearResult) => {
+            if (clearResult === 'Yes') {
+                // Call API if user confirms
+                this.iAdminApiService.updateInventoryMapClearWholeLocation(form.getRawValue()).subscribe(
+                    (res) => {
+                        if (res.isExecuted && res.data.pickPutAwayCount === 0) {
+                            console.log('Proceeding with clearing operation:', res);
+                            this.dialog.closeAll();
+                            // Show success toast
+                            this.global.ShowToastr(
+                                ToasterType.Success,
+                                'Clear Whole Location has been performed successfully',
+                                ToasterTitle.Success
+                            );
+
+                            if (res.data.adjustMade === 'Yes') {
+                                console.log('Adjustment made successfully.');
+                                // Optionally, show another dialog here for adjustments
+                            } else {
+                                console.log('No adjustment made.');
+                                // Optionally, show a dialog for no adjustment
+                            }
+
+                            if (res.data.dynamic) {
+                                console.log('Dynamic clearing was involved.');
+                            } else {
+                                console.log('Non-dynamic clearing process.');
+                            }
+
+                            this.dialog.closeAll(); // Close all dialogs
+                        } else if (!res.isExecuted || res.data.pickPutAwayCount > 0) {
+                            console.log('Clear operation did not execute properly:', res);
+                            if (res.responseMessage) {
+                                console.log('Response message from server:', res.responseMessage);
+                            }
+                        }
+                    },
+                    (error) => {
+                        console.error('An error occurred:', error);
+                    }
+                );
+            } else {
+                console.log('Clear operation canceled by the user.');
+            }
+        });
+    }
 }
 
 
