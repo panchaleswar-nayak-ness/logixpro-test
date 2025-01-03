@@ -15,7 +15,8 @@ import { StringConditions, ToasterMessages, ToasterTitle, ToasterType ,Column,zo
   styleUrls: ['./complete-pick-batch.component.scss']
 })
 export class CompletePickBatchComponent{
-
+  fieldMappings = JSON.parse(localStorage.getItem('fieldMappings') ?? '{}');
+  ItemNumber: string = this.fieldMappings.itemNumber;
   displayedColumns: string[] = ['order_no', 'tote_id', 'item_number', UniqueConstants.Description, 'transaction_qty', TableConstant.Location, TableConstant.zone,zoneType.carousel,Column.Row,TableConstant.shelf,ColumnDef.Bin, ColumnDef.Action];
   tableData: any = [];
   dataSourceList: any;

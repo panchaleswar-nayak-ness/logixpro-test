@@ -12,8 +12,8 @@
     <div class="row">
       <div class="col-xl-6 offset-xl-3">
         <div class="d-flex align-items-center justify-content-center flex-wrap gap-12 mb-3">
-          <div class="text-center"> <span class="label label-gray px-2 f-14 mb-1">Item
-              No.:&nbsp;<b>{{toteForm.value.itemNumber}}</b></span></div>
+          <div class="text-center"> <span class="label label-gray px-2 f-14 mb-1">{{ItemNumber}}
+              &nbsp;<b>{{toteForm.value.itemNumber}}</b></span></div>
           <div class="text-center"> <span class="label label-gray px-2 f-14 mb-1">Batch
               ID:&nbsp;<b>{{toteForm.value.batchID}}</b></span></div>
           <div class="text-center"> <span
@@ -166,7 +166,7 @@
       <div class="row">
         <div class="col-xl-3">
           <mat-form-field class="custom-form-field w-100 mb-2 mat-form-field-disabled" appearance="outline">
-            <mat-label replacePlaceholder [replacePlaceHolder]="placeholders.itemNumber" [fallbackPlaceHolder]="placeholders.itemNumberFallback">Item Number</mat-label>
+            <mat-label replacePlaceholder [replacePlaceHolder]="placeholders.itemNumber" [fallbackPlaceHolder]="placeholders.itemNumberFallback">{{ItemNumber}}</mat-label>
             <input formControlName="itemNumber" #itemNum (keydown.shift.enter)="$event.preventDefault()" matInput
               type="text" readonly>
           </mat-form-field>
@@ -187,7 +187,7 @@
         </div>
         <div class="col-xl-3">
           <mat-form-field class="custom-form-field w-100 mb-2 mat-form-field-disabled" appearance="outline">
-            <mat-label replacePlaceholder [replacePlaceHolder]="placeholders.unitOfMeasure" [fallbackPlaceHolder]="placeholders.unitOfMeasureFallback"> UM </mat-label>
+            <mat-label replacePlaceholder [replacePlaceHolder]="placeholders.unitOfMeasure" [fallbackPlaceHolder]="placeholders.unitOfMeasureFallback"> {{UnitOfMeasure}} </mat-label>
             <input formControlName="unitOfMeasure" (keydown.shift.enter)="$event.preventDefault()" matInput type="text"
               readonly>
           </mat-form-field>

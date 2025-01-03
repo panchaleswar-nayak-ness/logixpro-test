@@ -367,7 +367,6 @@ export class OmCreateOrdersComponent implements OnInit {
   }
 
   searchItem(loader: boolean = false, searchData: boolean = false) {
-    debugger
     if (this.createOrdersDTPayload.orderNumber.trim() != '') {
       let payload = {
         "orderNumber": this.createOrdersDTPayload.orderNumber,
@@ -406,7 +405,6 @@ export class OmCreateOrdersComponent implements OnInit {
   }
 
   optionSelected(filter: string) {
-    debugger;
     this.createOrdersDTPayload.filter = filter;
     this.paginator1.pageIndex = 0;
     this.createOrdersDT(true);
@@ -541,7 +539,6 @@ export class OmCreateOrdersComponent implements OnInit {
     });
 }
   autocompleteSearchColumn() {
-    debugger
     if (this.selectedFilterColumn != "") {
       if (this.selectedFilterString != "") {
          this.tempselectedFilterColumn=this.selectedFilterColumn

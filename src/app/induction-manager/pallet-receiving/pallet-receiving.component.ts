@@ -26,6 +26,8 @@ export interface PeriodicElement {
   styleUrls: ['./pallet-receiving.component.scss'],
 })
 export class PalletReceivingComponent implements OnInit {
+  fieldMappings = JSON.parse(localStorage.getItem('fieldMappings') ?? '{}');
+  ItemNumber: string = this.fieldMappings.itemNumber;
   zone : string;
   processForm: FormGroup;
   userData;
@@ -300,7 +302,6 @@ clearToteID() {
     }
 
     savePallet(split: boolean) {
-debugger
       let finalExpiryDate = new Date(this['expirationDate']);
       if (this.isValidDate(finalExpiryDate)) {
         this['expirationDate'] = this['expirationDate'] !== '' ? format(new Date(this['expirationDate']), "yyyy-MM-dd'T'HH:mm:ss.SSSxxx") : '';

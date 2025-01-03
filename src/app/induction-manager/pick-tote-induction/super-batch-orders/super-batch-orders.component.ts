@@ -40,6 +40,8 @@ import { ConfirmationDialogComponent } from 'src/app/admin/dialogs/confirmation-
   styleUrls: ['./super-batch-orders.component.scss'],
 })
 export class SuperBatchOrdersComponent implements OnInit, AfterViewInit {
+  fieldMappings = JSON.parse(localStorage.getItem('fieldMappings') ?? '{}');
+  ItemNumber: string = this.fieldMappings.itemNumber;
   constructor(
     private _liveAnnouncer: LiveAnnouncer,
     private global: GlobalService,

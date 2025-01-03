@@ -15,6 +15,20 @@ import {  TableConstant ,Column,zoneType,ToasterTitle,ToasterType,ColumnDef,Uniq
   styleUrls: ['./view-orders.component.scss']
 })
 export class ViewOrdersComponent implements OnInit {
+  fieldMappings = JSON.parse(localStorage.getItem('fieldMappings') ?? '{}');
+  ItemNumber: string = this.fieldMappings.itemNumber;
+  UnitOfMeasure: string = this.fieldMappings.unitOfMeasure;
+  UserField1:string = this.fieldMappings.userField1;
+  UserField2:string = this.fieldMappings.userField2;
+  UserField3:string = this.fieldMappings.userField3;
+  UserField4:string = this.fieldMappings.userField4;
+  UserField5:string = this.fieldMappings.userField5;
+  UserField6:string = this.fieldMappings.userField6;
+  UserField7:string = this.fieldMappings.userField7;
+  UserField8:string = this.fieldMappings.userField8;
+  UserField9:string = this.fieldMappings.userField9;
+  UserField10:string = this.fieldMappings.userField10;
+
   displayedColumns: string[] = [UniqueConstants.position, 'toteid', 'orderno', UniqueConstants.Priority, 'options', 'other'];
 
   displayedColumns1: string[] = [UniqueConstants.position, 'toteid', 'orderno', 'other'];
@@ -32,7 +46,7 @@ export class ViewOrdersComponent implements OnInit {
 
   filterTransColumns = [
     { columnDef: 'orderNumber', header: Column.OrderNumber, cell: (element: any) => `${element.orderNumber}` },
-    { columnDef: 'itemNumber', header: Column.ItemNumber, cell: (element: any) => `${element.itemNumber}` },
+    { columnDef: 'itemNumber', header: this.ItemNumber, cell: (element: any) => `${element.itemNumber}` },
     { columnDef: ColumnDef.TransactionQuantity, header: TableConstant.TransactionQuantity, cell: (element: any) => `${element.transactionQuantity}` },
     { columnDef: TableConstant.Location, header: Column.Location, cell: (element: any) => `${element.location}` },
     { columnDef: TableConstant.completedQuantity, header: 'Completed Quantity', cell: (element: any) => `${element.completedQuantity}` },
@@ -69,17 +83,17 @@ export class ViewOrdersComponent implements OnInit {
     { columnDef: 'statusCode', header: 'Status Code', cell: (element: any) => `${element.statusCode}` },
     { columnDef: ColumnDef.ToteID, header: Column.ToteID, cell: (element: any) => `${element.toteID}` },
     { columnDef: 'toteNumber', header: 'Tote Number', cell: (element: any) => `${element.toteNumber}` },
-    { columnDef: ColumnDef.UnitOfMeasure, header: 'Unit Of Measure', cell: (element: any) => `${element.unitOfMeasure}` },
-    { columnDef: ColumnDef.userField1, header: TableConstant.UserField1, cell: (element: any) => `${element.userField1}` },
-    { columnDef: ColumnDef.userField2, header: TableConstant.UserField2, cell: (element: any) => `${element.userField2}` },
-    { columnDef: ColumnDef.userField3, header: 'User Field3', cell: (element: any) => `${element.userField3}` },
-    { columnDef: ColumnDef.userField4, header: 'User Field4', cell: (element: any) => `${element.userField4}` },
-    { columnDef: ColumnDef.userField5, header: 'User Field5', cell: (element: any) => `${element.userField5}` },
-    { columnDef: ColumnDef.userField6, header: 'User Field6', cell: (element: any) => `${element.userField6}` },
-    { columnDef: ColumnDef.userField7, header: 'User Field7', cell: (element: any) => `${element.userField7}` },
-    { columnDef: ColumnDef.userField8, header: 'User Field8', cell: (element: any) => `${element.userField8}` },
-    { columnDef: ColumnDef.userField9, header: 'User Field9', cell: (element: any) => `${element.userField9}` },
-    { columnDef: ColumnDef.userField10, header: 'User Field10', cell: (element: any) => `${element.userField10}` },
+    { columnDef: ColumnDef.UnitOfMeasure, header: this.UnitOfMeasure, cell: (element: any) => `${element.unitOfMeasure}` },
+    { columnDef: ColumnDef.userField1, header: this.UserField1, cell: (element: any) => `${element.userField1}` },
+    { columnDef: ColumnDef.userField2, header: this.UserField2, cell: (element: any) => `${element.userField2}` },
+    { columnDef: ColumnDef.userField3, header: this.UserField3, cell: (element: any) => `${element.userField3}` },
+    { columnDef: ColumnDef.userField4, header: this.UserField4, cell: (element: any) => `${element.userField4}` },
+    { columnDef: ColumnDef.userField5, header: this.UserField5, cell: (element: any) => `${element.userField5}` },
+    { columnDef: ColumnDef.userField6, header: this.UserField6, cell: (element: any) => `${element.userField6}` },
+    { columnDef: ColumnDef.userField7, header: this.UserField7, cell: (element: any) => `${element.userField7}` },
+    { columnDef: ColumnDef.userField8, header: this.UserField8, cell: (element: any) => `${element.userField8}` },
+    { columnDef: ColumnDef.userField9, header: this.UserField9, cell: (element: any) => `${element.userField9}` },
+    { columnDef: ColumnDef.userField10, header: this.UserField10, cell: (element: any) => `${element.userField10}` },
     { columnDef: TableConstant.WareHouse, header: ColumnDef.Warehouse, cell: (element: any) => `${element.warehouse}` },
     { columnDef: TableConstant.zone, header: ColumnDef.Zone, cell: (element: any) => `${element.zone}` },
   ];
