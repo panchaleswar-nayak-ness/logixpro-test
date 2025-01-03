@@ -255,6 +255,8 @@ isButtonDisabled: boolean = true;
       this.itemDescription = this.getDetailInventoryMapData.description;
       this.quantity = this.getDetailInventoryMapData.itemQuantity;
       this.unitOFMeasure = this.getDetailInventoryMapData.unitOfMeasure;
+      this.shipVia = this.getDetailInventoryMapData.userField1;
+      this.shipToName = this.getDetailInventoryMapData.userField2;
       this.updateItemNumber();
     }
 
