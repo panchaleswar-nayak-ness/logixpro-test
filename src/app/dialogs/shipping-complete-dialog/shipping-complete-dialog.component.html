@@ -56,8 +56,8 @@
                   </ng-container>
 
                   <ng-container matColumnDef="itemNumber">
-                    <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by number">Item
-                      Number</th>
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by number">{{ItemNumber}}
+                      </th>
                     <td mat-cell *matCellDef="let element" #tooltip="matTooltip" matTooltipPosition="above"
                       [matTooltip]="element.itemNumber"
                       [matTooltipDisabled]="element.itemNumber && element.itemNumber.length>=20?false:true">
@@ -271,7 +271,7 @@
 
                   <ng-container matColumnDef="userField1">
                     <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by number">
-                      User Field 1</th>
+                      {{UserField1}}</th>
                     <td mat-cell *matCellDef="let element" #tooltip="matTooltip" matTooltipPosition="above"
                       [matTooltip]="element.userField1"
                       [matTooltipDisabled]="element.userField1 && element.userField1.length>=20?false:true">
@@ -280,7 +280,7 @@
                   
                   <ng-container matColumnDef="userField2">
                     <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by number">
-                      User Field 2</th>
+                      {{UserField2}}</th>
                     <td mat-cell *matCellDef="let element" #tooltip="matTooltip" matTooltipPosition="above"
                       [matTooltip]="element.userField2"
                       [matTooltipDisabled]="element.userField2 && element.userField2.length>=20?false:true">
@@ -289,7 +289,7 @@
 
                   <ng-container matColumnDef="userField3">
                     <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by number">
-                      User Field 3</th>
+                      {{UserField3}}</th>
                     <td mat-cell *matCellDef="let element" #tooltip="matTooltip" matTooltipPosition="above"
                       [matTooltip]="element.userField3"
                       [matTooltipDisabled]="element.userField3 && element.userField3.length>=20?false:true">
@@ -298,7 +298,7 @@
 
                   <ng-container matColumnDef="userField4">
                     <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by number">
-                      User Field 4</th>
+                      {{UserField4}}</th>
                     <td mat-cell *matCellDef="let element" #tooltip="matTooltip" matTooltipPosition="above"
                       [matTooltip]="element.userField4"
                       [matTooltipDisabled]="element.userField4 && element.userField4.length>=20?false:true">
@@ -307,7 +307,7 @@
 
                   <ng-container matColumnDef="userField5">
                     <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by number">
-                      User Field 5</th>
+                      {{UserField5}}</th>
                     <td mat-cell *matCellDef="let element" #tooltip="matTooltip" matTooltipPosition="above"
                       [matTooltip]="element.userField5"
                       [matTooltipDisabled]="element.userField5 && element.userField5.length>=20?false:true">
@@ -316,7 +316,7 @@
 
                   <ng-container matColumnDef="userField6">
                     <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by number">
-                      User Field 6</th>
+                      {{UserField6}}</th>
                     <td mat-cell *matCellDef="let element" #tooltip="matTooltip" matTooltipPosition="above"
                       [matTooltip]="element.userField6"
                       [matTooltipDisabled]="element.userField6 && element.userField6.length>=20?false:true">
@@ -325,7 +325,7 @@
 
                   <ng-container matColumnDef="userField7">
                     <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by number">
-                      User Field 7</th>
+                      {{UserField7}}</th>
                     <td mat-cell *matCellDef="let element" #tooltip="matTooltip" matTooltipPosition="above"
                       [matTooltip]="element.userField7"
                       [matTooltipDisabled]="element.userField7 && element.userField7.length>=20?false:true">

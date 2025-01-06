@@ -19,19 +19,7 @@ import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.ser
   styleUrls: ['./basic-reports-and-labels.component.scss']
 })
 export class BasicReportsAndLabelsComponent implements OnInit {
-  fieldMappings = JSON.parse(localStorage.getItem('fieldMappings') ?? '{}');
-  FieldItemNumber: string = this.fieldMappings.itemNumber;
-  UserField1:string = this.fieldMappings.userField1;
-  UserField2:string = this.fieldMappings.userField2;
-  UserField3:string = this.fieldMappings.userField3;
-  UserField4:string = this.fieldMappings.userField4;
-  UserField5:string = this.fieldMappings.userField5;
-  UserField6:string = this.fieldMappings.userField6;
-  UserField7:string = this.fieldMappings.userField7;
-  UserField8:string = this.fieldMappings.userField8;
-  UserField9:string = this.fieldMappings.userField9;
-  UserField10:string = this.fieldMappings.userField10;
-  UnitOfMeasure: string = this.fieldMappings.unitOfMeasure;
+
   reports:any = [];
   @ViewChild('matRef') matRef: MatSelect;
   reportTitles: any = [1,2,3,4]; 
@@ -166,9 +154,6 @@ basicReportDetails(selectedReport: string) {
         {
           this.reportData = res?.data?.reportData; 
         this.fields = res?.data?.fields; 
-        
-        this.getDynamicField();
-
         this.fields.unshift('');
         }
         else {
@@ -180,149 +165,8 @@ basicReportDetails(selectedReport: string) {
   }
 }
 
-    getDynamicField(){
-    // Replace "Item Number" value in this.fields with FieldlitemNumber
-    this.fields = this.fields.map((field: any) => {
-          
-      if (field === 'Item Number') {
-        return this.FieldItemNumber; // Replace 'Item Number' with FieldItemNumber value
-      }
-      return field; // Keep other fields unchanged
-    });
-    
-    this.fields = this.fields.map((field: any) => {
-      
-      if (field === 'Unit of Measure') {
-        return this.UnitOfMeasure; // Replace 'Item Number' with FieldItemNumber value
-      }
-      return field; // Keep other fields unchanged
-    });
 
-    this.fields = this.fields.map((field: any) => {
-      
-      if (field === 'User Field1') {
-        return this.UserField1; // Replace 'Item Number' with FieldItemNumber value
-      }
-      return field; // Keep other fields unchanged
-    });
-
-    this.fields = this.fields.map((field: any) => {
-      
-      if (field === 'User Field2') {
-        return this.UserField2; // Replace 'Item Number' with FieldItemNumber value
-      }
-      return field; // Keep other fields unchanged
-    });
-
-    this.fields = this.fields.map((field: any) => {
-      
-      if (field === 'User Field3') {
-        return this.UserField3; // Replace 'Item Number' with FieldItemNumber value
-      }
-      return field; // Keep other fields unchanged
-    });
-
-    this.fields = this.fields.map((field: any) => {
-      
-      if (field === 'User Field4') {
-        return this.UserField4; // Replace 'Item Number' with FieldItemNumber value
-      }
-      return field; // Keep other fields unchanged
-    });
-
-    this.fields = this.fields.map((field: any) => {
-      
-      if (field === 'User Field5') {
-        return this.UserField5; // Replace 'Item Number' with FieldItemNumber value
-      }
-      return field; // Keep other fields unchanged
-    });
-
-    this.fields = this.fields.map((field: any) => {
-      
-      if (field === 'User Field6') {
-        return this.UserField6; // Replace 'Item Number' with FieldItemNumber value
-      }
-      return field; // Keep other fields unchanged
-    });
-
-    this.fields = this.fields.map((field: any) => {
-      
-      if (field === 'User Field7') {
-        return this.UserField7; // Replace 'Item Number' with FieldItemNumber value
-      }
-      return field; // Keep other fields unchanged
-    });
-
-    this.fields = this.fields.map((field: any) => {
-      
-      if (field === 'User Field8') {
-        return this.UserField8; // Replace 'Item Number' with FieldItemNumber value
-      }
-      return field; // Keep other fields unchanged
-    });
-
-    this.fields = this.fields.map((field: any) => {
-      
-      if (field === 'User Field9') {
-        return this.UserField9; // Replace 'Item Number' with FieldItemNumber value
-      }
-      return field; // Keep other fields unchanged
-    });
-
-    this.fields = this.fields.map((field: any) => {
-      
-      if (field === 'User Field10') {
-        return this.UserField10; // Replace 'Item Number' with FieldItemNumber value
-      }
-      return field; // Keep other fields unchanged
-    });
-}
-
-  getStaticField(column:any):any{
-
-  if (column===this.FieldItemNumber){
-   return column='Item Number'
-  }
-  else if(column===this.UnitOfMeasure){
-  return column='Unit of Measure'
-  }
-  else if(column===this.UserField1){
-    return column='User Field1'
-  }
-  else if(column===this.UserField2){
-      return column='User Field2'
-  }
-  else if(column===this.UserField3){
-    return column='User Field3'
-  }
-  else if(column===this.UserField4){
-    return column='User Field4'
-  }
-  else if(column===this.UserField5){
-    return column='User Field5'
-  }
-  else if(column===this.UserField6){
-    return column='User Field6'
-  }
-  else if(column===this.UserField7){
-    return column='User Field7'
-  }
-  else if(column===this.UserField8){
-    return column='User Field8'
-  }
-  else if(column===this.UserField9){
-    return column='User Field9'
-  }
-  else if(column===this.UserField10){
-    return column='User Field10'
-  }   
-}
-
-  async changeFilter(column,index){
-  
-  column=this.getStaticField(column)
-    
+  async changeFilter(column,index){  
 
     let payload:any ={
       reportName:this.basicReportModel.ChooseReport,

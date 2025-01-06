@@ -31,6 +31,8 @@ import {  ToasterTitle ,LiveAnnouncerMessage,ResponseStrings,ToasterType,Keyboar
   styleUrls: ['./cm-shipping-transaction.component.scss'],
 })
 export class CmShippingTransactionComponent implements OnInit {
+  fieldMappings = JSON.parse(localStorage.getItem('fieldMappings') ?? '{}');
+  ItemNumber: string = this.fieldMappings.itemNumber;
   placeholders = Placeholders;
   @ViewChild('toteIdUpdate') toteIdUpdate: ElementRef;
   public userData: any;

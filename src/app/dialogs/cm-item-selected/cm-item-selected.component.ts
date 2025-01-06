@@ -15,7 +15,10 @@ import { LiveAnnouncerMessage, ToasterTitle, ToasterType, ColumnDef, TableConsta
   templateUrl: './cm-item-selected.component.html',
   styleUrls: ['./cm-item-selected.component.scss']
 })
-export class CmItemSelectedComponent implements OnInit { 
+export class CmItemSelectedComponent implements OnInit {
+  fieldMappings = JSON.parse(localStorage.getItem('fieldMappings') ?? '{}');
+  ItemNumber: string = this.fieldMappings.itemNumber;
+  UserField1:string = this.fieldMappings.userField1; 
   placeholders = Placeholders;
   public startSelectFilter: any;
   public unverifiedItems: any;

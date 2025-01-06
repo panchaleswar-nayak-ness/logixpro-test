@@ -57,7 +57,9 @@ export class ConsolidationComponent implements OnInit {
   @ViewChild('verifiedItemsPaginator') verifiedItemsPaginator: MatPaginator;
   @ViewChild('stagePaginator') stagePaginator: MatPaginator;
   @ViewChild('autoFocusField') searchBoxField: ElementRef;
-
+  fieldMappings = JSON.parse(localStorage.getItem('fieldMappings') ?? '{}');
+  ItemNumber: string = this.fieldMappings.itemNumber;
+  UserField1:string = this.fieldMappings.userField1;
   placeholders = Placeholders;
   public startSelectFilter: any;
   public startSelectFilterLabel: any;
@@ -97,11 +99,10 @@ export class ConsolidationComponent implements OnInit {
   verifiedItemsColumns: string[] = ['itemNumber', 'lineStatus', 'supplierItemID', TableConstant.LineNumber, TableConstant.completedQuantity, ColumnDef.ToteID, TableConstant.SerialNumber, ColumnDef.userField1, ColumnDef.Actions];
   verifiedItems = new MatTableDataSource<any>([]);
 
-  fieldMappings = JSON.parse(localStorage.getItem('fieldMappings') ?? '{}');
-
+  
   filterOption: any = [
     {key: '0', value: 'Any Code'},
-    {key: '1', value: Column.ItemNumber},
+    {key: '1', value: this.ItemNumber},
     {key: '10', value: Column.LotNumber},
     {key: '2', value: 'Supplier Item ID'},
     {key: '8', value: ColumnDef.SerialNumber},
@@ -200,7 +201,8 @@ export class ConsolidationComponent implements OnInit {
     this.IconsolidationAPI.ConsolidationIndex(payload).subscribe((res: any) => {
         if (res.isExecuted) {
           this.consolidationIndex = res.data;
-          this.startSelectFilterLabel = this.consolidationIndex.cmPreferences.defaultLookupType;
+          console.log(this.consolidationIndex.cmPreferences.defaultLookupType);
+          this.startSelectFilterLabel = this.getStaticField(this.consolidationIndex.cmPreferences.defaultLookupType);
           this.packListSort = this.consolidationIndex.cmPreferences.packingListSort;
           this.filterOption.forEach((e: any) => {
             if (e.value == this.startSelectFilterLabel) {
@@ -226,6 +228,19 @@ export class ConsolidationComponent implements OnInit {
     )
   }
 
+  getStaticField(column:any):any{
+
+    if (column==='Item Number'){
+     return column=this.ItemNumber
+    }
+    else if(column==='User Field 1'){
+      return column=this.UserField1
+    }  
+    else{
+      return column;
+    }
+  }
+  
   getTableData(typeValue: any) {
     this.getConsolidationIndex();
     let curValue = typeValue;
