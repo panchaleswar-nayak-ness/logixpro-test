@@ -81,10 +81,10 @@ export class FilterItemNumbersComponentCycleCount implements OnInit {
         
           if (this.importtype === 'Location') {
             heading = 'Location(s) Not Found';
-            message = `The following numbers do not exist [${res.data.item1.join(', ')}]`;
+            message = `The following Locations do not exist [${res.data.item1.join(', ')}]`;
           } else if (this.importtype === 'Item Number') {
             heading = 'Item(s) Not Found';
-            message = `The following numbers do not exist [${res.data.item1.join(', ')}]`;
+            message = `The following Item Numbers do not exist [${res.data.item1.join(', ')}]`;
           }
   
        

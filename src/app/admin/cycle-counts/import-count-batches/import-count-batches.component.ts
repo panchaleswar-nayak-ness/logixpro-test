@@ -17,6 +17,7 @@ import { MatPaginator,PageEvent } from '@angular/material/paginator';
 import { ConfirmationDialogComponent } from '../../dialogs/confirmation-dialog/confirmation-dialog.component';
 import { Router } from '@angular/router';
 import { AppRoutes } from 'src/app/common/constants/menu.constants';
+import { MatSelect } from '@angular/material/select';
 
 export interface PeriodicElement {
   invMapID:number;
@@ -61,6 +62,7 @@ export class ImportCountBatchesComponent implements OnInit {
   UnitOfMeasure: string = this.fieldMappings.unitOfMeasure;
   dataSource = new MatTableDataSource<PeriodicElement>();
   placeholders = Placeholders;
+  
   displayedColumns: string[] = [
     'itemNumber',
     'description',
@@ -79,6 +81,8 @@ export class ImportCountBatchesComponent implements OnInit {
   @Output() eventChange = new EventEmitter<Event>(); 
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
+  @ViewChild(MatSelect) matSelect: MatSelect;
+  
   dataSourcee: PeriodicElement[] = [];
   filtersForm: FormGroup;
   isDataAvailable: boolean = false;
@@ -182,15 +186,18 @@ removeSpacesFromString(value: string): string {
       this.filterOptions = ['Spreadsheet', this.ItemNumber];
     }
     else  if (this.selectedImportType === 'Location') {
+    
       this.dependVal = 'Location';
       this.filterOptions = ['Spreadsheet', 'Location'];
     }  else {
        this.filterOptions = [];
     }
+
   }
 
+
   onFilterByChange(fileInput: HTMLInputElement): void {
-  if (this.selectedFilterBy === 'Spreadsheet') {
+ if (this.selectedFilterBy === 'Spreadsheet') {
       fileInput.value = '';
       fileInput.click(); 
 
@@ -333,11 +340,11 @@ removeSpacesFromString(value: string): string {
              
               if (this.selectedImportType === 'Location') {
                 heading = 'Location(s) Not Found';
-                message = `The following numbers do not exist [${res.data.item1.join(', ')}]`;
+                message = `The following Locations do not exist [${res.data.item1.join(', ')}]`;
                
             } else if (this.selectedImportType === this.ItemNumber) {
                 heading = 'Item(s) Not Found';
-                message = `The following numbers do not exist [${res.data.item1.join(', ')}]`;
+                message = `The following Item Numbers do not exist [${res.data.item1.join(', ')}]`;
               
             }
             
