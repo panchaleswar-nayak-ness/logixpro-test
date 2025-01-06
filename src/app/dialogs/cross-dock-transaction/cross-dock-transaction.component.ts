@@ -35,6 +35,8 @@ import {PrintApiService} from "../../common/services/print-api/print-api.service
   styleUrls: ['./cross-dock-transaction.component.scss'],
 })
 export class CrossDockTransactionComponent implements OnInit {
+  fieldMappings = JSON.parse(localStorage.getItem('fieldMappings') ?? '{}');
+  ItemNumber: string = this.fieldMappings.itemNumber;
   placeholders = Placeholders;
   @ViewChild('completefocus') completefocus: ElementRef;
   public itemWhse;

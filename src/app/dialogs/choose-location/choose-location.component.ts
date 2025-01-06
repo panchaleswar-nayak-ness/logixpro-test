@@ -17,6 +17,8 @@ import {  ToasterMessages ,ToasterTitle,ToasterType,UniqueConstants,TableConstan
   styleUrls: ['./choose-location.component.scss']
 })
 export class ChooseLocationComponent implements OnInit {
+  fieldMappings = JSON.parse(localStorage.getItem('fieldMappings') ?? '{}');
+  ItemNumber: string = this.fieldMappings.itemNumber;
   @ViewChild('locFocus') locFocus: ElementRef;
   public iInductionManagerApi:IInductionManagerApiService;
 
