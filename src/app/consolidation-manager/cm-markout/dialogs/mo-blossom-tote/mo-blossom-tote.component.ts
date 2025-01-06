@@ -23,7 +23,8 @@ import { BlossomToteRecords, MarkoutBlossomTotenRequest, ToteData } from '../../
   styleUrls: ['./mo-blossom-tote.component.scss'],
 })
 export class MoBlossomToteComponent implements OnInit {
-
+  fieldMappings = JSON.parse(localStorage.getItem('fieldMappings') ?? '{}');
+  ItemNumber: string = this.fieldMappings.itemNumber;
   placeholders = Placeholders;
   public iMarkoutApiService: IMarkoutApiService;
   toteId: string = '';
