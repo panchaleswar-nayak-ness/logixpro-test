@@ -117,6 +117,7 @@ export class AddInvMapLocationComponent implements OnInit {
   addInvMapLocation: FormGroup<InventoryMapFormData>;
   clearInvMapLocation: FormGroup;
   allowClearWholeLocation: boolean = false;
+  isClearWholeLocationAvailable: boolean = false;
   buttonColor: 'primary' | 'warn' = 'warn';
 isButtonDisabled: boolean = true;
   locZoneList: any[] = [];
@@ -142,6 +143,11 @@ isButtonDisabled: boolean = true;
   searchItemNumbers
   warehouseSensitive: boolean;
   dateSensitive: boolean;
+  grpData: any = {};
+  userName: any;
+  public isGroupLookUp: boolean = false;
+  assignedFunctions:any;
+  unassignedFunctions:any;
   @ViewChild('cellSizeVal') cellSizeVal: ElementRef;
   @ViewChild('velCodeVal') velCodeVal: ElementRef;
   @ViewChild('location_name') location_name: ElementRef;
@@ -261,9 +267,11 @@ isButtonDisabled: boolean = true;
       this.updateItemNumber();
     }
 
+
     this.initializeDataSet();
 
     this.getLocationZones();
+    this.functionsByGroup();
 
     this.addInvMapLocation.get('allowClearWholeLocation')?.valueChanges.subscribe(value => {
       this.allowClearWholeLocation = value === 'true'; 
@@ -299,6 +307,32 @@ isButtonDisabled: boolean = true;
 }
 
 parentZones: any = [];
+
+
+functionsByGroup(event?: any) {
+
+  const grp_data = {
+   
+    "groupName":this?.userData?.accessLevel
+
+    }; 
+  this.iAdminApiService.getFunctionByGroup(grp_data)
+  .subscribe((response:any) => {
+    if(response.isExecuted && response.data)
+    {
+      this.assignedFunctions = response.data?.groupFunc
+      this.unassignedFunctions = response.data?.allFunc
+
+      this.isClearWholeLocationAvailable = response.data.allFunc.includes("Inv Map Clear Whole Location");
+
+    }
+    else {
+     
+    } 
+    
+  });
+}
+
 getLocationZones() {
   this.iAdminApiService.LocationZone().subscribe((res) => {
     if (res.isExecuted && res.data) {
@@ -356,7 +390,6 @@ getLocationZones() {
   clearFields() {
 
   }
-
 
   clearWholeLocation() {
 

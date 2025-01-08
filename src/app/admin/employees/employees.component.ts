@@ -266,7 +266,6 @@ export class EmployeesComponent implements OnInit {
     this.isGroupLookUp = event;
     this.maxOrders = 10;
     
-
     const grp_data = {
       "userName":this.userName,
       "groupName":this.grpData.groupName

@@ -359,11 +359,19 @@
           Clear
         </button>
 
-
-      <button type="submit"  class="form-button-submit btn-lg"  [disabled]="isButtonDisabled" (click)="clearWholeLocation()"  mat-stroked-button class="restore-to-default-btn form-button-submit btn-lg m-1 m-xl-0 " color="primary"
-      matTooltip="This will clear all items and quantities from all locations that share the same Zone, Carousel, Row, Shelf, and Bin"
-      matTooltipPosition="above">
-        Clear Whole Location</button>
+        <button
+  type="submit"
+  class="form-button-submit btn-lg"
+  [disabled]="isButtonDisabled"
+  (click)="clearWholeLocation()"
+  mat-stroked-button
+  class="restore-to-default-btn form-button-submit btn-lg m-1 m-xl-0"
+  color="primary"
+  matTooltip="This will clear all items and quantities from all locations that share the same Zone, Carousel, Row, Shelf, and Bin"
+  matTooltipPosition="above"
+  [hidden]="isClearWholeLocationAvailable">
+  Clear Whole Location
+</button>
 
         <button
           type="submit"
