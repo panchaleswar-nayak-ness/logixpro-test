@@ -302,6 +302,9 @@ clearToteID() {
     }
 
     savePallet(split: boolean) {
+      
+      this.onDateChange(this.processForm.value.expirationDate,'1')
+      
       let finalExpiryDate = new Date(this['expirationDate']);
       if (this.isValidDate(finalExpiryDate)) {
         this['expirationDate'] = this['expirationDate'] !== '' ? format(new Date(this['expirationDate']), "yyyy-MM-dd'T'HH:mm:ss.SSSxxx") : '';

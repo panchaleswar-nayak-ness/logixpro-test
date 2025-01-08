@@ -32,7 +32,7 @@ import {
   ToasterType
 } from 'src/app/common/constants/strings.constants';
 import { GtItemDetailsComponent } from './gt-item-details/gt-item-details.component';
-
+import { format, parse } from 'date-fns';
 @Component({
   selector: 'app-generate-transaction',
   templateUrl: './generate-transaction.component.html',
@@ -423,6 +423,7 @@ export class GenerateTransactionComponent implements OnInit {
     }
   }
   postTransaction(type) {
+    debugger
     if (this.isLocation && this.transQuantity > this.totalQuantity) {
       const dialogRef: any = this.global.OpenDialog(InvalidQuantityComponent, {
         height: DialogConstants.auto,
@@ -445,10 +446,16 @@ export class GenerateTransactionComponent implements OnInit {
   }
 
   updateTrans() {
+
+    let finalExpiryDate = new Date(this.expDate);
+      if (this.isValidDate(finalExpiryDate)) {
+        this.expDate = this.expDate !== '' ? format(new Date(this.expDate), "yyyy-MM-dd'T'HH:mm:ss.SSSxxx") : '';
+      }
+
     let updateValsequence: any = [];
     updateValsequence[0] = this.itemNumber; //itemNumber
     updateValsequence[1] = this.transType; //TransType
-    updateValsequence[2] = new Date(this.expDate).toLocaleString();
+    updateValsequence[2] = this.expDate;
     updateValsequence[3] = this.revision; //revision
     updateValsequence[4] = this.description; //description
     updateValsequence[5] = this.lotNumber; //lotNumber
@@ -553,9 +560,15 @@ export class GenerateTransactionComponent implements OnInit {
       this.transactionQtyInvalid = false;
       //following sequence must follow to update
       let updateValsequence: any = [];
+
+      let finalExpiryDate = new Date(this.expDate);
+      if (this.isValidDate(finalExpiryDate)) {
+        this.expDate = this.expDate !== '' ? format(new Date(this.expDate), "yyyy-MM-dd'T'HH:mm:ss.SSSxxx") : '';
+      }
+
       updateValsequence[0] = this.itemNumber; //itemNumber
       updateValsequence[1] = this.transType; //TransType
-      updateValsequence[2] = new Date(this.expDate).toLocaleString(); //expDate
+      updateValsequence[2] = this.expDate; //expDate
       updateValsequence[3] = this.revision; //revision
       updateValsequence[4] = this.description; //description
       updateValsequence[5] = this.lotNumber; //lotNumber
@@ -743,5 +756,21 @@ export class GenerateTransactionComponent implements OnInit {
     this.batchPickID = fieldValues.batchPickID;
     this.lineNumber = fieldValues.lineNumber;
     this.transQuantity = fieldValues.transQuantity;
+  }
+
+  
+  isValidDate(date: any) {
+    // Check for falsy values like '', null, undefined
+    if (!date) return false;
+  
+    // Convert to a Date object if it's not already one
+    const parsedDate = new Date(date);
+  
+    // Check if the date is valid
+    if (isNaN(parsedDate.getTime())) return false;
+  
+    // Check if the date is not 01-01-1970
+    const epochDate = new Date('1970-01-01T00:00:00Z');
+    return parsedDate.getTime() !== epochDate.getTime();
   }
 }
