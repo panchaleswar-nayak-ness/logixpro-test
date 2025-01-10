@@ -35,6 +35,7 @@ import { PutAwayOption } from 'src/app/common/Model/preferences';
 })
 export class AdminPrefrencesComponent implements OnInit {
 fieldMappings = JSON.parse(localStorage.getItem('fieldMappings') ?? '{}');
+ItemNumber: string = this.fieldMappings.itemNumber;
 UserField1:string = this.fieldMappings.userField1;
 UserField2:string = this.fieldMappings.userField2;
 UserField3:string = this.fieldMappings.userField3;
@@ -234,7 +235,7 @@ UserField10:string = this.fieldMappings.userField10;
     },
     {
       id: Column.ItemNumber,
-      name: Column.ItemNumber,
+      name: this.ItemNumber,
     },
     {
       id: ColumnDef.SerialNumber,
