@@ -335,27 +335,57 @@
                 <!-- search by Pick Location Date Range -->
                 <ng-container *ngSwitchCase="'PickedLocationRange'">
                     <div class="col-xl-12">
-                        <div class="d-flex flex-wrap gap-12 px-3 align-items-center">
+                        <div class="d-flex align-items-center row">
+                            <div class="col-xl-3">
                             <mat-checkbox (change)="setPickChecksLocation($event,'SortPicks')"
                                 formControlName="SortByPickCountLocation" class="example-margin custom-checkbox mb-2"
                                 color="primary">Sort By Locations with Most Picks</mat-checkbox>
+                            </div>
+
                             <div class="col-xl-3">
-                                <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline">
+                                <mat-form-field class="custom-form-field mb-3 w-100" appearance="outline">
                                     <mat-label>Enter Number of Locations</mat-label>
                                     <input (keyup)="handleInputChange($event)" [NumbersOnly]="true" matInput type="text"
                                         formControlName="MaxCycleCountsLocation" maxlength="9">
                                 </mat-form-field>
                             </div>
-                            <mat-checkbox (change)="setPickChecksLocation($event,'Pick')"
-                                formControlName="IncludeHotPickLocation" class="example-margin custom-checkbox mb-2"
+                            
+                            <div class="col-xl-3">
+                                <mat-checkbox 
+                                  (change)="setPickChecksLocation($event,'picklocincludeEmpty')" 
+                                  formControlName="picklocincludeEmpty" 
+                                  class="example-margin custom-checkbox mb-3 me-3" 
+                                  color="primary">
+                                  Include Empty Locations?
+                                </mat-checkbox>
+                            </div>
+                              
+                            <div class="col-xl-3">
+                                <mat-checkbox 
+                                  (change)="setPickChecksLocation($event,'picklocincludeOther')" 
+                                  formControlName="picklocincludeOther" 
+                                  class="example-margin custom-checkbox mb-3" 
+                                  color="primary">
+                                  Include Other Locations?
+                                </mat-checkbox>
+                            </div>
+
+                            <div class="col-xl-3">
+                                <mat-checkbox (change)="setPickChecksLocation($event,'Pick')"
+                                formControlName="IncludeHotPickLocation" class="example-margin custom-checkbox mb-3"
                                 color="primary">Include Hot Pick</mat-checkbox>
-                            <mat-checkbox (change)="setPickChecksLocation($event,'Move')"
-                                formControlName="IncludeHotMoveLocation" class="example-margin custom-checkbox mb-2"
+                            </div>
+                            <div class="col-xl-3">
+                                <mat-checkbox (change)="setPickChecksLocation($event,'Move')"
+                                formControlName="IncludeHotMoveLocation" class="example-margin custom-checkbox mb-3"
                                 color="primary">Include Hot Move </mat-checkbox>
-                            <mat-checkbox (change)="setPickChecksLocation($event,'Replenishment')"
+                            </div>
+                            <div class="col-xl-3">
+                                <mat-checkbox (change)="setPickChecksLocation($event,'Replenishment')"
                                 formControlName="IncludeReplenishmentLocation"
-                                class="example-margin custom-checkbox mb-2" color="primary">Include
+                                class="example-margin custom-checkbox mb-3" color="primary">Include
                                 Replenishment</mat-checkbox>
+                            </div>
                         </div>
                     </div>
                 </ng-container>
@@ -363,10 +393,12 @@
                 <!-- search by pPut Away Location Date Range -->
                 <ng-container *ngSwitchCase="'PutAwayLocationRange'">
                     <div class="col-xl-12">
-                        <div class="d-flex flex-wrap gap-12 px-3 align-items-center">
-                            <mat-checkbox (change)="setPutChecksLocation($event,'SortPicks')"
+                        <div class="d-flex align-items-center row">
+                            <div class="col-xl-3">
+                                <mat-checkbox (change)="setPutChecksLocation($event,'SortPicks')"
                                 formControlName="SortByPutAwayCountLocation" class="example-margin custom-checkbox mb-2"
                                 color="primary">Sort By Locations with Most Put Away</mat-checkbox>
+                            </div>
                             <div class="col-xl-3">
                                 <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline">
                                     <mat-label>Enter Number of Locations</mat-label>
@@ -374,16 +406,41 @@
                                         formControlName="MaxCycleCountsPutAwayLocation" maxlength="9">
                                 </mat-form-field>
                             </div>
+                            <div class="col-xl-3">
+                                <mat-checkbox 
+                                  (change)="setPutChecksLocation($event,'putlocincludeEmpty')"  
+                                  formControlName="putlocincludeEmpty" 
+                                  class="example-margin custom-checkbox mb-3 me-3" 
+                                  color="primary">
+                                  Include Empty Locations?
+                                </mat-checkbox>
+                            </div>
+                              
+                            <div class="col-xl-3">
+                                <mat-checkbox 
+                                  (change)="setPutChecksLocation($event,'putlocincludeOther')"  
+                                  formControlName="putlocincludeOther" 
+                                  class="example-margin custom-checkbox mb-3" 
+                                  color="primary">
+                                  Include Other Locations?
+                                </mat-checkbox>
+                            </div>
+                            <div class="col-xl-3">
                             <mat-checkbox (change)="setPutChecksLocation($event,'Pick')"
-                                formControlName="IncludeHotPutAwayLocation" class="example-margin custom-checkbox mb-2"
+                                formControlName="IncludeHotPutAwayLocation" class="example-margin custom-checkbox mb-3"
                                 color="primary">Include Hot Put Away</mat-checkbox>
+                            </div>
+                            <div class="col-xl-3">
                             <mat-checkbox (change)="setPutChecksLocation($event,'Move')"
-                                formControlName="IncludeHotMovePutAwayLocation" class="example-margin custom-checkbox mb-2"
+                                formControlName="IncludeHotMovePutAwayLocation" class="example-margin custom-checkbox mb-3"
                                 color="primary">Include Hot Move </mat-checkbox>
+                            </div>
+                            <div class="col-xl-3">
                             <mat-checkbox (change)="setPutChecksLocation($event,'Replenishment')"
                                 formControlName="IncludeReplenishmentPutAwayLocation"
-                                class="example-margin custom-checkbox mb-2" color="primary">Include
+                                class="example-margin custom-checkbox mb-3" color="primary">Include
                                 Replenishment</mat-checkbox>
+                            </div>
                         </div>
                     </div>
                 </ng-container>

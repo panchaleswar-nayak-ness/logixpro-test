@@ -34,6 +34,12 @@ export class LocalStorageService {
       else if (type === 'SortPicks'){
         userPickChecked.MostPicks = e.checked;
       }
+      else if (type === 'picklocincludeEmpty'){
+        userPickChecked.picklocincludeEmpty = e.checked;
+      }
+      else if (type === 'picklocincludeOther'){
+        userPickChecked.picklocincludeOther = e.checked;
+      }
       
       localStorage.setItem('CountPickChecks', JSON.stringify(usersPickChecks));
 
@@ -47,7 +53,9 @@ export class LocalStorageService {
         'HotPick': true,
         'HotMove': true,
         'Replenishment': true,
-        'MostPicks': false
+        'MostPicks': false,
+        'picklocincludeEmpty': true,
+        'picklocincludeOther': true
       }
 
 
@@ -66,7 +74,9 @@ export class LocalStorageService {
         'HotPick': true,
         'HotMove': true,
         'Replenishment': true,
-        'MostPicks': false
+        'MostPicks': false,
+        'picklocincludeEmpty': true,
+        'picklocincludeOther': true
       }
 
       let allPickChecks = [PickChecks];
@@ -84,7 +94,9 @@ export class LocalStorageService {
              updatedUserPickChecked.HotPick,
              updatedUserPickChecked.HotMove,
              updatedUserPickChecked.Replenishment,
-             updatedUserPickChecked.MostPicks
+             updatedUserPickChecked.MostPicks,
+             updatedUserPickChecked.picklocincludeEmpty,
+             updatedUserPickChecked.picklocincludeOther
          ];
      }
      return []; // If no pick checks found for the user, return an empty array
@@ -118,6 +130,12 @@ export class LocalStorageService {
       else if (type === 'SortPicks'){
         userPutChecked.MostPicks = e.checked;
       }
+      else if (type === 'putlocincludeEmpty'){
+        userPutChecked.putlocincludeEmpty = e.checked;
+      }
+      else if (type === 'putlocincludeOther'){
+        userPutChecked.putlocincludeOther = e.checked;
+      }
       
       localStorage.setItem('CountPutChecks', JSON.stringify(usersPutChecks));
 
@@ -131,7 +149,9 @@ export class LocalStorageService {
         'HotPick': true,
         'HotMove': true,
         'Replenishment': true,
-        'MostPicks': false
+        'MostPicks': false,
+        'putlocincludeEmpty': true,
+        'putlocincludeOther': true
       }
 
 
@@ -150,7 +170,9 @@ export class LocalStorageService {
         'HotPick': true,
         'HotMove': true,
         'Replenishment': true,
-        'MostPicks': false
+        'MostPicks': false,
+        'putlocincludeEmpty': true,
+        'putlocincludeOther': true
       }
 
       let allPutChecks = [PutChecks];
@@ -168,7 +190,9 @@ export class LocalStorageService {
              updatedUserPutChecked.HotPick,
              updatedUserPutChecked.HotMove,
              updatedUserPutChecked.Replenishment,
-             updatedUserPutChecked.MostPicks
+             updatedUserPutChecked.MostPicks,
+             updatedUserPutChecked.putlocincludeEmpty,
+             updatedUserPutChecked.putlocincludeOther
          ];
      }
      return []; // If no pick checks found for the user, return an empty array
@@ -204,6 +228,12 @@ export class LocalStorageService {
       else if (type === 'SortPicks'){
         userPickChecked.MostPicks = e.checked;
       }
+      else if (type === 'picklocincludeEmpty'){
+        userPickChecked.picklocincludeEmpty = e.checked;
+      }
+      else if (type === 'picklocincludeOther'){
+        userPickChecked.picklocincludeOther = e.checked;
+      }
       
       localStorage.setItem('CountPickChecksLocation', JSON.stringify(usersPickChecks));
 
@@ -217,7 +247,9 @@ export class LocalStorageService {
         'HotPick': true,
         'HotMove': true,
         'Replenishment': true,
-        'MostPicks': false
+        'MostPicks': false,
+        'picklocincludeEmpty': true,
+        'picklocincludeOther': true
       }
 
 
@@ -236,7 +268,9 @@ export class LocalStorageService {
         'HotPick': true,
         'HotMove': true,
         'Replenishment': true,
-        'MostPicks': false
+        'MostPicks': false,
+        'picklocincludeEmpty': true,
+        'picklocincludeOther': true
       }
 
       let allPickChecks = [PickChecks];
@@ -254,7 +288,9 @@ export class LocalStorageService {
              updatedUserPickChecked.HotPick,
              updatedUserPickChecked.HotMove,
              updatedUserPickChecked.Replenishment,
-             updatedUserPickChecked.MostPicks
+             updatedUserPickChecked.MostPicks,
+             updatedUserPickChecked.picklocincludeEmpty,
+             updatedUserPickChecked.picklocincludeOther
          ];
      }
      return []; // If no pick checks found for the user, return an empty array
@@ -287,6 +323,12 @@ export class LocalStorageService {
       else if (type === 'SortPicks'){
         userPutChecked.MostPicks = e.checked;
       }
+      else if (type === 'putlocincludeEmpty'){
+        userPutChecked.putlocincludeEmpty = e.checked;
+      }
+      else if (type === 'putlocincludeOther'){
+        userPutChecked.putlocincludeOther = e.checked;
+      }
       
       localStorage.setItem('CountPutChecksLocation', JSON.stringify(usersPutChecks));
 
@@ -300,7 +342,9 @@ export class LocalStorageService {
         'HotPick': true,
         'HotMove': true,
         'Replenishment': true,
-        'MostPicks': false
+        'MostPicks': false,
+        'putlocincludeEmpty': true,
+        'putlocincludeOther': true
       }
 
 
@@ -319,7 +363,9 @@ export class LocalStorageService {
         'HotPick': true,
         'HotMove': true,
         'Replenishment': true,
-        'MostPicks': false
+        'MostPicks': false,
+        'putlocincludeEmpty': true,
+        'putlocincludeOther': true
       }
 
       let allPutChecks = [PutChecks];
@@ -337,7 +383,9 @@ export class LocalStorageService {
              updatedUserPutChecked.HotPick,
              updatedUserPutChecked.HotMove,
              updatedUserPutChecked.Replenishment,
-             updatedUserPutChecked.MostPicks
+             updatedUserPutChecked.MostPicks,
+             updatedUserPutChecked.putlocincludeEmpty,
+             updatedUserPutChecked.putlocincludeOther
          ];
      }
      return []; // If no pick checks found for the user, return an empty array
