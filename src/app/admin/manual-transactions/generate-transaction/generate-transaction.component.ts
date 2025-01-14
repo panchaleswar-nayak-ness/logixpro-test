@@ -423,7 +423,6 @@ export class GenerateTransactionComponent implements OnInit {
     }
   }
   postTransaction(type) {
-    debugger
     if (this.isLocation && this.transQuantity > this.totalQuantity) {
       const dialogRef: any = this.global.OpenDialog(InvalidQuantityComponent, {
         height: DialogConstants.auto,
