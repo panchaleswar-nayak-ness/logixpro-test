@@ -29,7 +29,8 @@ import {
   StringConditions,
   Style,
   ToasterTitle,
-  ToasterType
+  ToasterType,
+  TransactionType
 } from 'src/app/common/constants/strings.constants';
 import { GtItemDetailsComponent } from './gt-item-details/gt-item-details.component';
 import { format, parse } from 'date-fns';
@@ -352,7 +353,7 @@ export class GenerateTransactionComponent implements OnInit {
     this.emergency = false;
   }
 
-  postTranscationFunction(type) {
+  postTransactionFunction(type: string) {
     if (
       this.item === '' ||
       this.item === undefined ||
@@ -422,8 +423,11 @@ export class GenerateTransactionComponent implements OnInit {
       });
     }
   }
-  postTransaction(type) {
-    if (this.isLocation && this.transQuantity > this.totalQuantity) {
+  postTransaction(type: string) {
+    const totalQuantity = Number(this.totalQuantity) || 0;
+    const quantityAllocatedPick = Number(this.quantityAllocatedPick) || 0;
+    const actualQuantity = totalQuantity - quantityAllocatedPick;
+    if (this.isLocation && this.transQuantity > actualQuantity && this.transType === TransactionType.Pick) {
       const dialogRef: any = this.global.OpenDialog(InvalidQuantityComponent, {
         height: DialogConstants.auto,
         width: Style.w560px,
@@ -435,12 +439,13 @@ export class GenerateTransactionComponent implements OnInit {
         this.isQuantityConfirmation = res;
         if (this.isQuantityConfirmation) {
           this.updateTransactionFunction();
-          this.postTranscationFunction(type);
+          this.postTransactionFunction(type);
         }
       });
     } else {
+      this.clearMatSelectList();
       this.updateTransactionFunction();
-      this.postTranscationFunction(type);
+      this.postTransactionFunction(type);
     }
   }
 
