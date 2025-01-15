@@ -136,7 +136,7 @@
                         <div class="row">
                             <div class="col-xl-6 col-md-12 mb-2">
                                 <mat-form-field class="d-block w-100 "   appearance="outline">
-                                    <mat-label replacePlaceholder [replacePlaceHolder]="placeholders.unitOfMeasure" [fallbackPlaceHolder]="placeholders.unitOfMeasureFallback"> </mat-label>
+                                    <mat-label>{{unitOfMeasure}} </mat-label>
                                     <input matInput formControlName="unitOfMeasure"  [ngModel]="unitOFMeasure" name="unitOfMeasure" >
                                 </mat-form-field>
                             </div>
@@ -172,7 +172,7 @@
 
                         <mat-form-field class="custom-form-field  w-100 mb-2" appearance="outline"
                             [floatLabel]="getFloatLabelValue()" [hideRequiredMarker]="hideRequiredControl.value">
-                            <mat-label replacePlaceholder [replacePlaceHolder]="placeholders.userField1" [fallbackPlaceHolder]="placeholders.userField1Fallback"> </mat-label>
+                            <mat-label > {{userField1}}</mat-label>
                             <input #ship_via type="text" placeholder="Search" aria-label="Number" matInput [(ngModel)]='shipVia'
                             maxlength="255" [matAutocomplete]="uf1" (ngModelChange)="this.searchByShipVia.next($event)" formControlName="userField1"   name="userField1">
                             <button matSuffix *ngIf="shipVia" class="clear-btn" (click)="shipVia=''"><mat-icon
@@ -186,7 +186,7 @@
 
                         <mat-form-field class="custom-form-field  w-100 mb-2" appearance="outline"
                             [floatLabel]="getFloatLabelValueItem()" [hideRequiredMarker]="hideRequiredControlShipName.value">
-                            <mat-label replacePlaceholder [replacePlaceHolder]="placeholders.userField2" [fallbackPlaceHolder]="placeholders.userField2Fallback"> </mat-label>
+                            <mat-label > {{userField2}}</mat-label>
                             <input type="text" placeholder="Search" aria-label="Number" matInput [(ngModel)]='shipToName'
                             maxlength="255" [matAutocomplete]="uf2" (ngModelChange)="this.searchByShipName.next($event)" formControlName="userField2"   name="userField2">
                             <button matSuffix *ngIf="shipToName" class="clear-btn" (click)="shipToName=''">

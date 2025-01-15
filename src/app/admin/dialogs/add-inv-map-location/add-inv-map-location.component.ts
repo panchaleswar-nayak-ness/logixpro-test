@@ -114,6 +114,10 @@ export interface InventoryMapDataStructure {
   styleUrls: ['./add-inv-map-location.component.scss']
 })
 export class AddInvMapLocationComponent implements OnInit {
+  fieldMappings = JSON.parse(localStorage.getItem('fieldMappings') ?? '{}');
+  userField1: string = this.fieldMappings.userField1;
+  userField2: string = this.fieldMappings.userField2;
+  unitOfMeasure: string = this.fieldMappings.unitOfMeasure;
   addInvMapLocation: FormGroup<InventoryMapFormData>;
   clearInvMapLocation: FormGroup;
   allowClearWholeLocation: boolean = false;
