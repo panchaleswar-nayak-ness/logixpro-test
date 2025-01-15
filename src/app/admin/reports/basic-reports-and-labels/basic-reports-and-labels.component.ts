@@ -19,6 +19,7 @@ import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.ser
   styleUrls: ['./basic-reports-and-labels.component.scss']
 })
 export class BasicReportsAndLabelsComponent implements OnInit {
+
   reports:any = [];
   @ViewChild('matRef') matRef: MatSelect;
   reportTitles: any = [1,2,3,4]; 
@@ -140,6 +141,7 @@ export class BasicReportsAndLabelsComponent implements OnInit {
 
 // Method to handle selection and navigation
 basicReportDetails(selectedReport: string) {
+  
   if (selectedReport === 'Utilization Report') {
       // Navigate to utilizationDashboard when "Utilization Report" is selected
       this.router.navigate(['/admin/reports/utilizationDashboard']);
@@ -159,12 +161,13 @@ basicReportDetails(selectedReport: string) {
           console.log("basicreportdetails",res.responseMessage);
         }
       })
+     
   }
 }
 
 
-  async changeFilter(column,index){
- 
+  async changeFilter(column,index){  
+
     let payload:any ={
       reportName:this.basicReportModel.ChooseReport,
       column:column

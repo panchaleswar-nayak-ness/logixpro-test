@@ -29,13 +29,9 @@ import { GlobalService } from 'src/app/common/services/global.service';
 import { Subject, debounceTime, distinctUntilChanged } from 'rxjs';
 import { FloatLabelType } from '@angular/material/form-field';
 import { DialogConstants, ToasterTitle, ToasterType ,zoneType,ColumnDef,Column,TableConstant,UniqueConstants,StringConditions} from 'src/app/common/constants/strings.constants';
-import { ConfirmationDialogComponent } from '../confirmation-dialog/confirmation-dialog.component';
-
-
-
-
 
 import { Placeholders } from 'src/app/common/constants/strings.constants';
+import { ConfirmationDialogComponent } from '../confirmation-dialog/confirmation-dialog.component';
 
 type InventoryMapFormData = {
   location: FormControl<string | null>;
@@ -118,9 +114,14 @@ export interface InventoryMapDataStructure {
   styleUrls: ['./add-inv-map-location.component.scss']
 })
 export class AddInvMapLocationComponent implements OnInit {
+  fieldMappings = JSON.parse(localStorage.getItem('fieldMappings') ?? '{}');
+  userField1: string = this.fieldMappings.userField1;
+  userField2: string = this.fieldMappings.userField2;
+  unitOfMeasure: string = this.fieldMappings.unitOfMeasure;
   addInvMapLocation: FormGroup<InventoryMapFormData>;
   clearInvMapLocation: FormGroup;
   allowClearWholeLocation: boolean = false;
+  isClearWholeLocationAvailable: boolean = false;
   buttonColor: 'primary' | 'warn' = 'warn';
 isButtonDisabled: boolean = true;
   locZoneList: any[] = [];
@@ -146,6 +147,11 @@ isButtonDisabled: boolean = true;
   searchItemNumbers
   warehouseSensitive: boolean;
   dateSensitive: boolean;
+  grpData: any = {};
+  userName: any;
+  public isGroupLookUp: boolean = false;
+  assignedFunctions:any;
+  unassignedFunctions:any;
   @ViewChild('cellSizeVal') cellSizeVal: ElementRef;
   @ViewChild('velCodeVal') velCodeVal: ElementRef;
   @ViewChild('location_name') location_name: ElementRef;
@@ -187,7 +193,6 @@ isButtonDisabled: boolean = true;
     altLight: '',
     velocity: ''
   };
-
 
   clickSubmit: boolean = true;
   headerLable: any;
@@ -261,12 +266,16 @@ isButtonDisabled: boolean = true;
       this.itemDescription = this.getDetailInventoryMapData.description;
       this.quantity = this.getDetailInventoryMapData.itemQuantity;
       this.unitOFMeasure = this.getDetailInventoryMapData.unitOfMeasure;
+      this.shipVia = this.getDetailInventoryMapData.userField1;
+      this.shipToName = this.getDetailInventoryMapData.userField2;
       this.updateItemNumber();
     }
+
 
     this.initializeDataSet();
 
     this.getLocationZones();
+    this.functionsByGroup();
 
     this.addInvMapLocation.get('allowClearWholeLocation')?.valueChanges.subscribe(value => {
       this.allowClearWholeLocation = value === 'true'; 
@@ -302,10 +311,36 @@ isButtonDisabled: boolean = true;
 }
 
 parentZones: any = [];
+
+
+functionsByGroup(event?: any) {
+
+  const grp_data = {
+   
+    "groupName":this?.userData?.accessLevel
+
+    }; 
+  this.iAdminApiService.getFunctionByGroup(grp_data)
+  .subscribe((response:any) => {
+    if(response.isExecuted && response.data)
+    {
+      this.assignedFunctions = response.data?.groupFunc
+      this.unassignedFunctions = response.data?.allFunc
+
+      this.isClearWholeLocationAvailable = response.data.allFunc.includes("Inv Map Clear Whole Location");
+
+    }
+    else {
+     
+    } 
+    
+  });
+}
+
 getLocationZones() {
   this.iAdminApiService.LocationZone().subscribe((res) => {
     if (res.isExecuted && res.data) {
-      // Find the object that matches the specified zone
+     
       const matchingLocation = res.data.find((location) => location.zone === this.zone);
 
       // Set button color and disabled state based on `allowClearWholeLocation` value
@@ -357,34 +392,17 @@ getLocationZones() {
   }
  
   clearFields() {
-    const quantityAllocatedPick = this.addInvMapLocation.get('quantityAllocatedPick')?.value ?? 0;
-    const quantityAllocatedPutAway = this.addInvMapLocation.get('quantityAllocatedPutAway')?.value ?? 0;
-  
-    if (+quantityAllocatedPick > 0 || +quantityAllocatedPutAway > 0) {
-      const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
-        width: '400px',
-        data: {
-          message: 'Quantity Allocated Pick or Quantity Allocated Put Away has a value greater than zero. You cannot proceed with Clear Whole Location.',
-          showOkButton: true,
-          showCancelButton: false, // Optional, retain for clarity
-          hideCancel: true // Pass this to hide the cancel button
-        }
-      });
-  
-      dialogRef.afterClosed().subscribe(() => {
-        // Do nothing; clear functionality is blocked.
-      });
-    } else {
-      this.performClear();
-      this.clearFieldsAndSubmit();
-      // this. adjustQuantity();
-      
-    }
+
   }
 
+  clearWholeLocation() {
+
+    this.onclearWholeLocation(this.addInvMapLocation);
+    
+  }
 
   clearFieldsAndSubmit() {
-    // Clear specific fields except for 'zone'
+   
     this.addInvMapLocation.patchValue({
       carousel: null,
       row: null,
@@ -392,11 +410,11 @@ getLocationZones() {
       bin: null,
     });
   
-    // Call onSubmit with the updated form
+  
     this.onSubmit(this.addInvMapLocation);
   }
 
-// Extracted field clearing logic for reuse
+
 performClear() {
   this.addInvMapLocation.patchValue({
     item: '',
@@ -550,6 +568,86 @@ performClear() {
     let value = this.addInvMapLocation.controls[TableConstant.zone].value + this.addInvMapLocation.controls[zoneType.carousel].value + this.addInvMapLocation.controls[Column.Row].value + this.addInvMapLocation.controls[TableConstant.shelf].value + this.addInvMapLocation.controls[ColumnDef.Bin].value;
     this.addInvMapLocation.controls['locationNumber'].setValue(value);
   }
+
+  onclearWholeLocation(form: FormGroup<InventoryMapFormData>) {
+    const quantityAllocatedPick = this.addInvMapLocation.get('quantityAllocatedPick')?.value ?? 0;
+    const quantityAllocatedPutAway = this.addInvMapLocation.get('quantityAllocatedPutAway')?.value ?? 0;
+
+    // Check if there are allocated quantities
+    if (+quantityAllocatedPick > 0 || +quantityAllocatedPutAway > 0) {
+        const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
+            width: '560px',
+            data: {
+                message: 'Clear Whole Location cannot proceed because the Allocated Pick or Allocated Put Away quantity is greater than zero.',
+                showOkButton: true,
+                hideCancel: true
+            }
+        });
+
+        dialogRef.afterClosed().subscribe(() => {
+            console.log('Dialog closed due to count restriction');
+            this.dialog.closeAll();
+        });
+    } else {
+        // Show confirmation dialog before API call
+        const clearDialogRef = this.dialog.open(ConfirmationDialogComponent, {
+            width: '560px',
+            data: {
+                heading: 'Clear Whole Location',
+                message: 'Click OK to clear all Inventory Map records matching Location Number (Zone + Carousal + Row + Shelf + Bin) Criteria!',
+                showOkButton: true,
+                hideCancel: false
+            }
+        });
+
+        clearDialogRef.afterClosed().subscribe((clearResult) => {
+            if (clearResult === 'Yes') {
+                // Call API if user confirms
+                this.iAdminApiService.updateInventoryMapClearWholeLocation(form.getRawValue()).subscribe(
+                    (res) => {
+                        if (res.isExecuted && res.data.pickPutAwayCount === 0) {
+                            console.log('Proceeding with clearing operation:', res);
+                            this.dialog.closeAll();
+                            // Show success toast
+                            this.global.ShowToastr(
+                                ToasterType.Success,
+                                'Clear Whole Location has been performed successfully',
+                                ToasterTitle.Success
+                            );
+
+                            if (res.data.adjustMade === 'Yes') {
+                                console.log('Adjustment made successfully.');
+                                // Optionally, show another dialog here for adjustments
+                            } else {
+                                console.log('No adjustment made.');
+                                // Optionally, show a dialog for no adjustment
+                            }
+
+                            if (res.data.dynamic) {
+                                console.log('Dynamic clearing was involved.');
+                            } else {
+                                console.log('Non-dynamic clearing process.');
+                            }
+
+                            this.dialog.closeAll(); // Close all dialogs
+                        } else if (!res.isExecuted || res.data.pickPutAwayCount > 0) {
+                            console.log('Clear operation did not execute properly:', res);
+                            if (res.responseMessage) {
+                                console.log('Response message from server:', res.responseMessage);
+                            }
+                        }
+                    },
+                    (error) => {
+                        console.error('An error occurred:', error);
+                    }
+                );
+            } else {
+                console.log('Clear operation canceled by the user.');
+            }
+        });
+    }
+}
+
 
 onSubmit(form: FormGroup<InventoryMapFormData>) {
   const invMapIDs = {
@@ -817,8 +915,6 @@ onSubmit(form: FormGroup<InventoryMapFormData>) {
     this.autoFillLocNumber = this.zone + this.carousel + this.row + this.shelf + this.bin;
 
   }
-
-
 
   dialogClose() {
     this.dialogRef.close(DialogConstants.close);

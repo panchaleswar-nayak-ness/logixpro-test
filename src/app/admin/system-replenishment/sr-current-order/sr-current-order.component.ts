@@ -30,6 +30,9 @@ import { ContextMenuFiltersService } from 'src/app/common/init/context-menu-filt
   styleUrls: ['./sr-current-order.component.scss'],
 })
 export class SrCurrentOrderComponent implements OnInit {
+  fieldMappings = JSON.parse(localStorage.getItem('fieldMappings') ?? '{}');
+  itemNumber: string = this.fieldMappings.itemNumber;
+  UnitOfMeasure: string = this.fieldMappings.unitOfMeasure;
   @ViewChild('openActionDropDown') openActionDropDown: MatSelect;
   @Input() TabIndex:any;
   displayedColumns2: string[] = [
@@ -54,7 +57,7 @@ export class SrCurrentOrderComponent implements OnInit {
     ColumnDef.Action,
   ];
   coloumnTable = [
-    { defination: Column.ItemNumber, label: 'Item Num', value: 'itemNumber',filterProperty:Column.ItemNumber},
+    { defination: Column.ItemNumber, label: this.itemNumber, value: 'itemNumber',filterProperty:Column.ItemNumber},
     { defination: 'Trans Type', label: 'Trans Type', value: TableConstant.transactionType,filterProperty:TableConstant.TransactionType },
     { defination: TableConstant.WareHouse, label: ColumnDef.Warehouse, value: TableConstant.WareHouse, filterProperty:ColumnDef.Warehouse},
     { defination: TableConstant.zone, label: ColumnDef.Zone, value: TableConstant.zone, filterProperty:ColumnDef.Zone },
@@ -67,7 +70,7 @@ export class SrCurrentOrderComponent implements OnInit {
     { defination: 'Trans Qty', label: 'Trans Qty', value: ColumnDef.TransactionQuantity , filterProperty:'Trans Qty'},
     { defination: UniqueConstants.Description, label: Column.Description, value: UniqueConstants.Description, filterProperty:Column.Description },
     { defination: Column.OrderNumber, label: Column.OrderNumber, value: UniqueConstants.OrderNumber, filterProperty:Column.OrderNumber },
-    { defination: 'UofM', label: 'UofM', value: ColumnDef.UnitOfMeasure, filterProperty:'UofM' },
+    { defination: 'UofM', label: this.UnitOfMeasure, value: ColumnDef.UnitOfMeasure, filterProperty:'UofM' },
     { defination: ColumnDef.BatchPickID, label: ColumnDef.BatchPickID, value: TableConstant.BatchPickID, filterProperty:ColumnDef.BatchPickID },
     { defination: ColumnDef.SerialNumber, label: ColumnDef.SerialNumber, value: TableConstant.SerialNumber, filterProperty:ColumnDef.SerialNumber },
     { defination: TableConstant.CompletedDate, label: 'Comp Date', value: 'completedDate', filterProperty:'Comp Date' },
@@ -117,7 +120,7 @@ export class SrCurrentOrderComponent implements OnInit {
     },
     {
       value: Column.ItemNumber,
-      viewValue: Column.ItemNumber,
+      viewValue: this.itemNumber,
       sortColumn: '0',
       key: 'itemNumber',
     },
@@ -161,7 +164,7 @@ export class SrCurrentOrderComponent implements OnInit {
     },
     {
       value: 'UofM',
-      viewValue: 'UofM',
+      viewValue: this.UnitOfMeasure,
       sortColumn: '13',
       key: ColumnDef.UnitOfMeasure,
     },

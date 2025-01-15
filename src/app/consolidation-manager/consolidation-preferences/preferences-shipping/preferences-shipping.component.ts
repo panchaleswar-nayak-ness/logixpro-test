@@ -21,6 +21,7 @@ import { CMShippingPreferences, ToasterMessages, ToasterTitle, ToasterType ,Stri
   styleUrls: ['./preferences-shipping.component.scss'],
 })
 export class PreferencesShippingComponent implements OnInit {
+  fieldMappings = JSON.parse(localStorage.getItem('fieldMappings') ?? '{}');
   placeholders = Placeholders;
   shippingForm: FormGroup;
   selectionShipping: boolean = false;

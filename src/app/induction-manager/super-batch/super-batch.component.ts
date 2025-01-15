@@ -14,6 +14,8 @@ import { ToasterTitle, ToasterType ,DialogConstants,TableConstant,ColumnDef,Uniq
   styleUrls: ['./super-batch.component.scss']
 })
 export class SuperBatchComponent implements OnInit {
+  fieldMappings = JSON.parse(localStorage.getItem('fieldMappings') ?? '{}');  
+  ItemNumber: string = this.fieldMappings.itemNumber;
   public iInductionManagerApi: IInductionManagerApiService;
   displayedColumns: string[] = [TableConstant.zone, 'totalTransactions', 'orderToBatch', 'newToteID', ColumnDef.Actions];
   dataSource: any;

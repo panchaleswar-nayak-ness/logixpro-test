@@ -26,6 +26,9 @@ import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.ser
   styleUrls: ['./count-queue.component.scss'],
 })
 export class CCBCountQueueComponent implements OnInit {
+  fieldMappings = JSON.parse(localStorage.getItem('fieldMappings') ?? '{}');
+  ItemNumber: string = this.fieldMappings.itemNumber;
+  UnitOfMeasure: string = this.fieldMappings.unitOfMeasure;
   placeholders = Placeholders;
   displayedColumns: string[] = [
     'itemNumber',

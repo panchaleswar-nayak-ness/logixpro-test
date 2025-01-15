@@ -136,7 +136,7 @@
                         <div class="row">
                             <div class="col-xl-6 col-md-12 mb-2">
                                 <mat-form-field class="d-block w-100 "   appearance="outline">
-                                    <mat-label replacePlaceholder [replacePlaceHolder]="placeholders.unitOfMeasure" [fallbackPlaceHolder]="placeholders.unitOfMeasureFallback"> </mat-label>
+                                    <mat-label>{{unitOfMeasure}} </mat-label>
                                     <input matInput formControlName="unitOfMeasure"  [ngModel]="unitOFMeasure" name="unitOfMeasure" >
                                 </mat-form-field>
                             </div>
@@ -172,7 +172,7 @@
 
                         <mat-form-field class="custom-form-field  w-100 mb-2" appearance="outline"
                             [floatLabel]="getFloatLabelValue()" [hideRequiredMarker]="hideRequiredControl.value">
-                            <mat-label replacePlaceholder [replacePlaceHolder]="placeholders.userField1" [fallbackPlaceHolder]="placeholders.userField1Fallback"> </mat-label>
+                            <mat-label > {{userField1}}</mat-label>
                             <input #ship_via type="text" placeholder="Search" aria-label="Number" matInput [(ngModel)]='shipVia'
                             maxlength="255" [matAutocomplete]="uf1" (ngModelChange)="this.searchByShipVia.next($event)" formControlName="userField1"   name="userField1">
                             <button matSuffix *ngIf="shipVia" class="clear-btn" (click)="shipVia=''"><mat-icon
@@ -186,7 +186,7 @@
 
                         <mat-form-field class="custom-form-field  w-100 mb-2" appearance="outline"
                             [floatLabel]="getFloatLabelValueItem()" [hideRequiredMarker]="hideRequiredControlShipName.value">
-                            <mat-label replacePlaceholder [replacePlaceHolder]="placeholders.userField2" [fallbackPlaceHolder]="placeholders.userField2Fallback"> </mat-label>
+                            <mat-label > {{userField2}}</mat-label>
                             <input type="text" placeholder="Search" aria-label="Number" matInput [(ngModel)]='shipToName'
                             maxlength="255" [matAutocomplete]="uf2" (ngModelChange)="this.searchByShipName.next($event)" formControlName="userField2"   name="userField2">
                             <button matSuffix *ngIf="shipToName" class="clear-btn" (click)="shipToName=''">
@@ -353,15 +353,30 @@
           [color]="buttonColor"
           class="form-button-submit btn-lg"
           (click)="clearFields()"
-          *ngIf="myroute1"
+           *ngIf="myroute1"
           [disabled]="isValidClearLocation()"
         >
           Clear
         </button>
+
+        <button
+  type="submit"
+  class="form-button-submit btn-lg"
+  [disabled]="isButtonDisabled"
+  (click)="clearWholeLocation()"
+  mat-stroked-button
+  class="restore-to-default-btn form-button-submit btn-lg m-1 m-xl-0"
+  color="primary"
+  matTooltip="This will clear all items and quantities from all locations that share the same Zone, Carousel, Row, Shelf, and Bin"
+  matTooltipPosition="above"
+  [hidden]="isClearWholeLocationAvailable">
+  Clear Whole Location
+</button>
+
         <button
           type="submit"
           mat-flat-button
-          class="form-button-submit btn-lg w-100"
+          class="form-button-submit btn-lg flex-grow-1 flex-basis-0"
           color="primary"
           *ngIf="myroute2"
           (click)="onSubmit(addInvMapLocation)"
@@ -370,17 +385,6 @@
           Save Changes
         </button>
         
-        <button
-        type="button"
-        mat-flat-button
-        [color]="buttonColor"
-        class="form-button-submit btn-lg w-50"
-        (click)="clearFields()"
-        [disabled]="isButtonDisabled"
-      >
-        Clear Whole Location
-      </button>
-
       </div>
       
 </mat-dialog-actions>

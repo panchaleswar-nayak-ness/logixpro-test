@@ -21,7 +21,7 @@ export class FilterItemNumbersComponentCycleCount implements OnInit {
   public includeEmpty: boolean = false;  
   public includeOther: boolean = false;  
   titleText: string = 'Filter Item Numbers'; 
-  instructionsText: string = 'This is used to copy and paste item numbers from an excel spreadsheet.'; // Default instructions
+  instructionsText: string = 'This is used to copy and paste item numbers from an excel spreadsheet.';
 
   constructor(
     public dialogRef: MatDialogRef<any>,
@@ -58,15 +58,11 @@ export class FilterItemNumbersComponentCycleCount implements OnInit {
     this.filterText.nativeElement.focus();
   }
   filterItemNumbers(): void {
-    // Step 1: Clean and split the input data
+   
     let itemsStr = this.items.trim().replace(/[\n\r]/g, ',');
     let itemsArray = itemsStr.split(',');
     itemsArray = itemsArray.filter((item: any) => item != "");
-  
-    // Step 2: Prepare the comma-separated string of items
     let commaSeparatedItems = itemsArray.join(',');
-  
-    // Step 3: Prepare payload with includeEmpty and includeOther filters
     let payload: any = { 
       "items": commaSeparatedItems,
       "importBy": this.importtype,
@@ -74,24 +70,24 @@ export class FilterItemNumbersComponentCycleCount implements OnInit {
       "includeOther": this.includeOther   
     };
   
-    // Step 4: Make the API request to get import batch count
+   
     this.adminApiService.GetImportBatchCount(payload).subscribe((res: any) => {
       if (res.isExecuted && res.data) {
-        // Step 5: Check if item1 is not empty and show the confirmation dialog first
+        
         if (res.data.item1 && res.data.item1.length > 0) {
           let heading = '';
           let message = '';
           
-          // Set the heading and message based on import type
+        
           if (this.importtype === 'Location') {
             heading = 'Location(s) Not Found';
-            message = `The following location(s) were not found in the system: [${res.data.item1.join(', ')}]`;
+            message = `The following Locations do not exist [${res.data.item1.join(', ')}]`;
           } else if (this.importtype === 'Item Number') {
             heading = 'Item(s) Not Found';
-            message = `The following item(s) were not found in the system: [${res.data.item1.join(', ')}]`;
+            message = `The following Item Numbers do not exist [${res.data.item1.join(', ')}]`;
           }
   
-          // Open the confirmation dialog with the item1 message
+       
           const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
             width: '560px',
             data: {
@@ -106,31 +102,32 @@ export class FilterItemNumbersComponentCycleCount implements OnInit {
             }
           });
   
-          // After the dialog is closed, proceed with checking item2
+         
           dialogRef.afterClosed().subscribe(() => {
-            // Step 6: Check if item2 exists and update table data
+             this.dialogRef.close();
+         
             if (res.data.item2 && res.data.item2.length > 0) {
-              // Map the response data to the table format
+            
               const tableData = res.data.item2.map((item: any) => ({
                 invMapID: item.invMapID,
                 itemNumber: item.itemNumber,
-                description: item.description.trim(), // Trim spaces if necessary
-                locationQuantity: item.itemQuantity,
-                um: item.unitOfMeasure,
-                warehouse: item.wareHouse || 'N/A', // Handle empty values with default 'N/A'
-                locations: item.generatedLocation,
-                velocityCode: item.cellSize,
+                description: item.description.trim(), 
+                itemQuantity: item.itemQuantity,
+                unitOfMeasure: item.unitOfMeasure,
+                wareHouse: item.wareHouse || 'N/A',
+                generatedLocation: item.generatedLocation,
                 cellSize: item.cellSize,
                 serialNumber: item.serialNumber,
                 lotNumber: item.lotNumber,
-                expirationDate: item.expirationDate || 'N/A', // Handle empty values with default 'N/A'
+                location: item.location,
+                expirationDate: item.expirationDate || 'N/A', 
               }));
   
-              // Step 7: Pass data and return it to the dialog or set it to the table
+              
               this.dialogRef.close({ 
                 filterItemNumbersText: this.data, 
                 filterItemNumbersArray: itemsArray,
-                responseData: tableData, // Pass mapped table data here
+                responseData: tableData, 
                 filterData: commaSeparatedItems,
               });
             } else {
@@ -138,29 +135,29 @@ export class FilterItemNumbersComponentCycleCount implements OnInit {
             }
           });
         } else {
-          // Step 7: If item1 is empty, continue with checking item2 and updating table data
+         
           if (res.data.item2 && res.data.item2.length > 0) {
-            // Map the response data to the table format
+            
             const tableData = res.data.item2.map((item: any) => ({
               invMapID: item.invMapID,
-              itemNumber: item.itemNumber,
-              description: item.description.trim(), // Trim spaces if necessary
-              locationQuantity: item.itemQuantity,
-              um: item.unitOfMeasure,
-              warehouse: item.wareHouse || 'N/A', // Handle empty values with default 'N/A'
-              locations: item.generatedLocation,
-              velocityCode: item.cellSize,
-              cellSize: item.cellSize,
-              serialNumber: item.serialNumber,
-              lotNumber: item.lotNumber,
-              expirationDate: item.expirationDate || 'N/A', // Handle empty values with default 'N/A'
+                itemNumber: item.itemNumber,
+                description: item.description.trim(), 
+                itemQuantity: item.itemQuantity,
+                unitOfMeasure: item.unitOfMeasure,
+                wareHouse: item.wareHouse || 'N/A', 
+                generatedLocation: item.generatedLocation,
+                cellSize: item.cellSize,
+                serialNumber: item.serialNumber,
+                lotNumber: item.lotNumber,
+                location: item.location,
+                expirationDate: item.expirationDate || 'N/A', 
             }));
   
-            // Step 8: Set the table data directly without dialog
+           
             this.dialogRef.close({ 
               filterItemNumbersText: this.data, 
               filterItemNumbersArray: itemsArray,
-              responseData: tableData, // Pass mapped table data here
+              responseData: tableData, 
               filterData: commaSeparatedItems,
             });
           } else {
@@ -168,8 +165,6 @@ export class FilterItemNumbersComponentCycleCount implements OnInit {
           }
         }
       } else {
-        // Step 9: Handle error case
-        this.global.ShowToastr('error', res.responseMessage, 'Error');
         console.log('FiltersItemNumInsert Error:', res.responseMessage);
       }
     });

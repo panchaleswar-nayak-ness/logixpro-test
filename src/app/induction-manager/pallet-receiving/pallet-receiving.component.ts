@@ -15,6 +15,7 @@ import { IAdminApiService } from 'src/app/common/services/admin-api/admin-api-in
 import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.service';
 import { MatPaginator } from '@angular/material/paginator';
 import { format, parse } from 'date-fns';
+import { invalid } from 'moment';
 
 export interface PeriodicElement {
   position: string;
@@ -26,6 +27,8 @@ export interface PeriodicElement {
   styleUrls: ['./pallet-receiving.component.scss'],
 })
 export class PalletReceivingComponent implements OnInit {
+  fieldMappings = JSON.parse(localStorage.getItem('fieldMappings') ?? '{}');
+  ItemNumber: string = this.fieldMappings.itemNumber;
   zone : string;
   processForm: FormGroup;
   userData;
@@ -92,7 +95,7 @@ export class PalletReceivingComponent implements OnInit {
       itemNo: new FormControl('', Validators.required),
       quantity: new FormControl(0, Validators.required),
       lotNumber: new FormControl(''),
-      expirationDate: new FormControl(' '),
+      expirationDate: new FormControl(''),
       id: new FormControl(' '),
       orgQty: new FormControl(0),
     });
@@ -300,11 +303,20 @@ clearToteID() {
     }
 
     savePallet(split: boolean) {
-debugger
-      let finalExpiryDate = new Date(this['expirationDate']);
-      if (this.isValidDate(finalExpiryDate)) {
-        this['expirationDate'] = this['expirationDate'] !== '' ? format(new Date(this['expirationDate']), "yyyy-MM-dd'T'HH:mm:ss.SSSxxx") : '';
+      
+      var expirationDate =this['expirationDate'];
+      
+      if (expirationDate) 
+      {
+          this.onDateChange(this.processForm.value.expirationDate,'1')
+          let finalExpiryDate = new Date(this['expirationDate']);
+
+        if (this.isValidDate(finalExpiryDate)) 
+          {
+           this['expirationDate'] = this['expirationDate'] !== '' ? format(new Date(this['expirationDate']), "yyyy-MM-dd'T'HH:mm:ss.SSSxxx") : '';
+          }
       }
+      
 
       const payload = {
         toteId: this.processForm.value.toteID,
@@ -335,11 +347,10 @@ debugger
     }
     
     async processPallet() {
+    
       if (
         this.processForm.value.toteID === '' || this.processForm.value.toteID == undefined ||
         this.processForm.value.itemNo === '' || this.processForm.value.itemNo == undefined ||
-        this.processForm.value.lotNumber === '' || this.processForm.value.lotNumber == undefined ||
-        this.processForm.value.expirationDate === '' || this.processForm.value.expirationDate == undefined ||
         this.processForm.value.quantity === ''
       ) {
         this.showNotification(

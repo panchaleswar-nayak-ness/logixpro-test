@@ -18,6 +18,9 @@ import {  LiveAnnouncerMessage ,ResponseStrings,Column,ToasterTitle,ToasterType,
   styleUrls: ['./admin.component.scss'],
 })
 export class AdminComponent implements OnInit {
+  fieldMappings = JSON.parse(localStorage.getItem('fieldMappings') ?? '{}');
+  itemNumber: string = this.fieldMappings.itemNumber;
+  UnitOfMeasure: string = this.fieldMappings.unitOfMeasure;
   placeholders = Placeholders;
   public columnValues: any = [];
   public dataSource: any = new MatTableDataSource();

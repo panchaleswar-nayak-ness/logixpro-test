@@ -25,6 +25,9 @@ import { LocalStorageService } from 'src/app/common/services/LocalStorage.servic
   styleUrls: ['./create-counts.component.scss'],
 })
 export class CCBCreateCountsComponent implements OnInit {
+  fieldMappings = JSON.parse(localStorage.getItem('fieldMappings') ?? '{}');
+  ItemNumber: string = this.fieldMappings.itemNumber;
+  UnitOfMeasure: string = this.fieldMappings.unitOfMeasure;
   placeholders = Placeholders;
   public userData: any;
   @ViewChild('matRefAction') matRefAction: MatSelect;
@@ -167,16 +170,19 @@ constructor(
       costStart: new FormControl(''),
       costEnd: new FormControl(''),
       warehouse: new FormControl(''),
-
       pickedStartLocation: new FormControl(new Date()) ,
       pickedEndLocation: new FormControl(new Date()),
       SortByPickCountLocation: new FormControl(false),
+      picklocincludeEmpty: new FormControl(false),
+      picklocincludeOther: new FormControl(false),
+      putlocincludeEmpty: new FormControl(false),
+      putlocincludeOther: new FormControl(false),
       MaxCycleCountsLocation: new FormControl(),
       IncludeHotPickLocation: new FormControl(false),
       IncludeHotMoveLocation: new FormControl(false),
       IncludeReplenishmentLocation: new FormControl(false),
 
-      PutAwayStartLocation: new FormControl(new Date()) ,
+     PutAwayStartLocation: new FormControl(new Date()) ,
       PutAwayEndLocation: new FormControl(new Date()),
       SortByPutAwayCountLocation: new FormControl(false),
       MaxCycleCountsPutAwayLocation: new FormControl(),
@@ -188,17 +194,21 @@ constructor(
     this.SetDateFormat();
   }
 
-  SetDateFormat(){
-    this.completeDate = new Date();
+  SetDateFormat() {
+    this.completeDate = new Date(); // Get the current date and time
+    this.completeDate.setHours(0, 0, 0, 0); // Set the time to 12:00 AM
+  
     const offsetMs = this.completeDate.getTimezoneOffset() * 60 * 1000;
-    const msLocal =  this.completeDate.getTime() - offsetMs;
+    const msLocal = this.completeDate.getTime() - offsetMs;
     const dateLocal = new Date(msLocal);
+  
     const iso = dateLocal.toISOString();
-    const isoLocal = iso.slice(0, 19)+".932Z";
-
-    //var test = "2023-09-25T19:48:18.932Z" //  2023-09-25T19:39:19.932Z
-    this.localCompleteDate=isoLocal.substring(0, isoLocal.length - 8);
+    const isoLocal = iso.slice(0, 19) + ".932Z";
+  
+    // Remove unnecessary parts and format for `datetime-local`
+    this.localCompleteDate = isoLocal.substring(0, 16); // Format to 'yyyy-MM-ddTHH:mm'
   }
+  
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['updateTable'][StringConditions.currentValue]) {
       this.resetVal();
@@ -520,7 +530,10 @@ constructor(
   // function returns an object with 18 values
   getPayload() {
     return {
-
+      picklocincludeEmpty: this.filtersForm.value.picklocincludeEmpty,
+      picklocincludeOther: this.filtersForm.value.picklocincludeOther,
+      putlocincludeEmpty: this.filtersForm.value.putlocincludeEmpty,
+      putlocincludeOther: this.filtersForm.value.putlocincludeOther,
       fromLocation: this.filtersForm.value.fromLocation
         ? this.filtersForm.value.fromLocation
         : '',
@@ -592,7 +605,8 @@ constructor(
   // and then assign the response to the dataSource variable with check type of response and if there is response.data and isExecuted is true else add error toast
   // handle with try catch
   fillData() { 
-      const  queryData:any =  {
+
+      const  queryData:any =  { 
         fromLocation: this.filtersForm.value.fromLocation
           ? this.filtersForm.value.fromLocation
           : '',
@@ -671,6 +685,10 @@ constructor(
         : this.filtersForm.value.pickedEndLocation,
 
         SortByPickCountLocation: this.filtersForm.value.SortByPickCountLocation,
+        picklocincludeEmpty: this.filtersForm.value.picklocincludeEmpty,
+        picklocincludeOther: this.filtersForm.value.picklocincludeOther,
+        putlocincludeEmpty: this.filtersForm.value.putlocincludeEmpty,
+        putlocincludeOther: this.filtersForm.value.putlocincludeOther,
         IncludeHotPickLocation: this.filtersForm.value.IncludeHotPickLocation,           
         IncludeHotMoveLocation: this.filtersForm.value.IncludeHotMoveLocation,           
         IncludeReplenishmentLocation: this.filtersForm.value.IncludeReplenishmentLocation,           
@@ -697,6 +715,7 @@ constructor(
              MaxCycleCountsPutAwayLocation: this.filtersForm.value.MaxCycleCountsPutAwayLocation
              ? this.filtersForm.value.MaxCycleCountsPutAwayLocation
              : 0,
+             
       } ;  
     this.iAdminApiService.BatchResultTable(queryData).subscribe(
       (res: any) => {
@@ -918,6 +937,9 @@ setPickChecksLocation(e:any, type:any)
   this.filtersForm.controls['IncludeHotMoveLocation'].setValue(updatedValues[1]);
   this.filtersForm.controls['IncludeReplenishmentLocation'].setValue(updatedValues[2]);
   this.filtersForm.controls['SortByPickCountLocation'].setValue(updatedValues[3]);
+  this.filtersForm.controls['picklocincludeEmpty'].setValue(updatedValues[4]);
+  this.filtersForm.controls['picklocincludeOther'].setValue(updatedValues[5]);
+  
   this.fillData();
 }
 setPutChecksLocation(e:any, type:any)
@@ -927,6 +949,8 @@ setPutChecksLocation(e:any, type:any)
   this.filtersForm.controls['IncludeHotMovePutAwayLocation'].setValue(updatedValues[1]);
   this.filtersForm.controls['IncludeReplenishmentPutAwayLocation'].setValue(updatedValues[2]);
   this.filtersForm.controls['SortByPutAwayCountLocation'].setValue(updatedValues[3]);
+  this.filtersForm.controls['putlocincludeEmpty'].setValue(updatedValues[4]);
+  this.filtersForm.controls['putlocincludeOther'].setValue(updatedValues[5]);
   this.fillData();
 }
 

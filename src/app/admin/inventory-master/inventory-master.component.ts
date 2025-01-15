@@ -35,7 +35,7 @@ import { ContextMenuFiltersService } from 'src/app/common/init/context-menu-filt
 export class InventoryMasterComponent implements OnInit {
   placeholders = Placeholders;
   fieldMappings = JSON.parse(localStorage.getItem('fieldMappings') ?? '{}');
-
+  LabelitemNumber: string = this.fieldMappings.itemNumber;
   @ViewChild('matRef') matRef: MatSelect;
   public textLabel: any = 'Details';
   tabIndex: any = 0;

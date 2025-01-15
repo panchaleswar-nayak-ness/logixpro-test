@@ -10,6 +10,8 @@ import {  TableConstant ,UniqueConstants,Column,ColumnDef, Placeholders} from 's
   styleUrls: ['./location.component.scss']
 })
 export class LocationComponent implements OnInit {
+  fieldMappings = JSON.parse(localStorage.getItem('fieldMappings') ?? '{}');
+  UnitOfMeasure: string = this.fieldMappings.unitOfMeasure;
   placeholders = Placeholders;
   @Input() fieldNameDetails: any;
   currentDir=UniqueConstants.Asc;

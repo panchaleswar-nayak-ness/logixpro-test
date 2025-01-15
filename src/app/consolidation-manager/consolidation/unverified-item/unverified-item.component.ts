@@ -12,7 +12,9 @@ import {LiveAnnouncerMessage, Placeholders} from 'src/app/common/constants/strin
 })
 
 export class UnverifiedItemComponent implements OnInit {
-
+  fieldMappings = JSON.parse(localStorage.getItem('fieldMappings') ?? '{}');
+  itemNumber: string = this.fieldMappings.itemNumber;
+  userField1: string = this.fieldMappings.userField1;
   @Input() startSelectFilterLabel: any;
   @Input() startSelectFilter: any;
   @Input() filterOption: any;

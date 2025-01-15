@@ -40,6 +40,20 @@ export interface PeriodicElement {
   styleUrls: ['./pick-tote-manager.component.scss'],
 })
 export class PickToteManagerComponent implements OnInit {
+fieldMappings = JSON.parse(localStorage.getItem('fieldMappings') ?? '{}');
+ItemNumber: string = this.fieldMappings.itemNumber;
+UnitOfMeasure: string = this.fieldMappings.unitOfMeasure;
+UserField1:string = this.fieldMappings.userField1;
+UserField2:string = this.fieldMappings.userField2;
+UserField3:string = this.fieldMappings.userField3;
+UserField4:string = this.fieldMappings.userField4;
+UserField5:string = this.fieldMappings.userField5;
+UserField6:string = this.fieldMappings.userField6;
+UserField7:string = this.fieldMappings.userField7;
+UserField8:string = this.fieldMappings.userField8;
+UserField9:string = this.fieldMappings.userField9;
+UserField10:string = this.fieldMappings.userField10;
+
   placeholders = Placeholders;
   ELEMENT_DATA: PeriodicElement[] = [
     { position: 1, name: 'Hydrogen', weight: 1.0079, symbol: 'H' },
@@ -150,7 +164,7 @@ export class PickToteManagerComponent implements OnInit {
     },
     {
       columnDef: 'itemNumber',
-      header: Column.ItemNumber,
+      header: this.ItemNumber,
       cell: (element: any) => `${element.itemNumber}`,
     },
     {
@@ -230,57 +244,57 @@ export class PickToteManagerComponent implements OnInit {
     },
     {
       columnDef: ColumnDef.UnitOfMeasure,
-      header: 'Unit Of Measure',
+      header: this.UnitOfMeasure,
       cell: (element: any) => `${element.unitOfMeasure}`,
     },
     {
       columnDef: ColumnDef.userField1,
-      header: TableConstant.UserField1,
+      header: this.UserField1,
       cell: (element: any) => `${element.userField1}`,
     },
     {
       columnDef: ColumnDef.userField2,
-      header: TableConstant.UserField2,
+      header: this.UserField2,
       cell: (element: any) => `${element.userField2}`,
     },
     {
       columnDef: ColumnDef.userField3,
-      header: 'User Field3',
+      header: this.UserField3,
       cell: (element: any) => `${element.userField3}`,
     },
     {
       columnDef: ColumnDef.userField4,
-      header: 'User Field4',
+      header: this.UserField4,
       cell: (element: any) => `${element.userField4}`,
     },
     {
       columnDef: ColumnDef.userField5,
-      header: 'User Field5',
+      header: this.UserField5,
       cell: (element: any) => `${element.userField5}`,
     },
     {
       columnDef: ColumnDef.userField6,
-      header: 'User Field6',
+      header: this.UserField6,
       cell: (element: any) => `${element.userField6}`,
     },
     {
       columnDef: ColumnDef.userField7,
-      header: 'User Field7',
+      header: this.UserField7,
       cell: (element: any) => `${element.userField7}`,
     },
     {
       columnDef: ColumnDef.userField8,
-      header: 'User Field8',
+      header: this.UserField8,
       cell: (element: any) => `${element.userField8}`,
     },
     {
       columnDef: ColumnDef.userField9,
-      header: 'User Field9',
+      header: this.UserField9,
       cell: (element: any) => `${element.userField9}`,
     },
     {
       columnDef: ColumnDef.userField10,
-      header: 'User Field10',
+      header: this.UserField10,
       cell: (element: any) => `${element.userField10}`,
     },
     {

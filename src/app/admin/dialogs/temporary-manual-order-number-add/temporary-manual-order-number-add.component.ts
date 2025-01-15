@@ -18,6 +18,8 @@ import { Placeholders, ToasterTitle, ToasterType, TransactionType ,UniqueConstan
   styleUrls: ['./temporary-manual-order-number-add.component.scss'],
 })
 export class TemporaryManualOrderNumberAddComponent implements OnInit {
+  fieldMappings = JSON.parse(localStorage.getItem('fieldMappings') ?? '{}');
+  Itemnumber: string = this.fieldMappings.itemNumber;
   placeholders = Placeholders;
   @ViewChild('ord_nmb') ord_nmb: ElementRef;
   floatLabelControl: any = new FormControl('auto' as FloatLabelType);

@@ -51,6 +51,8 @@ interface BatchTotesResponse {
   styleUrls: ['./process-put-aways.component.scss'],
 })
 export class ProcessPutAwaysComponent implements OnInit {
+  fieldMappings = JSON.parse(localStorage.getItem('fieldMappings') ?? '{}');
+  itemNumber: string = this.fieldMappings.itemNumber;
   ELEMENT_DATA = [{ position: 0, cells: '', toteid: '', locked: '' }];
   displayedColumns: string[] = ['positions', 'cells', 'toteid', 'save'];
   dataSource: any;

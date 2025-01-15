@@ -81,7 +81,7 @@
                     <mat-label>Input Type</mat-label>
                     <mat-select #matRef class="employees-action" [(ngModel)]="inputType" (selectionChange)="selectionChanged($event.value)">
                       <mat-option value="Any">Any</mat-option>
-                      <mat-option value="Item Number" replacePlaceholder [replacePlaceHolder]="placeholders.itemNumber" [fallbackPlaceHolder]="placeholders.itemNumberFallback">{{fieldNames.itemNumber}}</mat-option>
+                      <mat-option value="Item Number">{{itemNumber}}</mat-option>
                       <mat-option value="Serial Number">Serial Number</mat-option>
                       <mat-option value="Lot Number">Lot Number</mat-option>
                       <mat-option value="Host Transaction ID">Host Transaction ID</mat-option>

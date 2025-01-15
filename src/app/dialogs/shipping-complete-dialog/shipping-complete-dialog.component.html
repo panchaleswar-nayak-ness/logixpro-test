@@ -56,8 +56,8 @@
                   </ng-container>
 
                   <ng-container matColumnDef="itemNumber">
-                    <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by number">Item
-                      Number</th>
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by number">{{ItemNumber}}
+                      </th>
                     <td mat-cell *matCellDef="let element" #tooltip="matTooltip" matTooltipPosition="above"
                       [matTooltip]="element.itemNumber"
                       [matTooltipDisabled]="element.itemNumber && element.itemNumber.length>=20?false:true">

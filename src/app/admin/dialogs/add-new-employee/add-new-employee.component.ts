@@ -55,7 +55,6 @@ export class AddNewEmployeeComponent implements OnInit {
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
     private global:GlobalService,
-    
     private adminApiService: AdminApiService,
     private employeeService: ApiFuntions,
     private router: Router,

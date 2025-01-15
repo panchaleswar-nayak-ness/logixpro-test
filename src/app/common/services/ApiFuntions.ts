@@ -1361,6 +1361,10 @@ export class ApiFuntions {
     return this.ApiBase.Put(`/Admin/inventorymap`, body);
   }
 
+  public updateInventoryMapClearWholeLocation(body: any, mapID?): Observable<any> {
+    return this.ApiBase.Put(`/Admin/clearwholelocation`, body);
+  }
+
   public createInventoryMap(body?: any): Observable<any> {
     return this.ApiBase.Post(`/Admin/inventorymap`, body);
   }
@@ -2022,6 +2026,9 @@ export class ApiFuntions {
 
   public ToteManagementUpdate(body: any): Observable<any> {
     return this.ApiBase.Put('/Admin/totemanagement', body);
+  }
+  public StorageContainerManagementUpdate(body: any): Observable<any> {
+    return this.ApiBase.Put('/Admin/StorageContainerManagement', body);
   }
 
   public LocationAssignmentFunctionsUpdate(body: any): Observable<any> {

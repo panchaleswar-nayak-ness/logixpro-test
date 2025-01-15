@@ -17,6 +17,19 @@ import {  ToasterTitle ,ToasterType,TransactionType,ColumnDef,TableConstant,Uniq
   styleUrls: ['./om-add-record.component.scss']
 })
 export class OmAddRecordComponent implements OnInit {
+  fieldMappings = JSON.parse(localStorage.getItem('fieldMappings') ?? '{}');
+  ItemNumber: string = this.fieldMappings.itemNumber;
+  UnitOfMeasure: string = this.fieldMappings.unitOfMeasure;
+  UserField1:string = this.fieldMappings.userField1;
+  UserField2:string = this.fieldMappings.userField2;
+  UserField3:string = this.fieldMappings.userField3;
+  UserField4:string = this.fieldMappings.userField4;
+  UserField5:string = this.fieldMappings.userField5;
+  UserField6:string = this.fieldMappings.userField6;
+  UserField7:string = this.fieldMappings.userField7;
+  UserField8:string = this.fieldMappings.userField8;
+  UserField9:string = this.fieldMappings.userField9;
+  UserField10:string = this.fieldMappings.userField10;
   placeholders = Placeholders;
   @ViewChild('ordFocus') ordFocus: ElementRef;
   userData: any;

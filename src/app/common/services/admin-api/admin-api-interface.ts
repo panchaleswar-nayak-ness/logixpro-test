@@ -132,6 +132,7 @@ export interface IAdminApiService
       getItemNumDetail(payload : any);
       getLocZTypeInvMap(payload : any);
       updateInventoryMap(payload : any, mapID? : any)
+      updateInventoryMapClearWholeLocation(payload : any, mapID? : any)
        // check api call 
       createInventoryMap(payload : any)
       GetLocAssCountTable();
@@ -240,6 +241,7 @@ export interface IAdminApiService
     WorkstationSetupInfo()
     WorkstationSettingsUpdate(payload : any);
     ToteManagementUpdate(payload : any);
+    StorageContainerManagementUpdate(payload : any);
   LocationAssignmentFunctionsUpdate(payload: any);
   
 

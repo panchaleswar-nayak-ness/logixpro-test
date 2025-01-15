@@ -31,7 +31,9 @@ export class SelectionTransactionForToteExtendComponent implements OnInit {
   @ViewChild('fieldFocus') fieldFocus: ElementRef;
   @ViewChild('tooltip') tooltip: any = ElementRef;
   @ViewChild('inputToteQty') inputToteQty: ElementRef;
-
+  fieldMappings = JSON.parse(localStorage.getItem('fieldMappings') ?? '{}');
+  ItemNumber: string = this.fieldMappings.itemNumber;
+  UnitOfMeasure: string = this.fieldMappings.unitOfMeasure;
 
   public userData   : any;
   isWarehouseSensitive: boolean = false;

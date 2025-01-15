@@ -219,4 +219,12 @@ table.custom-action-clickable-table tr:hover td{
   height: 65vh;
 }
 
+.mat-tooltip {
+  font-size: 16px; /* Set the desired font size */
+  color: #ffffff; /* Optional: Change text color */
+  background-color: #333333; /* Optional: Change tooltip background color */
+  padding: 8px; /* Optional: Add some padding for better appearance */
+  border-radius: 4px; /* Optional: Add rounded corners */
+}
+
 

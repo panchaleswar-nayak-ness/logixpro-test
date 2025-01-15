@@ -11,7 +11,7 @@ export class CycleCountsComponent {
 
   constructor(private router: Router) { }
   createTransaction(){
-    this.router.navigate([AppRoutes.AdminCreateCountBatches]);
+    this.router.navigate([AppRoutes.AdminCreateCountBatches]);  
   }
 
 }

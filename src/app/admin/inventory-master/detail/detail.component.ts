@@ -24,6 +24,8 @@ import { ContextMenuFiltersService } from 'src/app/common/init/context-menu-filt
   styleUrls: ['./detail.component.scss']
 })
 export class DetailComponent implements OnInit {
+  fieldMappings = JSON.parse(localStorage.getItem('fieldMappings') ?? '{}');
+  ItemNumber: string = this.fieldMappings.itemNumber;
   private eventsSubscription: Subscription;
   @Input() events: Observable<string>;
   @Input() fieldNameDetails: any;

@@ -26,8 +26,8 @@
   -webkit-hyphens: auto;
   hyphens: auto;
 }
-.h-60v{
-      height: 60vh;
+.h-50v{
+      height: 50vh;
 }
  .w-48px{
   width: 48px;
@@ -50,3 +50,28 @@
   margin-right: 8px;
   color: #333;
 }
+
+.cardBorder{
+  overflow-x: auto;
+  .mat-table-scrollbar , .table-bar{
+    height: 400px;
+    th {
+      white-space: nowrap;
+      padding-right: 10px;
+    }
+    .th-align{
+      text-align: right
+    }
+    .td-align{
+      text-align: right
+    }
+    td {
+      max-width: 15ch;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      white-space: nowrap;
+      padding-right:15px;
+    }
+  }
+}
+

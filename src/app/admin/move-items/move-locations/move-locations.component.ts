@@ -13,7 +13,11 @@ import { GlobalService } from 'src/app/common/services/global.service';
   styleUrls: ['./move-locations.component.scss']
 })
 export class MoveLocationsComponent {
-
+  fieldMappings = JSON.parse(localStorage.getItem('fieldMappings') ?? '{}');
+  itemNumber: string = this.fieldMappings.itemNumber;
+  UnitOfMeasure: string = this.fieldMappings.unitOfMeasure;
+  UserField1:string = this.fieldMappings.userField1;
+  UserField2:string = this.fieldMappings.userField2;
   floatLabelControl = new FormControl('auto' as FloatLabelType);
   hideRequiredControl = new FormControl(false);
   selectedWarehouse: string = 'ALL';

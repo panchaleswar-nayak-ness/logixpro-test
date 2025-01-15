@@ -1123,6 +1123,14 @@ export class AdminApiService implements IAdminApiService {
     return this.Api.updateInventoryMap(payload);
   }
 
+  public updateInventoryMapClearWholeLocation(body: any) {
+    const payload = {
+      ...body
+    }
+    return this.Api.updateInventoryMapClearWholeLocation(payload);
+  }
+
+
   // check api call
   public createInventoryMap<T>(body?: T) {
     return this.Api.createInventoryMap(body);
@@ -2024,6 +2032,15 @@ export class AdminApiService implements IAdminApiService {
       ...body
     }
     return this.Api.ToteManagementUpdate(payload);
+  }
+  
+  public StorageContainerManagementUpdate(body: any) {
+    const payload = {
+      username: this.userData.userName,
+      wsid: this.userData.wsid,
+      ...body
+    }
+    return this.Api.StorageContainerManagementUpdate(payload);
   }
 
   public LocationAssignmentFunctionsUpdate(body: any) {

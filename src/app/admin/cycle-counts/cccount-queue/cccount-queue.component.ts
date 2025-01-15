@@ -26,8 +26,9 @@ const ELEMENT_DATA: PeriodicElement[] = [
   styleUrls: ['./cccount-queue.component.scss']
 })
 export class CCCountQueueComponent {
+  fieldMappings = JSON.parse(localStorage.getItem('fieldMappings') ?? '{}');
+  ItemNumber: string = this.fieldMappings.itemNumber;
   @ViewChild('matRef') matRef!: MatSelect; // Reference for mat-select
-
   displayedColumns: string[] = [UniqueConstants.position, 'name', 'weight', 'symbol', 'ex', 'srno', ColumnDef.Action];
   tableData = ELEMENT_DATA;
 
@@ -49,16 +50,17 @@ export class CCCountQueueComponent {
 
   onActionChange(event: any): void {
     const selectedValue = event.value;
-    console.log('Selected Value:', selectedValue); // Debug line
+    console.log('Selected Value:', selectedValue); 
 
-    if (selectedValue === '2') { // Value 2 corresponds to "Import Count Batches"
+    if (selectedValue === '2') { 
       this.openImportCountBatchesDialog();
     }
   }
 
   openImportCountBatchesDialog(): void {
     const dialogRef = this.dialog.open(ImportCountBatchesComponent, {
-      width: '1400px',
+      height: 'auto',
+      width: '1280px',
       autoFocus: DialogConstants.autoFocus,
       disableClose: true,
       data: {
@@ -67,10 +69,10 @@ export class CCCountQueueComponent {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      // Reset the mat-select value to ensure the next click can trigger the dialog again
-      this.matRef.value = null;  // Reset the selected value of mat-select
+    
+      this.matRef.value = null;  
 
-      // Handle dialog close result if needed
+     
     });
   }
 }

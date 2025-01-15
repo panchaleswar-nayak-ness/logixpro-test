@@ -13,7 +13,9 @@ import { CMConsolidationPreferences, ToasterMessages, ToasterTitle, ToasterType 
 })
 
 export class PreferencesConsolidationComponent {
-
+  fieldMappings = JSON.parse(localStorage.getItem('fieldMappings') ?? '{}');
+  ItemNumber: string = this.fieldMappings.itemNumber;
+  UserField1:string = this.fieldMappings.userField1;
   placeholders = Placeholders;
   filtersForm: FormGroup;
   @Input() pref: any;
