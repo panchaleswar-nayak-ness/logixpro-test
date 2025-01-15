@@ -2027,6 +2027,9 @@ export class ApiFuntions {
   public ToteManagementUpdate(body: any): Observable<any> {
     return this.ApiBase.Put('/Admin/totemanagement', body);
   }
+  public StorageContainerManagementUpdate(body: any): Observable<any> {
+    return this.ApiBase.Put('/Admin/StorageContainerManagement', body);
+  }
 
   public LocationAssignmentFunctionsUpdate(body: any): Observable<any> {
     return this.ApiBase.Put('/Admin/locationassignmentfunctions', body);

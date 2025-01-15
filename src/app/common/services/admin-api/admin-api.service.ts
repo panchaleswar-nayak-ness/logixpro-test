@@ -2033,6 +2033,15 @@ export class AdminApiService implements IAdminApiService {
     }
     return this.Api.ToteManagementUpdate(payload);
   }
+  
+  public StorageContainerManagementUpdate(body: any) {
+    const payload = {
+      username: this.userData.userName,
+      wsid: this.userData.wsid,
+      ...body
+    }
+    return this.Api.StorageContainerManagementUpdate(payload);
+  }
 
   public LocationAssignmentFunctionsUpdate(body: any) {
     const payload = {
