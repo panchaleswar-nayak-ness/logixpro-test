@@ -44,6 +44,8 @@ export class FilterItemNumbersComponentCycleCount implements OnInit {
     if (this.importtype === 'Location') {
       this.titleText = 'Filter Locations';
       this.instructionsText = 'This is used to copy and paste Locations from an excel spreadsheet.';
+      this.includeEmpty=this.data.includeEmpty;
+      this.includeOther=this.data.includeOther
     } else {
       this.titleText = 'Filter Item Numbers';
       this.instructionsText = 'This is used to copy and paste item numbers from an excel spreadsheet.';
@@ -58,7 +60,7 @@ export class FilterItemNumbersComponentCycleCount implements OnInit {
     this.filterText.nativeElement.focus();
   }
   filterItemNumbers(): void {
-   
+    
     let itemsStr = this.items.trim().replace(/[\n\r]/g, ',');
     let itemsArray = itemsStr.split(',');
     itemsArray = itemsArray.filter((item: any) => item != "");
@@ -69,22 +71,55 @@ export class FilterItemNumbersComponentCycleCount implements OnInit {
       "includeEmpty": this.includeEmpty,  
       "includeOther": this.includeOther   
     };
-  
    
     this.adminApiService.GetImportBatchCount(payload).subscribe((res: any) => {
+  
       if (res.isExecuted && res.data) {
         
         if (res.data.item1 && res.data.item1.length > 0) {
+          
           let heading = '';
           let message = '';
-          
-        
+          let message2 = '';
+
           if (this.importtype === 'Location') {
-            heading = 'Location(s) Not Found';
-            message = `The following Locations do not exist [${res.data.item1.join(', ')}]`;
+            
+            // for location exists in db
+            if (res.data.item3 && res.data.item3.length > 0) {
+          
+              heading = 'Location(s) Not Found';
+              message = `The following location(s) could not be imported as they are in another user's queue or have existing cycle count transactions: [${res.data.item3.join(', ')}]`;
+  
+              // for some location exists in db and some are not in db 
+              if (res.data.item4 && res.data.item4.length > 0) 
+              {
+                message = `The following location(s) could not be imported as they are in another user's queue or have existing cycle count transactions: [${res.data.item3.join(', ')}]`;
+                message2 =`The following location(s) do not exist: [${res.data.item4.join(', ')}]`;
+              }  
+  
+            }
+            else
+            {
+              // for not showing message dialog box if it is exists in empty locations
+              if ((res.data.item3.length === 0) && (res.data.item4.length === 0)){
+              this.dialogRef.close({ 
+                filterItemNumbersText: this.data, 
+                filterItemNumbersArray: itemsArray,
+                filterData: commaSeparatedItems,
+              });
+              return
+              }
+              // for showing no location exists in db
+              else {
+              heading = 'Location(s) Not Found';
+              message = `The following location(s) do not exist: [${res.data.item1.join(', ')}]`;
+              }  
+            }
+            //heading = 'Location(s) Not Found';
+            //message = `The following Locations do not exist [${res.data.item1.join(', ')}]`;
           } else if (this.importtype === 'Item Number') {
             heading = 'Item(s) Not Found';
-            message = `The following Item Numbers do not exist [${res.data.item1.join(', ')}]`;
+            message = `The following Item Number(s) do not exist [${res.data.item1.join(', ')}]`;
           }
   
        
@@ -93,6 +128,7 @@ export class FilterItemNumbersComponentCycleCount implements OnInit {
             data: {
               heading: heading,
               message: message,
+              message2:message2,
               buttonFields: false,
               threeButtons: false,
               singleButton: true,
@@ -104,6 +140,7 @@ export class FilterItemNumbersComponentCycleCount implements OnInit {
   
          
           dialogRef.afterClosed().subscribe(() => {
+           
              this.dialogRef.close();
          
             if (res.data.item2 && res.data.item2.length > 0) {
@@ -122,7 +159,6 @@ export class FilterItemNumbersComponentCycleCount implements OnInit {
                 location: item.location,
                 expirationDate: item.expirationDate || 'N/A', 
               }));
-  
               
               this.dialogRef.close({ 
                 filterItemNumbersText: this.data, 
@@ -131,7 +167,12 @@ export class FilterItemNumbersComponentCycleCount implements OnInit {
                 filterData: commaSeparatedItems,
               });
             } else {
-             
+              this.dialogRef.close({ 
+                filterItemNumbersText: this.data, 
+                filterItemNumbersArray: itemsArray,
+                //responseData: tableData, 
+                filterData: commaSeparatedItems,
+              });
             }
           });
         } else {
@@ -160,6 +201,7 @@ export class FilterItemNumbersComponentCycleCount implements OnInit {
               responseData: tableData, 
               filterData: commaSeparatedItems,
             });
+
           } else {
            
           }

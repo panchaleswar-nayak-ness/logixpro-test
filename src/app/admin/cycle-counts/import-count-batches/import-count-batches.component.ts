@@ -62,7 +62,8 @@ export class ImportCountBatchesComponent implements OnInit {
   UnitOfMeasure: string = this.fieldMappings.unitOfMeasure;
   dataSource = new MatTableDataSource<PeriodicElement>();
   placeholders = Placeholders;
-  
+  IncludeEmptyCheckedValue :any;
+  IncludeOtherCheckedValue :any;
   displayedColumns: string[] = [
     'itemNumber',
     'description',
@@ -218,13 +219,20 @@ removeSpacesFromString(value: string): string {
 
 
   onChangeDemo(e: any, type: string): void {
+    
     if (type === 'empty') {
       this.filtersForm.controls['includeEmpty'].setValue(e.checked);
+      this.IncludeEmptyCheckedValue=e.checked
+      this.dataSource.data = [];
+      
     } else if (type === 'other') {
       this.filtersForm.controls['includeOther'].setValue(e.checked);
-    }
+      this.IncludeOtherCheckedValue=e.checked
+      this.dataSource.data = [];
+          }
 
     this.confirmImport(true);
+
   }
 
   onFileSelect(event: Event): void {
@@ -402,14 +410,16 @@ removeSpacesFromString(value: string): string {
 openFilterItemNumbersDialog(): void {
     const dialogRef = this.dialog.open(FilterItemNumbersComponentCycleCount, {
       width: '600px',
-      
+       
       data: { 
         selectedImporttType: this.selectedImportType ?? "",
-          
+        includeEmpty:this.IncludeEmptyCheckedValue ?? false,
+        includeOther:this.IncludeOtherCheckedValue ?? false,
       },
     });
   
     dialogRef.afterClosed().subscribe((result) => {
+      
       this.selectedFilterBy = '';
       if (result && result.responseData && result.filterData) {
           console.log('Filtered Item Numbers Response Data:', result.responseData);
@@ -417,6 +427,11 @@ openFilterItemNumbersDialog(): void {
           this.filterData=result.filterData;
          this.updateTableData(result.responseData);
       }
+      if (result.filterData) {
+       console.log('Filtered Data:', result.filterData);
+      this.filterData=result.filterData;
+      // this.updateTableData(result.responseData);
+    }
     });
   }
 
