@@ -30,6 +30,7 @@ import { RouteUpdateMenu } from 'src/app/common/constants/menu.constants';
 import { AppNames, AppRoutes, } from 'src/app/common/constants/menu.constants';
 import { ContextMenuFiltersService } from 'src/app/common/init/context-menu-filters.service';
 import { Placeholders } from 'src/app/common/constants/strings.constants';
+import { StorageContainerManagementModalComponent } from '../dialogs/storage-container-management/storage-container-management.component';
 
 @Component({
   selector: 'app-inventory-map',
@@ -683,6 +684,18 @@ selectRow(row: any) {
       selectedRow.selected = !selectedRow.selected;
     }
   }, 250);
+}
+
+storageContainerManagement(){
+  let dialogRef:any = this.global.OpenDialog(StorageContainerManagementModalComponent, {
+    height: DialogConstants.auto,
+    width: '560px',
+    autoFocus: DialogConstants.autoFocus,
+    data: {}
+  })
+  dialogRef.afterClosed().pipe(takeUntil(this.onDestroy$)).subscribe(result => {
+   
+  })
 }
 
 }
