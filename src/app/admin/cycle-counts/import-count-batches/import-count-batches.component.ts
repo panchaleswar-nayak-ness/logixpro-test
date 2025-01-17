@@ -336,21 +336,54 @@ removeSpacesFromString(value: string): string {
       };
 
       this.iAdminApiService.GetImportBatchCount(payload).subscribe(
+        
         (res: { isExecuted: boolean; data: any; responseMessage: string }) => {
           console.log('API Response:', res);
-
+      
           if (res.isExecuted) {
           
             if (res.data && res.data.item1 && res.data.item1.length > 0 && !skipDialog) {
               let heading = '';
               let message = '';
-              
+              let message2='';
              
               if (this.selectedImportType === 'Location') {
-                heading = 'Location(s) Not Found';
-                message = `The following Locations do not exist [${res.data.item1.join(', ')}]`;
-               
-            } else if (this.selectedImportType === this.ItemNumber) {
+              
+                  // for location exists in db
+            if (res.data.item3 && res.data.item3.length > 0) {
+          
+              heading = 'Location(s) Not Found';
+              message = `The following location(s) could not be imported as they are in another user's queue or have existing cycle count transactions: [${res.data.item3.join(', ')}]`;
+  
+              // for some location exists in db and some are not in db 
+              if (res.data.item4 && res.data.item4.length > 0) 
+              {
+                message = `The following location(s) could not be imported as they are in another user's queue or have existing cycle count transactions: [${res.data.item3.join(', ')}]`;
+                message2 =`The following location(s) do not exist: [${res.data.item4.join(', ')}]`;
+              }  
+  
+            }
+            else
+            {
+              // for not showing message dialog box if it is exists in empty locations
+              if ((res.data.item3.length === 0) && (res.data.item4.length === 0)){
+              this.dialogRef.close({ 
+                filterItemNumbersText: this.data, 
+                filterItemNumbersArray: itemsArray,
+                filterData: commaSeparatedItems,
+              });
+              return
+              }
+              // for showing no location exists in db
+              else {
+              heading = 'Location(s) Not Found';
+              message = `The following location(s) do not exist: [${res.data.item1.join(', ')}]`;
+              }  
+            }
+            //heading = 'Location(s) Not Found';
+            //message = `The following Locations do not exist [${res.data.item1.join(', ')}]`;
+          }  
+              else if (this.selectedImportType === this.ItemNumber) {
                 heading = 'Item(s) Not Found';
                 message = `The following Item Numbers do not exist [${res.data.item1.join(', ')}]`;
               
@@ -361,6 +394,7 @@ removeSpacesFromString(value: string): string {
                 data: {
                   heading: heading,
                   message: message,
+                  message2: message2,
                   buttonFields: false,
                   threeButtons: false,
                   singleButton: true,
@@ -423,7 +457,7 @@ openFilterItemNumbersDialog(): void {
       this.selectedFilterBy = '';
       if (result && result.responseData && result.filterData) {
           console.log('Filtered Item Numbers Response Data:', result.responseData);
-         console.log('Filtered Data:', result.filterData);
+          console.log('Filtered Data:', result.filterData);
           this.filterData=result.filterData;
          this.updateTableData(result.responseData);
       }

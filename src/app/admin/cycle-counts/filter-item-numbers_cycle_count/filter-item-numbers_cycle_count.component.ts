@@ -73,7 +73,6 @@ export class FilterItemNumbersComponentCycleCount implements OnInit {
     };
    
     this.adminApiService.GetImportBatchCount(payload).subscribe((res: any) => {
-  
       if (res.isExecuted && res.data) {
         
         if (res.data.item1 && res.data.item1.length > 0) {
