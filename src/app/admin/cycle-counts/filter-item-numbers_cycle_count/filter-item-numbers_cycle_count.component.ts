@@ -6,7 +6,7 @@ import { AuthService } from 'src/app/common/init/auth.service';
 import { IAdminApiService } from 'src/app/common/services/admin-api/admin-api-interface';
 import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.service';
 import { ConfirmationDialogComponent } from '../../dialogs/confirmation-dialog/confirmation-dialog.component';
-
+import { LocalStorageService } from 'src/app/common/services/LocalStorage.service';
 @Component({
   selector: 'app-filter-item-numbers',
   templateUrl: './filter-item-numbers_cycle_count.component.html',
@@ -30,6 +30,7 @@ export class FilterItemNumbersComponentCycleCount implements OnInit {
     private global: GlobalService,
     public adminApiService: AdminApiService,
     private authService: AuthService,
+    private localstorageService:LocalStorageService
   ) {
     this.iAdminApiService = adminApiService;
    }
@@ -60,16 +61,19 @@ export class FilterItemNumbersComponentCycleCount implements OnInit {
     this.filterText.nativeElement.focus();
   }
   filterItemNumbers(): void {
-    
     let itemsStr = this.items.trim().replace(/[\n\r]/g, ',');
     let itemsArray = itemsStr.split(',');
     itemsArray = itemsArray.filter((item: any) => item != "");
     let commaSeparatedItems = itemsArray.join(',');
+
+    let updatedValues=this.localstorageService.SetImportCountLocationChecks(null,null);
+    this.includeEmpty=updatedValues[0];
+    this.includeOther=updatedValues[1];
     let payload: any = { 
       "items": commaSeparatedItems,
       "importBy": this.importtype,
-      "includeEmpty": this.includeEmpty,  
-      "includeOther": this.includeOther   
+      "includeEmpty": this.includeEmpty ? this.includeEmpty : false,  
+      "includeOther": this.includeOther ? this.includeOther : false   
     };
    
     this.adminApiService.GetImportBatchCount(payload).subscribe((res: any) => {

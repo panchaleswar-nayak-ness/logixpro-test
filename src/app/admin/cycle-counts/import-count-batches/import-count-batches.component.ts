@@ -18,6 +18,7 @@ import { ConfirmationDialogComponent } from '../../dialogs/confirmation-dialog/c
 import { Router } from '@angular/router';
 import { AppRoutes } from 'src/app/common/constants/menu.constants';
 import { MatSelect } from '@angular/material/select';
+import { LocalStorageService } from 'src/app/common/services/LocalStorage.service';
 
 export interface PeriodicElement {
   invMapID:number;
@@ -139,6 +140,7 @@ removeSpacesFromString(value: string): string {
     public global:GlobalService, 
     private dialog: MatDialog,
     public adminApiService: AdminApiService,
+    private localstorageService:LocalStorageService,
     @Inject(MAT_DIALOG_DATA) public data: DialogData,
 
     public dialogRef: MatDialogRef<ImportCountBatchesComponent>
@@ -187,9 +189,9 @@ removeSpacesFromString(value: string): string {
       this.filterOptions = ['Spreadsheet', this.ItemNumber];
     }
     else  if (this.selectedImportType === 'Location') {
-    
       this.dependVal = 'Location';
       this.filterOptions = ['Spreadsheet', 'Location'];
+      this.setLocationCheck(null,null);
     }  else {
        this.filterOptions = [];
     }
@@ -206,34 +208,12 @@ removeSpacesFromString(value: string): string {
     this.uploadedFileName = ''; 
     this.openFilterItemNumbersDialog();
   } else if (this.dependVal === 'Location') {
-    this.filtersForm.reset({
-      includeEmpty: false,
-      includeOther: false
-    });
-
+  
     this.uploadedFileName = ''; 
 
     this.openFilterItemNumbersDialog();
   }
 }
-
-
-  onChangeDemo(e: any, type: string): void {
-    
-    if (type === 'empty') {
-      this.filtersForm.controls['includeEmpty'].setValue(e.checked);
-      this.IncludeEmptyCheckedValue=e.checked
-      this.dataSource.data = [];
-      
-    } else if (type === 'other') {
-      this.filtersForm.controls['includeOther'].setValue(e.checked);
-      this.IncludeOtherCheckedValue=e.checked
-      this.dataSource.data = [];
-          }
-
-    this.confirmImport(true);
-
-  }
 
   onFileSelect(event: Event): void {
     const input = event.target as HTMLInputElement;
@@ -442,9 +422,10 @@ removeSpacesFromString(value: string): string {
   
   
 openFilterItemNumbersDialog(): void {
+
     const dialogRef = this.dialog.open(FilterItemNumbersComponentCycleCount, {
       width: '600px',
-       
+      
       data: { 
         selectedImporttType: this.selectedImportType ?? "",
         includeEmpty:this.IncludeEmptyCheckedValue ?? false,
@@ -574,5 +555,18 @@ openFilterItemNumbersDialog(): void {
     }
 
 }
+
+setLocationCheck(e:any, type:any)
+  {
+    let updatedValues=this.localstorageService.SetImportCountLocationChecks(e,type);
+    this.filtersForm.controls['includeEmpty'].setValue(updatedValues[0]);
+    this.IncludeEmptyCheckedValue=updatedValues[0];
+    this.filtersForm.controls['includeOther'].setValue(updatedValues[1]);
+    this.IncludeEmptyCheckedValue=updatedValues[1];
+    
+    this.dataSource.data = [];
+    this.confirmImport(true);
+  }
+
 
 }
