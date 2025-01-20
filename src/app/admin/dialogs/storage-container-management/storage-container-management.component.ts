@@ -3,7 +3,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { ConfirmationDialogComponent } from '../confirmation-dialog/confirmation-dialog.component';
 
 @Component({
-  selector: 'app-storage-container-management',
+  selector: 'app-storage-container-management-modal',
   templateUrl: './storage-container-management.component.html',
   styleUrls: ['./storage-container-management.component.scss']
 })
