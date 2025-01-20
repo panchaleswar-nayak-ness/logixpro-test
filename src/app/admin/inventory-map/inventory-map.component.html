@@ -32,7 +32,7 @@
                     <mat-option (click)="printRange()">Print Range</mat-option>
                     <mat-option value="set_column_sq">Set Column Sequence</mat-option>
                     <mat-option    routerLink="/admin/inventoryMap/utilizationDashboard">Utlilization Report</mat-option>
-                    <mat-option (click)="storageContainerManagement()">Storage Container Management</mat-option>
+                    <mat-option *ngIf="companyObj.storageContainer" (click)="storageContainerManagement()">Storage Container Management</mat-option>
                   </mat-select>
                   <span class="material-symbols-outlined icon-expand-more">expand_more</span>
                 </mat-form-field>

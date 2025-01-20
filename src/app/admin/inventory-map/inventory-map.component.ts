@@ -39,6 +39,7 @@ import { StorageContainerManagementModalComponent } from '../dialogs/storage-con
 })
 
 export class InventoryMapComponent implements OnInit {
+  companyObj = { storageContainer: false };
   placeholders = Placeholders;
   fieldMappings = JSON.parse(localStorage.getItem('fieldMappings') ?? '{}');
     
@@ -199,6 +200,18 @@ export class InventoryMapComponent implements OnInit {
     this.OSFieldFilterNames();
     this.initializeApi();
     this.getColumnsData();
+    this.companyInfo();
+  }
+  
+  public companyInfo() {
+    this.iAdminApiService.WorkstationSetupInfo().subscribe((res: any) => {
+      if (res.isExecuted && res.data) {
+        this.companyObj.storageContainer = res.data.storageContainer;        }
+      else {
+        //this.global.ShowToastr(ToasterType.Error, this.global.globalErrorMsg(), ToasterTitle.Error);
+        console.log("AdminCompanyInfo", res.responseMessage);
+      }
+    })
   }
 
   public OSFieldFilterNames() { 
@@ -687,6 +700,8 @@ selectRow(row: any) {
 }
 
 storageContainerManagement(){
+  console.log('Storage Container Management option selected.');
+
   let dialogRef:any = this.global.OpenDialog(StorageContainerManagementModalComponent, {
     height: DialogConstants.auto,
     width: '560px',
