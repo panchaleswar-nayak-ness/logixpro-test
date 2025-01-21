@@ -115,6 +115,7 @@ export interface InventoryMapDataStructure {
 })
 export class AddInvMapLocationComponent implements OnInit {
   fieldMappings = JSON.parse(localStorage.getItem('fieldMappings') ?? '{}');
+  itemNumber: string = this.fieldMappings.itemNumber;
   userField1: string = this.fieldMappings.userField1;
   userField2: string = this.fieldMappings.userField2;
   unitOfMeasure: string = this.fieldMappings.unitOfMeasure;

@@ -18,6 +18,8 @@ import { format, parse } from 'date-fns';
   styleUrls: ['./reprocess-transaction-detail.component.scss']
 })
 export class ReprocessTransactionDetailComponent implements OnInit {
+  fieldMappings = JSON.parse(localStorage.getItem('fieldMappings') ?? '{}');
+  itemNumber: string = this.fieldMappings.itemNumber;
   placeholders = Placeholders;
   @ViewChild('trans_qty') trans_qty: ElementRef;
   isHistory: any;

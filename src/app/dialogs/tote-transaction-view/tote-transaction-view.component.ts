@@ -29,6 +29,8 @@ import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.ser
   styleUrls: ['./tote-transaction-view.component.scss'],
 })
 export class ToteTransactionViewComponent implements OnInit {
+  fieldMappings = JSON.parse(localStorage.getItem('fieldMappings') ?? '{}');
+  itemNumber: string = this.fieldMappings.itemNumber;
   @ViewChild('fieldFocus') fieldFocus: ElementRef;
 
   batchID: any;

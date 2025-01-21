@@ -11,7 +11,7 @@
             <div class="row">
             <div class="col-xl-4">
                 <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline">
-                    <mat-label replacePlaceholder [replacePlaceHolder]="placeholders.itemNumber" [fallbackPlaceHolder]="placeholders.itemNumberFallback"> Item Number </mat-label>
+                    <mat-label> {{itemNumber}} </mat-label>
                     <input matInput class="" [value]="this.getAdjustQuantityData.itemNumber"   name="this.getAdjustQuantityData.itemNumber"
                         disabled>
                 </mat-form-field>

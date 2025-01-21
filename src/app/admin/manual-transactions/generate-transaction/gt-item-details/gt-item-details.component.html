@@ -19,7 +19,7 @@
                 
                 <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline"
                     (click)="this.openSetItemLocationDialogue.emit()">
-                    <mat-label replacePlaceholder [replacePlaceHolder]="placeholders.itemNumber" [fallbackPlaceHolder]="placeholders.itemNumberFallback"> </mat-label>
+                    <mat-label replacePlaceholder [replacePlaceHolder]="placeholders.itemNumber" [fallbackPlaceHolder]="itemNumber"> </mat-label>
                     <input readonly [disabled]="!item || this.orderNumber==''"  [(ngModel)]="itemNumber" (ngModelChange)="onFieldChange(itemNumber)"  matInput type="text" maxlength="255" value="Value"> 
                     <span matSuffix>
                         <mat-icon class="custom-icon">unfold_more</mat-icon>

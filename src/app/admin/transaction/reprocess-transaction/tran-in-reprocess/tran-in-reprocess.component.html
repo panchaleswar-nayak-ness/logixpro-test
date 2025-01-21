@@ -71,7 +71,7 @@
                             #autoOrder="matAutocomplete" (optionSelected)="orderSelected()">
                             <h6 class="card-header matAutoCompHeader ">
                                 <span class="w-140px">Order Number</span> <span class="w-200px">Date</span>
-                                <span class="w-160px">Transaction Type</span> <span class="w-140px" replacePlaceholder [replacePlaceHolder]="placeholders.itemNumber" [fallbackPlaceHolder]="placeholders.itemNumberFallback">Item Number</span> <span class="w-180px">Transaction Quantity</span>
+                                <span class="w-160px">Transaction Type</span> <span class="w-140px" replacePlaceholder [replacePlaceHolder]="placeholders.itemNumber" [fallbackPlaceHolder]="placeholders.itemNumberFallback">{{LabelitemNumber}}</span> <span class="w-180px">Transaction Quantity</span>
                             </h6>
                             <mat-option class="matAutoCompTableContent" *ngFor="let option of orderList"
                                 [value]="option.orderNumber">

@@ -38,6 +38,8 @@ export interface  AdjustQuantityDataStructure   {
   styleUrls: ['./adjust-quantity.component.scss']
 })
 export class AdjustQuantityComponent implements OnInit {
+  fieldMappings = JSON.parse(localStorage.getItem('fieldMappings') ?? '{}');
+  itemNumber: string = this.fieldMappings.itemNumber;
   @ViewChild('newQty') newQty: ElementRef;
   fieldName="";
  adjustInventoryMapForm: FormGroup;

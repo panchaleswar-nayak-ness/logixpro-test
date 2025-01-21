@@ -14,6 +14,7 @@ import { CurrentTabDataService } from 'src/app/admin/inventory-master/current-ta
 })
 export class TranInReprocessComponent implements OnInit {
   fieldMappings = JSON.parse(localStorage.getItem('fieldMappings') ?? '{}');
+  itemNumber: string = this.fieldMappings.itemNumber;
   LabelitemNumber: string = this.fieldMappings.itemNumber;
   placeholders = Placeholders;
   selectedOption = "reprocess";
@@ -25,7 +26,7 @@ export class TranInReprocessComponent implements OnInit {
   public fieldNames : any;
   public orderList : any;
   public itemNumberList : any;
-  public itemNumber : string = '';
+  // public itemNumber : string = '';
   public orderNumber : string = '';
   public history : boolean = false;
   

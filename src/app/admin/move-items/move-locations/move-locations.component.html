@@ -17,7 +17,7 @@
                     <mat-form-field class="w-100 bg-white br-8" appearance="outline"
                         [floatLabel]="getFloatLabelValue()" [hideRequiredMarker]="hideRequiredControl.value">
                         <span class="material-symbols-outlined icon-search"> search </span>
-                        <mat-label replacePlaceholder [replacePlaceHolder]="placeholders.itemNumber" [fallbackPlaceHolder]="placeholders.itemNumberFallback"> </mat-label>
+                        <!-- <mat-label>{{itemNumber}} </mat-label> -->
                         <input type="text" aria-label="Number" matInput autoFocus
                             [(ngModel)]='itemNo' maxlength="255" [matAutocomplete]="auto"
                             (ngModelChange)="itemNumberSearch()">
@@ -25,8 +25,7 @@
                         <mat-autocomplete class="card custom-scroll panel-custom-scroll" #auto="matAutocomplete"
                             (optionSelected)="searchData($event)">
     
-                            <h6 class="card-header matAutoCompHeader stickyHeader "><span>Item
-                                    Number</span><span>Description</span> </h6>
+                            <h6 class="card-header matAutoCompHeader stickyHeader "><span>{{itemNumber}}</span><span>Description</span> </h6>
     
                             <mat-option *ngFor="let option of searchAutocompletItemNo"
                                 [value]="option.itemNumber" class="matAutoCompTableContent">
@@ -242,7 +241,7 @@
                                 <td (contextmenu)="onContextMenu($event, element.goldenZone, 'Velocity Code')" [class.selected]="element.isSelected" mat-cell *matCellDef="let element">{{element.goldenZone}}</td>
                             </ng-container>
                             <ng-container matColumnDef="itemNumber">
-                                <th mat-header-cell mat-sort-header *matHeaderCellDef replacePlaceholder [replacePlaceHolder]="placeholders.itemNumber" [fallbackPlaceHolder]="placeholders.itemNumberFallback"> {{itemNumber}} </th>
+                                <th mat-header-cell mat-sort-header *matHeaderCellDef> {{itemNumber}} </th>
                                 <td (contextmenu)="onContextMenu($event, element.itemNumber, 'Item Number')" [class.selected]="element.isSelected" mat-cell *matCellDef="let element">{{element.itemNumber}}</td>
                             </ng-container>
                             <ng-container matColumnDef="description">
