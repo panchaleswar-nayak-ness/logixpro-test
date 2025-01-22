@@ -21,12 +21,14 @@ import {  LiveAnnouncerMessage ,ResponseStrings,KeyboardKeys,StringConditions,To
   styleUrls: ['./cm-confirm-and-packing.component.scss']
 })
 export class CmConfirmAndPackingComponent implements OnInit {
+  fieldMappings = JSON.parse(localStorage.getItem('fieldMappings') ?? '{}');
+  itemNumber: string = this.fieldMappings.itemNumber;
   placeholders = Placeholders;
   @ViewChild('orderFocus') orderFocus: ElementRef;
   orderNumber:any ;
   preferencesData:any;
   toteTable:any;
-  itemNumber:any;
+  // itemNumber:any;
   transTable:any;
   oldtransTable:any;
   contIDDrop:any[]=[];

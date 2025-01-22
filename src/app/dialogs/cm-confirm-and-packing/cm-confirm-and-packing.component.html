@@ -192,7 +192,7 @@
                         </ng-container>
                         <ng-container matColumnDef="itemNumber">
                             <th mat-header-cell *matHeaderCellDef mat-sort-header
-                                (sortActionDescription)="2" replacePlaceholder [replacePlaceHolder]="placeholders.itemNumber" [fallbackPlaceHolder]="placeholders.itemNumberFallback"> Item Number </th>
+                                (sortActionDescription)="2" > {{itemNumber}} </th>
                             <td mat-cell *matCellDef="let element">{{element.itemNumber}}</td>
                         </ng-container>
                         <ng-container matColumnDef="lineNumber">

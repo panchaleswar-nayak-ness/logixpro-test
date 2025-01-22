@@ -14,11 +14,11 @@
                 <div class="search-box">
 
 
-                    <mat-form-field class="w-100 bg-white br-8" appearance="outline"
+                    <mat-form-field class="w-100 bg-white br-14" appearance="outline"
                         [floatLabel]="getFloatLabelValue()" [hideRequiredMarker]="hideRequiredControl.value">
                         <span class="material-symbols-outlined icon-search"> search </span>
                         <!-- <mat-label>{{itemNumber}} </mat-label> -->
-                        <input type="text" aria-label="Number" matInput autoFocus
+                        <input type="text" aria-label="Number" matInput placeholder={{itemNumber}}
                             [(ngModel)]='itemNo' maxlength="255" [matAutocomplete]="auto"
                             (ngModelChange)="itemNumberSearch()">
                             <button matSuffix *ngIf="itemNo != ''" class="clear-btn" (click)="clearItemNum()"><mat-icon class="text-20 text-chrome-600">cancel</mat-icon></button>
@@ -35,8 +35,6 @@
                             </mat-option>
                         </mat-autocomplete>
                     </mat-form-field>
-    
-    
     
                 </div>
             </div>
