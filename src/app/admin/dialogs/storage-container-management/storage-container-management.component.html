@@ -16,9 +16,9 @@
         <div class="col-xl-6">
             <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline">
                 <mat-label>Zone</mat-label>
-                <mat-select [(ngModel)]="scm.zone" class="employees-action">
-                    <mat-option>01</mat-option>
-                    <mat-option>02</mat-option>
+                <mat-select [(ngModel)]="scm.zone" class="employees-action" [disabled]="checkDisabled('zone')">
+                    <mat-option [value]="01">01</mat-option>
+                    <mat-option [value]="02">02</mat-option>
                 </mat-select>
                 <span class="material-symbols-outlined icon-expand-more">expand_more</span>
             </mat-form-field>
@@ -27,7 +27,7 @@
         <div class="col-xl-6">
             <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline">
                 <mat-label>Carousel</mat-label>
-                <mat-select [(ngModel)]="scm.carousel" class="employees-action">
+                <mat-select [(ngModel)]="scm.carousel" class="employees-action" [disabled]="checkDisabled('carousel')">
                     <mat-option [value]="01">01</mat-option>
                     <mat-option [value]="02">02</mat-option>
                 </mat-select>
@@ -38,21 +38,22 @@
         <div class="col-xl-6">
             <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline">
                 <mat-label>Shelf</mat-label>
-                <input matInput [(ngModel)]="scm.shelf">
+                <input matInput [(ngModel)]="scm.shelf" [disabled]="checkDisabled('shelf')">
             </mat-form-field>
         </div>
 
         <div class="col-xl-6">
             <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline">
                 <mat-label>Storage Container/Tray</mat-label>
-                <input maxlength="5" matInput [(ngModel)]="scm.tray">
+                <input maxlength="5" matInput [(ngModel)]="scm.tray" [disabled]="checkDisabled('tray')">
             </mat-form-field>
         </div>
 
         <div class="col-xl-12">
             <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline">
                 <mat-label>Container Type</mat-label>
-                <mat-select [(ngModel)]="scm.containertype" class="employees-action">
+                <mat-select [(ngModel)]="scm.containertype" class="employees-action"
+                    [disabled]="checkDisabled('containertype')">
                     <mat-option *ngFor="let option of containerTypes" [value]="option">
                         {{option}}
                     </mat-option>
@@ -61,37 +62,16 @@
             </mat-form-field>
         </div>
 
-        <div class="col-xl-12">
+        <div class="col-xl-12" *ngIf="scm.containertype != ''">
             <div class="d-flex align-items-center text-tertary-900 mb-2 text-14 lh-24">
-            <mat-icon class="material-symbols-outlined text-18 text-tertary-900 lh-24">info</mat-icon><div>8 Inventory map records with Bin</div>
+                <mat-icon class="material-symbols-outlined text-18 text-tertary-900 lh-24">info</mat-icon>
+                <div>{{ inventoryMapRecords.count }} Inventory map {{ inventoryMapRecords.label }} with Bin</div>
             </div>
+
             <table class="w-100 br-20 overflow-hidden mb-2">
-                <tr>
-                    <td class="bg-primary-10 text-chrome-600 p-4 text-center">
-                        A02
-                    </td>
-                    <td class="bg-primary-10 text-chrome-600 p-4 text-center">
-                        B02
-                    </td>
-                    <td class="bg-primary-10 text-chrome-600 p-4 text-center">
-                        C02
-                    </td>
-                    <td class="bg-primary-10 text-chrome-600 p-4 text-center">
-                        D02
-                    </td>
-                </tr>
-                <tr>
-                    <td class="bg-primary-10 text-chrome-600 p-4 text-center">
-                        A01
-                    </td>
-                    <td class="bg-primary-10 text-chrome-600 p-4 text-center">
-                        B01
-                    </td>
-                    <td class="bg-primary-10 text-chrome-600 p-4 text-center">
-                        C01
-                    </td>
-                    <td class="bg-primary-10 text-chrome-600 p-4 text-center">
-                        D01
+                <tr *ngFor="let row of rows">
+                    <td *ngFor="let cell of getVisibleCells(row)" class="bg-primary-10 text-chrome-600 p-4 text-center">
+                        {{ cell }}
                     </td>
                 </tr>
             </table>
@@ -100,5 +80,6 @@
 </div>
 
 <mat-dialog-actions>
-    <button type="submit" mat-flat-button class="btn-lg flex-grow-1" color="primary" (click)="exstingTray()">Save</button>
+    <button type="submit" mat-flat-button class="btn-lg flex-grow-1" color="primary" [disabled]="checkDisabled('save')"
+        (click)="exstingTray()">Save</button>
 </mat-dialog-actions>
