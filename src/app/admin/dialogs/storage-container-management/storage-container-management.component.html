@@ -16,7 +16,7 @@
         <div class="col-xl-6">
             <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline">
                 <mat-label>Zone</mat-label>
-                <mat-select [(ngModel)]="scm.zone" class="employees-action" [disabled]="checkDisabled('zone')">
+                <mat-select [(ngModel)]="scm.zone" class="employees-action" [disabled]="checkDisabled('zone')" autoFocus #zone>
                     <mat-option [value]="01">01</mat-option>
                     <mat-option [value]="02">02</mat-option>
                 </mat-select>
@@ -26,26 +26,8 @@
 
         <div class="col-xl-6">
             <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline">
-                <mat-label>Carousel</mat-label>
-                <mat-select [(ngModel)]="scm.carousel" class="employees-action" [disabled]="checkDisabled('carousel')">
-                    <mat-option [value]="01">01</mat-option>
-                    <mat-option [value]="02">02</mat-option>
-                </mat-select>
-                <span class="material-symbols-outlined icon-expand-more">expand_more</span>
-            </mat-form-field>
-        </div>
-
-        <div class="col-xl-6">
-            <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline">
-                <mat-label>Shelf</mat-label>
-                <input matInput [(ngModel)]="scm.shelf" [disabled]="checkDisabled('shelf')">
-            </mat-form-field>
-        </div>
-
-        <div class="col-xl-6">
-            <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline">
-                <mat-label>Storage Container/Tray</mat-label>
-                <input maxlength="5" matInput [(ngModel)]="scm.tray" [disabled]="checkDisabled('tray')">
+                <mat-label>Storage Container</mat-label>
+                <input maxlength="6" matInput [(ngModel)]="scm.tray" [disabled]="checkDisabled('tray')">
             </mat-form-field>
         </div>
 

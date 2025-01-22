@@ -1,19 +1,16 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmationDialogComponent } from '../confirmation-dialog/confirmation-dialog.component';
-import { el } from 'date-fns/locale';
 
 @Component({
   selector: 'app-storage-container-management-modal',
   templateUrl: './storage-container-management.component.html',
   styleUrls: ['./storage-container-management.component.scss']
 })
-export class StorageContainerManagementModalComponent {
+export class StorageContainerManagementModalComponent implements OnInit {
 
   scm = {
     zone: "",
-    carousel: "",
-    shelf: "",
     tray: "",
     containertype: ""
   }
@@ -36,9 +33,19 @@ export class StorageContainerManagementModalComponent {
     return { count, label };
   }
 
+  @ViewChild('zone') zonefield: ElementRef;
+
   constructor(
     private readonly dialog: MatDialog,
   ) { }
+
+  ngOnInit(): void {
+    this.zonefield?.nativeElement.focus();
+  }
+
+  ngAfterViewInit() {
+    this.zonefield?.nativeElement.focus();
+  }
 
   getVisibleCells(row: string[]): string[] {
     // Dynamically filter cells based on the containertype
@@ -121,11 +128,9 @@ export class StorageContainerManagementModalComponent {
   checkDisabled(field: string): boolean {
     const dependencies: { [key: string]: string[] } = {
       zone: [],
-      carousel: ['zone'],
-      shelf: ['zone', 'carousel'],
-      tray: ['zone', 'carousel', 'shelf'],
-      containertype: ['zone', 'carousel', 'shelf', 'tray'],
-      save: ['zone', 'carousel', 'shelf', 'tray', 'containertype'],
+      tray: ['zone'],
+      containertype: ['zone', 'tray'],
+      save: ['zone', 'tray', 'containertype'],
     };
 
     const requiredFields = dependencies[field] || [];
