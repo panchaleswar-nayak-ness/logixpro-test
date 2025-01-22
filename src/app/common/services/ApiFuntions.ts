@@ -2019,6 +2019,10 @@ export class ApiFuntions {
   public WorkstationSetupInfo(): Observable<any> {
     return this.ApiBase.Get('/Admin/WorkstationSetup');
   }
+  
+  public AccessStorageContainerManagement(): Observable<any> {
+    return this.ApiBase.Get('/Admin/AccessStorageContainerManagement');
+  }
 
   public WorkstationSettingsUpdate(body: any): Observable<any> {
     return this.ApiBase.Put('/Admin/workstationsettings', body);

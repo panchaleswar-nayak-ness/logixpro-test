@@ -2015,6 +2015,9 @@ export class AdminApiService implements IAdminApiService {
   public WorkstationSetupInfo() {
     return this.Api.WorkstationSetupInfo();
   }
+  public AccessStorageContainerManagement() {
+    return this.Api.AccessStorageContainerManagement();
+  }
 
   public WorkstationSettingsUpdate(body: any) {
     const payload = {

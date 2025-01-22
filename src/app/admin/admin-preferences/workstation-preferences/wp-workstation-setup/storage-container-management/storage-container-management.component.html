@@ -6,7 +6,7 @@
     <div class="row">
       <div class="col">
         <div class="d-flex justify-content-between mb-3">
-            Storage Container Management<mat-slide-toggle [(ngModel)]="companyObj.storageContainer" (change)="payload()" color="primary" [disabled]="this.userData.accessLevel != 'Administrator'">
+            Storage Container Management<mat-slide-toggle [(ngModel)]="companyObj.storageContainer" (change)="payload()" color="primary" [disabled]="!this.isStorageContainer">
           </mat-slide-toggle>
         </div>
       </div>

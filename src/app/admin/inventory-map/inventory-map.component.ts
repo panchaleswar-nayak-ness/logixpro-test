@@ -86,6 +86,8 @@ export class InventoryMapComponent implements OnInit {
   fieldNames:any;
   routeFromIM:boolean=false;
   isActiveTrigger:boolean =false;
+  isStorageContainer :boolean =false;
+  
   routeFromOM:boolean=false;
   public displayedColumns: any ;
   public dataSource: any = [];
@@ -204,6 +206,12 @@ export class InventoryMapComponent implements OnInit {
   }
   
   public companyInfo() {
+    this.iAdminApiService.AccessStorageContainerManagement().subscribe((res: any) => {
+      if (res.isExecuted && res.data) {
+         this.isStorageContainer =  res.data;
+      }
+    });
+
     this.iAdminApiService.WorkstationSetupInfo().subscribe((res: any) => {
       if (res.isExecuted && res.data) {
         this.companyObj.storageContainer = res.data.storageContainer;        }
