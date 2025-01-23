@@ -10,6 +10,7 @@ import {
   UpdateQuantityRequest
 } from 'src/app/consolidation-manager/cm-markout/models/markout-model';
 import { AddPickToteInductionFilter } from 'src/app/induction-manager/models/PickToteInductionModel';
+import { BinLayoutRes, CarouselZonesRes, UpdateSCReq, UpdateSCRes } from '../Model/storage-container-management';
 
 @Injectable({
   providedIn: 'root',
@@ -2278,4 +2279,21 @@ export class ApiFuntions {
     return await this.ApiBase.PostAsync(`/print/totecontentslist`, body);
   }
 
+  // Storage Container Management Endpoints
+
+  public getStorageContainerLayout(containerId: string): Observable<any> {
+    return this.ApiBase.Get(`/storagecontainers/${containerId}`);
+  }
+
+  public updateStorageContainer(containerId: string,body:UpdateSCReq): Observable<UpdateSCRes | null> {
+    return this.ApiBase.Put(`/storagecontainers/${containerId}`,body);
+  }
+
+  public getCarouselZones(carousel: string): Observable<CarouselZonesRes> {
+    return this.ApiBase.Get(`/zones?Carousel=${carousel}`);
+  }
+
+  public getBinLayout(binLayoutId: string): Observable<BinLayoutRes> {
+    return this.ApiBase.Get(`/BinLayout/${binLayoutId}`);
+  }
 }

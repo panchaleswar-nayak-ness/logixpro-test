@@ -125,9 +125,9 @@ export class BaseService {
     );
   }
 
-  public Put<T>(endPoint: string, reqPaylaod: T) {
-    return this.request<T>('PUT', endPoint, { body: reqPaylaod }).pipe( // piping out the body for now for backward compatibility
-      map(response => response.body)
+  public Put<T>(endPoint: string, reqPayload: unknown): Observable<T | null> {
+    return this.request<unknown>('PUT', endPoint, { body: reqPayload }).pipe(
+        map(response => response.body as T || null) // Cast `response.body` to T and ensure null handling
     );
   }
 

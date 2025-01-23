@@ -1,3 +1,5 @@
+import { UpdateSCReq } from "../../Model/storage-container-management";
+
 export interface IAdminApiService
 {
     TransactionQtyReplenishmentUpdate(payload : any);
@@ -251,4 +253,12 @@ export interface IAdminApiService
   updateLookupTableData(payload : any);
   createLookupTableData(payload : any);
   deleteLookupTableData(id : any);
+
+
+  // Storage Container Management Functions
+
+  getStorageContainerLayout(containerId : string);
+  updateStorageContainer(containerId: string,body:UpdateSCReq);
+  getStorageContainerLayout(carousel : string);
+  getBinLayout(binLayoutId: string);
 }
