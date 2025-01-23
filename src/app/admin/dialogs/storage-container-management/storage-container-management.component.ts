@@ -1,13 +1,14 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmationDialogComponent } from '../confirmation-dialog/confirmation-dialog.component';
+import { MatSelect } from '@angular/material/select';
 
 @Component({
   selector: 'app-storage-container-management-modal',
   templateUrl: './storage-container-management.component.html',
   styleUrls: ['./storage-container-management.component.scss']
 })
-export class StorageContainerManagementModalComponent implements OnInit {
+export class StorageContainerManagementModalComponent {
 
   scm = {
     zone: "",
@@ -33,18 +34,21 @@ export class StorageContainerManagementModalComponent implements OnInit {
     return { count, label };
   }
 
-  @ViewChild('zone') zonefield: ElementRef;
-
   constructor(
     private readonly dialog: MatDialog,
   ) { }
 
-  ngOnInit(): void {
-    this.zonefield?.nativeElement.focus();
+  @ViewChild('zone') zoneSelect!: MatSelect;
+  @ViewChild('storageContainer', { static: false }) storageContainer!: ElementRef;
+
+  ngAfterViewInit(): void {
+    this.zoneSelect.focus();
   }
 
-  ngAfterViewInit() {
-    this.zonefield?.nativeElement.focus();
+  zoneChanged(){
+    if (this.storageContainer && this.storageContainer.nativeElement) {
+      this.storageContainer.nativeElement.focus();
+    }
   }
 
   getVisibleCells(row: string[]): string[] {

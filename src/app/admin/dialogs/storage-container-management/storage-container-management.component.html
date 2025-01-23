@@ -16,7 +16,7 @@
         <div class="col-xl-6">
             <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline">
                 <mat-label>Zone</mat-label>
-                <mat-select [(ngModel)]="scm.zone" class="employees-action" [disabled]="checkDisabled('zone')" autoFocus #zone>
+                <mat-select [(ngModel)]="scm.zone" class="employees-action" [disabled]="checkDisabled('zone')" autoFocus #zone (selectionChange)="zoneChanged()">
                     <mat-option [value]="01">01</mat-option>
                     <mat-option [value]="02">02</mat-option>
                 </mat-select>
@@ -27,7 +27,7 @@
         <div class="col-xl-6">
             <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline">
                 <mat-label>Storage Container</mat-label>
-                <input maxlength="6" matInput [(ngModel)]="scm.tray" [disabled]="checkDisabled('tray')">
+                <input matInput [(ngModel)]="scm.tray" [disabled]="checkDisabled('tray')" #storageContainer>
             </mat-form-field>
         </div>
 
@@ -50,10 +50,41 @@
                 <div>{{ inventoryMapRecords.count }} Inventory map {{ inventoryMapRecords.label }} with Bin</div>
             </div>
 
-            <table class="w-100 br-20 overflow-hidden mb-2">
+            <!-- <table class="w-100 br-20 overflow-hidden mb-2">
                 <tr *ngFor="let row of rows">
                     <td *ngFor="let cell of getVisibleCells(row)" class="bg-primary-10 text-chrome-600 p-4 text-center">
                         {{ cell }}
+                    </td>
+                </tr>
+            </table> -->
+
+            <table class="w-100 br-20 overflow-hidden mb-2">
+                <tr *ngIf="scm.containertype != 'Whole'">
+                    <td class="bg-primary-10 text-chrome-600 p-4 text-center" *ngIf="scm.containertype != 'Whole' && scm.containertype != 'Half Shortways'">
+                        A02
+                    </td>
+                    <td class="bg-primary-10 text-chrome-600 p-4 text-center" *ngIf="scm.containertype == 'Quartered' || scm.containertype == 'Octa-divided'">
+                        B02
+                    </td>
+                    <td class="bg-primary-10 text-chrome-600 p-4 text-center" *ngIf="scm.containertype == 'Octa-divided'">
+                        C02
+                    </td>
+                    <td class="bg-primary-10 text-chrome-600 p-4 text-center" *ngIf="scm.containertype == 'Octa-divided'">
+                        D02
+                    </td>
+                </tr>
+                <tr>
+                    <td class="bg-primary-10 text-chrome-600 p-4 text-center">
+                        A01
+                    </td>
+                    <td class="bg-primary-10 text-chrome-600 p-4 text-center" *ngIf="scm.containertype != 'Whole' && scm.containertype != 'Half Longways'">
+                        B01
+                    </td>
+                    <td class="bg-primary-10 text-chrome-600 p-4 text-center" *ngIf="scm.containertype == 'Octa-divided'">
+                        C01
+                    </td>
+                    <td class="bg-primary-10 text-chrome-600 p-4 text-center" *ngIf="scm.containertype == 'Octa-divided'">
+                        D01
                     </td>
                 </tr>
             </table>
