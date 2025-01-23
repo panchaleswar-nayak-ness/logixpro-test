@@ -13,7 +13,9 @@ import { LocalStorageService } from 'src/app/common/services/LocalStorage.servic
   styleUrls: ['./filter-item-numbers_cycle_count.component.scss']
 })
 export class FilterItemNumbersComponentCycleCount implements OnInit {
-  @ViewChild('filter_text') filterText: ElementRef;
+  fieldMappings = JSON.parse(localStorage.getItem('fieldMappings') ?? '{}');
+  itemNumber: string = this.fieldMappings.itemNumber;
+  @ViewChild('filter_text') filter_text;
   public userData: any;
   public iAdminApiService: IAdminApiService;
   importtype : string = '';
@@ -58,7 +60,7 @@ export class FilterItemNumbersComponentCycleCount implements OnInit {
   }
 
   ngAfterViewInit() {
-    this.filterText.nativeElement.focus();
+    this.filter_text.nativeElement.focus();
   }
   filterItemNumbers(): void {
     let itemsStr = this.items.trim().replace(/[\n\r]/g, ',');
@@ -120,9 +122,9 @@ export class FilterItemNumbersComponentCycleCount implements OnInit {
             }
             //heading = 'Location(s) Not Found';
             //message = `The following Locations do not exist [${res.data.item1.join(', ')}]`;
-          } else if (this.importtype === 'Item Number') {
+          } else if (this.importtype === this.itemNumber ) {
             heading = 'Item(s) Not Found';
-            message = `The following Item Number(s) do not exist [${res.data.item1.join(', ')}]`;
+            message = `The following ${this.itemNumber}(s) do not exist [${res.data.item1.join(', ')}]`;
           }
   
        
@@ -214,8 +216,6 @@ export class FilterItemNumbersComponentCycleCount implements OnInit {
       }
     });
   }
-  
-  
   
 }
 
