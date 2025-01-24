@@ -37,7 +37,7 @@ export class StorageContainerManagementComponent implements OnInit {
 
     this.iAdminApiService.WorkstationSetupInfo().subscribe((res: any) => {
       if (res.isExecuted && res.data) {
-        this.companyObj.storageContainer = this.userData=="Administrator" ? res.data.storageContainer : false;
+        this.companyObj.storageContainer = this.userData.accessLevel?.toLowerCase() =="administrator" ? res.data.storageContainer : false;
       } else {
         //this.global.ShowToastr(ToasterType.Error, this.global.globalErrorMsg(), ToasterTitle.Error);
         console.log('AdminCompanyInfo', res.responseMessage);
