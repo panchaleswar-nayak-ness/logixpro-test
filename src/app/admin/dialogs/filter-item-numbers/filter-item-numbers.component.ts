@@ -12,6 +12,8 @@ import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.ser
   styleUrls: ['./filter-item-numbers.component.scss']
 })
 export class FilterItemNumbersComponent implements OnInit {
+  fieldMappings = JSON.parse(localStorage.getItem('fieldMappings') ?? '{}');
+  itemNumber: string = this.fieldMappings.itemNumber;
   @ViewChild('filter_text') filterText: ElementRef;
   public userData: any;
 

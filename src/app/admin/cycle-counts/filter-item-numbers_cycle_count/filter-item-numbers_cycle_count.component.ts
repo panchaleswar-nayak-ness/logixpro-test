@@ -15,7 +15,6 @@ import { LocalStorageService } from 'src/app/common/services/LocalStorage.servic
 export class FilterItemNumbersComponentCycleCount implements OnInit {
   fieldMappings = JSON.parse(localStorage.getItem('fieldMappings') ?? '{}');
   itemNumber: string = this.fieldMappings.itemNumber;
-  @ViewChild('filter_text') filter_text;
   public userData: any;
   public iAdminApiService: IAdminApiService;
   importtype : string = '';
@@ -50,9 +49,10 @@ export class FilterItemNumbersComponentCycleCount implements OnInit {
       this.includeEmpty=this.data.includeEmpty;
       this.includeOther=this.data.includeOther
     } else {
-      this.titleText = 'Filter Item Numbers';
+      this.titleText = `Filter ${this.itemNumber}s`;
       this.instructionsText = 'This is used to copy and paste item numbers from an excel spreadsheet.';
     }
+  
   }
 
   onNoClick(): void {
@@ -60,7 +60,7 @@ export class FilterItemNumbersComponentCycleCount implements OnInit {
   }
 
   ngAfterViewInit() {
-    this.filter_text.nativeElement.focus();
+
   }
   filterItemNumbers(): void {
     let itemsStr = this.items.trim().replace(/[\n\r]/g, ',');
@@ -123,7 +123,7 @@ export class FilterItemNumbersComponentCycleCount implements OnInit {
             //heading = 'Location(s) Not Found';
             //message = `The following Locations do not exist [${res.data.item1.join(', ')}]`;
           } else if (this.importtype === this.itemNumber ) {
-            heading = 'Item(s) Not Found';
+            heading = `${this.itemNumber}(s) Not Found`;
             message = `The following ${this.itemNumber}(s) do not exist [${res.data.item1.join(', ')}]`;
           }
   

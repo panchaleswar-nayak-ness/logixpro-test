@@ -364,7 +364,7 @@ removeSpacesFromString(value: string): string {
             //message = `The following Locations do not exist [${res.data.item1.join(', ')}]`;
           }  
               else if (this.selectedImportType === this.ItemNumber) {
-                heading = 'Item(s) Not Found';
+                heading = `${this.ItemNumber}(s) Not Found`;
                 message = `The following Item Numbers do not exist [${res.data.item1.join(', ')}]`;
               
             }
