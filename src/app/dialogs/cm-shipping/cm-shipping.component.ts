@@ -27,7 +27,8 @@ export class CmShippingComponent implements OnInit {
     { position: 3, name: 'Lithium', weight: 6.941, symbol: 'Li' },
     { position: 4, name: 'Beryllium', weight: 9.0122, symbol: 'Be' },
   ];
-
+  ContainerArray: any = [];
+  dublicateContainerArray: any = [];
   isLoading: any = false;
   displayedColumns: string[] = [
     'containerID',
@@ -62,6 +63,7 @@ export class CmShippingComponent implements OnInit {
     this.carriers = [];
     this.shippingComp = false;
     this.ShippingIndex();
+    this.getShippingData();
   }
 
   async ShippingIndex() {
@@ -111,16 +113,21 @@ export class CmShippingComponent implements OnInit {
     element.value = value;
   }
 
-  async DeleteItem(element: any, i: any = null) {
+  async DeleteItem(element: any=null, i: any = null) {
+    
     let obj: any = {
-      id: element.id,
+      id: i.ID,
       orderNumber: this.orderNumber,
-      contId: element.containerID,
-      carrier: element.carrier,
-      trackingNum: element.trackingNum,
+      contId: i.ContainerID,
+      carrier: i.Carrier,
+      trackingNum: i.TrackingNumber,
     };
+  
     this.iConsolidationAPI.ShipmentItemDelete(obj).subscribe((res: any) => {
-      if (res?.isExecuted) this.shippingData = this.shippingData.slice(0, i);
+      if (res?.isExecuted) {
+       this.shippingData = this.shippingData.slice(0, i);
+       this.getShippingData();
+      }
       else {
         this.global.ShowToastr(ToasterType.Error, this.global.globalErrorMsg(), ToasterTitle.Error);
         console.log('ShipmentItemDelete', res.responseMessage);
@@ -130,24 +137,24 @@ export class CmShippingComponent implements OnInit {
 
   async updateShipmentItem(element: any) {
     let obj: any = {
-      id: element.id,
-      carrier: element.carrier,
-      trackingNum: element.trackingNum,
-      freight: element.freight,
-      freight1: element.freight1,
-      freight2: element.freight2,
-      weight: element.weight,
-      length: element.length ? element.length : 0,
-      width: element.width ? element.width : 0,
-      height: element.height ? element.height : 0,
-      cube: element.cube,
-      userField1:element.userField1,
-      userField2:element.userField2,
-      userField3:element.userField3,
-      userField4:element.userField4,
-      userField5:element.userField5,
-      userField6:element.userField6,
-      userField7:element.userField7,
+      id: element.ID,
+      carrier: element.Carrier,
+      trackingNum: element.TrackingNumber,
+      freight: element.Freight,
+      freight1: element.Freight1,
+      freight2: element.Freight2,
+      weight: element.Weight,
+      length: element.Length ? element.Length : 0,
+      width: element.Width ? element.Width : 0,
+      height: element.Height ? element.Height : 0,
+      cube: element.Cube,
+      userField1:element.UserField1,
+      userField2:element.UserField2,
+      userField3:element.UserField3,
+      userField4:element.UserField4,
+      userField5:element.UserField5,
+      userField6:element.UserField6,
+      userField7:element.UserField7,
     };
     this.iConsolidationAPI.ShipmentItemUpdate(obj).subscribe((res: any) => {});
   }
@@ -241,7 +248,10 @@ export class CmShippingComponent implements OnInit {
       }
     );
     dialogRef.afterClosed().subscribe((result) => {
-      if (result) this.ShippingIndex();
+      if (result) {
+         this.ShippingIndex();
+         this.getShippingData();
+      }
     });
   }
 
@@ -256,7 +266,58 @@ export class CmShippingComponent implements OnInit {
 
   PrintItem(element: any, i: any = null) {
     this.global.Print(
-      `FileName:PrintShipContPL|OrderNum:${this.orderNumber}|ContID:${element.containerID}`
+      `FileName:PrintShipContPL|OrderNum:${this.orderNumber}|ContID:${i.ContainerID}`
+    );
+  }
+  parentContainers: any = [];
+  getShippingData() {
+    
+    this.iConsolidationAPI.viewShipping({ orderNum: this.orderNumber }).subscribe(
+      (res: any) => {
+
+        if (res.isExecuted && res.data.shipTable) {
+          
+          this.ContainerArray = [];
+
+          res.data.shipTable.forEach((container: any, i) => {
+           
+            this.parentContainers.push(container.containerID);
+            this.ContainerArray.push(container.containerID);
+          
+          });
+
+          this.ContainerArray = res.data.shipTable.map((container: any) => ({
+            ID: container.id,
+            ContainerID: container.containerID, // Ensure the property matches
+            Carrier: container.carrierName,
+            TrackingNumber: container.trackingNumber,
+            Freight: container.freight,
+            Freight1: container.freight1,
+            Freight2: container.freight2,
+            Weight: container.weight,
+            Width: container.width,
+            Height: container.height,
+            UserField1: container.userField1,
+            UserField2: container.userField2,
+            UserField3: container.userField3,
+            UserField4: container.userField4,
+            UserField5: container.userField5,
+            UserField6: container.userField6,
+            UserField7: container.userField7,
+            Cube: container.cube,
+            Length:container.length
+            }));
+            
+          this.dublicateContainerArray = JSON.parse(
+            JSON.stringify(this.ContainerArray)
+          );
+        } 
+        
+        else {
+          this.global.ShowToastr(ToasterType.Error, this.global.globalErrorMsg(), ToasterTitle.Error);
+          console.log('ContainerData', res.responseMessage);
+        }
+      }
     );
   }
 }
