@@ -87,7 +87,9 @@ export class InventoryMapComponent implements OnInit {
   routeFromIM:boolean=false;
   isActiveTrigger:boolean =false;
   isStorageContainer :boolean =false;
-  
+  assignedFunctions:any;
+  unassignedFunctions:any;
+  isClearWholeLocationAvailable: boolean = false;
   routeFromOM:boolean=false;
   public displayedColumns: any ;
   public dataSource: any = [];
@@ -203,6 +205,9 @@ export class InventoryMapComponent implements OnInit {
     this.initializeApi();
     this.getColumnsData();
     this.companyInfo();
+
+    this.functionsByGroup();
+
   }
   
   public companyInfo() {
@@ -406,13 +411,16 @@ export class InventoryMapComponent implements OnInit {
     this.dialog.closeAll();
   }
 
+
   edit(event: any){
+ 
     let dialogRef:any = this.global.OpenDialog(AddInvMapLocationComponent, {
       height: DialogConstants.auto,
       width: '100%',
       autoFocus: DialogConstants.autoFocus,
       disableClose:true,
       data: {
+        isClearWholeLocationAvailable: this.isClearWholeLocationAvailable,
         mode: 'editInvMapLocation',
         itemList : this.itemList,
         detailData : event,
@@ -428,6 +436,33 @@ export class InventoryMapComponent implements OnInit {
         this.getContentData();
       }
     })
+
+  
+  }
+
+
+  functionsByGroup(event?: any) {
+
+    const grp_data = {
+     
+      "groupName":this?.userData?.accessLevel
+  
+      }; 
+    this.iAdminApiService.getFunctionByGroup(grp_data)
+    .subscribe((response:any) => {
+      if(response.isExecuted && response.data)
+      {
+        this.assignedFunctions = response.data?.groupFunc
+        this.unassignedFunctions = response.data?.allFunc
+  
+        this.isClearWholeLocationAvailable = response.data.allFunc.includes("Inv Map Clear Whole Location");
+  
+      }
+      else {
+       
+      } 
+      
+    });
   }
 
   delete(event: any){ 

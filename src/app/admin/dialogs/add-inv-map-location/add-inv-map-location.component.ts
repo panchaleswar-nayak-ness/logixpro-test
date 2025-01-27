@@ -239,6 +239,7 @@ isButtonDisabled: boolean = true;
     } else if (data.mode == "editInvMapLocation") {
       this.headerLable = 'Update Location';
       this.loadItemDetails(this.data.detailData.itemNumber);
+      
     }
 
     if(this.router.url=="/InductionManager/Admin/InventoryMap" || this.router.url=="/OrderManager/InventoryMap"){
@@ -254,6 +255,8 @@ isButtonDisabled: boolean = true;
   }
 
   ngOnInit(): void {
+
+    this.isClearWholeLocationAvailable = this.data?.isClearWholeLocationAvailable || false;
     this.userData = this.authService.userData();
     this.fieldNames = this.data?.fieldName;
 
@@ -276,7 +279,7 @@ isButtonDisabled: boolean = true;
     this.initializeDataSet();
 
     this.getLocationZones();
-    this.functionsByGroup();
+   
 
     this.addInvMapLocation.get('allowClearWholeLocation')?.valueChanges.subscribe(value => {
       this.allowClearWholeLocation = value === 'true'; 
@@ -313,30 +316,6 @@ isButtonDisabled: boolean = true;
 
 parentZones: any = [];
 
-
-functionsByGroup(event?: any) {
-
-  const grp_data = {
-   
-    "groupName":this?.userData?.accessLevel
-
-    }; 
-  this.iAdminApiService.getFunctionByGroup(grp_data)
-  .subscribe((response:any) => {
-    if(response.isExecuted && response.data)
-    {
-      this.assignedFunctions = response.data?.groupFunc
-      this.unassignedFunctions = response.data?.allFunc
-
-      this.isClearWholeLocationAvailable = response.data.allFunc.includes("Inv Map Clear Whole Location");
-
-    }
-    else {
-     
-    } 
-    
-  });
-}
 
 getLocationZones() {
   this.iAdminApiService.LocationZone().subscribe((res) => {
