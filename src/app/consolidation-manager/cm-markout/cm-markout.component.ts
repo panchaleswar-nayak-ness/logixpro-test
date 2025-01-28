@@ -93,34 +93,19 @@ export class CmMarkoutComponent implements OnInit {
       .GetMarkoutData(this.MarkoutToteReq)
       .subscribe((res: ToteDataResponse) => {
         this.toteDataResponse = res;
-
-        // let otIDs : number[] = [];
-
-        // // Check if all records are completed in a single loop and take actions accordingly
-        // this.toteDataResponse.data.forEach((data: ToteData) => {
-        //   if (data.toteId === this.toteId && data.status !== StringConditions.Complete) otIDs.push(data.id);
-        // });
-
-        // // Print for incomplete records
-        // if (otIDs.length > 0 && this.preferencesData.autoPrintMarkoutReport) {
-        //   this.print('Print Markout Report', { Ids : otIDs , toteIDs: this.toteId });
-        // }
-
-        // // If all records were completed, print the manifests
-        // if (otIDs.length === 0) {
-        //   this.toteDataResponse.data.forEach((data: ToteData) => {
-        //     if (data.toteId === this.toteId) {
-        //       if (this.preferencesData.autoPrintToteManifest) this.print('Print Tote Manifest', { Id: data.id, ToteID: data.toteId });
-        //       if (this.preferencesData.autoPrintToteManifest2) this.print('Print Tote Manifest 2', { Id: data.id, ToteID: data.toteId });
-        //     }
-        //   });
-        // }
-
+        
+        // Markout Print Logic
         if (this.toteDataResponse.data.length > 0) {
-          if (this.preferencesData.autoPrintMarkoutReport) this.print('Print Markout Report', this.toteId);
-          if (this.preferencesData.autoPrintToteManifest) this.print('Print Tote Manifest', this.toteId);
-          if (this.preferencesData.autoPrintToteManifest2) this.print('Print Tote Manifest 2', this.toteId);
+          this.toteDataResponse.data.forEach((data: ToteData) => {
+            if (data.status !== StringConditions.Complete) {
+              if (this.preferencesData.autoPrintMarkoutReport) this.print('Print Markout Report', data.toteId);
+            } else {
+              if (this.preferencesData.autoPrintToteManifest) this.print('Print Tote Manifest', data.toteId);
+              if (this.preferencesData.autoPrintToteManifest2) this.print('Print Tote Manifest 2', data.toteId);
+            }
+          });
         }
+
       });
   }
 
