@@ -183,7 +183,8 @@
                                   type="number"
                                   oninput="this.value = !!this.value && Math.abs(this.value) > 0 ? Math.abs(this.value) : 0"
                                   [(ngModel)]="i['Length']"
-                                  matInput
+                                  matInput (keyup)="calculateCube(i)"
+                                  class="counter-none"
                                   maxlength="200"
                                   
                                 />
@@ -199,8 +200,9 @@
                                   type="number"
                                   oninput="this.value = !!this.value && Math.abs(this.value) > 0 ? Math.abs(this.value) : 0"
                                   [(ngModel)]="i['Width']"
-                                  matInput
+                                  matInput (keyup)="calculateCube(i)"
                                   maxlength="200"
+                                  class="counter-none"
                                 />
                               </mat-form-field>
                             </div>
@@ -211,11 +213,12 @@
                                 >
                                   <mat-label>Height</mat-label>
                                   <input [disabled]="shippingComp"
-                                    type="number"
-                                    oninput="this.value = !!this.value && Math.abs(this.value) > 0 ? Math.abs(this.value) : 0"
+                                  oninput="this.value = !!this.value && Math.abs(this.value) > 0 ? Math.abs(this.value) : 0"
+                                  type="number"
                                     [(ngModel)]="i['Height']"
-                                    matInput
+                                    matInput (keyup)="calculateCube(i)"
                                     maxlength="200"
+                                    class="counter-none"
                                   />
                                 </mat-form-field>
                               </div>
@@ -225,7 +228,7 @@
                                   appearance="outline"
                                 >
                                   <mat-label>Cube</mat-label>
-                                  <input [disabled]="shippingComp"
+                                  <input disabled
                                     type="number"
                                     oninput="this.value = !!this.value && Math.abs(this.value) > 0 ? Math.abs(this.value) : 0"
                                     [(ngModel)]="i['Cube']"

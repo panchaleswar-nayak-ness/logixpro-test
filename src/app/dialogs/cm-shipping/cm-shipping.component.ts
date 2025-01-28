@@ -255,10 +255,27 @@ export class CmShippingComponent implements OnInit {
     });
   }
 
-  calculateCube(element) {
-    this.shippingData.filter((x: any) => x.id == element.id)[0].cube =
-      (element.length * element.width * element.height) / 1728;
-  }
+  calculateCube(element:any) {
+    
+  
+    const matchedshippingData = this.shippingData.find((x: any) => x.id === element.ID);
+    const matchedContainerArray = this.ContainerArray.find((x: any) => x.ID === element.ID);
+    
+    if (matchedshippingData) {
+      matchedshippingData.cube = (element.Length * element.Width * element.Height) / 1728;
+   
+    } else {
+    console.warn(`No matching shipping data found for ID: ${element.ID}`);
+    }
+
+  if (matchedContainerArray) {
+    matchedContainerArray.Cube = (element.Length * element.Width * element.Height) / 1728;
+  
+  } else {
+  console.warn(`No matching shipping data found for ID: ${element.ID}`);
+}
+
+}
 
   printAll() {
     this.global.Print(`FileName:PrintShipOrderPL|OrderNum:${this.orderNumber}`);
