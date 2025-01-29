@@ -93,19 +93,20 @@ export class CmMarkoutComponent implements OnInit {
       .GetMarkoutData(this.MarkoutToteReq)
       .subscribe((res: ToteDataResponse) => {
         this.toteDataResponse = res;
-        
+    
         // Markout Print Logic
         if (this.toteDataResponse.data.length > 0) {
-          this.toteDataResponse.data.forEach((data: ToteData) => {
-            if (data.status !== StringConditions.Complete) {
-              if (this.preferencesData.autoPrintMarkoutReport) this.print('Print Markout Report', data.toteId);
-            } else {
-              if (this.preferencesData.autoPrintToteManifest) this.print('Print Tote Manifest', data.toteId);
-              if (this.preferencesData.autoPrintToteManifest2) this.print('Print Tote Manifest 2', data.toteId);
-            }
-          });
-        }
+          const allTransactionsComplete = this.toteDataResponse.data.every(
+            (data: ToteData) => data.status === StringConditions.Complete
+          );
 
+          if (allTransactionsComplete) {
+            if (this.preferencesData.autoPrintToteManifest) this.print('Print Tote Manifest', this.toteId);
+            if (this.preferencesData.autoPrintToteManifest2) this.print('Print Tote Manifest 2', this.toteId);
+          } else {
+            if (this.preferencesData.autoPrintMarkoutReport) this.print('Print Markout Report', this.toteId);
+          }
+        }
       });
   }
 
