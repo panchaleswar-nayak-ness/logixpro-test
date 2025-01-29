@@ -242,7 +242,8 @@
                                   class="custom-form-field custom-form-field-bg-white w-100 mb-3"
                                   appearance="outline"
                                 >
-                                  <mat-label>{{shippingPreferences.userField1Alias}}</mat-label>
+                                  <mat-label>{{ shippingPreferences.userField1Alias ? shippingPreferences.userField1Alias : 'User Field 1' }}</mat-label>
+
                                   <input [disabled]="shippingComp"
                                     type="text"
                                     [(ngModel)]="i['UserField1']"
@@ -256,7 +257,8 @@
                                   class="custom-form-field custom-form-field-bg-white w-100 mb-3"
                                   appearance="outline"
                                 >
-                                  <mat-label>{{shippingPreferences.userField2Alias}}</mat-label>
+                                  <mat-label>{{ shippingPreferences.userField2Alias ? shippingPreferences.userField2Alias : 'User Field 2' }}</mat-label>
+
                                   <input [disabled]="shippingComp"
                                     type="text"
                                     [(ngModel)]="i['UserField2']"
@@ -272,7 +274,8 @@
                                 class="custom-form-field custom-form-field-bg-white w-100 mb-3"
                                 appearance="outline"
                               >
-                                <mat-label>{{shippingPreferences.userField3Alias}}</mat-label>
+                               <mat-label>{{ shippingPreferences.userField3Alias ? shippingPreferences.userField3Alias : 'User Field 3' }}</mat-label>
+
                                 <input [disabled]="shippingComp"
                                   type="text"
                                   [(ngModel)]="i['UserField3']"
@@ -287,7 +290,8 @@
                                 class="custom-form-field custom-form-field-bg-white w-100 mb-3"
                                 appearance="outline"
                               >
-                                <mat-label>{{shippingPreferences.userField4Alias}}</mat-label>
+                                <mat-label>{{ shippingPreferences.userField4Alias ? shippingPreferences.userField4Alias : 'User Field 4' }}</mat-label>
+
                                 <input [disabled]="shippingComp"
                                   type="text"
                                   [(ngModel)]="i['UserField4']"
@@ -301,7 +305,8 @@
                                   class="custom-form-field custom-form-field-bg-white w-100 mb-3"
                                   appearance="outline"
                                 >
-                                  <mat-label>{{shippingPreferences.userField5Alias}}</mat-label>
+                                  <mat-label>{{ shippingPreferences.userField5Alias ? shippingPreferences.userField5Alias : 'User Field 5' }}</mat-label>
+
                                   <input [disabled]="shippingComp"
                                     type="text"
                                     [(ngModel)]="i['UserField5']"
@@ -315,7 +320,8 @@
                                   class="custom-form-field custom-form-field-bg-white w-100 mb-3"
                                   appearance="outline"
                                 >
-                                  <mat-label>{{shippingPreferences.userField6Alias}}</mat-label>
+                                  <mat-label>{{ shippingPreferences.userField6Alias ? shippingPreferences.userField6Alias : 'User Field 6' }}</mat-label>
+
                                   <input [disabled]="shippingComp"
                                     type="text"
                                     [(ngModel)]="i['UserField6']"
@@ -329,7 +335,8 @@
                                   class="custom-form-field custom-form-field-bg-white w-100 mb-3"
                                   appearance="outline"
                                 >
-                                  <mat-label>{{shippingPreferences.userField7Alias}}</mat-label>
+                                  <mat-label>{{ shippingPreferences.userField7Alias ? shippingPreferences.userField7Alias : 'User Field 7' }}</mat-label>
+
                                   <input [disabled]="shippingComp"
                                     type="text"
                                     [(ngModel)]="i['UserField7']"
