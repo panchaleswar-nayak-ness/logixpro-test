@@ -747,7 +747,7 @@ storageContainerManagement(){
 
   let dialogRef:any = this.global.OpenDialog(StorageContainerManagementModalComponent, {
     height: DialogConstants.auto,
-    width: '560px',
+    width: Style.w786px,
     autoFocus: DialogConstants.autoFocus,
     data: {}
   })

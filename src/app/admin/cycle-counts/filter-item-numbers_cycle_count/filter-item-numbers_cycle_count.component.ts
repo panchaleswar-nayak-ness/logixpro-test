@@ -180,10 +180,8 @@ export class FilterItemNumbersComponentCycleCount implements OnInit {
               });
             }
           });
-        } else {
-         
-          if (res.data.item2 && res.data.item2.length > 0) {
-            
+        } 
+        else if (res.data.item2 && res.data.item2.length > 0) {
             const tableData = res.data.item2.map((item: any) => ({
               invMapID: item.invMapID,
                 itemNumber: item.itemNumber,
@@ -207,10 +205,16 @@ export class FilterItemNumbersComponentCycleCount implements OnInit {
               filterData: commaSeparatedItems,
             });
 
-          } else {
-           
-          }
         }
+        else{
+          this.dialogRef.close({ 
+            filterItemNumbersText: this.data, 
+            filterItemNumbersArray: itemsArray,
+            responseData: [], 
+            filterData: commaSeparatedItems,
+          });
+        }
+        
       } else {
         console.log('FiltersItemNumInsert Error:', res.responseMessage);
       }

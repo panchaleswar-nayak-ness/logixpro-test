@@ -442,7 +442,7 @@ openFilterItemNumbersDialog(): void {
           this.filterData=result.filterData;
          this.updateTableData(result.responseData);
       }
-      if (result.filterData) {
+      if (result?.filterData) {
        console.log('Filtered Data:', result.filterData);
       this.filterData=result.filterData;
       // this.updateTableData(result.responseData);
