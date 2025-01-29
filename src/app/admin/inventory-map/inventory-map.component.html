@@ -32,7 +32,7 @@
                     <mat-option (click)="printRange()">Print Range</mat-option>
                     <mat-option value="set_column_sq">Set Column Sequence</mat-option>
                     <mat-option    routerLink="/admin/inventoryMap/utilizationDashboard">Utlilization Report</mat-option>
-                  <mat-option *ngIf="companyObj.storageContainer && this.userData.accessLevel === 'administrator'" 
+                  <mat-option *ngIf="companyObj.storageContainer && this.userData.accessLevel.toLowerCase() =='administrator'" 
                   [disabled]="!this.isStorageContainer" 
                   (click)="isStorageContainer && storageContainerManagement()">
                   Storage Container Management
