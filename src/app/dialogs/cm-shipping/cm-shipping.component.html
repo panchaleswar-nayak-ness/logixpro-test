@@ -8,13 +8,50 @@
 <div matDialogContent>
 
     <div class="mb-3 card p-3">
-        
+
             <div class="row">
-                <div class="col-xl-3">
+                <div class="col-xl-3" *ngIf="orderShipHidden">
                     <mat-form-field class="custom-form-field custom-form-field-bg-white w-100" appearance="outline">
                         <mat-label>Order Number</mat-label>
                         <input type="text" aria-label="Search" matInput [(ngModel)]="orderNumber" disabled>
                     </mat-form-field>
+                </div>
+                <div  class="col-xl-3" *ngIf="!orderShipHidden">
+                    <div class="chip-container" class="custom-form-field custom-form-field-bg-white w-100">
+                        <mat-form-field class="chip-input-field" appearance="outline">
+                            <mat-label>Order Number</mat-label>
+                            <mat-chip-list #chipList aria-label="Order Selection">
+                              <mat-chip
+                                *ngFor="let order of selectedOrders"
+                                [selectable]="true"
+                                [removable]="true"
+                                (removed)="removeOrder(order)"
+                                class="bg-light-blue"
+                              >
+                                {{ order }}
+                                <button mat-icon-button matChipRemove>
+                                  <mat-icon>cancel</mat-icon>
+                                </button>
+                              </mat-chip>
+                              <input
+                                #chipInput
+                                [formControl]="itemControl"
+                                [matAutocomplete]="auto"
+                                [matChipInputFor]="chipList"
+                                [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                                [matChipInputAddOnBlur]="false"
+                                (matChipInputTokenEnd)="addOrderFromInput($event, chipInput)"
+                              />
+                            </mat-chip-list>
+                            <mat-autocomplete #auto="matAutocomplete" (optionSelected)="addOrderFromAutocomplete($event, chipInput)">
+                                <mat-option *ngFor="let order of filteredOrders | async" [value]="order">
+                                    {{ order }}
+                                  </mat-option>
+                            </mat-autocomplete>
+                          </mat-form-field>
+                      </div>
+                      
+                      
                 </div>
             </div>
         

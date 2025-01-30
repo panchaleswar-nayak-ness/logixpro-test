@@ -39,4 +39,5 @@ export interface IConsolidationApi
 	CarrierDelete(payload: any)
 	viewShipping(payload: any)
 	ShowCMPackPrintModal(payload: any)
+	insertOrderShipping(payload: any)
 }

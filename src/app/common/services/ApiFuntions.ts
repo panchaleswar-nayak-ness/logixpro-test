@@ -2296,4 +2296,10 @@ export class ApiFuntions {
   public getBinLayout(binLayoutId: string): Observable<BinLayoutRes> {
     return this.ApiBase.Get(`/BinLayout/${binLayoutId}`);
   }
+
+  public insertOrderShipping(body: any): Observable<any> {
+    return this.ApiBase.Post('/Consolidation/insertOrderShipping', body);
+  }
+
+
 }
