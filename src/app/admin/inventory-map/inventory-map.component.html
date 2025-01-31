@@ -28,7 +28,7 @@
                 <mat-form-field class="action-dropdown d-block mt-3 mt-xl-0 mt-sm-3" appearance="outline">
                   <mat-label>Actions</mat-label>
                   <mat-select #matRef class="employees-action" (selectionChange)="inventoryMapAction($event)" placeholder="Actions">
-                    <mat-option (click)="addLocDialog()"  *ngIf="inventoryRoute && !isAuthorized('Inv Map Add Location')">Add Location</mat-option>
+                    <mat-option (click)="addLocDialog()"  *ngIf=" inventoryRoute && !isAuthorized('Inv Map Add Location') && this.userData.accessLevel.toLowerCase() =='administrator' ">Add Location</mat-option>
                     <mat-option (click)="printRange()">Print Range</mat-option>
                     <mat-option value="set_column_sq">Set Column Sequence</mat-option>
                     <mat-option    routerLink="/admin/inventoryMap/utilizationDashboard">Utlilization Report</mat-option>
@@ -71,13 +71,13 @@
 
                     <mat-menu #appMenu="matMenu">
                       <button mat-menu-item (click)="printSelected(seletedRecord)">Print</button>
-                      <button mat-menu-item (click)="edit(seletedRecord)">Edit</button>
-                      <button mat-menu-item (click)="delete(seletedRecord)"   *ngIf="!isAuthorized('Inv Map Delete') &&  inventoryRoute">Delete</button>
+                      <button mat-menu-item *ngIf="this.userData.accessLevel.toLowerCase() =='administrator'" (click)="edit(seletedRecord)">Edit</button>
+                      <button mat-menu-item (click)="delete(seletedRecord)"   *ngIf="this.userData.accessLevel.toLowerCase() =='administrator' && !isAuthorized('Inv Map Delete') &&  inventoryRoute">Delete</button>
                       <button *ngIf="!seletedRecord.warehouse.includes('Quarantine')" mat-menu-item (click)="quarantine(seletedRecord)" >Quarantine</button>
                       <button *ngIf="seletedRecord.warehouse.includes('Quarantine')" mat-menu-item (click)="unQuarantine(seletedRecord)">Unquarantine</button>
                       <button mat-menu-item (click)="adjustQuantity(seletedRecord)" [disabled]="seletedRecord.itemNumber == ''">Adjust Quantity</button>
                       <button mat-menu-item *ngIf="transHistory" (click)="tranHistory(seletedRecord)" >Transaction History</button>
-                      <button mat-menu-item (click)="duplicate(seletedRecord)" *ngIf="inventoryRoute">Duplicate</button>
+                      <button mat-menu-item (click)="duplicate(seletedRecord)" *ngIf="inventoryRoute && this.userData.accessLevel.toLowerCase() =='administrator'">Duplicate</button>
                       <button mat-menu-item (click)="viewInInventoryMaster(seletedRecord)">View item in Inventory Master</button>
                       <button mat-menu-item (click)="viewLocationHistory(seletedRecord)">View Location History</button>
                     </mat-menu>
