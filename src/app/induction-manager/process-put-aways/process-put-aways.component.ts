@@ -1179,8 +1179,8 @@ async clearBatchData(){
 
 
                   if(this.imPreferences.autoPrintOffCarouselPutAwayList){
-                    if(this.imPreferences.printDirectly){
-                      this.global.Print(`FileName:PrintOffCarList|batchID:${this.batchId2}`);
+                    if (this.imPreferences.printDirectly) {
+                      this.printApiService.PrintOffCarList(this.batchId2);
                     }
                     else{
                       window.open(`/#/report-view?file=FileName:PrintOffCarList|batchID:${this.batchId2}`, UniqueConstants._blank, 'width=' + screen.width + ',height=' + screen.height + ',toolbar=0,menubar=0,location=0,status=1,scrollbars=1,resizable=1,left=0,top=0')
@@ -1203,7 +1203,7 @@ async clearBatchData(){
                       if (result == ResponseStrings.Yes) {
 
                           if(this.imPreferences.printDirectly){
-                            this.global.Print(`FileName:PrintOffCarList|batchID:${this.batchId2}`);
+                            this.printApiService.PrintOffCarList(this.batchId2);
                           }
                           else{
                             window.open(`/#/report-view?file=FileName:PrintOffCarList|batchID:${this.batchId2}`, UniqueConstants._blank, 'width=' + screen.width + ',height=' + screen.height + ',toolbar=0,menubar=0,location=0,status=1,scrollbars=1,resizable=1,left=0,top=0')
