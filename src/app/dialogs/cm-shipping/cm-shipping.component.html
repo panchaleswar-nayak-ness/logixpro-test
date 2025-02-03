@@ -16,9 +16,9 @@
                         <input type="text" aria-label="Search" matInput [(ngModel)]="orderNumber" disabled>
                     </mat-form-field>
                 </div>
-                <div  class="col-xl-4" *ngIf="!orderShipHidden">
-                    <div class="chip-container" class="custom-form-field custom-form-field-bg-white w-100">
-                        <mat-form-field class="chip-input-field" appearance="outline">
+                <div  class="col-xl-5" *ngIf="!orderShipHidden">
+                    <div class="chip-container">
+                        <mat-form-field class="custom-form-field custom-form-field-bg-white w-100" appearance="outline">
                             <mat-label>Order Number</mat-label>
                             <mat-chip-list #chipList aria-label="Order Selection" class="custom-form-field-bg-white w-100">
                               <mat-chip
@@ -29,8 +29,8 @@
                                 class="bg-light-blue"
                               >
                                 {{ order }}
-                                <button mat-icon-button matChipRemove>
-                                  <mat-icon>cancel</mat-icon>
+                                <button matChipRemove>
+                                  <mat-icon class="bold text-16 lh-20">close_small</mat-icon>
                                 </button>
                               </mat-chip>
                               <input
