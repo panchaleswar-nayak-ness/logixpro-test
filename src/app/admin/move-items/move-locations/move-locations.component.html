@@ -14,19 +14,18 @@
                 <div class="search-box">
 
 
-                    <mat-form-field class="w-100 bg-white br-8" appearance="outline"
+                    <mat-form-field class="w-100 bg-white br-14" appearance="outline"
                         [floatLabel]="getFloatLabelValue()" [hideRequiredMarker]="hideRequiredControl.value">
                         <span class="material-symbols-outlined icon-search"> search </span>
-                        <mat-label replacePlaceholder [replacePlaceHolder]="placeholders.itemNumber" [fallbackPlaceHolder]="placeholders.itemNumberFallback"> </mat-label>
-                        <input type="text" aria-label="Number" matInput autoFocus
+                        <!-- <mat-label>{{itemNumber}} </mat-label> -->
+                        <input type="text" aria-label="Number" matInput placeholder={{itemNumber}}
                             [(ngModel)]='itemNo' maxlength="255" [matAutocomplete]="auto"
                             (ngModelChange)="itemNumberSearch()">
                             <button matSuffix *ngIf="itemNo != ''" class="clear-btn" (click)="clearItemNum()"><mat-icon class="text-20 text-chrome-600">cancel</mat-icon></button>
                         <mat-autocomplete class="card custom-scroll panel-custom-scroll" #auto="matAutocomplete"
                             (optionSelected)="searchData($event)">
     
-                            <h6 class="card-header matAutoCompHeader stickyHeader "><span>Item
-                                    Number</span><span>Description</span> </h6>
+                            <h6 class="card-header matAutoCompHeader stickyHeader "><span>{{itemNumber}}</span><span>Description</span> </h6>
     
                             <mat-option *ngFor="let option of searchAutocompletItemNo"
                                 [value]="option.itemNumber" class="matAutoCompTableContent">
@@ -36,8 +35,6 @@
                             </mat-option>
                         </mat-autocomplete>
                     </mat-form-field>
-    
-    
     
                 </div>
             </div>
@@ -242,7 +239,7 @@
                                 <td (contextmenu)="onContextMenu($event, element.goldenZone, 'Velocity Code')" [class.selected]="element.isSelected" mat-cell *matCellDef="let element">{{element.goldenZone}}</td>
                             </ng-container>
                             <ng-container matColumnDef="itemNumber">
-                                <th mat-header-cell mat-sort-header *matHeaderCellDef replacePlaceholder [replacePlaceHolder]="placeholders.itemNumber" [fallbackPlaceHolder]="placeholders.itemNumberFallback"> {{itemNumber}} </th>
+                                <th mat-header-cell mat-sort-header *matHeaderCellDef> {{itemNumber}} </th>
                                 <td (contextmenu)="onContextMenu($event, element.itemNumber, 'Item Number')" [class.selected]="element.isSelected" mat-cell *matCellDef="let element">{{element.itemNumber}}</td>
                             </ng-container>
                             <ng-container matColumnDef="description">

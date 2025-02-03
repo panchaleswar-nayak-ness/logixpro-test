@@ -166,8 +166,15 @@ import {OrderDetailsComponent} from './dialogs/order-details/order-details.compo
 import { ZoneGroupsComponent } from './dialogs/zone-groups/zone-groups.component';
 import { ImprefInductionFilterComponent } from './dialogs/impref-induction-filter/impref-induction-filter.component';
 import { ImportCountBatchesComponent } from './admin/cycle-counts/import-count-batches/import-count-batches.component';
+import { MatSelectModule } from '@angular/material/select';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 
 // import { MarkoutComponent } from './markout/markout.component';
+import { MatChipsModule } from '@angular/material/chips';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatIconModule } from '@angular/material/icon';
 
 @NgModule({
   declarations: [
@@ -290,7 +297,14 @@ import { ImportCountBatchesComponent } from './admin/cycle-counts/import-count-b
     AppRoutingModule,
     DashboardModule,
     GlobalConfigModule,
-    SharedComponentsModule
+    SharedComponentsModule,
+    MatSelectModule,
+    MatCheckboxModule,
+    MatChipsModule,
+    MatAutocompleteModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatIconModule,
   ],
   providers: [
     Title,

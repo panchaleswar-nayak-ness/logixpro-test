@@ -42,3 +42,36 @@ table {
 .h-300px{
   height: 300px;
 }
+
+
+.chip-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.chip-field {
+  width: 100%;
+}
+
+mat-chip {
+  margin: 8px;
+}
+
+mat-autocomplete {
+  max-height: 800px;
+  overflow: auto;
+}
+.chip-input-field {
+  width: 100%;
+}
+
+mat-chip {
+  margin: 8px;
+  //background-color: #D6D6FD !important;
+}
+
+// .mat-chip-input {
+//   flex-grow: 1;
+//   width: 100%;  /* Ensures it spans full width */
+//   min-width: 350px; /* Prevents it from collapsing */
+// }

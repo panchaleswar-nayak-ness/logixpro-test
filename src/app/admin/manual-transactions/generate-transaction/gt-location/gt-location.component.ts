@@ -12,6 +12,7 @@ export class GtLocationComponent {
   @Input() carousel: any;
   @Input() bin: any;
   @Input() quantityAllocatedPick: any;
+  @Input() quantityAllocatedPutAway: any;
   @Input() totalQuantity: any;
   @Input() invMapID: any;
   

@@ -8,24 +8,53 @@
 <div matDialogContent>
 
     <div class="mb-3 card p-3">
-        <h2 class="card-header-title mb-3 d-flex align-items-center">
-            <div class="mat-icon-wrap me-lg-3">
-                <span class="material-symbols-outlined">
-                    directions_boat
-                </span>
-            </div>
-            <span>Shipping</span>
-        </h2>
-        <div class="card bg-light-blue bg-50 br-none px-4 py-4 br-14">
+
             <div class="row">
-                <div class="col-xl-3">
+                <div class="col-xl-4" *ngIf="orderShipHidden">
                     <mat-form-field class="custom-form-field custom-form-field-bg-white w-100" appearance="outline">
                         <mat-label>Order Number</mat-label>
                         <input type="text" aria-label="Search" matInput [(ngModel)]="orderNumber" disabled>
                     </mat-form-field>
                 </div>
+                <div  class="col-xl-5" *ngIf="!orderShipHidden">
+                    <div class="chip-container">
+                        <mat-form-field class="custom-form-field custom-form-field-bg-white w-100" appearance="outline">
+                            <mat-label>Order Number</mat-label>
+                            <mat-chip-list #chipList aria-label="Order Selection" class="custom-form-field-bg-white w-100">
+                              <mat-chip
+                                *ngFor="let order of selectedOrders"
+                                [selectable]="true"
+                                [removable]="true"
+                                (removed)="removeOrder(order)"
+                                class="bg-light-blue"
+                              >
+                                {{ order }}
+                                <button matChipRemove>
+                                  <mat-icon class="bold text-16 lh-20">close_small</mat-icon>
+                                </button>
+                              </mat-chip>
+                              <input
+                                #chipInput
+                                [formControl]="itemControl"
+                                [matAutocomplete]="auto"
+                                [matChipInputFor]="chipList"
+                                [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                                [matChipInputAddOnBlur]="false"
+                                (matChipInputTokenEnd)="addOrderFromInput($event, chipInput)"
+                              />
+                            </mat-chip-list>
+                            <mat-autocomplete #auto="matAutocomplete" (optionSelected)="addOrderFromAutocomplete($event, chipInput)">
+                                <mat-option *ngFor="let order of filteredOrders | async" [value]="order">
+                                    {{ order }}
+                                  </mat-option>
+                            </mat-autocomplete>
+                          </mat-form-field>
+                      </div>
+                      
+                      
+                </div>
             </div>
-        </div>
+        
     </div>
     <div class="mb-2 card p-3">
         <div class="d-flex justify-content-between">
@@ -35,289 +64,352 @@
                         repartition
                     </span>
                 </div>
-                <span>Shipping</span>
+                <span>Shipment</span>
             </h2>
-            <mat-form-field class="action-dropdown" appearance="outline">
-                <mat-label>Actions</mat-label>
-                <mat-select #matRef class="employees-action" placeholder="Actions">
-                    <mat-option value="0" (click)="openCmAddNewItem()" [disabled]="shippingComp"> Add New </mat-option>
-                    <mat-option value="1" (click)="printAll()"> Print All </mat-option>
-                </mat-select>
-                <span class="material-symbols-outlined icon-expand-more">
-                    expand_more
-                </span>
-            </mat-form-field>
-        </div>
-        <div class="card br-14 table-responsive borderless">
-            <ng-scrollbar class="mat-table-scrollbar h-300px" track="all">
-
-                <table class="w-100 table-borderless" mat-table [dataSource]="shippingData" matSort>
-                    <ng-container matColumnDef="containerID">
-                        <th mat-header-cell *matHeaderCellDef> Container ID </th>
-                        <td mat-cell *matCellDef="let element">
-                            <mat-form-field class="custom-form-field w-100" appearance="outline">
-                                <input matInput type="text" readonly="false" [value]="element.containerID" disabled>
-                            </mat-form-field>
-                        </td>
-                    </ng-container>
-                    <ng-container *ngIf="shippingPreferences && shippingPreferences?.freight">
-                        <ng-container matColumnDef="freight">
-                            <th mat-header-cell *matHeaderCellDef> Freight </th>
-                            <td mat-cell *matCellDef="let element">
-                                <mat-form-field class="custom-form-field w-60" appearance="outline">
-                                    <input matInput
-                                        oninput="this.value = !!this.value && Math.abs(this.value) > 0 ? Math.abs(this.value) : 0"
-                                        type="number" readonly="false" [(ngModel)]="element.freight"
-                                        [disabled]="shippingComp">
-                                </mat-form-field>
-                            </td>
-                        </ng-container>
-                    </ng-container>
-                    <ng-container *ngIf="shippingPreferences && shippingPreferences.freight1">
-                        <ng-container matColumnDef="freight1">
-                            <th mat-header-cell *matHeaderCellDef> Freight1 </th>
-                            <td mat-cell *matCellDef="let element">
-                                <mat-form-field class="custom-form-field w-60" appearance="outline">
-                                    <input matInput
-                                        oninput="this.value = !!this.value && Math.abs(this.value) > 0 ? Math.abs(this.value) : 0"
-                                        type="number" readonly="false" [(ngModel)]="element.freight1"
-                                        [disabled]="shippingComp">
-                                </mat-form-field>
-                            </td>
-                        </ng-container>
-                    </ng-container>
-                    <ng-container *ngIf="shippingPreferences && shippingPreferences.freight2">
-                        <ng-container matColumnDef="freight2">
-                            <th mat-header-cell *matHeaderCellDef> Freight2 </th>
-                            <td mat-cell *matCellDef="let element">
-                                <mat-form-field class="custom-form-field w-60" appearance="outline">
-                                    <input matInput
-                                        oninput="this.value = !!this.value && Math.abs(this.value) > 0 ? Math.abs(this.value) : 0"
-                                        type="number" readonly="false" [(ngModel)]="element.freight2"
-                                        [disabled]="shippingComp">
-                                </mat-form-field>
-                            </td>
-                        </ng-container>
-                    </ng-container>
-                    <ng-container matColumnDef="carrier">
-                        <th mat-header-cell *matHeaderCellDef> Carrier </th>
-                        <td mat-cell *matCellDef="let element">
-                            <mat-form-field class="action-dropdown  w-100" appearance="outline">
-                                <mat-select #matRef class="employees-action Carrier-select" [disabled]="shippingComp"
-                                    [(ngModel)]="element.carrier" placeholder="Carrier">
-                                    <mat-option *ngFor="let item of carriers" [value]="item">{{item}} </mat-option>
-                                </mat-select>
-                                <span class="material-symbols-outlined icon-expand-more">
-                                    expand_more
-                                </span>
-                            </mat-form-field>
-                        </td>
-                    </ng-container>
-                    <ng-container *ngIf="shippingPreferences && shippingPreferences.weight">
-                        <ng-container matColumnDef="weight" *ngIf="shippingPreferences && shippingPreferences.weight">
-                            <th mat-header-cell *matHeaderCellDef> Weight </th>
-                            <td mat-cell *matCellDef="let element">
-                                <mat-form-field class="custom-form-field w-60" appearance="outline">
-                                    <input matInput
-                                        oninput="this.value = !!this.value && Math.abs(this.value) > 0 ? Math.abs(this.value) : 0"
-                                        type="number" readonly="false" [(ngModel)]="element.weight"
-                                        [disabled]="shippingComp">
-                                </mat-form-field>
-                            </td>
-                        </ng-container>
-                    </ng-container>
-                    <ng-container *ngIf="shippingPreferences && shippingPreferences.length">
-                        <ng-container matColumnDef="length" *ngIf="shippingPreferences && shippingPreferences.length">
-                            <th mat-header-cell *matHeaderCellDef> Length </th>
-                            <td mat-cell *matCellDef="let element">
-                                <mat-form-field class="custom-form-field w-60" appearance="outline">
-                                    <input class="counter-none" matInput
-                                        oninput="this.value = !!this.value && Math.abs(this.value) > 0 ? Math.abs(this.value) : 0"
-                                        type="number" readonly="false" [(ngModel)]="element.length"
-                                        [disabled]="shippingComp" (keyup)="calculateCube(element)">
-                                </mat-form-field>
-                            </td>
-                        </ng-container>
-                    </ng-container>
-                    <ng-container *ngIf="shippingPreferences && shippingPreferences.width">
-                        <ng-container matColumnDef="width" *ngIf="shippingPreferences && shippingPreferences.width">
-                            <th mat-header-cell *matHeaderCellDef> Width </th>
-                            <td mat-cell *matCellDef="let element">
-                                <mat-form-field class="custom-form-field w-60" appearance="outline">
-                                    <input class="counter-none" matInput
-                                        oninput="this.value = !!this.value && Math.abs(this.value) > 0 ? Math.abs(this.value) : 0"
-                                        type="number" readonly="false" [(ngModel)]="element.width"
-                                        [disabled]="shippingComp" (keyup)="calculateCube(element)">
-                                </mat-form-field>
-                            </td>
-                        </ng-container>
-                    </ng-container>
-                    <ng-container matColumnDef="trackingNum">
-                        <th mat-header-cell *matHeaderCellDef> Tracking No. </th>
-                        <td mat-cell *matCellDef="let element">
-                            <mat-form-field class="custom-form-field w-100" appearance="outline">
-                                <input matInput type="text" readonly="false" [disabled]="shippingComp" maxlength="50"
-                                    [(ngModel)]="element.trackingNum">
-                            </mat-form-field>
-                        </td>
-                    </ng-container>
-                    <ng-container *ngIf="shippingPreferences && shippingPreferences.height">
-                        <ng-container matColumnDef="height" *ngIf="shippingPreferences && shippingPreferences.height">
-                            <th mat-header-cell *matHeaderCellDef> Height </th>
-                            <td mat-cell *matCellDef="let element">
-                                <mat-form-field class="custom-form-field w-60" appearance="outline">
-                                    <input class="counter-none" matInput
-                                        oninput="this.value = !!this.value && Math.abs(this.value) > 0 ? Math.abs(this.value) : 0"
-                                        type="number" readonly="false" [(ngModel)]="element.height"
-                                        [disabled]="shippingComp" (keyup)="calculateCube(element)">
-                                </mat-form-field>
-                            </td>
-                        </ng-container>
-                    </ng-container>
-                    <ng-container *ngIf="shippingPreferences && shippingPreferences.cube">
-                        <ng-container matColumnDef="cube" *ngIf="shippingPreferences && shippingPreferences.cube">
-                            <th mat-header-cell *matHeaderCellDef> Cube </th>
-                            <td mat-cell *matCellDef="let element">
-                                <mat-form-field class="custom-form-field w-60" appearance="outline">
-                                    <input matInput
-                                        oninput="this.value = !!this.value && Math.abs(this.value) > 0 ? Math.abs(this.value) : 0"
-                                        type="number" readonly="false" [(ngModel)]="element.cube"
-                                        [disabled]="shippingComp">
-                                </mat-form-field>
-                            </td>
-                        </ng-container>
-                    </ng-container>
-                    <ng-container *ngIf="shippingPreferences && shippingPreferences.userField1">
-                        <ng-container matColumnDef="userField1" *ngIf="shippingPreferences && shippingPreferences.userField1">
-                            <th mat-header-cell *matHeaderCellDef> {{shippingPreferences.userField1Alias}} </th>
-                            <td mat-cell *matCellDef="let element">
-                                <mat-form-field class="custom-form-field w-60" appearance="outline">
-                                    <input matInput
-                                        oninput="this.value"
-                                        type="text" readonly="false" [(ngModel)]="element.userField1"
-                                        [disabled]="shippingComp">
-                                </mat-form-field>
-                            </td>
-                        </ng-container>
-                    </ng-container>
-                    <ng-container *ngIf="shippingPreferences && shippingPreferences.userField2">
-                        <ng-container matColumnDef="userField2" *ngIf="shippingPreferences && shippingPreferences.userField2">
-                            <th mat-header-cell *matHeaderCellDef> {{shippingPreferences.userField2Alias}} </th>
-                            <td mat-cell *matCellDef="let element">
-                                <mat-form-field class="custom-form-field w-60" appearance="outline">
-                                    <input matInput
-                                        oninput="this.value"
-                                        type="text" readonly="false" [(ngModel)]="element.userField2"
-                                        [disabled]="shippingComp">
-                                </mat-form-field>
-                            </td>
-                        </ng-container>
-                    </ng-container>
-                    <ng-container *ngIf="shippingPreferences && shippingPreferences.userField3">
-                        <ng-container matColumnDef="userField3" *ngIf="shippingPreferences && shippingPreferences.userField3">
-                            <th mat-header-cell *matHeaderCellDef> {{shippingPreferences.userField3Alias}} </th>
-                            <td mat-cell *matCellDef="let element">
-                                <mat-form-field class="custom-form-field w-60" appearance="outline">
-                                    <input matInput
-                                        oninput="this.value"
-                                        type="text" readonly="false" [(ngModel)]="element.userField3"
-                                        [disabled]="shippingComp">
-                                </mat-form-field>
-                            </td>
-                        </ng-container>
-                    </ng-container>
-                    <ng-container *ngIf="shippingPreferences && shippingPreferences.userField4">
-                        <ng-container matColumnDef="userField4" *ngIf="shippingPreferences && shippingPreferences.userField4">
-                            <th mat-header-cell *matHeaderCellDef> {{shippingPreferences.userField4Alias}} </th>
-                            <td mat-cell *matCellDef="let element">
-                                <mat-form-field class="custom-form-field w-60" appearance="outline">
-                                    <input matInput
-                                        oninput="this.value"
-                                        type="text" readonly="false" [(ngModel)]="element.userField4"
-                                        [disabled]="shippingComp">
-                                </mat-form-field>
-                            </td>
-                        </ng-container>
-                    </ng-container>
-                    <ng-container *ngIf="shippingPreferences && shippingPreferences.userField5">
-                        <ng-container matColumnDef="userField5" *ngIf="shippingPreferences && shippingPreferences.userField5">
-                            <th mat-header-cell *matHeaderCellDef> {{shippingPreferences.userField5Alias}} </th>
-                            <td mat-cell *matCellDef="let element">
-                                <mat-form-field class="custom-form-field w-60" appearance="outline">
-                                    <input matInput
-                                        oninput="this.value"
-                                        type="text" readonly="false" [(ngModel)]="element.userField5"
-                                        [disabled]="shippingComp">
-                                </mat-form-field>
-                            </td>
-                        </ng-container>
-                    </ng-container>
-                    <ng-container *ngIf="shippingPreferences && shippingPreferences.userField6">
-                        <ng-container matColumnDef="userField6" *ngIf="shippingPreferences && shippingPreferences.userField6">
-                            <th mat-header-cell *matHeaderCellDef> {{shippingPreferences.userField6Alias}} </th>
-                            <td mat-cell *matCellDef="let element">
-                                <mat-form-field class="custom-form-field w-60" appearance="outline">
-                                    <input matInput
-                                        oninput="this.value"
-                                        type="text" readonly="false" [(ngModel)]="element.userField6"
-                                        [disabled]="shippingComp">
-                                </mat-form-field>
-                            </td>
-                        </ng-container>
-                    </ng-container>
-                    <ng-container *ngIf="shippingPreferences && shippingPreferences.userField7">
-                        <ng-container matColumnDef="userField7" *ngIf="shippingPreferences && shippingPreferences.userField7">
-                            <th mat-header-cell *matHeaderCellDef> {{shippingPreferences.userField7Alias}} </th>
-                            <td mat-cell *matCellDef="let element">
-                                <mat-form-field class="custom-form-field w-60" appearance="outline">
-                                    <input matInput
-                                        oninput="this.value"
-                                        type="text" readonly="false" [(ngModel)]="element.userField7"
-                                        [disabled]="shippingComp">
-                                </mat-form-field>
-                            </td>
-                        </ng-container>
-                    </ng-container>
-                    <!-- Action Column -->
-                    <ng-container matColumnDef="action" stickyEnd>
-
-                        <th mat-header-cell *matHeaderCellDef class="table-shipping-set">
-                        </th>
-
-                        <td mat-cell *matCellDef="let element;let i = index" class="table-td-shipping">
-
-                            <div class="d-flex gap-6px">
-                                <button class="mx-auto xsm-icon-button" mat-flat-button aria-label="Delete"
-                                    matTooltip="Remove" matTooltipPosition="above" color="warn"
-                                    [disabled]="shippingComp">
-                                    <mat-icon class="material-symbols-outlined"
-                                        (click)="DeleteItem(element,i)">close</mat-icon>
-                                </button>
-                                <button class="mx-auto xsm-icon-button" mat-flat-button aria-label="Delete"
-                                    matTooltip="Print" matTooltipPosition="above" color="primary">
-                                    <mat-icon class="material-symbols-outlined"
-                                        (click)="PrintItem(element,i)">print</mat-icon>
-                                </button>
-                                <button class="mx-auto xsm-icon-button" mat-flat-button aria-label="Delete"
-                                    matTooltip="Save" matTooltipPosition="above" color="primary"
-                                    [disabled]="shippingComp">
-                                    <mat-icon class="material-symbols-outlined"
-                                        (click)="updateShipmentItem(element)">save</mat-icon>
-                                </button>
-                            </div>
-
-                        </td>
-
-                    </ng-container>
-
-                    <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true" class="table-backcolor"></tr>
-                    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-                </table>
-            </ng-scrollbar>
-        </div>
+            <div class="d-block d-xl-flex justify-content-end gap-12">
+            <button
+            (click)="openCmAddNewItem()"
+            [disabled]="shippingComp"
+        mat-flat-button
+        color="primary"
+        class="add-icon-button mb-3"
+        
+      >
+        <span
+          class="material-symbols-outlined"
+          matTooltip="Add new container"
+          matTooltipPosition="above"
+          
+          
+        >
+          add
+        </span>
+        
+      </button>
+      <button
+        mat-button
+        color="primary"
+        class="icon-button secondary-button"
+        
+      >
+        <span
+          class="material-symbols-outlined"
+          mat-stroked-button
+          matTooltip="Print All"
+          matTooltipPosition="above"
+          (click)="printAll()"
+          color="primary"
+        >
+         print
+        </span>
+        
+      </button>
+     
     </div>
+        </div>
+        <ng-container >
+            <mat-accordion *ngFor="let i of ContainerArray; let index = index">
+              <div class="mb-2">
+                <mat-expansion-panel>
+                  <mat-expansion-panel-header>
+                    <mat-panel-title> 
+                      Container ID:&nbsp;<b> {{ i.ContainerID }}</b> 
+                    </mat-panel-title>
+                    <mat-panel-description> </mat-panel-description>
+                  </mat-expansion-panel-header>
+                  <div class="row">
+                    <div class="col-xl-12">
+                      <div class="row">
+                        <div class="col-12">
+                          <div class="row">
+                            <div class="col-sm-2">
+                                <mat-form-field class="action-dropdown  w-100" appearance="outline">
+                                    <mat-label>Carrier</mat-label>
+                                    <mat-select #matRef class="employees-action Carrier-select" [disabled]="shippingComp"
+                                    [(ngModel)]="i['Carrier']" placeholder="Carrier">
+                                        <mat-option *ngFor="let item of carriers" [value]="item">{{item}} </mat-option>
+                                    </mat-select>
+                                    <span class="material-symbols-outlined icon-expand-more">
+                                        expand_more
+                                    </span>
+                                </mat-form-field>
+                            </div>
+                            <div class="col-sm-2">
+                              <mat-form-field
+                                class="custom-form-field custom-form-field-bg-white w-100 mb-3"
+                                appearance="outline"
+                              >
+                                <mat-label>Tracking No.</mat-label>
+                                <input [disabled]="shippingComp"
+                                  type="text"
+                                  [(ngModel)]="i['TrackingNumber']"
+                                  matInput
+                                  maxlength="50"
+                                />
+                              </mat-form-field>
+                            </div>
+                            <div class="col-sm-2">
+                                <mat-form-field
+                                  class="custom-form-field custom-form-field-bg-white w-100 mb-3"
+                                  appearance="outline"
+                                >
+                                  <mat-label>Freight</mat-label>
+                                  <input [disabled]="shippingComp"
+                                    type="number"
+                                    oninput="this.value = !!this.value && Math.abs(this.value) > 0 ? Math.abs(this.value) : 0"
+                                    [(ngModel)]="i['Freight']"
+                                    matInput
+                                    maxlength="200"
+                                  />
+                                </mat-form-field>
+                              </div>
+                              <div class="col-sm-2">
+                                <mat-form-field
+                                  class="custom-form-field custom-form-field-bg-white w-100 mb-3"
+                                  appearance="outline"
+                                >
+                                  <mat-label>Freight1</mat-label>
+                                  <input [disabled]="shippingComp"
+                                    type="number"
+                                    oninput="this.value = !!this.value && Math.abs(this.value) > 0 ? Math.abs(this.value) : 0"
+                                    [(ngModel)]="i['Freight1']"
+                                    matInput
+                                    maxlength="200"
+                                  />
+                                </mat-form-field>
+                              </div>
+                              <div class="col-sm-2">
+                                <mat-form-field
+                                  class="custom-form-field custom-form-field-bg-white w-100 mb-3"
+                                  appearance="outline"
+                                >
+                                  <mat-label>Freight2</mat-label>
+                                  <input [disabled]="shippingComp"
+                                    type="number"
+                                    oninput="this.value = !!this.value && Math.abs(this.value) > 0 ? Math.abs(this.value) : 0"
+                                    [(ngModel)]="i['Freight2']"
+                                    matInput
+                                    maxlength="200"
+                                  />
+                                </mat-form-field>
+                              </div>
+                              <div class="col-sm-2">
+                                <mat-form-field
+                                  class="custom-form-field custom-form-field-bg-white w-100 mb-3"
+                                  appearance="outline"
+                                >
+                                  <mat-label>Weight</mat-label>
+                                  <input [disabled]="shippingComp"
+                                    type="number"
+                                    oninput="this.value = !!this.value && Math.abs(this.value) > 0 ? Math.abs(this.value) : 0"
+                                    [(ngModel)]="i['Weight']"
+                                    matInput
+                                    maxlength="200"
+                                  />
+                                </mat-form-field>
+                              </div>
+                          </div>
+                          <div class="row">
+                            <div class="col-sm-2">
+                              <mat-form-field
+                                class="custom-form-field custom-form-field-bg-white w-100 mb-3"
+                                appearance="outline"
+                              >
+                                <mat-label>Length</mat-label>
+                                <input [disabled]="shippingComp"
+                                  type="number"
+                                  oninput="this.value = !!this.value && Math.abs(this.value) > 0 ? Math.abs(this.value) : 0"
+                                  [(ngModel)]="i['Length']"
+                                  matInput (keyup)="calculateCube(i)"
+                                  class="counter-none"
+                                  maxlength="200"
+                                  
+                                />
+                              </mat-form-field>
+                            </div>
+                            <div class="col-sm-2">
+                              <mat-form-field
+                                class="custom-form-field custom-form-field-bg-white w-100 mb-3"
+                                appearance="outline"
+                              >
+                                <mat-label>Width</mat-label>
+                                <input [disabled]="shippingComp"
+                                  type="number"
+                                  oninput="this.value = !!this.value && Math.abs(this.value) > 0 ? Math.abs(this.value) : 0"
+                                  [(ngModel)]="i['Width']"
+                                  matInput (keyup)="calculateCube(i)"
+                                  maxlength="200"
+                                  class="counter-none"
+                                />
+                              </mat-form-field>
+                            </div>
+                            <div class="col-sm-2">
+                                <mat-form-field
+                                  class="custom-form-field custom-form-field-bg-white w-100 mb-3"
+                                  appearance="outline"
+                                >
+                                  <mat-label>Height</mat-label>
+                                  <input [disabled]="shippingComp"
+                                  oninput="this.value = !!this.value && Math.abs(this.value) > 0 ? Math.abs(this.value) : 0"
+                                  type="number"
+                                    [(ngModel)]="i['Height']"
+                                    matInput (keyup)="calculateCube(i)"
+                                    maxlength="200"
+                                    class="counter-none"
+                                  />
+                                </mat-form-field>
+                              </div>
+                              <div class="col-sm-2">
+                                <mat-form-field
+                                  class="custom-form-field custom-form-field-bg-white w-100 mb-3"
+                                  appearance="outline"
+                                >
+                                  <mat-label>Cube</mat-label>
+                                  <input disabled
+                                    type="number"
+                                    oninput="this.value = !!this.value && Math.abs(this.value) > 0 ? Math.abs(this.value) : 0"
+                                    [(ngModel)]="i['Cube']"
+                                    matInput
+                                    maxlength="200"
+                                  />
+                                </mat-form-field>
+                              </div>
+                              <div class="col-sm-2" *ngIf="shippingPreferences && shippingPreferences.userField1">
+                                <mat-form-field
+                                  class="custom-form-field custom-form-field-bg-white w-100 mb-3"
+                                  appearance="outline"
+                                >
+                                  <mat-label>{{ shippingPreferences.userField1Alias ? shippingPreferences.userField1Alias : 'User Field 1' }}</mat-label>
+
+                                  <input [disabled]="shippingComp"
+                                    type="text"
+                                    [(ngModel)]="i['UserField1']"
+                                    matInput
+                                    maxlength="200"
+                                  />
+                                </mat-form-field>
+                              </div>
+                              <div class="col-sm-2" *ngIf="shippingPreferences && shippingPreferences.userField2">
+                                <mat-form-field
+                                  class="custom-form-field custom-form-field-bg-white w-100 mb-3"
+                                  appearance="outline"
+                                >
+                                  <mat-label>{{ shippingPreferences.userField2Alias ? shippingPreferences.userField2Alias : 'User Field 2' }}</mat-label>
+
+                                  <input [disabled]="shippingComp"
+                                    type="text"
+                                    [(ngModel)]="i['UserField2']"
+                                    matInput
+                                    maxlength="200"
+                                  />
+                                </mat-form-field>
+                              </div>
+                          </div>
+                          <div class="row">
+                            <div class="col-sm-2" *ngIf="shippingPreferences && shippingPreferences.userField3">
+                              <mat-form-field
+                                class="custom-form-field custom-form-field-bg-white w-100 mb-3"
+                                appearance="outline"
+                              >
+                               <mat-label>{{ shippingPreferences.userField3Alias ? shippingPreferences.userField3Alias : 'User Field 3' }}</mat-label>
+
+                                <input [disabled]="shippingComp"
+                                  type="text"
+                                  [(ngModel)]="i['UserField3']"
+                                  matInput
+                                  maxlength="200"
+                                  
+                                />
+                              </mat-form-field>
+                            </div>
+                            <div class="col-sm-2" *ngIf="shippingPreferences && shippingPreferences.userField4">
+                              <mat-form-field
+                                class="custom-form-field custom-form-field-bg-white w-100 mb-3"
+                                appearance="outline"
+                              >
+                                <mat-label>{{ shippingPreferences.userField4Alias ? shippingPreferences.userField4Alias : 'User Field 4' }}</mat-label>
+
+                                <input [disabled]="shippingComp"
+                                  type="text"
+                                  [(ngModel)]="i['UserField4']"
+                                  matInput
+                                  maxlength="200"
+                                />
+                              </mat-form-field>
+                            </div>
+                            <div class="col-sm-2" *ngIf="shippingPreferences && shippingPreferences.userField5">
+                                <mat-form-field
+                                  class="custom-form-field custom-form-field-bg-white w-100 mb-3"
+                                  appearance="outline"
+                                >
+                                  <mat-label>{{ shippingPreferences.userField5Alias ? shippingPreferences.userField5Alias : 'User Field 5' }}</mat-label>
+
+                                  <input [disabled]="shippingComp"
+                                    type="text"
+                                    [(ngModel)]="i['UserField5']"
+                                    matInput
+                                    maxlength="200"
+                                  />
+                                </mat-form-field>
+                              </div>
+                              <div class="col-sm-2" *ngIf="shippingPreferences && shippingPreferences.userField6">
+                                <mat-form-field
+                                  class="custom-form-field custom-form-field-bg-white w-100 mb-3"
+                                  appearance="outline"
+                                >
+                                  <mat-label>{{ shippingPreferences.userField6Alias ? shippingPreferences.userField6Alias : 'User Field 6' }}</mat-label>
+
+                                  <input [disabled]="shippingComp"
+                                    type="text"
+                                    [(ngModel)]="i['UserField6']"
+                                    matInput
+                                    maxlength="200"
+                                  />
+                                </mat-form-field>
+                              </div>
+                              <div class="col-sm-2" *ngIf="shippingPreferences && shippingPreferences.userField7">
+                                <mat-form-field
+                                  class="custom-form-field custom-form-field-bg-white w-100 mb-3"
+                                  appearance="outline"
+                                >
+                                  <mat-label>{{ shippingPreferences.userField7Alias ? shippingPreferences.userField7Alias : 'User Field 7' }}</mat-label>
+
+                                  <input [disabled]="shippingComp"
+                                    type="text"
+                                    [(ngModel)]="i['UserField7']"
+                                    matInput
+                                    maxlength="200"
+                                  />
+                                </mat-form-field>
+                              </div>
+                             
+                          </div>
+                          <div class="row">
+                            <div class="d-block d-xl-flex justify-content-end">
+                                <div class="d-xl-flex gap-12">
+                                    <button  mat-stroked-button class="mb-3 mb-xl-0 form-button-submit m-1 m-xl-0"
+                                            color="primary" (click)="PrintItem('',i)">Print</button>
+                                    <button  mat-stroked-button [disabled]="shippingComp"  class="mb-3 mb-xl-0 button-remove-all-w-stroke m-1 m-xl-0"
+                                            color="warn" (click)="DeleteItem('',i)">Delete</button>
+                                    <button  mat-flat-button [disabled]="shippingComp" class="mb-3 mb-xl-0 form-button-submit m-1 m-xl-0"
+                                            color="primary" (click)="updateShipmentItem(i)">Save</button>
+                                  </div>
+                                
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </mat-expansion-panel>
+              </div>
+            </mat-accordion>
+          </ng-container>
+    </div>
+   
 </div>
 
+  
 <div matDialogActions>
     <button type="button" mat-flat-button color="primary" class="mb-2 btn-lg w-100" [disabled]="shippingComp"
         (click)="ShippingCompShip()">Complete Shipment</button>

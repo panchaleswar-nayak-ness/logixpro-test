@@ -193,6 +193,7 @@ import { ImportCountBatchesComponent } from './cycle-counts/import-count-batches
 import { FilterItemNumbersComponentCycleCount } from './cycle-counts/filter-item-numbers_cycle_count/filter-item-numbers_cycle_count.component';
 import { AuthService } from '../common/init/auth.service';
 import { StorageContainerManagementComponent } from './admin-preferences/workstation-preferences/wp-workstation-setup/storage-container-management/storage-container-management.component';
+import { StorageContainerManagementModalComponent } from './dialogs/storage-container-management/storage-container-management.component';
 
 export function initializeApp(authService: AuthService, fieldMappingService: FieldMappingService) {
     return (): Promise<any> => {
@@ -394,6 +395,7 @@ export function initializeApp(authService: AuthService, fieldMappingService: Fie
         LookupHotMoveComponent,
         LookupBlindInductionComponent,
         StorageContainerManagementComponent,
+        StorageContainerManagementModalComponent
     ],
     imports: [
         CommonModule,

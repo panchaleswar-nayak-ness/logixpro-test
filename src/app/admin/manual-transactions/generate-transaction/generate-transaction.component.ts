@@ -617,10 +617,14 @@ export class GenerateTransactionComponent implements OnInit {
   }
 
   updateTransaction() {
+    const totalQuantity = Number(this.totalQuantity) || 0;
+    const quantityAllocatedPick = Number(this.quantityAllocatedPick) || 0;
+    const actualQuantity = totalQuantity - quantityAllocatedPick;
     if (
       this.isPost &&
-      this.isLocation &&
-      this.transQuantity > this.totalQuantity
+      this.isLocation && 
+      this.transQuantity > actualQuantity && 
+      this.transType === TransactionType.Pick
     ) {
       this.isInvalidQuantityPopUp = true;
       const dialogRef: any = this.global.OpenDialog(InvalidQuantityComponent, {

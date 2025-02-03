@@ -60,9 +60,9 @@
 
   </div>
  
-  <div class="mt-3" [hidden]="selectedImportType !== 'Location'">
+  <div class="mt-3" [formGroup]="filtersForm" [hidden]="selectedImportType !== 'Location'">
     <mat-checkbox 
-      (change)="onChangeDemo($event,'empty')" 
+      (change)="setLocationCheck($event,'empty')" 
       formControlName="includeEmpty" 
       class="example-margin custom-checkbox mb-2 me-3" 
       color="primary">
@@ -70,7 +70,7 @@
     </mat-checkbox>
   
     <mat-checkbox 
-      (change)="onChangeDemo($event,'other')" 
+      (change)="setLocationCheck($event,'other')" 
       formControlName="includeOther" 
       class="example-margin custom-checkbox mb-2" 
       color="primary">

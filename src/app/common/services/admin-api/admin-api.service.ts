@@ -3,6 +3,7 @@ import {ApiFuntions} from '../ApiFuntions';
 import {AuthService} from 'src/app/common/init/auth.service';
 import {IAdminApiService} from './admin-api-interface'
 import { UserSession } from '../../types/CommonTypes';
+import { UpdateSCReq } from '../../Model/storage-container-management';
 
 @Injectable({
   providedIn: 'root'
@@ -2015,6 +2016,9 @@ export class AdminApiService implements IAdminApiService {
   public WorkstationSetupInfo() {
     return this.Api.WorkstationSetupInfo();
   }
+  public AccessStorageContainerManagement() {
+    return this.Api.AccessStorageContainerManagement();
+  }
 
   public WorkstationSettingsUpdate(body: any) {
     const payload = {
@@ -2091,6 +2095,25 @@ export class AdminApiService implements IAdminApiService {
     public deleteLookupTableData(body: any) {
      
       return this.Api.deleteLookupTableData(body);
+    }
+
+
+    // Storage Container Management Functions
+
+    public getStorageContainerLayout(containerId: string) {
+      return this.Api.getStorageContainerLayout(containerId);
+    }
+
+    public updateStorageContainer(containerId: string,body:UpdateSCReq) {
+      return this.Api.updateStorageContainer(containerId,body);
+    }
+
+    public getCarouselZones(carousel: string) {
+      return this.Api.getCarouselZones(carousel);
+    }
+
+    public getBinLayout(binLayoutId: string) {
+      return this.Api.getBinLayout(binLayoutId);
     }
   }
 

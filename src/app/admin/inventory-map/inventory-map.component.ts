@@ -30,6 +30,7 @@ import { RouteUpdateMenu } from 'src/app/common/constants/menu.constants';
 import { AppNames, AppRoutes, } from 'src/app/common/constants/menu.constants';
 import { ContextMenuFiltersService } from 'src/app/common/init/context-menu-filters.service';
 import { Placeholders } from 'src/app/common/constants/strings.constants';
+import { StorageContainerManagementModalComponent } from '../dialogs/storage-container-management/storage-container-management.component';
 
 @Component({
   selector: 'app-inventory-map',
@@ -38,6 +39,7 @@ import { Placeholders } from 'src/app/common/constants/strings.constants';
 })
 
 export class InventoryMapComponent implements OnInit {
+  companyObj = { storageContainer: false };
   placeholders = Placeholders;
   fieldMappings = JSON.parse(localStorage.getItem('fieldMappings') ?? '{}');
     
@@ -84,6 +86,10 @@ export class InventoryMapComponent implements OnInit {
   fieldNames:any;
   routeFromIM:boolean=false;
   isActiveTrigger:boolean =false;
+  isStorageContainer :boolean =false;
+  assignedFunctions:any;
+  unassignedFunctions:any;
+  isClearWholeLocationAvailable: boolean = false;
   routeFromOM:boolean=false;
   public displayedColumns: any ;
   public dataSource: any = [];
@@ -198,6 +204,27 @@ export class InventoryMapComponent implements OnInit {
     this.OSFieldFilterNames();
     this.initializeApi();
     this.getColumnsData();
+    this.companyInfo();
+
+    this.functionsByGroup();
+
+  }
+  
+  public companyInfo() {
+    this.iAdminApiService.AccessStorageContainerManagement().subscribe((res: any) => {
+      if (res.isExecuted && res.data) {
+         this.isStorageContainer =  res.data;
+      }
+    });
+
+    this.iAdminApiService.WorkstationSetupInfo().subscribe((res: any) => {
+      if (res.isExecuted && res.data) {
+        this.companyObj.storageContainer = res.data.storageContainer;        }
+      else {
+        //this.global.ShowToastr(ToasterType.Error, this.global.globalErrorMsg(), ToasterTitle.Error);
+        console.log("AdminCompanyInfo", res.responseMessage);
+      }
+    })
   }
 
   public OSFieldFilterNames() { 
@@ -384,13 +411,16 @@ export class InventoryMapComponent implements OnInit {
     this.dialog.closeAll();
   }
 
+
   edit(event: any){
+ 
     let dialogRef:any = this.global.OpenDialog(AddInvMapLocationComponent, {
       height: DialogConstants.auto,
       width: '100%',
       autoFocus: DialogConstants.autoFocus,
       disableClose:true,
       data: {
+        isClearWholeLocationAvailable: this.isClearWholeLocationAvailable,
         mode: 'editInvMapLocation',
         itemList : this.itemList,
         detailData : event,
@@ -406,6 +436,33 @@ export class InventoryMapComponent implements OnInit {
         this.getContentData();
       }
     })
+
+  
+  }
+
+
+  functionsByGroup(event?: any) {
+
+    const grp_data = {
+     
+      "groupName":this?.userData?.accessLevel
+  
+      }; 
+    this.iAdminApiService.getFunctionByGroup(grp_data)
+    .subscribe((response:any) => {
+      if(response.isExecuted && response.data)
+      {
+        this.assignedFunctions = response.data?.groupFunc
+        this.unassignedFunctions = response.data?.allFunc
+  
+        this.isClearWholeLocationAvailable = response.data.allFunc.includes("Inv Map Clear Whole Location");
+  
+      }
+      else {
+       
+      } 
+      
+    });
   }
 
   delete(event: any){ 
@@ -683,6 +740,20 @@ selectRow(row: any) {
       selectedRow.selected = !selectedRow.selected;
     }
   }, 250);
+}
+
+storageContainerManagement(){
+  console.log('Storage Container Management option selected.');
+
+  let dialogRef:any = this.global.OpenDialog(StorageContainerManagementModalComponent, {
+    height: DialogConstants.auto,
+    width: Style.w786px,
+    autoFocus: DialogConstants.autoFocus,
+    data: {}
+  })
+  dialogRef.afterClosed().pipe(takeUntil(this.onDestroy$)).subscribe(result => {
+   
+  })
 }
 
 }

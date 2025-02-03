@@ -18,6 +18,7 @@ import { ConfirmationDialogComponent } from '../../dialogs/confirmation-dialog/c
 import { Router } from '@angular/router';
 import { AppRoutes } from 'src/app/common/constants/menu.constants';
 import { MatSelect } from '@angular/material/select';
+import { LocalStorageService } from 'src/app/common/services/LocalStorage.service';
 
 export interface PeriodicElement {
   invMapID:number;
@@ -62,7 +63,8 @@ export class ImportCountBatchesComponent implements OnInit {
   UnitOfMeasure: string = this.fieldMappings.unitOfMeasure;
   dataSource = new MatTableDataSource<PeriodicElement>();
   placeholders = Placeholders;
-  
+  IncludeEmptyCheckedValue :any;
+  IncludeOtherCheckedValue :any;
   displayedColumns: string[] = [
     'itemNumber',
     'description',
@@ -138,6 +140,7 @@ removeSpacesFromString(value: string): string {
     public global:GlobalService, 
     private dialog: MatDialog,
     public adminApiService: AdminApiService,
+    private localstorageService:LocalStorageService,
     @Inject(MAT_DIALOG_DATA) public data: DialogData,
 
     public dialogRef: MatDialogRef<ImportCountBatchesComponent>
@@ -186,9 +189,9 @@ removeSpacesFromString(value: string): string {
       this.filterOptions = ['Spreadsheet', this.ItemNumber];
     }
     else  if (this.selectedImportType === 'Location') {
-    
       this.dependVal = 'Location';
       this.filterOptions = ['Spreadsheet', 'Location'];
+      this.setLocationCheck(null,null);
     }  else {
        this.filterOptions = [];
     }
@@ -205,27 +208,12 @@ removeSpacesFromString(value: string): string {
     this.uploadedFileName = ''; 
     this.openFilterItemNumbersDialog();
   } else if (this.dependVal === 'Location') {
-    this.filtersForm.reset({
-      includeEmpty: false,
-      includeOther: false
-    });
-
+  
     this.uploadedFileName = ''; 
 
     this.openFilterItemNumbersDialog();
   }
 }
-
-
-  onChangeDemo(e: any, type: string): void {
-    if (type === 'empty') {
-      this.filtersForm.controls['includeEmpty'].setValue(e.checked);
-    } else if (type === 'other') {
-      this.filtersForm.controls['includeOther'].setValue(e.checked);
-    }
-
-    this.confirmImport(true);
-  }
 
   onFileSelect(event: Event): void {
     const input = event.target as HTMLInputElement;
@@ -328,22 +316,55 @@ removeSpacesFromString(value: string): string {
       };
 
       this.iAdminApiService.GetImportBatchCount(payload).subscribe(
+        
         (res: { isExecuted: boolean; data: any; responseMessage: string }) => {
           console.log('API Response:', res);
-
+      
           if (res.isExecuted) {
           
             if (res.data && res.data.item1 && res.data.item1.length > 0 && !skipDialog) {
               let heading = '';
               let message = '';
-              
+              let message2='';
              
               if (this.selectedImportType === 'Location') {
-                heading = 'Location(s) Not Found';
-                message = `The following Locations do not exist [${res.data.item1.join(', ')}]`;
-               
-            } else if (this.selectedImportType === this.ItemNumber) {
-                heading = 'Item(s) Not Found';
+              
+                  // for location exists in db
+            if (res.data.item3 && res.data.item3.length > 0) {
+          
+              heading = 'Location(s) Not Found';
+              message = `The following location(s) could not be imported as they are in another user's queue or have existing cycle count transactions: [${res.data.item3.join(', ')}]`;
+  
+              // for some location exists in db and some are not in db 
+              if (res.data.item4 && res.data.item4.length > 0) 
+              {
+                message = `The following location(s) could not be imported as they are in another user's queue or have existing cycle count transactions: [${res.data.item3.join(', ')}]`;
+                message2 =`The following location(s) do not exist: [${res.data.item4.join(', ')}]`;
+              }  
+  
+            }
+            else
+            {
+              // for not showing message dialog box if it is exists in empty locations
+              if ((res.data.item3.length === 0) && (res.data.item4.length === 0)){
+              this.dialogRef.close({ 
+                filterItemNumbersText: this.data, 
+                filterItemNumbersArray: itemsArray,
+                filterData: commaSeparatedItems,
+              });
+              return
+              }
+              // for showing no location exists in db
+              else {
+              heading = 'Location(s) Not Found';
+              message = `The following location(s) do not exist: [${res.data.item1.join(', ')}]`;
+              }  
+            }
+            //heading = 'Location(s) Not Found';
+            //message = `The following Locations do not exist [${res.data.item1.join(', ')}]`;
+          }  
+              else if (this.selectedImportType === this.ItemNumber) {
+                heading = `${this.ItemNumber}(s) Not Found`;
                 message = `The following Item Numbers do not exist [${res.data.item1.join(', ')}]`;
               
             }
@@ -353,6 +374,7 @@ removeSpacesFromString(value: string): string {
                 data: {
                   heading: heading,
                   message: message,
+                  message2: message2,
                   buttonFields: false,
                   threeButtons: false,
                   singleButton: true,
@@ -400,23 +422,31 @@ removeSpacesFromString(value: string): string {
   
   
 openFilterItemNumbersDialog(): void {
+
     const dialogRef = this.dialog.open(FilterItemNumbersComponentCycleCount, {
       width: '600px',
       
       data: { 
         selectedImporttType: this.selectedImportType ?? "",
-          
+        includeEmpty:this.IncludeEmptyCheckedValue ?? false,
+        includeOther:this.IncludeOtherCheckedValue ?? false,
       },
     });
   
     dialogRef.afterClosed().subscribe((result) => {
+      
       this.selectedFilterBy = '';
       if (result && result.responseData && result.filterData) {
           console.log('Filtered Item Numbers Response Data:', result.responseData);
-         console.log('Filtered Data:', result.filterData);
+          console.log('Filtered Data:', result.filterData);
           this.filterData=result.filterData;
          this.updateTableData(result.responseData);
       }
+      if (result?.filterData) {
+       console.log('Filtered Data:', result.filterData);
+      this.filterData=result.filterData;
+      // this.updateTableData(result.responseData);
+    }
     });
   }
 
@@ -525,5 +555,18 @@ openFilterItemNumbersDialog(): void {
     }
 
 }
+
+setLocationCheck(e:any, type:any)
+  {
+    let updatedValues=this.localstorageService.SetImportCountLocationChecks(e,type);
+    this.filtersForm.controls['includeEmpty'].setValue(updatedValues[0]);
+    this.IncludeEmptyCheckedValue=updatedValues[0];
+    this.filtersForm.controls['includeOther'].setValue(updatedValues[1]);
+    this.IncludeEmptyCheckedValue=updatedValues[1];
+    
+    this.dataSource.data = [];
+    this.confirmImport(true);
+  }
+
 
 }

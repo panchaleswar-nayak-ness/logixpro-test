@@ -7,6 +7,8 @@ import { Placeholders, StringConditions } from 'src/app/common/constants/strings
   styleUrls: []
 })
 export class LocationDetailsComponent {
+  fieldMappings = JSON.parse(localStorage.getItem('fieldMappings') ?? '{}');
+  itemNumber: string = this.fieldMappings.itemNumber;
 
   @Input() reqDate : Date;
   @Input() isMoveQty : boolean = false;

@@ -295,7 +295,7 @@ clearToteID() {
         itemNo: itemNumber,
         lotNumber: lotNumber,
         quantity: transactionQuantity,
-        expirationDate: new Date(expirationDate),
+        expirationDate: expirationDate ? new Date(expirationDate) : "",
         id: id,
         orgQty: transactionQuantity,
       });

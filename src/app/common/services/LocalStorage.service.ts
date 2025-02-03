@@ -7,6 +7,78 @@ export class LocalStorageService {
 
   constructor() {}
 
+  SetImportCountLocationChecks(e: any, type: any): any[] {
+
+    let LoggedInUserData: any = localStorage.getItem('user'); // Logged-in user data
+    let LoggedInUserName: any = (JSON.parse(LoggedInUserData)).userName;  // Get current login user name from Logged-in user data
+    let AllPickChecks: any = localStorage.getItem('ImportCountLocationChecks'); // Pick Checks Data for all users
+    
+    if (AllPickChecks) // check if any value exists in local storage
+    {
+    
+    let usersPickChecks: any[] = JSON.parse(AllPickChecks);
+    let userPickChecked = usersPickChecks.find((pickCheck: any) => pickCheck.UserName === LoggedInUserName);
+    
+    if (userPickChecked) // check if value exists for loggedIn user in local storage
+      {
+      
+      if (type === 'empty'){
+        userPickChecked.emptyLocation = e.checked;
+      }  
+      else if (type === 'other'){
+        userPickChecked.otherLocation = e.checked;
+      }
+      
+      localStorage.setItem('ImportCountLocationChecks', JSON.stringify(usersPickChecks));
+
+    }
+    else //if value not exists for loggedIn user then add
+    {
+
+      let PickChecks = 
+      {
+        'UserName': LoggedInUserName,
+        'emptyLocation': false,
+        'otherLocation': false
+      }
+
+
+     usersPickChecks.push(PickChecks);
+     localStorage.setItem('ImportCountLocationChecks', JSON.stringify(usersPickChecks));
+    }
+    
+    } // if value not exists for any user in local storage then add value in it
+    
+    else
+    {
+     
+      let PickChecks = 
+      {
+        'UserName': LoggedInUserName,
+        'emptyLocation': false,
+        'otherLocation': false
+      }
+
+      let allPickChecks = [PickChecks];
+      localStorage.setItem('ImportCountLocationChecks', JSON.stringify(allPickChecks)); 
+        
+    } 
+   
+     // Retrieve the updated userPickChecked from localStorage after changes
+     let updatedPickChecks: any[] = JSON.parse(localStorage.getItem('ImportCountLocationChecks') || '[]');
+     let updatedUserPickChecked = updatedPickChecks.find((pickCheck: any) => pickCheck.UserName === LoggedInUserName);
+     
+     // Return the array of values
+     if (updatedUserPickChecked) {
+         return [
+             updatedUserPickChecked.emptyLocation,
+             updatedUserPickChecked.otherLocation
+         ];
+     }
+     return []; // If no pick checks found for the user, return an empty array
+
+  }
+
   SetCountPickChecks(e: any, type: any): any[] {
 
     let LoggedInUserData: any = localStorage.getItem('user'); // Logged-in user data
@@ -398,7 +470,7 @@ export class LocalStorageService {
     const totalKeys: number = localStorage.length;
 
     // Create an array of keys to be excluded from removal
-    const exceptKeys: string[] = ['CountPickChecks','CountPutChecks', 'CountPickChecksLocation', 'CountPutChecksLocation']; // Add more keys as needed
+    const exceptKeys: string[] = ['CountPickChecks','CountPutChecks', 'CountPickChecksLocation', 'CountPutChecksLocation','ImportCountLocationChecks']; // Add more keys as needed
 
     // Iterate through all the keys in localStorage
     for (let i = 0; i < totalKeys; i++) {
