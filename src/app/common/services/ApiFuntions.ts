@@ -10,7 +10,7 @@ import {
   UpdateQuantityRequest
 } from 'src/app/consolidation-manager/cm-markout/models/markout-model';
 import { AddPickToteInductionFilter } from 'src/app/induction-manager/models/PickToteInductionModel';
-import { BinLayoutRes, CarouselZonesRes, UpdateSCReq, UpdateSCRes } from '../Model/storage-container-management';
+import { BinLayoutRes, CarouselZonesRes, StorageContainerLayout, UpdateSCReq, UpdateSCRes, UpdateStorageContainerLayoutRes, VaildateScannedContainerRes } from '../Model/storage-container-management';
 
 @Injectable({
   providedIn: 'root',
@@ -2279,10 +2279,14 @@ export class ApiFuntions {
     return await this.ApiBase.PostAsync(`/print/totecontentslist`, body);
   }
 
+  public insertOrderShipping(body: any): Observable<any> {
+    return this.ApiBase.Post('/Consolidation/insertOrderShipping', body);
+  }
+
   // Storage Container Management Endpoints
 
-  public getStorageContainerLayout(containerId: string): Observable<any> {
-    return this.ApiBase.Get(`/storagecontainers/${containerId}`);
+  public getStorageContainerLayout(container: string): Observable<StorageContainerLayout> {
+    return this.ApiBase.Get(`/storageContainer/GetStorageContainerLayout/${container}`);
   }
 
   public updateStorageContainer(containerId: string,body:UpdateSCReq): Observable<UpdateSCRes | null> {
@@ -2297,9 +2301,12 @@ export class ApiFuntions {
     return this.ApiBase.Get(`/BinLayout/${binLayoutId}`);
   }
 
-  public insertOrderShipping(body: any): Observable<any> {
-    return this.ApiBase.Post('/Consolidation/insertOrderShipping', body);
+  public vaildateScannedContainer(container: string): Observable<VaildateScannedContainerRes> {
+    return this.ApiBase.Get(`/storageContainer/ValidateScannedContainer/${container}`);
   }
 
+  public updateStorageContainerLayout(BinLayoutId: string,body:UpdateSCReq): Observable<UpdateStorageContainerLayoutRes | null> {
+    return this.ApiBase.Put(`/storageContainer/UpdateStorageContainerLayout/${BinLayoutId}`,body);
+  }
 
 }

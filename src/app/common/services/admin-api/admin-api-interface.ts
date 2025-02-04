@@ -261,4 +261,6 @@ export interface IAdminApiService
   updateStorageContainer(containerId: string,body:UpdateSCReq);
   getStorageContainerLayout(carousel : string);
   getBinLayout(binLayoutId: string);
+  vaildateScannedContainer(container: string);
+  updateStorageContainerLayout(BinLayoutId: string,body:UpdateSCReq);
 }
