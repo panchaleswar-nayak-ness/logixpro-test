@@ -395,103 +395,99 @@ export class CmShippingComponent implements OnInit {
   }
 
   async ShippingCompShip() {
-    if (this.ContainerArray.length > 0) {
-    let dialogRef: any = this.global.OpenDialog(ConfirmationDialogComponent, {
+    if (this.ContainerArray.length === 0) {
+      this.global.ShowToastr(ToasterType.Error, "Please add at least one container", ResponseStrings.Error);
+      return;
+    }
+  
+    const userConfirmed = await this.openConfirmationDialog("Are you sure you wish to complete this shipment?");
+    if (!userConfirmed) return;
+  
+    let successOrders: string[] = [];
+    let failedOrders: string[] = [];
+  
+    for (const orderNumber of this.selectedOrders) {
+      try {
+        const res: any = await this.iConsolidationAPI.SelCountOfOpenTransactionsTemp({ orderNumber }).toPromise();
+  
+        if (!res.isExecuted) {
+          console.error("SelCountOfOpenTransactionsTemp", res.responseMessage);
+          failedOrders.push(orderNumber);
+          continue;
+        }
+  
+        if (res.data === -1) {
+          failedOrders.push(orderNumber);
+        } else if (res.data === 0) {
+          const isSuccess = await this.completeShipment(orderNumber);
+          if (isSuccess) successOrders.push(orderNumber);
+          else failedOrders.push(orderNumber);
+        } else {
+          const proceedWithShipment = await this.openConfirmationDialog(
+            `Back Orders exist for this order: ${orderNumber}. Still complete shipment?`
+          );
+          if (proceedWithShipment) {
+            const isSuccess = await this.completeShipment(orderNumber);
+            if (isSuccess) successOrders.push(orderNumber);
+            else failedOrders.push(orderNumber);
+          } else {
+            failedOrders.push(orderNumber);
+          }
+        }
+      } catch (error) {
+        console.error("API Error:", error);
+        failedOrders.push(orderNumber);
+      }
+    }
+  
+    // Show final toaster messages after all orders are processed
+    if (successOrders.length > 0) {
+      this.global.ShowToastr(
+        ToasterType.Success,
+        `Orders marked as Shipping Complete: ${successOrders.join(", ")}`,
+        "Success"
+      );
+    }
+    if (failedOrders.length > 0) {
+      this.global.ShowToastr(
+        ToasterType.Error,
+        `Failed to complete orders: ${failedOrders.join(", ")}`,
+        ResponseStrings.Error
+      );
+    }
+  
+    this.ShippingIndex(); // Execute after all orders processed
+  }
+  
+  async completeShipment(OrderNumber: any): Promise<boolean> {
+    try {
+      const res: any = await this.iConsolidationAPI.CompleteShipment({ orderNumber: OrderNumber }).toPromise();
+      if (res?.isExecuted) {
+        return true; // Success
+      } else {
+        console.error("CompleteShipment", res.responseMessage);
+        return false; // Failed
+      }
+    } catch (error) {
+      console.error("CompleteShipment API Error:", error);
+      return false;
+    }
+  }
+  
+  async openConfirmationDialog(message: string): Promise<boolean> {
+    const dialogRef = this.global.OpenDialog(ConfirmationDialogComponent, {
       height: "auto",
       width: Style.w560px,
       autoFocus: DialogConstants.autoFocus,
       disableClose: true,
-      data: {
-        message: "Are you sure you wish to complete this shipment?",
-      },
+      data: { message },
     });
-
-    dialogRef.afterClosed().subscribe((result) => {
-      if (result == ResponseStrings.Yes) {
-        for (let orderNumber of this.selectedOrders) {
-          let obj: any = { orderNumber: orderNumber };
-
-          this.iConsolidationAPI
-            .SelCountOfOpenTransactionsTemp(obj)
-            .subscribe((res: any) => {
-              if (res.isExecuted) {
-                if (res.data == -1) {
-                  this.global.ShowToastr(
-                    ToasterType.Error,
-                    "An error has occurred",
-                    ResponseStrings.Error
-                  );
-                } else if (res.data == 0) {
-                  this.completeShipment(orderNumber);
-                } else {
-                  let dialogRef: any = this.global.OpenDialog(
-                    ConfirmationDialogComponent,
-                    {
-                      height: "auto",
-                      width: Style.w560px,
-                      autoFocus: DialogConstants.autoFocus,
-                      disableClose: true,
-                      data: {
-                        message:
-                          "Back Orders exist for this order: " +
-                          orderNumber +
-                          ". Still complete shipment?",
-                      },
-                    }
-                  );
-
-                  dialogRef.afterClosed().subscribe((result) => {
-                    if (result == ResponseStrings.Yes)
-                      this.completeShipment(orderNumber);
-                  });
-                }
-              } else {
-                this.global.ShowToastr(
-                  ToasterType.Error,
-                  this.global.globalErrorMsg(),
-                  ToasterTitle.Error
-                );
-                console.log(
-                  "SelCountOfOpenTransactionsTemp",
-                  res.responseMessage
-                );
-              }
-            });
-        }
-        this.ShippingIndex();
-      }
+  
+    return new Promise((resolve) => {
+      dialogRef.afterClosed().subscribe((result) => resolve(result === ResponseStrings.Yes));
     });
   }
-  else{
-    this.global.ShowToastr(
-      ToasterType.Error,
-      "Please add atleast one container",
-      ResponseStrings.Error
-    );
-  }
-  }
-
-  async completeShipment(OrderNumber: any) {
-    let obj: any = { orderNumber: OrderNumber };
-    this.iConsolidationAPI.CompleteShipment(obj).subscribe((res: any) => {
-      if (res?.isExecuted) {
-        this.global.ShowToastr(
-          ToasterType.Success,
-          `Order Number: ${OrderNumber} is marked as Shipping Complete`,
-          "Success"
-        );
-        this.ShippingIndex();
-      } else {
-        this.global.ShowToastr(
-          ToasterType.Error,
-          "An error has occurred",
-          ResponseStrings.Error
-        );
-        console.log("CompleteShipment", res.responseMessage);
-      }
-    });
-  }
-
+  
   openCmAddNewItem() {
     let dialogRef: any = this.global.OpenDialog(
       CmAddNewItemToShipmentComponent,
