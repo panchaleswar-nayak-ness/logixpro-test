@@ -241,7 +241,7 @@ export interface IAdminApiService
     UpdateOSPriority(payload : any)
     DeleteOrderStatus(payload : any) 
     WorkstationSetupInfo()
-    AccessStorageContainerManagement()
+    AccessLevelByGroupFunctions()
     WorkstationSettingsUpdate(payload : any);
     ToteManagementUpdate(payload : any);
     StorageContainerManagementUpdate(payload : any);

@@ -2021,8 +2021,8 @@ export class ApiFuntions {
     return this.ApiBase.Get('/Admin/WorkstationSetup');
   }
   
-  public AccessStorageContainerManagement(): Observable<any> {
-    return this.ApiBase.Get('/Admin/AccessStorageContainerManagement');
+  public AccessLevelByGroupFunctions(): Observable<any> {
+    return this.ApiBase.Get('/Admin/AccessLevelByGroupFunctions');
   }
 
   public WorkstationSettingsUpdate(body: any): Observable<any> {

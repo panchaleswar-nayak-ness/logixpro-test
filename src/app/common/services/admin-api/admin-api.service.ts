@@ -2016,8 +2016,8 @@ export class AdminApiService implements IAdminApiService {
   public WorkstationSetupInfo() {
     return this.Api.WorkstationSetupInfo();
   }
-  public AccessStorageContainerManagement() {
-    return this.Api.AccessStorageContainerManagement();
+  public AccessLevelByGroupFunctions() {
+    return this.Api.AccessLevelByGroupFunctions();
   }
 
   public WorkstationSettingsUpdate(body: any) {

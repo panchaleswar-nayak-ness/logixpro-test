@@ -361,6 +361,7 @@
 
         <button
   type="submit"
+  *ngIf="isClearWholeLocationAvailable"
   class="form-button-submit btn-lg"
   [disabled]="isButtonDisabled"
   (click)="clearWholeLocation()"
@@ -368,8 +369,7 @@
   class="restore-to-default-btn form-button-submit btn-lg m-1 m-xl-0"
   color="primary"
   matTooltip="This will clear all items and quantities from all locations that share the same Zone, Carousel, Row, Shelf, and Bin"
-  matTooltipPosition="above"
-  [hidden]="isClearWholeLocationAvailable">
+  matTooltipPosition="above">
   Clear Whole Location
 </button>
 

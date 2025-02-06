@@ -29,9 +29,10 @@ export class StorageContainerManagementComponent implements OnInit {
 
   public companyInfo() {
     // first of all we need to check trhe user access leve then group which should have the SCM function is assigined,
-    this.iAdminApiService.AccessStorageContainerManagement().subscribe((res: any) => {
+    this.iAdminApiService.AccessLevelByGroupFunctions().subscribe((res: any) => {
       if (res.isExecuted && res.data) {
-         this.isStorageContainer =  res.data;
+        // check storage container management function 
+         this.isStorageContainer =  res.data.accessstorageContainer;
       }
     });
 
