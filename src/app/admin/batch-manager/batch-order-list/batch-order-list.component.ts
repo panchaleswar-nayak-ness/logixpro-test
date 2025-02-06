@@ -91,11 +91,11 @@ export class BatchOrderListComponent implements OnInit {
     if (data && data.length > 0) {
       data.forEach((m) => {
         if (m.isReprocess === false) {
-          m.status = 'Re-process';
-          m.statusCss = 'background-color: #FFF0D6;color:#4D3B1A';
-        } else {
           m.status = 'Open';
           m.statusCss = 'background-color: #F7D0DA;color:#4D0D1D';
+        } else {
+          m.status = 'Re-process';
+          m.statusCss = 'background-color: #FFF0D6;color:#4D3B1A';
         }
       });
     }
