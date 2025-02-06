@@ -2100,26 +2100,22 @@ export class AdminApiService implements IAdminApiService {
 
     // Storage Container Management Functions
 
+    public getCarouselZones() {
+      return this.Api.getCarouselZones();
+    }
+
+    public getBinLayout(layoutId: string, binCode:string) {
+      return this.Api.getBinLayout(layoutId, binCode);
+    }
+
+    public vaildateScannedContainer(containerId: string) {
+      return this.Api.vaildateScannedContainer(containerId);
+    }
+
     public getStorageContainerLayout(containerId: string) {
       return this.Api.getStorageContainerLayout(containerId);
     }
-
-    public updateStorageContainer(containerId: string,body:UpdateSCReq) {
-      return this.Api.updateStorageContainer(containerId,body);
-    }
-
-    public getCarouselZones(carousel: string) {
-      return this.Api.getCarouselZones(carousel);
-    }
-
-    public getBinLayout(binLayoutId: string) {
-      return this.Api.getBinLayout(binLayoutId);
-    }
-
-    public vaildateScannedContainer(container: string) {
-      return this.Api.vaildateScannedContainer(container);
-    }
-
+    
     public updateStorageContainerLayout(BinLayoutId: string,body:UpdateSCReq) {
       return this.Api.updateStorageContainerLayout(BinLayoutId,body);
     }

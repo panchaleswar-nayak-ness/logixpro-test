@@ -257,10 +257,9 @@ export interface IAdminApiService
 
   // Storage Container Management Functions
 
+  getCarouselZones();
+  getBinLayout(layoutId: string, binCode:string);
+  vaildateScannedContainer(containerId: string);
   getStorageContainerLayout(containerId : string);
-  updateStorageContainer(containerId: string,body:UpdateSCReq);
-  getStorageContainerLayout(carousel : string);
-  getBinLayout(binLayoutId: string);
-  vaildateScannedContainer(container: string);
   updateStorageContainerLayout(BinLayoutId: string,body:UpdateSCReq);
 }

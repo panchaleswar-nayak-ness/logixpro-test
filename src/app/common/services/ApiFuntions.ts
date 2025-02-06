@@ -2285,24 +2285,20 @@ export class ApiFuntions {
 
   // Storage Container Management Endpoints
 
-  public getStorageContainerLayout(container: string): Observable<StorageContainerLayout> {
-    return this.ApiBase.Get(`/storageContainer/GetStorageContainerLayout/${container}`);
+  public getCarouselZones(): Observable<CarouselZonesRes> {
+    return this.ApiBase.Get(`/zones/carouselZones`);
   }
 
-  public updateStorageContainer(containerId: string,body:UpdateSCReq): Observable<UpdateSCRes | null> {
-    return this.ApiBase.Put(`/storagecontainers/${containerId}`,body);
+  public getBinLayout(layoutId: string, binCode:string): Observable<BinLayoutRes> {
+    return this.ApiBase.Get(`/storageContainer/binLayout?layoutId=${layoutId}&binCode=${binCode}`);
   }
 
-  public getCarouselZones(carousel: string): Observable<CarouselZonesRes> {
-    return this.ApiBase.Get(`/zones?Carousel=${carousel}`);
+  public vaildateScannedContainer(containerId: string): Observable<VaildateScannedContainerRes> {
+    return this.ApiBase.Get(`/storageContainer/ValidateScannedContainer/${containerId}`);
   }
 
-  public getBinLayout(binLayoutId: string): Observable<BinLayoutRes> {
-    return this.ApiBase.Get(`/BinLayout/${binLayoutId}`);
-  }
-
-  public vaildateScannedContainer(container: string): Observable<VaildateScannedContainerRes> {
-    return this.ApiBase.Get(`/storageContainer/ValidateScannedContainer/${container}`);
+  public getStorageContainerLayout(containerId: string): Observable<StorageContainerLayout> {
+    return this.ApiBase.Get(`/storageContainer/GetStorageContainerLayout/${containerId}`);
   }
 
   public updateStorageContainerLayout(BinLayoutId: string,body:UpdateSCReq): Observable<UpdateStorageContainerLayoutRes | null> {
