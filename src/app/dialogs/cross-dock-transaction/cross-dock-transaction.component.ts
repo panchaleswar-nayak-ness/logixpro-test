@@ -292,7 +292,7 @@ export class CrossDockTransactionComponent implements OnInit {
 
         if (result != ResponseStrings.Yes)
           return;
-
+        this.data.values.toteQty -= this.transactions[this.selectedRow].completedQuantity;
         this.InsertOTFromOTTemp();
 
       });
