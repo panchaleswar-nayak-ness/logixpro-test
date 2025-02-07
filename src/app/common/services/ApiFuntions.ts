@@ -10,7 +10,7 @@ import {
   UpdateQuantityRequest
 } from 'src/app/consolidation-manager/cm-markout/models/markout-model';
 import { AddPickToteInductionFilter } from 'src/app/induction-manager/models/PickToteInductionModel';
-import { BinLayoutRes, CarouselZonesRes, StorageContainerLayout, UpdateSCReq, UpdateSCRes, UpdateStorageContainerLayoutRes, VaildateScannedContainerRes } from '../Model/storage-container-management';
+import { BinLayoutRes, StorageContainerLayout, UpdateSCReq, UpdateStorageContainerLayoutRes, VaildateScannedContainerRes } from '../Model/storage-container-management';
 
 @Injectable({
   providedIn: 'root',
@@ -2285,20 +2285,20 @@ export class ApiFuntions {
 
   // Storage Container Management Endpoints
 
-  public getCarouselZones(): Observable<CarouselZonesRes> {
-    return this.ApiBase.Get(`/zones/carouselZones`);
+  public async getCarouselZones(){
+    return await this.ApiBase.GetAsync(`/zones/carouselZones`);
   }
 
-  public getBinLayout(layoutId: string, binCode:string): Observable<BinLayoutRes> {
-    return this.ApiBase.Get(`/storageContainer/binLayout?layoutId=${layoutId}&binCode=${binCode}`);
+  public async getBinLayout(layoutId: string, binCode:string){
+    return await this.ApiBase.GetAsync(`/storageContainer/binLayout?layoutId=${layoutId}&binCode=${binCode}`);
   }
 
-  public vaildateScannedContainer(containerId: string): Observable<VaildateScannedContainerRes> {
-    return this.ApiBase.Get(`/storageContainer/ValidateScannedContainer/${containerId}`);
+  public async validateScannedContainer(containerId: string) {
+    return await this.ApiBase.GetAsync(`/storageContainer/ValidateScannedContainer/${containerId}`);
   }
 
-  public getStorageContainerLayout(containerId: string): Observable<StorageContainerLayout> {
-    return this.ApiBase.Get(`/storageContainer/GetStorageContainerLayout/${containerId}`);
+  public async getStorageContainerLayout(containerId: string) {
+    return await this.ApiBase.GetAsync(`/storageContainer/GetStorageContainerLayout/${containerId}`);
   }
 
   public updateStorageContainerLayout(BinLayoutId: string,body:UpdateSCReq): Observable<UpdateStorageContainerLayoutRes | null> {

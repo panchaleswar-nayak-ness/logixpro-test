@@ -259,7 +259,7 @@ export interface IAdminApiService
 
   getCarouselZones();
   getBinLayout(layoutId: string, binCode:string);
-  vaildateScannedContainer(containerId: string);
+  validateScannedContainer(containerId: string);
   getStorageContainerLayout(containerId : string);
   updateStorageContainerLayout(BinLayoutId: string,body:UpdateSCReq);
 }

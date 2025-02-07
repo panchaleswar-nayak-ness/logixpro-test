@@ -1,14 +1,19 @@
-import { Component, ElementRef, ViewChild } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmationDialogComponent } from '../confirmation-dialog/confirmation-dialog.component';
 import { MatSelect } from '@angular/material/select';
+import { IAdminApiService } from 'src/app/common/services/admin-api/admin-api-interface';
+import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.service';
+import { GlobalService } from 'src/app/common/services/global.service';
+import { ToasterTitle, ToasterType } from 'src/app/common/constants/strings.constants';
+import { HttpStatusCode } from '@angular/common/http';
 
 @Component({
   selector: 'app-storage-container-management-modal',
   templateUrl: './storage-container-management.component.html',
   styleUrls: ['./storage-container-management.component.scss']
 })
-export class StorageContainerManagementModalComponent {
+export class StorageContainerManagementModalComponent implements OnInit {
 
   scm = {
     zone: "",
@@ -33,19 +38,60 @@ export class StorageContainerManagementModalComponent {
     const label = count === 1 ? 'record' : 'records';
     return { count, label };
   }
-
-  constructor(
-    private readonly dialog: MatDialog,
-  ) { }
+  carouselZones: string[] = [];
 
   @ViewChild('zone') zoneSelect!: MatSelect;
   @ViewChild('storageContainer', { static: false }) storageContainer!: ElementRef;
+
+  public iAdminApiService: IAdminApiService;
+
+  constructor(
+    private readonly dialog: MatDialog,
+    public adminApiService: AdminApiService,
+    private readonly global: GlobalService,
+  ) {
+    this.iAdminApiService = adminApiService;
+  }
+
+  async ngOnInit(): Promise<void> {
+    await this.getCarouselZones();
+  }
 
   ngAfterViewInit(): void {
     this.zoneSelect.focus();
   }
 
-  zoneChanged(){
+  async getCarouselZones() {
+    let res = await this.iAdminApiService.getCarouselZones();
+    if (res?.status == HttpStatusCode.Ok) {
+      this.carouselZones = res?.body;
+      console.log(this.carouselZones);
+    }
+  }
+
+  async validateScannedContainer() {
+    if (this.scm.tray === "") return;
+    let res = await this.iAdminApiService.validateScannedContainer(this.scm.tray);
+    if (res?.status == HttpStatusCode.Ok) {
+      await this.getStorageContainerLayout();
+    } else {
+      this.global.ShowToastr(ToasterType.Error, res?.error?.errorMessage, ToasterTitle.Error);
+    }
+  }
+
+  async getStorageContainerLayout() {
+    if (!this.scm.tray) return;
+    let res = await this.iAdminApiService.getStorageContainerLayout(this.scm.tray);
+    if (res?.status == HttpStatusCode.Ok) {
+      console.log(res.hasError);
+    } else {
+      this.global.ShowToastr(ToasterType.Error, this.global.globalErrorMsg(), ToasterTitle.Error);
+    }
+  }
+
+
+
+  zoneChanged() {
     if (this.storageContainer && this.storageContainer.nativeElement) {
       this.storageContainer.nativeElement.focus();
     }

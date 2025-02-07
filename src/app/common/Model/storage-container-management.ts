@@ -38,10 +38,6 @@ export class BinLayoutRes {
     binLayout: BinLayout
 }
 
-export class CarouselZonesRes {
-    zones: string[];
-}
-
 export class VaildateScannedContainerRes {
     errorMessage: string;
     errorCode: number;

@@ -17,8 +17,9 @@
             <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline">
                 <mat-label>Zone</mat-label>
                 <mat-select [(ngModel)]="scm.zone" class="employees-action" [disabled]="checkDisabled('zone')" autoFocus #zone (selectionChange)="zoneChanged()">
-                    <mat-option [value]="01">01</mat-option>
-                    <mat-option [value]="02">02</mat-option>
+                    <mat-option *ngFor="let option of carouselZones" [value]="option">
+                        {{option}}
+                    </mat-option>
                 </mat-select>
                 <span class="material-symbols-outlined icon-expand-more">expand_more</span>
             </mat-form-field>
@@ -27,7 +28,7 @@
         <div class="col-xl-6">
             <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline">
                 <mat-label>Storage Container</mat-label>
-                <input matInput [(ngModel)]="scm.tray" [disabled]="checkDisabled('tray')" #storageContainer>
+                <input matInput [(ngModel)]="scm.tray" [disabled]="checkDisabled('tray')" #storageContainer (blur)="validateScannedContainer()">
             </mat-form-field>
         </div>
 

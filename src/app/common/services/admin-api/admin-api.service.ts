@@ -2108,8 +2108,8 @@ export class AdminApiService implements IAdminApiService {
       return this.Api.getBinLayout(layoutId, binCode);
     }
 
-    public vaildateScannedContainer(containerId: string) {
-      return this.Api.vaildateScannedContainer(containerId);
+    public validateScannedContainer(containerId: string) {
+      return this.Api.validateScannedContainer(containerId);
     }
 
     public getStorageContainerLayout(containerId: string) {
