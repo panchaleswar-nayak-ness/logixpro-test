@@ -23,7 +23,7 @@ export class BinLayout {
     layoutDefinitionID: number;
     columns: number;
     rows: number;
-    binCellLayouts: BinCellLayout[];
+    binCellLayouts: BinCellLayout[] = [];
     layoutDefinition: layoutDefinition;
 }
 
@@ -49,7 +49,7 @@ export class VaildateScannedContainerRes {
 export class StorageContainerLayout {
     columns: number;
     rows: number;
-    binLayout: BinLayout;
+    binLayout: BinLayout = new BinLayout();
     layoutDefinition: layoutDefinition;
 }
 
