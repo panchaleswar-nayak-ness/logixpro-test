@@ -10,6 +10,8 @@ import { SharedService } from 'src/app/common/services/shared.service';
 import { GlobalService } from 'src/app/common/services/global.service';
 import { BmToteidEntryComponent } from '../bm-toteid-entry/bm-toteid-entry.component';
 import {  DialogConstants } from 'src/app/common/constants/strings.constants';
+import { IAdminApiService } from 'src/app/common/services/admin-api/admin-api-interface';
+import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.service';
 
 
 @Component({
@@ -24,17 +26,29 @@ export class CreateBatchComponent implements OnInit {
     private dialog: MatDialog,
     public dialogRef: MatDialogRef<CreateBatchComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
+    public adminApiService: AdminApiService,
     private sharedService: SharedService
-  ) { }
+  ) {
+    this.iAdminApiService = adminApiService;
+  }
   pickToTotes: any;
   transType: any;
   selectedList: any;
   nextToteID: any;
+  autoPrintPickToteLabels: boolean;
+  public iAdminApiService: IAdminApiService;
   ngOnInit(): void {
     this.pickToTotes = this.data.pickToTotes;
     this.transType = this.data.transType;
     this.selectedList = this.data.selectedOrderList;
     this.nextToteID = this.data.nextToteID;
+    this.iAdminApiService.WorkstationSetupInfo().subscribe((res: any) => {
+      if (res.isExecuted && res.data) {
+        this.autoPrintPickToteLabels = res.data.autoPrintPickToteLabels;
+      } else {
+        console.log("AdminCompanyInfo", res.responseMessage);
+      }
+    });
   }
 
   /*
@@ -54,7 +68,8 @@ export class CreateBatchComponent implements OnInit {
         disableClose: true,
         data: {
           selectedOrderList: this.selectedList,
-          nextToteID: this.nextToteID
+          nextToteID: this.nextToteID,
+          autoPrintPickToteLabels: this.autoPrintPickToteLabels
         }
       });
       dialogRefTote.afterClosed().subscribe((result) => {
@@ -68,6 +83,9 @@ export class CreateBatchComponent implements OnInit {
         width: '550px',
         autoFocus: DialogConstants.autoFocus,
         disableClose: true,
+        data: {
+          autoPrintPickToteLabels: this.autoPrintPickToteLabels
+        }
       });
       dialogRef.afterClosed().subscribe((result) => {
         if (result) {

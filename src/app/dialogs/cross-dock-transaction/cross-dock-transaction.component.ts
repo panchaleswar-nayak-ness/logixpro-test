@@ -269,7 +269,7 @@ export class CrossDockTransactionComponent implements OnInit {
         this.global.ShowToastr(ToasterType.Error, 'Completed Quantity cannot be 0', ToasterTitle.Error);
         return;
       }
-      if (this.transactions[this.selectedRow].completedQuantity > this.data.values.transactionQuantity) {
+      if (this.transactions[this.selectedRow].completedQuantity > this.data.values.toteQty) {
         this.global.ShowToastr(ToasterType.Error, 'Completed Quantity cannot be greater than the source Put Away\'s Transaction Quantity', ToasterTitle.Error);
         return;
       }
@@ -292,7 +292,7 @@ export class CrossDockTransactionComponent implements OnInit {
 
         if (result != ResponseStrings.Yes)
           return;
-
+        this.data.values.toteQty -= this.transactions[this.selectedRow].completedQuantity;
         this.InsertOTFromOTTemp();
 
       });

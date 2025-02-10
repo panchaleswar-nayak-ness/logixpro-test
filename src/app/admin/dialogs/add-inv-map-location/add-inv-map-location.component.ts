@@ -320,9 +320,7 @@ parentZones: any = [];
 getLocationZones() {
   this.iAdminApiService.LocationZone().subscribe((res) => {
     if (res.isExecuted && res.data) {
-     
       const matchingLocation = res.data.find((location) => location.zone === this.zone);
-
       // Set button color and disabled state based on `allowClearWholeLocation` value
       if (matchingLocation && matchingLocation.allowClearWholeLocation) {
         this.buttonColor = 'primary';

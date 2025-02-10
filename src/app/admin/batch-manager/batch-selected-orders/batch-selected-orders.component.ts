@@ -21,7 +21,7 @@ import { GlobalService } from 'src/app/common/services/global.service';
 import { IAdminApiService } from 'src/app/common/services/admin-api/admin-api-interface';
 import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.service';
 import { ConfirmationHeadings, ConfirmationMessages, DialogConstants, LiveAnnouncerMessage, ResponseStrings, StringConditions, ToasterTitle, ToasterType, Style, UniqueConstants } from 'src/app/common/constants/strings.constants';
-import { PrintApiService } from 'src/app/common/services/print-api/print-api.service'; 
+import { PrintApiService } from 'src/app/common/services/print-api/print-api.service';
 
 @Component({
   selector: 'app-batch-selected-orders',
@@ -60,6 +60,7 @@ export class BatchSelectedOrdersComponent implements OnInit {
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
   public iAdminApiService: IAdminApiService;
+  autoPrintPickToteLabels: boolean;
   toteValue = 0;
 
   constructor(
@@ -75,6 +76,13 @@ export class BatchSelectedOrdersComponent implements OnInit {
 
   ngOnInit(): void {
     this.userData = this.authService.userData();
+    this.iAdminApiService.WorkstationSetupInfo().subscribe((res: any) => {
+      if (res.isExecuted && res.data) {
+        this.autoPrintPickToteLabels = res.data.autoPrintPickToteLabels;
+      } else {
+        console.log("AdminCompanyInfo", res.responseMessage);
+      }
+    });
   }
 
   ngAfterViewInit() {
@@ -248,7 +256,8 @@ export class BatchSelectedOrdersComponent implements OnInit {
           transType: this.transType,
           nextToteID: this.nextToteID,
           selectedOrderList: this.batchOrderDataTable['_data']['_value'],
-          batchid: this.nextBatchID
+          batchid: this.nextBatchID,
+          autoPrintPickToteLabels: this.autoPrintPickToteLabels
         },
       });
       dialogRef.afterClosed().subscribe((result) => {

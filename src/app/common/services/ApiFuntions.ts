@@ -10,7 +10,7 @@ import {
   UpdateQuantityRequest
 } from 'src/app/consolidation-manager/cm-markout/models/markout-model';
 import { AddPickToteInductionFilter } from 'src/app/induction-manager/models/PickToteInductionModel';
-import { BinLayoutRes, CarouselZonesRes, UpdateSCReq, UpdateSCRes } from '../Model/storage-container-management';
+import { BinLayoutRes, StorageContainerLayout, UpdateSCReq, UpdateStorageContainerLayoutRes, VaildateScannedContainerRes } from '../Model/storage-container-management';
 
 @Injectable({
   providedIn: 'root',
@@ -2021,8 +2021,8 @@ export class ApiFuntions {
     return this.ApiBase.Get('/Admin/WorkstationSetup');
   }
   
-  public AccessStorageContainerManagement(): Observable<any> {
-    return this.ApiBase.Get('/Admin/AccessStorageContainerManagement');
+  public AccessLevelByGroupFunctions(): Observable<any> {
+    return this.ApiBase.Get('/Admin/AccessLevelByGroupFunctions');
   }
 
   public WorkstationSettingsUpdate(body: any): Observable<any> {
@@ -2279,27 +2279,30 @@ export class ApiFuntions {
     return await this.ApiBase.PostAsync(`/print/totecontentslist`, body);
   }
 
-  // Storage Container Management Endpoints
-
-  public getStorageContainerLayout(containerId: string): Observable<any> {
-    return this.ApiBase.Get(`/storagecontainers/${containerId}`);
-  }
-
-  public updateStorageContainer(containerId: string,body:UpdateSCReq): Observable<UpdateSCRes | null> {
-    return this.ApiBase.Put(`/storagecontainers/${containerId}`,body);
-  }
-
-  public getCarouselZones(carousel: string): Observable<CarouselZonesRes> {
-    return this.ApiBase.Get(`/zones?Carousel=${carousel}`);
-  }
-
-  public getBinLayout(binLayoutId: string): Observable<BinLayoutRes> {
-    return this.ApiBase.Get(`/BinLayout/${binLayoutId}`);
-  }
-
   public insertOrderShipping(body: any): Observable<any> {
     return this.ApiBase.Post('/Consolidation/insertOrderShipping', body);
   }
 
+  // Storage Container Management Endpoints
+
+  public async getCarouselZones(){
+    return await this.ApiBase.GetAsync(`/zones/carouselZones`);
+  }
+
+  public async getBinLayout(layoutId: string, binCode:string){
+    return await this.ApiBase.GetAsync(`/storageContainer/binLayout?layoutId=${layoutId}&binCode=${binCode}`);
+  }
+
+  public async validateScannedContainer(containerId: string) {
+    return await this.ApiBase.GetAsync(`/storageContainer/ValidateScannedContainer/${containerId}`);
+  }
+
+  public async getStorageContainerLayout(containerId: string) {
+    return await this.ApiBase.GetAsync(`/storageContainer/GetStorageContainerLayout/${containerId}`);
+  }
+
+  public updateStorageContainerLayout(BinLayoutId: string,body:UpdateSCReq): Observable<UpdateStorageContainerLayoutRes | null> {
+    return this.ApiBase.Put(`/storageContainer/UpdateStorageContainerLayout/${BinLayoutId}`,body);
+  }
 
 }

@@ -205,15 +205,15 @@ export class InventoryMapComponent implements OnInit {
     this.initializeApi();
     this.getColumnsData();
     this.companyInfo();
-
-    this.functionsByGroup();
-
   }
   
   public companyInfo() {
-    this.iAdminApiService.AccessStorageContainerManagement().subscribe((res: any) => {
+    this.iAdminApiService.AccessLevelByGroupFunctions().subscribe((res: any) => {
       if (res.isExecuted && res.data) {
-         this.isStorageContainer =  res.data;
+        // storage container management access level
+         this.isStorageContainer =  res.data.accessstorageContainer;
+         // inv map clear whole locaiton  access level
+         this.isClearWholeLocationAvailable =   res.data.accessClearWholeLocation;
       }
     });
 
@@ -438,31 +438,6 @@ export class InventoryMapComponent implements OnInit {
     })
 
   
-  }
-
-
-  functionsByGroup(event?: any) {
-
-    const grp_data = {
-     
-      "groupName":this?.userData?.accessLevel
-  
-      }; 
-    this.iAdminApiService.getFunctionByGroup(grp_data)
-    .subscribe((response:any) => {
-      if(response.isExecuted && response.data)
-      {
-        this.assignedFunctions = response.data?.groupFunc
-        this.unassignedFunctions = response.data?.allFunc
-  
-        this.isClearWholeLocationAvailable = response.data.allFunc.includes("Inv Map Clear Whole Location");
-  
-      }
-      else {
-       
-      } 
-      
-    });
   }
 
   delete(event: any){ 

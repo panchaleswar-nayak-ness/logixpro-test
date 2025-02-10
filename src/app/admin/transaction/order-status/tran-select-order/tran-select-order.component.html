@@ -41,7 +41,7 @@
             <mat-select
               class="employees-action"
               [(ngModel)]="columnSelect"
-              (selectionChange)="actionDialog($event.value)"
+              (selectionChange)="onSelectionChange($event.value)"
             >
               <mat-option selected value="Order Number"> Order No. </mat-option>
               <mat-option value="Tote ID"> Tote ID </mat-option>

@@ -22,11 +22,14 @@ export class CreateBatchConfirmationComponent implements OnInit {
   selectedList: any;
   nextToteID: any;
   batchid: any;
+  autoPrintPickToteLabels: boolean;
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
     public dialogRef: MatDialogRef<CreateBatchConfirmationComponent>,
     private global: GlobalService,
-  ) { }
+  ) {
+    this.autoPrintPickToteLabels = data.autoPrintPickToteLabels;
+  }
 
   ngOnInit(): void {
     this.pickToTotes = this.data.pickToTotes;
@@ -63,6 +66,7 @@ export class CreateBatchConfirmationComponent implements OnInit {
         nextToteID: this.nextToteID,
         type: this.transType,
         view: 'batchmanager',
+        autoPrintPickToteLabels: this.autoPrintPickToteLabels,
         batchid: this.batchid
       }
     });

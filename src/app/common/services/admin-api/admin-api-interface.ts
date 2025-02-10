@@ -241,7 +241,7 @@ export interface IAdminApiService
     UpdateOSPriority(payload : any)
     DeleteOrderStatus(payload : any) 
     WorkstationSetupInfo()
-    AccessStorageContainerManagement()
+    AccessLevelByGroupFunctions()
     WorkstationSettingsUpdate(payload : any);
     ToteManagementUpdate(payload : any);
     StorageContainerManagementUpdate(payload : any);
@@ -257,8 +257,9 @@ export interface IAdminApiService
 
   // Storage Container Management Functions
 
+  getCarouselZones();
+  getBinLayout(layoutId: string, binCode:string);
+  validateScannedContainer(containerId: string);
   getStorageContainerLayout(containerId : string);
-  updateStorageContainer(containerId: string,body:UpdateSCReq);
-  getStorageContainerLayout(carousel : string);
-  getBinLayout(binLayoutId: string);
+  updateStorageContainerLayout(BinLayoutId: string,body:UpdateSCReq);
 }

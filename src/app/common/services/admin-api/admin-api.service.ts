@@ -2016,8 +2016,8 @@ export class AdminApiService implements IAdminApiService {
   public WorkstationSetupInfo() {
     return this.Api.WorkstationSetupInfo();
   }
-  public AccessStorageContainerManagement() {
-    return this.Api.AccessStorageContainerManagement();
+  public AccessLevelByGroupFunctions() {
+    return this.Api.AccessLevelByGroupFunctions();
   }
 
   public WorkstationSettingsUpdate(body: any) {
@@ -2100,20 +2100,24 @@ export class AdminApiService implements IAdminApiService {
 
     // Storage Container Management Functions
 
+    public getCarouselZones() {
+      return this.Api.getCarouselZones();
+    }
+
+    public getBinLayout(layoutId: string, binCode:string) {
+      return this.Api.getBinLayout(layoutId, binCode);
+    }
+
+    public validateScannedContainer(containerId: string) {
+      return this.Api.validateScannedContainer(containerId);
+    }
+
     public getStorageContainerLayout(containerId: string) {
       return this.Api.getStorageContainerLayout(containerId);
     }
-
-    public updateStorageContainer(containerId: string,body:UpdateSCReq) {
-      return this.Api.updateStorageContainer(containerId,body);
-    }
-
-    public getCarouselZones(carousel: string) {
-      return this.Api.getCarouselZones(carousel);
-    }
-
-    public getBinLayout(binLayoutId: string) {
-      return this.Api.getBinLayout(binLayoutId);
+    
+    public updateStorageContainerLayout(BinLayoutId: string,body:UpdateSCReq) {
+      return this.Api.updateStorageContainerLayout(BinLayoutId,body);
     }
   }
 

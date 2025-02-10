@@ -108,11 +108,18 @@ export class BaseService {
 
   async GetAsync<T>(endPoint: string, payload?, isLoader: boolean = false): Promise<HttpResponse<T>> {
     let queryParams = new HttpParams();
-    if (payload != null)
-      for (let key in payload)
-        if (payload[key] != undefined) queryParams = queryParams.append(key, payload[key]);
-
-    return await lastValueFrom(this.request('GET', endPoint, { params: queryParams }));
+    if (payload != null) {
+      for (let key in payload) {
+        if (payload[key] !== undefined) queryParams = queryParams.append(key, payload[key]);
+      }
+    }
+  
+    try {
+      return await lastValueFrom(this.request('GET', endPoint, { params: queryParams }));
+    } catch (error: any) {
+      // Return error response instead of throwing an exception
+      return error as HttpResponse<T>;
+    }
   }
 
   async PostAsync<T>(endPoint: string, model: T, isLoader: boolean = false): Promise<HttpResponse<T>> {
