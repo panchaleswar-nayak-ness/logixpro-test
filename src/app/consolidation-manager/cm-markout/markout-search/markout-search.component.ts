@@ -15,6 +15,7 @@ import { GlobalService } from 'src/app/common/services/global.service';
 import { IMarkoutApiService } from 'src/app/common/services/markout-api/markout-api-interface';
 import { MarkoutApiService } from 'src/app/common/services/markout-api/markout-api-service';
 import { MarkoutToteRequest, MOPrefResponse, ToteDataResponse } from '../models/markout-model';
+import { ViewChild, ElementRef } from '@angular/core';
 
 @Component({
   selector: 'app-markout-search',
@@ -35,6 +36,7 @@ export class MarkoutSearchComponent implements OnInit {
   @Input() toteId: string = '';
   @Input() toteDataResponse: ToteDataResponse;
   @Input() isBlossomComplete: boolean;
+  
   blossomType = BlossomType;
   
   constructor(
@@ -88,10 +90,13 @@ export class MarkoutSearchComponent implements OnInit {
         this.viewChangeEmitter.emit(this.selectedView);
       });
   }
-
+  @ViewChild('toteInput') toteInput!: ElementRef;
   emitToteId() {
-    if(this.toteId != "")
+    if (this.toteId !== "") {
       this.toteIdEmitter.emit({ toteId: this.toteId, viewType: this.selectedView });
+      this.toteId = '';  
+      this.toteInput.nativeElement.value = '';
+    }
   }
 
   getFloatLabelValue(): FloatLabelType {

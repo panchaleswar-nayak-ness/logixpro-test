@@ -43,7 +43,7 @@
                 <mat-form-field class="custom-form-field-bg-white w-100 __grab_cursor mb-2 mb-xl-0" appearance="outline"
                   [floatLabel]="getFloatLabelValue()">
                   <mat-label>Tote ID</mat-label>
-                  <input type="text" aria-label="Number" matInput [(ngModel)]='toteId' (keyup.enter)="emitToteId()">
+                  <input #toteInput type="text" aria-label="Number" matInput [(ngModel)]='toteId' (keyup.enter)="emitToteId()">
                   <button matSuffix *ngIf="toteId" class="clear-btn" (click)="toteId = ''"><mat-icon
                       class="text-20 text-chrome-600">cancel</mat-icon></button>
                 </mat-form-field>
