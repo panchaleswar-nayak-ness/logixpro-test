@@ -277,7 +277,7 @@ export class OpenTransactionOnHoldComponent implements OnInit, AfterViewInit {
 
     this.customPagination = {
       total: '',
-      recordsPerPage: 10,
+      recordsPerPage: 20,
       startIndex: 0,
       endIndex: 10,
     };
