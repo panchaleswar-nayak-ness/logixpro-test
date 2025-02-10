@@ -139,12 +139,12 @@
           </ng-container>
 
           <!-- Total Order Quantity Column -->
-          <ng-container matColumnDef="completedQuantity">
+          <ng-container matColumnDef="transactionQuantity">
             <th
               mat-header-cell
               *matHeaderCellDef
               mat-sort-header
-              sortActionDescription="Sort by completedQuantity"
+              sortActionDescription="Sort by total"
             >
               Total Order Quantity
             </th>
@@ -182,7 +182,7 @@
           <tr
             mat-row
             class="table-row"
-            tabindex="1"
+            tabindex=1
             *matRowDef="let row; columns: displayedColumns"
           ></tr>
         </table>

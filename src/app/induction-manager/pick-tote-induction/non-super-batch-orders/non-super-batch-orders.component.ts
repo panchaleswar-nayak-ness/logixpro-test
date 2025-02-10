@@ -94,7 +94,7 @@ export class NonSuperBatchOrdersComponent implements OnInit, AfterViewInit {
     'zone',
     'priority',
     'requiredDate',
-    'completedQuantity',
+    'transactionQuantity',
     'toteScanned',
   ];
 
@@ -195,7 +195,6 @@ export class NonSuperBatchOrdersComponent implements OnInit, AfterViewInit {
     } else {
       this._liveAnnouncer.announce(LiveAnnouncerMessage.SortingCleared);
     }
-    console.log(sortState);
     this.updateSorting();
   }
 
@@ -360,13 +359,15 @@ export class NonSuperBatchOrdersComponent implements OnInit, AfterViewInit {
                   this.global.ShowToastr(
                     ToasterType.Error,
                     errResponse.error.responseMessage,
-                    ToasterTitle.Error
+                    ToasterTitle.Error,
+                    1000
                   );
                 } else {
                   this.global.ShowToastr(
                     ToasterType.Error,
                     errResponse.error.responseMessage,
-                    ToasterTitle.Error
+                    ToasterTitle.Error,
+                    1000
                   );
                 }
                 return throwError(errResponse);
@@ -374,11 +375,11 @@ export class NonSuperBatchOrdersComponent implements OnInit, AfterViewInit {
             )
             .subscribe((innerResponse: any) => {
               if (innerResponse.data && innerResponse.isExecuted) {
-                this.global.ShowToastr(
-                  ToasterType.Success,
-                  innerResponse.responseMessage,
-                  ToasterTitle.Success
-                );
+                // this.global.ShowToastr(
+                //   ToasterType.Success,
+                //   innerResponse.responseMessage,
+                //   ToasterTitle.Success
+                // );
                 // Check for remaining quantity
                 if (innerResponse.data.remainingQuantity > 0) {
                   // Update the UI with the remaining quantity
@@ -412,7 +413,8 @@ export class NonSuperBatchOrdersComponent implements OnInit, AfterViewInit {
                 this.global.ShowToastr(
                   ToasterType.Error,
                   innerResponse.responseMessage,
-                  ToasterTitle.Error
+                  ToasterTitle.Error,
+                  1000
                 );
               }
             });
@@ -421,7 +423,8 @@ export class NonSuperBatchOrdersComponent implements OnInit, AfterViewInit {
         this.global.ShowToastr(
           ToasterType.Error,
           ToasterMessages.SomethingWentWrong,
-          ToasterTitle.Error
+          ToasterTitle.Error,
+          1000
         );
       }
     });

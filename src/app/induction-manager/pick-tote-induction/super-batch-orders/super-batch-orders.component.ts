@@ -321,13 +321,15 @@ export class SuperBatchOrdersComponent implements OnInit, AfterViewInit {
                   this.global.ShowToastr(
                     ToasterType.Error,
                     errResponse.error.responseMessage,
-                    ToasterTitle.Error
+                    ToasterTitle.Error,
+                    1000
                   );
                 } else {
                   this.global.ShowToastr(
                     ToasterType.Error,
                     errResponse.error.responseMessage,
-                    ToasterTitle.Error
+                    ToasterTitle.Error,
+                    1000
                   );
                 }
                 return throwError(errResponse);
@@ -406,7 +408,8 @@ export class SuperBatchOrdersComponent implements OnInit, AfterViewInit {
         this.global.ShowToastr(
           ToasterType.Error,
           ToasterMessages.SomethingWentWrong,
-          ToasterTitle.Error
+          ToasterTitle.Error,
+          1000
         );
       }
     });
