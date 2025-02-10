@@ -41,7 +41,7 @@ export class TranSelectOrderComponent implements OnInit {
   filterByTote: boolean;
   searchByOrderNumber = new Subject<string>();
   searchByToteId = new Subject<string>();
-
+  dropDownDefault: string = '';
   @Output() orderNo = new EventEmitter<any>();
   @Output() toteId = new EventEmitter<any>();
   @Output() clearField = new EventEmitter<any>();
@@ -152,6 +152,12 @@ export class TranSelectOrderComponent implements OnInit {
     }
   }
 
+  
+  onSelectionChange(e: any){
+    this.dropDownDefault = e;
+    localStorage.setItem('OrderStatusSelectionDefaultValue', JSON.stringify(this.dropDownDefault));
+    this.actionDialog(e);
+  }
   ngAfterViewInit() {
     this.subscription.add(
       this.sharedService.orderStatusObserver.subscribe((orderNo) => {
@@ -187,7 +193,8 @@ export class TranSelectOrderComponent implements OnInit {
   }
 
   ngOnInit(): void {
-
+      this.dropDownDefault = JSON.parse(localStorage.getItem('OrderStatusSelectionDefaultValue') ?? '{}');
+      this.columnSelect = this.dropDownDefault;
       this.searchControl.valueChanges.pipe(
         debounceTime(1500) // Wait for 1.5 seconds
       ).subscribe(value => {
@@ -291,7 +298,6 @@ export class TranSelectOrderComponent implements OnInit {
     this.sharedService.updateCompDate('Order')
     this.searchAutocompleteList = [];
     this.searchField = '';
-    this.columnSelect = '';
     this.currentTabDataService.savedItem[this.currentTabDataService.TRANSACTIONS_ORDER_SELECT] = undefined;
   }
 
