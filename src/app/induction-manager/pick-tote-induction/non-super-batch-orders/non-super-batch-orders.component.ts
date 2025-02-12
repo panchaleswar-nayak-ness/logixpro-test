@@ -355,21 +355,23 @@ export class NonSuperBatchOrdersComponent implements OnInit, AfterViewInit {
           this.Api.PerformNonSuperBatchOrderInduction(valueToInduct)
             .pipe(
               catchError((errResponse) => {
-                if (errResponse.error.status === 400) {
-                  this.global.ShowToastr(
-                    ToasterType.Error,
-                    errResponse.error.responseMessage,
-                    ToasterTitle.Error,
-                    1000
-                  );
-                } else {
-                  this.global.ShowToastr(
-                    ToasterType.Error,
-                    errResponse.error.responseMessage,
-                    ToasterTitle.Error,
-                    1000
-                  );
-                }
+                // if (errResponse.error.status === 400) {
+                  // this.global.ShowToastr(
+                  //   ToasterType.Error,
+                  //   errResponse.error.responseMessage,
+                  //   ToasterTitle.Error,
+                  //   1000
+                  // );
+                // } else {
+                  // this.global.ShowToastr(
+                  //   ToasterType.Error,
+                  //   errResponse.error.responseMessage,
+                  //   ToasterTitle.Error,
+                  //   1000
+                  // );
+                
+               // }
+               element.toteScanned = '';
                 return throwError(errResponse);
               })
             )

@@ -317,21 +317,22 @@ export class SuperBatchOrdersComponent implements OnInit, AfterViewInit {
             .pipe(
               
               catchError((errResponse) => {
-                if (errResponse.error.status === 400) {
-                  this.global.ShowToastr(
-                    ToasterType.Error,
-                    errResponse.error.responseMessage,
-                    ToasterTitle.Error,
-                    1000
-                  );
-                } else {
-                  this.global.ShowToastr(
-                    ToasterType.Error,
-                    errResponse.error.responseMessage,
-                    ToasterTitle.Error,
-                    1000
-                  );
-                }
+                // if (errResponse.error.status === 400) {
+                //   this.global.ShowToastr(
+                //     ToasterType.Error,
+                //     errResponse.error.responseMessage,
+                //     ToasterTitle.Error,
+                //     1000
+                //   );
+                // } else {
+                //   this.global.ShowToastr(
+                //     ToasterType.Error,
+                //     errResponse.error.responseMessage,
+                //     ToasterTitle.Error,
+                //     1000
+                //   );
+                // }
+                element.toteScanned = '';
                 return throwError(errResponse);
               })
             )
@@ -371,16 +372,16 @@ export class SuperBatchOrdersComponent implements OnInit, AfterViewInit {
                 }
 
                 // Success message if all item are successfully
-                if (
-                  innerResponse?.data?.inductedOrders?.length > 0 &&
-                  innerResponse?.data?.notInductedOrders?.length === 0
-                ) {
-                  this.global.ShowToastr(
-                    ToasterType.Success,
-                    innerResponse.responseMessage,
-                    ToasterTitle.Success
-                  );
-                }
+                // if (
+                //   innerResponse?.data?.inductedOrders?.length > 0 &&
+                //   innerResponse?.data?.notInductedOrders?.length === 0
+                // ) {
+                //   this.global.ShowToastr(
+                //     ToasterType.Success,
+                //     innerResponse.responseMessage,
+                //     ToasterTitle.Success
+                //   );
+                // }
 
                 if (
                   innerResponse?.data?.notInductedOrders?.length > 0
