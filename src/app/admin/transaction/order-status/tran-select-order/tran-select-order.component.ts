@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output, SimpleChanges } from '@angular/core';
+import { Component, ElementRef, EventEmitter, Input, OnInit, Output, SimpleChanges, ViewChild } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 import { FloatLabelType } from '@angular/material/form-field';
@@ -51,7 +51,8 @@ export class TranSelectOrderComponent implements OnInit {
   searchBar = new Subject<any>();
 
   @Input() orderStatNextData = []; // decorate the property with @Input()
-
+  @ViewChild('searchInput') searchInput!: ElementRef;
+  
   searchControl = new FormControl();
   floatLabelControl = new FormControl('auto' as FloatLabelType);
   hideRequiredControl = new FormControl(false);
@@ -155,6 +156,9 @@ export class TranSelectOrderComponent implements OnInit {
   
   onSelectionChange(e: any){
     this.dropDownDefault = e;
+    setTimeout(() => {
+      this.searchInput.nativeElement.focus();
+    },0)
     localStorage.setItem('OrderStatusSelectionDefaultValue', JSON.stringify(this.dropDownDefault));
     this.actionDialog(e);
   }
@@ -193,8 +197,15 @@ export class TranSelectOrderComponent implements OnInit {
   }
 
   ngOnInit(): void {
-      this.dropDownDefault = JSON.parse(localStorage.getItem('OrderStatusSelectionDefaultValue') ?? '{}');
-      this.columnSelect = this.dropDownDefault;
+    const savedValue = localStorage.getItem('OrderStatusSelectionDefaultValue');
+    const defaultVal = savedValue ? JSON.parse(savedValue) : 'Order Number';
+    
+    this.dropDownDefault = defaultVal;
+    this.columnSelect = defaultVal;
+    
+    if (!savedValue) {
+      localStorage.setItem('OrderStatusSelectionDefaultValue', JSON.stringify(defaultVal));
+    }
       this.searchControl.valueChanges.pipe(
         debounceTime(1500) // Wait for 1.5 seconds
       ).subscribe(value => {
@@ -236,7 +247,6 @@ export class TranSelectOrderComponent implements OnInit {
       this.searchControl.setValue(event.target.value, {emitEvent: true}); // Update the value of the FormControl
       if(event.target.value == ''){
         this.resetLines();
-        this.columnSelect = '';
       }
     }
   }

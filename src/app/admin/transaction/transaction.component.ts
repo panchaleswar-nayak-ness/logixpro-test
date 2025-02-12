@@ -146,6 +146,15 @@ export class TransactionComponent implements OnInit, AfterViewInit {
   }
 
   onTabChanged(event) {
+    if (event.index === 0) {
+      // 0 is the index of the Order Status tab
+      setTimeout(() => {
+        const searchInput = document.querySelector('app-order-status input[matInput]');
+        if (searchInput) {
+          (searchInput as HTMLInputElement).focus();
+        }
+      }, 0);
+    }
     this.sharedService.updateBreadcrumb(event)
   }
 }

@@ -64,6 +64,7 @@
                 Search
               </span>
               <input
+                #searchInput
                 (keyup.enter)="selectOrderByTote()"
                 (keyup)="getNextItemNo($event)"
                 type="text"
