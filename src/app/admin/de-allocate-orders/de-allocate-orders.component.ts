@@ -236,8 +236,8 @@ export class DeAllocateOrdersComponent implements OnInit {
             res.data.openTransactions[i].isDeallocate=false
           }
         })
-        this.orderItemTransactions.data = res.data.openTransactions
-        this.pageLength= res.data.recordsTotal
+        this.orderItemTransactions.data = res.data.openTransactions;
+        this.pageLength= res.data.recordsFiltered;
 
         }
         else {
@@ -550,7 +550,7 @@ export class DeAllocateOrdersComponent implements OnInit {
 
   optionSelected(filter : string) {
     this.FilterString = filter;
-    this.orderItemTable();    
+    this.orderItemTable(null,true);   
     this.isActiveTrigger = false;
   }
 
