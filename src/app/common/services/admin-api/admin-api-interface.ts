@@ -182,6 +182,7 @@ export interface IAdminApiService
     SaveColumns(payload : any);
     AllocatedOrders(payload : any);
     AllocatedItems(payload : any);
+    AllocatedToteID(payload : any);
     AllAllocatedOrders(payload : any);
     OrderItemsTable(payload : any);
     DeAllocateOrder(payload : any) ; 

@@ -1504,6 +1504,16 @@ export class AdminApiService implements IAdminApiService {
     return this.Api.AllocatedItems(payload);
   }
 
+  
+  public AllocatedToteID(body: any) {
+    const payload = {
+      username: this.userData.userName,
+      wsid: this.userData.wsid,
+      ...body
+    }
+    return this.Api.AllocatedToteID(payload);
+  }
+
   public AllAllocatedOrders(body: any) {
     const payload = {
       username: this.userData.userName,

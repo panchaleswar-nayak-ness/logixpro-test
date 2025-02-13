@@ -44,7 +44,7 @@ export class DeAllocateOrdersComponent implements OnInit {
       {trans_type: 'Count', order_no: '1202122', priority: '36', required_date: '11/02/2022 11:58 AM', user_field_1: 'Treat with care'},
     ];
     
-    displayedColumns: string[] = ['deallocate','order_no','item_no',UniqueConstants.Description,UniqueConstants.Priority, ColumnDef.TransactionQuantity,ColumnDef.UnitOfMeasure,TableConstant.BatchPickID,'trans_type'];
+    displayedColumns: string[] = ['deallocate','order_no','tote_id','item_no',UniqueConstants.Description,UniqueConstants.Priority, ColumnDef.TransactionQuantity,ColumnDef.UnitOfMeasure,TableConstant.BatchPickID,'trans_type'];
     tableData = this.ELEMENT_DATA
     orderItemTransactions:MatTableDataSource<any> = new MatTableDataSource<any>([]);  
   orderNameList:MatTableDataSource<any> = new MatTableDataSource<any>([]);
@@ -146,6 +146,23 @@ export class DeAllocateOrdersComponent implements OnInit {
         
       });
     }
+    else if(this.chooseSearchType == Column.ToteID){
+      let payload = {
+        "toteID": this.TypeValue, 
+      }
+      this.iAdminApiService.AllocatedToteID(payload).subscribe((res: any) => {
+        if(res.isExecuted && res.data)
+        {
+          this.searchedItemOrder = res.data
+        }
+        else {
+          this.global.ShowToastr(ToasterType.Error, this.global.globalErrorMsg(), ToasterTitle.Error);
+          console.log("AllocatedItems",res.responseMessage);
+
+        }
+        
+      });
+    }
 
   } 
   clearMatSelectList(){
@@ -161,6 +178,7 @@ export class DeAllocateOrdersComponent implements OnInit {
       let payload = {
         "orderNumber": this.chooseSearchType == Column.OrderNumber?this.TypeValue:'',
         "itemNumber": this.chooseSearchType == Column.ItemNumber?this.TypeValue:'',
+        "toteID": this.chooseSearchType == Column.ToteID?this.TypeValue : '', 
         "transType": this.transactionType,  
       }
       this.iAdminApiService.AllAllocatedOrders(payload).subscribe((res=>{
