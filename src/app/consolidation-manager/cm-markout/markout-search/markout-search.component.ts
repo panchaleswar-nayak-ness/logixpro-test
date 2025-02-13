@@ -23,6 +23,16 @@ import { ViewChild, ElementRef } from '@angular/core';
   styleUrls: ['./markout-search.component.scss'],
 })
 export class MarkoutSearchComponent implements OnInit {
+  @ViewChild('toteInput') toteInput!: ElementRef;
+
+  ngAfterViewInit() {
+    this.focusInput();
+  }
+  focusInput() {
+    if (this.toteInput) {
+      this.toteInput.nativeElement.focus();
+    }
+  }
 
   @Output() toteIdEmitter = new EventEmitter<MarkoutToteRequest>();
   @Output() viewChangeEmitter = new EventEmitter<string>();
@@ -90,12 +100,13 @@ export class MarkoutSearchComponent implements OnInit {
         this.viewChangeEmitter.emit(this.selectedView);
       });
   }
-  @ViewChild('toteInput') toteInput!: ElementRef;
+ 
   emitToteId() {
     if (this.toteId !== "") {
       this.toteIdEmitter.emit({ toteId: this.toteId, viewType: this.selectedView });
       this.toteId = '';  
       this.toteInput.nativeElement.value = '';
+      this.focusInput();
     }
   }
 
@@ -127,4 +138,5 @@ export class MarkoutSearchComponent implements OnInit {
       });
     }
   }
+
 }
