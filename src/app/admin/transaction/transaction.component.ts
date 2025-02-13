@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component, HostListener, OnInit } from '@angular/core';
 import { Router, ActivatedRoute, ParamMap  } from '@angular/router';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
@@ -157,4 +157,12 @@ export class TransactionComponent implements OnInit, AfterViewInit {
     }
     this.sharedService.updateBreadcrumb(event)
   }
+  @HostListener('copy', ['$event'])
+  onCopy(event: ClipboardEvent) {
+  const selection = window.getSelection()?.toString().trim(); // Trim copied text
+  if (selection) {
+    event.clipboardData?.setData('text/plain', selection);
+    event.preventDefault(); // Prevent default copy behavior
+  }
+}
 }

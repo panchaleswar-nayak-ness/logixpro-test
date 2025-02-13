@@ -1,5 +1,5 @@
  
-import { Component, ElementRef, OnInit, ViewChild, Renderer2, QueryList } from '@angular/core'; 
+import { Component, ElementRef, OnInit, ViewChild, Renderer2, QueryList, HostListener } from '@angular/core'; 
 import { MatTableDataSource } from '@angular/material/table';
 import { AuthService } from 'src/app/common/init/auth.service';
 import { FloatLabelType } from '@angular/material/form-field';
@@ -944,4 +944,12 @@ formatDateTimeToLocal(dateString) {
     this.getMoveItemList(StringConditions.MoveTo, false, true);
     if (this.tabIndex === 1) this.tabIndex = 0;
   }
+  @HostListener('copy', ['$event'])
+  onCopy(event: ClipboardEvent) {
+  const selection = window.getSelection()?.toString().trim(); // Trim copied text
+  if (selection) {
+    event.clipboardData?.setData('text/plain', selection);
+    event.preventDefault(); // Prevent default copy behavior
+  }
+}
 }

@@ -6,6 +6,7 @@ import {
   TemplateRef,
   ViewChild,
   Input,
+  HostListener,
 } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { AuthService } from '../../../common/init/auth.service';
@@ -208,4 +209,12 @@ export class BatchDeleteComponent implements OnInit {
     this.dltType = dltType;
     this.dialog.closeAll();
   }
+  @HostListener('copy', ['$event'])
+  onCopy(event: ClipboardEvent) {
+  const selection = window.getSelection()?.toString().trim(); // Trim copied text
+  if (selection) {
+    event.clipboardData?.setData('text/plain', selection);
+    event.preventDefault(); // Prevent default copy behavior
+  }
+}
 }

@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, HostListener, OnInit, ViewChild } from '@angular/core';
 import { AuthService } from 'src/app/common/init/auth.service';
 import { Subject, debounceTime, distinctUntilChanged } from 'rxjs';
 import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
@@ -558,5 +558,13 @@ export class DeAllocateOrdersComponent implements OnInit {
     this.TypeValue = ''
     this.getAllOrder()
   }
+  @HostListener('copy', ['$event'])
+  onCopy(event: ClipboardEvent) {
+  const selection = window.getSelection()?.toString().trim(); // Trim copied text
+  if (selection) {
+    event.clipboardData?.setData('text/plain', selection);
+    event.preventDefault(); // Prevent default copy behavior
+  }
+}
 
 }

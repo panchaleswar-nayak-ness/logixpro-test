@@ -1,4 +1,4 @@
-import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
+import {Component, ElementRef, HostListener, OnInit, ViewChild} from '@angular/core';
 import {MatSelect, MatSelectChange} from '@angular/material/select';
 import {AuthService} from '../../common/init/auth.service';
 import {
@@ -841,6 +841,14 @@ export class ConsolidationComponent implements OnInit {
   private focusItemSearch() {
     this.focusOnSearch = !this.focusOnSearch;
   }
+  @HostListener('copy', ['$event'])
+  onCopy(event: ClipboardEvent) {
+  const selection = window.getSelection()?.toString().trim(); // Trim copied text
+  if (selection) {
+    event.clipboardData?.setData('text/plain', selection);
+    event.preventDefault(); // Prevent default copy behavior
+  }
+}
 }
 
 
