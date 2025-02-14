@@ -56,7 +56,7 @@ export class DeAllocateOrdersComponent implements OnInit {
   public itemNumber:any = this.fieldMappings.itemNumber;
   public orderNumber = '';
   public chooseSearchType:any;
-  public TypeValue:any;
+  public TypeValue:string = '';
   transactionType:any = ResponseStrings.AllCaps;
   step
   isOrder = true;
@@ -294,10 +294,11 @@ export class DeAllocateOrdersComponent implements OnInit {
   }
 
   check(e){
-    this.chooseSearchType = e
-    this.searchedItemOrder.length = 0
-    this.resetPaginationOrder()
-    this.orderItemTransactions.data = []
+    this.chooseSearchType = e;
+    this.searchedItemOrder.length = 0;
+    this.resetPaginationOrder();
+    this.orderItemTransactions.data = [];
+    this.TypeValue = ""
   }
 
   optionSelect(event: MatAutocompleteSelectedEvent): void {
