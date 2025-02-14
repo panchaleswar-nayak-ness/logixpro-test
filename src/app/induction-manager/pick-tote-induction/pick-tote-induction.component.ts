@@ -602,6 +602,7 @@ export class PickToteInductionComponent
           } else {
             // Only clear the tote ID if transactionQty is not zero
             this.toteId = '';
+            this.getTransactionQty();
           }
           this.refreshOrders();
 
