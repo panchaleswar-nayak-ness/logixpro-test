@@ -328,6 +328,7 @@ export class GenerateTransactionComponent implements OnInit {
     this.row = '';
     this.bin = '';
     this.shelf = '';
+    this.wareHouse = '';
     this.totalQuantity = '';
     this.quantityAllocatedPick = '';
     this.quantityAllocatedPutAway = '';
@@ -341,6 +342,7 @@ export class GenerateTransactionComponent implements OnInit {
     this.row = '';
     this.bin = '';
     this.shelf = '';
+    this.wareHouse = '';
     this.totalQuantity = '';
     this.quantityAllocatedPick = '';
     this.quantityAllocatedPutAway = '';
@@ -530,6 +532,7 @@ export class GenerateTransactionComponent implements OnInit {
         this.carousel = items.carousel;
         this.row = items.row;
         this.shelf = items.shelf;
+        this.wareHouse = items.warehouse;
         this.bin = items.bin;
         this.invMapID = this.invMapIDget;
         this.totalQuantity = res.data.totalQuantity;
@@ -742,6 +745,7 @@ export class GenerateTransactionComponent implements OnInit {
 
   onFieldValuesChanged(fieldValues: any) {
     this.itemNumber = fieldValues.itemNumber;
+    this.wareHouse = fieldValues.wareHouse;
     this.supplierID = fieldValues.supplierID;
     this.expDate = fieldValues.expDate;
     this.revision = fieldValues.revision;

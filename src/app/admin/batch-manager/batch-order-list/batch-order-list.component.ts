@@ -7,6 +7,7 @@ import {
   SimpleChanges,
   EventEmitter,
   Output,
+  HostListener,
 } from '@angular/core';
 import { MatSort, Sort } from '@angular/material/sort';
 import { MatPaginator } from '@angular/material/paginator';
@@ -232,4 +233,12 @@ export class BatchOrderListComponent implements OnInit {
   ngOnDestroy() {
     this.subscription.unsubscribe();
   }
+  @HostListener('copy', ['$event'])
+  onCopy(event: ClipboardEvent) {
+  const selection = window.getSelection()?.toString().trim(); // Trim copied text
+  if (selection) {
+    event.clipboardData?.setData('text/plain', selection);
+    event.preventDefault(); // Prevent default copy behavior
+  }
+}
 }

@@ -206,6 +206,7 @@ export class TranOrderListComponent implements OnInit, AfterViewInit {
   public detailDataInventoryMap: any;
   public orderNo: any = '';
   public toteId: any = '';
+  public OrderIds: any = '';
   public searchCol: any = '';
   public searchString: any = '';
   public payload;
@@ -331,111 +332,114 @@ export class TranOrderListComponent implements OnInit, AfterViewInit {
 
   getContentData() {
     this.payload = {
-      draw: 0,
-      compDate: this.compDate,
-      identify: this.orderNo ? 0 : 1,
-      searchString: this.searchString,
-      direct: UniqueConstants.Asc,
-      searchColumn: this.searchCol,
-      sRow: this.customPagination.startIndex,
-      eRow: this.customPagination.endIndex,
-      checkValue: true,
-      checkColumn: 0,
-      orderNumber: this.orderNo,
-      toteID: this.toteId,
-      sortColumnNumber: this.sortCol,
-      sortOrder: this.sortOrder,
-      filter: this.filterString,
+        draw: 0,
+        compDate: this.compDate,
+        identify: this.orderNo ? 0 : 1,
+        searchString: this.searchString,
+        direct: UniqueConstants.Asc,
+        searchColumn: this.searchCol,
+        sRow: this.customPagination.startIndex,
+        eRow: this.customPagination.endIndex,
+        checkValue: true,
+        checkColumn: 0,
+        orderNumber: this.orderNo,
+        toteID: this.toteId,
+        sortColumnNumber: this.sortCol,
+        sortOrder: this.sortOrder,
+        filter: this.filterString,
     };
+
     this.iAdminApiService.OrderStatusData(this.payload).subscribe({
-      next: (res: any) => {
-        if (res.isExecuted) {
-          this.detailDataInventoryMap = res.data?.orderStatus;
-          this.getOrderForTote = res.data?.orderNo;
-          res.data?.orderStatus.forEach((element) => {
-            element.orignalCompletedDate = element.completedDate;
-            const inputFormat = 'M/D/YYYY h:mm:ss A';
-            const date = moment(element.completedDate, inputFormat);
-            if (date.isValid()) {
-              const outputFormat = 'YYYY/M/D h:mm:ss A';
-              element.completedDate = date.format(outputFormat);
+        next: (res: any) => {
+            if (res.isExecuted) {
+                this.detailDataInventoryMap = res.data?.orderStatus;
+                this.getOrderForTote = res.data?.orderNo;
+
+                // Extracting IDs from detailDataInventoryMap
+                this.OrderIds = this.detailDataInventoryMap.map((item: any) => item.id);
+                console.log("Extracted IDs:", this.OrderIds);
+
+                res.data?.orderStatus.forEach((element) => {
+                    element.orignalCompletedDate = element.completedDate;
+                    const inputFormat = 'M/D/YYYY h:mm:ss A';
+                    const date = moment(element.completedDate, inputFormat);
+                    if (date.isValid()) {
+                        const outputFormat = 'YYYY/M/D h:mm:ss A';
+                        element.completedDate = date.format(outputFormat);
+                    }
+                });
+
+                console.log(res.data?.orderStatus);
+
+                /// Enable/Disable the Put Away - Complete Order button
+                this.isOrderCompleted = !res.data?.orderStatus.every(
+                    (e: any) => e.transactionType === 'Put Away'
+                );
+
+                this.checkIsReProcessAndAddStatusField(res.data?.orderStatus);
+                this.dataSource = new MatTableDataSource(res.data?.orderStatus);
+                this.dataSource.paginator = this.paginator;
+                this.dataSource.sort = this.sort;
+
+                this.columnValues = res.data?.orderStatusColSequence;
+                this.customPagination.total = res.data?.totalRecords;
+                this.getOrderForTote = res?.data?.orderStatus[0]?.orderNumber;
+                
+                if (res.data) {
+                    this.onOpenOrderChange(res.data?.opLines);
+                    this.onCompleteOrderChange(res.data?.compLines);
+                    this.onReprocessOrderChange(res.data?.reLines);
+
+                    if (res?.data?.orderStatus?.length > 0) {
+                        res.data.orderStatus.find((el) => {
+                            res.data.completedStatus =
+                                el.completedDate === ''
+                                    ? StringConditions.InProgress
+                                    : StringConditions.Completed;
+                            return res.data.completedStatus;
+                        });
+                    }
+                    
+                    this.onOrderTypeOrderChange(
+                        res?.data?.orderStatus?.length > 0 &&
+                        res?.data?.orderStatus[0]?.transactionType
+                    );
+                    this.currentStatusChange(res.data.completedStatus);
+                    this.totalLinesOrderChange(res.data?.totalRecords);
+                    this.sharedService.updateOrderStatusSelect({
+                        totalRecords: res.data?.totalRecords,
+                    });
+                }
+
+                if (res.data?.onCar.length) {
+                    res.data.onCar.forEach((item) => {
+                        item.carousel = StringConditions.on;
+                    });
+                }
+
+                if (res.data?.offCar.length) {
+                    res.data.offCar.forEach((item) => {
+                        item.carousel = StringConditions.off;
+                    });
+                }
+
+                const combinedData = res.data?.onCar.concat(res.data?.offCar);
+                this.onLocationZoneChange(combinedData);
+            } else {
+                this.global.ShowToastr(
+                    ToasterType.Error,
+                    this.global.globalErrorMsg(),
+                    ToasterTitle.Error
+                );
+                console.log('iAdminApiService', res.responseMessage);
             }
-          });
-
-          console.log(res.data?.orderStatus);
-          /// Enable disable the Put Away - Complete Order button
-          if (
-            res.data?.orderStatus.every(
-              (e: any) => e.transactionType === 'Put Away'
-            )
-          ) {
-            this.isOrderCompleted = false;
-          } else {
-            this.isOrderCompleted = true;
-          }
-
-          this.checkIsReProcessAndAddStatusField(res.data?.orderStatus);
-          this.dataSource = new MatTableDataSource(res.data?.orderStatus);
-          this.dataSource.paginator = this.paginator;
-          this.dataSource.sort = this.sort;
-
-          this.columnValues = res.data?.orderStatusColSequence;
-          this.customPagination.total = res.data?.totalRecords;
-          this.getOrderForTote = res?.data?.orderStatus[0]?.orderNumber;
-
-          if (res.data) {
-            this.onOpenOrderChange(res.data?.opLines);
-            this.onCompleteOrderChange(res.data?.compLines);
-            this.onReprocessOrderChange(res.data?.reLines);
-            if (res?.data?.orderStatus?.length > 0) {
-              res.data.orderStatus.find((el) => {
-                res.data.completedStatus =
-                  el.completedDate === ''
-                    ? StringConditions.InProgress
-                    : StringConditions.Completed;
-                return res.data.completedStatus;
-              });
-            }
-            this.onOrderTypeOrderChange(
-              res?.data?.orderStatus?.length > 0 &&
-                res?.data?.orderStatus[0]?.transactionType
-            );
-            this.currentStatusChange(res.data.completedStatus);
-            this.totalLinesOrderChange(res.data?.totalRecords);
-            this.sharedService.updateOrderStatusSelect({
-              totalRecords: res.data?.totalRecords,
-            });
-          }
-
-          if (res.data?.onCar.length) {
-            res.data.onCar.filter((item) => {
-              let carouselValue = StringConditions.on;
-              item.carousel = carouselValue;
-              return item.carousel;
-            });
-          }
-          if (res.data?.offCar.length) {
-            res.data.offCar.filter((item) => {
-              let carouselValue = StringConditions.off;
-              item.carousel = carouselValue;
-              return item.carousel;
-            });
-          }
-
-          const combinedData = res.data?.onCar.concat(res.data?.offCar);
-          this.onLocationZoneChange(combinedData);
-        } else {
-          this.global.ShowToastr(
-            ToasterType.Error,
-            this.global.globalErrorMsg(),
-            ToasterTitle.Error
-          );
-          console.log('iAdminApiService', res.responseMessage);
-        }
-      },
-      error: (error) => {},
+        },
+        error: (error) => {
+            console.error("Error fetching order status data:", error);
+        },
     });
-  }
+}
+
 
   private checkIsReProcessAndAddStatusField(data: any[] | undefined) {
     // Add status field on provided data set to be displayed on material table
@@ -832,7 +836,8 @@ export class TranOrderListComponent implements OnInit, AfterViewInit {
   printReport() {
     return this.printApiService.PrintOrderStatusReport(
       this.orderNo,
-      this.toteId
+      this.toteId,
+      this.OrderIds
     );
 
     //this.global.Print(`FileName:printOSReport|OrderNum:${this.orderNo}|ToteID:|Identifier:0`)

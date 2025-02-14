@@ -104,7 +104,7 @@ export class PrintApiService implements IPrintApiService {
     return await this.Api.PrintPutAwayItem(payload);
   }
 
-  public async PrintOrderStatusReport(orderNumber: string, toteID: string) {
+  public async PrintOrderStatusReport(orderNumber: string, toteID: string, OrderIDs :any) {
 
     /*
       Ident meaning:
@@ -112,20 +112,21 @@ export class PrintApiService implements IPrintApiService {
       1: where ToteID = @ToteID
       2: where OrderNumber = @OrderNumber and ToteID = @ToteID
     */
-    var ident = 0;
-    if (toteID != "") {
-      if (orderNumber != "") {
-        ident = 2;
-      } else {
-        ident=1;
-      };
-    };
+    // var ident = 0;
+    // if (toteID != "") {
+    //   if (orderNumber != "") {
+    //     ident = 2;
+    //   } else {
+    //     ident=1;
+    //   };
+    // };
 
     const payload = {
       wsid: this.userData.wsid,
       orderNumber: orderNumber,
       toteID: toteID,
-      ident: ident
+      ident: 3,
+      orderIDs:OrderIDs
     };
 
     return await this.Api.PrintOrderStatusReport(payload);

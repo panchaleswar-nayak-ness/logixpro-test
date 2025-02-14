@@ -87,6 +87,7 @@
                                 (ngModelChange)="check($event)" [disabled]="step == 'transaction'">
                                 <mat-option value={{itemNumber}}>{{itemNumber}}</mat-option>
                                 <mat-option value="Order Number">Order No.</mat-option>
+                                <mat-option value="Tote ID">Tote ID</mat-option>
                             </mat-select>
                             <span class="material-symbols-outlined icon-expand-more">
                                 expand_more
@@ -202,6 +203,14 @@
                                         {{element.orderNumber}} </td>
                                 </ng-container>
 
+                                <ng-container matColumnDef="tote_id">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription> Tote ID
+                                    </th>
+                                    <td mat-cell *matCellDef="let element"
+                                        (contextmenu)="onContextMenu($event, element.orderNumber, 'Order Number')">
+                                        {{element.toteID}} </td>
+                                </ng-container>
+
                                 <ng-container matColumnDef="item_no">
                                     <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription> {{itemNumber}}</th>
                                     <td mat-cell *matCellDef="let element"
@@ -248,7 +257,7 @@
                                         ID
                                     </th>
                                     <td mat-cell *matCellDef="let element"
-                                        (contextmenu)="onContextMenu($event, element.batchPickID, 'Batch ID')">
+                                        (contextmenu)="onContextMenu($event, element.batchPickID, 'Batch Pick ID')">
                                         {{element.batchPickID}} </td>
                                 </ng-container>
 
@@ -257,7 +266,7 @@
                                         Type
                                     </th>
                                     <td mat-cell *matCellDef="let element"
-                                        (contextmenu)="onContextMenu($event, element.transactionType, 'Trans Type')">
+                                        (contextmenu)="onContextMenu($event, element.transactionType, 'Transaction Type')">
                                         {{element.transactionType}} </td>
                                 </ng-container>
 

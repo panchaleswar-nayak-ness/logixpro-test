@@ -470,7 +470,7 @@ export class LocalStorageService {
     const totalKeys: number = localStorage.length;
 
     // Create an array of keys to be excluded from removal
-    const exceptKeys: string[] = ['CountPickChecks','CountPutChecks', 'CountPickChecksLocation', 'CountPutChecksLocation','ImportCountLocationChecks']; // Add more keys as needed
+    const exceptKeys: string[] = ['CountPickChecks','CountPutChecks', 'CountPickChecksLocation', 'CountPutChecksLocation','ImportCountLocationChecks','OrderStatusSelectionDefaultValue']; // Add more keys as needed
 
     // Iterate through all the keys in localStorage
     for (let i = 0; i < totalKeys; i++) {

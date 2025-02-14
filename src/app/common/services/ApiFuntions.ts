@@ -1635,6 +1635,10 @@ export class ApiFuntions {
     return this.ApiBase.Get(`/Admin/allocateditems`, paylaod);
   }
 
+  public AllocatedToteID(paylaod: any): Observable<any> {
+    return this.ApiBase.Get(`/Admin/allocatedtoteids`, paylaod);
+  }
+
   public AllAllocatedOrders(paylaod: any): Observable<any> {
     return this.ApiBase.Get(`/Admin/allallocatedorders`, paylaod);
   }

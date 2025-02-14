@@ -291,6 +291,7 @@ export class CmShippingComponent implements OnInit {
                 this.orderShipHidden=this.shippingComp;
                 this.orderNumber = res.data.orderNumber;
                 this.isLoading = false;
+                this.getShippingData();
               } else {
                 // Handle case when `data` is null or undefined
                 console.error("No data found in the response.");

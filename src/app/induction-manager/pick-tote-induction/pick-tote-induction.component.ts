@@ -83,6 +83,7 @@ export class PickToteInductionComponent
   toteId: string = '';
   splitToggle: boolean = false;
   transactionQty: number = 0;
+  startZone: string = '';	
 
   userData : UserSession;
   // this is the global filteration object used to refresh and select various filters on the tote induction screen
@@ -466,7 +467,6 @@ export class PickToteInductionComponent
   }
 
   onEnter() {
-    console.log(this.orderNumber, this.toteId, this.splitToggle);
     if (this.orderNumber && this.toteId) {
       let valueToInduct: any = {
         orderNumber: this.orderNumber,
@@ -545,6 +545,7 @@ export class PickToteInductionComponent
       .subscribe((innerResponse: any) => {
         if (innerResponse.data && innerResponse.isExecuted) {
           this.transactionQty = innerResponse.data.totalQuantity;
+          this.startZone = innerResponse.data.zone;
 
           setTimeout(() => {
             this.toteIdInput.nativeElement.focus();
@@ -596,10 +597,12 @@ export class PickToteInductionComponent
             // Clear both order number and tote ID if transactionQty is zero
             this.orderNumber = '';
             this.toteId = '';
+            this.startZone = '';
             this.specificInductionSuccess.emit();
           } else {
             // Only clear the tote ID if transactionQty is not zero
             this.toteId = '';
+            this.getTransactionQty();
           }
           this.refreshOrders();
 

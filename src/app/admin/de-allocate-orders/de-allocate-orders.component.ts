@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, HostListener, OnInit, ViewChild } from '@angular/core';
 import { AuthService } from 'src/app/common/init/auth.service';
 import { Subject, debounceTime, distinctUntilChanged } from 'rxjs';
 import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
@@ -44,7 +44,7 @@ export class DeAllocateOrdersComponent implements OnInit {
       {trans_type: 'Count', order_no: '1202122', priority: '36', required_date: '11/02/2022 11:58 AM', user_field_1: 'Treat with care'},
     ];
     
-    displayedColumns: string[] = ['deallocate','order_no','item_no',UniqueConstants.Description,UniqueConstants.Priority, ColumnDef.TransactionQuantity,ColumnDef.UnitOfMeasure,TableConstant.BatchPickID,'trans_type'];
+    displayedColumns: string[] = ['deallocate','order_no','tote_id','item_no',UniqueConstants.Description,UniqueConstants.Priority, ColumnDef.TransactionQuantity,ColumnDef.UnitOfMeasure,TableConstant.BatchPickID,'trans_type'];
     tableData = this.ELEMENT_DATA
     orderItemTransactions:MatTableDataSource<any> = new MatTableDataSource<any>([]);  
   orderNameList:MatTableDataSource<any> = new MatTableDataSource<any>([]);
@@ -56,7 +56,7 @@ export class DeAllocateOrdersComponent implements OnInit {
   public itemNumber:any = this.fieldMappings.itemNumber;
   public orderNumber = '';
   public chooseSearchType:any;
-  public TypeValue:any;
+  public TypeValue:string = '';
   transactionType:any = ResponseStrings.AllCaps;
   step
   isOrder = true;
@@ -146,6 +146,23 @@ export class DeAllocateOrdersComponent implements OnInit {
         
       });
     }
+    else if(this.chooseSearchType == Column.ToteID){
+      let payload = {
+        "toteID": this.TypeValue, 
+      }
+      this.iAdminApiService.AllocatedToteID(payload).subscribe((res: any) => {
+        if(res.isExecuted && res.data)
+        {
+          this.searchedItemOrder = res.data
+        }
+        else {
+          this.global.ShowToastr(ToasterType.Error, this.global.globalErrorMsg(), ToasterTitle.Error);
+          console.log("AllocatedItems",res.responseMessage);
+
+        }
+        
+      });
+    }
 
   } 
   clearMatSelectList(){
@@ -161,6 +178,7 @@ export class DeAllocateOrdersComponent implements OnInit {
       let payload = {
         "orderNumber": this.chooseSearchType == Column.OrderNumber?this.TypeValue:'',
         "itemNumber": this.chooseSearchType == Column.ItemNumber?this.TypeValue:'',
+        "toteID": this.chooseSearchType == Column.ToteID?this.TypeValue : '', 
         "transType": this.transactionType,  
       }
       this.iAdminApiService.AllAllocatedOrders(payload).subscribe((res=>{
@@ -218,8 +236,8 @@ export class DeAllocateOrdersComponent implements OnInit {
             res.data.openTransactions[i].isDeallocate=false
           }
         })
-        this.orderItemTransactions.data = res.data.openTransactions
-        this.pageLength= res.data.recordsTotal
+        this.orderItemTransactions.data = res.data.openTransactions;
+        this.pageLength= res.data.recordsFiltered;
 
         }
         else {
@@ -276,10 +294,11 @@ export class DeAllocateOrdersComponent implements OnInit {
   }
 
   check(e){
-    this.chooseSearchType = e
-    this.searchedItemOrder.length = 0
-    this.resetPaginationOrder()
-    this.orderItemTransactions.data = []
+    this.chooseSearchType = e;
+    this.searchedItemOrder.length = 0;
+    this.resetPaginationOrder();
+    this.orderItemTransactions.data = [];
+    this.TypeValue = ""
   }
 
   optionSelect(event: MatAutocompleteSelectedEvent): void {
@@ -532,7 +551,7 @@ export class DeAllocateOrdersComponent implements OnInit {
 
   optionSelected(filter : string) {
     this.FilterString = filter;
-    this.orderItemTable();    
+    this.orderItemTable(null,true);   
     this.isActiveTrigger = false;
   }
 
@@ -540,5 +559,13 @@ export class DeAllocateOrdersComponent implements OnInit {
     this.TypeValue = ''
     this.getAllOrder()
   }
+  @HostListener('copy', ['$event'])
+  onCopy(event: ClipboardEvent) {
+  const selection = window.getSelection()?.toString().trim(); // Trim copied text
+  if (selection) {
+    event.clipboardData?.setData('text/plain', selection);
+    event.preventDefault(); // Prevent default copy behavior
+  }
+}
 
 }

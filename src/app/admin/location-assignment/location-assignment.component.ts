@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core'; 
+import { Component, HostListener, OnInit } from '@angular/core'; 
 import { Style, DialogConstants, ToasterTitle, ToasterType, TransactionType, UniqueConstants } from 'src/app/common/constants/strings.constants';
 import { GlobalService } from 'src/app/common/services/global.service';
 
@@ -118,5 +118,13 @@ export class LocationAssignmentComponent implements OnInit {
 
   }
 
+  @HostListener('copy', ['$event'])
+  onCopy(event: ClipboardEvent) {
+  const selection = window.getSelection()?.toString().trim(); // Trim copied text
+  if (selection) {
+    event.clipboardData?.setData('text/plain', selection);
+    event.preventDefault(); // Prevent default copy behavior
+  }
+}
 
 }

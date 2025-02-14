@@ -8,6 +8,7 @@ import { GlobalService } from 'src/app/common/services/global.service';
 import { ToasterTitle, ToasterType } from 'src/app/common/constants/strings.constants';
 import { HttpStatusCode } from '@angular/common/http';
 import { StorageContainerLayout } from 'src/app/common/Model/storage-container-management';
+import { el } from 'date-fns/locale';
 
 @Component({
   selector: 'app-storage-container-management-modal',
@@ -87,7 +88,7 @@ export class StorageContainerManagementModalComponent implements OnInit {
     if (res?.status == HttpStatusCode.Ok) {
       await this.getStorageContainerLayout();
     } else {
-      await this.getStorageContainerLayout();
+      this.storageContainerAlreadyExists();
       this.global.ShowToastr(ToasterType.Error, res?.error?.errorMessage, ToasterTitle.Error);
     }
   }
@@ -121,7 +122,7 @@ export class StorageContainerManagementModalComponent implements OnInit {
     this.tableMatrix = Array.from({ length: maxRows }, () => Array(maxCols).fill(""));
 
     positions.forEach(({ row, col, binID }) => {
-      if (!this.tableMatrix[row - 1][col - 1]) { 
+      if (!this.tableMatrix[row - 1][col - 1]) {
         this.tableMatrix[row - 1][col - 1] = binID;
       }
     });
@@ -129,14 +130,15 @@ export class StorageContainerManagementModalComponent implements OnInit {
     this.tableMatrix = this.tableMatrix.map(row => [...new Set(row)]);
     this.tableMatrix = Array.from(new Set(this.tableMatrix.map(row => JSON.stringify(row))))
       .map(row => JSON.parse(row));
+    this.tableMatrix.reverse();
   }
 
   extractPositions(commandString: string): number[][] {
     return commandString
-      .replace(/\]\[/g, "];[") 
-      .split(/\r?\n|;/) 
-      .map(pair => pair.trim()) 
-      .filter(pair => pair.length > 0) 
+      .replace(/\]\[/g, "];[")
+      .split(/\r?\n|;/)
+      .map(pair => pair.trim())
+      .filter(pair => pair.length > 0)
       .map(pair => JSON.parse(pair));
   }
 
@@ -167,18 +169,26 @@ export class StorageContainerManagementModalComponent implements OnInit {
     clearDialogRef.afterClosed().subscribe((res) => { });
   }
 
-  exstingTray() {
+  async storageContainerAlreadyExists() {
     const clearDialogRef = this.dialog.open(ConfirmationDialogComponent, {
       width: '560px',
       data: {
         heading: 'Storage Container Management',
-        message: 'The scanned Storage Container/Tray already exists. Do you want to confirm that the Inventory Map records will be modified?',
+        message: 'The storage container already exists. Proceeding will modify the inventory map records. Do you want to continue?',
         customButtonText: true,
         btn1Text: 'Yes',
         btn2Text: 'No'
       }
     });
-    clearDialogRef.afterClosed().subscribe((res) => { });
+    clearDialogRef.afterClosed().subscribe(async (res) => {
+      if(res == "Yes"){
+        await this.getStorageContainerLayout();
+      }
+      else{
+        this.scm.tray = "";
+        this.scm.containertype = 0;
+      } 
+    });
   }
 
   checkDisabled(field: string): boolean {

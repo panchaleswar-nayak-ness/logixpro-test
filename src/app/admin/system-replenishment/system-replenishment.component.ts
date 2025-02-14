@@ -1,4 +1,4 @@
-import { Component} from '@angular/core';
+import { Component, HostListener} from '@angular/core';
 import { Subject } from 'rxjs';
 import { GlobalService } from 'src/app/common/services/global.service';
 import { DeleteRangeComponent } from 'src/app/dialogs/delete-range/delete-range.component';
@@ -59,6 +59,13 @@ export class SystemReplenishmentComponent {
       this.replenishmentsProcessed = false;
     }
   }
-
+  @HostListener('copy', ['$event'])
+  onCopy(event: ClipboardEvent) {
+  const selection = window.getSelection()?.toString().trim(); // Trim copied text
+  if (selection) {
+    event.clipboardData?.setData('text/plain', selection);
+    event.preventDefault(); // Prevent default copy behavior
+  }
+}
 }
 

@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component, HostListener, OnInit } from '@angular/core';
 import { Router, ActivatedRoute, ParamMap  } from '@angular/router';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
@@ -146,6 +146,23 @@ export class TransactionComponent implements OnInit, AfterViewInit {
   }
 
   onTabChanged(event) {
+    if (event.index === 0) {
+      // 0 is the index of the Order Status tab
+      setTimeout(() => {
+        const searchInput = document.querySelector('app-order-status input[matInput]');
+        if (searchInput) {
+          (searchInput as HTMLInputElement).focus();
+        }
+      }, 0);
+    }
     this.sharedService.updateBreadcrumb(event)
   }
+  @HostListener('copy', ['$event'])
+  onCopy(event: ClipboardEvent) {
+  const selection = window.getSelection()?.toString().trim(); // Trim copied text
+  if (selection) {
+    event.clipboardData?.setData('text/plain', selection);
+    event.preventDefault(); // Prevent default copy behavior
+  }
+}
 }

@@ -94,20 +94,43 @@ export class CmMarkoutComponent implements OnInit {
       .subscribe((res: ToteDataResponse) => {
         this.toteDataResponse = res;
     
-        // Markout Print Logic
-        if (this.toteDataResponse.data.length > 0) {
-          const allTransactionsComplete = this.toteDataResponse.data.every(
-            (data: ToteData) => data.status === StringConditions.Complete
-          );
-
-          if (allTransactionsComplete) {
-            if (this.preferencesData.autoPrintToteManifest) this.print('Print Tote Manifest', this.toteId);
-            if (this.preferencesData.autoPrintToteManifest2) this.print('Print Tote Manifest 2', this.toteId);
-          } else {
-            if (this.preferencesData.autoPrintMarkoutReport) this.print('Print Markout Report', this.toteId);
-          }
-        }
+        this.handlePrinting();
       });
+  }
+
+  // Markout Print Logic
+  async handlePrinting() {
+    if (this.toteDataResponse.data.length > 0) {
+      const allTransactionsComplete = this.toteDataResponse.data.every(
+        (data: ToteData) => data.status === StringConditions.Complete
+      );
+
+      if (allTransactionsComplete) {
+        try {
+          if (this.preferencesData.autoPrintToteManifest) {
+            await this.print('Print Tote Manifest', this.toteId);
+          }  
+        } catch (error) {
+          console.error("Error printing Tote Manifest:", error);
+        }
+        
+        try {
+          if (this.preferencesData.autoPrintToteManifest2) {
+            await this.print('Print Tote Manifest 2', this.toteId);
+          }
+        } catch (error) {
+          console.error("Error printing Tote Manifest 2:", error);
+        }        
+      } 
+      
+      if (!allTransactionsComplete && this.preferencesData.autoPrintMarkoutReport) {
+        try {
+          this.print('Print Markout Report', this.toteId);
+        } catch (error) {
+          console.error('Error printing Markout Report:', error);
+        }
+      }
+    }
   }
 
   viewChange(event: string) {
