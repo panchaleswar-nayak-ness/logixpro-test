@@ -524,21 +524,21 @@ export class PickToteInductionComponent
         catchError((errResponse) => {
           this.transactionQty = 0;
           // Handle errors
-          if(errResponse.error) {
-            if (errResponse.error.status === 400) {
-              this.global.ShowToastr(
-                ToasterType.Error,
-                errResponse.error.responseMessage,
-                ToasterTitle.Error
-              );
-            } else {
-              this.global.ShowToastr(
-                ToasterType.Error,
-                errResponse.error.responseMessage,
-                ToasterTitle.Error
-              );
-            }
-          }
+          // if(errResponse.error) {
+          //   if (errResponse.error.status === 400) {
+          //     this.global.ShowToastr(
+          //       ToasterType.Error,
+          //       errResponse.error.responseMessage,
+          //       ToasterTitle.Error
+          //     );
+          //   } else {
+          //     this.global.ShowToastr(
+          //       ToasterType.Error,
+          //       errResponse.error.responseMessage,
+          //       ToasterTitle.Error
+          //     );
+          //   }
+          // }
           return throwError(errResponse);
         })
       )
@@ -550,13 +550,14 @@ export class PickToteInductionComponent
           setTimeout(() => {
             this.toteIdInput.nativeElement.focus();
           });
-        } else {
-          this.global.ShowToastr(
-            ToasterType.Error,
-            innerResponse.responseMessage,
-            ToasterTitle.Error
-          );
-        }
+        } 
+        // else {
+        //   this.global.ShowToastr(
+        //     ToasterType.Error,
+        //     innerResponse.responseMessage,
+        //     ToasterTitle.Error
+        //   );
+        // }
       });
     }
   }
@@ -572,19 +573,19 @@ export class PickToteInductionComponent
       .pipe(
         catchError((errResponse) => {
           // Handle errors
-          if (errResponse.error.status === 400) {
-            this.global.ShowToastr(
-              ToasterType.Error,
-              errResponse.error.responseMessage,
-              ToasterTitle.Error
-            );
-          } else {
-            this.global.ShowToastr(
-              ToasterType.Error,
-              errResponse.error.responseMessage,
-              ToasterTitle.Error
-            );
-          }
+          // if (errResponse.error.status === 400) {
+          //   this.global.ShowToastr(
+          //     ToasterType.Error,
+          //     errResponse.error.responseMessage,
+          //     ToasterTitle.Error
+          //   );
+          // } else {
+          //   this.global.ShowToastr(
+          //     ToasterType.Error,
+          //     errResponse.error.responseMessage,
+          //     ToasterTitle.Error
+          //   );
+          // }
           return throwError(errResponse);
         })
       )
@@ -606,18 +607,19 @@ export class PickToteInductionComponent
           }
           this.refreshOrders();
 
-          this.global.ShowToastr(
-            ToasterType.Success,
-            innerResponse.responseMessage,
-            ToasterTitle.Success
-          );
-        } else {
-          this.global.ShowToastr(
-            ToasterType.Error,
-            innerResponse.responseMessage,
-            ToasterTitle.Error
-          );
-        }
+          // this.global.ShowToastr(
+          //   ToasterType.Success,
+          //   innerResponse.responseMessage,
+          //   ToasterTitle.Success
+          // );
+        } 
+        // else {
+        //   this.global.ShowToastr(
+        //     ToasterType.Error,
+        //     innerResponse.responseMessage,
+        //     ToasterTitle.Error
+        //   );
+        // }
       });
   }
 }
