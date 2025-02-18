@@ -57,3 +57,16 @@ export class UpdateStorageContainerLayoutRes{
     success: boolean;
     errorMessage: string;
 }
+
+export class ContainerTypes{
+    id: number;
+    name: string;
+}
+
+export const ValidationErrorCodes = {
+    LocationDedicatedToContainer: "LocationDedicatedToContainer",
+    AllocatedPutawayToContainer: "AllocatedPutawayToContainer",
+    PickAllocatedToContainer: "PickAllocatedToContainer",
+    ItemQuantityAssignedToContainer: "ItemQuantityAssignedToContainer",
+    ItemAssignedToContainer: "ItemAssignedToContainer"
+}

@@ -36,7 +36,7 @@
             <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline">
                 <mat-label>Container Type</mat-label>
                 <mat-select [(ngModel)]="scm.containertype" class="employees-action"
-                    [disabled]="checkDisabled('containertype')">
+                    [disabled]="checkDisabled('containertype')" (selectionChange)="containerTypeChanged()">
                     <mat-option *ngFor="let option of containerTypes" [value]="option.id">
                         {{option.name}}
                     </mat-option>
@@ -62,5 +62,5 @@
 </div>
 
 <mat-dialog-actions>
-    <button type="submit" mat-flat-button class="btn-lg flex-grow-1" color="primary" [disabled]="checkDisabled('save')">Save</button>
+    <button type="submit" mat-flat-button class="btn-lg flex-grow-1" color="primary" [disabled]="checkDisabled('save')" (click)="save()">Save</button>
 </mat-dialog-actions>
