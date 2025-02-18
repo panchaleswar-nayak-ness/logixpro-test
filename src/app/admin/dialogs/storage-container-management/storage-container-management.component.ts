@@ -7,7 +7,7 @@ import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.ser
 import { GlobalService } from 'src/app/common/services/global.service';
 import { ToasterTitle, ToasterType } from 'src/app/common/constants/strings.constants';
 import { HttpStatusCode } from '@angular/common/http';
-import { ContainerTypes, StorageContainerLayout, ValidationErrorCodes } from 'src/app/common/Model/storage-container-management';
+import { BinCellLayout, ContainerTypes, StorageContainerLayout, ValidationErrorCodes } from 'src/app/common/Model/storage-container-management';
 
 @Component({
   selector: 'app-storage-container-management-modal',
@@ -89,6 +89,8 @@ export class StorageContainerManagementModalComponent implements OnInit {
   }
 
   async validateScannedContainer() {
+    this.tableMatrix = [];
+    this.scm.containertype = 0;
     if (this.scm.tray === "") return;
     let res = await this.iAdminApiService.validateScannedContainer(this.scm.tray);
     if (res?.status == HttpStatusCode.Ok) {
@@ -109,16 +111,16 @@ export class StorageContainerManagementModalComponent implements OnInit {
     if (res?.status == HttpStatusCode.Ok) {
       this.storageContainerLayout = res.body.resource;
       this.scm.containertype = this.storageContainerLayout.binLayout.id;
-      this.createTableMatrix();
+      this.createTableMatrix(this.storageContainerLayout.binLayout.binCellLayouts);
     } else {
       this.global.ShowToastr(ToasterType.Error, this.global.globalErrorMsg(), ToasterTitle.Error);
     }
   }
 
-  createTableMatrix() {
+  createTableMatrix(binCellLayouts:BinCellLayout[]) {
     let positions: { row: number, col: number, binID: string }[] = [];
 
-    this.storageContainerLayout.binLayout.binCellLayouts.forEach(item => {
+    binCellLayouts.forEach(item => {
       const posList = this.extractPositions(item.commandString);
       posList.forEach(pos => {
         positions.push({ row: pos[0], col: pos[1], binID: item.binID });
@@ -159,9 +161,7 @@ export class StorageContainerManagementModalComponent implements OnInit {
     let res = await this.iAdminApiService.GetBinCellsAsync(this.scm.containertype);
     if (res?.status == HttpStatusCode.Ok) {
       if (res?.body?.length > 0) {
-        res?.body?.forEach(element => {
-          this.containerTypes.push({ id: element.resource.id, name: element.resource.description });
-        });
+        this.createTableMatrix(res?.body?.map(item => item.resource));
       }
     }
   }
