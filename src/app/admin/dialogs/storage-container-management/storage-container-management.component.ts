@@ -7,7 +7,7 @@ import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.ser
 import { GlobalService } from 'src/app/common/services/global.service';
 import { ToasterTitle, ToasterType } from 'src/app/common/constants/strings.constants';
 import { HttpStatusCode } from '@angular/common/http';
-import { BinCellLayout, ContainerTypes, StorageContainerLayout, ValidationErrorCodes } from 'src/app/common/Model/storage-container-management';
+import { BinCellLayout, ContainerTypes, StorageContainerLayout } from 'src/app/common/Model/storage-container-management';
 
 @Component({
   selector: 'app-storage-container-management-modal',
@@ -18,7 +18,7 @@ export class StorageContainerManagementModalComponent implements OnInit {
   scm = {
     zone: "",
     tray: "",
-    containertype: 0
+    containerType: 0
   }
   errorText: string = "Storage Container/Tray cannot exceed 5 characters. Please enter a valid value.";
   rows = [
@@ -27,11 +27,11 @@ export class StorageContainerManagementModalComponent implements OnInit {
   ];
   containerTypes: ContainerTypes[] = [];
   get inventoryMapRecords(): { count: number; label: string } {
-    const count = this.scm.containertype === 1
+    const count = this.scm.containerType === 1
       ? 1
-      : this.scm.containertype === 2 || this.scm.containertype === 3
+      : this.scm.containerType === 2 || this.scm.containerType === 3
         ? 2
-        : this.scm.containertype === 4
+        : this.scm.containerType === 4
           ? 4
           : 8; // Default for 'Octa-divided' or others
 
@@ -43,6 +43,7 @@ export class StorageContainerManagementModalComponent implements OnInit {
   storageContainerLayout: StorageContainerLayout = new StorageContainerLayout();
   storageContainerLayouts: StorageContainerLayout[] = [];
   isExistingContainer: boolean = false;
+  fromCells: number = 0;
 
   @ViewChild('zone') zoneSelect!: MatSelect;
   @ViewChild('storageContainer', { static: false }) storageContainer!: ElementRef;
@@ -90,17 +91,16 @@ export class StorageContainerManagementModalComponent implements OnInit {
 
   async validateScannedContainer() {
     this.tableMatrix = [];
-    this.scm.containertype = 0;
+    this.scm.containerType = 0;
     if (this.scm.tray === "") return;
     let res = await this.iAdminApiService.validateScannedContainer(this.scm.tray);
     if (res?.status == HttpStatusCode.Ok) {
       this.isExistingContainer = false;
-      // await this.getStorageContainerLayout();
-    } else {
-      if(res?.error?.validationErrorCode == ValidationErrorCodes.ItemQuantityAssignedToContainer){
-        this.isExistingContainer = true;
-        this.storageContainerAlreadyExists();
-      }
+      await this.getStorageContainerLayout();
+    }
+    else if (res?.error?.hasError) {
+      this.scm.tray = "";
+      this.scm.containerType = 0;
       this.global.ShowToastr(ToasterType.Error, res?.error?.errorMessage, ToasterTitle.Error);
     }
   }
@@ -109,15 +109,36 @@ export class StorageContainerManagementModalComponent implements OnInit {
     if (!this.scm.tray) return;
     let res = await this.iAdminApiService.getStorageContainerLayout(this.scm.tray);
     if (res?.status == HttpStatusCode.Ok) {
-      this.storageContainerLayout = res.body.resource;
-      this.scm.containertype = this.storageContainerLayout.binLayout.id;
-      this.createTableMatrix(this.storageContainerLayout.binLayout.binCellLayouts);
+      if(res?.body.resource == null) return;
+      const clearDialogRef = this.dialog.open(ConfirmationDialogComponent, {
+        width: '560px',
+        data: {
+          heading: 'Storage Container Management',
+          message: 'The storage container already exists. Proceeding will modify the inventory map records. Do you want to continue?',
+          customButtonText: true,
+          btn1Text: 'Yes',
+          btn2Text: 'No'
+        }
+      });
+      clearDialogRef.afterClosed().subscribe(async (resp) => {
+        if (resp == "Yes") {
+          this.storageContainerLayout = res.body.resource;
+          this.scm.containerType = this.storageContainerLayout.binLayout.id;
+          this.isExistingContainer = this.storageContainerLayout.binLayout.binCellLayouts.length > 0;
+          this.fromCells = this.storageContainerLayout.binLayout.binCellLayouts.length;
+          this.createTableMatrix(this.storageContainerLayout.binLayout.binCellLayouts);
+        }
+        else {
+          this.scm.tray = "";
+          this.scm.containerType = 0;
+        }
+      });
     } else {
       this.global.ShowToastr(ToasterType.Error, this.global.globalErrorMsg(), ToasterTitle.Error);
     }
   }
 
-  createTableMatrix(binCellLayouts:BinCellLayout[]) {
+  createTableMatrix(binCellLayouts: BinCellLayout[]) {
     let positions: { row: number, col: number, binID: string }[] = [];
 
     binCellLayouts.forEach(item => {
@@ -158,7 +179,7 @@ export class StorageContainerManagementModalComponent implements OnInit {
   }
 
   async GetBinCellsAsync() {
-    let res = await this.iAdminApiService.GetBinCellsAsync(this.scm.containertype);
+    let res = await this.iAdminApiService.GetBinCellsAsync(this.scm.containerType);
     if (res?.status == HttpStatusCode.Ok) {
       if (res?.body?.length > 0) {
         this.createTableMatrix(res?.body?.map(item => item.resource));
@@ -180,7 +201,7 @@ export class StorageContainerManagementModalComponent implements OnInit {
       width: '560px',
       data: {
         heading: 'Storage Container Management',
-        message: 'Proceeding will add (X) record(s) in the inventory map. Do you want to continue?',
+        message: `Proceeding will add ${this.inventoryMapRecords.count} record(s) in the inventory map. Do you want to continue?`,
         customButtonText: true,
         btn1Text: 'Yes',
         btn2Text: 'No'
@@ -198,7 +219,7 @@ export class StorageContainerManagementModalComponent implements OnInit {
       width: '560px',
       data: {
         heading: 'Storage Container Management',
-        message: 'Proceeding will modify the location [X] cells to [Y] cells in the inventory map records. Do you want to continue?',
+        message: `Proceeding will modify the location from ${this.fromCells} cell(s) to ${this.inventoryMapRecords.count} cell(s) in the inventory map records. Do you want to continue?`,
         customButtonText: true,
         btn1Text: 'Yes',
         btn2Text: 'No'
@@ -212,9 +233,8 @@ export class StorageContainerManagementModalComponent implements OnInit {
   }
 
   async updateStorageContainerLayout() {
-    let res = await this.iAdminApiService.updateStorageContainerLayout(this.scm.tray, { BinLayoutId: this.scm.containertype });
+    let res = await this.iAdminApiService.updateStorageContainerLayout(this.scm.tray, { BinLayoutId: this.scm.containerType });
     if (res?.status == HttpStatusCode.Ok && res?.body?.resource?.success) {
-      await this.getStorageContainerLayout();
       this.global.ShowToastr(ToasterType.Success, "Container Updated Successfully", ToasterTitle.Success);
     }
   }
@@ -227,37 +247,15 @@ export class StorageContainerManagementModalComponent implements OnInit {
     }, 1);
   }
 
-  async storageContainerAlreadyExists() {
-    const clearDialogRef = this.dialog.open(ConfirmationDialogComponent, {
-      width: '560px',
-      data: {
-        heading: 'Storage Container Management',
-        message: 'The storage container already exists. Proceeding will modify the inventory map records. Do you want to continue?',
-        customButtonText: true,
-        btn1Text: 'Yes',
-        btn2Text: 'No'
-      }
-    });
-    clearDialogRef.afterClosed().subscribe(async (res) => {
-      if (res == "Yes") {
-        await this.getStorageContainerLayout();
-      }
-      else {
-        this.scm.tray = "";
-        this.scm.containertype = 0;
-      }
-    });
-  }
-
   checkDisabled(field: string): boolean {
     const dependencies: { [key: string]: string[] } = {
       zone: [],
       tray: ['zone'],
-      containertype: ['zone', 'tray'],
-      save: ['zone', 'tray', 'containertype'],
+      containerType: ['zone', 'tray'],
+      save: ['zone', 'tray', 'containerType'],
     };
 
     const requiredFields = dependencies[field] || [];
-    return requiredFields.some(dep => this.scm[dep] === '');
+    return requiredFields.some(dep => this.scm[dep] === '' || this.scm[dep] === 0);
   }
 }
