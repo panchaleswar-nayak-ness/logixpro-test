@@ -237,6 +237,9 @@ export class StorageContainerManagementModalComponent implements OnInit {
     if (res?.status == HttpStatusCode.Ok && res?.body?.resource?.success) {
       this.global.ShowToastr(ToasterType.Success, "Container Updated Successfully", ToasterTitle.Success);
     }
+    else{
+      this.global.ShowToastr(ToasterType.Error, res?.body?.resource?.errorMessage, ToasterTitle.Error);
+    }
   }
 
   zoneChanged() {
