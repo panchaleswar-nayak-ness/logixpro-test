@@ -370,7 +370,7 @@ export class OpenTransactionOnHoldComponent implements OnInit, AfterViewInit {
       searchPayload = {
         query: this.orderNumber,
         tableName: 2,
-        column: Column.OrderNumber,
+        column: 'orderNumber',
       };
     } else {
       searchPayload = {
@@ -485,7 +485,7 @@ export class OpenTransactionOnHoldComponent implements OnInit, AfterViewInit {
       draw: 0,
       sDate: this.datepipe.transform(this.sDate, 'MM/dd/yyyy'),
       eDate: this.datepipe.transform(this.eDate, 'MM/dd/yyyy'),
-      transType: this.transTypeSelect,
+      transType: this.transTypeSelect == 'All Transactions' ? '' : this.transTypeSelect,
       transStatus: this.transStatusSelect,
       searchString: this.columnSearch.searchValue,
       searchColumn: this.columnSearch.searchColumn.colDef,
@@ -674,9 +674,19 @@ export class OpenTransactionOnHoldComponent implements OnInit, AfterViewInit {
     this.paginator.pageIndex = 0;
   }
 
+  clearFilter(fieldName:string){
+    if(fieldName == 'toteId')
+    {
+      this.toteId='';
+    }
+    else if (fieldName == 'orderNumber'){
+      this.orderNumber='';
+    }
+    this.getContentData();
+  }
   clear() {
-    this.columnSearch.searchValue = ''
-    this.getContentData()
+    this.columnSearch.searchValue = '';
+    this.getContentData();
   }
 
   printCycleCountReport(){
