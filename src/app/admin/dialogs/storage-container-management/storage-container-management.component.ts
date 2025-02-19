@@ -90,6 +90,10 @@ export class StorageContainerManagementModalComponent implements OnInit {
   }
 
   async validateScannedContainer() {
+    this.scm.tray = this.scm.tray.replace(/^[A-Za-z]+/, '');
+    if (this.scm.tray.length > 5) {
+      this.scm.tray = this.scm.tray.substring(0, 5);
+    }
     this.tableMatrix = [];
     this.scm.containerType = 0;
     if (this.scm.tray === "") return;
@@ -109,7 +113,7 @@ export class StorageContainerManagementModalComponent implements OnInit {
     if (!this.scm.tray) return;
     let res = await this.iAdminApiService.getStorageContainerLayout(this.scm.tray);
     if (res?.status == HttpStatusCode.Ok) {
-      if(res?.body.resource == null) return;
+      if (res?.body.resource == null) return;
       const clearDialogRef = this.dialog.open(ConfirmationDialogComponent, {
         width: '560px',
         data: {
@@ -237,7 +241,7 @@ export class StorageContainerManagementModalComponent implements OnInit {
     if (res?.status == HttpStatusCode.Ok && res?.body?.resource?.success) {
       this.global.ShowToastr(ToasterType.Success, "Container Updated Successfully", ToasterTitle.Success);
     }
-    else{
+    else {
       this.global.ShowToastr(ToasterType.Error, res?.body?.resource?.errorMessage, ToasterTitle.Error);
     }
   }
