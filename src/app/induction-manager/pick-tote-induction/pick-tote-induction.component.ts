@@ -497,6 +497,7 @@ export class PickToteInductionComponent
         // Perform induction without maxToteQuantity
         this.performInduction(valueToInduct);
       }
+      this.toteId='';
     }
   }
 

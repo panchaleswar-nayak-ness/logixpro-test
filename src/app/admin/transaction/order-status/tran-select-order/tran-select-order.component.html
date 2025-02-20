@@ -86,6 +86,7 @@
               <mat-autocomplete
                 class="card custom-scroll panel-custom-scroll d-table"
                 #auto="matAutocomplete"
+                (optionSelected)="highlightText($event)"
               >
                 <ng-container *ngIf="columnSelect == 'Order Number'">
                   <h6 class="card-header matAutoCompHeader stickyHeader">

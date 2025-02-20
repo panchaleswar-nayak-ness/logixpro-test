@@ -12,6 +12,7 @@ import { IAdminApiService } from 'src/app/common/services/admin-api/admin-api-in
 import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.service';
 import { GlobalService } from 'src/app/common/services/global.service';
 import { Column, DialogConstants, Mode, ToasterTitle, ToasterType ,StringConditions,Style,UniqueConstants} from 'src/app/common/constants/strings.constants';
+import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 
 class info {
   title: string;
@@ -52,6 +53,12 @@ export class TranSelectOrderComponent implements OnInit {
 
   @Input() orderStatNextData = []; // decorate the property with @Input()
   @ViewChild('searchInput') searchInput!: ElementRef;
+
+  highlightText(event: MatAutocompleteSelectedEvent) {
+    this.searchField = event.option.value;
+      this.searchInput.nativeElement.focus();
+      this.searchInput.nativeElement.select();
+  }
   
   searchControl = new FormControl();
   floatLabelControl = new FormControl('auto' as FloatLabelType);
@@ -150,6 +157,12 @@ export class TranSelectOrderComponent implements OnInit {
         filterByTote: this.filterByTote,
         totalLinesOrder: this.totalLinesOrder
       };
+    }
+
+    if (this.searchField) {
+        this.searchInput.nativeElement.focus();
+        this.searchInput.nativeElement.select();
+
     }
   }
 
