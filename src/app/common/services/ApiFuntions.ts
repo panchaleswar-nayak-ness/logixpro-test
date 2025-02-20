@@ -2178,6 +2178,14 @@ export class ApiFuntions {
     return await this.ApiBase.PostAsync(`/print/ProcessPickPrintBatchList`, body);
   }
 
+  public async CycleCountPrintCycleCountDetails(body: any) {
+    return await this.ApiBase.PostAsync(`/print/cyclecountdetails`, body);
+  }
+
+  public async OpenTransactionsPrintCycleCount(body: any) {
+    return await this.ApiBase.PostAsync(`/print/cyclecount`, body);
+  }
+
 
 
   //===========markout=============
@@ -2294,19 +2302,35 @@ export class ApiFuntions {
   }
 
   public async getBinLayout(layoutId: string, binCode:string){
-    return await this.ApiBase.GetAsync(`/storageContainer/binLayout?layoutId=${layoutId}&binCode=${binCode}`);
+    return await this.ApiBase.GetAsync(`/StorageContainer/binLayout?layoutId=${layoutId}&binCode=${binCode}`);
   }
 
   public async validateScannedContainer(containerId: string) {
-    return await this.ApiBase.GetAsync(`/storageContainer/ValidateScannedContainer/${containerId}`);
+    return await this.ApiBase.GetAsync(`/StorageContainer/validate/${containerId}`);
   }
 
   public async getStorageContainerLayout(containerId: string) {
-    return await this.ApiBase.GetAsync(`/storageContainer/GetStorageContainerLayout/${containerId}`);
+    return await this.ApiBase.GetAsync(`/layouts/container/${containerId}`);
   }
 
-  public updateStorageContainerLayout(BinLayoutId: string,body:UpdateSCReq): Observable<UpdateStorageContainerLayoutRes | null> {
-    return this.ApiBase.Put(`/storageContainer/UpdateStorageContainerLayout/${BinLayoutId}`,body);
+  public async updateStorageContainerLayout(containerId: string,body:UpdateSCReq) {
+    return await this.ApiBase.HttpPutAsync(`/layouts/container/${containerId}`,body);
+  }
+
+  public async GetContainerLayoutsAsync() {
+    return await this.ApiBase.GetAsync(`/layouts`);
+  }
+
+  public async GetBinLayoutAsync(layoutId: number) {
+    return await this.ApiBase.GetAsync(`/layouts/${layoutId}`);
+  }
+
+  public async GetBinCellsAsync(layoutId: number) {
+    return await this.ApiBase.GetAsync(`/layouts/${layoutId}/binCells`);
+  }
+
+  public async GetBinCellAsync(binCellId: number) {
+    return await this.ApiBase.GetAsync(`/layouts/binCells/${binCellId}`);
   }
 
 }

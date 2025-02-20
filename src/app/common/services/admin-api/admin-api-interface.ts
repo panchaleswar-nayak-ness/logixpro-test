@@ -262,5 +262,9 @@ export interface IAdminApiService
   getBinLayout(layoutId: string, binCode:string);
   validateScannedContainer(containerId: string);
   getStorageContainerLayout(containerId : string);
-  updateStorageContainerLayout(BinLayoutId: string,body:UpdateSCReq);
+  updateStorageContainerLayout(containerId: string,body:UpdateSCReq);
+  GetContainerLayoutsAsync();
+  GetBinLayoutAsync(layoutId: number);
+  GetBinCellsAsync(layoutId: number);
+  GetBinCellAsync(binCellId: number);
 }

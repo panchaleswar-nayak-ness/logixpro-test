@@ -122,6 +122,10 @@ export class BaseService {
     }
   }
 
+  async HttpPutAsync<T>(endPoint: string, model: T, isLoader: boolean = false): Promise<HttpResponse<T>> {
+    return await lastValueFrom(this.request('PUT', endPoint,{body:model}));
+  }
+
   async PostAsync<T>(endPoint: string, model: T, isLoader: boolean = false): Promise<HttpResponse<T>> {
     return await lastValueFrom(this.request('POST', endPoint,{body:model}));
   }

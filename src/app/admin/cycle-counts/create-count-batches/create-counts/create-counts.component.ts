@@ -18,6 +18,7 @@ import { ICommonApi } from 'src/app/common/services/common-api/common-api-interf
 import { CommonApiService } from 'src/app/common/services/common-api/common-api.service';
 import { ToasterTitle, ToasterType ,LiveAnnouncerMessage,ResponseStrings,StringConditions,ToasterMessages,DialogConstants,UniqueConstants,Column,Style,ColumnDef,TableConstant, Placeholders} from 'src/app/common/constants/strings.constants';
 import { LocalStorageService } from 'src/app/common/services/LocalStorage.service';
+import { PrintApiService } from 'src/app/common/services/print-api/print-api.service';
 
 @Component({
   selector: 'app-ccb-create-counts',
@@ -128,7 +129,8 @@ export class CCBCreateCountsComponent implements OnInit {
   public iCommonAPI : ICommonApi;
 
 constructor(
-    public commonAPI : CommonApiService,
+    public commonAPI: CommonApiService,
+    private printApiService: PrintApiService,
     public Api: ApiFuntions,
     private authService: AuthService,
     public global:GlobalService,
@@ -339,8 +341,8 @@ constructor(
     }
   }
   printCountOrders(){
-    if(this.printCC){
-      this.global.Print(`FileName:PrintCycleCountReport|OrderNum:${this.orderNumber?this.orderNumber:''}`)
+    if (this.printCC) {
+      this.printApiService.ProcessCycleCountDetailsPrint(this.orderNumber);
      } else {
       window.open(`/#/report-view?file=PrintCycleCountReport-lst-prv|OrderNum:${this.orderNumber?this.orderNumber:''}`, UniqueConstants._blank, 'width=' + screen.width + ',height=' + screen.height + ',toolbar=0,menubar=0,location=0,status=1,scrollbars=1,resizable=1,left=0,top=0')
     }

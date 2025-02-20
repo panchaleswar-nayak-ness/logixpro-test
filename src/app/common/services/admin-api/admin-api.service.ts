@@ -2126,8 +2126,24 @@ export class AdminApiService implements IAdminApiService {
       return this.Api.getStorageContainerLayout(containerId);
     }
     
-    public updateStorageContainerLayout(BinLayoutId: string,body:UpdateSCReq) {
-      return this.Api.updateStorageContainerLayout(BinLayoutId,body);
+    public updateStorageContainerLayout(containerId: string,body:UpdateSCReq) {
+      return this.Api.updateStorageContainerLayout(containerId,body);
+    }
+
+    public GetContainerLayoutsAsync() {
+      return this.Api.GetContainerLayoutsAsync();
+    }
+
+    public GetBinLayoutAsync(layoutId: number) {
+      return this.Api.GetBinLayoutAsync(layoutId);
+    }
+
+    public GetBinCellsAsync(layoutId: number) {
+      return this.Api.GetBinCellsAsync(layoutId);
+    }
+
+    public GetBinCellAsync(binCellId: number) {
+      return this.Api.GetBinCellAsync(binCellId);
     }
   }
 

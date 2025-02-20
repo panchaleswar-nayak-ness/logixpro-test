@@ -25,6 +25,7 @@ import { RouteUpdateMenu } from 'src/app/common/constants/menu.constants';
 import { AppNames, AppRoutes, RouteNames} from 'src/app/common/constants/menu.constants';
 import { DatePipe } from '@angular/common';
 import { ContextMenuFiltersService } from 'src/app/common/init/context-menu-filters.service';
+import { PrintApiService } from 'src/app/common/services/print-api/print-api.service';
 
 @Component({
   selector: 'app-open-transaction-on-hold',
@@ -238,6 +239,7 @@ export class OpenTransactionOnHoldComponent implements OnInit, AfterViewInit {
   constructor(
     private router: Router,
     public adminApiService: AdminApiService,
+    private printApiService: PrintApiService,
     public datepipe:DatePipe,
     public authService: AuthService,
     private global: GlobalService,
@@ -370,7 +372,7 @@ export class OpenTransactionOnHoldComponent implements OnInit, AfterViewInit {
       searchPayload = {
         query: this.orderNumber,
         tableName: 2,
-        column: Column.OrderNumber,
+        column: 'orderNumber',
       };
     } else {
       searchPayload = {
@@ -485,7 +487,7 @@ export class OpenTransactionOnHoldComponent implements OnInit, AfterViewInit {
       draw: 0,
       sDate: this.datepipe.transform(this.sDate, 'MM/dd/yyyy'),
       eDate: this.datepipe.transform(this.eDate, 'MM/dd/yyyy'),
-      transType: this.transTypeSelect,
+      transType: this.transTypeSelect == 'All Transactions' ? '' : this.transTypeSelect,
       transStatus: this.transStatusSelect,
       searchString: this.columnSearch.searchValue,
       searchColumn: this.columnSearch.searchColumn.colDef,
@@ -674,13 +676,24 @@ export class OpenTransactionOnHoldComponent implements OnInit, AfterViewInit {
     this.paginator.pageIndex = 0;
   }
 
+  clearFilter(fieldName:string){
+    if(fieldName == 'toteId')
+    {
+      this.toteId='';
+    }
+    else if (fieldName == 'orderNumber'){
+      this.orderNumber='';
+    }
+    this.getContentData();
+  }
   clear() {
-    this.columnSearch.searchValue = ''
-    this.getContentData()
+    this.columnSearch.searchValue = '';
+    this.getContentData();
   }
 
-  printCycleCountReport(){
-    this.global.Print(`FileName:printCycleCountReport`)
+  printCycleCountReport() {
+    this.printApiService.ProcessCycleCountPrint();
+    //this.global.Print(`FileName:printCycleCountReport`)
   }
 
   previewFiftyPagesOnly(){

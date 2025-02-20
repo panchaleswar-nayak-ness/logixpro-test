@@ -43,8 +43,8 @@
                 <div class="col-xl-3 d-flex  justify-content-center ">
                     <mat-form-field c class="custom-form-field w-100 __grab_cursor mb-3" appearance="outline" [floatLabel]="getFloatLabelValue()" [hideRequiredMarker]="hideRequiredControl.value">
                         <mat-label>Order Number</mat-label>
-                        <input type="text" placeholder="Search" aria-label="Number" matInput [(ngModel)]='orderNumber' [matAutocomplete]="auto" (ngModelChange)="this.searchByOrderNumber.next($event)">
-                        <button matSuffix *ngIf="orderNumber" class="clear-btn" (click)="orderNumber = ''"><mat-icon class="text-20 text-chrome-600">cancel</mat-icon></button>
+                        <input type="text" placeholder="" aria-label="Number"  name="searchByorderNumber" id="searchByorderNumber" matInput [(ngModel)]='orderNumber' [matAutocomplete]="auto" (ngModelChange)="this.searchByOrderNumber.next($event)">
+                        <button matSuffix *ngIf="orderNumber" class="clear-btn" (click)="clearFilter('orderNumber');"><mat-icon class="text-20 text-chrome-600">cancel</mat-icon></button>
                         <mat-autocomplete #auto="matAutocomplete" (optionSelected)="searchData()">
                             <mat-option *ngFor="let option of searchAutocompleteList" [value]="option">{{option}}</mat-option>
                         </mat-autocomplete>
@@ -57,7 +57,7 @@
                     <mat-form-field class="custom-form-field w-100 __grab_cursor mb-3" appearance="outline">
                         <mat-label>Tote ID</mat-label>
                         <input [(ngModel)]="toteId" matInput class="" value="" type="text" name="searchByToteId" id="searchByToteId" (ngModelChange)="this.searchByToteId.next($event)">
-                        <button matSuffix *ngIf="toteId" class="clear-btn" (click)="toteId = ''"><mat-icon class="text-20 text-chrome-600">cancel</mat-icon></button>
+                        <button matSuffix *ngIf="toteId" class="clear-btn"  (click)="clearFilter('toteId');"><mat-icon class="text-20 text-chrome-600">cancel</mat-icon></button>
                     </mat-form-field>
                 </div>
 

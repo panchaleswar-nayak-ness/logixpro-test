@@ -386,18 +386,19 @@ export class SuperBatchOrdersComponent implements OnInit, AfterViewInit {
                 if (
                   innerResponse?.data?.notInductedOrders?.length > 0
                 ) {
-                  this.global.ShowToastr(
-                    ToasterType.Info,
-                    `Some orders were skipped as they exceed the maximum batch size: ${valueToInduct.maxSuperBatchSize} or Max quantity Per Tote: ${valueToInduct.maxToteQuantity}`,
-                    ToasterTitle.Info
-                  );
+                  // this.global.ShowToastr(
+                  //   ToasterType.Info,
+                  //   `Some orders were skipped as they exceed the maximum batch size: ${valueToInduct.maxSuperBatchSize} or Max quantity Per Tote: ${valueToInduct.maxToteQuantity}`,
+                  //   ToasterTitle.Info
+                  // );
                 }
-              } else {
-                this.global.ShowToastr(
-                  ToasterType.Info,
-                  innerResponse.responseMessage,
-                  ToasterTitle.Info
-                );
+              } 
+              else {
+                // this.global.ShowToastr(
+                //   ToasterType.Info,
+                //   innerResponse.responseMessage,
+                //   ToasterTitle.Info
+                // );
               }
 
               setTimeout(() => {
@@ -406,12 +407,12 @@ export class SuperBatchOrdersComponent implements OnInit, AfterViewInit {
             });
         }
       } else {
-        this.global.ShowToastr(
-          ToasterType.Error,
-          ToasterMessages.SomethingWentWrong,
-          ToasterTitle.Error,
-          1000
-        );
+        // this.global.ShowToastr(
+        //   ToasterType.Error,
+        //   ToasterMessages.SomethingWentWrong,
+        //   ToasterTitle.Error,
+        //   1000
+        // );
       }
     });
   }
