@@ -2178,6 +2178,14 @@ export class ApiFuntions {
     return await this.ApiBase.PostAsync(`/print/ProcessPickPrintBatchList`, body);
   }
 
+  public async CycleCountPrintCycleCountDetails(body: any) {
+    return await this.ApiBase.PostAsync(`/print/cyclecountdetails`, body);
+  }
+
+  public async OpenTransactionsPrintCycleCount(body: any) {
+    return await this.ApiBase.PostAsync(`/print/cyclecount`, body);
+  }
+
 
 
   //===========markout=============

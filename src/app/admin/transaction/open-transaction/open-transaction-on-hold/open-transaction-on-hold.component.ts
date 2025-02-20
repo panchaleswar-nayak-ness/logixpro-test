@@ -25,6 +25,7 @@ import { RouteUpdateMenu } from 'src/app/common/constants/menu.constants';
 import { AppNames, AppRoutes, RouteNames} from 'src/app/common/constants/menu.constants';
 import { DatePipe } from '@angular/common';
 import { ContextMenuFiltersService } from 'src/app/common/init/context-menu-filters.service';
+import { PrintApiService } from 'src/app/common/services/print-api/print-api.service';
 
 @Component({
   selector: 'app-open-transaction-on-hold',
@@ -238,6 +239,7 @@ export class OpenTransactionOnHoldComponent implements OnInit, AfterViewInit {
   constructor(
     private router: Router,
     public adminApiService: AdminApiService,
+    private printApiService: PrintApiService,
     public datepipe:DatePipe,
     public authService: AuthService,
     private global: GlobalService,
@@ -689,8 +691,9 @@ export class OpenTransactionOnHoldComponent implements OnInit, AfterViewInit {
     this.getContentData();
   }
 
-  printCycleCountReport(){
-    this.global.Print(`FileName:printCycleCountReport`)
+  printCycleCountReport() {
+    this.printApiService.ProcessCycleCountPrint();
+    //this.global.Print(`FileName:printCycleCountReport`)
   }
 
   previewFiftyPagesOnly(){

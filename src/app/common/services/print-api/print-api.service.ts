@@ -353,4 +353,21 @@ export class PrintApiService implements IPrintApiService {
 
     return await this.Api.PrintPrevToteContent(payload);
   }
+
+  public async ProcessCycleCountDetailsPrint(orderNumber: string) {
+    const payload = {
+      wsid: this.userData.wsid,
+      orderNumber: orderNumber
+    }
+
+    return await this.Api.CycleCountPrintCycleCountDetails(payload);
+  }
+
+  public async ProcessCycleCountPrint() {
+    const payload = {
+      wsid: this.userData.wsid
+    }
+
+    return await this.Api.OpenTransactionsPrintCycleCount(payload);
+  }
 }
