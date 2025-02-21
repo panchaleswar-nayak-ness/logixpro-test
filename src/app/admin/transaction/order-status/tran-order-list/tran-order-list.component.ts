@@ -352,6 +352,13 @@ export class TranOrderListComponent implements OnInit, AfterViewInit {
     this.iAdminApiService.OrderStatusData(this.payload).subscribe({
         next: (res: any) => {
             if (res.isExecuted) {
+              if(res?.data?.orderStatus[0]?.orderNumber && this.payload.toteID != ""){
+                this.toteId = "";
+                this.orderNo = res?.data?.orderStatus[0]?.orderNumber;
+                this.getOrderForTote = res?.data?.orderStatus[0]?.orderNumber;
+                this.handleOrderStatusUpdate();
+                return;
+              }
                 this.detailDataInventoryMap = res.data?.orderStatus;
                 this.getOrderForTote = res.data?.orderNo;
 
@@ -697,7 +704,19 @@ export class TranOrderListComponent implements OnInit, AfterViewInit {
     // orderstatus table generation api .
     this.subscription.add(
       this.sharedService.orderStatusObjObserver.subscribe((obj) => {
-        this.sharedService.updateOrderStatusOrderNo(this.getOrderForTote);
+        // this.handleOrderStatusUpdate();
+      })
+    );
+
+    this.subscription.add(
+      this.sharedService.updateCompDateObserver.subscribe(
+        () => (this.compDate = '')
+      )
+    );
+  }
+
+  handleOrderStatusUpdate(): void {
+    this.sharedService.updateOrderStatusOrderNo(this.getOrderForTote);
         this.orderNo = this.getOrderForTote;
         this.toteId = '';
         this.getContentData();
@@ -745,15 +764,8 @@ export class TranOrderListComponent implements OnInit, AfterViewInit {
             }
           },
         });
-      })
-    );
-
-    this.subscription.add(
-      this.sharedService.updateCompDateObserver.subscribe(
-        () => (this.compDate = '')
-      )
-    );
   }
+  
 
   ngAfterViewInit() {
     this.dataSource.paginator = this.paginator;

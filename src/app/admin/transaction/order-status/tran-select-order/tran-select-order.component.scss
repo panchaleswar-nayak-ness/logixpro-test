@@ -103,3 +103,8 @@
   width:20%; 
   white-space: nowrap;
 }
+.badge-ch-limit{
+  text-overflow: ellipsis;
+    max-width: 15ch;
+    overflow: hidden;
+}
