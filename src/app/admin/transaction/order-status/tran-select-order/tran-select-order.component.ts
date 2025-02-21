@@ -12,7 +12,6 @@ import { IAdminApiService } from 'src/app/common/services/admin-api/admin-api-in
 import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.service';
 import { GlobalService } from 'src/app/common/services/global.service';
 import { Column, DialogConstants, Mode, ToasterTitle, ToasterType ,StringConditions,Style,UniqueConstants} from 'src/app/common/constants/strings.constants';
-import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 
 class info {
   title: string;
