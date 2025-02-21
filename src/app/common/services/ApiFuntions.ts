@@ -10,7 +10,7 @@ import {
   UpdateQuantityRequest
 } from 'src/app/consolidation-manager/cm-markout/models/markout-model';
 import { AddPickToteInductionFilter } from 'src/app/induction-manager/models/PickToteInductionModel';
-import { BinLayoutRes, StorageContainerLayout, UpdateSCReq, UpdateStorageContainerLayoutRes, VaildateScannedContainerRes } from '../Model/storage-container-management';
+import { InventoryMap, UpdateSCReq } from '../Model/storage-container-management';
 
 @Injectable({
   providedIn: 'root',
@@ -2331,6 +2331,10 @@ export class ApiFuntions {
 
   public async GetBinCellAsync(binCellId: number) {
     return await this.ApiBase.GetAsync(`/layouts/binCells/${binCellId}`);
+  }
+
+  public async createInventoryMapAsync(body: InventoryMap) {
+    return await this.ApiBase.PostAsync(`/Admin/inventorymap`, body);
   }
 
 }

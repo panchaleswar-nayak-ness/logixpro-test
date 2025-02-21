@@ -7,7 +7,7 @@ import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.ser
 import { GlobalService } from 'src/app/common/services/global.service';
 import { ToasterTitle, ToasterType } from 'src/app/common/constants/strings.constants';
 import { HttpStatusCode } from '@angular/common/http';
-import { BinCellLayout, ContainerTypes, StorageContainerLayout } from 'src/app/common/Model/storage-container-management';
+import { BinCellLayout, ContainerTypes, InventoryMap, StorageContainerLayout } from 'src/app/common/Model/storage-container-management';
 
 @Component({
   selector: 'app-storage-container-management-modal',
@@ -213,7 +213,7 @@ export class StorageContainerManagementModalComponent implements OnInit {
     });
     clearDialogRef.afterClosed().subscribe(async (res) => {
       if (res == "Yes") {
-        await this.updateStorageContainerLayout();
+        await this.addInventoryMapRecord();
       }
     });
   }
@@ -265,4 +265,20 @@ export class StorageContainerManagementModalComponent implements OnInit {
     const requiredFields = dependencies[field] || [];
     return requiredFields.some(dep => this.scm[dep] === '' || this.scm[dep] === 0);
   }
+
+  async addInventoryMapRecord(){
+    let inventoryMap: InventoryMap = new InventoryMap();
+    inventoryMap.zone = this.scm.zone;
+    inventoryMap.row = this.scm.tray;
+    inventoryMap.cell = "F";
+    inventoryMap.velocity = "1";
+    let res = await this.iAdminApiService.createInventoryMapAsync(inventoryMap);
+    if (res?.status == HttpStatusCode.Ok) {
+      await this.updateStorageContainerLayout();
+    }
+    else{
+      this.global.ShowToastr(ToasterType.Error, this.global.globalErrorMsg(), ToasterTitle.Error);
+    }
+  }
+
 }
