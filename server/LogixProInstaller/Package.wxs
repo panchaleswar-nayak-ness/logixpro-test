@@ -1,0 +1,85 @@
+<Wix xmlns="http://wixtoolset.org/schemas/v4/wxs"
+	 xmlns:ui="http://wixtoolset.org/schemas/v4/wxs/ui">
+
+	<?define UpgradeCode = {d909a5fa-4323-4e42-925f-de3975535cd2}?>
+	<?define ServiceName = "PeakLogix.LogixPro"?>
+	
+	<Package
+		Name="LogixPro"
+		Manufacturer="PeakLogix"
+		Version="$(Version)"
+		UpgradeCode="$(var.UpgradeCode)"
+		Scope="perMachine">
+	  <MajorUpgrade
+	  AllowDowngrades="yes"/>
+
+		<MediaTemplate EmbedCab="yes" />
+		<ui:WixUI
+	Id="WixUI_InstallDir_NoLicense"
+	InstallDirectory="INSTALLFOLDER"
+			/>
+		<SetProperty 
+			After="FindRelatedProducts" 
+			Id="FirstInstall" 
+			Value="true" Condition="NOT Installed AND NOT WIX_UPGRADE_DETECTED AND NOT WIX_DOWNGRADE_DETECTED" />
+		<SetProperty 
+			After="SetFirstInstall" 
+			Id="Upgrading" 
+			Value="true" Condition="WIX_UPGRADE_DETECTED AND NOT (REMOVE=&quot;ALL&quot;)" />
+		<SetProperty 
+			After="RemoveExistingProducts" 
+			Id="RemovingForUpgrade" 
+			Sequence="execute" Value="true" Condition="(REMOVE=&quot;ALL&quot;) AND UPGRADINGPRODUCTCODE" />
+		<SetProperty 
+			After="SetUpgrading" 
+			Id="Uninstalling" 
+			Value="true" Condition="Installed AND (REMOVE=&quot;ALL&quot;) AND NOT (WIX_UPGRADE_DETECTED OR UPGRADINGPRODUCTCODE)" />
+		<SetProperty 
+			After="SetUninstalling" 
+			Id="Maintenance" 
+			Value="true" Condition="Installed AND NOT Upgrading AND NOT Uninstalling AND NOT UPGRADINGPRODUCTCODE" />
+
+		<UIRef Id="WixUI_Common" />
+
+		<StandardDirectory Id="ProgramFiles6432Folder">
+			<Directory Id="CompanyFolder" Name="!(bind.Property.Manufacturer)">
+				<Directory Id="INSTALLFOLDER" Name="!(bind.Property.ProductName)">
+					<!-- Service Component -->
+
+					<Component Id="LogixProServiceComponent" Bitness="always64" Guid="*">
+						<!-- The service executable -->
+						<File Id="LogixPro.exe" Name="LogixPro.exe" Source="$(var.FilesDir)\LogixPro.exe" />
+
+						<!-- Service installation settings -->
+						<ServiceInstall Id="LogixProServiceInstaller"
+                            Type="ownProcess"
+                            Vital="yes"
+                            Name="$(var.ServiceName)"
+                            DisplayName="PeakLogix LogixPro"
+                            Description="LogixPro"
+                            Start="auto"
+                            ErrorControl="normal"
+                            Account="LocalSystem" >
+
+
+
+						</ServiceInstall>
+
+						<!-- Service control settings -->
+						<ServiceControl Id="LogixProControl"
+                            Start="install"
+                            Stop="both"
+                            Remove="uninstall"
+                            Name="PeakLogix.LogixPro"
+                            Wait="yes"  />
+					</Component>
+				</Directory>
+			</Directory>
+		</StandardDirectory>
+		
+    <Feature Id="Main" Title="LogixPro">
+		<ComponentGroupRef Id="HarvestedComponents" />
+		<ComponentRef Id="LogixProServiceComponent" />
+    </Feature>
+  </Package>
+</Wix>

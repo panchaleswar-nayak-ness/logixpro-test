@@ -3,11 +3,14 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "ClientApp": {
+    "logix-pro": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
           "style": "scss"
+        },
+        "@schematics/angular:application": {
+          "strict": true
         }
       },
       "root": "",
@@ -17,7 +20,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "dist/client-app",
+            "outputPath": "server/LogixProServer/wwwroot",
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": "src/polyfills.ts",
@@ -45,13 +48,13 @@
               "budgets": [
                 {
                   "type": "initial",
-                  "maximumWarning": "3mb",
-                  "maximumError": "3mb"
+                  "maximumWarning": "5mb",
+                  "maximumError": "5mb"
                 },
                 {
                   "type": "anyComponentStyle",
-                  "maximumWarning": "20kb",
-                  "maximumError": "40kb"
+                  "maximumWarning": "2kb",
+                  "maximumError": "4kb"
                 }
               ],
               "fileReplacements": [
@@ -61,6 +64,20 @@
                 }
               ],
               "outputHashing": "all"
+            },
+            "demo": {
+              "buildOptimizer": false,
+              "optimization": false,
+              "vendorChunk": true,
+              "extractLicenses": false,
+              "sourceMap": true,
+              "namedChunks": true,
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.demo.ts"
+                }
+              ]
             },
             "dev-e64": {
               "optimization": {
@@ -91,7 +108,7 @@
               ],
               "outputHashing": "all"
             },
-			      "local": {
+            "local": {
               "optimization": false,
               "sourceMap": true,
               "budgets": [
@@ -196,15 +213,18 @@
         },
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
+          "options": {
+            "port": 5291
+          },
           "configurations": {
             "production": {
-              "browserTarget": "ClientApp:build:production"
+              "browserTarget": "logix-pro:build:production"
             },
             "development": {
-              "browserTarget": "ClientApp:build:development"
+              "browserTarget": "logix-pro:build:development"
             },
             "local": {
-              "browserTarget": "ClientApp:build:local"
+              "browserTarget": "logix-pro:build:local"
             }
           },
           "defaultConfiguration": "development"
@@ -212,7 +232,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "ClientApp:build"
+            "browserTarget": "logix-pro:build"
           }
         },
         "test": {
@@ -237,6 +257,7 @@
       }
     }
   },
+  "defaultProject": "logix-pro",
   "cli": {
     "analytics": "768ab0bf-18cb-438b-801e-37ff54e5857a"
   }

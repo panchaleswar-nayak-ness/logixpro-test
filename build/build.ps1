@@ -28,19 +28,50 @@ Set-Location $projectDirectory
 write-host "Building project in $projectDirectory"
 
 write-host "Running npm install"
+#npm install --package-lock-only
 npm ci
-
-write-host "Deleting dist directory"
-Remove-Item -Recurse -Force "dist"
 
 write-host "Running ng build"
 ng build -c stage
 
 $angularJsonPath = "$projectDirectory/angular.json"
+
+if (-not (Test-Path $angularJsonPath)) {
+    write-host "Could not find angular.json: $angularJsonPath"
+    exit 1
+}
+
 $angularJson = Get-Content -Path $angularJsonPath -Raw
+
+if($null -eq $angularJson) {
+    write-host "Could not read from angular.json"
+    exit 1
+}
+
 $angularConfig = $angularJson | ConvertFrom-Json
-$projectName = "ClientApp"
+
+if($null -eq $angularConfig) {
+    write-host "Could not convert angular.json to json: $angularJson"
+    exit 1
+}
+
+$projectName = "logix-pro"
 $projectOutputPath = $angularConfig.projects.$projectName.architect.build.options.outputPath
+
+Write-Host "Project Output Path: $projectOutputPath"
+
+if($null -eq $projectOutputPath) {
+    write-host "Could not find outputPath in angular.json: $angularJson"
+    exit 1
+}
+
+#check if projectOutputPath exits
+if (-not (Test-Path $projectOutputPath)) {
+    write-host "Output path does not exist"
+    
+    # create the output path
+    New-Item -ItemType Directory -Force -Path $projectOutputPath
+}
 
 # now copy the package.json file from the scriptDirectory to the output directory
 write-host "Copying package.json to $projectOutputPath"
