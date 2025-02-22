@@ -53,12 +53,12 @@ export class StorageContainerLayout {
     layoutDefinition: layoutDefinition;
 }
 
-export class UpdateStorageContainerLayoutRes{
+export class UpdateStorageContainerLayoutRes {
     success: boolean;
     errorMessage: string;
 }
 
-export class ContainerTypes{
+export class ContainerTypes {
     id: number;
     name: string;
 }
@@ -69,4 +69,42 @@ export const ValidationErrorCodes = {
     PickAllocatedToContainer: "PickAllocatedToContainer",
     ItemQuantityAssignedToContainer: "ItemQuantityAssignedToContainer",
     ItemAssignedToContainer: "ItemAssignedToContainer"
+}
+
+export class InventoryMap {
+    location:string = "";
+    zone:string = "";
+    carousel:string = "";
+    row:string = "";
+    shelf:string = "";
+    bin:string = "";
+    item:string = "";
+    itemQuantity: number;
+    description:string = "";
+    clear: number;
+    cell:string = "";
+    velocity:string = "";
+    maxQuantity: number;
+    dedicated: boolean = false;
+    serialNumber: number;
+    lotNumber: number;
+    expirationDate:string = "";
+    unitOfMeasure:string = "";
+    quantityAllocatedPick: number;
+    quantityAllocatedPutAway: number;
+    putAwayDate:string = "";
+    warehouse:string = "";
+    revision:string = "";
+    inventoryMapID:string = "";
+    userField1:string = "";
+    userField2:string = "";
+    masterLocation: boolean = false;
+    dateSensitive: boolean = false;
+    masterInventoryMapID:string = "";
+    minQuantity: number;
+    laserX: number;
+    laserY: number;
+    locationNumber:string = "";
+    locationID:string = "";
+    altLight: number;
 }

@@ -1,4 +1,4 @@
-import { UpdateSCReq } from "../../Model/storage-container-management";
+import { InventoryMap, UpdateSCReq } from "../../Model/storage-container-management";
 
 export interface IAdminApiService
 {
@@ -267,4 +267,5 @@ export interface IAdminApiService
   GetBinLayoutAsync(layoutId: number);
   GetBinCellsAsync(layoutId: number);
   GetBinCellAsync(binCellId: number);
+  createInventoryMapAsync(body: InventoryMap);
 }

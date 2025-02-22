@@ -1,0 +1,34 @@
+<Project Sdk="WixToolset.Sdk/4.0.5">
+	<PropertyGroup>
+		<ProductVersion>0.0.0</ProductVersion>
+		<SolutionDir Condition="'$(SolutionDir)' == '' Or '$(SolutionDir)' == '*Undefined*'">..\</SolutionDir>
+		<FilesDir>$(SolutionDir)LogixProServer\publish</FilesDir>
+		<SiteName></SiteName>
+		<DefineConstants>FilesDir=$(FilesDir);Version=$(ProductVersion);SiteName=$(SiteName)</DefineConstants>
+		<AssetsPackageFile></AssetsPackageFile>
+	</PropertyGroup>
+  
+	<ItemGroup>
+		<None Include="Filter.xsl" />
+	</ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="WixToolset.Heat" Version="4.0.4" />
+		<PackageReference Include="WixToolset.UI.wixext" Version="4.0.4" />
+	</ItemGroup>
+	<Target Name="PublishApplication" BeforeTargets="BeforeBuild">
+		<Exec Command="dir" />
+		<Message Text="Deleting Publish" Importance="high" />
+		<Exec Command="rd /s /q ..\LogixProServer\Publish\" />
+		<Message Text="Publishing LogixProServer" Importance="high" />
+		<Exec Command="dotnet restore ..\LogixProServer\LogixProServer.csproj -s https://peaklogix.jfrog.io/artifactory/api/nuget/v3/peaklogix-nuget-dev-virtual" />
+		<Exec Command="dotnet publish ..\LogixProServer\LogixProServer.csproj /p:ExecutableName=LogixPro;PublishSingleFile=true;SelfContained=true;Configuration=Release;PublishProfile=FolderProfile;DebugType=none;SiteName=$(SiteName)" Condition="$(AssetsPackageFile) == ''"/>
+		<Exec Command="dotnet publish ..\LogixProServer\LogixProServer.csproj /p:ExecutableName=LogixPro;PublishSingleFile=true;SelfContained=true;Configuration=Release;PublishProfile=FolderProfile;DebugType=none;SiteName=$(SiteName);AssetsPackageFile=$(AssetsPackageFile)" Condition="$(AssetsPackageFile) != ''"/>
+		<Message Text="Finished Publishing" Importance="high" />
+	</Target>
+	<Target Name="HarvestApplication" AfterTargets="PublishApplication">
+		<Message Text="Harvesting Files from $(FilesDir)" Importance="high" />
+		<Message Text="SolutionDir $(SolutionDir)" Importance="high" />
+		<HeatDirectory Directory="$(FilesDir)" OutputFile="GeneratedComponents.wxs" DirectoryRefId="INSTALLFOLDER" ComponentGroupName="HarvestedComponents" SuppressCom="true" SuppressFragments="true" SuppressRegistry="true" SuppressRootDirectory="true" AutoGenerateGuids="false" GenerateGuidsNow="true" ToolPath="$(WixToolPath)" PreprocessorVariable="var.FilesDir" Transforms="Filter.xsl" />
+		<Message Text="Finished Harvesting" Importance="high" />
+	</Target>
+</Project> 

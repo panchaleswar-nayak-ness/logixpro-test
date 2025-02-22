@@ -12,7 +12,6 @@ import { IAdminApiService } from 'src/app/common/services/admin-api/admin-api-in
 import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.service';
 import { GlobalService } from 'src/app/common/services/global.service';
 import { Column, DialogConstants, Mode, ToasterTitle, ToasterType ,StringConditions,Style,UniqueConstants} from 'src/app/common/constants/strings.constants';
-import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 
 class info {
   title: string;
@@ -43,6 +42,8 @@ export class TranSelectOrderComponent implements OnInit {
   searchByOrderNumber = new Subject<string>();
   searchByToteId = new Subject<string>();
   dropDownDefault: string = '';
+  displayOrderNumber: string = "";
+  displayToteID: string = "";
   @Output() orderNo = new EventEmitter<any>();
   @Output() toteId = new EventEmitter<any>();
   @Output() clearField = new EventEmitter<any>();
@@ -53,12 +54,6 @@ export class TranSelectOrderComponent implements OnInit {
 
   @Input() orderStatNextData = []; // decorate the property with @Input()
   @ViewChild('searchInput') searchInput!: ElementRef;
-
-  highlightText(event: MatAutocompleteSelectedEvent) {
-    this.searchField = event.option.value;
-      this.searchInput.nativeElement.focus();
-      this.searchInput.nativeElement.select();
-  }
   
   searchControl = new FormControl();
   floatLabelControl = new FormControl('auto' as FloatLabelType);
@@ -143,14 +138,14 @@ export class TranSelectOrderComponent implements OnInit {
   }
 
   selectOrderByTote() {
-
+    
     if (this.totalLinesOrder > 0) {
-
+      
       this.sharedService.updateFilterByTote({
         filterCheck: this.filterByTote,
         type: this.columnSelect,
       });
-
+      
       this.currentTabDataService.savedItem[this.currentTabDataService.TRANSACTIONS_ORDER_SELECT] = {
         searchField: this.searchField,
         columnSelect: this.columnSelect,
@@ -158,12 +153,16 @@ export class TranSelectOrderComponent implements OnInit {
         totalLinesOrder: this.totalLinesOrder
       };
     }
-
-    if (this.searchField) {
-        this.searchInput.nativeElement.focus();
-        this.searchInput.nativeElement.select();
-
+    
+    this.onOrderNoChange();
+    if(this.columnSelect == Column.ToteID){
+      this.displayToteID = this.searchField;
     }
+    else{
+      this.displayOrderNumber = this.searchField;
+      this.displayToteID = "";
+    }
+    this.searchField = "";
   }
 
   
@@ -180,7 +179,6 @@ export class TranSelectOrderComponent implements OnInit {
       this.sharedService.orderStatusObserver.subscribe((orderNo) => {
         if (orderNo) {
           this.columnSelect = Column.OrderNumber;
-          this.searchField = orderNo;
           this.onOrderNoChange();
         }
       })
@@ -222,9 +220,7 @@ export class TranSelectOrderComponent implements OnInit {
       this.searchControl.valueChanges.pipe(
         debounceTime(1500) // Wait for 1.5 seconds
       ).subscribe(value => {
-        this.searchField = value;
         this.autoCompleteSearchColumn();
-        this.onOrderNoChange();
       });
 
     this.userData = this.authService.userData();
@@ -232,8 +228,7 @@ export class TranSelectOrderComponent implements OnInit {
     this.subscription.add(
       this.sharedService.orderStatusSendOrderObserver.subscribe((orderNo) => {
         if (orderNo) {
-          this.columnSelect = Column.OrderNumber;
-          this.searchField = orderNo;
+          this.displayOrderNumber = orderNo;
           this.filterByTote = false;
           this.searchAutocompleteList.length = 0;
         }
@@ -321,6 +316,8 @@ export class TranSelectOrderComponent implements OnInit {
     this.sharedService.updateCompDate('Order')
     this.searchAutocompleteList = [];
     this.searchField = '';
+    this.displayOrderNumber = "";
+    this.displayToteID = "";
     this.currentTabDataService.savedItem[this.currentTabDataService.TRANSACTIONS_ORDER_SELECT] = undefined;
   }
 

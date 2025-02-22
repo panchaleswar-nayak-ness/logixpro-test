@@ -37,12 +37,35 @@ yarn-error.log
 testem.log
 /typings
 
+# Build results
+[Dd]ebug/
+[Dd]ebugPublic/
+[Rr]elease/
+[Rr]eleases/
+x64/
+x86/
+[Ww][Ii][Nn]32/
+[Aa][Rr][Mm]/
+[Aa][Rr][Mm]64/
+bld/
+[Bb]in/
+[Oo]bj/
+[Ll]og/
+[Ll]ogs/
+
+# Click-Once directory
+publish/
+
+
 # System files
 .DS_Store
 Thumbs.db
 
-/.vs
 /server/.vs
+/.vs
+/server/BulkProServer/bin/Debug/net8.0
+/server/BulkProServer/obj
 /server/LogixProServer/bin/Debug/net8.0
 /server/LogixProServer/obj
 /server/LogixProServer/wwwroot
+/server/LogixProServer/bin/Release/net8.0

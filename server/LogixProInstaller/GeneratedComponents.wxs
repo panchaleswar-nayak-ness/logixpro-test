@@ -1,0 +1,452 @@
+﻿<Wix xmlns="http://wixtoolset.org/schemas/v4/wxs">
+    <Fragment>
+        <DirectoryRef Id="INSTALLFOLDER">
+            
+            <Component Id="cmpOGkoJkApsx09TmwlmeSYNXu8O2k" Guid="{B95AD525-9F13-4AEB-942D-7E23520CDABB}">
+                <File Id="filhOmU2zCUvc3hRee0kCgcGDUVj8c" KeyPath="yes" Source="$(var.FilesDir)\appsettings.json" />
+            </Component>
+            <Component Id="cmpcdo6rpFXtOicErwRA1C.2TtceeE" Guid="{4942163D-49EF-42B4-AD4C-88065C3650F7}">
+                <File Id="filcwrw2YZLIm.kvl9yZfZtHMUJsCk" KeyPath="yes" Source="$(var.FilesDir)\appsettings.Production.json" />
+            </Component>
+            <Component Id="cmpK5ySGSiRoF97d_uIMN9lDAvs51Q" Guid="{CCFBB477-1957-4AA4-8CF0-355ECFEF0DEE}">
+                <File Id="filnRZXro4jqlWY3zQ6yi6T.QpieEM" KeyPath="yes" Source="$(var.FilesDir)\aspnetcorev2_inprocess.dll" />
+            </Component>
+            <Component Id="cmpNKUuGYO_pf7717IrJY9bIPl_GkA" Guid="{888474A9-6B5C-4B88-B2B1-74B86EC10154}">
+                <File Id="filqB53zuR42CPJBsK23KsAzHCro_E" KeyPath="yes" Source="$(var.FilesDir)\getfilesiginforedist.dll" />
+            </Component>
+            
+            <Component Id="cmpctpvHgF.KboXjPvxoZvGvZYbEfw" Guid="{DFF0929C-F5BF-47C7-8BD0-3B9A0848E969}">
+                <File Id="filmVHLTz7tnHdusHQ4tEFcy77w.MQ" KeyPath="yes" Source="$(var.FilesDir)\microsoft.management.infrastructure.native.unmanaged.dll" />
+            </Component>
+            <Component Id="cmpKT2uPqYbpPvRJpwOCU6gfTc5r8w" Guid="{20492930-41B1-4B11-8DB6-38A53FFF9E8C}">
+                <File Id="filXdJIQukpn3mSr_fYgkK5tlrx7So" KeyPath="yes" Source="$(var.FilesDir)\PowerShell.Core.Instrumentation.dll" />
+            </Component>
+            <Component Id="cmpItcIcpJ0ogIOkIUvy2tmkKd3kk0" Guid="{A08326FE-F341-4857-98AC-77BFFB2A08DB}">
+                <File Id="fil7PQlPMf1kl.TqlDZHqc1EYo80Lw" KeyPath="yes" Source="$(var.FilesDir)\pwrshplugin.dll" />
+            </Component>
+            <Component Id="cmpLDAQBANRAtytN1I8w7lteQ2jE7o" Guid="{C0F3BCC2-4F6B-4E1A-A68A-CEDBCD1E6A7A}">
+                <File Id="fil4MRgks159h47JdB.ZcR_hliUtLI" KeyPath="yes" Source="$(var.FilesDir)\sni.dll" />
+            </Component>
+            <Component Id="cmp6e_0_mvckeg6ezzAKTmyoz1f014" Guid="{E1ABAC19-FFDC-4246-9671-BB2560F6DDAC}">
+                <File Id="filTz2.bmhJNV5fU.37dPKTygTf73U" KeyPath="yes" Source="$(var.FilesDir)\web.config" />
+            </Component>
+            <Directory Id="dirLvDLgTxzEbCkhw2_kZ.OUtkYhdA" Name="wwwroot">
+                <Component Id="cmp7bzLbNKQpdZtNiMpWxuNFiV80UQ" Guid="{9756D4D1-67FD-4A57-9BA2-B15752850353}">
+                    <File Id="filBnUj4.K1_8REeuoDxJ6.wnUBUrs" KeyPath="yes" Source="$(var.FilesDir)\wwwroot\default-src_app_admin_dialogs_bm-toteid-entry_bm-toteid-entry_component_ts.js" />
+                </Component>
+                <Component Id="cmpv6r53ukgca23fLiJ6HepZWeL3_c" Guid="{1B55DC4B-D13F-4471-87CF-9AD85E692BD1}">
+                    <File Id="filhp69cYxOmqPD5JYHWWlPxuZv.Os" KeyPath="yes" Source="$(var.FilesDir)\wwwroot\default-src_app_admin_dialogs_bm-toteid-entry_bm-toteid-entry_component_ts.js.map" />
+                </Component>
+                <Component Id="cmp7If.pPIiA0UkxSLxl3xeb_J_xag" Guid="{1BF55DAA-DA17-47A0-ACC9-9D86F6EF132D}">
+                    <File Id="fil7mX6HS404tnsQ_mY9AGHhfKqtpA" KeyPath="yes" Source="$(var.FilesDir)\wwwroot\default-src_app_admin_inventory-map_inventory-map_component_ts-src_app_admin_inventory-master-f008ec.js" />
+                </Component>
+                <Component Id="cmpatndaKrnXA3F8V9A3rHnWW5mhNE" Guid="{297ABE9E-6562-4A35-BB4D-24EC4D700F80}">
+                    <File Id="filwmEslyEgKCbWK0l9uuwjGXVn2cc" KeyPath="yes" Source="$(var.FilesDir)\wwwroot\default-src_app_admin_inventory-map_inventory-map_component_ts-src_app_admin_inventory-master-f008ec.js.map" />
+                </Component>
+                <Component Id="cmpR3x_6M4FkFFDDeir9XqvNRrHHNE" Guid="{84044596-D84A-49AA-8DCB-36599C1D63E8}">
+                    <File Id="filQPvPgTRAFBxJveDvQGj61taGP0U" KeyPath="yes" Source="$(var.FilesDir)\wwwroot\default-src_app_admin_manual-transactions_manual-transactions_component_ts-src_app_common_gua-373741.js" />
+                </Component>
+                <Component Id="cmpRex1Sw9i5_vsdCnexQ6nLnZIi9k" Guid="{8DE2E7B1-F116-40B0-90D5-B8053DDAB102}">
+                    <File Id="fil3Zw.khfN1g.5dv2ptTVqCPvVChE" KeyPath="yes" Source="$(var.FilesDir)\wwwroot\default-src_app_admin_manual-transactions_manual-transactions_component_ts-src_app_common_gua-373741.js.map" />
+                </Component>
+                <Component Id="cmpS_yhAvkKp424mPvYUB0CzWJtsw4" Guid="{5F442BC2-A4D5-4842-98FC-77D196179D1A}">
+                    <File Id="filsBV6KJ3HCYy6CuDozxBwCkfCJOs" KeyPath="yes" Source="$(var.FilesDir)\wwwroot\default-src_app_admin_reports_reports_component_ts-src_app_admin_transaction_transaction_comp-723f54.js" />
+                </Component>
+                <Component Id="cmpT5YXDUuJGX9iNF.1v_g0.h89.fQ" Guid="{DC5C301B-97BE-4B7E-9432-1805DFBBE0A4}">
+                    <File Id="fil3yQIkXmrW8Ou7nOfANKZAA7s7bI" KeyPath="yes" Source="$(var.FilesDir)\wwwroot\default-src_app_admin_reports_reports_component_ts-src_app_admin_transaction_transaction_comp-723f54.js.map" />
+                </Component>
+                <Component Id="cmpPBz.du5O8de_WpB8IDBtUUwZbZE" Guid="{D899E96A-3681-4680-BA1E-929448167B2E}">
+                    <File Id="fil6AJ_laLwuLx3xgz6l8lBVi3lyo8" KeyPath="yes" Source="$(var.FilesDir)\wwwroot\default-src_app_consolidation-manager_cm-markout_dialogs_mo-blossom-tote_mo-blossom-tote_comp-a42c9c.js" />
+                </Component>
+                <Component Id="cmp96rsT0X8wo0oDRMtFflJgU5pst8" Guid="{440D2807-593B-46E0-90A0-A28314ECF97B}">
+                    <File Id="filGeGVMTBolIoApVXSx2brXuvIRtM" KeyPath="yes" Source="$(var.FilesDir)\wwwroot\default-src_app_consolidation-manager_cm-markout_dialogs_mo-blossom-tote_mo-blossom-tote_comp-a42c9c.js.map" />
+                </Component>
+                <Component Id="cmpO3kxx6TqHHz7Itw86aMyY1nkEoA" Guid="{2F06E8FC-1750-49E0-8A20-22AA4A8A4476}">
+                    <File Id="filuLeX2Bhkbl7C4hkd.ZuI1_9Bvd4" KeyPath="yes" Source="$(var.FilesDir)\wwwroot\default-src_app_order-manager_event-log_event-log_component_ts.js" />
+                </Component>
+                <Component Id="cmpCX7pHKuTc6fV64M805JgM69zpMA" Guid="{EA5E4EE4-5FF7-484D-BC2F-838A9CB964BE}">
+                    <File Id="filsUjo.HJnXa6cTNv0ybYvfdPlvxI" KeyPath="yes" Source="$(var.FilesDir)\wwwroot\default-src_app_order-manager_event-log_event-log_component_ts.js.map" />
+                </Component>
+                <Component Id="cmpASvEd2tWjVfHGI7B_mUoQ.YZ2zg" Guid="{3E6BF72F-B1A7-4936-95D4-244777997071}">
+                    <File Id="fil7CxQ.TEeoDOMqlWE6t5jnyokFJU" KeyPath="yes" Source="$(var.FilesDir)\wwwroot\favicon.ico" />
+                </Component>
+                <Component Id="cmpnlc1Msc8RvybZcVOJewKgpeHqww" Guid="{335AF185-EC42-4A54-9AA8-1F19D692D16B}">
+                    <File Id="fil45HLZOjZFVyKiZKV2rICc0QyyIo" KeyPath="yes" Source="$(var.FilesDir)\wwwroot\index.html" />
+                </Component>
+                <Component Id="cmpQylFBj0Gjf_7Xz7Bhol1X_QpfPU" Guid="{2B26421D-DCEE-426F-8E79-59DA89BBA33E}">
+                    <File Id="filHqtKyMoPsVVbeq97FhddBKIN0f0" KeyPath="yes" Source="$(var.FilesDir)\wwwroot\LogixPro-login-image2.jpg" />
+                </Component>
+                <Component Id="cmpdDklj_PFceXculdWF_itFvNEsCo" Guid="{494E6F86-5492-4D3D-963E-DECF174DBE27}">
+                    <File Id="fil9VrcteweTWCbQopKLFih2lTMq0c" KeyPath="yes" Source="$(var.FilesDir)\wwwroot\main.js" />
+                </Component>
+                <Component Id="cmpYUHOfc4G.fh4a45f5WRA5R_MAes" Guid="{85669CFA-80E0-474E-BBE6-0ACC517D5D71}">
+                    <File Id="filCYwJNKwVBeTD34cy7hh6XXTdUPs" KeyPath="yes" Source="$(var.FilesDir)\wwwroot\main.js.map" />
+                </Component>
+                <Component Id="cmpqpPWDhcKZHo2SWeC4pCQ6nImiEs" Guid="{2BE463B1-3FA5-41E4-B896-EC7883E6452E}">
+                    <File Id="filiLvOEDGq0Vv00WwndaSJUJ6TsYc" KeyPath="yes" Source="$(var.FilesDir)\wwwroot\MaterialIcons-Regular.woff2" />
+                </Component>
+                <Component Id="cmpipsCDBD1aYR8QC2fOxhqKlc5QyE" Guid="{E1A201D2-D19F-428F-B688-C5CF53EDCF4E}">
+                    <File Id="filOtGe7lp.wix.Zyk5WASAcGK9G6U" KeyPath="yes" Source="$(var.FilesDir)\wwwroot\MaterialIconsOutlined-Regular.woff2" />
+                </Component>
+                <Component Id="cmpumD_iPWStgJCPOT_Pcp6R.XqfqM" Guid="{DADA1212-EB48-40DA-BFC7-02C1C275EE93}">
+                    <File Id="fillib2bXppwRCZ27EOAosHg4mwMpw" KeyPath="yes" Source="$(var.FilesDir)\wwwroot\polyfills.js" />
+                </Component>
+                <Component Id="cmpsClWTasUw06WAoL8JaXhh.FIdzU" Guid="{55328600-55B4-4879-A506-B612D7E4582D}">
+                    <File Id="fil0pqIuCY3UYI.nwLyvSWLAmQzqHg" KeyPath="yes" Source="$(var.FilesDir)\wwwroot\polyfills.js.map" />
+                </Component>
+                <Component Id="cmpuJ6REWBM14AjQz4zwqa6to9nMs0" Guid="{E9CC215C-92D0-487C-A432-5027CC8F1BEF}">
+                    <File Id="filF6tcC3sAFH5KTfmG7DYli1MvMbo" KeyPath="yes" Source="$(var.FilesDir)\wwwroot\runtime.js" />
+                </Component>
+                <Component Id="cmpTLrmxQYcdslJIY4wNubv.1IzsBY" Guid="{6070C743-BAB4-446E-999A-BE69F5C39CFD}">
+                    <File Id="fil.QoUiwSRrRwKZTGneyJv8zHUiNE" KeyPath="yes" Source="$(var.FilesDir)\wwwroot\runtime.js.map" />
+                </Component>
+                <Component Id="cmpG2z91LRpE.l85UlfBFRNz17MVBU" Guid="{B40EE20B-F2E5-4AFC-A777-687034C539F3}">
+                    <File Id="filyCAPMbZMCTsGd5sjSKBx6PoviKc" KeyPath="yes" Source="$(var.FilesDir)\wwwroot\scripts.js" />
+                </Component>
+                <Component Id="cmp3YhEALLpJ1qNq94c31gDe_2HlIs" Guid="{32AD176A-BBD1-4E58-A910-03D25F99530C}">
+                    <File Id="filcYUC7xIFPKtenEq4G4.YR7BOLQs" KeyPath="yes" Source="$(var.FilesDir)\wwwroot\scripts.js.map" />
+                </Component>
+                <Component Id="cmpVr_wN71XaWupPtQaWLLkXS.LeII" Guid="{13392058-646A-4165-AF33-FDBE1EC77D92}">
+                    <File Id="filpCefE5QvdyiUSjTvM5l6d.q15uY" KeyPath="yes" Source="$(var.FilesDir)\wwwroot\src_app_admin_admin_module_ts.js" />
+                </Component>
+                <Component Id="cmpUYZjXP4IUCTf4GMPvFDNbcEleRQ" Guid="{12F214EB-DC51-4D89-B638-2697B3E77864}">
+                    <File Id="filpRKPr80xEXzjc9F4LmGnZq89.JE" KeyPath="yes" Source="$(var.FilesDir)\wwwroot\src_app_admin_admin_module_ts.js.map" />
+                </Component>
+                <Component Id="cmpeV2Pj2IJD6Ne6nmOmRjKpQjKTp8" Guid="{F1BB4BC6-A585-44C2-A09C-6CB6FC506FC5}">
+                    <File Id="filr6cqLRjbvqvH5_fDfCXYbxTyeHw" KeyPath="yes" Source="$(var.FilesDir)\wwwroot\src_app_bulk-process_bulk-process_module_ts.js" />
+                </Component>
+                <Component Id="cmpwNMBPejOXoy78o87wND6X4kSnok" Guid="{E92DDF32-0B2C-40B5-BF59-C9276794CB35}">
+                    <File Id="filvgrDJEO1ZaQ8iVq79qKpqoIhxto" KeyPath="yes" Source="$(var.FilesDir)\wwwroot\src_app_bulk-process_bulk-process_module_ts.js.map" />
+                </Component>
+                <Component Id="cmpRbNBbuZKHmNr7.KPDFNeOJgJVZs" Guid="{7FA19E04-829B-4903-B01D-9CA0FCEC3E74}">
+                    <File Id="fil4TVHbcrhdizffCJDT7ixo6AVWfM" KeyPath="yes" Source="$(var.FilesDir)\wwwroot\src_app_bulk-process_bulk-transaction_bulk-transaction_module_ts.js" />
+                </Component>
+                <Component Id="cmpTMw5TOkrthMW2c_fVo4UAlErNmo" Guid="{763F5FA7-F75B-4EE0-96A0-843915B9476E}">
+                    <File Id="fil1xEuUijHRp9Uh38Ux9X.aODryUg" KeyPath="yes" Source="$(var.FilesDir)\wwwroot\src_app_bulk-process_bulk-transaction_bulk-transaction_module_ts.js.map" />
+                </Component>
+                <Component Id="cmp9wIz2QcqZ.7X1UF9alQb3Gn7geQ" Guid="{3B0C4E40-00C4-4A0D-B0BE-D4CAE17682AC}">
+                    <File Id="filscp4gWYIBqJiJQHPgQByPq_DN8s" KeyPath="yes" Source="$(var.FilesDir)\wwwroot\src_app_consolidation-manager_consolidation-manager_module_ts.js" />
+                </Component>
+                <Component Id="cmpbRrD3BQrVkQ9_lfgsiDuguIsnig" Guid="{E7F69313-FF1E-47AC-8B6B-A0A1E1BCDD3B}">
+                    <File Id="filyHfIZn.jCbJWB_SntsjJmOPU6W8" KeyPath="yes" Source="$(var.FilesDir)\wwwroot\src_app_consolidation-manager_consolidation-manager_module_ts.js.map" />
+                </Component>
+                <Component Id="cmpCtUumAjUf.X8iaRu_SeB4MuYolo" Guid="{8D06077C-41F6-4034-A663-BA51194FFBC9}">
+                    <File Id="file00J7ZHEelt2X6XTmZZRbqt0G0U" KeyPath="yes" Source="$(var.FilesDir)\wwwroot\src_app_flowrack-replenishment_flowrack-replenishment_module_ts.js" />
+                </Component>
+                <Component Id="cmpCJxDcKtg5.RFwolgJ.UuVf2.T2E" Guid="{D0C5AE19-354A-49C0-9599-28A7AD89D366}">
+                    <File Id="filaWI9Eyre3feJSKJN9JvPBZXkMy0" KeyPath="yes" Source="$(var.FilesDir)\wwwroot\src_app_flowrack-replenishment_flowrack-replenishment_module_ts.js.map" />
+                </Component>
+                <Component Id="cmpSvpMemQc43EUp.oiu8C6qyPheX8" Guid="{355F4E2F-352C-41EA-87F8-9A171B1069B6}">
+                    <File Id="filCsc4IsJy8BiuKlHK8gpXM98i7X4" KeyPath="yes" Source="$(var.FilesDir)\wwwroot\src_app_induction-manager_induction-manager_module_ts.js" />
+                </Component>
+                <Component Id="cmp0gJoBStOTSuxANUbLkmM4kiQq0k" Guid="{B822B5A9-21DE-4B4E-BDC4-5A37C964E20A}">
+                    <File Id="filcwThe9zmS1VA_GHl7FKg1Rvc7.w" KeyPath="yes" Source="$(var.FilesDir)\wwwroot\src_app_induction-manager_induction-manager_module_ts.js.map" />
+                </Component>
+                <Component Id="cmpKYBfKe.UDY7AH9b416gfpcN0UMI" Guid="{EEEB2DC5-CAE8-45F3-A961-F6A23A4605BD}">
+                    <File Id="filV7361h13nk_5iiq2Z72Q0PHXU2A" KeyPath="yes" Source="$(var.FilesDir)\wwwroot\src_app_list-and-label_list-and-label_module_ts.js" />
+                </Component>
+                <Component Id="cmpwNPTY2iuA3I51e3d9C0_EzJOrO4" Guid="{4565CAD5-45BD-4787-BEC1-E9D2D8FDC1B4}">
+                    <File Id="filW_HpRJu12dWYHeESr5b1YI9.3I0" KeyPath="yes" Source="$(var.FilesDir)\wwwroot\src_app_list-and-label_list-and-label_module_ts.js.map" />
+                </Component>
+                <Component Id="cmpGNJ4uO9jqeFNRgO48EVEBFb4fSE" Guid="{41148F2B-0EDC-4380-B8EF-B1C34B4FE143}">
+                    <File Id="filOyPJwl.EKRG_UkW1DTl8G6wjsy4" KeyPath="yes" Source="$(var.FilesDir)\wwwroot\src_app_order-manager_order-manager_module_ts.js" />
+                </Component>
+                <Component Id="cmp5GaOZFvtd8D9Qmi9my4GWWRNhGs" Guid="{F5247C04-67FC-48D4-991D-68F0E5CB8670}">
+                    <File Id="filzwz_T_7kRCHlrrxrOAfBDux.zMg" KeyPath="yes" Source="$(var.FilesDir)\wwwroot\src_app_order-manager_order-manager_module_ts.js.map" />
+                </Component>
+                <Component Id="cmpaAxxkp3avgjPGQcecmzKQ9kHS_s" Guid="{D654B30B-AA34-4B5E-BEF0-6437F7B47BB4}">
+                    <File Id="filmgxxVu7J8PYQ7Bg5m.xterAGQLs" KeyPath="yes" Source="$(var.FilesDir)\wwwroot\styles.css" />
+                </Component>
+                <Component Id="cmpp37YM3uink90oS6g.17pJInwAvc" Guid="{2EA422EB-D4F4-4C0A-8F2D-348EBAC99B98}">
+                    <File Id="fil4c65LuNFF9tlUE4oibyvdspx6ec" KeyPath="yes" Source="$(var.FilesDir)\wwwroot\styles.css.map" />
+                </Component>
+                <Component Id="cmp5oPF0zBwn_ogNdGkSpnjdFj4Bu0" Guid="{11744F4D-738A-4113-A47C-3E31CBB49422}">
+                    <File Id="filz8xvbFqCWIq8RIPGIOzjidKM4gA" KeyPath="yes" Source="$(var.FilesDir)\wwwroot\vendor.js" />
+                </Component>
+                <Component Id="cmpn3.kLMYHaFbcZT12qgPhY3UcRoU" Guid="{7F0BF0BC-25D4-4B26-A7BF-06BC066FADF3}">
+                    <File Id="filPkU7e54CpN3uIZJjmBfS6pqv8.c" KeyPath="yes" Source="$(var.FilesDir)\wwwroot\vendor.js.map" />
+                </Component>
+                <Directory Id="dirVUGVB82ag7Qdfw1VXGsxwou90gs" Name="assets">
+                    <Component Id="cmpt9kvEw4EQRWv0jVjcxsRcO_3gVc" Guid="{249F49DE-888C-46AF-80BD-DE481A31575A}">
+                        <File Id="filhMmZrTlzdibCmtEwrvIBAWiJ3yc" KeyPath="yes" Source="$(var.FilesDir)\wwwroot\assets\bmw-logo.svg" />
+                    </Component>
+                    <Component Id="cmp0Ca4MvGnyxdEpnaGrA39indWoIk" Guid="{A7AC2873-7D65-404B-9721-9A2C12D43587}">
+                        <File Id="file8cA5w5QarpvcYBNOprzhAmKmcI" KeyPath="yes" Source="$(var.FilesDir)\wwwroot\assets\Brand Flourish.png" />
+                    </Component>
+                    <Directory Id="dirRu.mHmKEh99zAhf.j098CXGlMhs" Name="design-system">
+                        <Component Id="cmpnGvZYcZ5YmT29j.c4iekC1b67As" Guid="{C9E83183-10BB-4530-B506-B2DBC3789D54}">
+                            <File Id="filcjDt9UFeEQjc8SDffou6taJp_po" KeyPath="yes" Source="$(var.FilesDir)\wwwroot\assets\design-system\d-main.scss" />
+                        </Component>
+                        <Component Id="cmpjhX359W2dFtgn55H3fNnSZrcbgA" Guid="{A6187DA1-0FEC-4891-84C2-F67517BB4178}">
+                            <File Id="filUEQ_xRQ7LGpp0K1_qXZ4ifbUelg" KeyPath="yes" Source="$(var.FilesDir)\wwwroot\assets\design-system\styles-hc-v1.css" />
+                        </Component>
+                        <Component Id="cmpc86AggaQYrZI92C5qQM4yGGXzdY" Guid="{8A80B6A4-E377-465E-9123-527ED03C5A55}">
+                            <File Id="filLe_mdUSW0ILVxauqDlVOnOpm71E" KeyPath="yes" Source="$(var.FilesDir)\wwwroot\assets\design-system\styles-hc-v2.css" />
+                        </Component>
+                        <Component Id="cmp98kpuvpE2M1m2mTfxPWlCI47P1A" Guid="{75BA817A-E4CC-4748-9E62-E10318C23966}">
+                            <File Id="filPAs51SHhUIu39gAmZeE0UzbBy9s" KeyPath="yes" Source="$(var.FilesDir)\wwwroot\assets\design-system\styles-hc.css" />
+                        </Component>
+                        <Component Id="cmphaGTniey_WhQ3g9_zj1SpoGXmxk" Guid="{43C78BB5-06BC-43CC-A99B-FA08A834EBC8}">
+                            <File Id="filZn8vBMlDerTNvQGqr2LofhcGl4k" KeyPath="yes" Source="$(var.FilesDir)\wwwroot\assets\design-system\styles-hhc.css" />
+                        </Component>
+                        <Component Id="cmpb7cOqv5HGPam0s8mQKRqr9xT1SE" Guid="{0D297962-022E-4F41-BA2D-D9F786F13F8B}">
+                            <File Id="filF8MY_2C9VaLFJwZoAXvGj0yNu9w" KeyPath="yes" Source="$(var.FilesDir)\wwwroot\assets\design-system\styles-normal.css" />
+                        </Component>
+                        <Component Id="cmpkQLXOjbvhurgpW5xjJSp9vYErno" Guid="{F8E031CD-2CEF-468F-93D5-0A41C4F9DFDC}">
+                            <File Id="filwlifCsD4zVjTOfZUwrKmBRN2Oxs" KeyPath="yes" Source="$(var.FilesDir)\wwwroot\assets\design-system\_colors.scss" />
+                        </Component>
+                        <Component Id="cmpPheGpmWD_zOK6YnBwzN0r6SGxuU" Guid="{62EBE4EC-6222-4894-829E-C2865B889EDA}">
+                            <File Id="filZT7Nf6nOXq.ZoB2OHeFidfbNjgE" KeyPath="yes" Source="$(var.FilesDir)\wwwroot\assets\design-system\_root.scss" />
+                        </Component>
+                        <Component Id="cmpeIoATOY2i.hOFtmJZOAAkEOwZU0" Guid="{E2CC1983-22F9-4A00-93C1-76BDFFD0BD5A}">
+                            <File Id="filTKxnpQn67313y_PZdTr23CYkOso" KeyPath="yes" Source="$(var.FilesDir)\wwwroot\assets\design-system\_typography.scss" />
+                        </Component>
+                        <Component Id="cmp2C8JUW.5BOPdPAjam8YEwufqTH4" Guid="{90474FCF-3E5E-4CB7-8101-ABB027EBEB93}">
+                            <File Id="fil5WDAmoqJqpsZj1Ts2kMycV2h.uo" KeyPath="yes" Source="$(var.FilesDir)\wwwroot\assets\design-system\_utilities.scss" />
+                        </Component>
+                    </Directory>
+                    <Directory Id="dirY5w1rwIq3LZAi1weO.ZEQc3a8Dc" Name="font">
+                        <Component Id="cmpZhOsVyUiG1EM_io_UEEktdeudx0" Guid="{CB385FBB-8B2C-4F19-9BB3-B903D726FD40}">
+                            <File Id="filth.1EtFNFY6MoaEjesdDKOAJMYU" KeyPath="yes" Source="$(var.FilesDir)\wwwroot\assets\font\mulish-font.css" />
+                        </Component>
+                        <Component Id="cmpvAdxaBVPF_lqZrRA0w.gH1QCdkA" Guid="{EF0B13A2-838C-4480-A6B1-89C35913010E}">
+                            <File Id="filza612iVXOSJO7wCAb.13u9QO2_Q" KeyPath="yes" Source="$(var.FilesDir)\wwwroot\assets\font\Mulish-Italic-VariableFont_wght.ttf" />
+                        </Component>
+                        <Component Id="cmphpzFuSpW2henfgrwDYLJKdqGxWA" Guid="{53D561AD-6632-4C18-8648-8438A8327E91}">
+                            <File Id="filiRm0eoePoEFTMMM7l.BQCEbeThI" KeyPath="yes" Source="$(var.FilesDir)\wwwroot\assets\font\Mulish-VariableFont_wght.ttf" />
+                        </Component>
+                        <Directory Id="dirg6qMw8WlkWHH4eH8IpwSjW53kLI" Name="static">
+                            <Component Id="cmpc0h4bN3QplR_pOsr1zlCXBnYPvI" Guid="{288B74C5-BBC0-44FF-BF22-FF5C7E8D90BB}">
+                                <File Id="fil0_e6HMz2PnwJ1fNTbO_4RS6XVn8" KeyPath="yes" Source="$(var.FilesDir)\wwwroot\assets\font\static\Mulish-Black.ttf" />
+                            </Component>
+                            <Component Id="cmpSgI1uqnY45o4Nss4KL_W2IqyS1k" Guid="{831AB353-EECD-41BC-AE70-C7C6ADAA62FE}">
+                                <File Id="fild4NkNeOJrIOUz83DMf_aKX1Y_0w" KeyPath="yes" Source="$(var.FilesDir)\wwwroot\assets\font\static\Mulish-BlackItalic.ttf" />
+                            </Component>
+                            <Component Id="cmpyC7OuRVMbG_idCeigUsE2zr.aUs" Guid="{A6FF8DD4-D39C-4521-A666-8A11EAB0EBE9}">
+                                <File Id="filwP5PK947g9JmaoRY4WiOrDWhM98" KeyPath="yes" Source="$(var.FilesDir)\wwwroot\assets\font\static\Mulish-Bold.ttf" />
+                            </Component>
+                            <Component Id="cmposoVHVqdK2MA9EZJxFR.1rUNx3I" Guid="{E033388A-F796-4711-A7AA-EC33A6874397}">
+                                <File Id="filiQ3cmJR.vGXDKEfFWYyooHVcTf4" KeyPath="yes" Source="$(var.FilesDir)\wwwroot\assets\font\static\Mulish-BoldItalic.ttf" />
+                            </Component>
+                            <Component Id="cmpyGTfZ1mudxHHjh9IDQ7JmvknrKU" Guid="{CC0A384F-CC3C-470D-809F-AE3EEF44FBF0}">
+                                <File Id="filwcylWdSA1MtSHqzecgCgDDJDBJ4" KeyPath="yes" Source="$(var.FilesDir)\wwwroot\assets\font\static\Mulish-ExtraBold.ttf" />
+                            </Component>
+                            <Component Id="cmp2DDq3HHMiYqg.sFJnRsdT3kBcYU" Guid="{EDEF4A6F-7FE1-45CD-8E50-CDA6D0453880}">
+                                <File Id="fil8rk7VeD5RnKQ0m46t8gQiOpP4bY" KeyPath="yes" Source="$(var.FilesDir)\wwwroot\assets\font\static\Mulish-ExtraBoldItalic.ttf" />
+                            </Component>
+                            <Component Id="cmp0_IRNkJ0BzzUFEL8tSn7T6WbPg4" Guid="{C7236806-4FF3-4AB4-940B-833FD428408E}">
+                                <File Id="fil5XwlWVTYFN8zYaF9pHFbkvqH4yo" KeyPath="yes" Source="$(var.FilesDir)\wwwroot\assets\font\static\Mulish-ExtraLight.ttf" />
+                            </Component>
+                            <Component Id="cmp3OQC.jOda_WIDfWMnApjwCUMQXA" Guid="{0FBE3F9A-26F7-4171-A1B4-68F8AA36FEC1}">
+                                <File Id="filqnyxCGzSeu3z6l8.a3aYm8XLoK0" KeyPath="yes" Source="$(var.FilesDir)\wwwroot\assets\font\static\Mulish-ExtraLightItalic.ttf" />
+                            </Component>
+                            <Component Id="cmptyLuTuD8sv_O0xvxSfHE_cs1HFY" Guid="{08DB56A6-D09C-46A3-9E53-59D0171606F5}">
+                                <File Id="filF4KzCKPHduR6lIUA0BeI6HyQciU" KeyPath="yes" Source="$(var.FilesDir)\wwwroot\assets\font\static\Mulish-Italic.ttf" />
+                            </Component>
+                            <Component Id="cmppepmH52kN1AM0RuaFIeWFB3u5kg" Guid="{951733C7-33E8-4ABA-9BCD-35EE356F78F1}">
+                                <File Id="filBZ8KJQlyc0NyVfQvN_KeKrV3T48" KeyPath="yes" Source="$(var.FilesDir)\wwwroot\assets\font\static\Mulish-Light.ttf" />
+                            </Component>
+                            <Component Id="cmptPPjK1TQzPlFTejkdYcejAh5.Qw" Guid="{6BF5428C-7EAD-421A-ADBB-F803BB1F117A}">
+                                <File Id="filnMyNf_9Zg8r4b6PdqU3E0q0RRIc" KeyPath="yes" Source="$(var.FilesDir)\wwwroot\assets\font\static\Mulish-LightItalic.ttf" />
+                            </Component>
+                            <Component Id="cmpjiTqAWwQO6UrDn_71o0ZkDj8fwY" Guid="{56D605E9-A8F2-4A28-BB74-79B4C576BA74}">
+                                <File Id="fil.Uuuu9cDx30p43IxObinot3sRrU" KeyPath="yes" Source="$(var.FilesDir)\wwwroot\assets\font\static\Mulish-Medium.ttf" />
+                            </Component>
+                            <Component Id="cmpoTpCX5MI269Dkfsx.w5Vr1OThZ0" Guid="{C2F837DB-903E-43AC-9198-33131526733C}">
+                                <File Id="filmn8iaaYrFGnH3jm.Ye3x_jZxXEg" KeyPath="yes" Source="$(var.FilesDir)\wwwroot\assets\font\static\Mulish-MediumItalic.ttf" />
+                            </Component>
+                            <Component Id="cmpHzqRhnTyagh6hPBvyKUJQLIKaE0" Guid="{87164E6C-B906-4492-ACA4-893708D0D5B4}">
+                                <File Id="filJS2N9Xy7NWkvf4P9ysf4zJkUE6I" KeyPath="yes" Source="$(var.FilesDir)\wwwroot\assets\font\static\Mulish-Regular.ttf" />
+                            </Component>
+                            <Component Id="cmpPekE7wJCd0jHlVXa1ajutE6Jpdg" Guid="{F3B8D964-4022-4405-9354-065EB69CD59D}">
+                                <File Id="filpoMqqznjQ6PmE9xvPLeVbBVT5mo" KeyPath="yes" Source="$(var.FilesDir)\wwwroot\assets\font\static\Mulish-SemiBold.ttf" />
+                            </Component>
+                            <Component Id="cmpsh.5EXP8sJBwvlZ_aF3SlZL1CFA" Guid="{E8A9AC88-5EFF-4CAF-9289-616E77EFA524}">
+                                <File Id="filtq2HTyYLEL9IFSdnwsbAswhzVkw" KeyPath="yes" Source="$(var.FilesDir)\wwwroot\assets\font\static\Mulish-SemiBoldItalic.ttf" />
+                            </Component>
+                        </Directory>
+                    </Directory>
+                    <Directory Id="dirNO9nHPUnW0lNRu.ci_qTlDIGDgg" Name="font-icon">
+                        <Component Id="cmph_hJrNll9ZczmeTZ1aIgxO_aPLQ" Guid="{18225057-1551-4A6B-9806-40D73548F23C}">
+                            <File Id="filml8D8TPZHKdw.oHdvi.XEbQKW7c" KeyPath="yes" Source="$(var.FilesDir)\wwwroot\assets\font-icon\material.css" />
+                        </Component>
+                        <Component Id="cmptnVqBxPy3SsybHFxu5q979vIyb4" Guid="{BCD46E40-D209-4A8A-AF14-E2E5EE95883D}">
+                            <File Id="filolJJ4Hm.dc_o0dbHZzxLD.AC7pQ" KeyPath="yes" Source="$(var.FilesDir)\wwwroot\assets\font-icon\MaterialIcons-Regular.ttf" />
+                        </Component>
+                        <Component Id="cmpTUM.bAfDn6NZN3exqu3qfULbs3E" Guid="{213586C3-2FB1-49CD-B91E-847AC0432964}">
+                            <File Id="filBFOLKW5GBMm5mleU6FQ8zcOhsd0" KeyPath="yes" Source="$(var.FilesDir)\wwwroot\assets\font-icon\MaterialIcons-Regular.woff2" />
+                        </Component>
+                        <Component Id="cmp2ZHEwHp0UH7TPcB1X3u7enZsPKE" Guid="{BB4124A7-70B5-449C-BE53-4E9C7E15B623}">
+                            <File Id="filRvy4qpVszBFGe3joVuMrT61IiF8" KeyPath="yes" Source="$(var.FilesDir)\wwwroot\assets\font-icon\MaterialIconsOutlined-Regular.otf" />
+                        </Component>
+                        <Component Id="cmpH9zoBAIeE9.u0EFE3IlfM9afcn8" Guid="{1B9A0243-4523-4AE9-9F48-AAD79B062CD8}">
+                            <File Id="file_LozpMEgAANNdXUnYBg02mVesg" KeyPath="yes" Source="$(var.FilesDir)\wwwroot\assets\font-icon\MaterialIconsOutlined-Regular.woff2" />
+                        </Component>
+                        <Component Id="cmpdpVYDrsrUmMOmasT2QT9dVbzUWo" Guid="{75A78963-836D-45C5-8BAB-75D0C3C698C7}">
+                            <File Id="filEEBGbm47yecgGAxJctI7r9UMh5k" KeyPath="yes" Source="$(var.FilesDir)\wwwroot\assets\font-icon\MaterialIconsRound-Regular.otf" />
+                        </Component>
+                        <Component Id="cmpGcxGgx.yuQfZ_UztWiArs2hn7So" Guid="{0B562C1E-06F3-4447-B621-FEFFF539470F}">
+                            <File Id="fil15N4EMYLE2uwY7BLU09s.Z083BQ" KeyPath="yes" Source="$(var.FilesDir)\wwwroot\assets\font-icon\MaterialIconsSharp-Regular.otf" />
+                        </Component>
+                        <Component Id="cmpKOcaw5Npn.t08GAewEuvwCvb8IA" Guid="{18A4E30D-B9B1-4FC6-96A3-164B603C02C0}">
+                            <File Id="filL3oN4RejqJSZxAsGm5NCRdjIWLc" KeyPath="yes" Source="$(var.FilesDir)\wwwroot\assets\font-icon\MaterialIconsTwoTone-Regular.otf" />
+                        </Component>
+                    </Directory>
+                    <Directory Id="diryhxeA1UJK4sYgiM30S1TEKGLaOo" Name="images">
+                        <Component Id="cmpv5UHYR_IWdQMo_6CHrI8eMDTStE" Guid="{FFB22199-5656-46C9-B18E-713E48274A8B}">
+                            <File Id="filNsF3ppvaIC9jyQH4Q9USzWvDIlU" KeyPath="yes" Source="$(var.FilesDir)\wwwroot\assets\images\chevron-down.svg" />
+                        </Component>
+                        <Component Id="cmp9tMwX5rwquLKFo_d8gA3IuDCzIk" Guid="{E8198C79-0E57-491E-B5CC-F7D728B9A23F}">
+                            <File Id="filrqp72UqnVr0iGvs3o6MJ0Uc.t8U" KeyPath="yes" Source="$(var.FilesDir)\wwwroot\assets\images\login_background.png" />
+                        </Component>
+                        <Component Id="cmpD0tn6AcQEyMARToGGN2Cc6kW7Jc" Guid="{5D6F5444-3EFC-44B7-BA10-AE84208AA2A9}">
+                            <File Id="filXBXPvMrh7BGwwFdg7PeuGfsLDkA" KeyPath="yes" Source="$(var.FilesDir)\wwwroot\assets\images\logixpro-login-image.jpg" />
+                        </Component>
+                        <Component Id="cmpbv94XeluFYjvLfYvYz7GFqZRfcU" Guid="{8203694E-1902-447E-86AE-52402DEEFA57}">
+                            <File Id="fil5RNL3AUybfLc1V2S1dMGoIbbSA8" KeyPath="yes" Source="$(var.FilesDir)\wwwroot\assets\images\LogixPro-login-image2.jpg" />
+                        </Component>
+                        <Component Id="cmpOa3w80YTbKom_Y7r_f0ocQ2JNII" Guid="{E59DEDC0-6FF5-43F0-9D17-B843000C8D56}">
+                            <File Id="filtrDCQR9I_lZKLkZvGSYlA1q7fhA" KeyPath="yes" Source="$(var.FilesDir)\wwwroot\assets\images\LogixPro-Logo.png" />
+                        </Component>
+                        <Component Id="cmpAOpoIWPEBbmm6nIBy0QGF6eQhIo" Guid="{A6714BD8-1650-40FC-A4D2-7CDFE9C6A3A9}">
+                            <File Id="filPGnS5sSDVInksE4k8LgY12IVoZY" KeyPath="yes" Source="$(var.FilesDir)\wwwroot\assets\images\peaklogix.png" />
+                        </Component>
+                        <Component Id="cmpycv9W0afDQfEIqMFtCSF.JqbXrY" Guid="{FD95FCD9-D32C-4320-BF5E-7C9B4366B9FB}">
+                            <File Id="filDVjVP1WJDYgq0QZ9nwq2RVBPcUo" KeyPath="yes" Source="$(var.FilesDir)\wwwroot\assets\images\scottech-white.png" />
+                        </Component>
+                        <Component Id="cmp6R6ItOApIwQlXOcZrHSnOZz.f0k" Guid="{A7F3AE8C-54DD-4F0C-BF6C-D1A94076F50D}">
+                            <File Id="fil9eMZeAxCsxkKkXdEVDVBi1.8sqs" KeyPath="yes" Source="$(var.FilesDir)\wwwroot\assets\images\ScottTech _ Pickpro_Blue.png" />
+                        </Component>
+                        <Directory Id="dirdX.vjXTdnU6l8CIWQQisVQ5fYbY" Name="favicon">
+                            <Component Id="cmphu2ynakjtrPLPWHUBPYMK47wTgg" Guid="{EAB68686-A387-4FD2-B6B8-41984D8D3200}">
+                                <File Id="filcOMQF2ofxRwWdrlZCozM9crnGE4" KeyPath="yes" Source="$(var.FilesDir)\wwwroot\assets\images\favicon\favicon-new.ico" />
+                            </Component>
+                            <Component Id="cmpQQJfugDOWon7qzeFzXHGUktGK58" Guid="{6259CC9B-0C90-4945-804E-0312329DFD0A}">
+                                <File Id="filKFb85sFt3BJz8o9o7ERxrEV8bjA" KeyPath="yes" Source="$(var.FilesDir)\wwwroot\assets\images\favicon\favicon-new.svg" />
+                            </Component>
+                            <Component Id="cmp1mO3MN6ha9gXyCNSm7tht0EOENU" Guid="{5FC4B988-C10B-4399-B0AB-449C7A86635B}">
+                                <File Id="filTyKW285VSAT4VUg0g5UZw46SqYc" KeyPath="yes" Source="$(var.FilesDir)\wwwroot\assets\images\favicon\favicon.ico" />
+                            </Component>
+                        </Directory>
+                    </Directory>
+                    <Directory Id="dirVQBQs8EY9cSykEp0KxTyQ.14MRM" Name="json">
+                        <Component Id="cmpeuWhVM94M9cGZNgOC0LBi1L_bHU" Guid="{A78122E3-7CEF-4640-BB83-ADDBC56CE165}">
+                            <File Id="filhppXeaxh4hHHUlbkq4QbrjQtseQ" KeyPath="yes" Source="$(var.FilesDir)\wwwroot\assets\json\GlobalConfigrations.json" />
+                        </Component>
+                    </Directory>
+                </Directory>
+            </Directory>
+        </DirectoryRef>
+    </Fragment>
+    <Fragment>
+        <ComponentGroup Id="HarvestedComponents">
+            
+            <ComponentRef Id="cmpOGkoJkApsx09TmwlmeSYNXu8O2k" />
+            <ComponentRef Id="cmpcdo6rpFXtOicErwRA1C.2TtceeE" />
+            <ComponentRef Id="cmpK5ySGSiRoF97d_uIMN9lDAvs51Q" />
+            <ComponentRef Id="cmpNKUuGYO_pf7717IrJY9bIPl_GkA" />
+            
+            <ComponentRef Id="cmpctpvHgF.KboXjPvxoZvGvZYbEfw" />
+            <ComponentRef Id="cmpKT2uPqYbpPvRJpwOCU6gfTc5r8w" />
+            <ComponentRef Id="cmpItcIcpJ0ogIOkIUvy2tmkKd3kk0" />
+            <ComponentRef Id="cmpLDAQBANRAtytN1I8w7lteQ2jE7o" />
+            <ComponentRef Id="cmp6e_0_mvckeg6ezzAKTmyoz1f014" />
+            <ComponentRef Id="cmp7bzLbNKQpdZtNiMpWxuNFiV80UQ" />
+            <ComponentRef Id="cmpv6r53ukgca23fLiJ6HepZWeL3_c" />
+            <ComponentRef Id="cmp7If.pPIiA0UkxSLxl3xeb_J_xag" />
+            <ComponentRef Id="cmpatndaKrnXA3F8V9A3rHnWW5mhNE" />
+            <ComponentRef Id="cmpR3x_6M4FkFFDDeir9XqvNRrHHNE" />
+            <ComponentRef Id="cmpRex1Sw9i5_vsdCnexQ6nLnZIi9k" />
+            <ComponentRef Id="cmpS_yhAvkKp424mPvYUB0CzWJtsw4" />
+            <ComponentRef Id="cmpT5YXDUuJGX9iNF.1v_g0.h89.fQ" />
+            <ComponentRef Id="cmpPBz.du5O8de_WpB8IDBtUUwZbZE" />
+            <ComponentRef Id="cmp96rsT0X8wo0oDRMtFflJgU5pst8" />
+            <ComponentRef Id="cmpO3kxx6TqHHz7Itw86aMyY1nkEoA" />
+            <ComponentRef Id="cmpCX7pHKuTc6fV64M805JgM69zpMA" />
+            <ComponentRef Id="cmpASvEd2tWjVfHGI7B_mUoQ.YZ2zg" />
+            <ComponentRef Id="cmpnlc1Msc8RvybZcVOJewKgpeHqww" />
+            <ComponentRef Id="cmpQylFBj0Gjf_7Xz7Bhol1X_QpfPU" />
+            <ComponentRef Id="cmpdDklj_PFceXculdWF_itFvNEsCo" />
+            <ComponentRef Id="cmpYUHOfc4G.fh4a45f5WRA5R_MAes" />
+            <ComponentRef Id="cmpqpPWDhcKZHo2SWeC4pCQ6nImiEs" />
+            <ComponentRef Id="cmpipsCDBD1aYR8QC2fOxhqKlc5QyE" />
+            <ComponentRef Id="cmpumD_iPWStgJCPOT_Pcp6R.XqfqM" />
+            <ComponentRef Id="cmpsClWTasUw06WAoL8JaXhh.FIdzU" />
+            <ComponentRef Id="cmpuJ6REWBM14AjQz4zwqa6to9nMs0" />
+            <ComponentRef Id="cmpTLrmxQYcdslJIY4wNubv.1IzsBY" />
+            <ComponentRef Id="cmpG2z91LRpE.l85UlfBFRNz17MVBU" />
+            <ComponentRef Id="cmp3YhEALLpJ1qNq94c31gDe_2HlIs" />
+            <ComponentRef Id="cmpVr_wN71XaWupPtQaWLLkXS.LeII" />
+            <ComponentRef Id="cmpUYZjXP4IUCTf4GMPvFDNbcEleRQ" />
+            <ComponentRef Id="cmpeV2Pj2IJD6Ne6nmOmRjKpQjKTp8" />
+            <ComponentRef Id="cmpwNMBPejOXoy78o87wND6X4kSnok" />
+            <ComponentRef Id="cmpRbNBbuZKHmNr7.KPDFNeOJgJVZs" />
+            <ComponentRef Id="cmpTMw5TOkrthMW2c_fVo4UAlErNmo" />
+            <ComponentRef Id="cmp9wIz2QcqZ.7X1UF9alQb3Gn7geQ" />
+            <ComponentRef Id="cmpbRrD3BQrVkQ9_lfgsiDuguIsnig" />
+            <ComponentRef Id="cmpCtUumAjUf.X8iaRu_SeB4MuYolo" />
+            <ComponentRef Id="cmpCJxDcKtg5.RFwolgJ.UuVf2.T2E" />
+            <ComponentRef Id="cmpSvpMemQc43EUp.oiu8C6qyPheX8" />
+            <ComponentRef Id="cmp0gJoBStOTSuxANUbLkmM4kiQq0k" />
+            <ComponentRef Id="cmpKYBfKe.UDY7AH9b416gfpcN0UMI" />
+            <ComponentRef Id="cmpwNPTY2iuA3I51e3d9C0_EzJOrO4" />
+            <ComponentRef Id="cmpGNJ4uO9jqeFNRgO48EVEBFb4fSE" />
+            <ComponentRef Id="cmp5GaOZFvtd8D9Qmi9my4GWWRNhGs" />
+            <ComponentRef Id="cmpaAxxkp3avgjPGQcecmzKQ9kHS_s" />
+            <ComponentRef Id="cmpp37YM3uink90oS6g.17pJInwAvc" />
+            <ComponentRef Id="cmp5oPF0zBwn_ogNdGkSpnjdFj4Bu0" />
+            <ComponentRef Id="cmpn3.kLMYHaFbcZT12qgPhY3UcRoU" />
+            <ComponentRef Id="cmpt9kvEw4EQRWv0jVjcxsRcO_3gVc" />
+            <ComponentRef Id="cmp0Ca4MvGnyxdEpnaGrA39indWoIk" />
+            <ComponentRef Id="cmpnGvZYcZ5YmT29j.c4iekC1b67As" />
+            <ComponentRef Id="cmpjhX359W2dFtgn55H3fNnSZrcbgA" />
+            <ComponentRef Id="cmpc86AggaQYrZI92C5qQM4yGGXzdY" />
+            <ComponentRef Id="cmp98kpuvpE2M1m2mTfxPWlCI47P1A" />
+            <ComponentRef Id="cmphaGTniey_WhQ3g9_zj1SpoGXmxk" />
+            <ComponentRef Id="cmpb7cOqv5HGPam0s8mQKRqr9xT1SE" />
+            <ComponentRef Id="cmpkQLXOjbvhurgpW5xjJSp9vYErno" />
+            <ComponentRef Id="cmpPheGpmWD_zOK6YnBwzN0r6SGxuU" />
+            <ComponentRef Id="cmpeIoATOY2i.hOFtmJZOAAkEOwZU0" />
+            <ComponentRef Id="cmp2C8JUW.5BOPdPAjam8YEwufqTH4" />
+            <ComponentRef Id="cmpZhOsVyUiG1EM_io_UEEktdeudx0" />
+            <ComponentRef Id="cmpvAdxaBVPF_lqZrRA0w.gH1QCdkA" />
+            <ComponentRef Id="cmphpzFuSpW2henfgrwDYLJKdqGxWA" />
+            <ComponentRef Id="cmpc0h4bN3QplR_pOsr1zlCXBnYPvI" />
+            <ComponentRef Id="cmpSgI1uqnY45o4Nss4KL_W2IqyS1k" />
+            <ComponentRef Id="cmpyC7OuRVMbG_idCeigUsE2zr.aUs" />
+            <ComponentRef Id="cmposoVHVqdK2MA9EZJxFR.1rUNx3I" />
+            <ComponentRef Id="cmpyGTfZ1mudxHHjh9IDQ7JmvknrKU" />
+            <ComponentRef Id="cmp2DDq3HHMiYqg.sFJnRsdT3kBcYU" />
+            <ComponentRef Id="cmp0_IRNkJ0BzzUFEL8tSn7T6WbPg4" />
+            <ComponentRef Id="cmp3OQC.jOda_WIDfWMnApjwCUMQXA" />
+            <ComponentRef Id="cmptyLuTuD8sv_O0xvxSfHE_cs1HFY" />
+            <ComponentRef Id="cmppepmH52kN1AM0RuaFIeWFB3u5kg" />
+            <ComponentRef Id="cmptPPjK1TQzPlFTejkdYcejAh5.Qw" />
+            <ComponentRef Id="cmpjiTqAWwQO6UrDn_71o0ZkDj8fwY" />
+            <ComponentRef Id="cmpoTpCX5MI269Dkfsx.w5Vr1OThZ0" />
+            <ComponentRef Id="cmpHzqRhnTyagh6hPBvyKUJQLIKaE0" />
+            <ComponentRef Id="cmpPekE7wJCd0jHlVXa1ajutE6Jpdg" />
+            <ComponentRef Id="cmpsh.5EXP8sJBwvlZ_aF3SlZL1CFA" />
+            <ComponentRef Id="cmph_hJrNll9ZczmeTZ1aIgxO_aPLQ" />
+            <ComponentRef Id="cmptnVqBxPy3SsybHFxu5q979vIyb4" />
+            <ComponentRef Id="cmpTUM.bAfDn6NZN3exqu3qfULbs3E" />
+            <ComponentRef Id="cmp2ZHEwHp0UH7TPcB1X3u7enZsPKE" />
+            <ComponentRef Id="cmpH9zoBAIeE9.u0EFE3IlfM9afcn8" />
+            <ComponentRef Id="cmpdpVYDrsrUmMOmasT2QT9dVbzUWo" />
+            <ComponentRef Id="cmpGcxGgx.yuQfZ_UztWiArs2hn7So" />
+            <ComponentRef Id="cmpKOcaw5Npn.t08GAewEuvwCvb8IA" />
+            <ComponentRef Id="cmpv5UHYR_IWdQMo_6CHrI8eMDTStE" />
+            <ComponentRef Id="cmp9tMwX5rwquLKFo_d8gA3IuDCzIk" />
+            <ComponentRef Id="cmpD0tn6AcQEyMARToGGN2Cc6kW7Jc" />
+            <ComponentRef Id="cmpbv94XeluFYjvLfYvYz7GFqZRfcU" />
+            <ComponentRef Id="cmpOa3w80YTbKom_Y7r_f0ocQ2JNII" />
+            <ComponentRef Id="cmpAOpoIWPEBbmm6nIBy0QGF6eQhIo" />
+            <ComponentRef Id="cmpycv9W0afDQfEIqMFtCSF.JqbXrY" />
+            <ComponentRef Id="cmp6R6ItOApIwQlXOcZrHSnOZz.f0k" />
+            <ComponentRef Id="cmphu2ynakjtrPLPWHUBPYMK47wTgg" />
+            <ComponentRef Id="cmpQQJfugDOWon7qzeFzXHGUktGK58" />
+            <ComponentRef Id="cmp1mO3MN6ha9gXyCNSm7tht0EOENU" />
+            <ComponentRef Id="cmpeuWhVM94M9cGZNgOC0LBi1L_bHU" />
+        </ComponentGroup>
+    </Fragment>
+</Wix>

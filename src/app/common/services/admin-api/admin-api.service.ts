@@ -3,7 +3,7 @@ import {ApiFuntions} from '../ApiFuntions';
 import {AuthService} from 'src/app/common/init/auth.service';
 import {IAdminApiService} from './admin-api-interface'
 import { UserSession } from '../../types/CommonTypes';
-import { UpdateSCReq } from '../../Model/storage-container-management';
+import { InventoryMap, UpdateSCReq } from '../../Model/storage-container-management';
 
 @Injectable({
   providedIn: 'root'
@@ -2144,6 +2144,10 @@ export class AdminApiService implements IAdminApiService {
 
     public GetBinCellAsync(binCellId: number) {
       return this.Api.GetBinCellAsync(binCellId);
+    }
+
+    public createInventoryMapAsync(body: InventoryMap) {
+      return this.Api.createInventoryMapAsync(body);
     }
   }
 
