@@ -1,4 +1,4 @@
-import { Component, ElementRef, EventEmitter, Input, OnInit, Output, SimpleChanges, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, ElementRef, EventEmitter, Input, OnInit, Output, SimpleChanges, ViewChild } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 import { FloatLabelType } from '@angular/material/form-field';
@@ -73,38 +73,39 @@ export class TranSelectOrderComponent implements OnInit {
 
   @Output() deleteEvent = new EventEmitter<Event>();
 
-  @Input() set openOrderEvent(event: Event) {
-    if (event) {
-      this.openOrder = event;
+  @Input() set openOrderEvent(event: { value: number }) {
+    if (event.value) {
+      this.openOrder = event.value;
       this.info[2].value = this.openOrder;
     }
   }
-  @Input() set completeOrderEvent(event: Event) {
-    if (event) {
-      this.completeOrder = event;
+  @Input() set completeOrderEvent(event: { value: number }) {
+    if (event.value) {
+      this.completeOrder = event.value;
       this.info[0].value = this.completeOrder;
     }
   }
-  @Input() set reprocessOrderEvent(event: Event) {
-    if (event) {
-      this.reprocessOrder = event;
+  @Input() set reprocessOrderEvent(event: { value: number }) {
+    if (event.value) {
+      this.reprocessOrder = event.value;
       this.info[1].value = this.reprocessOrder;
     }
   }
-  @Input() set orderTypeOrderEvent(event: Event) {
-    if (event) {
-      this.orderTypeOrder = event;
+  @Input() set orderTypeOrderEvent(event: { value: string }) {
+    if (event.value) {
+      this.orderTypeOrder = event.value;
       this.info[3].value = this.orderTypeOrder;
     }
   }
-  @Input() set totalLinesOrderEvent(event: Event) {
-    if (event) {
+  @Input() set totalLinesOrderEvent(event: { value: number }) {
+    if (event.value) {
+      this.totalLinesOrder = event.value;
       this.info[4].value = this.totalLinesOrder;
     }
   }
-  @Input() set currentStatusOrderEvent(event: Event) {
-    if (event) {
-      this.currentStatusOrder = event;
+  @Input() set currentStatusOrderEvent(event: { value: string }) {
+    if (event.value) {
+      this.currentStatusOrder = event.value;
       this.info[5].value = this.currentStatusOrder;
     }
   }
@@ -124,7 +125,8 @@ export class TranSelectOrderComponent implements OnInit {
     public adminApiService: AdminApiService,
     private sharedService: SharedService,
     private currentTabDataService: CurrentTabDataService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private cd: ChangeDetectorRef
   ) {
     this.iAdminApiService = adminApiService;
   }
@@ -157,6 +159,7 @@ export class TranSelectOrderComponent implements OnInit {
     this.onOrderNoChange();
     if(this.columnSelect == Column.ToteID){
       this.displayToteID = this.searchField;
+      this.displayOrderNumber = "";
     }
     else{
       this.displayOrderNumber = this.searchField;
@@ -230,7 +233,9 @@ export class TranSelectOrderComponent implements OnInit {
         if (orderNo) {
           this.displayOrderNumber = orderNo;
           this.filterByTote = false;
-          this.searchAutocompleteList.length = 0;
+          if(this.searchAutocompleteList){
+            this.searchAutocompleteList.length = 0;
+          }
         }
       })
     );
@@ -289,6 +294,7 @@ export class TranSelectOrderComponent implements OnInit {
       optionSelect: option ? true : false
     };
     this.orderNo.emit(obj);
+    
     this.currentTabDataService.savedItem[this.currentTabDataService.TRANSACTIONS_ORDER_SELECT] = {
       searchField: this.searchField,
       columnSelect: this.columnSelect,
@@ -383,7 +389,6 @@ export class TranSelectOrderComponent implements OnInit {
   actionDialog(event) {
     this.searchField = '';
     this.searchAutocompleteList = [];
-    this.resetLines();
     this.sharedService.updateCompDate(event)
   }
 

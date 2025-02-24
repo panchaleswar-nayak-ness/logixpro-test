@@ -352,7 +352,7 @@ export class TranOrderListComponent implements OnInit, AfterViewInit {
     this.iAdminApiService.OrderStatusData(this.payload).subscribe({
         next: (res: any) => {
             if (res.isExecuted) {
-              if(res?.data?.orderStatus[0]?.orderNumber && this.payload.toteID != ""){
+              if(res?.data?.orderStatus && res?.data?.orderStatus[0]?.orderNumber && this.payload.toteID != ""){
                 this.toteId = "";
                 this.orderNo = res?.data?.orderStatus[0]?.orderNumber;
                 this.getOrderForTote = res?.data?.orderStatus[0]?.orderNumber;
@@ -363,10 +363,10 @@ export class TranOrderListComponent implements OnInit, AfterViewInit {
                 this.getOrderForTote = res.data?.orderNo;
 
                 // Extracting IDs from detailDataInventoryMap
-                this.OrderIds = this.detailDataInventoryMap.map((item: any) => item.id);
+                this.OrderIds = this.detailDataInventoryMap?.map((item: any) => item.id);
                 console.log("Extracted IDs:", this.OrderIds);
 
-                res.data?.orderStatus.forEach((element) => {
+                res.data?.orderStatus?.forEach((element) => {
                     element.orignalCompletedDate = element.completedDate;
                     const inputFormat = 'M/D/YYYY h:mm:ss A';
                     const date = moment(element.completedDate, inputFormat);
@@ -379,18 +379,20 @@ export class TranOrderListComponent implements OnInit, AfterViewInit {
                 console.log(res.data?.orderStatus);
 
                 /// Enable/Disable the Put Away - Complete Order button
-                this.isOrderCompleted = !res.data?.orderStatus.every(
+                this.isOrderCompleted = !res.data?.orderStatus?.every(
                     (e: any) => e.transactionType === 'Put Away'
                 );
 
                 this.checkIsReProcessAndAddStatusField(res.data?.orderStatus);
                 this.dataSource = new MatTableDataSource(res.data?.orderStatus);
-                this.dataSource.paginator = this.paginator;
-                this.dataSource.sort = this.sort;
+                if(this.dataSource.filteredData){
+                  this.dataSource.paginator = this.paginator;
+                  this.dataSource.sort = this.sort;
+                }
 
                 this.columnValues = res.data?.orderStatusColSequence;
                 this.customPagination.total = res.data?.totalRecords;
-                this.getOrderForTote = res?.data?.orderStatus[0]?.orderNumber;
+                this.getOrderForTote = res?.data?.orderStatus ? res?.data?.orderStatus[0]?.orderNumber : "";
                 
                 if (res.data) {
                     this.onOpenOrderChange(res.data?.opLines);
@@ -408,8 +410,8 @@ export class TranOrderListComponent implements OnInit, AfterViewInit {
                     }
                     
                     this.onOrderTypeOrderChange(
-                        res?.data?.orderStatus?.length > 0 &&
-                        res?.data?.orderStatus[0]?.transactionType
+                        res?.data?.orderStatus?.length > 0 ?
+                        res?.data?.orderStatus[0]?.transactionType : "-"
                     );
                     this.currentStatusChange(res.data.completedStatus);
                     this.totalLinesOrderChange(res.data?.totalRecords);
@@ -524,29 +526,32 @@ export class TranOrderListComponent implements OnInit, AfterViewInit {
     this.orderNoEvent = event;
   }
 
-  onOpenOrderChange(event) {
-    this.openOrders.emit(event);
+
+
+  onOpenOrderChange(event: number) {
+    this.openOrders.emit({ value: event });
+  }
+  
+  onOrderTypeOrderChange(event: string) {
+    this.orderTypeOrders.emit({ value: event });
   }
 
-  onOrderTypeOrderChange(event) {
-    this.orderTypeOrders.emit(event);
+  onReprocessOrderChange(event: number) {
+    this.reprocessOrders.emit({ value: event });
   }
 
-  onReprocessOrderChange(event) {
-    this.reprocessOrders.emit(event);
+  totalLinesOrderChange(event: number) {
+    this.totalLinesOrders.emit({ value: event });
   }
 
-  totalLinesOrderChange(event) {
-    this.totalLinesOrders.emit(event);
+  currentStatusChange(event: string) {
+    this.currentStatus.emit({ value: event });
   }
 
-  currentStatusChange(event) {
-    this.currentStatus.emit(event);
+  onCompleteOrderChange(event: number) {
+    this.completeOrders.emit({ value: event });
   }
 
-  onCompleteOrderChange(event) {
-    this.completeOrders.emit(event);
-  }
 
   onLocationZoneChange(event) {
     this.locationZones.emit(event);
