@@ -30,6 +30,12 @@ export class PreferencesMarkoutComponent {
       autoPrintMarkoutReport: new FormControl(false),
       autoPrintToteManifest: new FormControl(false),
       autoPrintToteManifest2: new FormControl(false),
+      currentStatus:new FormControl(false),
+      short: new FormControl(false),
+      missed: new FormControl(false),
+      shipShort:new FormControl(false),
+      complete:new FormControl(false),
+      notIncluded:new FormControl(false)
     });
     this.IconsolidationAPI = consolidationAPI;
   }
@@ -39,11 +45,17 @@ export class PreferencesMarkoutComponent {
     this.markoutForm.controls['autoPrintMarkoutReport'].setValue(item.autoPrintMarkoutReport);
     this.markoutForm.controls['autoPrintToteManifest'].setValue(item.autoPrintToteManifest);
     this.markoutForm.controls['autoPrintToteManifest2'].setValue(item.autoPrintToteManifest2);
+    this.markoutForm.controls['currentStatus'].setValue(item.currentStatus);
+    this.markoutForm.controls['short'].setValue(item.short);
+    this.markoutForm.controls['missed'].setValue(item.missed);
+    this.markoutForm.controls['complete'].setValue(item.complete);
+    this.markoutForm.controls['shipShort'].setValue(item.shipShort);
+    this.markoutForm.controls['notIncluded'].setValue(item.notIncluded);
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    if (changes['pref'][StringConditions.currentValue]) {
-      this.setPreferences(changes['pref'][StringConditions.currentValue])
+    if (changes['pref'] && changes['pref'].currentValue) {
+      this.setPreferences(changes['pref'].currentValue);
     }
   }
 
@@ -53,6 +65,12 @@ export class PreferencesMarkoutComponent {
       autoPrintMarkoutReport: this.markoutForm.controls['autoPrintMarkoutReport'].value,
       autoPrintToteManifest: this.markoutForm.controls['autoPrintToteManifest'].value,
       autoPrintToteManifest2: this.markoutForm.controls['autoPrintToteManifest2'].value,
+      currentStatus: this.markoutForm.controls['currentStatus'].value,
+      short: this.markoutForm.controls['short'].value,
+      missed: this.markoutForm.controls['missed'].value,
+      shipShort: this.markoutForm.controls['shipShort'].value,
+      complete: this.markoutForm.controls['complete'].value,
+      notIncluded:  this.markoutForm.controls['notIncluded'].value,
     };
     this.IconsolidationAPI
       .ConsolidationPreferenceMarkoutUpdate(payload)
