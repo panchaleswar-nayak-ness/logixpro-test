@@ -59,7 +59,7 @@
                         <div *ngFor="let info of info | slice:1" class="w-100 col pb-xl-0">
                             <app-info-card-component 
                                 [title]="info.title" 
-                                [value]="info.value"
+                                [value]="info.value.toString()"
                                 [colorClass]="info.colorClass">
                             </app-info-card-component>
                         </div>
