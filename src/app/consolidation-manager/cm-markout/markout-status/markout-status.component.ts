@@ -23,6 +23,10 @@ export class MarkoutStatusComponent implements OnInit {
     { title: 'Not Inducted', value: 0, colorClass: 'not-inducted-status' }
   ];
 
+  isGreaterThanZero(value: any): boolean {
+    return Number(value) > 0;
+  }
+
   @Input() toteDataResponse: ToteDataResponse;
   @Input() markoutPreference: CmPreferences;
 
