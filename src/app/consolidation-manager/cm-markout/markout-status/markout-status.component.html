@@ -63,11 +63,11 @@
                                 [colorClass]="info.colorClass"
                                 class="custom-markout-style"
                                 [ngClass]="{
-                                    'custom-style-missed': markoutPreference.missed === true && isGreaterThanZero(info.value),
-                                    'custom-style-short': markoutPreference.short === true && isGreaterThanZero(info.value),
-                                    'custom-style-complete': markoutPreference.complete === true && isGreaterThanZero(info.value),
-                                    'custom-style-notincluded': markoutPreference.notIncluded === true && isGreaterThanZero(info.value),
-                                    'custom-style-shipsort': markoutPreference.shipShort === true && isGreaterThanZero(info.value)
+                                    'custom-style-missed': isGreaterThanZero(info.value),
+                                    'custom-style-short': isGreaterThanZero(info.value),
+                                    'custom-style-complete': isGreaterThanZero(info.value),
+                                    'custom-style-notincluded': isGreaterThanZero(info.value),
+                                    'custom-style-shipsort': isGreaterThanZero(info.value)
                                 }">
                             </app-info-card-component>
                         </div>
