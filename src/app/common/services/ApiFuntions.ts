@@ -2305,12 +2305,12 @@ export class ApiFuntions {
     return await this.ApiBase.GetAsync(`/StorageContainer/binLayout?layoutId=${layoutId}&binCode=${binCode}`);
   }
 
-  public async validateScannedContainer(containerId: string) {
-    return await this.ApiBase.GetAsync(`/StorageContainer/validate/${containerId}`);
+  public async validateScannedContainer(containerId: string, zone:string) {
+    return await this.ApiBase.GetAsync(`/StorageContainer/validate/${containerId}/zone/${zone}`);
   }
 
-  public async getStorageContainerLayout(containerId: string) {
-    return await this.ApiBase.GetAsync(`/layouts/container/${containerId}`);
+  public async getStorageContainerLayout(containerId: string, zone:string) {
+    return await this.ApiBase.GetAsync(`/layouts/container/${containerId}/zone/${zone}`);
   }
 
   public async updateStorageContainerLayout(containerId: string,body:UpdateSCReq) {

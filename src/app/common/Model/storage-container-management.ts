@@ -1,5 +1,6 @@
 export class UpdateSCReq {
     BinLayoutId: number;
+    Zone: string;
 }
 
 export class UpdateSCRes {
