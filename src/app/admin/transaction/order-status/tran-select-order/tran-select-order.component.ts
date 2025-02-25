@@ -74,42 +74,41 @@ export class TranSelectOrderComponent implements OnInit {
   @Output() deleteEvent = new EventEmitter<Event>();
 
   @Input() set openOrderEvent(event: { value: number }) {
-    if (event.value) {
+    if (event.value != null) {
       this.openOrder = event.value;
       this.info[2].value = this.openOrder;
     }
   }
   @Input() set completeOrderEvent(event: { value: number }) {
-    if (event.value) {
+    if (event.value != null) {
       this.completeOrder = event.value;
       this.info[0].value = this.completeOrder;
     }
   }
   @Input() set reprocessOrderEvent(event: { value: number }) {
-    if (event.value) {
+    if (event.value != null) {
       this.reprocessOrder = event.value;
       this.info[1].value = this.reprocessOrder;
     }
   }
   @Input() set orderTypeOrderEvent(event: { value: string }) {
-    if (event.value) {
+    if (event.value != null) {
       this.orderTypeOrder = event.value;
       this.info[3].value = this.orderTypeOrder;
     }
   }
   @Input() set totalLinesOrderEvent(event: { value: number }) {
-    if (event.value) {
+    if (event.value != null) {
       this.totalLinesOrder = event.value;
       this.info[4].value = this.totalLinesOrder;
     }
   }
   @Input() set currentStatusOrderEvent(event: { value: string }) {
-    if (event.value) {
+    if (event.value != null) {
       this.currentStatusOrder = event.value;
       this.info[5].value = this.currentStatusOrder;
     }
   }
-  @Input()
 
 
   @Input() set clearFromListEvent(event: Event) {
@@ -155,7 +154,7 @@ export class TranSelectOrderComponent implements OnInit {
         totalLinesOrder: this.totalLinesOrder
       };
     }
-    
+    this.resetLines();
     this.onOrderNoChange();
     if(this.columnSelect == Column.ToteID){
       this.displayToteID = this.searchField;
@@ -255,12 +254,8 @@ export class TranSelectOrderComponent implements OnInit {
   }
 
   getNextItemNo(event: any) {
-
     if(event.code !== 'CapsLock') {
       this.searchControl.setValue(event.target.value, {emitEvent: true}); // Update the value of the FormControl
-      if(event.target.value == ''){
-        this.resetLines();
-      }
     }
   }
 

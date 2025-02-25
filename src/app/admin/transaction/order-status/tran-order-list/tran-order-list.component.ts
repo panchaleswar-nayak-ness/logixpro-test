@@ -330,7 +330,7 @@ export class TranOrderListComponent implements OnInit, AfterViewInit {
     else if (router.url == AppRoutes.AdminTrans) this.priority = false;
   }
 
-  getContentData() {
+  getContentData(putawayComplete = false) {
     this.payload = {
         draw: 0,
         compDate: this.compDate,
@@ -352,7 +352,7 @@ export class TranOrderListComponent implements OnInit, AfterViewInit {
     this.iAdminApiService.OrderStatusData(this.payload).subscribe({
         next: (res: any) => {
             if (res.isExecuted) {
-              if(res?.data?.orderStatus && res?.data?.orderStatus[0]?.orderNumber && this.payload.toteID != ""){
+              if(!putawayComplete && res?.data?.orderStatus && res?.data?.orderStatus[0]?.orderNumber && this.payload.toteID != ""){
                 this.toteId = "";
                 this.orderNo = res?.data?.orderStatus[0]?.orderNumber;
                 this.getOrderForTote = res?.data?.orderStatus[0]?.orderNumber;
@@ -942,7 +942,7 @@ export class TranOrderListComponent implements OnInit, AfterViewInit {
                   'Complete Transaction Posted Successfully',
                   ToasterTitle.Success
                 );
-                this.getContentData();
+                this.getContentData(true);
               }
             });
         }
