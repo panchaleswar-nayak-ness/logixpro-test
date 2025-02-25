@@ -2,16 +2,31 @@ import { Component, EventEmitter, Input, Output, SimpleChanges } from '@angular/
 import { FormControl, FormGroup } from '@angular/forms';
 import { StringConditions, ToasterMessages, ToasterTitle, ToasterType } from 'src/app/common/constants/strings.constants';
 import { AuthService } from 'src/app/common/init/auth.service';
+import { ResponseData } from 'src/app/common/interface/Iemployee';
 import { IConsolidationApi } from 'src/app/common/services/consolidation-api/consolidation-api-interface';
 import { ConsolidationApiService } from 'src/app/common/services/consolidation-api/consolidation-api.service';
 import { GlobalService } from 'src/app/common/services/global.service';
-import { CmPreferences, UserSession } from 'src/app/common/types/CommonTypes';
+import { ApiResponse, CmPreferences, UserSession } from 'src/app/common/types/CommonTypes';
 
+interface Config {
+  defaultViewType: string; 
+  autoPrintMarkoutReport: boolean;
+  autoPrintToteManifest: boolean;
+  autoPrintToteManifest2: boolean;
+  currentStatus: boolean;
+  missed: boolean;
+  short: boolean;
+  shipShort: boolean;
+  complete: boolean;
+  notIncluded: boolean;
+}
 @Component({
   selector: 'app-preferences-markout',
   templateUrl: './preferences-markout.component.html',
   styleUrls: ['./preferences-markout.component.scss']
 })
+
+
 export class PreferencesMarkoutComponent {
 
   markoutForm: FormGroup;
@@ -75,7 +90,7 @@ export class PreferencesMarkoutComponent {
     this.IconsolidationAPI
       .ConsolidationPreferenceMarkoutUpdate(payload)
       .subscribe(
-        (response: any) => {
+        (response: ApiResponse<Config>) => {
           if (response.isExecuted) {
             this.markoutEvnt.emit();
           } else {
