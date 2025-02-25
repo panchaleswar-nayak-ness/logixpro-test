@@ -4,7 +4,7 @@ import { CmPreferences } from 'src/app/common/types/CommonTypes';
 
 class info {
   title: string;
-  value: number;
+  value: number | string;
   colorClass: string;
 }
 
@@ -15,7 +15,7 @@ class info {
 })
 export class MarkoutStatusComponent implements OnInit {
   info: info[] = [
-    { title: 'Current Status', value: 0, colorClass: 'label-gray' },
+    { title: 'Current Status', value: '-', colorClass: 'label-gray' },
     { title: 'Missed', value: 0, colorClass: 'Reprocess-card' },
     { title: 'Short', value: 0, colorClass: 'Open-card' },
     { title: 'Ship Short', value: 0, colorClass: 'label-blue2' },
@@ -33,60 +33,45 @@ export class MarkoutStatusComponent implements OnInit {
   ngOnInit(): void {}
 
   ngOnChanges(changes: SimpleChanges) {
-    if (
-      changes['toteDataResponse'] &&
-      changes['toteDataResponse']['currentValue']
-    ) {
-     
-  this.info[0].value = this.toteDataResponse.toteStatus === "" ? 0 : Number(this.toteDataResponse.toteStatus);
-
-  this.info[3].value = this.toteDataResponse.data
-    .filter((element) => element.status == 'Ship Short')
-    .length;
-
-  this.info[2].value = this.toteDataResponse.data
-    .filter((element) => element.status == 'Short')
-    .length; 
-
-  this.info[4].value = this.toteDataResponse.data
-    .filter((element) => element.status == 'Complete')
-    .length; 
-
-  this.info[1].value = this.toteDataResponse.data
-    .filter((element) => element.status == 'Missed')
-    .length;
-
-  this.info[5].value = this.toteDataResponse.data
-    .filter((element) => element.status == 'Not Inducted')
-    .length; 
-
-      this.isBlossomed = this.toteDataResponse.blossomCount > 0;
+    if (changes['toteDataResponse']?.currentValue) {
+      this.updateInfoValues();
+      this.updateBoxShadow();
     }
-
-      let elements: NodeListOf<Element>[] = [];
-    
-      if (this.markoutPreference?.missed === true && this.info[1]?.value > 0) {  
-        elements.push(this.el.nativeElement.querySelectorAll('app-info-card-component mat-card.Reprocess-card'));
-      }
-      if (this.markoutPreference?.short === true && this.info[2]?.value > 0) {
-        elements.push(this.el.nativeElement.querySelectorAll('app-info-card-component mat-card.Open-card'));
-      }
-      if (this.markoutPreference?.complete === true && this.info[4]?.value > 0) {
-        elements.push(this.el.nativeElement.querySelectorAll('app-info-card-component mat-card.Compete-cart'));
-      }
-      if (this.markoutPreference?.notIncluded === true && this.info[5]?.value > 0) {
-        elements.push(this.el.nativeElement.querySelectorAll('app-info-card-component mat-card.not-inducted-status'));
-      }
-      if (this.markoutPreference?.shipShort === true && this.info[3]?.value > 0) {
-        elements.push(this.el.nativeElement.querySelectorAll('app-info-card-component mat-card.label-blue2'));
-      }
-    
-      // Apply styles to all selected elements
-      elements.forEach(nodeList => {
-        nodeList.forEach(element => {
-          this.renderer.setStyle(element, 'box-shadow', 'inset 0 0 0 4px #1A1AD3');
-        });
-      });
- 
   }
+  
+  private updateInfoValues() {
+    const data = this.toteDataResponse.data;
+    
+    this.info[0].value = this.toteDataResponse.toteStatus || "-";
+    this.info[1].value = data.filter((el) => el.status === 'Missed').length;
+    this.info[2].value = data.filter((el) => el.status === 'Short').length;
+    this.info[3].value = data.filter((el) => el.status === 'Ship Short').length;
+    this.info[4].value = data.filter((el) => el.status === 'Complete').length;
+    this.info[5].value = data.filter((el) => el.status === 'Not Inducted').length;
+  
+    this.isBlossomed = this.toteDataResponse.blossomCount > 0;
+  }
+  
+  private updateBoxShadow() {
+    const statusMap = [
+      { key: 'missed', index: 1, selector: '.Reprocess-card' },
+      { key: 'short', index: 2, selector: '.Open-card' },
+      { key: 'complete', index: 4, selector: '.Compete-cart' },
+      { key: 'notIncluded', index: 5, selector: '.not-inducted-status' },
+      { key: 'shipShort', index: 3, selector: '.label-blue2' }
+    ];
+  
+    statusMap.forEach(({ key, index, selector }) => {
+      const elements = this.el.nativeElement.querySelectorAll(`app-info-card-component mat-card${selector}`);
+      elements.forEach((element: Element) => {
+        if (this.markoutPreference?.[key] && Number(this.info[index]?.value) > 0) {
+          this.renderer.setStyle(element, 'box-shadow', 'inset 0 0 0 4px #1A1AD3');
+        } else {
+          this.renderer.removeStyle(element, 'box-shadow');
+        }
+      });
+    });
+  }
+  
+
 }

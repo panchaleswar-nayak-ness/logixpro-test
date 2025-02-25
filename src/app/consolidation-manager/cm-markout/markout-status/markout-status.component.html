@@ -46,7 +46,7 @@
                     <div class="row g-2">
                     <!-- <div *ngFor="let info of info" class="w-100 col pb-xl-0"> -->
                         <app-info-card-component title={{this.info[0].title}} value={{this.info[0].value}}
-                            colorClass={{this.info[0].colorClass}}></app-info-card-component>
+                            colorClass={{this.info[0].colorClass}} class="custom-markout-style"></app-info-card-component>
                     <!-- </div> -->
                 </div>
                 </div>
@@ -60,7 +60,16 @@
                             <app-info-card-component 
                                 [title]="info.title" 
                                 [value]="info.value.toString()"
-                                [colorClass]="info.colorClass">
+                                [colorClass]="info.colorClass"
+                                class="custom-markout-style"
+                                [ngClass]="{
+                                 'custom-style-missed': markoutPreference.missed === true,
+                                'custom-style-short': markoutPreference.short === true,
+                                'custom-style-complete': markoutPreference.complete === true,
+                                'custom-style-notincluded': markoutPreference.notIncluded === true,
+                                'custom-style-shipsort': markoutPreference.shipShort === true
+                                
+                                }">
                             </app-info-card-component>
                         </div>
                 </div>

@@ -2434,6 +2434,66 @@ button.active-btn{
   }
 
 
+// Markout Status STYLING
+
+.custom-markout-style{
+  font-weight: bold;
+  .col-12 strong{
+    font-size: 24px;
+    font-weight: 700 !important;
+}
+.Reprocess-card {
+  background-color: rgba(247 208 218 / 35%) !important;
+}
+.Open-card {
+  background-color: rgba(255 240 214 / 35%) !important;
+}
+.Compete-cart {
+  background-color: rgba(200 226 216 / 35%) !important;
+}
+.label-blue2 {
+  background: rgba(202, 202, 238, 35%) !important;
+}
+.not-inducted-status {
+  background-color: rgba(245 245 250 / 35%) !important;
+}
+}
+
+
+
+.custom-style-missed{
+  .Reprocess-card {
+    background-color: rgba(247 208 218 / 100%) !important;
+  }
+}
+
+.custom-style-short {
+   .Open-card{
+    background-color : rgba(255 240 214 / 100%) !important;
+  }
+}
+
+.custom-style-complete {
+  .Compete-cart {
+    background-color: rgba(200 226 216 / 100%) !important;
+  }
+}
+
+.custom-style-notincluded {
+  .not-inducted-status {
+    background-color: rgba(245 245 250 / 100%)  !important;
+  }
+}
+
+.custom-style-shipsort {
+  .label-blue2 {
+    background: rgba(202, 202, 238, 100%) !important;
+  }
+}
+
+
+
+
 
   //-------------- ACCORDIAN-CLASSES ----END-------------------
 
