@@ -264,6 +264,8 @@ export class StorageContainerManagementModalComponent implements OnInit {
     let inventoryMap: InventoryMap = new InventoryMap();
     inventoryMap.zone = this.scm.zone;
     inventoryMap.row = this.scm.tray;
+    inventoryMap.shelf = "01";
+    inventoryMap.carousel = "1";
     inventoryMap.cell = "F";
     inventoryMap.velocity = "1";
     inventoryMap.altLight = 1;
