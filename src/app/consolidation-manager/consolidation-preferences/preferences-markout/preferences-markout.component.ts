@@ -18,7 +18,7 @@ interface Config {
   short: boolean;
   shipShort: boolean;
   complete: boolean;
-  notIncluded: boolean;
+  notInducted: boolean;
 }
 @Component({
   selector: 'app-preferences-markout',
@@ -50,7 +50,7 @@ export class PreferencesMarkoutComponent {
       missed: new FormControl(false),
       shipShort:new FormControl(false),
       complete:new FormControl(false),
-      notIncluded:new FormControl(false)
+      notInducted:new FormControl(false)
     });
     this.IconsolidationAPI = consolidationAPI;
   }
@@ -65,7 +65,7 @@ export class PreferencesMarkoutComponent {
     this.markoutForm.controls['missed'].setValue(item.missed);
     this.markoutForm.controls['complete'].setValue(item.complete);
     this.markoutForm.controls['shipShort'].setValue(item.shipShort);
-    this.markoutForm.controls['notIncluded'].setValue(item.notIncluded);
+    this.markoutForm.controls['notInducted'].setValue(item.notInducted);
   }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -85,7 +85,7 @@ export class PreferencesMarkoutComponent {
       missed: this.markoutForm.controls['missed'].value,
       shipShort: this.markoutForm.controls['shipShort'].value,
       complete: this.markoutForm.controls['complete'].value,
-      notIncluded:  this.markoutForm.controls['notIncluded'].value,
+      notInducted:  this.markoutForm.controls['notInducted'].value,
     };
     this.IconsolidationAPI
       .ConsolidationPreferenceMarkoutUpdate(payload)
