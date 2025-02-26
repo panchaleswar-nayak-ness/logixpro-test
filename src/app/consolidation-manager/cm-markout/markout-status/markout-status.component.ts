@@ -58,17 +58,23 @@ export class MarkoutStatusComponent implements OnInit {
   
   private updateBoxShadow() {
     const statusMap = [
+      { key: 'currentStatus', index: 0, selector: '.label-gray' },
       { key: 'missed', index: 1, selector: '.Reprocess-card' },
       { key: 'short', index: 2, selector: '.Open-card' },
+      { key: 'shipShort', index: 3, selector: '.label-blue2' },
       { key: 'complete', index: 4, selector: '.Compete-cart' },
-      { key: 'notIncluded', index: 5, selector: '.not-inducted-status' },
-      { key: 'shipShort', index: 3, selector: '.label-blue2' }
+      { key: 'notInducted', index: 5, selector: '.not-inducted-status' }
     ];
   
     statusMap.forEach(({ key, index, selector }) => {
       const elements = this.el.nativeElement.querySelectorAll(`app-info-card-component mat-card${selector}`);
+  
       elements.forEach((element: Element) => {
-        if (this.markoutPreference?.[key] && Number(this.info[index]?.value) > 0) {
+        const isHighlighted = 
+          (key === 'currentStatus' && this.markoutPreference?.currentStatus && this.info[index]?.value !== '-') || 
+          (this.markoutPreference?.[key] && Number(this.info[index]?.value) > 0);
+  
+        if (isHighlighted) {
           this.renderer.setStyle(element, 'box-shadow', 'inset 0 0 0 4px #1A1AD3');
         } else {
           this.renderer.removeStyle(element, 'box-shadow');
@@ -76,6 +82,4 @@ export class MarkoutStatusComponent implements OnInit {
       });
     });
   }
-  
-
 }
