@@ -233,6 +233,7 @@ export class StorageContainerManagementModalComponent implements OnInit {
   async updateStorageContainerLayout() {
     let res = await this.iAdminApiService.updateStorageContainerLayout(this.scm.tray, { BinLayoutId: this.scm.containerType,Zone: this.scm.zone});
     if (res?.status == HttpStatusCode.Ok && res?.body?.resource?.success) {
+      this.clearAll();
       this.global.ShowToastr(ToasterType.Success, "Container Updated Successfully", ToasterTitle.Success);
     }
     else {
@@ -278,4 +279,13 @@ export class StorageContainerManagementModalComponent implements OnInit {
     }
   }
 
+  clearAll(){
+    this.scm.zone = "";
+    if (this.carouselZones.length == 1) {
+      this.scm.zone = this.carouselZones[0];
+    }
+    this.scm.tray = "";
+    this.scm.containerType = 0;
+    this.tableMatrix = [];
+  }
 }
