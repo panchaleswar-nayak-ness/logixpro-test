@@ -386,7 +386,6 @@ export class TranOrderListComponent implements OnInit, AfterViewInit {
                 this.checkIsReProcessAndAddStatusField(res.data?.orderStatus);
                 this.dataSource = new MatTableDataSource(res.data?.orderStatus);
                 if(this.dataSource.filteredData){
-                  this.dataSource.paginator = this.paginator;
                   this.dataSource.sort = this.sort;
                 }
 
@@ -673,7 +672,7 @@ export class TranOrderListComponent implements OnInit, AfterViewInit {
 
   handlePageEvent(e: PageEvent) {
     this.pageEvent = e;
-    this.customPagination.startIndex = e.pageSize * e.pageIndex;
+    this.customPagination.startIndex = (e.pageSize * e.pageIndex) + 1 ;
     this.customPagination.endIndex = e.pageSize * e.pageIndex + e.pageSize;
     this.customPagination.recordsPerPage = e.pageSize;
     this.getContentData();
