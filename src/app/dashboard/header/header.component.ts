@@ -269,7 +269,10 @@ export class HeaderComponent {
       });
     } else {
       this.iUserApi.Logout().subscribe((res:any) => {
-        if (res.isExecuted) window.location.href = "/#/login";
+        if (res.isExecuted){
+          this.localstorageService.clearLocalStorage();
+          window.location.href = "/#/login";
+        } 
         else {
           this.global.ShowToastr(ToasterType.Error,res.responseMessage, ToasterTitle.Error);
           console.log("Logout",res.responseMessage);
