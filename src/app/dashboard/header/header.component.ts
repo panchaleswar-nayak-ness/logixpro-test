@@ -271,6 +271,7 @@ export class HeaderComponent {
       this.iUserApi.Logout().subscribe((res:any) => {
         if (res.isExecuted){
           this.localstorageService.clearLocalStorage();
+          localStorage.setItem("logout", new Date().toDateString());
           window.location.href = "/#/login";
         } 
         else {
