@@ -165,6 +165,7 @@ export class TranSelectOrderComponent implements OnInit {
       this.displayToteID = "";
     }
     this.searchField = "";
+    this.searchAutocompleteList = [];
   }
 
   
