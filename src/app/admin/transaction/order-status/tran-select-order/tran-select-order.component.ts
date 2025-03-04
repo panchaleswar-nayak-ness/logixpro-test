@@ -348,37 +348,29 @@ export class TranSelectOrderComponent implements OnInit {
   }
 
   async autoCompleteSearchColumn() {
-    let searchPayload;
-    if (this.columnSelect == Column.OrderNumber) searchPayload = { orderNumber: this.searchField };
-    else {
-      searchPayload = {
-        query: this.searchField,
-        tableName: 1,
-        column: this.columnSelect
-      };
-    }
-
-   if( this.columnSelect == Column.OrderNumber) {
-    this.iAdminApiService.OrderNumberNext(searchPayload).subscribe({
+    const isOrderNumber = this.columnSelect === Column.OrderNumber;
+    const searchPayload = isOrderNumber
+      ? { orderNumber: this.searchField }
+      : { query: this.searchField, tableName: 1, column: this.columnSelect };
+  
+    const apiCall = isOrderNumber
+      ? this.iAdminApiService.OrderNumberNext(searchPayload)
+      : this.iAdminApiService.NextSuggestedTransactions(searchPayload);
+  
+    apiCall.subscribe({
       next: (res: any) => {
-        if(res.isExecuted && res.data) this.searchAutocompleteList = res.data;
-        else {
+        if (res.isExecuted && res.data) {
+          if (!this.searchField){
+            this.searchAutocompleteList = [];
+            return;
+          } 
+          this.searchAutocompleteList = res.data;
+        } else {
           this.global.ShowToastr(ToasterType.Error, this.global.globalErrorMsg(), ToasterTitle.Error);
-          console.log("OrderNumberNext",res.responseMessage);
+          console.log(isOrderNumber ? "OrderNumberNext" : "NextSuggestedTransactions", res.responseMessage);
         }
       }
     });
-   } else {
-    this.iAdminApiService.NextSuggestedTransactions(searchPayload).subscribe({
-      next: (res: any) => {
-        if(res.isExecuted && res.data) this.searchAutocompleteList = res.data;
-        else {
-          this.global.ShowToastr(ToasterType.Error, this.global.globalErrorMsg(), ToasterTitle.Error);
-          console.log("NextSuggestedTransactions",res.responseMessage);
-        }
-      }
-    });
-   }
   }
 
   actionDialog(event) {
