@@ -280,6 +280,15 @@
                       matTooltip="Toggles if the Case Label will be automatically printed"
                     ></mat-slide-toggle>
                   </div>
+                  <div class="d-flex justify-content-between mb-2">
+                    Exclude Orders in Reprocess:
+                    <mat-slide-toggle
+                      (change)="updatePreferences(1)"
+                      formControlName="excludeOrderInReprocess"
+                      color="primary"
+                      matTooltip="Toggles if orders in reprocess are excluded from pick batch selection"
+                    ></mat-slide-toggle>
+                  </div>
                 </div>
               </div>
             </div>
@@ -968,19 +977,6 @@
               </div>
               <span>Pick Tote Induction</span>
             </h2>
-          </div>
-
-          <div class="row mb-3">
-            <div class="col-md-4">
-              <div class="d-flex justify-content-between align-items-center">
-                <span>Exclude Orders in Reprocess:</span>
-                <mat-slide-toggle
-                  formControlName="excludeOrderInReprocess"
-                  color="primary"
-                  (change)="updatePreferences(1)"
-                ></mat-slide-toggle>
-              </div>
-            </div>
           </div>
 
           <div class="row">
