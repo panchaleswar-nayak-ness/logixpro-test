@@ -6,6 +6,8 @@ import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.ser
 import { ToasterTitle, ToasterType } from 'src/app/common/constants/strings.constants';
 import { ApiResponse, ColumnAlias } from 'src/app/common/types/CommonTypes';
 import { FieldMappingService } from 'src/app/common/services/field-mapping/field-mapping.service';
+import { time } from 'echarts';
+import { timeout } from 'rxjs';
 
 @Component({
   selector: 'app-sp-field-name-mapping',
@@ -74,6 +76,11 @@ export class SpFieldNameMappingComponent implements OnInit {
        this.columns.userField10
       ]
     };
+
+    if (this.global.isEmptyOrWhitespace(payload.itemAlias) || 
+        this.global.isEmptyOrWhitespace(payload.uomAlias)    || payload.ufs.some(field => !field)) {
+      this.global.ShowToastr(ToasterType.Info, "Field cannot be empty. Default value has been applied.", ToasterTitle.Info,2000);
+    }
     this.iAdminApiService.FieldNameSave(payload).subscribe((res: any) => {
       if(res) {
         this.OSFieldFilterNames();

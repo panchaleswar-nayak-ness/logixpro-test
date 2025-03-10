@@ -101,6 +101,8 @@ export class GlobalService {
     return value.split(' ').join('').toLowerCase();
   }
 
+  isEmptyOrWhitespace = (value: string) => !value || value.trim().length === 0;
+
   ShowToastr(
     type?: any,
     msg: string | null = null,
@@ -300,6 +302,8 @@ export class GlobalService {
       return false;
     }
   }
+
+
 
   OpenDialog(component: any, item: any) {
     return this.dialog.open(component, {
@@ -514,4 +518,5 @@ export class GlobalService {
   jsonify(value) {
     return JSON.parse(value);
   }
+
 }
