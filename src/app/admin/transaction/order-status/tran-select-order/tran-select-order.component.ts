@@ -325,7 +325,7 @@ export class TranSelectOrderComponent implements OnInit {
 
   deleteOrder() {
     let payload = {
-      OrderNumber: this.searchField,
+      OrderNumber: !this.displayToteID ? this.displayOrderNumber : this.displayToteID,
       TotalLines: JSON.stringify(this.totalLinesOrder)
     };
 
