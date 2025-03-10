@@ -567,8 +567,8 @@ export class SelectionTransactionForToteExtendComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe((res) => {
       this.toteForm.patchValue({
-        transactionQuantity    : values.transactionQuantity - (res.qtyToSubtract ? res.qtyToSubtract : 0),
-        toteQty                : values.toteQty - (res.qtyToSubtract ? res.qtyToSubtract : 0),
+        transactionQuantity    : values.transactionQuantity - (values.otid > 0 ?  (res.qtyToSubtract ? res.qtyToSubtract : 0) : 0), // Used for existing transaction qty. Only update the qty if the transaction is an existing transaction.
+        toteQty                : values.toteQty, // Just update the UI with what is in the values object since the cross-dock-transaction.component.ts#295 is updating the value.
       });
       if(res.data == "Submit") this.completeTransaction();
     });
@@ -631,7 +631,7 @@ export class SelectionTransactionForToteExtendComponent implements OnInit {
     try {
       const values = this.toteForm.value;
       if (!this.validationPopups({...values, type : 1})) return;
-      if (!this.validateOverReciept()) return;
+      if (!this.validateOverReciept(values.otid)) return;
 
       let payload = { zone: this.toteForm.value.zone };
       this.iInductionManagerApi.BatchByZone(payload).subscribe(
@@ -698,11 +698,11 @@ export class SelectionTransactionForToteExtendComponent implements OnInit {
     } catch (error) {}
   }
 
-  validateOverReciept() {
+  validateOverReciept(otid: number) {
     let toteQty = this.toteForm?.get('toteQty')?.value;
     let transactionQuantity = this.toteForm?.get(ColumnDef.TransactionQuantity)?.value;
-    if(this.imPreferences.dontAllowOverReceipt && toteQty > transactionQuantity) {
-      this.global.ShowToastr(ToasterType.Error, "Quantity cannot be greater than current transaction quantity", ToasterTitle.Error);
+    if(otid > 0 && this.imPreferences.dontAllowOverReceipt && toteQty > transactionQuantity) {
+      this.global.ShowToastr(ToasterType.Error, "Quantity cannot be greater than current transaction quantity.", ToasterTitle.Error);
       this.inputToteQty.nativeElement.focus();
       this.QtyToAssignFieldColor = 'warn';
       return false;
