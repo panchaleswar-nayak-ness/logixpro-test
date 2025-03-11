@@ -57,7 +57,9 @@ export class InventoryMasterComponent implements OnInit {
   }
   public currentPageItemNo: any = '';
   searchList: any;
+  currentPage: number = 1;
   public _searchValue: any = '';
+  isAutocompletePaginationDone: boolean;
   get searchValue(): any { return this._searchValue; }
   set searchValue(value: any) { this._searchValue = value; }
   isDataFound = false;
@@ -217,6 +219,7 @@ export class InventoryMasterComponent implements OnInit {
   @ViewChild(MatAutocompleteTrigger) autocompleteTrigger!: MatAutocompleteTrigger;
   @ViewChild("searchauto", { static: false }) autocompleteOpened: MatAutocomplete;
   @ViewChild('autoFocusField') searchBoxField: ElementRef;
+  @ViewChild('searchauto', { static: false }) autocomplete!: MatAutocompleteTrigger;
 
   public setVal: boolean = false;
 ContextMenu($event:any){
@@ -810,15 +813,31 @@ ContextMenu($event:any){
     }
   }
 
-  updateSearchList(stockCode : any) {
-    let payload = {
-      "stockCode": stockCode
+  onScrollEnd() {
+    if (!this.isAutocompletePaginationDone) {
+      this.updateSearchList(this.searchValue, this.currentPage);
+    }
+  }
+
+  updateSearchList(stockCode: any, pageNumber: number) {
+    const payload = {
+      stockCode,
+      pageNumber
     }
     this.iAdminApiService.GetLocationTable(payload).subscribe((res: any) => {
       if(res.isExecuted)
       {
         if (res.data?.length) {
-          this.searchList = res.data;
+          const map = new Map(this.searchList.map(item => [item.itemNumber, item]));
+          res.data.forEach(item => {
+            if (!map.has(item.itemNumber)) map.set(item.itemNumber, item);
+          });
+          this.searchList = Array.from(map.values());
+          if (res.data.length < 20) {
+              this.isAutocompletePaginationDone = true;
+          } else {
+              this.currentPage++;
+          }
           this.isDataFound = true;
           this.isDataFoundCounter = 0;
           this.saveDisabled = true;
@@ -837,14 +856,18 @@ ContextMenu($event:any){
 
   getSearchList(e: any):void {
     e.stopPropagation();
+    if (e.currentTarget.value !== this.searchValue) {
+      this.isAutocompletePaginationDone = false;
+      this.currentPage = 1;
+      this.searchList = [];
+      this.updateSearchList(e.currentTarget.value, this.currentPage);
+    }
+    this.searchValue = e.currentTarget.value;
     if (e.key === KeyboardKeys.Enter) {
       this.autocompleteTrigger.closePanel();
-      this.searchValue = e.currentTarget.value;
       this.currentPageItemNo =e.currentTarget.value;
       this.getInventory();
     }
-    this.searchValue = e.currentTarget.value;
-    this.updateSearchList(e.currentTarget.value);
   }
 
   onSearchSelect(e: any) {
@@ -868,7 +891,9 @@ ContextMenu($event:any){
   getNotification(e: any) {
     if (e?.newItemNumber) {
       this.currentPageItemNo = e.newItemNumber;
-      this.updateSearchList(e.newItemNumber);
+      this.searchList = [];
+      this.isAutocompletePaginationDone = false;
+      this.updateSearchList(e.newItemNumber, this.currentPage = 1);
       this.getInventory();
     } 
     else if (e?.refreshLocationGrid) this.getInvMasterLocations(this.currentPageItemNo);
