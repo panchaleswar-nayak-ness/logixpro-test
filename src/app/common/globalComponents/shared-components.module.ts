@@ -9,10 +9,13 @@ import { ColumnFilterComponentComponent } from './column-filter-component/column
 import { SortPipe } from 'src/app/common/init/sort.pipe';
 import { StatsCircleComponent } from './stats-circle/stats-circle.component';
 import { ReplacePlaceholderDirective } from '../init/replace-placeholder/replace-placeholder.directive';
+import { MatAutocompleteScrollDirective } from '../init/mat-autoscroll.directive';
+
 
 @NgModule({
   declarations: [
     ReplacePlaceholderDirective,
+    MatAutocompleteScrollDirective,
     TableContextMenuComponentComponent,
     IconHeadingComponentComponent,
     InfoCardComponentComponent,
@@ -23,6 +26,7 @@ import { ReplacePlaceholderDirective } from '../init/replace-placeholder/replace
   ],
   exports: [
     ReplacePlaceholderDirective,
+    MatAutocompleteScrollDirective,
     TableContextMenuComponentComponent,
     IconHeadingComponentComponent,
     StatsCircleComponent,

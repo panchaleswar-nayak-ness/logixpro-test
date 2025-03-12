@@ -130,6 +130,12 @@ export interface CmPreferences {
     autoPrintToteManifest2: boolean;
     autoPrintMarkoutReport: boolean;
     defaultViewType: string;
+    currentStatus: boolean;
+    missed: boolean;
+    short: boolean;
+    shipShort: boolean;
+    complete: boolean;
+    notIncluded: boolean;
   }
 
   export interface FieldMappingModel {

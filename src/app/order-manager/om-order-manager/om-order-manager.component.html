@@ -197,7 +197,7 @@
                 <table class="w-100 table-borderless" mat-table matSort [dataSource]="orderTable" (matSortChange)="announceSortChange($event)">                                                        
 
                     <ng-container *ngFor="let col of allColumns; let i = index;" matColumnDef="{{col.colDef}}">
-                        <th mat-header-cell *matHeaderCellDef mat-sort-header> {{col.colHeader}} </th>
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header> {{col.key}} </th>
 
                         <td mat-cell *matCellDef="let element" (contextmenu)="onContextMenu($event,  element[col.colHeader], col.colDef)">
                             <div *ngIf="col.colDef != 'Transaction Type'"

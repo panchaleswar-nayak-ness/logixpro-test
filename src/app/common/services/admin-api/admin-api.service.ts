@@ -2118,12 +2118,12 @@ export class AdminApiService implements IAdminApiService {
       return this.Api.getBinLayout(layoutId, binCode);
     }
 
-    public validateScannedContainer(containerId: string) {
-      return this.Api.validateScannedContainer(containerId);
+    public validateScannedContainer(containerId: string, zone:string) {
+      return this.Api.validateScannedContainer(containerId, zone);
     }
 
-    public getStorageContainerLayout(containerId: string) {
-      return this.Api.getStorageContainerLayout(containerId);
+    public getStorageContainerLayout(containerId: string, zone:string) {
+      return this.Api.getStorageContainerLayout(containerId ,zone);
     }
     
     public updateStorageContainerLayout(containerId: string,body:UpdateSCReq) {

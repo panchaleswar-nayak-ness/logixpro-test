@@ -2,6 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { AuthService } from 'src/app/common/init/auth.service'; 
 import { ApiFuntions } from 'src/app/common/services/ApiFuntions';
 import { CurrentTabDataService } from '../../inventory-master/current-tab-data-service';
+import { NumberHolder, StringHolder } from 'src/app/common/Model/holders';
 
 @Component({
   selector: 'app-order-status',
@@ -12,12 +13,12 @@ export class OrderStatusComponent implements OnInit {
   orderNoEvent: Event;
   @Input() tabIndex:any;
   toteIdEvent: Event;
-  openOrderEvent: Event;
-  completeOrderEvent: Event;
-  reprocessOrderEvent: Event;
-  orderTypeOrderEvent: Event;
-  totalLinesOrderEvent: Event;
-  currentStatusOrderEvent: Event;
+  openOrderEvent: NumberHolder;
+  completeOrderEvent: NumberHolder;
+  reprocessOrderEvent: NumberHolder;
+  orderTypeOrderEvent: StringHolder;
+  totalLinesOrderEvent: NumberHolder;
+  currentStatusOrderEvent: StringHolder;
   locationZonesEvent: Event;
   orderStatusNext = [];
   clearEvent: Event;
@@ -56,22 +57,22 @@ export class OrderStatusComponent implements OnInit {
     this.toteIdEvent = event;
   }
 
-  openOrderChange(event: Event) {
+  openOrderChange(event: NumberHolder) {
     this.openOrderEvent = event;
   }
-  reprocessOrderChange(event: Event) {
+  reprocessOrderChange(event: NumberHolder) {
     this.reprocessOrderEvent = event;
   }
-  orderTypeOrderChange(event: Event) {
+  orderTypeOrderChange(event: StringHolder) {
     this.orderTypeOrderEvent = event;
   }
-  completeOrderChange(event: Event) {
+  completeOrderChange(event: NumberHolder) {
     this.completeOrderEvent = event;
   }
-  totalLinesOrderChange(event: Event) {
+  totalLinesOrderChange(event: NumberHolder) {
     this.totalLinesOrderEvent = event;
   }
-  currentStatusOrderChange(event: Event) {
+  currentStatusOrderChange(event: StringHolder) {
     this.currentStatusOrderEvent = event;
   }
   locationZones(event: Event) {

@@ -1,46 +1,109 @@
-<mat-card class="mat-elevation-z g-card mt-2 mb-3">
-    <div class="mb-0">
-        <app-icon-heading-component heading="Preferences" icon="tune">
-        </app-icon-heading-component>
-        <p class="text-tertiary-800 bold py-3 mb-0"></p>
-    </div>
-    <form [formGroup]="markoutForm">
-        <div class="row">
-            <div class="col-xl-6 pb-2">
-                <mat-form-field class="action-dropdown col-xl-12 col-12" appearance="outline">
-                    <mat-label>Default View Type</mat-label>
-                    <mat-select  formControlName="defaultViewType" class="employees-action" (selectionChange)="updateMarkoutPreferences()">
-                        <mat-option [value]="'View by Order'">View by Order</mat-option>
-                        <mat-option [value]="'View by Tote'">View by Tote</mat-option>
-                    </mat-select>
-                    <span class="material-symbols-outlined icon-expand-more">
-                        expand_more
-                    </span>
-                </mat-form-field>
+<mat-card class="mat-elevation-z g-card mt-2 mb-3 pb-5">
+  <div class="mb-0">
+    <app-icon-heading-component heading="Preferences" icon="tune">
+    </app-icon-heading-component>
+    <p class="text-tertiary-800 bold py-3 mb-0"></p>
+  </div>
+  <div>
+  <form [formGroup]="markoutForm">
+    <div class="row pb-2 mb-3">
+      <div class="col-xl-4">
+        <div class="card">
+          <div class="row p-3">
+            <div class="col-xl-12 pb-2">
+              <mat-form-field
+                class="action-dropdown col-xl-12 col-12"
+                appearance="outline"
+              >
+                <mat-label>Default View Type</mat-label>
+                <mat-select
+                  formControlName="defaultViewType"
+                  class="employees-action"
+                  (selectionChange)="updateMarkoutPreferences()"
+                >
+                  <mat-option [value]="'View by Order'"
+                    >View by Order</mat-option
+                  >
+                  <mat-option [value]="'View by Tote'">View by Tote</mat-option>
+                </mat-select>
+                <span class="material-symbols-outlined icon-expand-more">
+                  expand_more
+                </span>
+              </mat-form-field>
             </div>
-        </div>
-        <div class="row pb-5 mb-5">
-            <div class="col-xl-6">
-                <div class="d-xl-flex gap-12 mb-2 pb-5">
-                    <div class="col-xl-12 text-left admin-prefrences py-2 ps-1">
-                        <div class="d-flex justify-content-between mb-2 text-tertiary-900">
-                            Auto Print Markout Report: <mat-slide-toggle (change)="updateMarkoutPreferences()" 
-                                formControlName="autoPrintMarkoutReport" checked color="primary" 
-                                matTooltip=""></mat-slide-toggle>
-                        </div>
-                        <div class="d-flex justify-content-between mb-2 text-tertiary-900">
-                            Auto Print Tote Manifest: <mat-slide-toggle (change)="updateMarkoutPreferences()" 
-                                formControlName="autoPrintToteManifest" checked color="primary"
-                                matTooltip=""></mat-slide-toggle>
-                        </div>
-                        <div class="d-flex justify-content-between mb-2 text-tertiary-900">
-                            Auto Print Tote Manifest 2: <mat-slide-toggle (change)="updateMarkoutPreferences()" 
-                                formControlName="autoPrintToteManifest2" checked color="primary"
-                                matTooltip=""></mat-slide-toggle>
-                        </div>
-                    </div>
+          <div class="row pb-0 mb-0">
+            <div class="col-xl-12">
+              <div class="d-xl-flex gap-12 mb-0 pb-0">
+                <div class="col-xl-12 text-left admin-prefrences py-2 ps-1">
+                  <div
+                    class="d-flex justify-content-between mb-2 text-tertiary-900"
+                  >
+                    Auto Print Markout Report:
+                    <mat-slide-toggle
+                      (change)="updateMarkoutPreferences()"
+                      formControlName="autoPrintMarkoutReport"
+                      checked
+                      color="primary"
+                      matTooltip=""
+                    ></mat-slide-toggle>
+                  </div>
+                  <div
+                    class="d-flex justify-content-between mb-2 text-tertiary-900"
+                  >
+                    Auto Print Tote Manifest:
+                    <mat-slide-toggle
+                      (change)="updateMarkoutPreferences()"
+                      formControlName="autoPrintToteManifest"
+                      checked
+                      color="primary"
+                      matTooltip=""
+                    ></mat-slide-toggle>
+                  </div>
+                  <div
+                    class="d-flex justify-content-between mb-2 text-tertiary-900"
+                  >
+                    Auto Print Tote Manifest 2:
+                    <mat-slide-toggle
+                      (change)="updateMarkoutPreferences()"
+                      formControlName="autoPrintToteManifest2"
+                      checked
+                      color="primary"
+                      matTooltip=""
+                    ></mat-slide-toggle>
+                  </div>
                 </div>
+              </div>
             </div>
+          </div>
         </div>
-    </form>
+        </div>
+      </div>
+    </div>
+    <div class="row pb-2 mb-3">
+      <div class="col-xl-4">
+          <div class="card">
+          <div class="row p-3">
+              <div class="col-xl-12 pb-2">
+                <div class="mb-2">
+                  <span class="text-20 text-tertiary-900 bold mb-0 d-flex align-items-center ">Status Card Highlight Settings</span>
+                </div>
+              <div class="row py-2">
+                  <p class="text-tertiary-800 bold mb-0 ">Tote Status</p>
+                  <mat-checkbox (change)="updateMarkoutPreferences()" formControlName="currentStatus" color="primary" class="ld_checkbox col-12 col-xl-4">Current Status</mat-checkbox>
+              </div>
+                  <div class="row py-2">
+                      <p class="text-tertiary-800 bold mb-0"> Transaction Status</p>
+                      <mat-checkbox  (change)="updateMarkoutPreferences()" class="ld_checkbox col-12" color="primary" formControlName="short">Short</mat-checkbox>
+                      <mat-checkbox  (change)="updateMarkoutPreferences()" class="ld_checkbox col-12" color="primary" formControlName="missed">Missed</mat-checkbox>
+                      <mat-checkbox  (change)="updateMarkoutPreferences()" class="ld_checkbox col-12" color="primary" formControlName="shipShort">Ship Short</mat-checkbox>
+                      <mat-checkbox  (change)="updateMarkoutPreferences()" class="ld_checkbox col-12" color="primary" formControlName="complete">Complete</mat-checkbox>
+                      <mat-checkbox  (change)="updateMarkoutPreferences()" class="ld_checkbox col-12" color="primary" formControlName="notInducted">Not Inducted</mat-checkbox>
+                  </div>
+              </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>
 </mat-card>

@@ -2,6 +2,8 @@ import { Component, HostListener, OnInit } from '@angular/core';
 import { BrowserCloseService } from './common/services/browser-close.service';
 import { BroadcastService } from './common/init/broadcast.service';
 import {  UniqueConstants } from 'src/app/common/constants/strings.constants';
+import { LocalStorageService } from './common/services/LocalStorage.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-root',
@@ -12,9 +14,19 @@ export class AppComponent implements OnInit {
   userData;
 
   constructor(
-    private browserCloseService: BrowserCloseService,
-    private broadCast:BroadcastService
+    private readonly browserCloseService: BrowserCloseService,
+    private readonly broadCast:BroadcastService,
+    private readonly localstorageService:LocalStorageService,
+    private readonly router: Router
   ) {}
+
+  @HostListener('window:storage', [UniqueConstants.event])
+  onStorageChange(event: StorageEvent) {
+    if (event.key === 'logout') {
+      this.localstorageService.clearLocalStorage();
+      this.router.navigate(["/login"]);
+    }
+  }
 
   @HostListener('window:beforeunload', [UniqueConstants.event])
   beforeunloadHandler(): void {

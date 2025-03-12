@@ -20,11 +20,6 @@ export class StorageContainerManagementModalComponent implements OnInit {
     tray: "",
     containerType: 0
   }
-  errorText: string = "Storage Container/Tray cannot exceed 5 characters. Please enter a valid value.";
-  rows = [
-    ['A02', 'B02', 'C02', 'D02'], // Row 1
-    ['A01', 'B01', 'C01', 'D01'], // Row 2
-  ];
   containerTypes: ContainerTypes[] = [];
   get inventoryMapRecords(): { count: number; label: string } {
     const count = this.scm.containerType === 1
@@ -41,7 +36,6 @@ export class StorageContainerManagementModalComponent implements OnInit {
   carouselZones: string[] = [];
   tableMatrix: string[][] = [];
   storageContainerLayout: StorageContainerLayout = new StorageContainerLayout();
-  storageContainerLayouts: StorageContainerLayout[] = [];
   isExistingContainer: boolean = false;
   fromCells: number = 0;
 
@@ -97,7 +91,7 @@ export class StorageContainerManagementModalComponent implements OnInit {
     this.tableMatrix = [];
     this.scm.containerType = 0;
     if (this.scm.tray === "") return;
-    let res = await this.iAdminApiService.validateScannedContainer(this.scm.tray);
+    let res = await this.iAdminApiService.validateScannedContainer(this.scm.tray,this.scm.zone);
     if (res?.status == HttpStatusCode.Ok) {
       this.isExistingContainer = false;
       await this.getStorageContainerLayout();
@@ -111,7 +105,7 @@ export class StorageContainerManagementModalComponent implements OnInit {
 
   async getStorageContainerLayout() {
     if (!this.scm.tray) return;
-    let res = await this.iAdminApiService.getStorageContainerLayout(this.scm.tray);
+    let res = await this.iAdminApiService.getStorageContainerLayout(this.scm.tray,this.scm.zone);
     if (res?.status == HttpStatusCode.Ok) {
       if (res?.body.resource == null) return;
       const clearDialogRef = this.dialog.open(ConfirmationDialogComponent, {
@@ -237,8 +231,9 @@ export class StorageContainerManagementModalComponent implements OnInit {
   }
 
   async updateStorageContainerLayout() {
-    let res = await this.iAdminApiService.updateStorageContainerLayout(this.scm.tray, { BinLayoutId: this.scm.containerType });
+    let res = await this.iAdminApiService.updateStorageContainerLayout(this.scm.tray, { BinLayoutId: this.scm.containerType,Zone: this.scm.zone});
     if (res?.status == HttpStatusCode.Ok && res?.body?.resource?.success) {
+      this.clearAll();
       this.global.ShowToastr(ToasterType.Success, "Container Updated Successfully", ToasterTitle.Success);
     }
     else {
@@ -270,8 +265,11 @@ export class StorageContainerManagementModalComponent implements OnInit {
     let inventoryMap: InventoryMap = new InventoryMap();
     inventoryMap.zone = this.scm.zone;
     inventoryMap.row = this.scm.tray;
+    inventoryMap.shelf = "01";
+    inventoryMap.carousel = "1";
     inventoryMap.cell = "F";
     inventoryMap.velocity = "1";
+    inventoryMap.altLight = 1;
     let res = await this.iAdminApiService.createInventoryMapAsync(inventoryMap);
     if (res?.status == HttpStatusCode.Ok) {
       await this.updateStorageContainerLayout();
@@ -281,4 +279,13 @@ export class StorageContainerManagementModalComponent implements OnInit {
     }
   }
 
+  clearAll(){
+    this.scm.zone = "";
+    if (this.carouselZones.length == 1) {
+      this.scm.zone = this.carouselZones[0];
+    }
+    this.scm.tray = "";
+    this.scm.containerType = 0;
+    this.tableMatrix = [];
+  }
 }
