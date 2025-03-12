@@ -178,16 +178,8 @@ export class TranSelectOrderComponent implements OnInit {
     this.actionDialog(e);
   }
   ngAfterViewInit() {
-    this.subscription.add(
-      this.sharedService.orderStatusObserver.subscribe((orderNo) => {
-        if (orderNo) {
-          this.columnSelect = Column.OrderNumber;
-          this.onOrderNoChange();
-        }
-      })
-    );
     const hasOrderStatus = this.route.snapshot.queryParamMap.has('orderStatus');
-
+    
     if (!hasOrderStatus) {
       if (this.currentTabDataService.savedItem[this.currentTabDataService.TRANSACTIONS_ORDER_SELECT])
       {
@@ -250,6 +242,16 @@ export class TranSelectOrderComponent implements OnInit {
     this.subscription.add(
       this.sharedService.updateOrderStatusSelectObserver.subscribe((obj) => {
         this.totalLinesOrder = obj.totalRecords ? obj.totalRecords : 0
+      })
+    );
+
+    this.subscription.add(
+      this.route.queryParams.subscribe(params => {
+        if (params['orderStatus']) {
+          this.columnSelect = Column.OrderNumber;
+          this.searchField = params['orderStatus'];
+          this.selectOrderByTote();
+        }
       })
     );
   }
@@ -325,7 +327,7 @@ export class TranSelectOrderComponent implements OnInit {
 
   deleteOrder() {
     let payload = {
-      OrderNumber: !this.displayToteID ? this.displayOrderNumber : this.displayToteID,
+      OrderNumber: this.displayOrderNumber,
       TotalLines: JSON.stringify(this.totalLinesOrder)
     };
 
@@ -344,6 +346,8 @@ export class TranSelectOrderComponent implements OnInit {
       if (res.isExecuted) {
         this.deleteEvent.emit(res);
         this.resetLines();
+        this.displayOrderNumber = "";
+        this.displayToteID = "";
       }
     });
   }
