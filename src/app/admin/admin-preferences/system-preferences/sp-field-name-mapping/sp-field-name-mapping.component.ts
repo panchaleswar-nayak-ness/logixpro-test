@@ -32,6 +32,12 @@ export class SpFieldNameMappingComponent implements OnInit {
     this.OSFieldFilterNames();
   }
 
+  emptyCol(){
+    this.emptyColumns();
+    this.FieldNameSave(true);
+  }
+   
+
   emptyColumns(){
     this.columns = {
       itemNumber: '',
@@ -48,7 +54,8 @@ export class SpFieldNameMappingComponent implements OnInit {
       userField10: ''
     }
   }
-   
+
+
   public OSFieldFilterNames() { 
     this.iAdminApiService.ColumnAlias().subscribe((res: ApiResponse<ColumnAlias>) => {
       if(res.isExecuted && res.data) this.columns = res.data;
@@ -59,7 +66,7 @@ export class SpFieldNameMappingComponent implements OnInit {
     });
   }
 
-  public FieldNameSave() { 
+  public FieldNameSave(defaultCheck?:boolean) { 
     const payload = {
       "itemAlias": this.columns.itemNumber,
       "uomAlias": this.columns.unitOfMeasure,
@@ -76,10 +83,12 @@ export class SpFieldNameMappingComponent implements OnInit {
        this.columns.userField10
       ]
     };
-
-    if (this.global.isEmptyOrWhitespace(payload.itemAlias) || 
-        this.global.isEmptyOrWhitespace(payload.uomAlias)    || payload.ufs.some(field => !field)) {
-      this.global.ShowToastr(ToasterType.Info, "Field cannot be empty. Default value has been applied.", ToasterTitle.Info,2000);
+    const isEmptyOrWhitespace = (value: string) => !value || value.trim().length === 0;
+    if (isEmptyOrWhitespace(payload.itemAlias) || 
+        isEmptyOrWhitespace(payload.uomAlias)    || payload.ufs.some(field => !field)) {
+          if(!defaultCheck){
+            this.global.ShowToastr(ToasterType.Info, "Field cannot be empty. Default value has been applied.", ToasterTitle.Info);
+          }
     }
     this.iAdminApiService.FieldNameSave(payload).subscribe((res: any) => {
       if(res) {
