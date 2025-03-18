@@ -338,7 +338,7 @@ export class VerifyBulkComponent implements OnInit {
           message: `There is a completed quantity of ZERO for one or more line items!`,
           message2: `Touch 'Yes' to to leave the transactions open.
           Touch 'No' to complete with zero quantity.
-          Touch Cancel to continue varification.`,
+          Touch Cancel to continue verification.`,
           heading: 'Zero Completed Quantity - Leave Open?',
           buttonFields: true,
           threeButtons: true
