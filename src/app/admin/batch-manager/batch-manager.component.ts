@@ -118,13 +118,6 @@ export class BatchManagerComponent implements OnInit {
     if (type == 1) {
       this.orderList = this.orderList.filter(val => val.orderNumber !== order.orderNumber);
       this.selOrderList = [...this.selOrderList,order];
-      // this.selOrderList.sort((a, b) => {
-      //   const orderNumA = a.orderNumber.toLowerCase();
-      //   const orderNumB = b.orderNumber.toLowerCase();
-      //   if (orderNumA < orderNumB) return -1;
-      //   if (orderNumA > orderNumB) return 1;
-      //   return 0;
-      // });
     } else {
       this.selOrderList = this.selOrderList.filter(val => val.orderNumber !== order.orderNumber);
       this.orderList = [...this.orderList,order];
