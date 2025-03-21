@@ -22,9 +22,9 @@ export class InputFilterComponent implements OnInit {
   condition: any;
   columnName: any;
   butttonText : string = "Submit";
-  inputType : string = "text";
-  
+  inputType : string = "text";  
   dynamicText: string = 'Dynamic Text';
+
   constructor(
     public dialogRef: MatDialogRef<any>,
     @Inject(MAT_DIALOG_DATA) public data: any
@@ -34,9 +34,10 @@ export class InputFilterComponent implements OnInit {
     this.condition = this.data.Condition;
     this.columnName = this.data.FilterColumnName;
     this.dynamicText = this.data.dynamicText;
-    this.butttonText = this.data.butttonText;
-    this.inputType= this.data.inputType;
+    this.butttonText = this.data.butttonText ? this.data.butttonText : "Submit";
+    this.inputType = this.data.inputType;
   }
+
   onSend(form?: any) {
     if (
       this.data.Condition == 'is between' &&
@@ -59,6 +60,7 @@ export class InputFilterComponent implements OnInit {
     };
     this.dialogRef.close(dictionary);
   }
+  
   ngAfterViewInit(): void {
     this.autFocus.nativeElement.focus();
   }

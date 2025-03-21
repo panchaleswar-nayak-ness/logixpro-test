@@ -12,9 +12,9 @@
         <div class="col-xl-6">
             <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline">
                 <mat-label>Zone</mat-label>
-                <mat-select [(ngModel)]="scm.zone" class="employees-action" [disabled]="checkDisabled('zone')" autoFocus #zone (selectionChange)="zoneChanged()">
+                <mat-select [(ngModel)]="scm.carouselZone" class="employees-action" [disabled]="checkDisabled('zone')" autoFocus #zone (selectionChange)="zoneChanged()">
                     <mat-option *ngFor="let option of carouselZones" [value]="option">
-                        {{option}}
+                        {{option.zone}}
                     </mat-option>
                 </mat-select>
                 <span class="material-symbols-outlined icon-expand-more">expand_more</span>

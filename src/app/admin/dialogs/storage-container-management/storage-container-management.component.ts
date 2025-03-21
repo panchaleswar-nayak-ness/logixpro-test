@@ -7,7 +7,7 @@ import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.ser
 import { GlobalService } from 'src/app/common/services/global.service';
 import { ToasterTitle, ToasterType } from 'src/app/common/constants/strings.constants';
 import { HttpStatusCode } from '@angular/common/http';
-import { BinCellLayout, ContainerTypes, InventoryMap, StorageContainerLayout } from 'src/app/common/Model/storage-container-management';
+import { BinCellLayout, CarouselZone, ContainerTypes, InventoryMap, StorageContainerLayout } from 'src/app/common/Model/storage-container-management';
 
 @Component({
   selector: 'app-storage-container-management-modal',
@@ -16,7 +16,7 @@ import { BinCellLayout, ContainerTypes, InventoryMap, StorageContainerLayout } f
 })
 export class StorageContainerManagementModalComponent implements OnInit {
   scm = {
-    zone: "",
+    carouselZone: new CarouselZone(),
     tray: "",
     containerType: 0
   }
@@ -33,7 +33,7 @@ export class StorageContainerManagementModalComponent implements OnInit {
     const label = count === 1 ? 'record' : 'records';
     return { count, label };
   }
-  carouselZones: string[] = [];
+  carouselZones: CarouselZone[] = [];
   tableMatrix: string[][] = [];
   storageContainerLayout: StorageContainerLayout = new StorageContainerLayout();
   isExistingContainer: boolean = false;
@@ -66,7 +66,7 @@ export class StorageContainerManagementModalComponent implements OnInit {
     if (res?.status == HttpStatusCode.Ok) {
       this.carouselZones = res?.body;
       if (this.carouselZones.length == 1) {
-        this.scm.zone = this.carouselZones[0];
+        this.scm.carouselZone = this.carouselZones[0];
         this.zoneChanged();
       }
     }
@@ -91,7 +91,7 @@ export class StorageContainerManagementModalComponent implements OnInit {
     this.tableMatrix = [];
     this.scm.containerType = 0;
     if (this.scm.tray === "") return;
-    let res = await this.iAdminApiService.validateScannedContainer(this.scm.tray,this.scm.zone);
+    let res = await this.iAdminApiService.validateScannedContainer(this.scm.tray,this.scm.carouselZone.zone);
     if (res?.status == HttpStatusCode.Ok) {
       this.isExistingContainer = false;
       await this.getStorageContainerLayout();
@@ -105,7 +105,7 @@ export class StorageContainerManagementModalComponent implements OnInit {
 
   async getStorageContainerLayout() {
     if (!this.scm.tray) return;
-    let res = await this.iAdminApiService.getStorageContainerLayout(this.scm.tray,this.scm.zone);
+    let res = await this.iAdminApiService.getStorageContainerLayout(this.scm.tray,this.scm.carouselZone.zone);
     if (res?.status == HttpStatusCode.Ok) {
       if (res?.body.resource == null) return;
       const clearDialogRef = this.dialog.open(ConfirmationDialogComponent, {
@@ -231,7 +231,7 @@ export class StorageContainerManagementModalComponent implements OnInit {
   }
 
   async updateStorageContainerLayout() {
-    let res = await this.iAdminApiService.updateStorageContainerLayout(this.scm.tray, { BinLayoutId: this.scm.containerType,Zone: this.scm.zone});
+    let res = await this.iAdminApiService.updateStorageContainerLayout(this.scm.tray, { BinLayoutId: this.scm.containerType,Zone: this.scm.carouselZone.zone});
     if (res?.status == HttpStatusCode.Ok && res?.body?.resource?.success) {
       this.clearAll();
       this.global.ShowToastr(ToasterType.Success, "Container Updated Successfully", ToasterTitle.Success);
@@ -263,7 +263,8 @@ export class StorageContainerManagementModalComponent implements OnInit {
 
   async addInventoryMapRecord(){
     let inventoryMap: InventoryMap = new InventoryMap();
-    inventoryMap.zone = this.scm.zone;
+    inventoryMap.location = this.scm.carouselZone.zoneName;
+    inventoryMap.zone = this.scm.carouselZone.zone;
     inventoryMap.row = this.scm.tray;
     inventoryMap.shelf = "01";
     inventoryMap.carousel = "1";
@@ -280,9 +281,9 @@ export class StorageContainerManagementModalComponent implements OnInit {
   }
 
   clearAll(){
-    this.scm.zone = "";
+    this.scm.carouselZone = new CarouselZone();
     if (this.carouselZones.length == 1) {
-      this.scm.zone = this.carouselZones[0];
+      this.scm.carouselZone = this.carouselZones[0];
     }
     this.scm.tray = "";
     this.scm.containerType = 0;

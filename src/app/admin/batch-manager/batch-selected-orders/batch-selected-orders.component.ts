@@ -180,10 +180,7 @@ export class BatchSelectedOrdersComponent implements OnInit {
     let iBactchData: any[] = [];
     this.batchOrderDataTable.data.map((order: any) => {
       let result = [
-        order.orderNumber.toString(),
-        this.isAutoBatch
-          ? order.toteNumber.toString()
-          : order.fixedTote.toString(),
+        order.orderNumber.toString(), order.toteNumber.toString()
       ];
       iBactchData.push(result);
     });
