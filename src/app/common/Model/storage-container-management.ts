@@ -64,6 +64,11 @@ export class ContainerTypes {
     name: string;
 }
 
+export class CarouselZone {
+    zone: string;
+    zoneName: string;
+}
+
 export const ValidationErrorCodes = {
     LocationDedicatedToContainer: "LocationDedicatedToContainer",
     AllocatedPutawayToContainer: "AllocatedPutawayToContainer",
