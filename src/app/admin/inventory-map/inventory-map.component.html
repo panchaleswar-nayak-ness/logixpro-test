@@ -57,7 +57,7 @@
                   <td class="container-table-data" mat-cell *matCellDef="let element" 
                   (dblclick)="col.colDef == 'Item Number' && viewInInventoryMaster(element)"
                   (contextmenu)=" onContextMenu($event,  element[col.colHeader], col.colDef)"  
-                  [ngClass]="{'quarantineColor': element.warehouse.includes('Quarantine')}" > {{ element[col.colHeader] }}</td>
+                  [ngClass]="{'quarantineColor': element.warehouse.includes('Quarantine')}" >{{ element[col.colHeader] }}</td>
                 </ng-container>
 
                 <ng-container matColumnDef="actions" stickyEnd>

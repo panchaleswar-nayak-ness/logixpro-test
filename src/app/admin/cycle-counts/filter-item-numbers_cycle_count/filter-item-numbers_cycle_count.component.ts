@@ -76,10 +76,12 @@ export class FilterItemNumbersComponentCycleCount implements OnInit {
           if (this.importtype === 'Location') {
             if (res.data.item3 && res.data.item3.length > 0) {
               heading = 'Location(s) Not Found';
-              message = `The following location(s) could not be imported as they are in another user's queue or have existing cycle count transactions: [${res.data.item3.join(', ')}]`;
+                const item5List = Array.isArray(res.data.item5) ? res.data.item5.join(', ') : '';
+                const item3List = Array.isArray(res.data.item3) ? res.data.item3.join(', ') : '';
+                message = `The following locations could not be imported as they are allocated to workstation${item5List ? ` [${item5List}]` : ''}${item3List ? ` or have existing cycle count transactions: [${item3List}]` : ''}.`;
               // for some location exists in db and some are not in db 
               if (res.data.item4 && res.data.item4.length > 0) {
-                message = `The following location(s) could not be imported as they are in another user's queue or have existing cycle count transactions: [${res.data.item3.join(', ')}]`;
+                message = `The following locations could not be imported as they are allocated to workstation${item5List ? ` [${item5List}]` : ''}${item3List ? ` or have existing cycle count transactions: [${item3List}]` : ''}.`;
                 message2 = `The following location(s) do not exist: [${res.data.item4.join(', ')}]`;
               }
             }

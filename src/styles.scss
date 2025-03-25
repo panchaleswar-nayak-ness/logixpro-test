@@ -698,7 +698,7 @@ button {
 .action-dropdown.mat-form-field-appearance-outline {
 
   .mat-form-field-infix {
-    padding: 9px 0 10px 0;
+    padding: 9px 0 14px 0;
     width: auto !important;
     min-width: 180px;
   }
@@ -1788,6 +1788,10 @@ button.default-btn {
   border-collapse: separate !important;
   width: 100%;
 
+  td{
+    white-space: pre !important;
+  }
+
   th.mat-header-cell {
 
     background: var(--clr-table-header);
@@ -2097,6 +2101,11 @@ button.default-btn {
   text-overflow: ellipsis;
 }
 
+.auto-comp-custom{
+  .mat-option{
+    white-space: pre;
+  }
+}
 
 .autocomplete-center {
   left: 32%;

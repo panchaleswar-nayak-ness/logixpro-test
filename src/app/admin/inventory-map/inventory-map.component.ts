@@ -727,7 +727,7 @@ storageContainerManagement(){
     data: {}
   })
   dialogRef.afterClosed().pipe(takeUntil(this.onDestroy$)).subscribe(result => {
-   
+    this.getContentData();
   })
 }
 
