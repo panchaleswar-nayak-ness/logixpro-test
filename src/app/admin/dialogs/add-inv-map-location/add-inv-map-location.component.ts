@@ -508,7 +508,7 @@ performClear() {
       laserY: [this.getDetailInventoryMapData.laserY || 0, [Validators.pattern(UniqueConstants.Regx), Validators.maxLength(9)]],
       locationNumber: [this.getDetailInventoryMapData.locationNumber || '',],
       locationID: [this.getDetailInventoryMapData.locationID || ''],
-      altLight: [this.getDetailInventoryMapData.altLight || 0, [Validators.maxLength(9), Validators.pattern(UniqueConstants.Regx)]]
+      altLight: [this.getDetailInventoryMapData.locationID || 0, [Validators.maxLength(9), Validators.pattern(UniqueConstants.Regx)]]
     });
 
     this.clearInvMapLocation = this.fb.group({

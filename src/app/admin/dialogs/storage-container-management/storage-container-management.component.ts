@@ -7,7 +7,7 @@ import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.ser
 import { GlobalService } from 'src/app/common/services/global.service';
 import { ToasterTitle, ToasterType } from 'src/app/common/constants/strings.constants';
 import { HttpStatusCode } from '@angular/common/http';
-import { BinCellLayout, CarouselZone, ContainerTypes, InventoryMap, StorageContainerLayout } from 'src/app/common/Model/storage-container-management';
+import { BinCellLayout, CarouselZone, ContainerTypes, InventoryMap, StorageContainerLayout, ValidationErrorCodes } from 'src/app/common/Model/storage-container-management';
 
 @Component({
   selector: 'app-storage-container-management-modal',
@@ -40,7 +40,9 @@ export class StorageContainerManagementModalComponent implements OnInit {
   fromCells: number = 0;
 
   @ViewChild('zone') zoneSelect!: MatSelect;
+  @ViewChild('containerTypeDropdown') containerTypeSelect!: MatSelect;
   @ViewChild('storageContainer', { static: false }) storageContainer!: ElementRef;
+
 
   public iAdminApiService: IAdminApiService;
 
@@ -58,7 +60,11 @@ export class StorageContainerManagementModalComponent implements OnInit {
   }
 
   ngAfterViewInit(): void {
-    this.zoneSelect.focus();
+    this.storageContainer.nativeElement.focus();
+  }
+
+  handleEnter() {
+    this.validateScannedContainer();
   }
 
   async getCarouselZones() {
@@ -94,13 +100,45 @@ export class StorageContainerManagementModalComponent implements OnInit {
     let res = await this.iAdminApiService.validateScannedContainer(this.scm.tray,this.scm.carouselZone.zone);
     if (res?.status == HttpStatusCode.Ok) {
       this.isExistingContainer = false;
+
+      //TODO: Use HATEOS Link
       await this.getStorageContainerLayout();
     }
     else if (res?.error?.hasError) {
+
+      if(res?.error?.validationErrorCode.toString() === ValidationErrorCodes.NoLayoutAssignedToContainer){
+        this.reassigningContainerWithoutLayout();
+        return;
+      }
+
       this.scm.tray = "";
       this.scm.containerType = 0;
       this.global.ShowToastr(ToasterType.Error, res?.error?.errorMessage, ToasterTitle.Error);
     }
+  }
+
+  async reassigningContainerWithoutLayout(){
+    const clearDialogRef = this.dialog.open(ConfirmationDialogComponent, {
+      width: '560px',
+      data: {
+        heading: 'Storage Container Management',
+        message: 'The storage container already exists but does not have a layout assigned. Proceeding will modify the inventory map records. Do you want to continue?',
+        customButtonText: true,
+        btn1Text: 'Yes',
+        btn2Text: 'No'
+      }
+    });
+
+    clearDialogRef.afterClosed().subscribe(async (resp) => {
+      if (resp == "Yes") {
+        this.isExistingContainer = true;
+        this.containerTypeSelect.open();
+      }
+      else {
+        this.scm.tray = "";
+        this.scm.containerType = 0;
+      }
+    });
   }
 
   async getStorageContainerLayout() {
@@ -125,6 +163,8 @@ export class StorageContainerManagementModalComponent implements OnInit {
           this.isExistingContainer = this.storageContainerLayout.binLayout.binCellLayouts.length > 0;
           this.fromCells = this.storageContainerLayout.binLayout.binCellLayouts.length;
           this.createTableMatrix(this.storageContainerLayout.binLayout.binCellLayouts);
+          this.containerTypeSelect.open();
+
         }
         else {
           this.scm.tray = "";

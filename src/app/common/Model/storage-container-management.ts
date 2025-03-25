@@ -74,7 +74,8 @@ export const ValidationErrorCodes = {
     AllocatedPutawayToContainer: "AllocatedPutawayToContainer",
     PickAllocatedToContainer: "PickAllocatedToContainer",
     ItemQuantityAssignedToContainer: "ItemQuantityAssignedToContainer",
-    ItemAssignedToContainer: "ItemAssignedToContainer"
+    ItemAssignedToContainer: "ItemAssignedToContainer",
+    NoLayoutAssignedToContainer: "NoLayoutAssignedToContainer"
 }
 
 export class InventoryMap {
