@@ -327,47 +327,65 @@ export class ImportCountBatchesComponent implements OnInit {
               let message = '';
               let message2='';
 
-              if (this.selectedImportType === 'Location') {
+                if (this.selectedImportType === 'Location') {
 
-                  // for location exists in db
-            if (res.data.item3 && res.data.item3.length > 0) {
+                    // for location exists in db
+                    if (res.data.item3 && res.data.item3.length > 0) {
 
-              heading = 'Location(s) Not Found';
-              message = `The following location(s) could not be imported as they are in another user's queue or have existing cycle count transactions: [${res.data.item3.join(', ')}]`;
+                        heading = 'Location(s) Not Found';
+                        message = `The following location(s) could not be imported as they are in another user's queue or have existing cycle count transactions: [${res.data.item3.join(', ')}]`;
 
-              // for some location exists in db and some are not in db
-              if (res.data.item4 && res.data.item4.length > 0)
-              {
-                message = `The following location(s) could not be imported as they are in another user's queue or have existing cycle count transactions: [${res.data.item3.join(', ')}]`;
-                message2 =`The following location(s) do not exist: [${res.data.item4.join(', ')}]`;
-              }
+                        // for some location exists in db and some are not in db
+                        if (res.data.item4 && res.data.item4.length > 0) {
+                            message2 = `The following location(s) do not exist: [${res.data.item4.join(', ')}]`;
+                        }
 
-            }
-            else
-            {
-              // for not showing message dialog box if it is exists in empty locations
-              if ((res.data.item3.length === 0) && (res.data.item4.length === 0)){
-              this.dialogRef.close({
-                filterItemNumbersText: this.data,
-                filterItemNumbersArray: itemsArray,
-                filterData: commaSeparatedItems,
-              });
-              return
-              }
-              // for showing no location exists in db
-              else {
-              heading = 'Location(s) Not Found';
-              message = `The following location(s) do not exist: [${res.data.item1.join(', ')}]`;
-              }
-            }
-            //heading = 'Location(s) Not Found';
-            //message = `The following Locations do not exist [${res.data.item1.join(', ')}]`;
-          }
-              else if (this.selectedImportType === this.ItemNumber) {
-                heading = `${this.ItemNumber}(s) Not Found`;
-                message = `The following Item Numbers do not exist [${res.data.item1.join(', ')}]`;
+                    } else {
+                        // for not showing message dialog box if it is exists in empty locations
+                        if ((res.data.item3.length === 0) && (res.data.item4.length === 0)) {
+                            this.dialogRef.close({
+                                filterItemNumbersText: this.data,
+                                filterItemNumbersArray: itemsArray,
+                                filterData: commaSeparatedItems,
+                            });
+                            return
+                        }
+                        // for showing no location exists in db
+                        else {
+                            heading = 'Location(s) Not Found';
+                            message = `The following location(s) do not exist: [${res.data.item1.join(', ')}]`;
+                        }
+                    }
+                } else if (this.selectedImportType === this.ItemNumber) {
 
-            }
+                    // for item exists in db
+                    if (res.data.item3 && res.data.item3.length > 0) {
+
+                        heading = 'Item(s) Not Found';
+                        message = `The following item(s) could not be imported as they are in another user's queue or have existing cycle count transactions: [${res.data.item3.join(', ')}]`;
+
+                        // for some items exists in db and some are not in db
+                        if (res.data.item4 && res.data.item4.length > 0) {
+                            message2 = `The following item(s) do not exist: [${res.data.item4.join(', ')}]`;
+                        }
+
+                    } else {
+                        // for not showing message dialog box if it is exists in empty item
+                        if ((res.data.item3.length === 0) && (res.data.item4.length === 0)) {
+                            this.dialogRef.close({
+                                filterItemNumbersText: this.data,
+                                filterItemNumbersArray: itemsArray,
+                                filterData: commaSeparatedItems,
+                            });
+                            return
+                        }
+                        // for showing no location exists in db
+                        else {
+                            heading = 'Items(s) Not Found';
+                            message = `The following item(s) do not exist: [${res.data.item1.join(', ')}]`;
+                        }
+                    }
+                }
 
               const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
                 width: '560px',
