@@ -48,8 +48,8 @@ type InventoryMapFormData = {
   velocity: FormControl<string | null>;
   maxQuantity: FormControl<string | number | null>;
   dedicated: FormControl<boolean | null>;
-  serialNumber: FormControl<string | number | null>;
-  lotNumber: FormControl<string | number | null>;
+  serialNumber: FormControl<string | null>;
+  lotNumber: FormControl<string | null>;
   expirationDate: FormControl<string | null>;
   unitOfMeasure: FormControl<string | null>;
   quantityAllocatedPick: FormControl<string | number | null>;
@@ -168,8 +168,8 @@ isButtonDisabled: boolean = true;
     bin: '',
     itemNumber: '',
     revision: '',
-    serialNumber: '',
-    lotNumber: '',
+    serialNumber: "0",
+    lotNumber: "0",
     expirationDate: '',
     description: '',
     itemQuantity: '',
@@ -400,8 +400,8 @@ performClear() {
     maxQuantity: '0',
     minQuantity: '0',
     putAwayDate: '',
-    serialNumber: '',
-    lotNumber: '',
+    serialNumber: "0",
+    lotNumber: "0",
     revision: '',
     expirationDate: '',
     userField1: '',
@@ -488,8 +488,8 @@ performClear() {
       velocity: [this.getDetailInventoryMapData.goldenZone || '', [Validators.required]],
       maxQuantity: [this.getDetailInventoryMapData.maxQuantity || 0, [Validators.maxLength(9)]],
       dedicated: [this.getDetailInventoryMapData.dedicated || false],
-      serialNumber: new FormControl({ value: this.getDetailInventoryMapData.serialNumber || 0, disabled: true }),
-      lotNumber: new FormControl({ value: this.getDetailInventoryMapData.lotNumber || 0, disabled: true }),
+      serialNumber: new FormControl({ value: this.getDetailInventoryMapData.serialNumber || "0", disabled: true }),
+      lotNumber: new FormControl({ value: this.getDetailInventoryMapData.lotNumber || "0", disabled: true }),
       expirationDate: new FormControl({ value: this.getDetailInventoryMapData.expirationDate || '', disabled: true }),
       unitOfMeasure: [{value:this.getDetailInventoryMapData.unitOfMeasure ,disabled:true}],//disabled:this.data.detailData?true:false
       quantityAllocatedPick: new FormControl({ value: this.getDetailInventoryMapData.quantityAllocatedPick || 0, disabled: true }),
