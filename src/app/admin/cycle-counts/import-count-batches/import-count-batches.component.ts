@@ -44,7 +44,7 @@ export interface Pagination {
 
 export interface SortColumn {
   columnIndex: number;
-  sortOrder: 'asc' | 'desc'; 
+  sortOrder: 'asc' | 'desc';
 }
 export interface DialogData {
   selectedImportType: string;
@@ -80,11 +80,11 @@ export class ImportCountBatchesComponent implements OnInit {
   ];
   selectedTabIndex: number = 0;
   @Output() countsUpdated = new EventEmitter<string>();
-  @Output() eventChange = new EventEmitter<Event>(); 
+  @Output() eventChange = new EventEmitter<Event>();
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSelect) matSelect: MatSelect;
-  
+
   dataSourcee: PeriodicElement[] = [];
   filtersForm: FormGroup;
   isDataAvailable: boolean = false;
@@ -92,26 +92,26 @@ export class ImportCountBatchesComponent implements OnInit {
 
 
   importTypes: string[] = ['Location', this.ItemNumber];
-  filterOptions: string[] = []; 
+  filterOptions: string[] = [];
 
-
- // Add a getter for formatted importTypes
- get formattedImportTypes(): string[] {
-  return this.importTypes.map(type => 
-    type.replace(/([a-z0-9])([A-Z])/g, '$1 $2') // Adds space between camelCase words
-  );
-}
-
-// Add a getter for formatted filterOptions
-get formattedFilterOptions(): string[] {
-  return this.filterOptions.map(option => 
-    option.replace(/([a-z0-9])([A-Z])/g, '$1 $2') // Adds space between camelCase words
-  );
-}
-
-removeSpacesFromString(value: string): string {
-  return value.replace(/\s+/g, ''); // Remove all spaces
-}
+// IDK what these were used for... but no...
+//  // Add a getter for formatted importTypes
+//  get formattedImportTypes(): string[] {
+//   return this.importTypes.map(type =>
+//     type.replace(/([a-z0-9])([A-Z])/g, '$1 $2') // Adds space between camelCase words
+//   );
+// }
+//
+// // Add a getter for formatted filterOptions
+// get formattedFilterOptions(): string[] {
+//   return this.filterOptions.map(option =>
+//     option.replace(/([a-z0-9])([A-Z])/g, '$1 $2') // Adds space between camelCase words
+//   );
+// }
+//
+// removeSpacesFromString(value: string): string {
+//   return value.replace(/\s+/g, ''); // Remove all spaces
+// }
 
   selectedImportType: string = '';
   filterData: string = '';
@@ -125,7 +125,7 @@ removeSpacesFromString(value: string): string {
     startIndex: 1,
     endIndex: 10,
   };
-  
+
   sortColumn: SortColumn = {
     columnIndex: 1,
     sortOrder: 'desc',
@@ -137,7 +137,7 @@ removeSpacesFromString(value: string): string {
     private cdRef: ChangeDetectorRef,
     public Api: ApiFuntions,
     private authService: AuthService,
-    public global:GlobalService, 
+    public global:GlobalService,
     private dialog: MatDialog,
     public adminApiService: AdminApiService,
     private localstorageService:LocalStorageService,
@@ -150,20 +150,20 @@ removeSpacesFromString(value: string): string {
 
 
   ngOnInit(): void {
-   
+
     this.dataSource.data = [];
     this.filtersForm = new FormGroup({
-      includeEmpty: new FormControl(false),  
-      includeOther: new FormControl(false)   
+      includeEmpty: new FormControl(false),
+      includeOther: new FormControl(false)
     });
   }
 
-  
+
   toggleRowSelection(row: PeriodicElement): void {
     console.log('Row selection toggled:', row);
   }
 
-  
+
   close(): void {
     this.dialogRef.close();
   }
@@ -177,13 +177,13 @@ removeSpacesFromString(value: string): string {
       this.customPagination.startIndex = e.pageSize * e.pageIndex;
       this.customPagination.endIndex = e.pageSize * e.pageIndex + e.pageSize;
       this.customPagination.recordsPerPage = e.pageSize;
-    
+
     }
 
   onImportTypeChange(): void {
-   
+
     this.selectedFilterBy = '';
-    
+
    if (this.selectedImportType === this.ItemNumber) {
       this.dependVal = this.ItemNumber;
       this.filterOptions = ['Spreadsheet', this.ItemNumber];
@@ -202,14 +202,14 @@ removeSpacesFromString(value: string): string {
   onFilterByChange(fileInput: HTMLInputElement): void {
  if (this.selectedFilterBy === 'Spreadsheet') {
       fileInput.value = '';
-      fileInput.click(); 
+      fileInput.click();
 
   } else if (this.dependVal === this.ItemNumber) {
-    this.uploadedFileName = ''; 
+    this.uploadedFileName = '';
     this.openFilterItemNumbersDialog();
   } else if (this.dependVal === 'Location') {
-  
-    this.uploadedFileName = ''; 
+
+    this.uploadedFileName = '';
 
     this.openFilterItemNumbersDialog();
   }
@@ -222,11 +222,11 @@ removeSpacesFromString(value: string): string {
     } else {
       this.selectedFilterBy = '';
       this.uploadedFileName = null;
-     
+
     }
   }
 
- 
+
   updateQueCountEvent(obj) {
     this.eventChange.emit(obj);
   }
@@ -245,7 +245,7 @@ removeSpacesFromString(value: string): string {
     }
   }
 
-  
+
   confirmImport(skipDialog: boolean = false): void {
     if (!this.uploadedFileName) {
       const includeEmpty = this.filtersForm.value.includeEmpty;
@@ -257,18 +257,18 @@ removeSpacesFromString(value: string): string {
         includeEmpty: includeEmpty,
         includeOther: includeOther
       };
-  
+
       this.iAdminApiService.GetImportBatchCount(payload).subscribe(
         (res: { isExecuted: boolean; data: any; responseMessage: string }) => {
           console.log('API Response:', res);
-  
+
           if (res.isExecuted) {
-          
+
             if (res.data && res.data.item2 && res.data.item2.length > 0) {
-              this.updateTableData(res.data.item2);  
+              this.updateTableData(res.data.item2);
               console.log('Data updated successfully.');
             } else {
-              
+
             }
           } else {
             this.global.ShowToastr(ToasterType.Error, res.responseMessage, ToasterTitle.Error);
@@ -280,9 +280,9 @@ removeSpacesFromString(value: string): string {
           this.global.ShowToastr(ToasterType.Error, 'Failed to import data.', ToasterTitle.Error);
         }
       );
-      return; 
+      return;
     }
-    
+
     const fileInput = document.querySelector('input[type="file"]') as HTMLInputElement;
 
   if (fileInput?.files?.length) {
@@ -316,39 +316,39 @@ removeSpacesFromString(value: string): string {
       };
 
       this.iAdminApiService.GetImportBatchCount(payload).subscribe(
-        
+
         (res: { isExecuted: boolean; data: any; responseMessage: string }) => {
           console.log('API Response:', res);
-      
+
           if (res.isExecuted) {
-          
+
             if (res.data && res.data.item1 && res.data.item1.length > 0 && !skipDialog) {
               let heading = '';
               let message = '';
               let message2='';
-             
+
               if (this.selectedImportType === 'Location') {
-              
+
                   // for location exists in db
             if (res.data.item3 && res.data.item3.length > 0) {
-          
+
               heading = 'Location(s) Not Found';
               message = `The following location(s) could not be imported as they are in another user's queue or have existing cycle count transactions: [${res.data.item3.join(', ')}]`;
-  
-              // for some location exists in db and some are not in db 
-              if (res.data.item4 && res.data.item4.length > 0) 
+
+              // for some location exists in db and some are not in db
+              if (res.data.item4 && res.data.item4.length > 0)
               {
                 message = `The following location(s) could not be imported as they are in another user's queue or have existing cycle count transactions: [${res.data.item3.join(', ')}]`;
                 message2 =`The following location(s) do not exist: [${res.data.item4.join(', ')}]`;
-              }  
-  
+              }
+
             }
             else
             {
               // for not showing message dialog box if it is exists in empty locations
               if ((res.data.item3.length === 0) && (res.data.item4.length === 0)){
-              this.dialogRef.close({ 
-                filterItemNumbersText: this.data, 
+              this.dialogRef.close({
+                filterItemNumbersText: this.data,
                 filterItemNumbersArray: itemsArray,
                 filterData: commaSeparatedItems,
               });
@@ -358,17 +358,17 @@ removeSpacesFromString(value: string): string {
               else {
               heading = 'Location(s) Not Found';
               message = `The following location(s) do not exist: [${res.data.item1.join(', ')}]`;
-              }  
+              }
             }
             //heading = 'Location(s) Not Found';
             //message = `The following Locations do not exist [${res.data.item1.join(', ')}]`;
-          }  
+          }
               else if (this.selectedImportType === this.ItemNumber) {
                 heading = `${this.ItemNumber}(s) Not Found`;
                 message = `The following Item Numbers do not exist [${res.data.item1.join(', ')}]`;
-              
+
             }
-            
+
               const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
                 width: '560px',
                 data: {
@@ -386,20 +386,20 @@ removeSpacesFromString(value: string): string {
 
               dialogRef.afterClosed().subscribe(() => {
                 console.log('Dialog closed, proceeding with import.');
-             
+
                 if (res.data && res.data.item2 && res.data.item2.length > 0) {
-                  this.updateTableData(res.data.item2);  
+                  this.updateTableData(res.data.item2);
                   console.log('Data updated successfully.');
                 } else {
-                 
+
                 }
               });
             } else if (res.data && res.data.item2 && res.data.item2.length > 0) {
-            
+
               this.updateTableData(res.data.item2);
               console.log('Data updated successfully without dialog.');
             } else {
-              
+
               console.log('No item2 data found in the API response.');
             }
           } else {
@@ -419,22 +419,22 @@ removeSpacesFromString(value: string): string {
     this.global.ShowToastr(ToasterType.Error, "No file found.", ToasterTitle.Error);
   }
   }
-  
-  
+
+
 openFilterItemNumbersDialog(): void {
 
     const dialogRef = this.dialog.open(FilterItemNumbersComponentCycleCount, {
       width: '600px',
-      
-      data: { 
+
+      data: {
         selectedImporttType: this.selectedImportType ?? "",
         includeEmpty:this.IncludeEmptyCheckedValue ?? false,
         includeOther:this.IncludeOtherCheckedValue ?? false,
       },
     });
-  
+
     dialogRef.afterClosed().subscribe((result) => {
-      
+
       this.selectedFilterBy = '';
       if (result && result.responseData && result.filterData) {
           console.log('Filtered Item Numbers Response Data:', result.responseData);
@@ -456,7 +456,7 @@ openFilterItemNumbersDialog(): void {
       invMapID:item.invMapID,
       itemNumber: item.itemNumber,
       description: item.description,
-      locationQuantity: Number(item.itemQuantity), 
+      locationQuantity: Number(item.itemQuantity),
       um: item.unitOfMeasure,
       warehouse: item.wareHouse || '',
       locations: item.location,
@@ -474,7 +474,7 @@ openFilterItemNumbersDialog(): void {
 
   insertCCQueue(ids: any) {
     const payLoad = {
-      InvMapIDs: ids, 
+      InvMapIDs: ids,
     };
     this.iAdminApiService.CycleCountQueueInsert(payLoad).subscribe(
       (res: any) => {
@@ -487,7 +487,7 @@ openFilterItemNumbersDialog(): void {
           this.router.navigate([AppRoutes.AdminCreateCountBatches], { queryParams: { selectedIndex: 2 } });
 
         } else {
-          
+
           this.global.ShowToastr(ToasterType.Error,ToasterMessages.SomethingWentWrong, ToasterTitle.Error);
           console.log("CycleCountQueueInsert",res.responseMessage);
           this.close();
@@ -505,7 +505,7 @@ openFilterItemNumbersDialog(): void {
 
     if (finaliter == 0) {
       this.dataSource.data.forEach((element) => {
-        
+
         invMapIDs.push(element.invMapID);
       });
 
@@ -516,7 +516,7 @@ openFilterItemNumbersDialog(): void {
 
         if (invMapIDs.length == 1000) {
           const payLoad = {
-            InvMapIDs: invMapIDs, 
+            InvMapIDs: invMapIDs,
           };
           this.iAdminApiService
             .CycleCountQueueInsert(payLoad)
@@ -527,9 +527,9 @@ openFilterItemNumbersDialog(): void {
                   if (curriter == finaliter) {
                     if (invMapIDs.length > 0) {
                       this.insertCCQueue(invMapIDs);
-                     
+
                       this.close();
-                     
+
                     } else {
                       this.dataSourcee = [];
                       this.selectedTabIndex = 1;
@@ -537,11 +537,11 @@ openFilterItemNumbersDialog(): void {
                     }
                   }
                 } else {
-                  
+
                   this.global.ShowToastr(ToasterType.Error,
                     ToasterMessages.SomethingWentWrong,
-                    ToasterTitle.Error 
-                  
+                    ToasterTitle.Error
+
                   );
                   console.log("CycleCountQueueInsert",res.responseMessage);
                   this.close();
@@ -563,7 +563,7 @@ setLocationCheck(e:any, type:any)
     this.IncludeEmptyCheckedValue=updatedValues[0];
     this.filtersForm.controls['includeOther'].setValue(updatedValues[1]);
     this.IncludeEmptyCheckedValue=updatedValues[1];
-    
+
     this.dataSource.data = [];
     this.confirmImport(true);
   }
