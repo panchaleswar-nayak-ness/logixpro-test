@@ -269,7 +269,14 @@ export class SuperBatchOrdersComponent implements OnInit, AfterViewInit {
       ...values,
       wsId: this.userData.wsid,
     }).subscribe((filteredOrders) => {
-      this.rebind(filteredOrders.data);
+      let response = filteredOrders.data;
+      this.filteredOrderResults = response;
+
+      if (response) {
+        this.rebind(response);
+      }
+
+
     });
   }
 
@@ -306,7 +313,7 @@ export class SuperBatchOrdersComponent implements OnInit, AfterViewInit {
         const values = res.data.imPreference;
 
         // Pick Tote Induction Settings
-        valueToInduct.maxToteQuantity = values.maximumQuantityperTote;
+        valueToInduct.maxToteQuantity = values.sbMaximumQuantityperTote;
         valueToInduct.maxSuperBatchSize = values.defaultSuperBatchSize;
 
         // call API to induct this tote as per PLST-2772

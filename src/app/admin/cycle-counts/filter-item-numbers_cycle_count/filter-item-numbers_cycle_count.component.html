@@ -1,27 +1,26 @@
 <div class="d-flex justify-content-between mb-4 align-items-center">
     <!-- Dynamic title -->
     <h1 class="m-0 text-center" mat-dialog-title>{{ titleText }}</h1>
-    
+
     <button mat-icon-button class="close-button dialog-close-button-fix" (click)="onNoClick()">
       <mat-icon class="close-icon">close</mat-icon>
     </button>
   </div>
-  
+
   <div>
     <!-- Error message or instructions -->
     <div class="label-blue3 p-3 d-flex br-8 mb-4">
       <mat-icon class="material-symbols-outlined">notification_important</mat-icon>
       <span class="ps-2 w-100">{{ instructionsText }}</span>
     </div>
-  
+
     <div>
       <mat-form-field class="custom-form-field w-100" appearance="outline">
-        <textarea matInput [(ngModel)]="items" class="min-h-100px" maxlength="255" cdkFocusInitial></textarea>
+        <textarea matInput [(ngModel)]="items" class="min-h-100px" cdkFocusInitial></textarea>
       </mat-form-field>
     </div>
-  
+
     <div class="d-flex justify-content-end pt-3">
       <button mat-flat-button color="primary" class="button-primary btn-lg flex-grow-1" (click)="filterItemNumbers()" cdkFocusInitial>Filter</button>
     </div>
   </div>
-  
