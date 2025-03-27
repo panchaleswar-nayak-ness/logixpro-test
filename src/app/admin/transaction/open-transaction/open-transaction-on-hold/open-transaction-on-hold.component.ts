@@ -692,7 +692,12 @@ export class OpenTransactionOnHoldComponent implements OnInit, AfterViewInit {
   }
 
   printCycleCountReport() {
-    this.printApiService.ProcessCycleCountPrint();
+    var searchString = this.columnSearch.searchValue;
+    var searchColumn = this.columnSearch.searchColumn.colDef;
+    var filter = this.filterString;
+
+    this.printApiService.ProcessCycleCountPrint(searchString, searchColumn, filter);
+    
     //this.global.Print(`FileName:printCycleCountReport`)
   }
 

@@ -363,9 +363,12 @@ export class PrintApiService implements IPrintApiService {
     return await this.Api.CycleCountPrintCycleCountDetails(payload);
   }
 
-  public async ProcessCycleCountPrint() {
+  public async ProcessCycleCountPrint(searchString: string, searchColumn: string, filter: string) {
     const payload = {
-      wsid: this.userData.wsid
+      wsid: this.userData.wsid,
+      searchString: searchString,
+      searchColumn: searchColumn,
+      filter: filter
     }
 
     return await this.Api.OpenTransactionsPrintCycleCount(payload);
