@@ -292,12 +292,12 @@ export class ToteTransactionManagerComponent implements OnInit {
         break;
       case 'printToteContents':
         if (this.imPreferences.printDirectly) {
-          this.printApiService.ProcessToteContent(row.toteId, row.zone, row.transactionType);
+          this.printApiService.ProcessToteContent(row.toteId, row.zoneLabel, row.transactionType);
         }
         break;
       case 'printToteLabels':
         if (this.imPreferences.printDirectly) {
-          this.printApiService.PrintPrevToteContentsLabel(row.toteId, row.Zone, row.transactionType, -2, '');
+          this.printApiService.PrintPrevToteContentsLabel(row.toteId, row.zoneLabel, row.transactionType, -2, '');
         }
         break;
       default:
