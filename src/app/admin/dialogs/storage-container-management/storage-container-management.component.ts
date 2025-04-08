@@ -59,9 +59,6 @@ export class StorageContainerManagementModalComponent implements OnInit {
     await this.GetContainerLayoutsAsync();
   }
 
-  ngAfterViewInit(): void {
-    this.storageContainer.nativeElement.focus();
-  }
 
   handleEnter() {
     this.validateScannedContainer();
@@ -249,6 +246,9 @@ export class StorageContainerManagementModalComponent implements OnInit {
       if (res == "Yes") {
         await this.addInventoryMapRecord();
       }
+      if(this.scm.carouselZone){
+        this.storageContainer.nativeElement.focus();
+      }
     });
   }
 
@@ -266,6 +266,9 @@ export class StorageContainerManagementModalComponent implements OnInit {
     clearDialogRef.afterClosed().subscribe(async (res) => {
       if (res == "Yes") {
         await this.updateStorageContainerLayout();
+      }
+      if(this.scm.carouselZone){
+        this.storageContainer.nativeElement.focus();
       }
     });
   }
@@ -291,14 +294,20 @@ export class StorageContainerManagementModalComponent implements OnInit {
 
   checkDisabled(field: string): boolean {
     const dependencies: { [key: string]: string[] } = {
-      zone: [],
-      tray: ['zone'],
-      containerType: ['zone', 'tray'],
-      save: ['zone', 'tray', 'containerType'],
+      carouselZone: [],
+      tray: ['carouselZone'],
+      containerType: ['carouselZone', 'tray'],
+      save: ['carouselZone', 'tray', 'containerType'],
     };
-
+    
     const requiredFields = dependencies[field] || [];
-    return requiredFields.some(dep => this.scm[dep] === '' || this.scm[dep] === 0);
+
+    return requiredFields.some(dep => {
+      const value = dep === 'carouselZone' ? this.scm.carouselZone?.zone : this.scm[dep]; 
+      return !value || value === 0 || value === '';
+    });
+
+    
   }
 
   async addInventoryMapRecord(){
