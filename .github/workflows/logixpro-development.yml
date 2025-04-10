@@ -1,0 +1,69 @@
+# Docs for the Azure Web Apps Deploy action: https://github.com/Azure/webapps-deploy
+# More GitHub Actions for Azure: https://github.com/Azure/actions
+
+name: Build and Test LogixPro Development
+
+on:
+    push:
+     branches:
+        - Development
+    pull_request:
+        branches:
+          - Development
+        types: [opened, synchronize, reopened, ready_for_review]       
+    workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: windows-latest
+    permissions:
+      contents: read #This is required for actions/checkout
+
+    steps:
+
+      - name: Echo the PR Title
+        run: |
+          echo "PR Title: ${{ github.event.pull_request.title }}"
+        if: github.event_name == 'pull_request'
+
+      - name: Enforce PR PLST Title
+        uses: ryanvade/enforce-pr-title-style-action@v2.1.2
+        with:
+          projectKey: 'PLST'
+          separator: ':'
+          keyAnywhereInTitle: 'true'
+        if: github.event_name == 'pull_request'
+
+      - name: Title Change Level Check
+        uses: actions-ecosystem/action-regex-match@v2
+        id: regex-match
+        with:
+          text: ${{ github.event.pull_request.title }}
+          regex: '\[(MAJOR|FEATURE|PATCH)\]'
+        if: github.event_name == 'pull_request'
+
+      - name: Fail if no change level found
+        if: github.event_name == 'pull_request' && steps.regex-match.outputs.match == ''
+        run: |
+          echo "Error: The branch name must contain [MAJOR], [FEATURE], or [PATCH]."
+          echo "match=false" >> $GITHUB_ENV
+          exit 1
+        
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js version
+        uses: actions/setup-node@v4
+        with:
+         node-version: '20.x'
+
+      - name: npm install, build, and test
+        run: |
+          npm install
+          npm run prod-build --if-present
+      
+      - name: Upload artifact for deployment job
+        uses: actions/upload-artifact@v4
+        with:
+          name: node-app
+          path: server/LogixProServer/wwwroot
