@@ -23,7 +23,7 @@
 
         <div class="col-xl-5">
             <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline">
-                <mat-label>Storage Container</mat-label>
+                <mat-label>{{data.rowFieldAlias}}</mat-label>
                 <input matInput [(ngModel)]="scm.tray" [disabled]="checkDisabled('tray')" autoFocus #storageContainer (keydown.enter)="handleEnter()">
             </mat-form-field>
         </div>

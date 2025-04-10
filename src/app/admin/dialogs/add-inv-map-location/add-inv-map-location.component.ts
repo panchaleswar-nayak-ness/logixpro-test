@@ -119,6 +119,10 @@ export class AddInvMapLocationComponent implements OnInit {
   userField1: string = this.fieldMappings.userField1;
   userField2: string = this.fieldMappings.userField2;
   unitOfMeasure: string = this.fieldMappings.unitOfMeasure;
+  rowAlias: string = this.fieldMappings.row;
+  shelfAlias: string = this.fieldMappings.shelf;
+  binAlias: string = this.fieldMappings.bin;
+  carouselAlias: string = this.fieldMappings.carousel;
   addInvMapLocation: FormGroup<InventoryMapFormData>;
   clearInvMapLocation: FormGroup;
   allowClearWholeLocation: boolean = false;

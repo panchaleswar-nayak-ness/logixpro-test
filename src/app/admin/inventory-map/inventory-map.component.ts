@@ -45,8 +45,8 @@ export class InventoryMapComponent implements OnInit {
     
    INVMAP_DATA = [
     { colHeader: "locationID", colDef: "Alternate Light", colTitle: "Alternate Light" },
-    { colHeader: "bin", colDef: "Bin", colTitle: "Bin" },
-    { colHeader: "carousel", colDef: "Carousel", colTitle: "Carousel" },
+    { colHeader: "bin", colDef: "Bin", colTitle: this.fieldMappings?.bin || this.placeholders.binFallback },
+    { colHeader: "carousel", colDef: "Carousel", colTitle: this.fieldMappings?.carousel || this.placeholders.carouselFallback },
     { colHeader: "cellSize", colDef: "Cell Size", colTitle: "Cell Size" },
     { colHeader: "dateSensitive", colDef: "Date Sensitive", colTitle: "Date Sensitive" },
     { colHeader: "dedicated", colDef: "Dedicated", colTitle: "Dedicated" },
@@ -67,10 +67,10 @@ export class InventoryMapComponent implements OnInit {
     { colHeader: "putAwayDate", colDef: "Put Away Date", colTitle: "Put Away Date" },
     { colHeader: "quantityAllocatedPick", colDef: "Quantity Allocated Pick", colTitle: "Quantity Allocated Pick" },
     { colHeader: "quantityAllocatedPutAway", colDef: "Quantity Allocated Put Away", colTitle: "Quantity Allocated Put Away" },
-    { colHeader: "revision", colDef: "Revision", colTitle: "Revision" },
-    { colHeader: "row", colDef: "Row", colTitle: "Row" },
+    { colHeader: "revision", colDef: "Revision", colTitle: "Revision" },    
+    { colHeader: "row", colDef: "Row", colTitle: this.fieldMappings?.row || this.placeholders.rowFallback },
     { colHeader: "serialNumber", colDef: "Serial Number", colTitle: "Serial Number" },
-    { colHeader: "shelf", colDef: "Shelf", colTitle: "Shelf" },
+    { colHeader: "shelf", colDef: "Shelf", colTitle: this.fieldMappings?.shelf || this.placeholders.shelfFallback },
     { colHeader: "unitOfMeasure", colDef: "Unit of Measure", colTitle: this.fieldMappings?.unitOfMeasure || this.placeholders.unitOfMeasureFallback },
     { colHeader: "userField1", colDef: "User Field1", colTitle: this.fieldMappings?.userField1 || this.placeholders.userField1Fallback },
     { colHeader: "userField2", colDef: "User Field2", colTitle: this.fieldMappings?.userField2 || this.placeholders.userField2Fallback },
@@ -724,7 +724,10 @@ storageContainerManagement(){
     height: DialogConstants.auto,
     width: Style.w786px,
     autoFocus: DialogConstants.autoFocus,
-    data: {}
+    
+    data: {
+      rowFieldAlias: this.fieldMappings?.row || "Storage Container",
+    }
   })
   dialogRef.afterClosed().pipe(takeUntil(this.onDestroy$)).subscribe(result => {
     this.getContentData();

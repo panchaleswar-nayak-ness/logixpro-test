@@ -506,5 +506,17 @@ export const Placeholders = {
     userField10: '{{userField10}}',
     userField10Fallback: 'User Field 10',
 
+    bin: '{{bin}}',
+    binFallback: 'Bin',
+
+    shelf: '{{shelf}}',
+    shelfFallback: 'Shelf',
+
+    row: '{{rin}}',
+    rowFallback: 'Row',
+
+    carousel: '{{carousel}}',
+    carouselFallback: 'Carousel',
+
   };
 

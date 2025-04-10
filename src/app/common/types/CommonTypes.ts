@@ -60,6 +60,10 @@ export interface ColumnAlias {
     userField8: string;
     userField9: string;
     userField10: string;
+    bin: string;
+    shelf: string;
+    row: string;
+    carousel: string;
 }
 
 export interface OSFieldFilterNames {

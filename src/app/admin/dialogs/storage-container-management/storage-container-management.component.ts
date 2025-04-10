@@ -1,5 +1,5 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
+import { Component, ElementRef, Inject, OnInit, ViewChild } from '@angular/core';
+import { MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
 import { ConfirmationDialogComponent } from '../confirmation-dialog/confirmation-dialog.component';
 import { MatSelect } from '@angular/material/select';
 import { IAdminApiService } from 'src/app/common/services/admin-api/admin-api-interface';
@@ -38,6 +38,7 @@ export class StorageContainerManagementModalComponent implements OnInit {
   storageContainerLayout: StorageContainerLayout = new StorageContainerLayout();
   isExistingContainer: boolean = false;
   fromCells: number = 0;
+  rowFieldAlias: string;
 
   @ViewChild('zone') zoneSelect!: MatSelect;
   @ViewChild('containerTypeDropdown') containerTypeSelect!: MatSelect;
@@ -50,8 +51,10 @@ export class StorageContainerManagementModalComponent implements OnInit {
     private readonly dialog: MatDialog,
     public adminApiService: AdminApiService,
     private readonly global: GlobalService,
+    @Inject(MAT_DIALOG_DATA) public data: any
   ) {
     this.iAdminApiService = adminApiService;
+    this.rowFieldAlias = data?.rowFieldAlias ?? '';
   }
 
   async ngOnInit(): Promise<void> {

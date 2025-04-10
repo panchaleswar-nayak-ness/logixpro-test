@@ -99,7 +99,7 @@
                         <div class="row">
                             <div class="col-xl-6 col-md-12 mb-2">
                                 <mat-form-field class="d-block w-100 " appearance="outline">
-                                    <mat-label>Carousel</mat-label>
+                                    <mat-label>{{carouselAlias}}</mat-label>                                    
                                     <input [NumbersOnly]="true" matInput formControlName="carousel" #carousel   name="carousel"  [maxlength]="1" (change)="updateItemNumber('carousel', carousel.value)">
                                 </mat-form-field>
                                 <div class="error" *ngIf="hasError('carousel', 'required')">This field is required.</div>
@@ -108,7 +108,7 @@
                             </div>
                             <div class="col-xl-6 col-md-12 mb-2">
                                 <mat-form-field class="d-block w-100" appearance="outline">
-                                    <mat-label>Row</mat-label>
+                                    <mat-label>{{rowAlias}}</mat-label>
                                     <input maxlength="5" matInput formControlName="row" #row   name="row" (change)="updateItemNumber('row', row.value)">
                                 </mat-form-field>
                                 <div class="error" *ngIf="hasError('row', 'required')">This field is required.</div>
@@ -118,7 +118,7 @@
                         <div class="row">
                             <div class="col-xl-6 col-md-12 mb-2">
                                 <mat-form-field class="d-block w-100 " appearance="outline">
-                                    <mat-label>Shelf</mat-label>
+                                    <mat-label>{{shelfAlias}}</mat-label>
                                     <input  maxlength="2"  matInput formControlName="shelf" #shelf   name="shelf" (change)="updateItemNumber('shelf', shelf.value)">
                                 </mat-form-field>
                                 <div class="error" *ngIf="hasError('shelf', 'required')">This field is required.</div>
@@ -126,7 +126,7 @@
                             </div>
                             <div class="col-xl-6 col-md-12 mb-2">
                                 <mat-form-field class="d-block w-100" appearance="outline">
-                                    <mat-label>Bin</mat-label>
+                                    <mat-label>{{binAlias}}</mat-label>
                                     <input  maxlength="3"  matInput formControlName="bin" #bin   name="bin" (change)="updateItemNumber('bin', bin.value)">
                                 </mat-form-field>
                                 <div class="error" *ngIf="hasError('bin', 'required')">This field is required.</div>

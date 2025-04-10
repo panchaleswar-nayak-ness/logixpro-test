@@ -51,7 +51,11 @@ export class SpFieldNameMappingComponent implements OnInit {
       userField7: '',
       userField8: '',
       userField9: '',
-      userField10: ''
+      userField10: '',
+      bin : '',
+      shelf: '',
+      row: '',
+      carousel: ''
     }
   }
 
@@ -81,7 +85,11 @@ export class SpFieldNameMappingComponent implements OnInit {
        this.columns.userField8,
        this.columns.userField9,
        this.columns.userField10
-      ]
+      ],
+      "binAlias": this.columns.bin,
+      "shelfAlias": this.columns.shelf,
+      "rowAlias" : this.columns.row,
+      "carouselAlias": this.columns.carousel
     };
     const isEmptyOrWhitespace = (value: string) => !value || value.trim().length === 0;
     if (isEmptyOrWhitespace(payload.itemAlias) || 

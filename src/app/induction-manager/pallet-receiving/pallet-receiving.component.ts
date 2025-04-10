@@ -190,7 +190,11 @@ export class PalletReceivingComponent implements OnInit {
       userField7: '',
       userField8: '',
       userField9: '',
-      userField10: ''
+      userField10: '',
+      bin : '',
+      shelf: '',
+      row: '',
+      carousel: ''
     }
   }
 
