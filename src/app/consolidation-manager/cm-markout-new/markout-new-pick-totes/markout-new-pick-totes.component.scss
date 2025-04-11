@@ -1,0 +1,123 @@
+.container-table-header {
+    width: auto;
+    padding: 5px 12px;
+
+}
+
+.border {
+
+    border: 0;
+}
+
+.container-table-data {
+
+    padding: 10px 12px;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    max-width: 20ch;
+    // white-space: nowrap;
+}
+
+.filter {
+    gap: 12px
+}
+
+.actionContainer-Header {
+
+    border: 0;
+    height: 66px;
+    padding-left: 65px;
+    width: 88px;
+}
+
+.actionContainerdata {
+    border: 0;
+    padding-left: 24px;
+    background: var(--clr-pure-white);
+}
+
+.quarantineColor {
+    background-color: #FCEAEE;
+    min-height: 40px;
+}
+
+mat-row,
+mat-footer-row {
+    min-height: 40px;
+}
+
+.scroll-bar {
+    height: 250px;
+}
+
+.dialogButton {
+    flex: 1;
+}
+
+table {
+
+    mat-row,
+    mat-header-row {
+        display: table-row !important;
+        white-space: nowrap;
+
+        th,
+        td {
+            vertical-align: middle;
+            border-bottom: 1px solid var(--clr-pure-white);
+
+            &:first-child {
+                padding-left: 28px !important;
+            }
+        }
+    }
+
+    .selected {
+        background-color: var(--clr-primary-400) !important;
+        border-radius: 0px !important;
+
+        color: #fff;
+
+        .custom-add-button-color {
+            color: #fff !important;
+        }
+    }
+}
+
+.view-all-loacation-heading {
+    width: 48px
+}
+
+.custom-add-button-color {
+    color: var(--clr-primary-500);
+}
+
+table.custom-action-clickable-table tr {
+    top: 0;
+    left: 0px;
+    right: 14px;
+    bottom: 0;
+    cursor: pointer;
+    color: #fff;
+    border-radius: 8px !important;
+    margin-left: 15px;
+}
+
+table.custom-action-clickable-table tr:hover {
+    transition: 0.3s ease all;
+    color: #fff !important;
+    background: var(--clr-primary-300);
+    position: relative;
+    border-radius: 8px !important;
+    z-index: 0;
+    cursor: pointer;
+
+    .custom-add-button-color {
+        color: #fff !important;
+    }
+}
+
+table.custom-action-clickable-table tr:hover td {
+    color: #fff !important;
+    border: none;
+}

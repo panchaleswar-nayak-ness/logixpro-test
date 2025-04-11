@@ -520,3 +520,69 @@ export const Placeholders = {
 
   };
 
+export const MarkoutNewPickTotesKeys = {
+    ToteID: 'toteId',
+    Status: 'status',
+    StatusDate: 'statusDate',
+    RouteID: 'routeID',
+    DivertReason: 'divertReason',
+    Location: 'location',
+    Destination: 'destination',
+    Details: 'details'
+}
+
+export const MarkoutNewPickTotesDC = {
+    ToteID: 'Tote ID',
+    Status: 'Status',
+    StatusDate: 'Status Date',
+    RouteID: 'Route ID',
+    DivertReason: 'Divert Reason',
+    Location: 'Location',
+    Destination: 'Destination',
+    Details: 'Details'
+}
+
+
+export const MarkoutNewPickLinesKeys = {
+    Item: 'item',
+    Qty: 'qty',
+    LocID: 'locID',
+    Status: 'status',
+    StatusDate: 'statusDate',
+    CompQty: 'compQty',
+    CompBy: 'compBy',
+    ShortReason: 'shortReason'
+}
+
+export const MarkoutNewPickLinesDC = {
+    Item: 'Item',
+    Qty: 'Qty',
+    LocID: 'Loc ID',
+    Status: 'Status',
+    StatusDate: 'Status Date',
+    CompQty: 'Comp Qty',
+    CompBy: 'Comp By',
+    ShortReason: 'Short Reason'
+}
+
+export const MarkoutNewToteAuditKeys = {
+    Time: 'time',
+    Type: 'type',
+    Scanner: 'scanner',
+    Divert: 'divert',
+    Location: 'location',
+    Status: 'status',
+    StatusDate: 'statusDate',
+    DivertReason: 'divertReason'
+}
+
+export const MarkoutNewToteAuditDC = {
+    Time: 'Time',
+    Type: 'Type',
+    Scanner: 'Scanner',
+    Divert: 'Divert',
+    Location: 'Location',
+    Status: 'Status',
+    StatusDate: 'Status Date',
+    DivertReason: 'Divert Reason'
+}
