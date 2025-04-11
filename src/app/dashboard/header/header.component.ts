@@ -256,10 +256,9 @@ export class HeaderComponent {
       this.iGlobalConfigApi.configLogout().subscribe((res:any) => {
         if (res.isExecuted) 
         {
-          //this.clearLocalStorageExcept('CountPickChecks')
-          //localStorage.clear();
           this.localstorageService.clearLocalStorage();
-          window.location.href = "/#/globalconfig"; 
+          localStorage.removeItem('userConfig');
+          this.router.navigate(['/globalconfig']);
         }
         else 
         {
