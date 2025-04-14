@@ -18,18 +18,12 @@ export class StorageContainerManagementModalComponent implements OnInit {
   scm = {
     carouselZone: new CarouselZone(),
     tray: "",
-    containerType: 0
+    containerType: 0,
+    numberOfCells: 0
   }
   containerTypes: ContainerTypes[] = [];
   get inventoryMapRecords(): { count: number; label: string } {
-    const count = this.scm.containerType === 1
-      ? 1
-      : this.scm.containerType === 2 || this.scm.containerType === 3
-        ? 2
-        : this.scm.containerType === 4
-          ? 4
-          : 8; // Default for 'Octa-divided' or others
-
+    const count = this.scm.numberOfCells;
     const label = count === 1 ? 'record' : 'records';
     return { count, label };
   }
@@ -220,6 +214,7 @@ export class StorageContainerManagementModalComponent implements OnInit {
     let res = await this.iAdminApiService.GetBinCellsAsync(this.scm.containerType);
     if (res?.status == HttpStatusCode.Ok) {
       if (res?.body?.length > 0) {
+        this.scm.numberOfCells = res?.body.length;
         this.createTableMatrix(res?.body?.map(item => item.resource));
       }
     }
