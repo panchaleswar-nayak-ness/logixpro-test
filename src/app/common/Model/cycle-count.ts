@@ -71,3 +71,10 @@ interface BatchCount {
   location: string;
   expirationDate: string | null;
 }
+// Payload for GetImportBatchCount
+export interface ImportBatchCountPayload {
+  items: string;
+  importBy: string;
+  includeEmpty: boolean;
+  includeOther: boolean;
+}

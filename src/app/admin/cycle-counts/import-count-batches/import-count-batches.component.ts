@@ -19,6 +19,8 @@ import { Router } from '@angular/router';
 import { AppRoutes } from 'src/app/common/constants/menu.constants';
 import { MatSelect } from '@angular/material/select';
 import { LocalStorageService } from 'src/app/common/services/LocalStorage.service';
+import { ImportBatchCountPayload, WorkstationItems, WorkstationLocations } from 'src/app/common/Model/cycle-count';
+import { CycleCountConfirmMessageDialogComponent } from '../../dialogs/cycle-count-confirm-message-dialog/cycle-count-confirm-message-dialog.component';
 
 export interface PeriodicElement {
   invMapID:number;
@@ -291,16 +293,24 @@ export class ImportCountBatchesComponent implements OnInit {
   
         const excelData: (string | number | null)[][] = XLSX.utils.sheet_to_json(sheet, { header: 1 });
   
-        const itemsArray: string[] = excelData
-          .flat()
-          .filter((item) => item !== null && item !== '') as string[];
-  
-        const commaSeparatedItems = itemsArray.join(',');
+        // Updated logic to match FilterItemNumbersComponentCycleCount
+        const itemsStr = excelData
+        .flat()
+        .filter((item) => item !== null && item !== '') // Remove null and empty items
+        .map(item => String(item).trim()) // Convert to string and trim
+        .join('\n'); // Join with new lines to mimic the input format
+
+        let itemsArray = itemsStr
+        .split(/[\n\r]+/) // Split by new lines
+        .map(item => item.trim()) // Trim each item to remove starting/trailing spaces
+        .filter(item => item !== ''); // Remove empty lines if any
+
+        const commaSeparatedItems = itemsArray.join(','); // Join into a comma-separated string
   
         const includeEmpty = this.filtersForm.value.includeEmpty;
         const includeOther = this.filtersForm.value.includeOther;
   
-        const payload: { items: string; importBy: string, includeEmpty: boolean, includeOther: boolean } = {
+        const payload: ImportBatchCountPayload = {
           items: commaSeparatedItems,
           importBy: this.selectedImportType,
           includeEmpty: includeEmpty,
@@ -311,23 +321,29 @@ export class ImportCountBatchesComponent implements OnInit {
           (res: { isExecuted: boolean; data: any; responseMessage: string }) => {
   
             if (res.isExecuted) {
-              if (res.data && res.data.missingValues && res.data.missingValues.length > 0 && !skipDialog) {
+              if (res.data && res.data.missingValues && res.data.missingValues.length > 0 
+                 || (res.data.locationWithWSNameList?.length > 0 || res.data.itemNumberWithWSNameList?.length > 0
+                  || res.data.locationExistsList?.length > 0 || res.data.itemNumberExistsList?.length > 0)) {
                 let heading = '';
-                let message = '';
-                let message2 = '';
-  
+                let notFoundLocations: string[] = [];
+                let cycleCountLocations: string[] = [];
+                let workstationGroups: WorkstationLocations[] = [];
+                let notFoundItems: string[] = [];
+                let cycleCountItems: string[] = [];
+                let itemWorkstationGroups: WorkstationItems[] = [];
                 if (this.selectedImportType === 'Location') {
-                  // For locations with existing cycle counts or in another user's queue
-                  if (res.data.locationExistsList && res.data.locationExistsList.length > 0) {
+                  if (
+                    (res.data.locationExistsList && res.data.locationExistsList.length > 0) ||
+                    (res.data.locationWithWSNameList && res.data.locationWithWSNameList.length > 0)
+                  ) {
                     heading = 'Location(s) Not Found';
-                    message = `The following location(s) could not be imported as they are in another user's queue or have existing cycle count transactions: [${res.data.locationExistsList.join(', ')}]`;
+                    cycleCountLocations = res.data.locationExistsList || [];
+                    workstationGroups = res.data.locationWithWSNameList || [];
   
-                    // For some locations that exist and some that do not
                     if (res.data.locationNotExistsList && res.data.locationNotExistsList.length > 0) {
-                      message2 = `The following location(s) do not exist: [${res.data.locationNotExistsList.join(', ')}]`;
+                      notFoundLocations = res.data.locationNotExistsList;
                     }
                   } else {
-                    // For not showing message dialog box if all locations are valid (e.g., empty locations)
                     if (
                       (res.data.locationExistsList?.length === 0 || !res.data.locationExistsList) &&
                       (res.data.locationNotExistsList?.length === 0 || !res.data.locationNotExistsList) &&
@@ -340,23 +356,23 @@ export class ImportCountBatchesComponent implements OnInit {
                       });
                       return;
                     } else {
-                      // For showing no locations exist in the database
                       heading = 'Location(s) Not Found';
-                      message = `The following location(s) do not exist: [${res.data.missingValues.join(', ')}]`;
+                      notFoundLocations = res.data.missingValues || [];
                     }
                   }
                 } else if (this.selectedImportType === this.ItemNumber) {
-                  // For items with existing cycle counts or in another user's queue
-                  if (res.data.itemNumberExistsList && res.data.itemNumberExistsList.length > 0) {
+                  if (
+                    (res.data.itemNumberExistsList && res.data.itemNumberExistsList.length > 0) ||
+                    (res.data.itemNumberWithWSNameList && res.data.itemNumberWithWSNameList.length > 0)
+                  ) {
                     heading = 'Item(s) Not Found';
-                    message = `The following item(s) could not be imported as they are in another user's queue or have existing cycle count transactions: [${res.data.itemNumberExistsList.join(', ')}]`;
+                    cycleCountItems = res.data.itemNumberExistsList || [];
+                    itemWorkstationGroups = res.data.itemNumberWithWSNameList || [];
   
-                    // For some items that exist and some that do not
                     if (res.data.itemNumberNotExistsList && res.data.itemNumberNotExistsList.length > 0) {
-                      message2 = `The following item(s) do not exist: [${res.data.itemNumberNotExistsList.join(', ')}]`;
+                      notFoundItems = res.data.itemNumberNotExistsList;
                     }
                   } else {
-                    // For not showing message dialog box if all items are valid (e.g., empty items)
                     if (
                       (res.data.itemNumberExistsList?.length === 0 || !res.data.itemNumberExistsList) &&
                       (res.data.itemNumberNotExistsList?.length === 0 || !res.data.itemNumberNotExistsList) &&
@@ -369,32 +385,34 @@ export class ImportCountBatchesComponent implements OnInit {
                       });
                       return;
                     } else {
-                      // For showing no items exist in the database
-                      heading = 'Items(s) Not Found';
-                      message = `The following item(s) do not exist: [${res.data.missingValues.join(', ')}]`;
+                      heading = 'Item(s) Not Found';
+                      notFoundItems = res.data.missingValues || [];
                     }
                   }
                 }
-  
-                const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
-                  width: '560px',
-                  data: {
-                    heading: heading,
-                    message: message,
-                    message2: message2,
-                    buttonFields: false,
-                    threeButtons: false,
-                    singleButton: true,
-                    customButtonText: false,
-                    btn1Text: 'Ok',
-                    hideCancel: true
+                if(!skipDialog){// handle checkboxes case 
+                  const dialogRef = this.dialog.open(CycleCountConfirmMessageDialogComponent, {
+                    width: '560px',
+                    data: {
+                      heading: heading,
+                      importType: this.selectedImportType,
+                      notFoundLocations: notFoundLocations,
+                      cycleCountLocations: cycleCountLocations,
+                      workstationGroups: workstationGroups,
+                      notFoundItems: notFoundItems,
+                      cycleCountItems: cycleCountItems,
+                      itemWorkstationGroups: itemWorkstationGroups
+                    }
+                  });
+                  
+                dialogRef.afterClosed().subscribe(() => {
+                  if (res.data && res.data.inventoryList && res.data.inventoryList.length > 0) {
+                    this.updateTableData(res.data.inventoryList);
                   }
                 });
-  
-                dialogRef.afterClosed().subscribe(() => {
-                  if (res.data && res.data.inventoryList && res.data.inventoryList.length > 0) 
-                    this.updateTableData(res.data.inventoryList);
-                });
+              } else if (res.data && res.data.inventoryList && res.data.inventoryList.length > 0) {
+                this.updateTableData(res.data.inventoryList);
+              }
               } else if (res.data && res.data.inventoryList && res.data.inventoryList.length > 0) 
                 this.updateTableData(res.data.inventoryList);
             } else {
