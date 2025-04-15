@@ -15,7 +15,7 @@ import { catchError, of } from 'rxjs';
 import { IAdminApiService } from 'src/app/common/services/admin-api/admin-api-interface';
 import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.service';
 import { GlobalService } from 'src/app/common/services/global.service';
-import { ToasterTitle, ToasterType ,ResponseStrings,DialogConstants,Style,TableConstant,UniqueConstants} from 'src/app/common/constants/strings.constants';
+import { ToasterTitle, ToasterType ,ResponseStrings,DialogConstants,Style,TableConstant,UniqueConstants, ToasterMessages} from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-add-new-device',
@@ -341,7 +341,7 @@ export class AddNewDeviceComponent implements OnInit {
           this.newDeviceForm.controls['Parity'].setValue(res.data.parity);
         } else {
 
-          this.global.ShowToastr(ToasterType.Error, 'An Error occured while retrieving data.', ToasterTitle.Error);
+          this.global.ShowToastr(ToasterType.Error, ToasterMessages.ErrorWhileRetrievingData, ToasterTitle.Error);
           console.log("DeviceInformation", res.responseMessage);
         }
       });

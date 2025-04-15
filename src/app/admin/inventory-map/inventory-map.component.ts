@@ -25,13 +25,13 @@ import { CurrentTabDataService } from '../inventory-master/current-tab-data-serv
 import { IAdminApiService } from 'src/app/common/services/admin-api/admin-api-interface';
 import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.service';
 import { TableContextMenuService } from 'src/app/common/globalComponents/table-context-menu-component/table-context-menu.service';
-import { DialogConstants, StringConditions, ToasterMessages, ToasterTitle, ToasterType, ColumnDef, Style, UniqueConstants } from 'src/app/common/constants/strings.constants';
+import { DialogConstants, StringConditions, ToasterMessages, ToasterTitle, ToasterType, ColumnDef, Style, UniqueConstants, defaultWorkstationSetup, AccessLevel } from 'src/app/common/constants/strings.constants';
 import { RouteUpdateMenu } from 'src/app/common/constants/menu.constants';
 import { AppNames, AppRoutes, } from 'src/app/common/constants/menu.constants';
 import { ContextMenuFiltersService } from 'src/app/common/init/context-menu-filters.service';
 import { Placeholders } from 'src/app/common/constants/strings.constants';
 import { StorageContainerManagementModalComponent } from '../dialogs/storage-container-management/storage-container-management.component';
-
+import { AccessLevelByGroupFunctions, ApiResponse, UserSession, WorkStationSetup } from 'src/app/common/types/CommonTypes';
 @Component({
   selector: 'app-inventory-map',
   templateUrl: './inventory-map.component.html',
@@ -39,7 +39,8 @@ import { StorageContainerManagementModalComponent } from '../dialogs/storage-con
 })
 
 export class InventoryMapComponent implements OnInit {
-  companyObj = { storageContainer: false };
+  companyObj :WorkStationSetup = defaultWorkstationSetup;
+  accessLevel = AccessLevel;
   placeholders = Placeholders;
   fieldMappings = JSON.parse(localStorage.getItem('fieldMappings') ?? '{}');
     
@@ -112,7 +113,7 @@ export class InventoryMapComponent implements OnInit {
     columnName: 0,
     sortOrder: UniqueConstants.Asc
   }
-  userData: any;
+  userData: UserSession;
   payload: any;
 
   searchAutocompleteList: any;
@@ -208,7 +209,7 @@ export class InventoryMapComponent implements OnInit {
   }
   
   public companyInfo() {
-    this.iAdminApiService.AccessLevelByGroupFunctions().subscribe((res: any) => {
+    this.iAdminApiService.AccessLevelByGroupFunctions().subscribe((res: ApiResponse<AccessLevelByGroupFunctions>) => {
       if (res.isExecuted && res.data) {
         // storage container management access level
          this.isStorageContainer =  res.data.accessstorageContainer;
@@ -217,11 +218,11 @@ export class InventoryMapComponent implements OnInit {
       }
     });
 
-    this.iAdminApiService.WorkstationSetupInfo().subscribe((res: any) => {
-      if (res.isExecuted && res.data) {
-        this.companyObj.storageContainer = res.data.storageContainer;        }
+    this.iAdminApiService.WorkstationSetupInfo().subscribe((res: ApiResponse<WorkStationSetup>) => {
+      if (res.isExecuted && res.data) 
+        this.companyObj = res.data;
       else {
-        //this.global.ShowToastr(ToasterType.Error, this.global.globalErrorMsg(), ToasterTitle.Error);
+        this.global.ShowToastr(ToasterType.Error, this.global.globalErrorMsg(), ToasterTitle.Error);
         console.log("AdminCompanyInfo", res.responseMessage);
       }
     })
@@ -353,14 +354,14 @@ export class InventoryMapComponent implements OnInit {
         fieldName:this.fieldNames
       }
     })
-    dialogRef.afterClosed().pipe(takeUntil(this.onDestroy$)).subscribe(result => {
-      
+    dialogRef.afterClosed().pipe(takeUntil(this.onDestroy$)).subscribe(result => {      
       if(result != DialogConstants.close){
         this.getContentData();
       }
         
     })
   }
+  
   inventoryMapAction(actionEvent: any) {
     if (actionEvent.value === 'set_column_sq') {
 

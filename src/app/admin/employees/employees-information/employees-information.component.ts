@@ -1,6 +1,7 @@
 import { Component, EventEmitter, Input, Output, ViewChild } from '@angular/core';
 import { MatOption } from '@angular/material/core';
 import { MatSelect } from '@angular/material/select';
+import { AccessLevel } from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-employees-information',
@@ -12,6 +13,7 @@ export class EmployeesInformationComponent{
   @Input() isLookUp : boolean = false;
   @Input() env : string = '';
   @Input() empData;
+  accessLevel = AccessLevel;
 
   @ViewChild('matRef') matRef: MatSelect;
 

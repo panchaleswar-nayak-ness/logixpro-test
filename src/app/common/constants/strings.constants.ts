@@ -1,3 +1,5 @@
+import { AccessLevelByGroupFunctions, WorkStationSetup } from "../types/CommonTypes";
+
 export const StringAssignments = {
     WorkstationNotAssignedToZone: 'This workstation is not assigned to a zone',
 };
@@ -177,7 +179,20 @@ export const ToasterMessages = {
     MissingDataFromPrint: 'Missing data from the desired print row',
     DeletePendingTransaction: 'You can only delete pending transactions.',
     ItemNumberExists: 'Item Number Already Exists.',
-    RecordUpdatedSuccessful: 'Record Updated Successfully'
+    RecordUpdatedSuccessful: 'Record Updated Successfully',
+    DuplicateAdjustmentReason: 'Adjustment Reason is a duplicate. Save other edited fields and ensure it is not a duplicate before saving.',
+    DuplicateToteError: 'Tote must be unique. Another entry matches it. Please save any pending totes and try again.',
+    DuplicateFieldError: 'Field is a duplicate. Save other edited fields and ensure it is not a duplicate before saving.',
+    ErrorRemovingRow: 'An Error Occured while trying to remove this row, check the event log for more information',
+    ErrorRemovingData: 'An Error Occured while trying to remove all data, check the event log for more information',
+    ErrorCreatingCount: 'Error Occured while creating Count records, check event log for more information',
+    ImportDataFailed: 'Failed to import data.',
+    NoFileFound: 'No file found.',
+    OrderDeAllocationFailed: 'Order De-Allocation Not Successful',
+    NoItemAtLocation: 'No item found at the location specified. Ensure that the entry selected has been saved since an item was assigned to it.',
+    ZoneLocationRequired: 'Zone and Location need to be set via the dropdown in order to save.',
+    WarehouseSensitiveWarning: 'The selected item is warehouse sensitive. Please set a warehouse to continue.',
+    DateSensitiveWarning: 'Item is date sensitive. Please set date sensitive before saving.',
 }
 
 
@@ -585,4 +600,52 @@ export const MarkoutNewToteAuditDC = {
     Status: 'Status',
     StatusDate: 'Status Date',
     DivertReason: 'Divert Reason'
+}
+
+export const defaultWorkstationSetup: WorkStationSetup = {
+    podID: "No",
+    scanVerifyPicks: false,
+    scanVerifyCounts: false,
+    scanVerifyPutAways: false,
+    printReportLocation: "No Printer",
+    printLabelLocation: "No Printer",
+    cartonFlowID: null,
+    pickToTotes: false,
+    putAwayFromTotes: false,
+    autoPrintPickToteLabels: false,
+    batchPutAway: false,
+    storageContainer: false,
+    locationControl: false,
+    locAssOrderSelection: false,
+    printReprocessReport: false,
+    printPickLabel: false,
+    printPickLabelBatch: false,
+    pfSettings: [
+      {
+        pfName: "",
+        pfSetting: ""
+      }
+    ],
+    pfSettingsII: [
+      {
+        pfName: "",
+        pfSetting: ""
+      }
+    ],
+    pfSettingsIII: [
+      {
+        pfName: "",
+        pfSetting: ""
+      }
+    ]
+};
+
+export const defaultAccessLevelByGroupFunctions: AccessLevelByGroupFunctions = {
+    accessClearWholeLocation: false,
+    accessstorageContainer: false
+}
+
+export const AccessLevel = {
+    Administrator: "administrator",
+    StaffMember: "staff_member"
 }
