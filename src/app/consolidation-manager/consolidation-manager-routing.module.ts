@@ -34,8 +34,8 @@ component: ReportsComponent,
 canActivate: [AuthGuardGuard], 
 },
 { path: 'Markout', 
-  // component: CmMarkoutComponent, 
-  component: CmMarkoutNewComponent, 
+  component: CmMarkoutComponent, 
+  // component: CmMarkoutNewComponent, 
   canActivate: [AuthGuardGuard], 
 }
 ];
