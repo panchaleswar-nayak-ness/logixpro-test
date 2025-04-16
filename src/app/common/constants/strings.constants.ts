@@ -127,7 +127,9 @@ export const ConfirmationMessages = {
     ClickOkToPrintItemLabels: 'Click Ok to print item labels for the selected batch orders?',
     UnverfiedItemsLeft: 'There are still unverfied items. Coninue the preview?',
     EventLogDeleteWithRange: 'Are you sure you want to delete all Event Log entries with specified date, message, event location and name stamp filters?',
-    ClickOkToUpdateLocation: 'You will now update both locations to complete the current move'
+    ClickOkToUpdateLocation: 'You will now update both locations to complete the current move',
+    ConfirmationToClearAllInventoryMap : "Click OK to clear all Inventory Map records matching Location Number (Zone + Carousal + Row + Shelf + Bin) Criteria!",
+    ClearWholeLocationPutAwayQuantity:"Clear Whole Location cannot proceed because the Allocated Pick or Allocated Put Away quantity is greater than zero."
 }
 
 export const ToasterMessages = {
