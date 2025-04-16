@@ -76,8 +76,10 @@ export class HeaderInterceptor implements HttpInterceptor {
       const responseMessage = err.error?.ResponseMessage ? `(${err.error.ResponseMessage})` : '';
       const errorMessage = 'Unauthorize access ' + responseMessage;
       this.global.ShowToastr(ToasterType.Error, errorMessage, ToasterTitle.Error);
-      this.router.navigate(['/dashboard']);
-      this.sharedService.BroadCastMenuUpdate("/dashboard");
+      if(!this.authService.isConfigUser()){
+        this.router.navigate(['/dashboard']);
+        this.sharedService.BroadCastMenuUpdate("/dashboard");
+      }
     }
 
     return of(err.message);

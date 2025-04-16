@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { FieldMappingModel } from '../../types/CommonTypes';
 import { AdminApiService } from '../admin-api/admin-api.service';
 import { BehaviorSubject, firstValueFrom, Observable } from 'rxjs';
+import { AuthService } from '../../init/auth.service';
 
 @Injectable({
   providedIn: 'root',
@@ -10,8 +11,12 @@ import { BehaviorSubject, firstValueFrom, Observable } from 'rxjs';
 export class FieldMappingService {
   private fieldMappingSubject = new BehaviorSubject<FieldMappingModel | null>(null);
 
-  constructor(private adminApiService: AdminApiService) {
-    this.loadFieldMappings(); // Automatically loads when the service is created
+  constructor(private adminApiService: AdminApiService,
+    private readonly authService: AuthService
+  ) {
+    if(!this.authService.isConfigUser()){
+      this.loadFieldMappings(); // Automatically loads when the service is created
+    }
   }
   
 

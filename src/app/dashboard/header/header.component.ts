@@ -258,6 +258,7 @@ export class HeaderComponent {
         {
           this.localstorageService.clearLocalStorage();
           localStorage.removeItem('userConfig');
+          localStorage.removeItem('isConfigUser');
           this.router.navigate(['/globalconfig']);
         }
         else 

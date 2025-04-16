@@ -1,7 +1,7 @@
 import { Component, ElementRef,  TemplateRef,  ViewChild } from '@angular/core';
 import { ILogin} from './Ilogin'; 
 import { FormControl} from '@angular/forms';
-import { Router } from '@angular/router';
+import { NavigationEnd, Router } from '@angular/router';
 import { ChangePasswordComponent } from './change-password/change-password.component';
 import { SpinnerService } from '../common/init/spinner.service';
 import { AuthService } from '../common/init/auth.service'; 
@@ -21,6 +21,7 @@ import { ValidWorkstation, ApiResponse } from 'src/app/common/types/CommonTypes'
 import { LinkedResource } from 'src/app/common/services/base-service.service';
 import { AppInfo, App, AppData, AppLicense, AppNameByWorkstationResponse } from 'src/app/dashboard/main/main.component';
 import { LocalStorageService } from 'src/app/common/services/LocalStorage.service';
+import { filter } from 'rxjs';
 type Version = {version: string};
 
 @Component({
@@ -67,7 +68,13 @@ export class LoginComponent {
       });
     });
     this.url = this.router.url;
-    let wsName = global.getCookie("WSName");
+    this.configureWorkstation();
+  }
+
+  
+
+  configureWorkstation(){
+    let wsName = this.global.getCookie("WSName");
     if(wsName){
       this.apiBase.GetApiEndpoint("validworkstations").subscribe((endpoint: string) => {
         this.apiBase.Get<[LinkedResource<ValidWorkstation>]>(endpoint).subscribe((res: [LinkedResource<ValidWorkstation>]) => {
@@ -208,6 +215,16 @@ export class LoginComponent {
   }
 
   ngOnInit() {
+    this.router.events
+    .pipe(
+      filter(event => event instanceof NavigationEnd)
+    )
+    .subscribe(event => {
+      const navEndEvent = event as NavigationEnd;
+      if (navEndEvent.urlAfterRedirects === '/login') {
+        this.configureWorkstation();
+      }
+    });
     this.version = packJSON.version;
     let lastRoute: any = localStorage.getItem('LastRoute') ? localStorage.getItem('LastRoute') : "";
     //localStorage.clear();
