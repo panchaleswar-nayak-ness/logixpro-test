@@ -129,7 +129,7 @@ export class InventoryMapComponent implements OnInit {
   inventoryRoute:any;
   clickTimeout:ReturnType<typeof setTimeout>;
 
-  @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
+  @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild('matRef') matRef: MatSelect;
   @ViewChild('viewAllLocation') customTemplate: TemplateRef<any>;
@@ -149,9 +149,16 @@ export class InventoryMapComponent implements OnInit {
 
   optionSelected(filter : string) {
     this.filterString = filter;
+    this.resetPagination();
     this.initializeApi();
     this.getContentData();    
     this.isActiveTrigger = false;
+  }
+
+  resetPagination(){
+    this.customPagination.startIndex = 0;
+    this.customPagination.endIndex = 20;
+    this.paginator.pageIndex = 0;
   }
 
  //---------------------for mat menu End ----------------------------
@@ -663,6 +670,7 @@ export class InventoryMapComponent implements OnInit {
 
     this.initializeApi();
     this.getContentData();
+    this.resetPagination();
 
   }
 
