@@ -1,7 +1,8 @@
 export enum OperationTypes {
     NUMERIC,
     STRING,
-    EQUALS
+    EQUALS,
+    DATE
 }
 
 export enum KeyboardCodes {

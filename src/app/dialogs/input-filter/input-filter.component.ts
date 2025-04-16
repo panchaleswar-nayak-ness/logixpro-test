@@ -41,7 +41,7 @@ export class InputFilterComponent implements OnInit {
   onSend(form?: any) {
     if (
       this.data.Condition == 'is between' &&
-      this.data.TypeOfElement == 'date'
+      this.data.TypeOfElement == 'string'
     ) {
       this.SendData = "'" + this.text1 + "'" + ' and ' + "'" + this.text2 + "'";
     } else if (

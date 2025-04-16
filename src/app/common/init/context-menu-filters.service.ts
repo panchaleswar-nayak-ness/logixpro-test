@@ -58,7 +58,9 @@ export class ContextMenuFiltersService {
   
 
   getType(val) : string {
-    if(val == 'Expiration Date' ||  val == 'Put Away Date') return "date";
+    if(val == 'Expiration Date' ||  val == 'Put Away Date' || 
+      val == 'Import Date' || val == 'Required Date' || val == 'Expiration Date' ||
+      val == 'Completed Date' || val == 'Export Date' || val == 'Induction Date') return "date";
     else return typeof val;
   }
 
@@ -106,6 +108,8 @@ export class ContextMenuFiltersService {
       else if(condition == "begins with" || condition == "does not begins with") return "'" + valueText + "%'";
       else if(condition == "ends with" || condition == "does not ends with") return "'%" + valueText + "'";
       else if(condition == "is like" || condition == "is not like" || condition == "contains" || condition == "does not contains") return "'%" + valueText + "%'";
+      else if(condition == "is greater than" || condition == "is less than") return "'" + valueText + "'";
+      else if(condition == "is between" || condition == "between") return   valueText  ;
       else return "";
 
     return "";

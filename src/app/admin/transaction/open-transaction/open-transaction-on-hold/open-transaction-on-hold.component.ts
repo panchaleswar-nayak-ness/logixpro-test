@@ -479,6 +479,7 @@ export class OpenTransactionOnHoldComponent implements OnInit, AfterViewInit {
     this.columnValues.find((x, i) => { if(x === event.active) index = i; });
     this.sortCol = index;
     this.sortOrder = event.direction;
+    this.resetPagination();
     this.getContentData();
   }
 

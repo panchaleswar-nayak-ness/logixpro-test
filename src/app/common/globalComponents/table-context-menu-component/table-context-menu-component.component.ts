@@ -22,6 +22,8 @@ export class TableContextMenuComponentComponent implements OnInit{
     { condition: "is not equals to", title: "Not Equals", type: OperationTypes.EQUALS },
     { condition: "is greater than or equal to", title: "Greater than or Equal", type: OperationTypes.NUMERIC },
     { condition: "is less than or equal to", title: "Less than or Equal", type: OperationTypes.NUMERIC },
+    { condition: "is greater than", title: "Greater than", type: OperationTypes.DATE },
+    { condition: "is less than", title: "Less than", type: OperationTypes.DATE },
     { condition: "is like", title: "Like", type: OperationTypes.STRING },
     { condition: "is not like", title: "Not Like", type: OperationTypes.STRING }
   ];

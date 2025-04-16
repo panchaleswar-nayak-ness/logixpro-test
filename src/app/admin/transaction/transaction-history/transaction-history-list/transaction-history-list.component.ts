@@ -110,7 +110,7 @@ export class TransactionHistoryListComponent implements OnInit, AfterViewInit {
   public orderNo: any;
   public payload: any;
   public sortCol: any = 0;
-  public sortOrder: any = UniqueConstants.Asc;
+  public sortOrder: any = UniqueConstants.Desc;
   selectedVariable: any;
   selectedDropdown = '';
   floatLabelControl = new FormControl('auto' as FloatLabelType);
@@ -395,6 +395,9 @@ export class TransactionHistoryListComponent implements OnInit, AfterViewInit {
   }
 
   sortChange(event) {
+    
+    this.resetPagination();
+
     if (!this.dataSource._data._value || event.direction == '' || event.direction == this.sortOrder) return;
 
     let index;
