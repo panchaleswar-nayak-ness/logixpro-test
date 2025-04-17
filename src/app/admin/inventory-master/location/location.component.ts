@@ -3,6 +3,7 @@ import { FormGroup } from '@angular/forms';
 import { PageEvent } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import {  TableConstant ,UniqueConstants,Column,ColumnDef, Placeholders} from 'src/app/common/constants/strings.constants';
+import { ColumnAlias } from 'src/app/common/types/CommonTypes';
 
 @Component({
   selector: 'app-location',
@@ -14,6 +15,7 @@ export class LocationComponent implements OnInit {
   UnitOfMeasure: string = this.fieldMappings.unitOfMeasure;
   placeholders = Placeholders;
   @Input() fieldNameDetails: any;
+  @Input() fieldNames: ColumnAlias;
   currentDir=UniqueConstants.Asc;
   nextDir='desc';
   counter=0;

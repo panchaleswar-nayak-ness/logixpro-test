@@ -13,7 +13,7 @@
                     <ng-scrollbar track="all"  class="mat-table-scrollbar h-260px">
                         <table #zoneSort="matSort" mat-table [dataSource]="dataSource" matSort (matSortChange)="sortChange()" class="w-100">
                             <ng-container matColumnDef="carousel">
-                                <th mat-header-cell mat-sort-header  *matHeaderCellDef>Carousel </th>
+                                <th mat-header-cell mat-sort-header  *matHeaderCellDef>{{fieldNames.carousel}} </th>
                                 <td mat-cell *matCellDef="let element"><div class="d-flex align-items-center "><span class="br-14 label px-3 f-16" [ngClass]="{'label-green': element.carousel === 'on', 'label-red' : element.carousel === 'off' }">{{element.carousel}}</span></div> </td>
                             </ng-container>
 

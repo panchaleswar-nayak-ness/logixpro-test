@@ -110,19 +110,19 @@
                                 <td (contextmenu)="onContextMenu($event, element.zone, 'Zone')" [class.selected]="element.isSelected" mat-cell *matCellDef="let element">{{element.zone}}</td>
                             </ng-container>
                             <ng-container matColumnDef="carousel">
-                                <th mat-header-cell mat-sort-header *matHeaderCellDef>Carousel </th>
+                                <th mat-header-cell mat-sort-header *matHeaderCellDef>{{fieldMappings.carousel}} </th>
                                 <td (contextmenu)="onContextMenu($event, element.carousel, 'Carousel')" [class.selected]="element.isSelected" mat-cell *matCellDef="let element">{{element.carousel}}</td>
                             </ng-container>
                             <ng-container matColumnDef="row">
-                                <th mat-header-cell mat-sort-header *matHeaderCellDef> Row </th>
+                                <th mat-header-cell mat-sort-header *matHeaderCellDef> {{fieldMappings.row}} </th>
                                 <td (contextmenu)="onContextMenu($event, element.row, 'Row')" [class.selected]="element.isSelected" mat-cell *matCellDef="let element">{{element.row}}</td>
                             </ng-container>
                             <ng-container matColumnDef="shelf">
-                                <th mat-header-cell mat-sort-header *matHeaderCellDef> Shelf</th>
+                                <th mat-header-cell mat-sort-header *matHeaderCellDef> {{fieldMappings.shelf}}</th>
                                 <td (contextmenu)="onContextMenu($event, element.shelf, 'Shelf')" [class.selected]="element.isSelected" mat-cell *matCellDef="let element">{{element.shelf}}</td>
                             </ng-container>
                             <ng-container matColumnDef="bin">
-                                <th mat-header-cell mat-sort-header *matHeaderCellDef> Bin</th>
+                                <th mat-header-cell mat-sort-header *matHeaderCellDef> {{fieldMappings.bin}}</th>
                                 <td (contextmenu)="onContextMenu($event, element.bin, 'Bin')" [class.selected]="element.isSelected" mat-cell *matCellDef="let element">{{element.bin}}</td>
                             </ng-container>
                             <ng-container matColumnDef="cellSize">
@@ -268,19 +268,19 @@
                                 <td (contextmenu)="onContextMenu($event, element.zone, 'Zone')" [class.selected]="element.isSelected" mat-cell *matCellDef="let element">{{element.zone}}</td>
                             </ng-container>
                             <ng-container matColumnDef="carousel">
-                                <th mat-header-cell mat-sort-header *matHeaderCellDef>Carousel </th>
+                                <th mat-header-cell mat-sort-header *matHeaderCellDef>{{fieldMappings.carousel}} </th>
                                 <td (contextmenu)="onContextMenu($event, element.carousel, 'Carousel')" [class.selected]="element.isSelected"  mat-cell *matCellDef="let element">{{element.carousel}}</td>
                             </ng-container>
                             <ng-container matColumnDef="row">
-                                <th mat-header-cell mat-sort-header *matHeaderCellDef> Row </th>
+                                <th mat-header-cell mat-sort-header *matHeaderCellDef> {{fieldMappings.row}} </th>
                                 <td (contextmenu)="onContextMenu($event, element.row, 'Row')" [class.selected]="element.isSelected" mat-cell *matCellDef="let element">{{element.row}}</td>
                             </ng-container>
                             <ng-container matColumnDef="shelf">
-                                <th mat-header-cell mat-sort-header *matHeaderCellDef> Shelf</th>
+                                <th mat-header-cell mat-sort-header *matHeaderCellDef> {{fieldMappings.shelf}}</th>
                                 <td  (contextmenu)="onContextMenu($event, element.shelf, 'Shelf')" [class.selected]="element.isSelected" mat-cell *matCellDef="let element">{{element.shelf}}</td>
                             </ng-container>
                             <ng-container matColumnDef="bin">
-                                <th mat-header-cell mat-sort-header *matHeaderCellDef> Bin</th>
+                                <th mat-header-cell mat-sort-header *matHeaderCellDef> {{fieldMappings.bin}}</th>
                                 <td (contextmenu)="onContextMenu($event, element.bin, 'Bin')" [class.selected]="element.isSelected" mat-cell *matCellDef="let element">{{element.bin}}</td>
                             </ng-container>
                             <ng-container matColumnDef="cellSize">

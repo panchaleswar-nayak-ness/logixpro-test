@@ -5,6 +5,7 @@ import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
 import {  zoneType ,UniqueConstants,TableConstant} from 'src/app/common/constants/strings.constants'; 
+import { ColumnAlias } from 'src/app/common/types/CommonTypes';
 
 @Component({
   selector: 'app-tran-carousel-lzone',
@@ -12,6 +13,7 @@ import {  zoneType ,UniqueConstants,TableConstant} from 'src/app/common/constant
   styleUrls: ['./tran-carousel-lzone.component.scss'],
 })
 export class TranCarouselLzoneComponent implements OnInit, AfterViewInit {
+  @Input() fieldNames: ColumnAlias;
   public columnValues: any = [];
   public locationZonesData: any = [];
   dataSource = new MatTableDataSource<any>([]);

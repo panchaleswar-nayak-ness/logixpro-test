@@ -6,6 +6,7 @@ import { IAdminApiService } from 'src/app/common/services/admin-api/admin-api-in
 import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.service';
 import { GlobalService } from 'src/app/common/services/global.service';
 import { Column, DialogConstants, Mode, ToasterTitle, ToasterType ,Style,UniqueConstants,ColumnDef,TableConstant, Placeholders} from 'src/app/common/constants/strings.constants';
+import { ColumnAlias } from 'src/app/common/types/CommonTypes';
 
 @Component({
   selector: 'app-open-transaction-data-table',
@@ -46,6 +47,7 @@ export class OpenTransactionDataTableComponent implements OnInit {
   public sortCol: any = 0;
   public sortOrder: any = UniqueConstants.Asc;
   public columnValues: any = [];
+  @Input() fieldNames: ColumnAlias;
   pageEvent: PageEvent;
 
   public iAdminApiService: IAdminApiService;

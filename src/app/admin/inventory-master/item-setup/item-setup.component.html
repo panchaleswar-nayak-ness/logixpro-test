@@ -7,7 +7,7 @@
             <mat-label>Primary Zone</mat-label>
             <mat-select (selectionChange)="handleInputChange($event)" (contextmenu)=" onContextMenu($event, 'Primary Pick Zone')"   formControlName="primaryPickZone" (selectionChange)="getSelected($event)">
               <mat-option value=""></mat-option>
-              <mat-option value="carousel">Carousel</mat-option>
+              <mat-option value="carousel">{{fieldNames.carousel}}</mat-option>
               <mat-option value="bulk">Bulk</mat-option>
               <mat-option value="carton flow">Carton Flow</mat-option>
             </mat-select>
@@ -22,7 +22,7 @@
             <mat-select (selectionChange)="handleInputChange($event)" (contextmenu)=" onContextMenu($event, 'Secondary Pick Zone')"   
             formControlName="secondaryPickZone"  >
               <mat-option value=""></mat-option>
-              <mat-option value="carousel">Carousel</mat-option>
+              <mat-option value="carousel">{{fieldNames.carousel}}</mat-option>
               <mat-option value="bulk">Bulk</mat-option>
               <mat-option value="carton flow">Carton Flow</mat-option>
             </mat-select>
@@ -91,7 +91,7 @@
         </div>
         <div class="col-3">
           <mat-form-field class="custom-form-field w-100 __grab_cursor" appearance="outline" (click)="openCellSizeDialog('cellSize')">
-            <mat-label>Carousel</mat-label>
+            <mat-label>{{fieldNames.carousel}}</mat-label>
             <input matInput type="text" (contextmenu)="onContextMenu($event, 'Cell Size')" formControlName="cellSize" maxlength="50" readonly="true">
             <span matSuffix>
               <mat-icon class="text-tertiary-900 rotate-45">unfold_more</mat-icon>
@@ -127,7 +127,7 @@
         </div>
         <div class="col-3">
           <mat-form-field class="custom-form-field w-100 __grab_cursor" appearance="outline" (click)="openVelocityCodeDialog('goldenZone')">
-            <mat-label>Carousel</mat-label>
+            <mat-label>{{fieldNames.carousel}}</mat-label>
             <input matInput type="text" formControlName="goldenZone" readonly="true" (contextmenu)=" onContextMenu($event, 'Golden Zone')">
             <span matSuffix>
               <mat-icon class="text-tertiary-900 rotate-45">unfold_more</mat-icon>
@@ -160,7 +160,7 @@
         </div>
         <div class="col-3">
           <mat-form-field class="custom-form-field w-100 __grab_cursor" appearance="outline">
-            <mat-label>Carousel</mat-label>
+            <mat-label>{{fieldNames.carousel}}</mat-label>
             <input (input)="handleInputChange($event)" (focusout)="defaultVal($event,'minimumQuantity')" (contextmenu)="onContextMenu($event, 'Minimum Quantity')"  matInput type="text" formControlName="minimumQuantity"  maxlength="9" (change)="cellQuantityChange()">
           </mat-form-field>
         </div>
@@ -188,7 +188,7 @@
         </div>
         <div class="col-3">
           <mat-form-field class="custom-form-field w-100 __grab_cursor" appearance="outline" >
-            <mat-label>Carousel</mat-label>
+            <mat-label>{{fieldNames.carousel}}</mat-label>
             <input  (input)="handleInputChange($event)" matInput type="text" (focusout)="defaultVal($event,'maximumQuantity')"  (contextmenu)="onContextMenu($event, 'Maximum Quantity')" formControlName="maximumQuantity" maxlength="9" (change)="cellQuantityChange()">
           </mat-form-field>
         </div>

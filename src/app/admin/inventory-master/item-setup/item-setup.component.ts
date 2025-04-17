@@ -8,6 +8,7 @@ import { GlobalService } from 'src/app/common/services/global.service';
 import {  DialogConstants ,UniqueConstants} from 'src/app/common/constants/strings.constants';
 import { TableContextMenuService } from 'src/app/common/globalComponents/table-context-menu-component/table-context-menu.service';
 import { ContextMenuFiltersService } from 'src/app/common/init/context-menu-filters.service';
+import { ColumnAlias } from 'src/app/common/types/CommonTypes';
 @Component({
   selector: 'app-item-setup',
   templateUrl: './item-setup.component.html',
@@ -17,7 +18,7 @@ export class ItemSetupComponent implements OnInit {
 
   disableSecondaryZone=true;
   @Input() itemSetup: FormGroup;
-
+  @Input() fieldNames: ColumnAlias;
   public userData: any;
   @Output() notifyContextMenu: EventEmitter<any> = new EventEmitter();
   filterString : string = UniqueConstants.OneEqualsOne;
