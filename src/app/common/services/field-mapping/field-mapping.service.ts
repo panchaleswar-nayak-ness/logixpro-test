@@ -14,8 +14,8 @@ export class FieldMappingService {
   constructor(private adminApiService: AdminApiService,
     private readonly authService: AuthService
   ) {
-    if(!this.authService.isConfigUser()){
-      this.loadFieldMappings(); // Automatically loads when the service is created
+    if(!this.authService.isConfigUser() && this.authService.IsloggedIn()){
+      this.loadFieldMappings();
     }
   }
   
