@@ -12,7 +12,7 @@ import { GlobalConfigApiService } from 'src/app/common/services/globalConfig-api
 import { IUserAPIService } from '../common/services/user-api/user-api-interface';
 import { UserApiService } from '../common/services/user-api/user-api.service';
 import { GlobalService } from '../common/services/global.service';
-import { ToasterTitle,ToasterType,DialogConstants} from 'src/app/common/constants/strings.constants';
+import { ToasterTitle,ToasterType,DialogConstants, Style, ConfirmationHeadings, ConfirmationButtonText, ResponseStrings} from 'src/app/common/constants/strings.constants';
 import { AppName, AppNames, AppPermissions, AppRoutes, RouteName, RouteNames, RouteMenu, RouteUpdateMenu, AppPermission } from 'src/app/common/constants/menu.constants';
 import { MatDialog } from '@angular/material/dialog';
 import { WorkstationLoginComponent } from '../dialogs/workstation-login/workstation-login.component';
@@ -22,6 +22,7 @@ import { LinkedResource } from 'src/app/common/services/base-service.service';
 import { AppInfo, App, AppData, AppLicense, AppNameByWorkstationResponse } from 'src/app/dashboard/main/main.component';
 import { LocalStorageService } from 'src/app/common/services/LocalStorage.service';
 import { filter } from 'rxjs';
+import { ConfirmationDialogComponent } from '../admin/dialogs/confirmation-dialog/confirmation-dialog.component';
 type Version = {version: string};
 
 @Component({
@@ -155,7 +156,28 @@ export class LoginComponent {
       }
       switch (validity) {
         case 100:
-          return this.handleLoginSuccess(response, errorMessage?.toString());
+          let dialogRef = this.global.OpenDialog(ConfirmationDialogComponent, {
+            height: DialogConstants.auto,
+            width: Style.w560px,
+            autoFocus: DialogConstants.autoFocus,
+            disableClose: true,
+            data: {
+              message: errorMessage?.toString(),
+              heading: ConfirmationHeadings.PasswordExpiryAlert,
+              customButtonText: ConfirmationButtonText.ResetPassword,                    
+              btn1Text:ConfirmationButtonText.ResetPassword,
+              btn2Text:ConfirmationButtonText.RemindMeLater
+            },
+          });
+          dialogRef.afterClosed().subscribe((res) => {
+                  if (res === ResponseStrings.Yes) {
+                    this.changePass()
+                  }
+                  else {
+                    return this.handleLoginSuccess(response);
+                  }
+                });
+          return;
         case 200:
         case 0:
           return this.handleLoginSuccess(response);

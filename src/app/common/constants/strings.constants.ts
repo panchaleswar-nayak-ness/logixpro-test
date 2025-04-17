@@ -116,9 +116,13 @@ export const ToasterTitle = {
 
 export const ConfirmationHeadings = {
     BatchManager: 'Batch Manager',
-    MoveNow: "Continue Move Now?"
+    MoveNow: "Continue Move Now?",
+    PasswordExpiryAlert: "Password Expiry Alert"
 }
-
+export const ConfirmationButtonText = {
+    ResetPassword: 'Reset Password Now',
+    RemindMeLater: 'Remind Me Later'
+}
 
 
 export const ConfirmationMessages = {
