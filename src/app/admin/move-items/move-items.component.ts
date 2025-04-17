@@ -175,8 +175,6 @@ export class MoveItemsComponent implements OnInit {
     this.itemNumberSearch
       .pipe(debounceTime(400), distinctUntilChanged())
       .subscribe((value) => {
-        // this.startRow = 0;
-        // this.endRow = 10;
         this.resetPaginationFrom();
         this.autocompleteSearchColumn();
       });
@@ -250,7 +248,7 @@ export class MoveItemsComponent implements OnInit {
     let payload = {
       draw: 1,
       StartRow: tableName === StringConditions.MoveFrom ? this.startRow : this.startRowTo,
-      EndRow: tableName === StringConditions.MoveFrom ? this.endRow : this.endRowTo,
+      EndRow: tableName === StringConditions.MoveFrom ? (!isNaN(this.endRow) ? this.endRow : 10) : this.endRowTo,
       searchString: searchString || (tableName === StringConditions.MoveFrom ? this.itemNo : this.from_itemNo),
       searchColumn: searchColumn || Column.ItemNumber,
       sortColumnIndex: tableName === StringConditions.MoveFrom ? this.sortCol : this.sortColTo,
@@ -304,69 +302,6 @@ export class MoveItemsComponent implements OnInit {
       }
     });
   }
-  
-  // getMoveItemList(tableName, fromPagination = false, unselectFrom = false) {
-  //   if (tableName === StringConditions.MoveTo)
-  //     if (this.viewAll || this.dataSource.data.length === 0) this.viewModeTo = ResponseStrings.AllCaps;
-  //     else if (fromPagination && !this.isRowSelected) this.viewModeTo = ResponseStrings.AllCaps;
-  //     else if (unselectFrom) this.viewModeTo = ResponseStrings.AllCaps;
-  //     else this.viewModeTo = 'NOA';
-
-  //   let payload = {
-  //     draw: 1,
-  //     StartRow: tableName === StringConditions.MoveFrom ? this.startRow : this.startRowTo,
-  //     EndRow: tableName === StringConditions.MoveFrom ? this.endRow : this.endRowTo,
-  //     searchString: tableName === StringConditions.MoveFrom ? this.itemNo : this.from_itemNo,
-  //     searchColumn: Column.ItemNumber,
-  //     sortColumnIndex: tableName === StringConditions.MoveFrom ? this.sortCol : this.sortColTo,
-  //     sortOrder: tableName === StringConditions.MoveFrom ? this.sortOrder : this.sortOrderTo,
-  //     tableName: tableName,
-  //     cellSize: this.from_cellSize,
-  //     warehouse: this.seletedWarehouse,
-  //     invMapid: tableName === StringConditions.MoveFrom ? this.invMapID : this.invMapIDToItem,
-  //     viewMode: tableName === StringConditions.MoveFrom ? this.viewMode : this.viewModeTo,
-  //     filter: tableName === StringConditions.MoveFrom ? this.moveFromFilter : this.moveToFilter,
-  //   };
-
-  //   this.iAdminApiService.GetMoveItemsTable(payload).subscribe((res: any) => {
-  //     if(res.isExecuted)
-  //     {
-  //       if (res?.data && res.data['moveMapItems'].length === 0)
-  //         if (tableName === StringConditions.MoveFrom) this.resetPaginationFrom();
-  //         else this.resetPaginationTo();
-
-  //       if (tableName === StringConditions.MoveTo) {
-  //         res?.data && res.data['moveMapItems'].map((item : any) => item.isSelected = false);
-  //         const sortedMoveMapItems = (res?.data && res.data['moveMapItems']) || [];
-
-  //         // Sort by itemNumber in ascending order
-  //         sortedMoveMapItems.sort((a, b) => {
-  //           return (a.itemNumber.trim() === '' ? 1 : 0) - (b.itemNumber.trim() === '' ? 1 : 0);
-  //         });
-  //         this.moveToDatasource = new MatTableDataSource(sortedMoveMapItems);
-  //         this.totalRecordsTo = res?.data.recordsTotal;
-  //         this.recordsFilteredTo = res?.data.recordsFiltered;
-  //         this.customLabelTo = `Showing page ${this.totalRecords} of ${Math.ceil(this.totalRecords / this.recordsPerPage)}`;
-  //       } else {
-  //         res?.data && res.data && res.data['moveMapItems'].map((item : any) => item.isSelected = false);
-  //         // this.dataSource = new MatTableDataSource(res?.data['moveMapItems']);
-          
-  //         const filteredData = res?.data['moveMapItems'].filter(item => item.itemNumber !== '');
-
-  //         // Initialize MatTableDataSource with filtered data
-  //         this.dataSource = new MatTableDataSource(filteredData);
-  //         this.totalRecords = res?.data.recordsTotal;
-  //         this.recordsFiltered = res?.data.recordsFiltered;
-  //         this.customLabel = `Showing page ${this.totalRecords} of ${Math.ceil(this.totalRecords / this.recordsPerPage)}`;
-  //       }
-  //     }
-  //     else {
-  //       this.global.ShowToastr(ToasterType.Error, this.global.globalErrorMsg(), ToasterTitle.Error);
-  //       console.log("GetMoveItemsTable",res.responseMessage);
-  //     }
-  //   });
-  // }
-
   getFloatLabelValue(): FloatLabelType {
     return this.floatLabelControl.value ?? 'auto';
   }
@@ -418,9 +353,10 @@ export class MoveItemsComponent implements OnInit {
     this.pageEvent = e;
     this.startRow = e.pageSize * e.pageIndex;
     // this.endRow = e.pageSize
-    if (e.pageSize !== undefined) {
-      this.endRow = e.pageSize;
-  }
+  //   if (e.pageSize !== undefined) {
+  //     this.endRow = e.pageSize;
+  // }
+  this.endRow = e.pageSize * e.pageIndex + e.pageSize;
     this.recordsPerPage = e.pageSize;
     this.getMoveItemList(StringConditions.MoveFrom);
   }
@@ -894,6 +830,8 @@ formatDateTimeToLocal(dateString) {
     this.sortOrderTo = UniqueConstants.Asc;
     this.sortColTo = 0;
     this.totalRecordsTo = 0;
+    this.startRow = 0;
+    this.endRow = 10;
     this.startRowTo = 0;
     this.endRowTo = 10;
     this.recordsPerPageTo = 10;
