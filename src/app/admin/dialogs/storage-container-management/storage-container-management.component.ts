@@ -1,12 +1,12 @@
 import { Component, ElementRef, Inject, OnInit, ViewChild } from '@angular/core';
-import { MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
-import { ConfirmationDialogComponent } from '../confirmation-dialog/confirmation-dialog.component';
-import { MatSelect } from '@angular/material/select';
-import { IAdminApiService } from 'src/app/common/services/admin-api/admin-api-interface';
-import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.service';
-import { GlobalService } from 'src/app/common/services/global.service';
-import { ToasterTitle, ToasterType } from 'src/app/common/constants/strings.constants';
-import { HttpStatusCode } from '@angular/common/http';
+import {MAT_DIALOG_DATA, MatDialog} from '@angular/material/dialog';
+import {ConfirmationDialogComponent} from '../confirmation-dialog/confirmation-dialog.component';
+import {MatSelect} from '@angular/material/select';
+import {IAdminApiService} from 'src/app/common/services/admin-api/admin-api-interface';
+import {AdminApiService} from 'src/app/common/services/admin-api/admin-api.service';
+import {GlobalService} from 'src/app/common/services/global.service';
+import {ToasterTitle, ToasterType} from 'src/app/common/constants/strings.constants';
+import {HttpStatusCode} from '@angular/common/http';
 import { BinCellLayout, CarouselZone, ContainerTypes, InventoryMap, StorageContainerLayout, ValidationErrorCodes } from 'src/app/common/Model/storage-container-management';
 
 @Component({
@@ -25,7 +25,7 @@ export class StorageContainerManagementModalComponent implements OnInit {
   get inventoryMapRecords(): { count: number; label: string } {
     const count = this.scm.numberOfCells;
     const label = count === 1 ? 'record' : 'records';
-    return { count, label };
+    return {count, label};
   }
   carouselZones: CarouselZone[] = [];
   tableMatrix: string[][] = [];
@@ -36,7 +36,7 @@ export class StorageContainerManagementModalComponent implements OnInit {
 
   @ViewChild('zone') zoneSelect!: MatSelect;
   @ViewChild('containerTypeDropdown') containerTypeSelect!: MatSelect;
-  @ViewChild('storageContainer', { static: false }) storageContainer!: ElementRef;
+  @ViewChild('storageContainer', {static: false}) storageContainer!: ElementRef;
 
 
   public iAdminApiService: IAdminApiService;
@@ -77,7 +77,7 @@ export class StorageContainerManagementModalComponent implements OnInit {
     if (res?.status == HttpStatusCode.Ok) {
       if (res?.body?.length > 0) {
         res?.body?.forEach(element => {
-          this.containerTypes.push({ id: element.resource.id, name: element.resource.description });
+          this.containerTypes.push({id: element.resource.id, name: element.resource.description});
         });
       }
     }
@@ -91,16 +91,15 @@ export class StorageContainerManagementModalComponent implements OnInit {
     this.tableMatrix = [];
     this.scm.containerType = 0;
     if (this.scm.tray === "") return;
-    let res = await this.iAdminApiService.validateScannedContainer(this.scm.tray,this.scm.carouselZone.zone);
+    let res = await this.iAdminApiService.validateScannedContainer(this.scm.tray, this.scm.carouselZone.zone);
     if (res?.status == HttpStatusCode.Ok) {
       this.isExistingContainer = false;
 
       //TODO: Use HATEOS Link
       await this.getStorageContainerLayout();
-    }
-    else if (res?.error?.hasError) {
+    } else if (res?.error?.hasError) {
 
-      if(res?.error?.validationErrorCode.toString() === ValidationErrorCodes.NoLayoutAssignedToContainer){
+      if (res?.error?.validationErrorCode.toString() === ValidationErrorCodes.NoLayoutAssignedToContainer) {
         this.reassigningContainerWithoutLayout();
         return;
       }
@@ -111,7 +110,7 @@ export class StorageContainerManagementModalComponent implements OnInit {
     }
   }
 
-  async reassigningContainerWithoutLayout(){
+  async reassigningContainerWithoutLayout() {
     const clearDialogRef = this.dialog.open(ConfirmationDialogComponent, {
       width: '560px',
       data: {
@@ -137,9 +136,15 @@ export class StorageContainerManagementModalComponent implements OnInit {
 
   async getStorageContainerLayout() {
     if (!this.scm.tray) return;
-    let res = await this.iAdminApiService.getStorageContainerLayout(this.scm.tray,this.scm.carouselZone.zone);
+    let res = await this.iAdminApiService.getStorageContainerLayout(this.scm.tray, this.scm.carouselZone.zone);
     if (res?.status == HttpStatusCode.Ok) {
-      if (res?.body.resource == null) return;
+      if (res?.body.resource == null) {
+        this.scm.containerType = this.containerTypes[0].id;
+        await this.containerTypeChanged();
+        // @ts-ignore
+        window.document.getElementById('saveBtn').focus();
+        return;
+      }
       const clearDialogRef = this.dialog.open(ConfirmationDialogComponent, {
         width: '560px',
         data: {
@@ -176,16 +181,16 @@ export class StorageContainerManagementModalComponent implements OnInit {
     binCellLayouts.forEach(item => {
       const posList = this.extractPositions(item.commandString);
       posList.forEach(pos => {
-        positions.push({ row: pos[0], col: pos[1], binID: item.binID });
+        positions.push({row: pos[0], col: pos[1], binID: item.binID});
       });
     });
 
     const maxRows = Math.max(...positions.map(pos => pos.row));
     const maxCols = Math.max(...positions.map(pos => pos.col));
 
-    this.tableMatrix = Array.from({ length: maxRows }, () => Array(maxCols).fill(""));
+    this.tableMatrix = Array.from({length: maxRows}, () => Array(maxCols).fill(""));
 
-    positions.forEach(({ row, col, binID }) => {
+    positions.forEach(({row, col, binID}) => {
       if (!this.tableMatrix[row - 1][col - 1]) {
         this.tableMatrix[row - 1][col - 1] = binID;
       }
@@ -244,7 +249,7 @@ export class StorageContainerManagementModalComponent implements OnInit {
       if (res == "Yes") {
         await this.addInventoryMapRecord();
       }
-      if(this.scm.carouselZone){
+      if (this.scm.carouselZone) {
         this.storageContainer.nativeElement.focus();
       }
     });
@@ -265,7 +270,7 @@ export class StorageContainerManagementModalComponent implements OnInit {
       if (res == "Yes") {
         await this.updateStorageContainerLayout();
       }
-      if(this.scm.carouselZone){
+      if (this.scm.carouselZone) {
         this.storageContainer.nativeElement.focus();
       }
     });
@@ -297,18 +302,18 @@ export class StorageContainerManagementModalComponent implements OnInit {
       containerType: ['carouselZone', 'tray'],
       save: ['carouselZone', 'tray', 'containerType'],
     };
-    
+
     const requiredFields = dependencies[field] || [];
 
     return requiredFields.some(dep => {
-      const value = dep === 'carouselZone' ? this.scm.carouselZone?.zone : this.scm[dep]; 
+      const value = dep === 'carouselZone' ? this.scm.carouselZone?.zone : this.scm[dep];
       return !value || value === 0 || value === '';
     });
 
-    
+
   }
 
-  async addInventoryMapRecord(){
+  async addInventoryMapRecord() {
     let inventoryMap: InventoryMap = new InventoryMap();
     inventoryMap.location = this.scm.carouselZone.zoneName;
     inventoryMap.zone = this.scm.carouselZone.zone;
@@ -327,7 +332,7 @@ export class StorageContainerManagementModalComponent implements OnInit {
     }
   }
 
-  clearAll(){
+  clearAll() {
     this.scm.carouselZone = new CarouselZone();
     if (this.carouselZones.length == 1) {
       this.scm.carouselZone = this.carouselZones[0];
