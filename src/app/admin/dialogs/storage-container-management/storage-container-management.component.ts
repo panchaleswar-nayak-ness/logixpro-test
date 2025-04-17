@@ -318,8 +318,8 @@ export class StorageContainerManagementModalComponent implements OnInit {
     inventoryMap.location = this.scm.carouselZone.zoneName;
     inventoryMap.zone = this.scm.carouselZone.zone;
     inventoryMap.row = this.scm.tray;
-    inventoryMap.shelf = "01";
-    inventoryMap.carousel = "1";
+    inventoryMap.shelf = "";
+    inventoryMap.carousel = "0";
     inventoryMap.cell = "F";
     inventoryMap.velocity = "1";
     inventoryMap.altLight = 1;
