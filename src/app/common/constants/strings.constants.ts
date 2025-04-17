@@ -110,7 +110,8 @@ export const ToasterTitle = {
     NoRows: 'No Rows',
     BatchFilled: 'Batch is Filled.',
     Update: 'Update!',
-    Info:'Info!'
+    Info:'Info!',
+    InvalidTote: 'Invalid Tote'
 }
 
 export const ConfirmationHeadings = {
@@ -195,6 +196,7 @@ export const ToasterMessages = {
     ZoneLocationRequired: 'Zone and Location need to be set via the dropdown in order to save.',
     WarehouseSensitiveWarning: 'The selected item is warehouse sensitive. Please set a warehouse to continue.',
     DateSensitiveWarning: 'Item is date sensitive. Please set date sensitive before saving.',
+    ToteIsInUse:"This tote is in use and assigned to an open order."
 }
 
 
