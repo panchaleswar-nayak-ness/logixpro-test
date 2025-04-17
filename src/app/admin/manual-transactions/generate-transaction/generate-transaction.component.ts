@@ -744,8 +744,7 @@ export class GenerateTransactionComponent implements OnInit {
   }
 
   onFieldValuesChanged(fieldValues: any) {
-    this.itemNumber = fieldValues.itemNumber;
-    this.wareHouse = fieldValues.wareHouse;
+    this.itemNumber = fieldValues.itemNumber;    
     this.supplierID = fieldValues.supplierID;
     this.expDate = fieldValues.expDate;
     this.revision = fieldValues.revision;
