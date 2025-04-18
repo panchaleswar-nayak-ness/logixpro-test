@@ -351,11 +351,11 @@ export class MoveItemsComponent implements OnInit {
   handlePageEvent(e: PageEvent) {
     
     this.pageEvent = e;
-    this.startRow = e.pageSize * e.pageIndex;
-    // this.endRow = e.pageSize
-  //   if (e.pageSize !== undefined) {
-  //     this.endRow = e.pageSize;
-  // }
+    if (typeof e.pageSize === 'number' && typeof e.pageIndex === 'number') {
+      this.startRow = e.pageSize * e.pageIndex;
+      } else {
+      this.startRow = 0;
+      }
   this.endRow = e.pageSize * e.pageIndex + e.pageSize;
     this.recordsPerPage = e.pageSize;
     this.getMoveItemList(StringConditions.MoveFrom);
@@ -861,6 +861,7 @@ formatDateTimeToLocal(dateString) {
 
   resetFromFilters() {
     this.startRow = 0;
+    this.endRow = 10;
   }
 
   resetToFilters() {
