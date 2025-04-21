@@ -84,7 +84,7 @@ export class PickToteInductionComponent
   splitToggle: boolean = false;
   transactionQty: number = 0;
   startZone: string = '';	
-
+  pickToteSuppressInfoMessages: boolean;
   userData : UserSession;
   // this is the global filteration object used to refresh and select various filters on the tote induction screen
   // this will be passed to the respective api for loading data in tables based on induction type currently selected
@@ -159,7 +159,7 @@ export class PickToteInductionComponent
 
       if (piResponse.data && piResponse.isExecuted) {
         const values = piResponse.data.imPreference;
-
+        this.pickToteSuppressInfoMessages=values.pickToteSuppressInfoMessages;
         this.selectedZoneGrouping = this.zoneGroupingsList.find(
           (x) => x.ZoneGroup === values.defaultZoneGroup
         );
@@ -525,21 +525,23 @@ export class PickToteInductionComponent
         catchError((errResponse) => {
           this.transactionQty = 0;
           // Handle errors
-          // if(errResponse.error) {
-          //   if (errResponse.error.status === 400) {
-          //     this.global.ShowToastr(
-          //       ToasterType.Error,
-          //       errResponse.error.responseMessage,
-          //       ToasterTitle.Error
-          //     );
-          //   } else {
-          //     this.global.ShowToastr(
-          //       ToasterType.Error,
-          //       errResponse.error.responseMessage,
-          //       ToasterTitle.Error
-          //     );
-          //   }
-          // }
+          if(errResponse.error) {
+            if (errResponse.error.statusCode === 400 ) {
+              if(this.pickToteSuppressInfoMessages){
+                this.global.ShowToastr(
+                  ToasterType.Error,
+                  errResponse.error.responseMessage,
+                  ToasterTitle.Error
+                );
+              }
+            } else {
+              this.global.ShowToastr(
+                ToasterType.Error,
+                errResponse.error.responseMessage,
+                ToasterTitle.Error
+              );
+            }
+          }
           return throwError(errResponse);
         })
       )
@@ -552,13 +554,13 @@ export class PickToteInductionComponent
             this.toteIdInput.nativeElement.focus();
           });
         } 
-        // else {
-        //   this.global.ShowToastr(
-        //     ToasterType.Error,
-        //     innerResponse.responseMessage,
-        //     ToasterTitle.Error
-        //   );
-        // }
+        else {
+          this.global.ShowToastr(
+            ToasterType.Error,
+            innerResponse.responseMessage,
+            ToasterTitle.Error
+          );
+        }
       });
     }
   }
@@ -574,19 +576,21 @@ export class PickToteInductionComponent
       .pipe(
         catchError((errResponse) => {
           // Handle errors
-          // if (errResponse.error.status === 400) {
-          //   this.global.ShowToastr(
-          //     ToasterType.Error,
-          //     errResponse.error.responseMessage,
-          //     ToasterTitle.Error
-          //   );
-          // } else {
-          //   this.global.ShowToastr(
-          //     ToasterType.Error,
-          //     errResponse.error.responseMessage,
-          //     ToasterTitle.Error
-          //   );
-          // }
+          if (errResponse.error.statusCode === 400) {
+            if(this.pickToteSuppressInfoMessages){
+              this.global.ShowToastr(
+                ToasterType.Error,
+                errResponse.error.responseMessage,
+                ToasterTitle.Error
+              );
+            }
+          } else {
+            this.global.ShowToastr(
+              ToasterType.Error,
+              errResponse.error.responseMessage,
+              ToasterTitle.Error
+            );
+          }
           return throwError(errResponse);
         })
       )
@@ -607,20 +611,21 @@ export class PickToteInductionComponent
             this.getTransactionQty();
           }
           this.refreshOrders();
-
-          // this.global.ShowToastr(
-          //   ToasterType.Success,
-          //   innerResponse.responseMessage,
-          //   ToasterTitle.Success
-          // );
+          if(this.pickToteSuppressInfoMessages){
+            this.global.ShowToastr(
+              ToasterType.Success,
+              innerResponse.responseMessage,
+              ToasterTitle.Success
+            );
+          }
         } 
-        // else {
-        //   this.global.ShowToastr(
-        //     ToasterType.Error,
-        //     innerResponse.responseMessage,
-        //     ToasterTitle.Error
-        //   );
-        // }
+        else {
+          this.global.ShowToastr(
+            ToasterType.Error,
+            innerResponse.responseMessage,
+            ToasterTitle.Error
+          );
+        }
       });
   }
 }

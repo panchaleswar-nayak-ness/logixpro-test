@@ -142,12 +142,14 @@
       [transactionQtyRecieved]="transactionQty"
       [zones]="zoneList"
       (someEvent)="clearNonSuperBatchFilters($event)"
+      [pickToteSuppressInfoMessages]="pickToteSuppressInfoMessages"
     ></app-non-super-batch-orders>
   </mat-tab>
   <mat-tab label="Super Batch Orders">
     <app-super-batch-orders
       [zones]="zoneList"
       (someEvent)="clearSuperBatchFilters($event)"
+      [pickToteSuppressInfoMessages]="pickToteSuppressInfoMessages"
     ></app-super-batch-orders>
   </mat-tab>
 </mat-tab-group>

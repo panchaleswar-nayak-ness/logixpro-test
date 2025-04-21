@@ -150,6 +150,7 @@ UserField10:string = this.fieldMappings.userField10;
       excludeOrderInReprocess: new FormControl(false, Validators.compose([])),
       maximumQtyPerTote: new FormControl(0, Validators.compose([])),
       defaultZoneGroup: new FormControl('', Validators.compose([])),
+      pickToteSuppressInfoMessages: new FormControl(0, Validators.compose([])),
     });
   }
 
@@ -397,6 +398,7 @@ UserField10:string = this.fieldMappings.userField10;
             excludeOrderInReprocess: values.excludeOrdersinReprocess,
             maximumQtyPerTote: values.maximumQuantityperTote,
             defaultZoneGroup: values.defaultZoneGroup,
+            pickToteSuppressInfoMessages:values.pickToteSuppressInfoMessages
           });
         } else {
           this.global.ShowToastr(
@@ -490,6 +492,7 @@ UserField10:string = this.fieldMappings.userField10;
           ExcludeOrdersinReprocess: values.excludeOrderInReprocess,
           MaximumQuantityperTote: values.maximumQtyPerTote,
           DefaultZoneGroup: values.defaultZoneGroup,
+          PickToteSuppressInfoMessages:values.pickToteSuppressInfoMessages
         };
 
         endPoint = ApiEndpoints.IMSytemSettings;

@@ -1020,7 +1020,16 @@
               </mat-form-field>
             </div>
           </div>
-
+          <div class="row mb-3">
+            <div class="col-4 d-flex justify-content-between mb-2">
+              Display Toast Messages 
+              <mat-slide-toggle
+                (change)="updatePreferences(1)"
+                formControlName="pickToteSuppressInfoMessages"
+                color="primary"
+              ></mat-slide-toggle>
+            </div>
+          </div>
           <div class="row mb-3">
             <div class="col-md-4">
               <button
@@ -1033,7 +1042,6 @@
               </button>
             </div>
           </div>
-
           <div class="row">
             <div class="col-md-4">
               <button
