@@ -218,13 +218,13 @@
                         </div>
                         <div class="col-xl-3">
                             <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline">
-                                <mat-label>Carousel</mat-label>
+                                <mat-label>{{this.fieldMappings?.carousel || this.placeholders.carouselFallback}}</mat-label>
                                 <input formControlName="carousel" matInput type="text" value="Label">
                             </mat-form-field>
                         </div>
                         <div class="col-xl-3">
                             <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline">
-                                <mat-label>Row</mat-label>
+                                <mat-label>{{this.fieldMappings?.row || this.placeholders.rowFallback}}</mat-label>
                                 <input formControlName="row" matInput type="text" value="Label">
                             </mat-form-field>
                         </div>
@@ -233,13 +233,13 @@
                     <div class="row">
                         <div class="col-xl-6">
                             <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline">
-                                <mat-label>Shelf</mat-label>
+                                <mat-label>{{this.fieldMappings?.shelf || this.placeholders.shelfFallback }}</mat-label>
                                 <input formControlName="shelf" matInput type="text" value="Label">
                             </mat-form-field>
                         </div>
                         <div class="col-xl-6">
                             <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline">
-                                <mat-label>Bin</mat-label>
+                                <mat-label>{{this.fieldMappings?.bin || this.placeholders.binFallback}}</mat-label>
                                 <input formControlName="bin" matInput type="text" value="">
                             </mat-form-field>
                         </div>

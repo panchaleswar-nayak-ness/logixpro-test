@@ -249,7 +249,7 @@
               <mat-label>Primary Zone</mat-label>
               <mat-select formControlName="primaryPickZone" class="employees-action">
                 <mat-option value=""></mat-option>
-                <mat-option value="carousel">Carousel</mat-option>
+                <mat-option value="carousel">{{this.fieldMappings?.carousel || this.placeholders.carouselFallback}}</mat-option>
                 <mat-option value="bulk">Bulk</mat-option>
                 <mat-option value="carton flow">Carton Flow</mat-option>
               </mat-select>
@@ -318,7 +318,7 @@
               <mat-label>Secondary zone</mat-label>
               <mat-select formControlName="secondaryPickZone" class="employees-action">
                 <mat-option value=""></mat-option>
-                <mat-option value="carousel">Carousel</mat-option>
+                <mat-option value="carousel">{{this.fieldMappings?.carousel || this.placeholders.carouselFallback}}</mat-option>
                 <mat-option value="bulk">Bulk</mat-option>
                 <mat-option value="carton flow">Carton Flow</mat-option>
               </mat-select>
@@ -367,27 +367,27 @@
         </div>
         <div class="col-xl-3">
           <mat-form-field class="custom-form-field w-100 mb-2 mat-form-field-disabled" appearance="outline">
-            <mat-label>Carousel</mat-label>
+            <mat-label>{{this.fieldMappings?.carousel || this.placeholders.carouselFallback}}</mat-label>
             <input formControlName="carousel" (keydown.shift.enter)="$event.preventDefault()" matInput type="text"
               readonly>
           </mat-form-field>
         </div>
         <div class="col-xl-3">
           <mat-form-field class="custom-form-field w-100 mb-2 mat-form-field-disabled" appearance="outline">
-            <mat-label>Row</mat-label>
+            <mat-label>{{this.fieldMappings?.row || this.placeholders.rowFallback}}</mat-label>
             <input formControlName="row" (keydown.shift.enter)="$event.preventDefault()" matInput type="text" readonly>
           </mat-form-field>
         </div>
         <div class="col-xl-3">
           <mat-form-field class="custom-form-field w-100 mb-2 mat-form-field-disabled" appearance="outline">
-            <mat-label>Shelf</mat-label>
+            <mat-label>{{this.fieldMappings?.shelf || this.placeholders.shelfFallback }}</mat-label>
             <input formControlName="shelf" (keydown.shift.enter)="$event.preventDefault()" matInput type="text"
               readonly>
           </mat-form-field>
         </div>
         <div class="col-xl-3">
           <mat-form-field class="custom-form-field w-100 mb-2 mat-form-field-disabled" appearance="outline">
-            <mat-label>Bin</mat-label>
+            <mat-label>{{this.fieldMappings?.bin || this.placeholders.binFallback}}</mat-label>
             <input formControlName="bin" (keydown.shift.enter)="$event.preventDefault()" matInput type="text" readonly>
           </mat-form-field>
         </div>
