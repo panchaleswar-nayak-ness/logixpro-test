@@ -62,7 +62,8 @@ export class AuthGuardGuard implements CanActivate {
       if (Storagepermission?.length) {
         this.ConfigJson = Storagepermission;
       } else {
-        this.http.get('assets/json/GlobalConfigrations.json').subscribe((res: any) => {
+        const url = `assets/json/GlobalConfigrations.json?v=${new Date().getTime()}`;
+        this.http.get(url).subscribe((res: any) => {
           if (res) {
             this.ConfigJson = res;
             localStorage.setItem('Permission', JSON.stringify(this.ConfigJson));
