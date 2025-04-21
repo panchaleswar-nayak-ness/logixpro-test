@@ -35,8 +35,10 @@ export class MoveLocationsComponent {
   @Input() recordsFiltered : number = 0;
   @Input() moveToDatasource;
   @Input() recordsFilteredTo : number = 0;
-  @ViewChild(MatPaginator) paginator: MatPaginator;
-  @Input() paginatorTo : any;
+
+  @ViewChild('paginatorMoveFrom') paginator: MatPaginator;
+  @ViewChild('paginatorMoveTo') paginatorTo: MatPaginator;
+
   @Input() paginators : any;
 
   @Input() moveFromFilter : string;
@@ -82,6 +84,10 @@ export class MoveLocationsComponent {
   ngOnChanges(changes: SimpleChanges) {
     if (changes['moveFromFilter']) {
       this.paginator.pageIndex = 0;
+    }
+
+    if (changes['moveToFilter']) {
+      this.paginatorTo.pageIndex = 0;
     }
   }
   

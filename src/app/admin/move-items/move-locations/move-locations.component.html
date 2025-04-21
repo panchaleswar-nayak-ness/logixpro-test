@@ -213,7 +213,7 @@
                 <div class="table-pagination d-flex justify-content-start"
                     *ngIf="  displayedColumns && dataSource">
                     <mat-paginator [length]="recordsFiltered" [pageSize]="10" showFirstLastButtons [pageSizeOptions]="[10, 20, 100]" mat-paginator-range-label="customLabel"
-                        #paginator (page)="handlePageEvent($event)"></mat-paginator>
+                        #paginatorMoveFrom (page)="handlePageEvent($event)"></mat-paginator>
                 </div>
 
             </mat-tab>
@@ -369,7 +369,7 @@
                 <div class="table-pagination d-flex justify-content-start"
                 *ngIf="  displayedColumns && moveToDatasource">
                 <mat-paginator [length]="recordsFilteredTo" [pageSize]="10" showFirstLastButtons [pageSizeOptions]="[10, 20, 100]" mat-paginator-range-label="customLabelTo"
-                    #paginatorTo (page)="handlePageEventTo($event)"></mat-paginator>
+                    #paginatorMoveTo (page)="handlePageEventTo($event)"></mat-paginator>
 
 
             </div>

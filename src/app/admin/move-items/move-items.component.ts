@@ -363,7 +363,13 @@ export class MoveItemsComponent implements OnInit {
 
   handlePageEventTo(e: PageEvent) {
     this.pageEventTo = e;
-    this.startRowTo = e.pageSize * e.pageIndex;
+    if (typeof e.pageSize === 'number' && typeof e.pageIndex === 'number') {
+      this.startRowTo = e.pageSize * e.pageIndex;
+      } else {
+      this.startRowTo = 0;
+      }
+
+    // this.startRowTo = e.pageSize * e.pageIndex;
     this.endRowTo = e.pageSize * e.pageIndex + e.pageSize;
     this.recordsPerPageTo = e.pageSize;
     this.getMoveItemList(StringConditions.MoveTo, true);
@@ -813,7 +819,8 @@ formatDateTimeToLocal(dateString) {
     if (this.tableType === StringConditions.MoveFrom) this.moveFromFilter = filter;
     else if(this.tableType === StringConditions.MoveTo) this.moveToFilter = filter;
     this.resetFromFilters();
-   // this.resetPaginationFrom();
+    this.resetToFilters();
+    // this.resetPaginationFrom();
     this.getMoveItemList(this.tableType);  
     this.isActiveTrigger = false;
   }
@@ -866,6 +873,7 @@ formatDateTimeToLocal(dateString) {
 
   resetToFilters() {
     this.startRowTo = 0;
+    this.endRowTo = 10;
     this.viewModeTo = ResponseStrings.AllCaps;
   }
 
