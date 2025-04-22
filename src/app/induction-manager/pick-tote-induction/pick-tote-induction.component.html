@@ -81,7 +81,7 @@
                   #orderNumberInput
                   matInput
                   type="text"
-                  (input)="orderNumber = orderNumber.split(' ').join('').split('\t').join('')"
+                  (input)="orderNumber = orderNumber.trim()"
                   [(ngModel)]="orderNumber"
                   (keyup.enter)="getTransactionQty()"
                   (blur)="getTransactionQty()"
@@ -97,7 +97,7 @@
                 <input
                   #toteIdInput
                   matInput
-                  (input)="toteId = toteId.split(' ').join('').split('\t').join('')"
+                  (input)="toteId = toteId.trim()"
                   type="text"
                   value=""
                   [(ngModel)]="toteId"
