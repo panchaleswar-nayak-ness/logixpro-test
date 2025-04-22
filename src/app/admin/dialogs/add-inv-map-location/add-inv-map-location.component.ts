@@ -291,6 +291,16 @@ isButtonDisabled: boolean = true;
 
     this.searchItemNumbers = this.getDetailInventoryMapData.itemNumber;
 
+    this.addInvMapLocation.get('zone')?.valueChanges.subscribe(zoneValue => {
+      // When the zone field is cleared, reset the filtered options
+      if (!zoneValue) {
+          this.filteredOptions = this.addInvMapLocation.controls[TableConstant.Location].valueChanges.pipe(
+              startWith(''),
+              map(value => this.filterLocalZoneList('')) // Pass empty string to reset the filter
+          );
+      }
+  });
+
     this.iAdminApiService.getLocZTypeInvMap({}).subscribe((res) => {
       if (res.isExecuted && res.data) {
         this.locZoneList = res.data;
@@ -802,12 +812,30 @@ onSubmit(form: FormGroup<InventoryMapFormData>) {
   private filterLocalZoneList(value: any): string[] {
     const filterValue = value.toLowerCase();
 
-    return this.locZoneList.filter(option => option.locationName.toLowerCase().includes(filterValue));
+    if (!this.addInvMapLocation.controls['zone'].value) {
+      return this.locZoneList;
   }
-  loadZones(zone: any) {
-    this.zoneList = this.locZoneList.filter(option => option.locationName.includes(zone.option.value));
+
+  // Filter based on locationName as before
+  return this.locZoneList.filter(option => 
+      option.locationName.toLowerCase().includes(filterValue)
+  );
+  }
+
+  loadLocationZones(type:any,LocationZoneData: any) {
+
+    if (type === 'Location') {
+    this.zoneList = this.locZoneList.filter(option => option.locationName.includes(LocationZoneData.option.value));
     this.addInvMapLocation.controls[TableConstant.zone].setValue(this.zoneList[0]?.zone);
     this.updateItemNumber(TableConstant.zone, this.zoneList[0]?.zone);
+    }
+
+    else if (type ==='Zone'){
+      this.zoneList = this.locZoneList.filter(option => option.zone.includes(LocationZoneData.option.value));
+      this.addInvMapLocation.controls[TableConstant.Location].setValue(this.zoneList[0]?.locationName);
+    this.updateItemNumber(TableConstant.Location, this.zoneList[0]?.locationName);
+    }
+
   }
 
   zoneChecker(zone, location) { //To check if the zone and location are selected from dropdown.
@@ -858,6 +886,9 @@ onSubmit(form: FormGroup<InventoryMapFormData>) {
 
   updateItemNumber(col?: string, val?: any) {
 
+    if (col === TableConstant.Location) {
+      this.location_name = val?.toString();
+    }
     if (col === TableConstant.zone) {
       this.zone = val?.toString();
     }

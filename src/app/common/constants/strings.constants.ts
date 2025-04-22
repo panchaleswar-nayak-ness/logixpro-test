@@ -200,7 +200,8 @@ export const ToasterMessages = {
     ZoneLocationRequired: 'Zone and Location need to be set via the dropdown in order to save.',
     WarehouseSensitiveWarning: 'The selected item is warehouse sensitive. Please set a warehouse to continue.',
     DateSensitiveWarning: 'Item is date sensitive. Please set date sensitive before saving.',
-    ToteIsInUse:"This tote is in use and assigned to an open order."
+    ToteIsInUse:"This tote is in use and assigned to an open order.",
+    DuplicateLocation:"Location name already exists."
 }
 
 

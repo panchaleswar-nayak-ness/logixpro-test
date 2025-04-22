@@ -8,7 +8,7 @@ import { ApiFuntions } from 'src/app/common/services/ApiFuntions';
 import { IAdminApiService } from 'src/app/common/services/admin-api/admin-api-interface';
 import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.service';
 import { GlobalService } from 'src/app/common/services/global.service';
-import { StringConditions, ToasterTitle, ToasterType ,DialogConstants,UniqueConstants,Style,ColumnDef} from 'src/app/common/constants/strings.constants';
+import { StringConditions, ToasterTitle,ToasterMessages, ToasterType ,DialogConstants,UniqueConstants,Style,ColumnDef} from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-location-name',
@@ -76,7 +76,8 @@ export class LocationNameComponent implements OnInit {
       if (res === StringConditions.Yes){
 
         let payload = { 
-          "name": ele.currentVal,
+          "Location": ele.currentVal,
+          
         }
         this.iAdminApiService.DeleteLocationNames(payload).subscribe((res=>{ 
           if(res.isExecuted){
@@ -102,6 +103,21 @@ export class LocationNameComponent implements OnInit {
   }
 
   saveLocation(ele){
+    const newName = ele.currentVal.trim().toLowerCase();
+
+    const isDuplicate = this.locationNames.data.some(item =>
+      item !== ele && item.currentVal.trim().toLowerCase() === newName
+    );
+  
+    if (isDuplicate) {
+     this.global.ShowToastr(
+                 ToasterType.Error,
+                 ToasterMessages.DuplicateLocation,
+                 ToasterTitle.Error
+               );
+      return;
+    }
+
     let payload = { 
       "oldName":ele.oldVal,
       "newName":ele.currentVal

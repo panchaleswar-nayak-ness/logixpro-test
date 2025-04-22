@@ -16,6 +16,7 @@ import { ColumnAlias } from 'src/app/common/types/CommonTypes';
   styleUrls: ['./sp-location-zones.component.scss'],
 })
 export class SpLocationZonesComponent implements OnInit {
+  prevLocation : string;
   fieldMappings : ColumnAlias = JSON.parse(localStorage.getItem('fieldMappings') ?? '{}');
 
   toggleSwitches = [
@@ -118,7 +119,7 @@ export class SpLocationZonesComponent implements OnInit {
   }
 
   zoneChange(zone: any, check, type?) {
-  
+    
     if (!check) {
       if (type === zoneType.carousel) {
         if (zone.carousel) {
@@ -207,7 +208,12 @@ export class SpLocationZonesComponent implements OnInit {
         locationZone: updatedObj,
       };
 
-      this.iAdminApiService.LocationZoneSave(payload).subscribe((res) => { });
+      this.iAdminApiService.LocationZoneSave(payload).subscribe((res) => {
+        if (!res.isExecuted) {
+          zone.locationName = this.prevLocation;
+          this.global.ShowToastr(ToasterType.Error, res.responseMessage, ToasterTitle.Error);
+        }
+       });
     }
     if (type == 'kanbanZone' || type=='allocable'){
       this.conflictCheck(zone);
@@ -241,6 +247,7 @@ export class SpLocationZonesComponent implements OnInit {
   }
 
   locationName(item: any) {
+    this.prevLocation=item.locationName;
     let dialogRef: any = this.global.OpenDialog(LocationNameComponent, {
       height: 'auto',
       width: Style.w786px,
