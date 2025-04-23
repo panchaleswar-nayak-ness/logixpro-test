@@ -201,7 +201,8 @@ export const ToasterMessages = {
     WarehouseSensitiveWarning: 'The selected item is warehouse sensitive. Please set a warehouse to continue.',
     DateSensitiveWarning: 'Item is date sensitive. Please set date sensitive before saving.',
     ToteIsInUse:"This tote is in use and assigned to an open order.",
-    DuplicateLocation:"Location name already exists."
+    DuplicateLocation:"Location name already exists.",
+    SessionTimeOut:"Session timed out, you have been logged off"
 }
 
 
