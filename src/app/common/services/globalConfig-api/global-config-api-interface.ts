@@ -3,6 +3,7 @@ export interface IGlobalConfigApi
     workstationdefaultapp(payload: any); 
     GlobalMenu(paylaod: any); 
     AppLicense();
+    DeleteAppLicense(appName: string);
     getWorkstationapp (paylaod: any);
     workstationapp (paylaod: any);
     WorkStationDelete();

@@ -134,7 +134,8 @@ export const ConfirmationMessages = {
     EventLogDeleteWithRange: 'Are you sure you want to delete all Event Log entries with specified date, message, event location and name stamp filters?',
     ClickOkToUpdateLocation: 'You will now update both locations to complete the current move',
     ConfirmationToClearAllInventoryMap : "Click OK to clear all Inventory Map records matching Location Number (Zone + Carousal + Row + Shelf + Bin) Criteria!",
-    ClearWholeLocationPutAwayQuantity:"Clear Whole Location cannot proceed because the Allocated Pick or Allocated Put Away quantity is greater than zero."
+    ClearWholeLocationPutAwayQuantity:"Clear Whole Location cannot proceed because the Allocated Pick or Allocated Put Away quantity is greater than zero.",
+    DeleteLicenseConfirmation:"Are you sure you wish to delete this License?"
 }
 
 export const ToasterMessages = {
@@ -204,6 +205,7 @@ export const ToasterMessages = {
     DuplicateLocation:"Location name already exists.",
     SessionTimeOut:"Session timed out, you have been logged off",
     LocationDeleted: 'Location deleted successfully',
+    DeleteFailed:"Delete Failed",
     FieldEmptyDefault:"Field cannot be empty. Default value has been applied."
 }
 
@@ -661,3 +663,13 @@ export const AccessLevel = {
     Administrator: "administrator",
     StaffMember: "staff_member"
 }
+
+export const AppLicensingDisplayedColumns = {
+    AppName: 'appname',
+    DisplayName: 'displayname',
+    License: 'license',
+    NumLicense: 'numlicense',
+    Status: 'status',
+    AppURL: 'appurl',
+    Save: 'save',
+};

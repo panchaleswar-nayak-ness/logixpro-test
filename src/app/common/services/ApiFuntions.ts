@@ -98,6 +98,10 @@ export class ApiFuntions {
     return this.ApiBase.Get('/GlobalConfig/AppLicense');
   }
 
+  public DeleteAppLicense(appName: string) {
+    return this.ApiBase.Delete(`/GlobalConfig/AppLicense/${appName}`);
+  }
+
   public getWorkstationapp(body: any) {
     return this.ApiBase.Get('/GlobalConfig/workstationapp', body);
   }

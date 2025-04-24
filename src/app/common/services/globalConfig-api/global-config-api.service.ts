@@ -38,6 +38,10 @@ export class GlobalConfigApiService implements IGlobalConfigApi {
     return this.Api.AppLicense();
   }
 
+  DeleteAppLicense(appName: string){
+    return this.Api.DeleteAppLicense(appName);
+  }
+
   getWorkstationapp(payloadParams : any) {
     this.userData = this.authService.userData();
 		const payload = {
