@@ -67,6 +67,32 @@ export interface ColumnAlias {
     carousel: string;
 }
 
+export interface FieldMappingAlias {
+    itemNumber: string;
+    unitOfMeasure: string;
+    userField1: string;
+    userField2: string;
+    userField3: string;
+    userField4: string;
+    userField5: string;
+    userField6: string;
+    userField7: string;
+    userField8: string;
+    userField9: string;
+    userField10: string;
+    bin: string;
+    shelf: string;
+    row: string;
+    carousel: string;
+    routeID: string;
+    statusDate: string;
+    consolidationStatus: string;
+    routeIDStatus: string;
+    consolidationProgress: string;
+    routeIDStatusCountCard: string;
+    consolidationStatusCard: string;
+}
+
 export interface OSFieldFilterNames {
     UserField1: string;
     UserField2: string;

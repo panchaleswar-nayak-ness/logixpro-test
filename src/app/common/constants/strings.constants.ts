@@ -203,7 +203,8 @@ export const ToasterMessages = {
     ToteIsInUse:"This tote is in use and assigned to an open order.",
     DuplicateLocation:"Location name already exists.",
     SessionTimeOut:"Session timed out, you have been logged off",
-    LocationDeleted: 'Location deleted successfully'
+    LocationDeleted: 'Location deleted successfully',
+    FieldEmptyDefault:"Field cannot be empty. Default value has been applied."
 }
 
 
