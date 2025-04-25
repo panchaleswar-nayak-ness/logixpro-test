@@ -86,12 +86,12 @@ export interface FieldMappingAlias {
     shelf: string;
     row: string;
     carousel: string;
-    routeID: string;
+    routeId: string;
     statusDate: string;
     consolidationStatus: string;
-    routeIDStatus: string;
+    routeIdStatus: string;
     consolidationProgress: string;
-    routeIDStatusCountCard: string;
+    routeIdStatusCountCard: string;
     consolidationStatusCard: string;
 }
 

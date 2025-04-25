@@ -56,12 +56,12 @@ export class SpFieldNameMappingComponent implements OnInit {
       shelf: '',
       row: '',
       carousel: '',
-      routeID: '',
+      routeId: '',
       statusDate: '',
       consolidationStatus: '',
-      routeIDStatus: '',
+      routeIdStatus: '',
       consolidationProgress: '',
-      routeIDStatusCountCard: '',
+      routeIdStatusCountCard: '',
       consolidationStatusCard: ''
     }
   }
@@ -95,12 +95,12 @@ export class SpFieldNameMappingComponent implements OnInit {
       shelf: this.columns.shelf,
       row: this.columns.row,
       carousel: this.columns.carousel,
-      routeID: this.columns.routeID,
+      routeId: this.columns.routeId,
       statusDate: this.columns.statusDate,
       consolidationStatus: this.columns.consolidationStatus,
-      routeIDStatus: this.columns.routeIDStatus,
+      routeIdStatus: this.columns.routeIdStatus,
       consolidationProgress: this.columns.consolidationProgress,
-      routeIDStatusCountCard: this.columns.routeIDStatusCountCard,
+      routeIdStatusCountCard: this.columns.routeIdStatusCountCard,
       consolidationStatusCard: this.columns.consolidationStatusCard
     };
     
