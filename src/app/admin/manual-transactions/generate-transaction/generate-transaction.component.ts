@@ -386,41 +386,43 @@ export class GenerateTransactionComponent implements OnInit {
       );
       dialogRef.afterClosed().subscribe((res) => {
         if (res) {
-          let payload = {
-            deleteTransaction: type !== 'save',
-            transactionID: this.transactionID,
-          };
-
-          this.iAdminApiService
-            .PostTransaction(payload)
-            .subscribe((res: any) => {
-              if (res?.isExecuted) {
-                this.global.ShowToastr(
-                  ToasterType.Success,
-                  labels.alert.success,
-                  ToasterTitle.Success
-                );
-                this.updateTrans();
-                // this.clearFields();
-                if (type != 'save') {
-                  this.clearFields();
-                }
-                this.invMapID = '';
-                this.clearAfterPost()
-              } else {
-                this.global.ShowToastr(
-                  ToasterType.Error,
-                  res.responseMessage,
-                  ToasterTitle.Error
-                );
-                console.log('PostTransaction', res.responseMessage);
-                if (type != 'save') {
+          this.updateTrans(() => {
+            let payload = {
+              deleteTransaction: type !== 'save',
+              transactionID: this.transactionID,
+            };
+  
+            this.iAdminApiService
+              .PostTransaction(payload)
+              .subscribe((res: any) => {
+                if (res?.isExecuted) {
+                  this.global.ShowToastr(
+                    ToasterType.Success,
+                    labels.alert.success,
+                    ToasterTitle.Success
+                  );
+                  //this.updateTrans();
                   // this.clearFields();
+                  if (type != 'save') {
+                    this.clearFields();
+                  }
+                  this.invMapID = '';
+                  this.clearAfterPost()
+                } else {
+                  this.global.ShowToastr(
+                    ToasterType.Error,
+                    res.responseMessage,
+                    ToasterTitle.Error
+                  );
+                  console.log('PostTransaction', res.responseMessage);
+                  if (type != 'save') {
+                    // this.clearFields();
+                  }
+                  this.invMapID = '';
+                  this.clearAfterPost()
                 }
-                this.invMapID = '';
-                this.clearAfterPost()
-              }
-            });
+              });
+          })
         }
       });
     }
@@ -451,7 +453,7 @@ export class GenerateTransactionComponent implements OnInit {
     }
   }
 
-  updateTrans() {
+  updateTrans(afterSub : () => void) {
 
     let finalExpiryDate = new Date(this.expDate);
       if (this.isValidDate(finalExpiryDate)) {
@@ -492,7 +494,10 @@ export class GenerateTransactionComponent implements OnInit {
 
     this.iAdminApiService
       .UpdateTransaction(payload)
-      .subscribe((res: any) => {});
+      .subscribe(() => {
+        if (afterSub != null)
+          afterSub();
+      });
   }
   deleteTransaction() {
     const dialogRef: any = this.global.OpenDialog(
