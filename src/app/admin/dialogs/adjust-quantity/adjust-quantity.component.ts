@@ -143,7 +143,13 @@ export class AdjustQuantityComponent implements OnInit {
   }
   onSubmit(form: FormGroup) { 
 
-    if(form.valid){
+    if (form.valid) {
+      //Validates if adjustment quantity is above the allocated pick quantity
+      if (form.value.quantity < this.getAdjustQuantityData.quantityAllocatedPick) {
+        this.global.ShowToastr(ToasterType.Error, "Quantity must be greater than or equal to the Allocated Pick Quantity", ToasterTitle.Error);
+        return;
+      }
+
       this.iAdminApiService.updateItemQuantity(form.value).subscribe((res) => {
         if(res.isExecuted){
           this.global.ShowToastr(ToasterType.Success,res.responseMessage, ToasterTitle.Success); 
@@ -153,7 +159,6 @@ export class AdjustQuantityComponent implements OnInit {
           
           this.global.ShowToastr(ToasterType.Error, this.global.globalErrorMsg(), ToasterTitle.Error);
           console.log("updateItemQuantity",res.responseMessage);
-          
         }
       });
     }
