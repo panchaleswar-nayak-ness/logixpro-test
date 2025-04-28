@@ -135,7 +135,7 @@ export const ConfirmationMessages = {
     ClickOkToUpdateLocation: 'You will now update both locations to complete the current move',
     ConfirmationToClearAllInventoryMap : "Click OK to clear all Inventory Map records matching Location Number (Zone + Carousal + Row + Shelf + Bin) Criteria!",
     ClearWholeLocationPutAwayQuantity:"Clear Whole Location cannot proceed because the Allocated Pick or Allocated Put Away quantity is greater than zero.",
-    DeleteLicenseConfirmation:"Are you sure you wish to delete this License?"
+    DeleteLicenseConfirmation:"Are you sure you want to delete this License?"
 }
 
 export const ToasterMessages = {
