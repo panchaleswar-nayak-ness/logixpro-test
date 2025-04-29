@@ -24,13 +24,10 @@
                                     <!--   #location_name  -->
                                     <input placeholder="Location Name" aria-label="Location Name" matInput maxlength="50"
                                         formControlName="location" [matAutocomplete]="auto" (focus)="focusinmethod()" (focusout)="focusoutmethod()">
-                                    <mat-autocomplete class="br-14 otocompletestyle" autoActiveFirstOption #auto="matAutocomplete"
-                                        (optionSelected)="loadLocationZones('Location',$event)">
-
-
+                                    <mat-autocomplete class="br-14 otocompletestyle" autoActiveFirstOption #auto="matAutocomplete">
                                         <h6 class="card-header matAutoCompHeader stickyHeader"> <span class="locationStickyHeaderStyle"> Location</span> <span class="zoneStickyHeaderStyle">Zone</span></h6>
-                                        <mat-option class="" *ngFor="let option of filteredOptions | async"
-                                            [value]="option.locationName">
+                                        <mat-option class="" *ngFor="let option of filteredOptions | async; let i = index"
+                                            [value]="option.locationName" (onSelectionChange)="loadLocationZones(locationZoneType.Location,i,$event)">
                                             <div class="loc_option">
                                                 <span class="optionLocationNameStyle">{{option.locationName}}</span> <span class="optionZoneStyle">{{option.zone}}</span>
                                             </div>
@@ -78,12 +75,10 @@
                                     <mat-label>Zone</mat-label>
                                     <input  maxlength="2" placeholder="Zone" aria-label="Zone" matInput
                                         formControlName="zone" [matAutocomplete]="autoZone">
-                                    <mat-autocomplete autoActiveFirstOption #autoZone="matAutocomplete" class="br-14 otocompletestyle"
-                                    (optionSelected)="loadLocationZones('Zone',$event)">
-
+                                    <mat-autocomplete autoActiveFirstOption #autoZone="matAutocomplete" class="br-14 otocompletestyle">
                                         <h6 class="card-header matAutoCompHeader stickyHeader"><span class="zoneStickyHeaderStyle zone-padding">Zone</span> <span class="locationStickyHeaderStyle location-padding">Location</span></h6>
-                                        <mat-option *ngFor="let option of filteredOptions | async"
-                                            [value]="option.zone">
+                                        <mat-option *ngFor="let option of filteredOptions | async; let i = index"
+                                            [value]="option.zone"  (onSelectionChange)="loadLocationZones(locationZoneType.Zone,i,$event)">
                                             <div class="loc_option">
                                                 <span class="optionZoneStyle">{{option.zone}}  </span> <span class="optionLocationNameStyle">{{option.locationName}}</span>
                                             </div>

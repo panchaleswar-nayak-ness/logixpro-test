@@ -206,7 +206,8 @@ export const ToasterMessages = {
     SessionTimeOut:"Session timed out, you have been logged off",
     LocationDeleted: 'Location deleted successfully',
     DeleteFailed:"Delete Failed",
-    FieldEmptyDefault:"Field cannot be empty. Default value has been applied."
+    FieldEmptyDefault:"Field cannot be empty. Default value has been applied.",
+    ZoneAndLocationNameNeedToBeSet:" “Zone and Location Name need to be set via the Preferences - Location Zones screen in order to save”"
 }
 
 

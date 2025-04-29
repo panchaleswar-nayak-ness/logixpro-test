@@ -105,3 +105,8 @@ export enum KeyboardCodes {
     CLOSE_BRACKET = 221,
     SINGLE_QUOTE = 222,
 }
+
+export enum LocationZoneType {
+    Location = 'Location',
+    Zone = 'Zone'
+}

@@ -28,10 +28,12 @@ import { ICommonApi } from 'src/app/common/services/common-api/common-api-interf
 import { GlobalService } from 'src/app/common/services/global.service';
 import { Subject, debounceTime, distinctUntilChanged } from 'rxjs';
 import { FloatLabelType } from '@angular/material/form-field';
-import { DialogConstants, ToasterTitle, ToasterType ,zoneType,ColumnDef,Column,TableConstant,UniqueConstants,StringConditions, ConfirmationMessages} from 'src/app/common/constants/strings.constants';
+import { DialogConstants, ToasterTitle, ToasterType ,zoneType,ColumnDef,Column,TableConstant,UniqueConstants,StringConditions, ConfirmationMessages, ToasterMessages} from 'src/app/common/constants/strings.constants';
 
 import { Placeholders } from 'src/app/common/constants/strings.constants';
 import { ConfirmationDialogComponent } from '../confirmation-dialog/confirmation-dialog.component';
+import { MatOptionSelectionChange } from '@angular/material/core';
+import { LocationZoneType } from 'src/app/common/enums/CommonEnums';
 
 type InventoryMapFormData = {
   location: FormControl<string | null>;
@@ -223,6 +225,7 @@ isButtonDisabled: boolean = true;
   public iCommonAPI : ICommonApi;
 
   placeholders = Placeholders;
+  locationZoneType = LocationZoneType;
 
   constructor(
     public commonAPI : CommonApiService,
@@ -822,20 +825,26 @@ onSubmit(form: FormGroup<InventoryMapFormData>) {
   );
   }
 
-  loadLocationZones(type:any,LocationZoneData: any) {
-
-    if (type === 'Location') {
-    this.zoneList = this.locZoneList.filter(option => option.locationName.includes(LocationZoneData.option.value));
-    this.addInvMapLocation.controls[TableConstant.zone].setValue(this.zoneList[0]?.zone);
-    this.updateItemNumber(TableConstant.zone, this.zoneList[0]?.zone);
+  loadLocationZones(type: LocationZoneType, index: number, event: MatOptionSelectionChange): void {
+    if (event?.isUserInput && event?.source?.selected) {
+      const selectedData = this.locZoneList?.[index];
+  
+      if (!selectedData) return;
+  
+      if(selectedData.zone == "" || selectedData.locationName == ""){
+        this.global.ShowToastr(ToasterType.Error, ToasterMessages.ZoneAndLocationNameNeedToBeSet, ToasterTitle.Warning);
+      }
+      
+      if (type === this.locationZoneType.Location) {
+        const zoneValue = selectedData.zone ?? '';
+        this.addInvMapLocation.controls[TableConstant.zone].setValue(zoneValue);
+        this.updateItemNumber(TableConstant.zone, zoneValue);
+      } else if (type === this.locationZoneType.Zone) {
+        const locationValue = selectedData.locationName ?? '';
+        this.addInvMapLocation.controls[TableConstant.Location].setValue(locationValue);
+        this.updateItemNumber(TableConstant.Location, locationValue);
+      }
     }
-
-    else if (type ==='Zone'){
-      this.zoneList = this.locZoneList.filter(option => option.zone.includes(LocationZoneData.option.value));
-      this.addInvMapLocation.controls[TableConstant.Location].setValue(this.zoneList[0]?.locationName);
-    this.updateItemNumber(TableConstant.Location, this.zoneList[0]?.locationName);
-    }
-
   }
 
   zoneChecker(zone, location) { //To check if the zone and location are selected from dropdown.
