@@ -1,3 +1,4 @@
+import { Time } from "@angular/common";
 import { OperationTypes } from "../enums/CommonEnums";
 
 export interface Operations {
@@ -9,10 +10,10 @@ export interface Operations {
 export interface TableHeaderDefinitions {
     colHeader: string,
     colDef: string
-} 
+}
 
 export type ValidWorkstation = {
-    pcName: string, 
+    pcName: string,
     wsid: string
 };
 
@@ -20,6 +21,8 @@ export interface ApiResponse<T> {
     data: T;
     responseMessage: string;
     isExecuted: boolean;
+    messages: any;
+    statusCode: number;
 }
 
 export interface UserSession {
@@ -60,6 +63,36 @@ export interface ColumnAlias {
     userField8: string;
     userField9: string;
     userField10: string;
+    bin: string;
+    shelf: string;
+    row: string;
+    carousel: string;
+}
+
+export interface FieldMappingAlias {
+    itemNumber: string;
+    unitOfMeasure: string;
+    userField1: string;
+    userField2: string;
+    userField3: string;
+    userField4: string;
+    userField5: string;
+    userField6: string;
+    userField7: string;
+    userField8: string;
+    userField9: string;
+    userField10: string;
+    bin: string;
+    shelf: string;
+    row: string;
+    carousel: string;
+    routeId: string;
+    statusDate: string;
+    consolidationStatus: string;
+    routeIdStatus: string;
+    consolidationProgress: string;
+    routeIdStatusCountCard: string;
+    consolidationStatusCard: string;
 }
 
 export interface OSFieldFilterNames {
@@ -136,9 +169,9 @@ export interface CmPreferences {
     shipShort: boolean;
     complete: boolean;
     notIncluded: boolean;
-  }
+}
 
-  export interface FieldMappingModel {
+export interface FieldMappingModel {
     itemNumber: string;
     unitOfMeasure: string;
     userField1: string;
@@ -151,5 +184,143 @@ export interface CmPreferences {
     userField8: string;
     userField9: string;
     userField10: string;
-  }
-  
+}
+
+export interface WorkStationSetup {
+    podID: string;
+    scanVerifyPicks: boolean;
+    scanVerifyCounts: boolean;
+    scanVerifyPutAways: boolean;
+    printReportLocation: string;
+    printLabelLocation: string;
+    cartonFlowID: string | null;
+    pickToTotes: boolean;
+    putAwayFromTotes: boolean;
+    autoPrintPickToteLabels: boolean;
+    batchPutAway: boolean;
+    storageContainer: boolean;
+    locationControl: boolean;
+    locAssOrderSelection: boolean;
+    printReprocessReport: boolean;
+    printPickLabel: boolean;
+    printPickLabelBatch: boolean;
+    pfSettings: PFSetting[];
+    pfSettingsII: PFSetting[];
+    pfSettingsIII: PFSetting[];
+}
+
+type PFSetting = {
+    pfName: string;
+    pfSetting: string;
+};
+
+export interface SystemPreference {
+    id: number;
+    maximumOrders: number;
+    companyName?: string;
+    address1?: string;
+    city?: string;
+    state?: string;
+    zip?: string;
+    companyLogo?: Uint8Array;
+    userField1?: string;
+    userField2?: string;
+    userField3?: string;
+    userField4?: string;
+    userField5?: string;
+    userField6?: string;
+    userField7?: string;
+    userField8?: string;
+    userField9?: string;
+    userField10?: string;
+    itemNumber?: string;
+    unitOfMeasure?: string;
+    warehouse?: string;
+    showTransQty?: string;
+    locationLotMixing: boolean;
+    nextBatchId?: string;
+    webSite?: string;
+    replenishNextOrder?: string;
+    replenishNextBatchId?: string;
+    nextToteId: number;
+    checkForValidTotes: boolean;
+    pickType?: string;
+    zeroLocationQuantityCheck: boolean;
+    orderSort?: string;
+    orderManifest: boolean;
+    pickPartialKits: boolean;
+    distinctKitOrders: boolean;
+    autoBatchKits: boolean;
+    nextSerialNumber: number;
+    shortPickFindNewLocation: boolean;
+    reelTrackingPickLogic?: string;
+    autoLocPicks: boolean;
+    autoLocPutAways: boolean;
+    autoLocCounts: boolean;
+    carouselBatchId: boolean;
+    bulkBatchId: boolean;
+    rtsDollarAmount: number;
+    rtsThresholdQuantity: number;
+    rtU1?: string;
+    rtU2?: string;
+    rtU3?: string;
+    rtU4?: string;
+    rtU5?: string;
+    rtU6?: string;
+    rtU7?: string;
+    rtU8?: string;
+    rtU9?: string;
+    rtU10?: string;
+    rtOrderNumberPrefix?: string;
+    replenishDedicatedOnly: boolean;
+    domainAuthentication: boolean;
+    fifoPickAcrossWarehouse: boolean;
+    confirmInventoryChanges: boolean;
+    dynamicReelTrackingCreateWip: boolean;
+    pickLabelsOnePerQty: boolean;
+    cartonFlowDisplay?: string;
+    requestNumberOfPutAwayLabels: boolean;
+    maxNumberOfPutAwayLabels: number;
+    emailPackingSlip: boolean;
+    urlImages: boolean;
+    urlPreamble?: string;
+    urlPostamble?: string;
+    autoDisplayImage: boolean;
+    useNtlm: boolean;
+    multiBatchCartSelection: boolean;
+    printFullCases: boolean;
+    hostImage: boolean;
+    hostImageLocation?: string;
+    quickCountQuantity?: string;
+    osFieldName?: string;
+    osText?: string;
+    companyLogoLocation?: string;
+    displayEob: boolean;
+    beepIfPicks: boolean;
+    allowTwoPickBatchSelection: boolean;
+    viewOrderShowOrderStatus: boolean;
+    toteLabelShowCount: boolean;
+    displayCaseQty: boolean;
+    displayCaseQtyUm?: string;
+    otTempToOtPending: boolean;
+    earlyBreakTime: Time;
+    earlyBreakDuration: number;
+    midBreakTime: Time;
+    midBreakDuration: number;
+    lateBreakTime: Time;
+    lateBreakDuration: number;
+    printReplenPutLabels: boolean;
+    osFieldNameRed?: string;
+    osTextRed?: string;
+    osFieldNameGreen?: string;
+    osTextGreen?: string;
+    osFieldNameBlue?: string;
+    osTextBlue?: string;
+    generateQuarantineTransactions: boolean;
+    requireHotReasons: boolean;
+}
+
+export interface AccessLevelByGroupFunctions {
+    accessClearWholeLocation: boolean;
+    accessstorageContainer: boolean;
+}

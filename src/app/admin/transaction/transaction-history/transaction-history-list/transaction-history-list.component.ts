@@ -52,10 +52,10 @@ export class TransactionHistoryListComponent implements OnInit, AfterViewInit {
     { colHeader: 'location', colDef: 'Location', colTitle: 'Location' },
     { colHeader: 'wareHouse', colDef: 'Warehouse', colTitle: 'Warehouse' },
     { colHeader: 'zone', colDef: 'Zone', colTitle: 'Zone' },
-    { colHeader: 'carousel', colDef: 'Carousel', colTitle: 'Carousel' },
-    { colHeader: 'row', colDef: 'Row', colTitle: 'Row' },
-    { colHeader: 'shelf', colDef: 'Shelf', colTitle: 'Shelf' },
-    { colHeader: 'bin', colDef: 'Bin', colTitle: 'Bin' },
+    { colHeader: 'carousel', colDef: 'Carousel', colTitle: this.fieldMappings?.carousel || this.placeholders.carouselFallback },
+    { colHeader: 'row', colDef: 'Row', colTitle: this.fieldMappings?.row || this.placeholders.rowFallback },
+    { colHeader: 'shelf', colDef: 'Shelf', colTitle: this.fieldMappings?.shelf || this.placeholders.shelfFallback  },
+    { colHeader: 'bin', colDef: 'Bin', colTitle: this.fieldMappings?.bin || this.placeholders.binFallback  },
     { colHeader: 'completedDate', colDef: 'Completed Date', colTitle: 'Completed Date' },
     { colHeader: 'completedBy', colDef: 'Completed By', colTitle: 'Completed By' },
     { colHeader: 'completedQuantity', colDef: 'Completed Quantity', colTitle: 'Completed Quantity' },
@@ -110,7 +110,7 @@ export class TransactionHistoryListComponent implements OnInit, AfterViewInit {
   public orderNo: any;
   public payload: any;
   public sortCol: any = 0;
-  public sortOrder: any = UniqueConstants.Asc;
+  public sortOrder: any = UniqueConstants.Desc;
   selectedVariable: any;
   selectedDropdown = '';
   floatLabelControl = new FormControl('auto' as FloatLabelType);
@@ -395,6 +395,9 @@ export class TransactionHistoryListComponent implements OnInit, AfterViewInit {
   }
 
   sortChange(event) {
+    
+    this.resetPagination();
+
     if (!this.dataSource._data._value || event.direction == '' || event.direction == this.sortOrder) return;
 
     let index;

@@ -43,7 +43,7 @@
                           mat-flat-button
                           color="primary"
                           class="add-icon-button"
-                          
+                          [disabled]="addingNew"
                         >
                           <span
                             class="material-symbols-outlined"
@@ -75,11 +75,12 @@
                             <div class="pe-2">
                               <mat-form-field class="custom-form-field w-100" appearance="outline">
                                 <input
+                                  #printerNameInput
                                   matInput
                                   type="text"
                                   maxlength="50"
                                   [(ngModel)]="element.appname"
-                                  (ngModelChange)="onInputValueChange($event, element, index)"
+                                  (ngModelChange)="onInputValueChange(index)"
                                   [disabled]="!element.isNewRow"
                                 />
                               </mat-form-field>
@@ -107,7 +108,7 @@
                                   [value]="element.displayname"
                                   [(ngModel)]="element.displayname"
                                   (ngModelChange)="
-                                    onInputValueChange($event, element, index)
+                                    onInputValueChange(index)
                                   "
                                   [value]="element.displayname"
                                 />
@@ -134,7 +135,7 @@
                                   [value]="element.license"
                                   [(ngModel)]="element.license"
                                   (ngModelChange)="
-                                    onInputValueChange($event, element, index)
+                                    onInputValueChange(index)
                                   "
                                   [value]="element.license"
                                 />
@@ -164,7 +165,7 @@
                                   [value]="element.numlicense"
                                   [(ngModel)]="element.numlicense"
                                   (ngModelChange)="
-                                    onInputValueChange($event, element, index)
+                                    onInputValueChange(index)
                                   "
                                   [value]="element.numlicense"
                                 />
@@ -200,7 +201,7 @@
                                   type="text"
                                   maxlength="50"
                                   [(ngModel)]="element.appurl"
-                                  (ngModelChange)="onInputValueChange($event, element, index)"
+                                  (ngModelChange)="onInputValueChange(index)"
                                   [disabled]="!element.isNewRow" 
                                 />
                               </mat-form-field>
@@ -210,21 +211,13 @@
                         <ng-container matColumnDef="save">
                           <th mat-header-cell *matHeaderCellDef></th>
                           <td mat-cell *matCellDef="let element">
-                            <div class="d-flex justify-content-end">
-                              <button
-                                (click)="saveLicense(element)"
-                                mat-flat-button
-                                color="primary"
-                                class="xsm-icon-button"
-                                [disabled]="element.isButtonDisable"
-                              >
-                                <mat-icon
-                                  class="material-symbols-outlined"
-                                  matTooltip="Save"
-                                  matTooltipPosition="above"
-                                  >save</mat-icon
-                                >
+                            <div class="d-flex gap-12 align-items-center">
+                              <button (click)="saveLicense(element)" mat-flat-button color="primary" class="xsm-icon-button mb-2" [disabled]="element.isButtonDisable">
+                                <mat-icon class="material-symbols-outlined" matTooltip="Save" matTooltipPosition="above">save</mat-icon>
                               </button>
+                              <button mat-flat-button color="warn" class="xsm-icon-button mb-2" (click)="removeLicense(element)">
+                                <mat-icon class="material-symbols-outlined" matTooltip="Delete" matTooltipPosition="above">close</mat-icon>
+                            </button>
                             </div>
                           </td>
                         </ng-container>
@@ -236,7 +229,6 @@
                         <tr
                           mat-row
                           *matRowDef="let row; columns: displayedColumns"
-                          (click)="selection.toggle(row)"
                         ></tr>
                       </table>
                     </ng-scrollbar>

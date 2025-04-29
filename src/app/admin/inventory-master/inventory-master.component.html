@@ -88,7 +88,7 @@
                 </mat-tab>
                 <mat-tab label="Item Setup" >
                   <div class="remaining"></div> 
-                  <app-item-setup [itemSetup]="invMaster" [isActiveTrigger]="tabIndex == 1" (notifyContextMenu)="ContextMenu($event)" ></app-item-setup>
+                  <app-item-setup [fieldNames]="columns" [itemSetup]="invMaster" [isActiveTrigger]="tabIndex == 1" (notifyContextMenu)="ContextMenu($event)" ></app-item-setup>
                 </mat-tab>
                 <mat-tab label="Kit Items" >
                   <div class="remaining"></div> 
@@ -96,7 +96,7 @@
                 </mat-tab>
                 <mat-tab label="Location"  >
                   <div class="remaining"></div>
-                  <app-location [fieldNameDetails]="fieldNames" [count]="count" [location]="invMaster" (notifyParent)="getNotification($event)" ></app-location>
+                  <app-location [fieldNames]="columns" [fieldNameDetails]="fieldNames" [count]="count" [location]="invMaster" (notifyParent)="getNotification($event)" ></app-location>
                 </mat-tab>
                 <mat-tab label="Reel Tracking">
                   <app-reel-tracking  [events]="reelSubject.asObservable()"  [isActiveTrigger]="tabIndex == 4"  [reelTracking]="invMaster" (notifyContextMenu)="ContextMenu($event)" ></app-reel-tracking>

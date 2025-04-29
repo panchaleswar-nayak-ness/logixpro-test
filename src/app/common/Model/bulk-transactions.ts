@@ -291,6 +291,8 @@ export class WorkStationSetupResponse {
     printReprocessReport: boolean;
     printPickLabel: boolean;
     printPickLabelBatch: boolean;
+    storageContainer: boolean;
+    locationControl: boolean;
     pfSettings: PFSettings[];
     pfSettingsII: PFSettings[];
     pfSettingsIII: PFSettings[];

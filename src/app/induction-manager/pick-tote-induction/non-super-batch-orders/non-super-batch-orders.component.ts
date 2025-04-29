@@ -60,6 +60,7 @@ export class NonSuperBatchOrdersComponent implements OnInit, AfterViewInit {
     event.subscribe(() => this.focusFirstInput());
   }
   @Input() transactionQtyRecieved: any;
+  @Input() pickToteSuppressInfoMessages: boolean;
   userData;
   elementData = [
     {
@@ -355,33 +356,37 @@ export class NonSuperBatchOrdersComponent implements OnInit, AfterViewInit {
           this.Api.PerformNonSuperBatchOrderInduction(valueToInduct)
             .pipe(
               catchError((errResponse) => {
-                // if (errResponse.error.status === 400) {
-                  // this.global.ShowToastr(
-                  //   ToasterType.Error,
-                  //   errResponse.error.responseMessage,
-                  //   ToasterTitle.Error,
-                  //   1000
-                  // );
-                // } else {
-                  // this.global.ShowToastr(
-                  //   ToasterType.Error,
-                  //   errResponse.error.responseMessage,
-                  //   ToasterTitle.Error,
-                  //   1000
-                  // );
+                if (errResponse.error.statusCode === 400) {
+                  if(this.pickToteSuppressInfoMessages){
+                    this.global.ShowToastr(
+                      ToasterType.Error,
+                      errResponse.error.responseMessage,
+                      ToasterTitle.Error,
+                      1000
+                    );
+                  }
+                } else {
+                  this.global.ShowToastr(
+                    ToasterType.Error,
+                    errResponse.error.responseMessage,
+                    ToasterTitle.Error,
+                    1000
+                  );
                 
-               // }
+               }
                element.toteScanned = '';
                 return throwError(errResponse);
               })
             )
             .subscribe((innerResponse: any) => {
               if (innerResponse.data && innerResponse.isExecuted) {
-                // this.global.ShowToastr(
-                //   ToasterType.Success,
-                //   innerResponse.responseMessage,
-                //   ToasterTitle.Success
-                // );
+                if(this.pickToteSuppressInfoMessages){
+                  this.global.ShowToastr(
+                    ToasterType.Success,
+                    innerResponse.responseMessage,
+                    ToasterTitle.Success
+                  );
+                }
                 // Check for remaining quantity
                 if (innerResponse.data.remainingQuantity > 0) {
                   // Update the UI with the remaining quantity

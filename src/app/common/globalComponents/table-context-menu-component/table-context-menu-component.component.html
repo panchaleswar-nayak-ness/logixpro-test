@@ -5,8 +5,9 @@
     <ng-container *ngFor="let con of matMenuContentItem">
       <button mat-menu-item (click)="onContextMenuCommand(item.SelectedItem, item.FilterColumnName, con.condition, getType(item.SelectedItem))" 
         *ngIf="con.type === OperationTypes.EQUALS || 
-        (con.type === OperationTypes.STRING && getType(item.SelectedItem) == 'string' && getType(item.FilterColumnName) != 'date') ||
-        (con.type === OperationTypes.NUMERIC && getType(item.SelectedItem) == 'number' || getType(item.FilterColumnName) == 'date')" >
+        (con.type === OperationTypes.STRING && (getType(item.SelectedItem) == 'string' && getType(item.FilterColumnName) != 'date')) ||
+        (con.type === OperationTypes.NUMERIC && getType(item.SelectedItem) == 'number') ||
+        (con.type === OperationTypes.DATE && getType(item.FilterColumnName) == 'date')" >
         {{con.title}}
       </button>
     </ng-container>
@@ -22,8 +23,8 @@
     <ng-container *ngFor="let item of matMenuContentCategory">
         <button mat-menu-item (click)="InputFilterSearch(category.FilterColumnName, item.condition, getType(category.SelectedItem))" 
           *ngIf="item.type === OperationTypes.EQUALS || 
-          (item.type === OperationTypes.STRING && getType(category.SelectedItem) == 'string' && getType(category.FilterColumnName) != 'date') ||
-          (item.type === OperationTypes.NUMERIC && getType(category.SelectedItem) == 'number' || getType(category.FilterColumnName) == 'date')">
+          (item.type === OperationTypes.STRING && (getType(category.SelectedItem) == 'string' && getType(category.FilterColumnName) != 'date')) ||
+          (item.type === OperationTypes.NUMERIC && (getType(category.SelectedItem) == 'number' || getType(category.FilterColumnName) == 'date'))">
           {{item.title}}
         </button>
     </ng-container>

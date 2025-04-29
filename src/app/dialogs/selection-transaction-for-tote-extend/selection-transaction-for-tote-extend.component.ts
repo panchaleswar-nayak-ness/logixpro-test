@@ -71,6 +71,8 @@ export class SelectionTransactionForToteExtendComponent implements OnInit {
     public router: Router,
     private global:GlobalService,
   ) {
+    const selectedTote = this.data?.totes?.find((e) => e.isSelected);
+    let cell = selectedTote?.toteQuantity != null ? Number(selectedTote.toteQuantity) + 1 : 0;
     this.iInductionManagerApi = inductionManagerApi;
     this.iAdminApiService = adminApiService;
     this.iCommonAPI = commonAPI;
@@ -132,6 +134,7 @@ export class SelectionTransactionForToteExtendComponent implements OnInit {
 
       invMapID                          : new FormControl(0, Validators.compose([])),
       dedicated                         : new FormControl(false, Validators.compose([])),
+      cell                              : new FormControl(cell, Validators.compose([])),
     });
   }
 
@@ -726,7 +729,7 @@ export class SelectionTransactionForToteExtendComponent implements OnInit {
       "lot": values.lotNumber,
       "ser": values.serialNumber,
       "totePos": values.totePos ? parseInt(values.totePos) : 0,
-      'cell': values.cellSize,
+      'cell': values.cell,
       "warehouse": values.warehouse,
       "expDate": values.expirationDate,
       "revision": "",

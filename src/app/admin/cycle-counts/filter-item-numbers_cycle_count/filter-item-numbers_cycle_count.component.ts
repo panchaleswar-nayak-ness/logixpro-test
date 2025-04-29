@@ -1,14 +1,20 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
+import {
+  MAT_DIALOG_DATA,
+  MatDialog,
+  MatDialogRef,
+} from '@angular/material/dialog';
 import { AuthService } from 'src/app/common/init/auth.service';
 import { IAdminApiService } from 'src/app/common/services/admin-api/admin-api-interface';
 import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.service';
 import { ConfirmationDialogComponent } from '../../dialogs/confirmation-dialog/confirmation-dialog.component';
 import { LocalStorageService } from 'src/app/common/services/LocalStorage.service';
+import { CycleCountConfirmMessageDialogComponent } from '../../dialogs/cycle-count-confirm-message-dialog/cycle-count-confirm-message-dialog.component';
+import { CommonResponse, WorkstationItems, WorkstationLocations } from 'src/app/common/Model/cycle-count';
 @Component({
   selector: 'app-filter-item-numbers',
   templateUrl: './filter-item-numbers_cycle_count.component.html',
-  styleUrls: ['./filter-item-numbers_cycle_count.component.scss']
+  styleUrls: ['./filter-item-numbers_cycle_count.component.scss'],
 })
 export class FilterItemNumbersComponentCycleCount implements OnInit {
   fieldMappings = JSON.parse(localStorage.getItem('fieldMappings') ?? '{}');
@@ -20,7 +26,8 @@ export class FilterItemNumbersComponentCycleCount implements OnInit {
   public includeEmpty: boolean = false;
   public includeOther: boolean = false;
   titleText: string = 'Filter Item Numbers';
-  instructionsText: string = 'This is used to copy and paste item numbers from an excel spreadsheet.';
+  instructionsText: string =
+    'This is used to copy and paste item numbers from an excel spreadsheet.';
 
   constructor(
     public dialogRef: MatDialogRef<any>,
@@ -39,12 +46,14 @@ export class FilterItemNumbersComponentCycleCount implements OnInit {
     // Check if importtype is 'Location' and update the text accordingly
     if (this.importtype === 'Location') {
       this.titleText = 'Filter Locations';
-      this.instructionsText = 'This is used to copy and paste Locations from an excel spreadsheet.';
+      this.instructionsText =
+        'This is used to copy and paste Locations from an excel spreadsheet.';
       this.includeEmpty = this.data.includeEmpty;
-      this.includeOther = this.data.includeOther
+      this.includeOther = this.data.includeOther;
     } else {
       this.titleText = `Filter ${this.itemNumber}s`;
-      this.instructionsText = 'This is used to copy and paste item numbers from an excel spreadsheet.';
+      this.instructionsText =
+        'This is used to copy and paste item numbers from an excel spreadsheet.';
     }
   }
 
@@ -53,73 +62,116 @@ export class FilterItemNumbersComponentCycleCount implements OnInit {
   }
 
   filterItemNumbers(): void {
-    let itemsStr = this.items.trim().replace(/[\n\r]/g, ',');
-    let itemsArray = itemsStr.split(',');
-    itemsArray = itemsArray.filter((item: any) => item != "");
+    let itemsStr = this.items
+    .split(/[\n\r]+/)              // Split by new lines
+    .map(item => item.trim())      // Trim each item to remove starting/trailing spaces
+    .filter(item => item !== '')   // Remove empty lines if any
+    .join(',');                    // Join into a comma-separated string
+      let itemsArray = itemsStr.split(',');
+    itemsArray = itemsArray.filter((item: any) => item != '');
     let commaSeparatedItems = itemsArray.join(',');
-    let updatedValues = this.localstorageService.SetImportCountLocationChecks(null, null);
+    let updatedValues = this.localstorageService.SetImportCountLocationChecks(
+      null,
+      null
+    );
     this.includeEmpty = updatedValues[0];
     this.includeOther = updatedValues[1];
     let payload: any = {
-      "items": commaSeparatedItems,
-      "importBy": this.importtype,
-      "includeEmpty": this.includeEmpty ? this.includeEmpty : false,
-      "includeOther": this.includeOther ? this.includeOther : false
+      items: commaSeparatedItems,
+      importBy: this.importtype,
+      includeEmpty: this.includeEmpty ? this.includeEmpty : false,
+      includeOther: this.includeOther ? this.includeOther : false,
     };
-
-    this.adminApiService.GetImportBatchCount(payload).subscribe((res: any) => {
+    this.adminApiService.GetImportBatchCount(payload).subscribe((res: CommonResponse) => {
       if (res.isExecuted && res.data) {
-        if ((res.data.item1 && res.data.item1.length > 0) || (res.data.item3 && res.data.item3.length > 0)) {
-          let heading = '';
-          let message = '';
-          let message2 = '';
-          if (this.importtype === 'Location') {
-            if (res.data.item3 && res.data.item3.length > 0) {
-              heading = 'Location(s) Not Found';
-                const item5List = Array.isArray(res.data.item5) ? res.data.item5.join(', ') : '';
-                const item3List = Array.isArray(res.data.item3) ? res.data.item3.join(', ') : '';
-                message = `The following locations could not be imported as they are allocated to workstation${item5List ? ` [${item5List}]` : ''}${item3List ? ` or have existing cycle count transactions: [${item3List}]` : ''}.`;
-              // for some location exists in db and some are not in db 
-              if (res.data.item4 && res.data.item4.length > 0) {
-                message = `The following locations could not be imported as they are allocated to workstation${item5List ? ` [${item5List}]` : ''}${item3List ? ` or have existing cycle count transactions: [${item3List}]` : ''}.`;
-                message2 = `The following location(s) do not exist: [${res.data.item4.join(', ')}]`;
-              }
+        let heading = '';
+        let notFoundLocations: string[] = [];
+        let cycleCountLocations: string[] = [];
+        let workstationGroups: WorkstationLocations[] = [];
+        let notFoundItems: string[] = [];
+        let cycleCountItems: string[] = [];
+        let itemWorkstationGroups: WorkstationItems[] = [];
+    
+        if (this.importtype === 'Location') {
+          if (
+            (res.data.locationExistsList && res.data.locationExistsList.length > 0) ||
+            (res.data.locationWithWSNameList && res.data.locationWithWSNameList.length > 0)
+          ) {
+            heading = 'Location(s) Not Found';
+            cycleCountLocations = res.data.locationExistsList || [];
+            workstationGroups = res.data.locationWithWSNameList || [];
+    
+            if (res.data.locationNotExistsList && res.data.locationNotExistsList.length > 0) {
+              notFoundLocations = res.data.locationNotExistsList;
             }
-            else if ((res.data.item3.length === 0) && (res.data.item4.length === 0)) {
-              this.dialogRef.close({
-                filterItemNumbersText: this.data,
-                filterItemNumbersArray: itemsArray,
-                filterData: commaSeparatedItems,
-              });
-              return
-            }
-            // for showing no location exists in db
-            else {
-              heading = 'Location(s) Not Found';
-              message = `The following location(s) do not exist: [${res.data.item1.join(', ')}]`;
-            }
-          } else if (this.importtype === this.itemNumber) {
-            heading = `${this.itemNumber}(s) Not Found`;
-            message = `The following ${this.itemNumber}(s) do not exist [${res.data.item1.join(', ')}]`;
+          } else if (
+            (res.data.locationExistsList?.length === 0) &&
+            (res.data.locationNotExistsList?.length === 0) &&
+            (res.data.locationWithWSNameList?.length === 0)
+          ) {
+            this.dialogRef.close({
+              filterItemNumbersText: this.data,
+              filterItemNumbersArray: itemsArray,
+              filterData: commaSeparatedItems,
+            });
+          } else {
+            heading = 'Location(s) Not Found';
+            notFoundLocations = res.data.missingValues || [];
           }
-          const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
+        } else if (this.importtype === this.itemNumber) {
+          if (
+            (res.data.itemNumberExistsList && res.data.itemNumberExistsList.length > 0) ||
+            (res.data.itemNumberWithWSNameList && res.data.itemNumberWithWSNameList.length > 0)
+          ) {
+            heading = `Item(s) Not Found`;
+            cycleCountItems = res.data.itemNumberExistsList || [];
+            itemWorkstationGroups = res.data.itemNumberWithWSNameList || [];
+    
+            if (res.data.itemNumberNotExistsList && res.data.itemNumberNotExistsList.length > 0) {
+              notFoundItems = res.data.itemNumberNotExistsList;
+            }
+          } else if (
+            (res.data.itemNumberExistsList?.length === 0) &&
+            (res.data.itemNumberNotExistsList?.length === 0) &&
+            (res.data.itemNumberWithWSNameList?.length === 0)
+          ) {
+            this.dialogRef.close({
+              filterItemNumbersText: this.data,
+              filterItemNumbersArray: itemsArray,
+              filterData: commaSeparatedItems,
+            });
+          } else {
+            heading = `Item(s) Not Found`;
+            notFoundItems = res.data.missingValues || [];
+          }
+        }
+    
+        if (
+          notFoundLocations.length > 0 ||
+          cycleCountLocations.length > 0 ||
+          workstationGroups.length > 0 ||
+          notFoundItems.length > 0 ||
+          cycleCountItems.length > 0 ||
+          itemWorkstationGroups.length > 0
+        ) {
+          const dialogRef = this.dialog.open(CycleCountConfirmMessageDialogComponent, {
             width: '560px',
             data: {
               heading: heading,
-              message: message,
-              message2: message2,
-              buttonFields: false,
-              threeButtons: false,
-              singleButton: true,
-              customButtonText: false,
-              btn1Text: 'Ok',
-              hideCancel: true
+              importType: this.importtype,
+              notFoundLocations: notFoundLocations,
+              cycleCountLocations: cycleCountLocations,
+              workstationGroups: workstationGroups,
+              notFoundItems: notFoundItems,
+              cycleCountItems: cycleCountItems,
+              itemWorkstationGroups: itemWorkstationGroups
             }
           });
+    
           dialogRef.afterClosed().subscribe(() => {
             this.dialogRef.close();
-            if (res.data.item2 && res.data.item2.length > 0) {
-              const tableData = res.data.item2.map((item: any) => ({
+            if (res.data.inventoryList && res.data.inventoryList.length > 0) {
+              const tableData = res.data.inventoryList.map((item: any) => ({
                 invMapID: item.invMapID,
                 itemNumber: item.itemNumber,
                 description: item.description.trim(),
@@ -143,14 +195,13 @@ export class FilterItemNumbersComponentCycleCount implements OnInit {
               this.dialogRef.close({
                 filterItemNumbersText: this.data,
                 filterItemNumbersArray: itemsArray,
-                responseData: [], 
+                responseData: [],
                 filterData: commaSeparatedItems,
               });
             }
           });
-        }
-        else if (res.data.item2 && res.data.item2.length > 0) {
-          const tableData = res.data.item2.map((item: any) => ({
+        } else if (res.data.inventoryList && res.data.inventoryList.length > 0) {
+          const tableData = res.data.inventoryList.map((item: any) => ({
             invMapID: item.invMapID,
             itemNumber: item.itemNumber,
             description: item.description.trim(),
@@ -170,8 +221,7 @@ export class FilterItemNumbersComponentCycleCount implements OnInit {
             responseData: tableData,
             filterData: commaSeparatedItems,
           });
-        }
-        else {
+        } else {
           this.dialogRef.close({
             filterItemNumbersText: this.data,
             filterItemNumbersArray: itemsArray,
@@ -184,6 +234,4 @@ export class FilterItemNumbersComponentCycleCount implements OnInit {
       }
     });
   }
-
 }
-

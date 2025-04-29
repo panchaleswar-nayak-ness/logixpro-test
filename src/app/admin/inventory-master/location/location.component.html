@@ -30,22 +30,22 @@
     
       <!-- Symbol Column -->
       <ng-container matColumnDef="carousal">
-        <th mat-header-cell mat-sort-header  *matHeaderCellDef> Carousal </th>
+        <th mat-header-cell mat-sort-header  *matHeaderCellDef> {{fieldNames.carousel}} </th>
         <td mat-cell *matCellDef="let element" [ngClass]="{'quarantineColor': element.warehouse.includes('Quarantine')}"> {{element.carousel}} </td>
       </ng-container>
 
       <ng-container matColumnDef="row">
-        <th mat-header-cell mat-sort-header  *matHeaderCellDef> Row</th>
+        <th mat-header-cell mat-sort-header  *matHeaderCellDef> {{fieldNames.row}}</th>
         <td mat-cell *matCellDef="let element" [ngClass]="{'quarantineColor': element.warehouse.includes('Quarantine')}"> {{element.row}} </td>
       </ng-container>
 
       <ng-container matColumnDef="shelf">
-        <th mat-header-cell mat-sort-header  *matHeaderCellDef>Shelf</th>
+        <th mat-header-cell mat-sort-header  *matHeaderCellDef>{{fieldNames.shelf}}</th>
         <td mat-cell *matCellDef="let element" [ngClass]="{'quarantineColor': element.warehouse.includes('Quarantine')}"> {{element.shelf}} </td>
       </ng-container>
 
       <ng-container matColumnDef="bin">
-        <th mat-header-cell mat-sort-header  *matHeaderCellDef>Bin</th>
+        <th mat-header-cell mat-sort-header  *matHeaderCellDef>{{fieldNames.bin}}</th>
         <td mat-cell *matCellDef="let element" [ngClass]="{'quarantineColor': element.warehouse.includes('Quarantine')}"> {{element.bin}} </td>
       </ng-container>
 

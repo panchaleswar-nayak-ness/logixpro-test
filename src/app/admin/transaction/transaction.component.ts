@@ -9,6 +9,7 @@ import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.ser
 import { GlobalService } from 'src/app/common/services/global.service';
 import { ToasterTitle, ToasterType, TableConstant, localStorageKeys} from 'src/app/common/constants/strings.constants';
 import { AppRoutes, RouteUpdateMenu } from 'src/app/common/constants/menu.constants';
+import { ColumnAlias } from 'src/app/common/types/CommonTypes';
 
 @Component({
   selector: 'app-transaction',
@@ -21,7 +22,7 @@ export class TransactionComponent implements OnInit, AfterViewInit {
   public showReprocess;
   public showReprocessed;
   public setval;
-  fieldNames:any;
+  public fieldNames:ColumnAlias;
   orderStatus$: Observable<any>;
   itemNumber$: Observable<any>;
   type$: Observable<any>;

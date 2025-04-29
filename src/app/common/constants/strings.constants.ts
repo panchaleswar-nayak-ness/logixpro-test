@@ -1,3 +1,5 @@
+import { AccessLevelByGroupFunctions, WorkStationSetup } from "../types/CommonTypes";
+
 export const StringAssignments = {
     WorkstationNotAssignedToZone: 'This workstation is not assigned to a zone',
 };
@@ -108,14 +110,19 @@ export const ToasterTitle = {
     NoRows: 'No Rows',
     BatchFilled: 'Batch is Filled.',
     Update: 'Update!',
-    Info:'Info!'
+    Info:'Info!',
+    InvalidTote: 'Invalid Tote'
 }
 
 export const ConfirmationHeadings = {
     BatchManager: 'Batch Manager',
-    MoveNow: "Continue Move Now?"
+    MoveNow: "Continue Move Now?",
+    PasswordExpiryAlert: "Password Expiry Alert"
 }
-
+export const ConfirmationButtonText = {
+    ResetPassword: 'Reset Password Now',
+    RemindMeLater: 'Remind Me Later'
+}
 
 
 export const ConfirmationMessages = {
@@ -125,7 +132,10 @@ export const ConfirmationMessages = {
     ClickOkToPrintItemLabels: 'Click Ok to print item labels for the selected batch orders?',
     UnverfiedItemsLeft: 'There are still unverfied items. Coninue the preview?',
     EventLogDeleteWithRange: 'Are you sure you want to delete all Event Log entries with specified date, message, event location and name stamp filters?',
-    ClickOkToUpdateLocation: 'You will now update both locations to complete the current move'
+    ClickOkToUpdateLocation: 'You will now update both locations to complete the current move',
+    ConfirmationToClearAllInventoryMap : "Click OK to clear all Inventory Map records matching Location Number (Zone + Carousal + Row + Shelf + Bin) Criteria!",
+    ClearWholeLocationPutAwayQuantity:"Clear Whole Location cannot proceed because the Allocated Pick or Allocated Put Away quantity is greater than zero.",
+    DeleteLicenseConfirmation:"Are you sure you want to delete this License?"
 }
 
 export const ToasterMessages = {
@@ -177,7 +187,27 @@ export const ToasterMessages = {
     MissingDataFromPrint: 'Missing data from the desired print row',
     DeletePendingTransaction: 'You can only delete pending transactions.',
     ItemNumberExists: 'Item Number Already Exists.',
-    RecordUpdatedSuccessful: 'Record Updated Successfully'
+    RecordUpdatedSuccessful: 'Record Updated Successfully',
+    DuplicateAdjustmentReason: 'Adjustment Reason is a duplicate. Save other edited fields and ensure it is not a duplicate before saving.',
+    DuplicateToteError: 'Tote must be unique. Another entry matches it. Please save any pending totes and try again.',
+    DuplicateFieldError: 'Field is a duplicate. Save other edited fields and ensure it is not a duplicate before saving.',
+    ErrorRemovingRow: 'An Error Occured while trying to remove this row, check the event log for more information',
+    ErrorRemovingData: 'An Error Occured while trying to remove all data, check the event log for more information',
+    ErrorCreatingCount: 'Error Occured while creating Count records, check event log for more information',
+    ImportDataFailed: 'Failed to import data.',
+    NoFileFound: 'No file found.',
+    OrderDeAllocationFailed: 'Order De-Allocation Not Successful',
+    NoItemAtLocation: 'No item found at the location specified. Ensure that the entry selected has been saved since an item was assigned to it.',
+    ZoneLocationRequired: 'Zone and Location need to be set via the dropdown in order to save.',
+    WarehouseSensitiveWarning: 'The selected item is warehouse sensitive. Please set a warehouse to continue.',
+    DateSensitiveWarning: 'Item is date sensitive. Please set date sensitive before saving.',
+    ToteIsInUse:"This tote is in use and assigned to an open order.",
+    DuplicateLocation:"Location name already exists.",
+    SessionTimeOut:"Session timed out, you have been logged off",
+    LocationDeleted: 'Location deleted successfully',
+    DeleteFailed:"Delete Failed",
+    FieldEmptyDefault:"Field cannot be empty. Default value has been applied.",
+    ZoneAndLocationNameNeedToBeSet:" “Zone and Location Name need to be set via the Preferences - Location Zones screen in order to save”"
 }
 
 
@@ -506,5 +536,141 @@ export const Placeholders = {
     userField10: '{{userField10}}',
     userField10Fallback: 'User Field 10',
 
+    bin: '{{bin}}',
+    binFallback: 'Bin',
+
+    shelf: '{{shelf}}',
+    shelfFallback: 'Shelf',
+
+    row: '{{rin}}',
+    rowFallback: 'Row',
+
+    carousel: '{{carousel}}',
+    carouselFallback: 'Carousel',
+
   };
 
+export const MarkoutNewPickTotesKeys = {
+    ToteID: 'toteId',
+    Status: 'status',
+    StatusDate: 'statusDate',
+    RouteID: 'routeID',
+    DivertReason: 'divertReason',
+    Location: 'location',
+    Destination: 'destination',
+    Details: 'details'
+}
+
+export const MarkoutNewPickTotesDC = {
+    ToteID: 'Tote ID',
+    Status: 'Status',
+    StatusDate: 'Status Date',
+    RouteID: 'Route ID',
+    DivertReason: 'Divert Reason',
+    Location: 'Location',
+    Destination: 'Destination',
+    Details: 'Details'
+}
+
+
+export const MarkoutNewPickLinesKeys = {
+    Item: 'item',
+    Qty: 'qty',
+    LocID: 'locID',
+    Status: 'status',
+    StatusDate: 'statusDate',
+    CompQty: 'compQty',
+    CompBy: 'compBy',
+    ShortReason: 'shortReason'
+}
+
+export const MarkoutNewPickLinesDC = {
+    Item: 'Item',
+    Qty: 'Qty',
+    LocID: 'Loc ID',
+    Status: 'Status',
+    StatusDate: 'Status Date',
+    CompQty: 'Comp Qty',
+    CompBy: 'Comp By',
+    ShortReason: 'Short Reason'
+}
+
+export const MarkoutNewToteAuditKeys = {
+    Time: 'time',
+    Type: 'type',
+    Scanner: 'scanner',
+    Divert: 'divert',
+    Location: 'location',
+    Status: 'status',
+    StatusDate: 'statusDate',
+    DivertReason: 'divertReason'
+}
+
+export const MarkoutNewToteAuditDC = {
+    Time: 'Time',
+    Type: 'Type',
+    Scanner: 'Scanner',
+    Divert: 'Divert',
+    Location: 'Location',
+    Status: 'Status',
+    StatusDate: 'Status Date',
+    DivertReason: 'Divert Reason'
+}
+
+export const defaultWorkstationSetup: WorkStationSetup = {
+    podID: "No",
+    scanVerifyPicks: false,
+    scanVerifyCounts: false,
+    scanVerifyPutAways: false,
+    printReportLocation: "No Printer",
+    printLabelLocation: "No Printer",
+    cartonFlowID: null,
+    pickToTotes: false,
+    putAwayFromTotes: false,
+    autoPrintPickToteLabels: false,
+    batchPutAway: false,
+    storageContainer: false,
+    locationControl: false,
+    locAssOrderSelection: false,
+    printReprocessReport: false,
+    printPickLabel: false,
+    printPickLabelBatch: false,
+    pfSettings: [
+      {
+        pfName: "",
+        pfSetting: ""
+      }
+    ],
+    pfSettingsII: [
+      {
+        pfName: "",
+        pfSetting: ""
+      }
+    ],
+    pfSettingsIII: [
+      {
+        pfName: "",
+        pfSetting: ""
+      }
+    ]
+};
+
+export const defaultAccessLevelByGroupFunctions: AccessLevelByGroupFunctions = {
+    accessClearWholeLocation: false,
+    accessstorageContainer: false
+}
+
+export const AccessLevel = {
+    Administrator: "administrator",
+    StaffMember: "staff_member"
+}
+
+export const AppLicensingDisplayedColumns = {
+    AppName: 'appname',
+    DisplayName: 'displayname',
+    License: 'license',
+    NumLicense: 'numlicense',
+    Status: 'status',
+    AppURL: 'appurl',
+    Save: 'save',
+};

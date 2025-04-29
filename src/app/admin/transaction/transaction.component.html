@@ -1,6 +1,6 @@
 <mat-tab-group dynamicHeight [(selectedIndex)]="tabIndex" (selectedTabChange)="onTabChanged($event);">
     <mat-tab label="Order Status">
-        <app-order-status 
+        <app-order-status [fieldNames]="fieldNames"
             [tabIndex]="tabIndex">
         </app-order-status>
     </mat-tab>
@@ -8,6 +8,7 @@
         <mat-tab label="Open Transactions" *ngIf="!isOrderStatus" >
             <app-open-transaction 
                 [tabIndex]="tabIndex" 
+                [fieldNames]="fieldNames"
                 (emitOrderTab)="switchToOrder()">
             </app-open-transaction>
         </mat-tab>

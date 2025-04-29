@@ -11,9 +11,12 @@
       <span *ngIf="data && data.message2"><br></span>
       <span *ngIf="data && data.message2"><br>{{dialog_msg2}}</span>
     </p>
+    <div class="br-14 px-4 py-3 checkbox-background mb-4" *ngIf="checkBox">
+      <mat-checkbox class="example-margin" color="primary" (change)="checkOptions($event)">{{checkBoxText}}</mat-checkbox>
+    </div>
   </div>
   <div class="w-100">
-    <button (click)="confirmOK()" mat-stroked-button color="primary"
+    <button (click)="confirmOK()" mat-stroked-button color="primary" [disabled]="checkBox && !isChecked"
       class="w-100 btn-lg mb-2 prompt-action-accent-button">
       {{customButtonText ? btn1Text : buttonFields?'Yes':'Ok'}}
     </button>

@@ -19,6 +19,11 @@ import { MarkoutListComponent } from './cm-markout/markout-list/markout-list.com
 import { MarkoutSearchComponent } from './cm-markout/markout-search/markout-search.component';
 import { MarkoutStatusComponent } from './cm-markout/markout-status/markout-status.component';
 import { PreferencesMarkoutComponent } from './consolidation-preferences/preferences-markout/preferences-markout.component';
+import { CmMarkoutNewComponent } from './cm-markout-new/cm-markout-new.component';
+import { MarkoutNewPickTotesComponent } from './cm-markout-new/markout-new-pick-totes/markout-new-pick-totes.component';
+import { MarkoutNewPickLinesComponent } from './cm-markout-new/markout-new-pick-lines/markout-new-pick-lines.component';
+import { MarkoutNewToteAuditComponent } from './cm-markout-new/markout-new-tote-audit/markout-new-tote-audit.component';
+import { ToteIdDetailsComponent } from './cm-markout-new/dialogs/tote-id-details/tote-id-details.component';
 
 
 @NgModule({
@@ -36,7 +41,12 @@ import { PreferencesMarkoutComponent } from './consolidation-preferences/prefere
         MarkoutSearchComponent,
         MarkoutStatusComponent,
         MarkoutListComponent,
-        PreferencesMarkoutComponent
+        PreferencesMarkoutComponent,
+        CmMarkoutNewComponent,
+        MarkoutNewPickTotesComponent,
+        MarkoutNewPickLinesComponent,
+        MarkoutNewToteAuditComponent,
+        ToteIdDetailsComponent
     ],
     imports: [
         CommonModule,

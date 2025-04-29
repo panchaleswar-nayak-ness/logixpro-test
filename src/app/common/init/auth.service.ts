@@ -38,7 +38,7 @@ export class AuthService {
   }
 
   userData(){
-    if(this.isConfigUser()) return JSON.parse(localStorage.getItem('userConfig') ?? '{}');
+    if(localStorage.getItem('userConfig')) return JSON.parse(localStorage.getItem('userConfig') ?? '{}');
     else return JSON.parse(localStorage.getItem('user') ?? '{}');
   }
 

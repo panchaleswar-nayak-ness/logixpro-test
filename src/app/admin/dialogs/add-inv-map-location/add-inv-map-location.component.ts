@@ -28,10 +28,12 @@ import { ICommonApi } from 'src/app/common/services/common-api/common-api-interf
 import { GlobalService } from 'src/app/common/services/global.service';
 import { Subject, debounceTime, distinctUntilChanged } from 'rxjs';
 import { FloatLabelType } from '@angular/material/form-field';
-import { DialogConstants, ToasterTitle, ToasterType ,zoneType,ColumnDef,Column,TableConstant,UniqueConstants,StringConditions} from 'src/app/common/constants/strings.constants';
+import { DialogConstants, ToasterTitle, ToasterType ,zoneType,ColumnDef,Column,TableConstant,UniqueConstants,StringConditions, ConfirmationMessages, ToasterMessages} from 'src/app/common/constants/strings.constants';
 
 import { Placeholders } from 'src/app/common/constants/strings.constants';
 import { ConfirmationDialogComponent } from '../confirmation-dialog/confirmation-dialog.component';
+import { MatOptionSelectionChange } from '@angular/material/core';
+import { LocationZoneType } from 'src/app/common/enums/CommonEnums';
 
 type InventoryMapFormData = {
   location: FormControl<string | null>;
@@ -119,6 +121,10 @@ export class AddInvMapLocationComponent implements OnInit {
   userField1: string = this.fieldMappings.userField1;
   userField2: string = this.fieldMappings.userField2;
   unitOfMeasure: string = this.fieldMappings.unitOfMeasure;
+  rowAlias: string = this.fieldMappings.row;
+  shelfAlias: string = this.fieldMappings.shelf;
+  binAlias: string = this.fieldMappings.bin;
+  carouselAlias: string = this.fieldMappings.carousel;
   addInvMapLocation: FormGroup<InventoryMapFormData>;
   clearInvMapLocation: FormGroup;
   allowClearWholeLocation: boolean = false;
@@ -219,6 +225,7 @@ isButtonDisabled: boolean = true;
   public iCommonAPI : ICommonApi;
 
   placeholders = Placeholders;
+  locationZoneType = LocationZoneType;
 
   constructor(
     public commonAPI : CommonApiService,
@@ -287,6 +294,16 @@ isButtonDisabled: boolean = true;
 
     this.searchItemNumbers = this.getDetailInventoryMapData.itemNumber;
 
+    this.addInvMapLocation.get('zone')?.valueChanges.subscribe(zoneValue => {
+      // When the zone field is cleared, reset the filtered options
+      if (!zoneValue) {
+          this.filteredOptions = this.addInvMapLocation.controls[TableConstant.Location].valueChanges.pipe(
+              startWith(''),
+              map(value => this.filterLocalZoneList('')) // Pass empty string to reset the filter
+          );
+      }
+  });
+
     this.iAdminApiService.getLocZTypeInvMap({}).subscribe((res) => {
       if (res.isExecuted && res.data) {
         this.locZoneList = res.data;
@@ -296,8 +313,6 @@ isButtonDisabled: boolean = true;
         );
       } else {
         this.global.ShowToastr(ToasterType.Error, this.global.globalErrorMsg(), ToasterTitle.Error);
-        console.log("getLocZTypeInvMap", res.responseMessage);
-
       }
     });
 
@@ -331,7 +346,6 @@ getLocationZones() {
       }
     } else {
       this.global.ShowToastr(ToasterType.Error, this.global.globalErrorMsg(), ToasterTitle.Error);
-      console.log('LocationZone', res.responseMessage);
     }
   });
 }
@@ -556,14 +570,13 @@ performClear() {
         const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
             width: '560px',
             data: {
-                message: 'Clear Whole Location cannot proceed because the Allocated Pick or Allocated Put Away quantity is greater than zero.',
+                message: ConfirmationMessages.ClearWholeLocationPutAwayQuantity,
                 showOkButton: true,
                 hideCancel: true
             }
         });
 
         dialogRef.afterClosed().subscribe(() => {
-            console.log('Dialog closed due to count restriction');
             this.dialog.closeAll();
         });
     } else {
@@ -572,7 +585,7 @@ performClear() {
             width: '560px',
             data: {
                 heading: 'Clear Whole Location',
-                message: 'Click OK to clear all Inventory Map records matching Location Number (Zone + Carousal + Row + Shelf + Bin) Criteria!',
+                message: ConfirmationMessages.ConfirmationToClearAllInventoryMap,
                 showOkButton: true,
                 hideCancel: false
             }
@@ -584,7 +597,7 @@ performClear() {
                 this.iAdminApiService.updateInventoryMapClearWholeLocation(form.getRawValue()).subscribe(
                     (res) => {
                         if (res.isExecuted && res.data.pickPutAwayCount === 0) {
-                            console.log('Proceeding with clearing operation:', res);
+                            //Proceeding with clearing operation:', res
                             this.dialog.closeAll();
                             // Show success toast
                             this.global.ShowToastr(
@@ -593,25 +606,11 @@ performClear() {
                                 ToasterTitle.Success
                             );
 
-                            if (res.data.adjustMade === 'Yes') {
-                                console.log('Adjustment made successfully.');
-                                // Optionally, show another dialog here for adjustments
-                            } else {
-                                console.log('No adjustment made.');
-                                // Optionally, show a dialog for no adjustment
-                            }
-
-                            if (res.data.dynamic) {
-                                console.log('Dynamic clearing was involved.');
-                            } else {
-                                console.log('Non-dynamic clearing process.');
-                            }
-
                             this.dialog.closeAll(); // Close all dialogs
                         } else if (!res.isExecuted || res.data.pickPutAwayCount > 0) {
-                            console.log('Clear operation did not execute properly:', res);
+                            //Clear operation did not execute properly:', res 
                             if (res.responseMessage) {
-                                console.log('Response message from server:', res.responseMessage);
+                                //Response message from server:', res.responseMessage
                             }
                         }
                     },
@@ -620,7 +619,7 @@ performClear() {
                     }
                 );
             } else {
-                console.log('Clear operation canceled by the user.');
+                //Clear operation canceled by the user
             }
         });
     }
@@ -678,7 +677,6 @@ onSubmit(form: FormGroup<InventoryMapFormData>) {
           this.dialog.closeAll();
         } else {
           this.global.ShowToastr(ToasterType.Error, this.global.globalErrorMsg(), ToasterTitle.Error);
-          console.log("updateInventoryMap", res.responseMessage);
         }
       });
     } else {
@@ -721,7 +719,6 @@ onSubmit(form: FormGroup<InventoryMapFormData>) {
           this.dialog.closeAll();
         } else {
           this.global.ShowToastr(ToasterType.Error, this.global.globalErrorMsg(), ToasterTitle.Error);
-          console.log("createInventoryMap", res.responseMessage);
         }
       });
     }
@@ -818,12 +815,36 @@ onSubmit(form: FormGroup<InventoryMapFormData>) {
   private filterLocalZoneList(value: any): string[] {
     const filterValue = value.toLowerCase();
 
-    return this.locZoneList.filter(option => option.locationName.toLowerCase().includes(filterValue));
+    if (!this.addInvMapLocation.controls['zone'].value) {
+      return this.locZoneList;
   }
-  loadZones(zone: any) {
-    this.zoneList = this.locZoneList.filter(option => option.locationName.includes(zone.option.value));
-    this.addInvMapLocation.controls[TableConstant.zone].setValue(this.zoneList[0]?.zone);
-    this.updateItemNumber(TableConstant.zone, this.zoneList[0]?.zone);
+
+  // Filter based on locationName as before
+  return this.locZoneList.filter(option => 
+      option.locationName.toLowerCase().includes(filterValue)
+  );
+  }
+
+  loadLocationZones(type: LocationZoneType, index: number, event: MatOptionSelectionChange): void {
+    if (event?.isUserInput && event?.source?.selected) {
+      const selectedData = this.locZoneList?.[index];
+  
+      if (!selectedData) return;
+  
+      if(selectedData.zone == "" || selectedData.locationName == ""){
+        this.global.ShowToastr(ToasterType.Error, ToasterMessages.ZoneAndLocationNameNeedToBeSet, ToasterTitle.Warning);
+      }
+      
+      if (type === this.locationZoneType.Location) {
+        const zoneValue = selectedData.zone ?? '';
+        this.addInvMapLocation.controls[TableConstant.zone].setValue(zoneValue);
+        this.updateItemNumber(TableConstant.zone, zoneValue);
+      } else if (type === this.locationZoneType.Zone) {
+        const locationValue = selectedData.locationName ?? '';
+        this.addInvMapLocation.controls[TableConstant.Location].setValue(locationValue);
+        this.updateItemNumber(TableConstant.Location, locationValue);
+      }
+    }
   }
 
   zoneChecker(zone, location) { //To check if the zone and location are selected from dropdown.
@@ -867,7 +888,6 @@ onSubmit(form: FormGroup<InventoryMapFormData>) {
       }
       else {
         this.global.ShowToastr(ToasterType.Error, this.global.globalErrorMsg(), ToasterTitle.Error);
-        console.log("getItemNumDetail",res.responseMessage);
       }
 
     });
@@ -875,6 +895,9 @@ onSubmit(form: FormGroup<InventoryMapFormData>) {
 
   updateItemNumber(col?: string, val?: any) {
 
+    if (col === TableConstant.Location) {
+      this.location_name = val?.toString();
+    }
     if (col === TableConstant.zone) {
       this.zone = val?.toString();
     }
@@ -927,7 +950,7 @@ onSubmit(form: FormGroup<InventoryMapFormData>) {
           this.searchAutocompleteShipVia = res.data;
         },
         (error) => {
-          console.log(error);
+          //Error message
         }
       );
   }
@@ -944,7 +967,7 @@ onSubmit(form: FormGroup<InventoryMapFormData>) {
           this.searchAutocompleteShipName = res.data;
         },
         (error) => {
-          console.log(error);
+          //error message
         }
       );
   }

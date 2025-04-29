@@ -1,0 +1,12 @@
+// .item-bottom{
+//     border-bottom: 1px solid var(--clr-tertiary-50);
+// }
+
+.tote-details-section{
+    .row{
+        border-bottom: 1px solid var(--clr-tertiary-10);
+        &:last-child{
+            border:none
+        }
+    }
+}

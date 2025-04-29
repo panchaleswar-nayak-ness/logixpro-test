@@ -1,6 +1,7 @@
-import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { Component, Input, Output, EventEmitter, ViewChild, SimpleChanges } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { FloatLabelType } from '@angular/material/form-field';
+import { MatPaginator } from '@angular/material/paginator';
 import { MatTab, MatTabChangeEvent } from '@angular/material/tabs';
 import { Placeholders, ToasterTitle, ToasterType } from 'src/app/common/constants/strings.constants';
 import { TableContextMenuService } from 'src/app/common/globalComponents/table-context-menu-component/table-context-menu.service';
@@ -34,10 +35,14 @@ export class MoveLocationsComponent {
   @Input() recordsFiltered : number = 0;
   @Input() moveToDatasource;
   @Input() recordsFilteredTo : number = 0;
-  @Input() paginator : any;
-  @Input() paginatorTo : any;
+
+  @ViewChild('paginatorMoveFrom') paginator: MatPaginator;
+  @ViewChild('paginatorMoveTo') paginatorTo: MatPaginator;
+
   @Input() paginators : any;
 
+  @Input() moveFromFilter : string;
+  @Input() moveToFilter : string;
   @Output() onChangeLocationEmit = new EventEmitter();
   @Output() tabChangedEmit = new EventEmitter();
   @Output() sortChangeEmit = new EventEmitter();
@@ -76,6 +81,16 @@ export class MoveLocationsComponent {
     });
   }
 
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes['moveFromFilter']) {
+      this.paginator.pageIndex = 0;
+    }
+
+    if (changes['moveToFilter']) {
+      this.paginatorTo.pageIndex = 0;
+    }
+  }
+  
   onWarehouseSelect(warehouse: string) {
     console.log(warehouse);
     if(warehouse=='ALL'){
@@ -142,7 +157,6 @@ export class MoveLocationsComponent {
     setTimeout(() => {
       this.contextMenuService.updateContextMenuState(event, SelectedItem, FilterColumnName, FilterConditon, FilterItemType);
     }, 100);
-    this.handlePageEventEmit.emit(event);
   }
 
   isQuantityGreater(quantity: number): boolean {

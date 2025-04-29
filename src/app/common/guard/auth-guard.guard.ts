@@ -27,26 +27,26 @@ export class AuthGuardGuard implements CanActivate {
   async canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) { 
     const currentUrl: string = state.url;
     const previousUrl: string = this.currentTabDataService.getPreviousUrl() ?? '';
-
     const pathSet = state.url.split('?')[0]; 
     if(pathSet.indexOf('/login') > -1) {
       if(this.authService.IsloggedIn()) {
         window.location.href = '/#/dashboard'; 
-      return false;
-      } 
+        return false;
+      }
+      if(this.authService.IsConfigLogin()) {
+        return false;
+      }
       else return true;
     }
   if(pathSet == '/globalconfig'){ 
-    if(this.authService.IsloggedIn()) {
-      window.location.href = '/#/dashboard'; 
-    return false;
+    if(this.authService.IsConfigLogin()) {
+      this.router.navigate(['/globalconfig/home']); 
     } 
     if(this.authService.IsConfigLogin()) {
-       if(this.router.url.split('?')[0].indexOf('report-view') > -1){
+      if(this.router.url.split('?')[0].indexOf('report-view') > -1){
         return false;
-    }else{
-        window.location.href = '/#/globalconfig/home'; 
-        return false;
+      }else{
+        return true;
       }
     }  
     else{
@@ -62,7 +62,8 @@ export class AuthGuardGuard implements CanActivate {
       if (Storagepermission?.length) {
         this.ConfigJson = Storagepermission;
       } else {
-        this.http.get('assets/json/GlobalConfigrations.json').subscribe((res: any) => {
+        const url = `assets/json/GlobalConfigrations.json?v=${new Date().getTime()}`;
+        this.http.get(url).subscribe((res: any) => {
           if (res) {
             this.ConfigJson = res;
             localStorage.setItem('Permission', JSON.stringify(this.ConfigJson));
@@ -76,7 +77,7 @@ export class AuthGuardGuard implements CanActivate {
       let permission = this.ConfigJson.find(x => x.path.toLowerCase() == pathSet.toLowerCase());
       if(permission.Permission == true) return true;
       
-      else if (userPermission.filter(x => x.toLowerCase() == permission.Permission.toLowerCase()).length > 0) {
+      else if (userPermission && userPermission.filter(x => x.toLowerCase() == permission.Permission.toLowerCase()).length > 0) {
         const isProceed = this.currentTabDataService.CheckTabOnRoute(currentUrl, previousUrl);
         if (isProceed) 
         {
@@ -90,15 +91,11 @@ export class AuthGuardGuard implements CanActivate {
             return this.router.navigate(['/dashboard'], { queryParams: { error: 'multipletab'} });
           }
       } else{ 
-        window.location.href = '/#/login';
-        return false;
+        this.router.navigateByUrl('/login');
       }
     } else if (!this.ConfigJson?.length && this.authService.IsloggedIn()) {
       return true;
     }
-    //localStorage.clear();
-    this.localstorageService.clearLocalStorage();
-    window.location.href = '/#/login';
     return false;
   }
 }

@@ -1,77 +1,46 @@
-import { SelectionModel } from '@angular/cdk/collections';
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, QueryList, Renderer2, ViewChildren } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
-
-import { SharedService } from 'src/app/common/services/shared.service'; 
+import { SharedService } from 'src/app/common/services/shared.service';
 import labels from 'src/app/common/labels/labels.json';
 import { LicensingInvalidComponent } from 'src/app/admin/dialogs/licensing-invalid/licensing-invalid.component';
 import { Subject, takeUntil } from 'rxjs';
-import { ApiFuntions } from 'src/app/common/services/ApiFuntions';
 import { IGlobalConfigApi } from 'src/app/common/services/globalConfig-api/global-config-api-interface';
 import { GlobalConfigApiService } from 'src/app/common/services/globalConfig-api/global-config-api.service';
 import { GlobalService } from 'src/app/common/services/global.service';
-import { ToasterTitle, ToasterType ,DialogConstants} from 'src/app/common/constants/strings.constants';
-export interface PeriodicElement {
-  position: string;
-}
+import { ToasterTitle, ToasterType, DialogConstants, Style, UniqueConstants, StringConditions, AppLicensingDisplayedColumns, ConfirmationMessages, ToasterMessages } from 'src/app/common/constants/strings.constants';
+import { DeleteConfirmationComponent } from 'src/app/admin/dialogs/delete-confirmation/delete-confirmation.component';
+import { AppLicense, LicenseModule, SaveLicense } from 'src/app/common/Model/licensing';
+import { ApiResponse } from 'src/app/common/types/CommonTypes';
 
-const ELEMENT_DATA: PeriodicElement[] = [
-  { position: 'asdasd' },
-  { position: 'asdasd' },
-  { position: 'asdasd' },
-  { position: 'asdasd' },
-  { position: 'asdasd' },
-  { position: 'asdasd' },
-  { position: 'asdasd' },
-];
 @Component({
   selector: 'app-licensing',
   templateUrl: './licensing.component.html',
   styleUrls: ['./licensing.component.scss'],
 })
+
 export class LicensingComponent implements OnInit {
   sideBarOpen: boolean = true;
   onDestroy$: Subject<boolean> = new Subject();
   displayedColumns: string[] = [
-    'appname',
-    'displayname',
-    'license',
-    'numlicense',
-    'status',
-    'appurl',
-    'save',
+    AppLicensingDisplayedColumns.AppName,
+    AppLicensingDisplayedColumns.DisplayName,
+    AppLicensingDisplayedColumns.License,
+    AppLicensingDisplayedColumns.NumLicense,
+    AppLicensingDisplayedColumns.Status,
+    AppLicensingDisplayedColumns.AppURL,
+    AppLicensingDisplayedColumns.Save,
   ];
-  dataSource = new MatTableDataSource<PeriodicElement>(ELEMENT_DATA);
-  selection = new SelectionModel<PeriodicElement>(true, []);
-  licAppData;
-  /** Whether the number of selected elements matches the total number of rows. */
-  isAllSelected() {
-    const numSelected = this.selection.selected.length;
-    const numRows = this.dataSource.data.length;
-    return numSelected === numRows;
-  }
+  dataSource = new MatTableDataSource<AppLicense>();
+  licAppData: { [key: string]: LicenseModule; };
+  addingNew: boolean = false;
+  @ViewChildren('printerNameInput', { read: ElementRef }) printerNameInputs: QueryList<ElementRef>;
 
-  /** Selects all rows if they are not all selected; otherwise clear selection. */
-  toggleAllRows() {
-    if (this.isAllSelected()) {
-      this.selection.clear();
-      return;
-    }
-
-    this.selection.select(...this.dataSource.data);
-  }
-
-  sideBarToggler() {
-    this.sideBarOpen = !this.sideBarOpen;
-  }
-
-  public  iGlobalConfigApi: IGlobalConfigApi
+  public iGlobalConfigApi: IGlobalConfigApi
   constructor(
-    private Api: ApiFuntions,
-    private sharedService: SharedService,
-    
-    public globalConfigApi: GlobalConfigApiService,
-    private global:GlobalService
+    private readonly sharedService: SharedService,
+    public readonly globalConfigApi: GlobalConfigApiService,
+    private readonly global: GlobalService,
+    private readonly renderer: Renderer2,
   ) {
     this.iGlobalConfigApi = globalConfigApi;
   }
@@ -85,29 +54,39 @@ export class LicensingComponent implements OnInit {
       this.convertToObj();
     }
   }
-  async getAppLicense() {
-    // get can access
-    this.iGlobalConfigApi.AppLicense().subscribe(
-      {next: (res: any) => {
-        if (res?.data) {
-          this.licAppData = res.data;
-          this.convertToObj();
 
-          this.sharedService.setApp(this.licAppData);
-        }
-        else{
+  sideBarToggler() {
+    this.sideBarOpen = !this.sideBarOpen;
+  }
+
+  getAppLicense() {
+    this.iGlobalConfigApi.AppLicense().subscribe(
+      {
+        next: (res: ApiResponse<{ [key: string]: LicenseModule; }>) => {
+          if (res?.data) {
+            this.licAppData = res.data;
+            this.convertToObj();
+            this.sharedService.setApp(this.licAppData);
+          }
+          else {
+            this.global.ShowToastr(ToasterType.Error, this.global.globalErrorMsg(), ToasterTitle.Error);
+            console.log("AppLicense", res.responseMessage);
+          }
+        },
+        error: (error) => {
           this.global.ShowToastr(ToasterType.Error, this.global.globalErrorMsg(), ToasterTitle.Error);
-          console.log("AppLicense",res.responseMessage);
+          console.error('AppLicense', error);
         }
-      },
-      error: (error) => {}}
+      }
     );
   }
-  onInputValueChange(event, item, index) {
+
+  onInputValueChange(index: number) {
     this.dataSource.filteredData[index]['isButtonDisable'] = false;
   }
+
   convertToObj() {
-    const arrayOfObjects: any = [];
+    const arrayOfObjects: AppLicense[] = [];
     for (const key of Object.keys(this.licAppData)) {
       arrayOfObjects.push({
         appname: this.licAppData[key].info.name,
@@ -121,65 +100,119 @@ export class LicensingComponent implements OnInit {
     }
     this.dataSource = new MatTableDataSource(arrayOfObjects);
   }
-  saveLicense(item) {
-    let payload = {
+
+  saveLicense(item: AppLicense) {
+    const payload: SaveLicense = {
       LicenseString: item.license,
-      AppUrl:item.appurl,
-      DisplayName:item.displayname,
+      AppUrl: item.appurl,
+      DisplayName: item.displayname,
       AppName: item.appname
     };
     this.iGlobalConfigApi
       .ValidateLicenseSave(payload)
       .subscribe(
-        {next: (res: any) => {
-          if (res.isExecuted) {
-            this.getAppLicense();
-            this.global.ShowToastr(ToasterType.Success,res.responseMessage, ToasterTitle.Success);
-          }else if(!res.isExecuted){
-           
-
-            let dialogRef:any = this.global.OpenDialog(LicensingInvalidComponent, {
-              width: '550px',
-              autoFocus: DialogConstants.autoFocus,
-      disableClose:true,
-
-
-              data: {
-                displayName:item.displayname,
-                mode: '',
-              },
-            });
-            dialogRef
-              .afterClosed()
-              .pipe(takeUntil(this.onDestroy$))
-              .subscribe((result) => {
-                this.getAppLicense();
+        {
+          next: (res: ApiResponse<number | null>) => {
+            if (res.isExecuted) {
+              this.getAppLicense();
+              this.global.ShowToastr(ToasterType.Success, res.responseMessage, ToasterTitle.Success);
+            }
+            else {
+              let dialogRef = this.global.OpenDialog(LicensingInvalidComponent, {
+                width: '550px',
+                autoFocus: DialogConstants.autoFocus,
+                disableClose: true,
+                data: {
+                  displayName: item.displayname,
+                  mode: '',
+                },
               });
+              dialogRef
+                .afterClosed()
+                .pipe(takeUntil(this.onDestroy$))
+                .subscribe((result) => {
+                  this.getAppLicense();
+                });
+            }
+            this.addingNew = false;
+          },
+          error: (error) => {
+            this.global.ShowToastr(ToasterType.Error, labels.alert.went_worng, ToasterTitle.Error);
+            console.error('ValidateLicenseSave', error);
+            this.addingNew = false;
           }
-          else{
-            this.global.ShowToastr(ToasterType.Error, this.global.globalErrorMsg(), ToasterTitle.Error);
-            console.log("ValidateLicenseSave",res.responseMessage);
-          }
-        },
-        error: (error) => {
-          this.global.ShowToastr(ToasterType.Error,labels.alert.went_worng, ToasterTitle.Error);
-        }}
+        }
       );
   }
+
   addLincenseRow() {
-    this.dataSource.filteredData.push(this.createObjectNewConn());
+    this.addingNew = true;
+    this.dataSource.filteredData.splice(0, 0, this.createObjectNewConn());
     this.dataSource = new MatTableDataSource(this.dataSource.filteredData);
+    const lastIndex = this.dataSource.filteredData.length - 1;
+    setTimeout(() => {
+      const inputElements = this.printerNameInputs.toArray();
+      if (inputElements.length > lastIndex) {
+        const inputElement = inputElements[lastIndex].nativeElement as HTMLInputElement;
+        this.renderer.selectRootElement(inputElement).focus();
+      }
+    });
   }
-  createObjectNewConn() {
-    const newLicenceObj: any = {};
-    newLicenceObj.appname = '';
-    newLicenceObj.displayname = '';
-    newLicenceObj.license = '';
-    newLicenceObj.numlicense = '';
-    newLicenceObj.status = 'Invalid';
-    newLicenceObj.appurl = '';
-    newLicenceObj.isButtonDisable = true;
-    newLicenceObj.isNewRow = true; // Mark this as a new row
-    return newLicenceObj;
+
+  createObjectNewConn(): AppLicense {
+    const newLicenseObj: AppLicense = {
+      appname: '',
+      displayname: '',
+      license: '',
+      numlicense: 0,
+      status: 'Invalid',
+      appurl: '',
+      isButtonDisable: true,
+      isNewRow: true
+    };
+    return newLicenseObj;
+  }
+
+  removeLicense(License: AppLicense) {
+    const dialogRef = this.global.OpenDialog(DeleteConfirmationComponent, {
+      height: 'auto',
+      width: Style.w560px,
+      autoFocus: DialogConstants.autoFocus,
+      disableClose: true,
+      data: {
+        mode: 'remove-license',
+        ErrorMessage: ConfirmationMessages.DeleteLicenseConfirmation,
+        action: UniqueConstants.delete
+      },
+    });
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result === StringConditions.Yes) {
+        if (License.isNewRow) {
+          this.dataSource.filteredData = this.dataSource.filteredData.filter((item: AppLicense) => !item.isNewRow);
+          this.dataSource = new MatTableDataSource(this.dataSource.filteredData);
+          this.addingNew = false;
+        }
+        else {
+          this.iGlobalConfigApi.DeleteAppLicense(License.appname).subscribe(
+            {
+              next: (res: ApiResponse<boolean>) => {
+                if (res.isExecuted && res.data) {
+                  this.dataSource.filteredData = this.dataSource.filteredData.filter((item: AppLicense) => item.appname != License.appname);
+                  this.dataSource = new MatTableDataSource(this.dataSource.filteredData);
+                  this.global.ShowToastr(ToasterType.Success, labels.alert.delete, ToasterTitle.Success);
+                } else {
+                  this.global.ShowToastr(ToasterType.Error, ToasterMessages.DeleteFailed, ToasterTitle.Error);
+                  console.log("RemoveLicense", res.responseMessage);
+                }
+              },
+              error: (error) => {
+                this.global.ShowToastr(ToasterType.Error, this.global.globalErrorMsg(), ToasterTitle.Error);
+                console.error('RemoveLicense', error);
+              }
+            }
+          );
+        }
+      }
+    });
   }
 }

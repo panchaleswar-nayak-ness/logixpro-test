@@ -68,7 +68,6 @@ export class MainComponent implements OnInit {
   private subscription: Subscription = new Subscription();
 
   public  iGlobalConfigApi: IGlobalConfigApi;
-
   constructor(
     private sharedService: SharedService,
     private global: GlobalService,
@@ -116,25 +115,34 @@ export class MainComponent implements OnInit {
   }
 
   setApplicationData(data: AppNameByWorkstationResponse) {
-    data.wsAllAppPermission?.forEach((item, i) => {
-      let licences: { [key: string]: AppLicense;} | null = data.appLicenses;
-      for (const key in licences) {
-        if (item.includes(key) && licences[key].isLicenseValid) {
+  const licenses = data.appLicenses ?? {};
+  const wsApps = data.wsAllAppPermission ?? [];
+
+  wsApps.forEach((item) => {
+    for (const key in licenses) {
+      const license = licenses[key];
+
+      if (item.includes(key) && license?.isLicenseValid) {
+        const appInfo = license.info;
+        const nameInfo = this.appNameDictionary(item);
+
+        if (appInfo && nameInfo) {
           this.applicationData.push({
-            appname: licences[key].info.name,
-            displayname: licences[key].info.displayName,
-            license: licences[key].info.licenseString,
-            numlicense: licences[key].numLicenses,
-            info: this.appNameDictionary(item)!,
-            appurl: licences[key].info.url,
+            appname: appInfo.name,
+            displayname: appInfo.displayName,
+            license: appInfo.licenseString,
+            numlicense: license.numLicenses,
+            info: nameInfo,
+            appurl: appInfo.url,
             isButtonDisable: true,
           });
         }
       }
-    });
-    this.sortAppsData();
-    
-  }
+    }
+  });
+
+  this.sortAppsData();
+}
 
   appNameDictionary(appName) {
     let routes:{
@@ -224,11 +232,11 @@ export class MainComponent implements OnInit {
   }
 
   sortAppsData() {
-    this.applicationData.sort(function (a, b) {
-      let nameA = a.info.name.toLowerCase(), nameB = b.info.name.toLowerCase();
-      if (nameA < nameB) return -1; //sort string ascending
-      if (nameA > nameB) return 1;
-      return 0; //default return value (no sorting)
+    this.applicationData?.sort((a, b) => {
+      const nameA = a?.info?.name?.toLowerCase() || '';
+      const nameB = b?.info?.name?.toLowerCase() || '';
+      
+      return nameA.localeCompare(nameB);
     });
   }
 

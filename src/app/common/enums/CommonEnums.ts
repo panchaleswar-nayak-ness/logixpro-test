@@ -1,7 +1,8 @@
 export enum OperationTypes {
     NUMERIC,
     STRING,
-    EQUALS
+    EQUALS,
+    DATE
 }
 
 export enum KeyboardCodes {
@@ -103,4 +104,9 @@ export enum KeyboardCodes {
     BACK_SLASH = 220,
     CLOSE_BRACKET = 221,
     SINGLE_QUOTE = 222,
+}
+
+export enum LocationZoneType {
+    Location = 'Location',
+    Zone = 'Zone'
 }

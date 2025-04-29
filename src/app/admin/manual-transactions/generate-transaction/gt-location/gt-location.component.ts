@@ -1,4 +1,5 @@
 import { Component, Input } from '@angular/core';
+import { ColumnAlias } from 'src/app/common/types/CommonTypes';
 
 @Component({
   selector: 'app-gt-location',
@@ -6,6 +7,7 @@ import { Component, Input } from '@angular/core';
   styleUrls: []
 })
 export class GtLocationComponent {
+  @Input() fieldNames: ColumnAlias;
   @Input() zone: any;
   @Input() row: any;
   @Input() shelf: any;

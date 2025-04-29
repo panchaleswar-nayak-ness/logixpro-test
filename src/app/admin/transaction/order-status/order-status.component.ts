@@ -3,6 +3,7 @@ import { AuthService } from 'src/app/common/init/auth.service';
 import { ApiFuntions } from 'src/app/common/services/ApiFuntions';
 import { CurrentTabDataService } from '../../inventory-master/current-tab-data-service';
 import { NumberHolder, StringHolder } from 'src/app/common/Model/holders';
+import { ColumnAlias } from 'src/app/common/types/CommonTypes';
 
 @Component({
   selector: 'app-order-status',
@@ -23,6 +24,7 @@ export class OrderStatusComponent implements OnInit {
   orderStatusNext = [];
   clearEvent: Event;
   clearFromList: Event;
+  @Input() fieldNames: ColumnAlias;
   event: Event;
   userData;
   orderStatusTable:any

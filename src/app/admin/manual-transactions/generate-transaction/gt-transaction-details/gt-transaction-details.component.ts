@@ -1,7 +1,9 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { WarehouseComponent } from 'src/app/admin/dialogs/warehouse/warehouse.component';
-import { DialogConstants ,StringConditions} from 'src/app/common/constants/strings.constants';
+import { DialogConstants, StringConditions, ToasterType,ToasterTitle,ToasterMessages } from 'src/app/common/constants/strings.constants';
 import { GlobalService } from 'src/app/common/services/global.service';
+import { IInductionManagerApiService } from 'src/app/common/services/induction-manager-api/induction-manager-api-interface';
+import { InductionManagerApiService } from 'src/app/common/services/induction-manager-api/induction-manager-api.service';
 
 @Component({
   selector: 'app-gt-transaction-details',
@@ -10,8 +12,13 @@ import { GlobalService } from 'src/app/common/services/global.service';
 })
 export class GtTransactionDetailsComponent {
   inputField: any;
-
-  constructor(private global: GlobalService) {}
+  public iInductionManagerApi:IInductionManagerApiService;
+  constructor(
+    private readonly global: GlobalService,
+    public readonly inductionManagerApi: InductionManagerApiService,
+  ) { 
+    this.iInductionManagerApi = inductionManagerApi;
+  }
 
   @Input() item: any = '';
   @Input() emergency: any = '';
@@ -86,5 +93,16 @@ export class GtTransactionDetailsComponent {
     };
     fieldValues[fieldName] = this[fieldName];
     this.fieldValuesChanged.emit(fieldValues);
+  }
+
+  newToteIdFocusOut() {
+    if (this.toteID != "") {
+      this.iInductionManagerApi.ValidateTote({ toteID: this.toteID }).subscribe((res) => {
+        if (res.isExecuted && !res.data) {
+          this.toteID = "";
+          this.global.ShowToastr(ToasterType.Error, ToasterMessages.ToteIsInUse, ToasterTitle.InvalidTote);
+        }
+      });
+    }
   }
 }

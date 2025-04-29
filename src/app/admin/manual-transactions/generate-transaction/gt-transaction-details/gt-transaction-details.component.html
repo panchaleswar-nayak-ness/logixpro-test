@@ -94,7 +94,7 @@
                 <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline">
                     <mat-label>Tote ID</mat-label>
                     <input [disabled]="!item" [(ngModel)]="toteID" matInput type="text" maxlength="50"
-                        value="Value" (ngModelChange)="onFieldChange(toteID)">
+                        value="Value" (ngModelChange)="onFieldChange(toteID)" (focusout)="newToteIdFocusOut()">
                 </mat-form-field>
             </div>
         </div>

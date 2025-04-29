@@ -10,7 +10,7 @@ import { GlobalConfigApiService } from 'src/app/common/services/globalConfig-api
 import { IUserAPIService } from '../services/user-api/user-api-interface';
 import { UserApiService } from '../services/user-api/user-api.service';
 import { GlobalService } from '../services/global.service';
-import { ToasterTitle, ToasterType } from '../constants/strings.constants';
+import { ToasterTitle, ToasterType,ToasterMessages } from '../constants/strings.constants';
 import { SharedService } from '../services/shared.service';
 
 @Injectable()
@@ -49,7 +49,7 @@ export class HeaderInterceptor implements HttpInterceptor {
           this.iGlobalConfigApi.configLogout().subscribe((res: any) => {
             if (res.isExecuted) {       
               this.dialog.closeAll();
-              this.global.ShowToastr(ToasterType.Error, 'Token Expire', ToasterTitle.Error);
+              this.global.ShowToastr(ToasterType.Error, ToasterMessages.SessionTimeOut, ToasterTitle.Error);
               window.location.href = "/#/globalconfig"; 
             } else this.global.ShowToastr(ToasterType.Error, res.responseMessage, ToasterTitle.Error);
           });    
@@ -60,7 +60,7 @@ export class HeaderInterceptor implements HttpInterceptor {
               if(lastRoute != "") localStorage.setItem('LastRoute', lastRoute);
               if(!localStorage.getItem('LastRoute')) localStorage.setItem('LastRoute', this.router.url);
               this.dialog.closeAll();
-              this.global.ShowToastr(ToasterType.Error,'Token Expire', ToasterTitle.Error);
+              this.global.ShowToastr(ToasterType.Error,ToasterMessages.SessionTimeOut, ToasterTitle.Error);
               if((this.router.url.indexOf('login') <= -1)) localStorage.setItem('LastRoute', this.router.url);
               this.router.navigate(['/login']);
             } else this.global.ShowToastr(ToasterType.Error, res.responseMessage, ToasterTitle.Error);
@@ -76,8 +76,10 @@ export class HeaderInterceptor implements HttpInterceptor {
       const responseMessage = err.error?.ResponseMessage ? `(${err.error.ResponseMessage})` : '';
       const errorMessage = 'Unauthorize access ' + responseMessage;
       this.global.ShowToastr(ToasterType.Error, errorMessage, ToasterTitle.Error);
-      this.router.navigate(['/dashboard']);
-      this.sharedService.BroadCastMenuUpdate("/dashboard");
+      if(!this.authService.isConfigUser()){
+        this.router.navigate(['/dashboard']);
+        this.sharedService.BroadCastMenuUpdate("/dashboard");
+      }
     }
 
     return of(err.message);

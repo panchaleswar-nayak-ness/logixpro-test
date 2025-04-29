@@ -24,13 +24,10 @@
                                     <!--   #location_name  -->
                                     <input placeholder="Location Name" aria-label="Location Name" matInput maxlength="50"
                                         formControlName="location" [matAutocomplete]="auto" (focus)="focusinmethod()" (focusout)="focusoutmethod()">
-                                    <mat-autocomplete class="br-14 otocompletestyle" autoActiveFirstOption #auto="matAutocomplete"
-                                        (optionSelected)="loadZones($event)">
-
-
+                                    <mat-autocomplete class="br-14 otocompletestyle" autoActiveFirstOption #auto="matAutocomplete">
                                         <h6 class="card-header matAutoCompHeader stickyHeader"> <span class="locationStickyHeaderStyle"> Location</span> <span class="zoneStickyHeaderStyle">Zone</span></h6>
-                                        <mat-option class="" *ngFor="let option of filteredOptions | async"
-                                            [value]="option.locationName">
+                                        <mat-option class="" *ngFor="let option of filteredOptions | async; let i = index"
+                                            [value]="option.locationName" (onSelectionChange)="loadLocationZones(locationZoneType.Location,i,$event)">
                                             <div class="loc_option">
                                                 <span class="optionLocationNameStyle">{{option.locationName}}</span> <span class="optionZoneStyle">{{option.zone}}</span>
                                             </div>
@@ -78,12 +75,10 @@
                                     <mat-label>Zone</mat-label>
                                     <input  maxlength="2" placeholder="Zone" aria-label="Zone" matInput
                                         formControlName="zone" [matAutocomplete]="autoZone">
-                                    <mat-autocomplete autoActiveFirstOption #autoZone="matAutocomplete" class="br-14 otocompletestyle"
-                                        (optionSelected)="loadZones($event)">
-
+                                    <mat-autocomplete autoActiveFirstOption #autoZone="matAutocomplete" class="br-14 otocompletestyle">
                                         <h6 class="card-header matAutoCompHeader stickyHeader"><span class="zoneStickyHeaderStyle zone-padding">Zone</span> <span class="locationStickyHeaderStyle location-padding">Location</span></h6>
-                                        <mat-option *ngFor="let option of filteredOptions | async"
-                                            [value]="option.zone">
+                                        <mat-option *ngFor="let option of filteredOptions | async; let i = index"
+                                            [value]="option.zone"  (onSelectionChange)="loadLocationZones(locationZoneType.Zone,i,$event)">
                                             <div class="loc_option">
                                                 <span class="optionZoneStyle">{{option.zone}}  </span> <span class="optionLocationNameStyle">{{option.locationName}}</span>
                                             </div>
@@ -99,7 +94,7 @@
                         <div class="row">
                             <div class="col-xl-6 col-md-12 mb-2">
                                 <mat-form-field class="d-block w-100 " appearance="outline">
-                                    <mat-label>Carousel</mat-label>
+                                    <mat-label>{{carouselAlias}}</mat-label>                                    
                                     <input [NumbersOnly]="true" matInput formControlName="carousel" #carousel   name="carousel"  [maxlength]="1" (change)="updateItemNumber('carousel', carousel.value)">
                                 </mat-form-field>
                                 <div class="error" *ngIf="hasError('carousel', 'required')">This field is required.</div>
@@ -108,7 +103,7 @@
                             </div>
                             <div class="col-xl-6 col-md-12 mb-2">
                                 <mat-form-field class="d-block w-100" appearance="outline">
-                                    <mat-label>Row</mat-label>
+                                    <mat-label>{{rowAlias}}</mat-label>
                                     <input maxlength="5" matInput formControlName="row" #row   name="row" (change)="updateItemNumber('row', row.value)">
                                 </mat-form-field>
                                 <div class="error" *ngIf="hasError('row', 'required')">This field is required.</div>
@@ -118,7 +113,7 @@
                         <div class="row">
                             <div class="col-xl-6 col-md-12 mb-2">
                                 <mat-form-field class="d-block w-100 " appearance="outline">
-                                    <mat-label>Shelf</mat-label>
+                                    <mat-label>{{shelfAlias}}</mat-label>
                                     <input  maxlength="2"  matInput formControlName="shelf" #shelf   name="shelf" (change)="updateItemNumber('shelf', shelf.value)">
                                 </mat-form-field>
                                 <div class="error" *ngIf="hasError('shelf', 'required')">This field is required.</div>
@@ -126,7 +121,7 @@
                             </div>
                             <div class="col-xl-6 col-md-12 mb-2">
                                 <mat-form-field class="d-block w-100" appearance="outline">
-                                    <mat-label>Bin</mat-label>
+                                    <mat-label>{{binAlias}}</mat-label>
                                     <input  maxlength="3"  matInput formControlName="bin" #bin   name="bin" (change)="updateItemNumber('bin', bin.value)">
                                 </mat-form-field>
                                 <div class="error" *ngIf="hasError('bin', 'required')">This field is required.</div>

@@ -330,22 +330,22 @@ UserField10:string = this.fieldMappings.userField10;
     },
     {
       columnDef: zoneType.carousel,
-      header: TableConstant.Carousel,
+      header: this.fieldMappings?.carousel || TableConstant.Carousel,
       cell: (element: any) => `${element.carousel}`,
     },
     {
       columnDef: Column.Row,
-      header: TableConstant.Row,
+      header: this.fieldMappings?.row || TableConstant.Row,
       cell: (element: any) => `${element.row}`,
     },
     {
       columnDef: TableConstant.shelf,
-      header: TableConstant.shelf,
+      header: this.fieldMappings?.shelf || TableConstant.shelf,
       cell: (element: any) => `${element.shelf}`,
     },
     {
       columnDef: ColumnDef.Bin,
-      header: TableConstant.Bin,
+      header: this.fieldMappings?.bin || TableConstant.Bin,
       cell: (element: any) => `${element.bin}`,
     },
     {

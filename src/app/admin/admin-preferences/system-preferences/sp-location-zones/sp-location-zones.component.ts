@@ -8,6 +8,7 @@ import { IAdminApiService } from 'src/app/common/services/admin-api/admin-api-in
 import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.service';
 import { GlobalService } from 'src/app/common/services/global.service';
 import { zoneType, ToasterMessages, ToasterType ,ToasterTitle,ResponseStrings,DialogConstants,UniqueConstants,TableConstant,Style} from 'src/app/common/constants/strings.constants';
+import { ColumnAlias } from 'src/app/common/types/CommonTypes';
 
 @Component({
   selector: 'app-sp-location-zones',
@@ -15,8 +16,11 @@ import { zoneType, ToasterMessages, ToasterType ,ToasterTitle,ResponseStrings,Di
   styleUrls: ['./sp-location-zones.component.scss'],
 })
 export class SpLocationZonesComponent implements OnInit {
+  prevLocation : string;
+  fieldMappings : ColumnAlias = JSON.parse(localStorage.getItem('fieldMappings') ?? '{}');
+
   toggleSwitches = [
-    { label: TableConstant.Carousel, name: zoneType.carousel, property: zoneType.carousel },
+    { label: this.fieldMappings?.carousel || TableConstant.Carousel, name: zoneType.carousel, property: zoneType.carousel },
     { label: 'Staging Zone', name: 'stagingZone', property: 'stagingZone' },
     {
       label: 'CCS Auto Induct',
@@ -115,7 +119,7 @@ export class SpLocationZonesComponent implements OnInit {
   }
 
   zoneChange(zone: any, check, type?) {
-  
+    
     if (!check) {
       if (type === zoneType.carousel) {
         if (zone.carousel) {
@@ -204,7 +208,12 @@ export class SpLocationZonesComponent implements OnInit {
         locationZone: updatedObj,
       };
 
-      this.iAdminApiService.LocationZoneSave(payload).subscribe((res) => { });
+      this.iAdminApiService.LocationZoneSave(payload).subscribe((res) => {
+        if (!res.isExecuted) {
+          zone.locationName = this.prevLocation;
+          this.global.ShowToastr(ToasterType.Error, res.responseMessage, ToasterTitle.Error);
+        }
+       });
     }
     if (type == 'kanbanZone' || type=='allocable'){
       this.conflictCheck(zone);
@@ -238,6 +247,7 @@ export class SpLocationZonesComponent implements OnInit {
   }
 
   locationName(item: any) {
+    this.prevLocation=item.locationName;
     let dialogRef: any = this.global.OpenDialog(LocationNameComponent, {
       height: 'auto',
       width: Style.w786px,

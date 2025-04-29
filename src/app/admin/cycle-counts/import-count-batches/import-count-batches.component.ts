@@ -19,6 +19,8 @@ import { Router } from '@angular/router';
 import { AppRoutes } from 'src/app/common/constants/menu.constants';
 import { MatSelect } from '@angular/material/select';
 import { LocalStorageService } from 'src/app/common/services/LocalStorage.service';
+import { ImportBatchCountPayload, WorkstationItems, WorkstationLocations } from 'src/app/common/Model/cycle-count';
+import { CycleCountConfirmMessageDialogComponent } from '../../dialogs/cycle-count-confirm-message-dialog/cycle-count-confirm-message-dialog.component';
 
 export interface PeriodicElement {
   invMapID:number;
@@ -250,194 +252,184 @@ export class ImportCountBatchesComponent implements OnInit {
     if (!this.uploadedFileName) {
       const includeEmpty = this.filtersForm.value.includeEmpty;
       const includeOther = this.filtersForm.value.includeOther;
-      const filterdata = this.filterData;  // Ensure you have the correct filter data here
+      const filterdata = this.filterData; // Ensure you have the correct filter data here
       const payload: { items: string; importBy: string, includeEmpty: boolean, includeOther: boolean } = {
-        items: filterdata,  // Pass filterdata instead of commaSeparatedItems
+        items: filterdata, // Pass filterdata instead of commaSeparatedItems
         importBy: this.selectedImportType,
         includeEmpty: includeEmpty,
         includeOther: includeOther
       };
-
+  
       this.iAdminApiService.GetImportBatchCount(payload).subscribe(
         (res: { isExecuted: boolean; data: any; responseMessage: string }) => {
-          console.log('API Response:', res);
-
           if (res.isExecuted) {
-
-            if (res.data && res.data.item2 && res.data.item2.length > 0) {
-              this.updateTableData(res.data.item2);
-              console.log('Data updated successfully.');
-            } else {
-
-            }
+            if (res.data && res.data.inventoryList && res.data.inventoryList.length > 0) 
+              this.updateTableData(res.data.inventoryList);
+            
           } else {
             this.global.ShowToastr(ToasterType.Error, res.responseMessage, ToasterTitle.Error);
-            console.log('API Error Response:', res.responseMessage);
           }
         },
         (err: Error) => {
-          console.error('Error importing batch count:', err);
           this.global.ShowToastr(ToasterType.Error, 'Failed to import data.', ToasterTitle.Error);
         }
       );
       return;
     }
-
+  
     const fileInput = document.querySelector('input[type="file"]') as HTMLInputElement;
-
-  if (fileInput?.files?.length) {
-    const file = fileInput.files[0];
-    const reader = new FileReader();
-
-    reader.onload = (e: ProgressEvent<FileReader>) => {
-      const result = e.target?.result as ArrayBuffer;
-      const data = new Uint8Array(result);
-      const workbook = XLSX.read(data, { type: 'array' });
-
-      const sheetName = workbook.SheetNames[0];
-      const sheet = workbook.Sheets[sheetName];
-
-      const excelData: (string | number | null)[][] = XLSX.utils.sheet_to_json(sheet, { header: 1 });
-
-      const itemsArray: string[] = excelData
+  
+    if (fileInput?.files?.length) {
+      const file = fileInput.files[0];
+      const reader = new FileReader();
+  
+      reader.onload = (e: ProgressEvent<FileReader>) => {
+        const result = e.target?.result as ArrayBuffer;
+        const data = new Uint8Array(result);
+        const workbook = XLSX.read(data, { type: 'array' });
+  
+        const sheetName = workbook.SheetNames[0];
+        const sheet = workbook.Sheets[sheetName];
+  
+        const excelData: (string | number | null)[][] = XLSX.utils.sheet_to_json(sheet, { header: 1 });
+  
+        // Updated logic to match FilterItemNumbersComponentCycleCount
+        const itemsStr = excelData
         .flat()
-        .filter((item) => item !== null && item !== '') as string[];
+        .filter((item) => item !== null && item !== '') // Remove null and empty items
+        .map(item => String(item).trim()) // Convert to string and trim
+        .join('\n'); // Join with new lines to mimic the input format
 
-      const commaSeparatedItems = itemsArray.join(',');
+        let itemsArray = itemsStr
+        .split(/[\n\r]+/) // Split by new lines
+        .map(item => item.trim()) // Trim each item to remove starting/trailing spaces
+        .filter(item => item !== ''); // Remove empty lines if any
 
-      const includeEmpty = this.filtersForm.value.includeEmpty;
-      const includeOther = this.filtersForm.value.includeOther;
-
-      const payload: { items: string; importBy: string, includeEmpty: boolean, includeOther: boolean } = {
-        items: commaSeparatedItems,
-        importBy: this.selectedImportType,
-        includeEmpty: includeEmpty,
-        includeOther: includeOther
-      };
-
-      this.iAdminApiService.GetImportBatchCount(payload).subscribe(
-
-        (res: { isExecuted: boolean; data: any; responseMessage: string }) => {
-          console.log('API Response:', res);
-
-          if (res.isExecuted) {
-
-            if (res.data && res.data.item1 && res.data.item1.length > 0 && !skipDialog) {
-              let heading = '';
-              let message = '';
-              let message2='';
-
+        const commaSeparatedItems = itemsArray.join(','); // Join into a comma-separated string
+  
+        const includeEmpty = this.filtersForm.value.includeEmpty;
+        const includeOther = this.filtersForm.value.includeOther;
+  
+        const payload: ImportBatchCountPayload = {
+          items: commaSeparatedItems,
+          importBy: this.selectedImportType,
+          includeEmpty: includeEmpty,
+          includeOther: includeOther
+        };
+  
+        this.iAdminApiService.GetImportBatchCount(payload).subscribe(
+          (res: { isExecuted: boolean; data: any; responseMessage: string }) => {
+  
+            if (res.isExecuted) {
+              if (res.data && res.data.missingValues && res.data.missingValues.length > 0 
+                 || (res.data.locationWithWSNameList?.length > 0 || res.data.itemNumberWithWSNameList?.length > 0
+                  || res.data.locationExistsList?.length > 0 || res.data.itemNumberExistsList?.length > 0)) {
+                let heading = '';
+                let notFoundLocations: string[] = [];
+                let cycleCountLocations: string[] = [];
+                let workstationGroups: WorkstationLocations[] = [];
+                let notFoundItems: string[] = [];
+                let cycleCountItems: string[] = [];
+                let itemWorkstationGroups: WorkstationItems[] = [];
                 if (this.selectedImportType === 'Location') {
-
-                    // for location exists in db
-                    if (res.data.item3 && res.data.item3.length > 0) {
-
-                        heading = 'Location(s) Not Found';
-                        message = `The following location(s) could not be imported as they are in another user's queue or have existing cycle count transactions: [${res.data.item3.join(', ')}]`;
-
-                        // for some location exists in db and some are not in db
-                        if (res.data.item4 && res.data.item4.length > 0) {
-                            message2 = `The following location(s) do not exist: [${res.data.item4.join(', ')}]`;
-                        }
-
-                    } else {
-                        // for not showing message dialog box if it is exists in empty locations
-                        if ((res.data.item3.length === 0) && (res.data.item4.length === 0)) {
-                            this.dialogRef.close({
-                                filterItemNumbersText: this.data,
-                                filterItemNumbersArray: itemsArray,
-                                filterData: commaSeparatedItems,
-                            });
-                            return
-                        }
-                        // for showing no location exists in db
-                        else {
-                            heading = 'Location(s) Not Found';
-                            message = `The following location(s) do not exist: [${res.data.item1.join(', ')}]`;
-                        }
+                  if (
+                    (res.data.locationExistsList && res.data.locationExistsList.length > 0) ||
+                    (res.data.locationWithWSNameList && res.data.locationWithWSNameList.length > 0)
+                  ) {
+                    heading = 'Location(s) Not Found';
+                    cycleCountLocations = res.data.locationExistsList || [];
+                    workstationGroups = res.data.locationWithWSNameList || [];
+  
+                    if (res.data.locationNotExistsList && res.data.locationNotExistsList.length > 0) {
+                      notFoundLocations = res.data.locationNotExistsList;
                     }
+                  } else {
+                    if (
+                      (res.data.locationExistsList?.length === 0 || !res.data.locationExistsList) &&
+                      (res.data.locationNotExistsList?.length === 0 || !res.data.locationNotExistsList) &&
+                      (res.data.locationWithWSNameList?.length === 0 || !res.data.locationWithWSNameList)
+                    ) {
+                      this.dialogRef.close({
+                        filterItemNumbersText: this.data,
+                        filterItemNumbersArray: itemsArray,
+                        filterData: commaSeparatedItems,
+                      });
+                      return;
+                    } else {
+                      heading = 'Location(s) Not Found';
+                      notFoundLocations = res.data.missingValues || [];
+                    }
+                  }
                 } else if (this.selectedImportType === this.ItemNumber) {
-
-                    // for item exists in db
-                    if (res.data.item3 && res.data.item3.length > 0) {
-
-                        heading = 'Item(s) Not Found';
-                        message = `The following item(s) could not be imported as they are in another user's queue or have existing cycle count transactions: [${res.data.item3.join(', ')}]`;
-
-                        // for some items exists in db and some are not in db
-                        if (res.data.item4 && res.data.item4.length > 0) {
-                            message2 = `The following item(s) do not exist: [${res.data.item4.join(', ')}]`;
-                        }
-
-                    } else {
-                        // for not showing message dialog box if it is exists in empty item
-                        if ((res.data.item3.length === 0) && (res.data.item4.length === 0)) {
-                            this.dialogRef.close({
-                                filterItemNumbersText: this.data,
-                                filterItemNumbersArray: itemsArray,
-                                filterData: commaSeparatedItems,
-                            });
-                            return
-                        }
-                        // for showing no location exists in db
-                        else {
-                            heading = 'Items(s) Not Found';
-                            message = `The following item(s) do not exist: [${res.data.item1.join(', ')}]`;
-                        }
+                  if (
+                    (res.data.itemNumberExistsList && res.data.itemNumberExistsList.length > 0) ||
+                    (res.data.itemNumberWithWSNameList && res.data.itemNumberWithWSNameList.length > 0)
+                  ) {
+                    heading = 'Item(s) Not Found';
+                    cycleCountItems = res.data.itemNumberExistsList || [];
+                    itemWorkstationGroups = res.data.itemNumberWithWSNameList || [];
+  
+                    if (res.data.itemNumberNotExistsList && res.data.itemNumberNotExistsList.length > 0) {
+                      notFoundItems = res.data.itemNumberNotExistsList;
                     }
+                  } else {
+                    if (
+                      (res.data.itemNumberExistsList?.length === 0 || !res.data.itemNumberExistsList) &&
+                      (res.data.itemNumberNotExistsList?.length === 0 || !res.data.itemNumberNotExistsList) &&
+                      (res.data.itemNumberWithWSNameList?.length === 0 || !res.data.itemNumberWithWSNameList)
+                    ) {
+                      this.dialogRef.close({
+                        filterItemNumbersText: this.data,
+                        filterItemNumbersArray: itemsArray,
+                        filterData: commaSeparatedItems,
+                      });
+                      return;
+                    } else {
+                      heading = 'Item(s) Not Found';
+                      notFoundItems = res.data.missingValues || [];
+                    }
+                  }
                 }
-
-              const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
-                width: '560px',
-                data: {
-                  heading: heading,
-                  message: message,
-                  message2: message2,
-                  buttonFields: false,
-                  threeButtons: false,
-                  singleButton: true,
-                  customButtonText: false,
-                  btn1Text: 'Ok',
-                  hideCancel: true
-                }
-              });
-
-              dialogRef.afterClosed().subscribe(() => {
-                console.log('Dialog closed, proceeding with import.');
-
-                if (res.data && res.data.item2 && res.data.item2.length > 0) {
-                  this.updateTableData(res.data.item2);
-                  console.log('Data updated successfully.');
-                } else {
-
-                }
-              });
-            } else if (res.data && res.data.item2 && res.data.item2.length > 0) {
-
-              this.updateTableData(res.data.item2);
-              console.log('Data updated successfully without dialog.');
+                if(!skipDialog){// handle checkboxes case 
+                  const dialogRef = this.dialog.open(CycleCountConfirmMessageDialogComponent, {
+                    width: '560px',
+                    data: {
+                      heading: heading,
+                      importType: this.selectedImportType,
+                      notFoundLocations: notFoundLocations,
+                      cycleCountLocations: cycleCountLocations,
+                      workstationGroups: workstationGroups,
+                      notFoundItems: notFoundItems,
+                      cycleCountItems: cycleCountItems,
+                      itemWorkstationGroups: itemWorkstationGroups
+                    }
+                  });
+                  
+                dialogRef.afterClosed().subscribe(() => {
+                  if (res.data && res.data.inventoryList && res.data.inventoryList.length > 0) {
+                    this.updateTableData(res.data.inventoryList);
+                  }
+                });
+              } else if (res.data && res.data.inventoryList && res.data.inventoryList.length > 0) {
+                this.updateTableData(res.data.inventoryList);
+              }
+              } else if (res.data && res.data.inventoryList && res.data.inventoryList.length > 0) 
+                this.updateTableData(res.data.inventoryList);
             } else {
-
-              console.log('No item2 data found in the API response.');
+              this.global.ShowToastr(ToasterType.Error, res.responseMessage, ToasterTitle.Error);
             }
-          } else {
-            this.global.ShowToastr(ToasterType.Error, res.responseMessage, ToasterTitle.Error);
-            console.log('API Error Response:', res.responseMessage);
+          },
+          (err: Error) => {
+            this.global.ShowToastr(ToasterType.Error, 'Failed to import data.', ToasterTitle.Error);
           }
-        },
-        (err: Error) => {
-          console.error('Error importing batch count:', err);
-          this.global.ShowToastr(ToasterType.Error, 'Failed to import data.', ToasterTitle.Error);
-        }
-      );
-    };
-
-    reader.readAsArrayBuffer(file);
-  } else {
-    this.global.ShowToastr(ToasterType.Error, "No file found.", ToasterTitle.Error);
+        );
+      };
+  
+      reader.readAsArrayBuffer(file);
+    } else {
+      this.global.ShowToastr(ToasterType.Error, "No file found.", ToasterTitle.Error);
+    }
   }
-  }
-
 
 openFilterItemNumbersDialog(): void {
 
@@ -455,13 +447,10 @@ openFilterItemNumbersDialog(): void {
 
       this.selectedFilterBy = '';
       if (result && result.responseData && result.filterData) {
-          console.log('Filtered Item Numbers Response Data:', result.responseData);
-          console.log('Filtered Data:', result.filterData);
           this.filterData=result.filterData;
          this.updateTableData(result.responseData);
       }
       if (result?.filterData) {
-       console.log('Filtered Data:', result.filterData);
       this.filterData=result.filterData;
       // this.updateTableData(result.responseData);
     }
@@ -507,7 +496,6 @@ openFilterItemNumbersDialog(): void {
         } else {
 
           this.global.ShowToastr(ToasterType.Error,ToasterMessages.SomethingWentWrong, ToasterTitle.Error);
-          console.log("CycleCountQueueInsert",res.responseMessage);
           this.close();
         }
       },
@@ -561,7 +549,6 @@ openFilterItemNumbersDialog(): void {
                     ToasterTitle.Error
 
                   );
-                  console.log("CycleCountQueueInsert",res.responseMessage);
                   this.close();
                 }
               },
