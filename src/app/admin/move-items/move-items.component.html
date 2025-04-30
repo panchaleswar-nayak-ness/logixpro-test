@@ -67,6 +67,8 @@
                     (sortChangeToItemsEmit)="sortChangeToItems($event)"
                     (handlePageEventToEmit)="handlePageEventTo($event)"
                     (activeTrigger)="isActiveTrigger = $event"
+                    (fromPageSizeEmit)="this.endRow = $event"
+                    (toPageSizeEmit)="this.endRowTo = $event"
                     (itemNumberSearchEmit)="itemNo = $event;this.itemNumberSearch.next($event)">
                 </app-move-locations>
             </mat-card-content>

@@ -818,8 +818,8 @@ formatDateTimeToLocal(dateString) {
   optionSelected(filter : string) {
     if (this.tableType === StringConditions.MoveFrom) this.moveFromFilter = filter;
     else if(this.tableType === StringConditions.MoveTo) this.moveToFilter = filter;
-    this.resetFromFilters();
-    this.resetToFilters();
+    // this.resetFromFilters();
+    // this.resetToFilters();
     // this.resetPaginationFrom();
     this.getMoveItemList(this.tableType);  
     this.isActiveTrigger = false;
