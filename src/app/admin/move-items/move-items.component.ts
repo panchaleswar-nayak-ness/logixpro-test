@@ -336,6 +336,7 @@ export class MoveItemsComponent implements OnInit {
     this.displayedColumns.find((x, i) => { if(x === event.active) index = i; });
     this.sortCol = index;
     this.sortOrder = event.direction;
+    this.resetFromFilters(this.pageEvent?.pageSize);    
     this.getMoveItemList(StringConditions.MoveFrom);
   }
 
@@ -345,6 +346,7 @@ export class MoveItemsComponent implements OnInit {
     this.displayedColumns.find((x, i) => { if (x === event.active) index = i; });
     this.sortColTo = index;
     this.sortOrderTo = event.direction;
+    this.resetToFilters(this.pageEventTo?.pageSize);
     this.getMoveItemList(StringConditions.MoveTo);
   }
 

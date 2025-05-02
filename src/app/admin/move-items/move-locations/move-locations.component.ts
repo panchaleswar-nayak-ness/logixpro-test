@@ -114,6 +114,8 @@ export class MoveLocationsComponent {
 
   sortChange(event) {
     this.sortChangeEmit.emit(event);
+    if(event.direction != '') this.paginator.pageIndex = 0;
+    if(this.paginator?.pageSize) this.fromPageSizeEmit.emit(this.paginator?.pageSize);
   }
   
   clearItemNum() {
@@ -137,6 +139,9 @@ export class MoveLocationsComponent {
 
   sortChangeToItems(event) {
     this.sortChangeToItemsEmit.emit(event);
+    if(event.direction != '') this.paginatorTo.pageIndex = 0;
+    if(this.paginator?.pageSize) this.toPageSizeEmit.emit(this.paginator?.pageSize);
+
   }
 
   handlePageEventTo(event) {
