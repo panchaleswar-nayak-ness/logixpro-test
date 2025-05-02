@@ -985,12 +985,29 @@
                 class="custom-form-field w-100 mb-3"
                 appearance="outline"
               >
-                <mat-label class="pe-2">Maximum Quantity Per Tote:</mat-label>
+                <mat-label class="pe-2">Max Quantity per Tote (Non-Super Batch):</mat-label>
                 <input
                   type="text"
                   (change)="updatePreferences(1)"
                   matInput
                   formControlName="maximumQtyPerTote"
+                />
+              </mat-form-field>
+            </div>
+          </div>
+
+          <div class="row mb-3">
+            <div class="col-md-4">
+              <mat-form-field
+                class="custom-form-field w-100 mb-3"
+                appearance="outline"
+              >
+                <mat-label class="pe-2">Max Quantity per Tote (Super Batch):</mat-label>
+                <input
+                  type="text"
+                  (change)="updatePreferences(1)"
+                  matInput
+                  formControlName="sbMaximumQtyPerTote"
                 />
               </mat-form-field>
             </div>

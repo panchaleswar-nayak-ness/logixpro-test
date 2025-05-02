@@ -313,7 +313,7 @@ export class SuperBatchOrdersComponent implements OnInit, AfterViewInit {
         const values = res.data.imPreference;
 
         // Pick Tote Induction Settings
-        valueToInduct.maxToteQuantity = values.maximumQuantityperTote;
+        valueToInduct.maxToteQuantity = values.sbMaximumQuantityPerTote;
         valueToInduct.maxSuperBatchSize = values.defaultSuperBatchSize;
 
         // call API to induct this tote as per PLST-2772

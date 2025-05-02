@@ -149,6 +149,7 @@ UserField10:string = this.fieldMappings.userField10;
       //Pick Tote Induction Settings
       excludeOrderInReprocess: new FormControl(false, Validators.compose([])),
       maximumQtyPerTote: new FormControl(0, Validators.compose([])),
+      sbMaximumQtyPerTote: new FormControl(0, Validators.compose([])),
       defaultZoneGroup: new FormControl('', Validators.compose([])),
       pickToteSuppressInfoMessages: new FormControl(0, Validators.compose([])),
     });
@@ -397,6 +398,7 @@ UserField10:string = this.fieldMappings.userField10;
             //Pick Tote Induction Settings
             excludeOrderInReprocess: values.excludeOrdersinReprocess,
             maximumQtyPerTote: values.maximumQuantityperTote,
+            sbMaximumQtyPerTote: values.sbMaximumQuantityPerTote,
             defaultZoneGroup: values.defaultZoneGroup,
             pickToteSuppressInfoMessages:values.pickToteSuppressInfoMessages
           });
@@ -491,6 +493,7 @@ UserField10:string = this.fieldMappings.userField10;
           PurchaseOrderRequired: values.purchaseOrderRequired,
           ExcludeOrdersinReprocess: values.excludeOrderInReprocess,
           MaximumQuantityperTote: values.maximumQtyPerTote,
+          SBMaximumQuantityperTote: values.sbMaximumQtyPerTote,
           DefaultZoneGroup: values.defaultZoneGroup,
           PickToteSuppressInfoMessages:values.pickToteSuppressInfoMessages
         };
