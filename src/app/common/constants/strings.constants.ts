@@ -1,4 +1,4 @@
-import { AccessLevelByGroupFunctions, WorkStationSetup } from "../types/CommonTypes";
+import { EmployeeAccessLevel, WorkStationSetup } from "../types/CommonTypes";
 
 export const StringAssignments = {
     WorkstationNotAssignedToZone: 'This workstation is not assigned to a zone',
@@ -655,9 +655,10 @@ export const defaultWorkstationSetup: WorkStationSetup = {
     ]
 };
 
-export const defaultAccessLevelByGroupFunctions: AccessLevelByGroupFunctions = {
-    accessClearWholeLocation: false,
-    accessstorageContainer: false
+export const defaultEmployeeAccessLevels: EmployeeAccessLevel ={
+    lastRefreshedDateTime : new Date(),
+    accessStorageContainer : false,
+    accessClearWholeLocation : false
 }
 
 export const AccessLevel = {
@@ -674,3 +675,7 @@ export const AppLicensingDisplayedColumns = {
     AppURL: 'appurl',
     Save: 'save',
 };
+
+export const LocalStorageCacheKeys = {
+    EmployeeAccessLevels: 'employeeAccessLevels',
+}

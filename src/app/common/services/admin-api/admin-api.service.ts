@@ -4,6 +4,7 @@ import {AuthService} from 'src/app/common/init/auth.service';
 import {IAdminApiService} from './admin-api-interface'
 import { UserSession } from '../../types/CommonTypes';
 import { InventoryMap, UpdateSCReq } from '../../Model/storage-container-management';
+import { UserAccessLevels } from '../user-access-levels/user-access-levels';
 
 @Injectable({
   providedIn: 'root'
@@ -13,9 +14,12 @@ export class AdminApiService implements IAdminApiService {
   public userData: UserSession;
 
   constructor(
-    private Api: ApiFuntions,
-    private authService: AuthService) {
+    private readonly Api: ApiFuntions,
+    private readonly authService: AuthService,
+    private readonly userAccessLevels: UserAccessLevels) {
     this.userData = this.authService.userData();
+    this.userAccessLevels.Init(this.userData.userName);
+
   }
 
   public TransactionQtyReplenishmentUpdate(body: any) {
@@ -2026,8 +2030,13 @@ export class AdminApiService implements IAdminApiService {
   public WorkstationSetupInfo() {
     return this.Api.WorkstationSetupInfo();
   }
-  public AccessLevelByGroupFunctions() {
-    return this.Api.AccessLevelByGroupFunctions();
+
+  // Get Access Level By Group, setting refreshCache to true will get the latest data from the server
+  public AccessLevelByGroupFunctions(refreshCache: boolean = false) {
+    if (refreshCache) {
+      return this.userAccessLevels.RefreshAccessLevelByGroupCache(this.userData.userName);
+    }
+    return this.userAccessLevels.AccessLevelByGroup(this.userData.userName);
   }
 
   public WorkstationSettingsUpdate(body: any) {

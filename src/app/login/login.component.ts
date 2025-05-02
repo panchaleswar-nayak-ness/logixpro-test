@@ -17,12 +17,13 @@ import { AppName, AppNames, AppPermissions, AppRoutes, RouteName, RouteNames, Ro
 import { MatDialog } from '@angular/material/dialog';
 import { WorkstationLoginComponent } from '../dialogs/workstation-login/workstation-login.component';
 import { BaseService } from 'src/app/common/services/base-service.service';
-import { ValidWorkstation, ApiResponse } from 'src/app/common/types/CommonTypes';
+import { ValidWorkstation, ApiResponse, EmployeeAccessLevel } from 'src/app/common/types/CommonTypes';
 import { LinkedResource } from 'src/app/common/services/base-service.service';
 import { AppInfo, App, AppData, AppLicense, AppNameByWorkstationResponse } from 'src/app/dashboard/main/main.component';
 import { LocalStorageService } from 'src/app/common/services/LocalStorage.service';
 import { filter } from 'rxjs';
 import { ConfirmationDialogComponent } from '../admin/dialogs/confirmation-dialog/confirmation-dialog.component';
+import { UserAccessLevels } from '../common/services/user-access-levels/user-access-levels';
 type Version = {version: string};
 
 @Component({
@@ -59,7 +60,8 @@ export class LoginComponent {
     private sharedService: SharedService,
     public dialog: MatDialog,
     private apiBase: BaseService,
-    private localstorageService:LocalStorageService
+    private localstorageService:LocalStorageService,
+    private readonly userAccessLevels: UserAccessLevels
   ) { 
     this.iGlobalConfigApi = globalConfigApi;
     this.iUserApi = userApi;
@@ -169,7 +171,7 @@ export class LoginComponent {
               btn2Text:ConfirmationButtonText.RemindMeLater
             },
           });
-          dialogRef.afterClosed().subscribe((res) => {
+          dialogRef.afterClosed().subscribe(async (res) => {
                   if (res === ResponseStrings.Yes) {
                     this.changePass()
                   }
@@ -195,9 +197,13 @@ export class LoginComponent {
     this.login = this.addLoginForm;
   }
   
-  handleLoginSuccess(response: ApiResponse<any>, errorMessage: string = "") {
-    this.setLoginDatainLocalStorage(response,errorMessage);
-    this.getAppLicense(response.data.wsid);
+  async handleLoginSuccess(response: ApiResponse<any>, errorMessage: string = "") {
+
+      this.setLoginDatainLocalStorage(response,errorMessage);
+      this.getAppLicense(response.data.wsid);
+
+      this.userAccessLevels.Init(response.data.userName);
+      await this.userAccessLevels.RefreshAccessLevelByGroupCache(response.data.userName);
   
       const lastRoute = localStorage.getItem('LastRoute');
       const url = lastRoute ? `/#${lastRoute}` : "/#/dashboard";

@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { defaultAccessLevelByGroupFunctions, defaultWorkstationSetup, ToasterTitle, ToasterType } from 'src/app/common/constants/strings.constants';
+import { defaultEmployeeAccessLevels, defaultWorkstationSetup, ToasterTitle, ToasterType } from 'src/app/common/constants/strings.constants';
 import { AuthService } from 'src/app/common/init/auth.service';
 import { IAdminApiService } from 'src/app/common/services/admin-api/admin-api-interface';
 import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.service';
@@ -15,7 +15,7 @@ export class StorageContainerManagementComponent implements OnInit {
 
   public iAdminApiService: IAdminApiService;
   userData: UserSession;
-  @Input() accessLevelByGroupFunctions = defaultAccessLevelByGroupFunctions;
+  @Input() employeeAccessLevels = defaultEmployeeAccessLevels;
   @Input() workstationSetup = defaultWorkstationSetup;
   
   constructor(

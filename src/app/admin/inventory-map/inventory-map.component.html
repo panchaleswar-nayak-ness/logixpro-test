@@ -41,8 +41,8 @@
                     <mat-option routerLink="/admin/inventoryMap/utilizationDashboard">Utlilization Report</mat-option>
                     <mat-option 
                       *ngIf="companyObj.storageContainer && this.userData.accessLevel.toLowerCase() == accessLevel.Administrator" 
-                      [disabled]="!this.isStorageContainer" 
-                      (click)="isStorageContainer && storageContainerManagement()">
+                      [disabled]="!this.employeeAccessLevel.accessStorageContainer" 
+                      (click)="this.employeeAccessLevel.accessStorageContainer  && storageContainerManagement()">
                       Storage Container Management
                     </mat-option>
                   </mat-select>
