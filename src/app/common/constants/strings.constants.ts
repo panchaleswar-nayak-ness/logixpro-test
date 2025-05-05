@@ -658,7 +658,8 @@ export const defaultWorkstationSetup: WorkStationSetup = {
 export const defaultEmployeeAccessLevels: EmployeeAccessLevel ={
     lastRefreshedDateTime : new Date(),
     accessStorageContainer : false,
-    accessClearWholeLocation : false
+    accessClearWholeLocation : false,
+    accessAddInvMapLocation: false
 }
 
 export const AccessLevel = {

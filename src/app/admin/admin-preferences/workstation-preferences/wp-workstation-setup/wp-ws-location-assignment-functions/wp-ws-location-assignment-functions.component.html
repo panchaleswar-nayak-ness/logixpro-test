@@ -8,7 +8,7 @@
 
       <mat-form-field class="action-dropdown custom-form-field-bg-white w-100 mb-3" appearance="outline">
         <mat-label>Pick Locations Assigned By</mat-label>
-        <mat-select class="employees-action" [(ngModel)]="companyObj.locAssPickSort" (ngModelChange)="payload()">
+        <mat-select class="employees-action" [(ngModel)]="companyObj.locAssPickSort" (ngModelChange)="savePrefs()">
           <mat-option value="Item Quantity">Item Quantity</mat-option>
           <mat-option value="Zone">Zone</mat-option>
           <mat-option value="Location">Location</mat-option>
@@ -21,7 +21,7 @@
 
       <mat-form-field class="action-dropdown custom-form-field-bg-white w-100 mb-3" appearance="outline">
         <mat-label>Display Bulk Counts Quantity</mat-label>
-        <mat-select class="employees-action" [(ngModel)]="companyObj.showTransQtyBulk" (ngModelChange)="payload()">
+        <mat-select class="employees-action" [(ngModel)]="companyObj.showTransQtyBulk" (ngModelChange)="savePrefs()">
           <mat-option value="Display Always">Display Always</mat-option>
           <mat-option value="Never Display">Never Display</mat-option>
         </mat-select>
@@ -34,27 +34,27 @@
 
     <div class="col">
       <div class="d-flex justify-content-between mb-3">
-        Auto Complete Back Order<mat-slide-toggle [(ngModel)]="companyObj.autoCompBackOrders" (change)="payload()"
+        Auto Complete Back Order<mat-slide-toggle [(ngModel)]="companyObj.autoCompBackOrders" (change)="savePrefs()"
           color="primary">
         </mat-slide-toggle>
       </div>
       <div class="d-flex justify-content-between mb-3">
-        Print Pick Label For Each Pick <mat-slide-toggle [(ngModel)]="companyObj.printPickLab" (change)="payload()"
+        Print Pick Label For Each Pick <mat-slide-toggle [(ngModel)]="companyObj.printPickLab" (change)="savePrefs()"
           color="primary">
         </mat-slide-toggle>
       </div>
       <div class="d-flex justify-content-between mb-3">
-        Location Assign Single Order Selection <mat-slide-toggle [(ngModel)]="companyObj.locAssOrderSel" (change)="payload()"
+        Location Assign Single Order Selection <mat-slide-toggle [(ngModel)]="companyObj.locAssOrderSel" (change)="savePrefs()"
           color="primary">
         </mat-slide-toggle>
       </div>
       <div class="d-flex justify-content-between mb-3">
-        Print Reprocess Report After Allocation <mat-slide-toggle [(ngModel)]="companyObj.printReprocRep" (change)="payload()" color="primary">
+        Print Reprocess Report After Allocation <mat-slide-toggle [(ngModel)]="companyObj.printReprocRep" (change)="savePrefs()" color="primary">
         </mat-slide-toggle>
       </div>
       <div class="d-flex justify-content-between mb-3">
         Create SAP Location Change Transactions <mat-slide-toggle [(ngModel)]="companyObj.sapLocChange"
-          (change)="payload()" color="primary">
+          (change)="savePrefs()" color="primary">
         </mat-slide-toggle>
       </div>
 

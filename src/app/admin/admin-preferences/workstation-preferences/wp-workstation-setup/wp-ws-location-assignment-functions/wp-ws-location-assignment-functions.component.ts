@@ -45,7 +45,7 @@ export class WpWsLocationAssignmentFunctionsComponent implements OnInit {
     })
   }
 
-  payload() {
+  savePrefs() {
     const payload: any = {
       "locAssOrderSel": this.companyObj.locAssOrderSel,
       "printReprocRep": this.companyObj.printReprocRep ,

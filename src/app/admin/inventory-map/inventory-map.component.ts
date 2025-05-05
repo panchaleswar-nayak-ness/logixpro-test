@@ -87,6 +87,8 @@ export class InventoryMapComponent implements OnInit {
   fieldNames:any;
   routeFromIM:boolean=false;
   isActiveTrigger:boolean =false;
+  isStorageContainer :boolean =false;
+  isLocationControl :boolean =false; 
   assignedFunctions:any;
   unassignedFunctions:any;
   routeFromOM:boolean=false;
@@ -207,7 +209,6 @@ export class InventoryMapComponent implements OnInit {
       startIndex: 0,
       endIndex: 20
     }
-
     this.OSFieldFilterNames();
     this.initializeApi();
     this.getColumnsData();

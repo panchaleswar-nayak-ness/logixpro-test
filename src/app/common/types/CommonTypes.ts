@@ -327,8 +327,8 @@ export interface AccessLevelByGroupFunctions {
 }
 
 export interface EmployeeAccessLevel {
-
     lastRefreshedDateTime : Date;
     accessStorageContainer : boolean;
     accessClearWholeLocation : boolean;
+    accessAddInvMapLocation: boolean;
 }

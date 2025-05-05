@@ -37,12 +37,13 @@ export class UserAccessLevels implements IUserAccessLevels {
         // Return a promise that resolves with the data from the API
         return new Promise((resolve) => {
 
-             this.Api.AccessLevelByGroupFunctions().subscribe((res: ApiResponse<AccessLevelByGroupFunctions>) => {
+             this.Api.AccessLevelByGroupFunctions().subscribe((res: ApiResponse<EmployeeAccessLevel>) => {
                   if (res.isExecuted && res.data) {
                     const data: EmployeeAccessLevel = {
                         lastRefreshedDateTime: new Date(),
-                        accessStorageContainer: res.data.accessstorageContainer,
-                        accessClearWholeLocation: res.data.accessClearWholeLocation
+                        accessStorageContainer: res.data.accessStorageContainer,
+                        accessClearWholeLocation: res.data.accessClearWholeLocation,
+                        accessAddInvMapLocation: res.data.accessAddInvMapLocation
                     };
 
                     this.localStorageCache.setData(data);
@@ -55,12 +56,13 @@ export class UserAccessLevels implements IUserAccessLevels {
     RefreshAccessLevelByGroupCache(username: string): Promise<EmployeeAccessLevel> {
         return new Promise((resolve) => {
 
-            this.Api.AccessLevelByGroupFunctions().subscribe((res: ApiResponse<AccessLevelByGroupFunctions>) => {
+            this.Api.AccessLevelByGroupFunctions().subscribe((res: ApiResponse<EmployeeAccessLevel>) => {
                  if (res.isExecuted && res.data) {
                    const data: EmployeeAccessLevel = {
                        lastRefreshedDateTime: new Date(),
-                       accessStorageContainer: res.data.accessstorageContainer,
-                       accessClearWholeLocation: res.data.accessClearWholeLocation
+                       accessStorageContainer: res.data.accessStorageContainer,
+                       accessClearWholeLocation: res.data.accessClearWholeLocation,
+                       accessAddInvMapLocation:res.data.accessAddInvMapLocation,
                    };
 
                    this.localStorageCache.setData(data);

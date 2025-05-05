@@ -30,7 +30,7 @@ export class StorageContainerManagementComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  payload() {
+  savePrefs() {
     const payload = {
       StorageContainer: this.workstationSetup.storageContainer,
       LocationControl: this.workstationSetup.locationControl
