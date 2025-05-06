@@ -1,0 +1,261 @@
+::ng-deep .toast-info::before {
+    background: rgba(var(--clr-primary-rgb-500), 0.1)!important
+  }
+
+
+
+.btn-custom-color-blue{
+    color:var(--clr-primary-500)
+}
+
+.paginator-left-align{
+    float: left, !important;
+}
+
+.mat-table {
+    th {
+      white-space: nowrap;
+      padding-right: 12px;
+    }
+    td {
+      max-width: 15ch;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      white-space: nowrap;
+      padding-right: 12px;
+    }
+}
+
+.custom-scrollbar {
+  min-height:calc(90vh - 455px) !important; // Adjust as needed
+}
+@media (max-height: 800px) {
+  .custom-scrollbar {
+    
+    min-height: 175px !important; // Adjust as needed
+  }
+}
+
+.custom-header-cell {
+  border: 0;
+  height: 67px;
+  padding-left: 65px;
+  border-bottom: 1px solid var(--clr-tertiary-50); // Adjust the color as needed
+}
+.min-h-150px{
+  min-height: 150px !important;
+}
+.table-row:focus{
+  background: transparent;
+}
+
+
+.stickyHeader{
+  position: sticky;
+  top: 0px;
+  z-index: 200000000;
+}
+
+
+// .custom-action-clickable-table .mat-row{
+//   position: relative;
+// }
+.toolTipConf{
+  padding: 10px 12px;
+   border: 0; 
+   text-overflow: ellipsis;
+    overflow: hidden; 
+    max-width: 23ch;
+     white-space: nowrap;
+}
+
+
+table.custom-action-clickable-table tr{
+  top: 0;
+  left: 0px;
+  right: 14px;
+  bottom: 0;
+  cursor: pointer;
+  color:var(--clr-pure-white);
+  border-radius: 8px !important;
+  margin-left:15px;
+}
+
+table.custom-action-clickable-table tr:hover{
+        transition: 0.3s ease all;
+        color: var(--clr-pure-white) !important;
+        background: var(--clr-primary-300);
+        position: relative;
+        border-radius: 8px !important;
+        z-index:0;
+        cursor: pointer;
+}
+
+table.custom-action-clickable-table tr:hover td{
+  color: var(--clr-pure-white) !important;
+  border: none;
+}
+.scroll-color{
+  --scrollbar-track-color: var(--clr-pure-white) !important;
+  // --scrollbar-thumb-color: rgb(200, 200, 200) !important;
+  --scrollbar-padding: 0px;
+  // --scrollbar-size: 10px;
+  
+  }
+
+.divWithClass{
+    width:48px !important;
+}
+.scrolBar-colorStyle{
+  height:65vh !important;
+}
+
+  .otocompletestyle{
+    padding-bottom: 16px !important; 
+    padding-top: 16px !important;
+  }
+  .locationStickyHeaderStyle{
+    padding: 0px 25px !important; 
+    border: 0 !important; 
+    text-overflow: ellipsis !important; 
+    overflow: hidden !important; 
+    width:70% !important; 
+    white-space: nowrap !important;
+  }
+  .zoneStickyHeaderStyle{
+    padding: 0px 0px !important; 
+    border: 0 !important; 
+    text-overflow: ellipsis !important; 
+    overflow: hidden !important;
+     width:30% !important; 
+    white-space: nowrap !important;
+  }
+  .optionLocationNameStyle{
+    padding: 10px 12px !important; 
+    border: 0 !important; 
+    text-overflow: ellipsis !important; 
+    overflow: hidden !important; 
+    width:70% !important; 
+    white-space: nowrap !important;
+  }
+  .optionZoneStyle{
+    padding: 10px 12px !important; 
+    border: 0 !important; 
+    text-overflow: ellipsis !important; 
+    overflow: hidden !important; 
+    width:30% !important; 
+    white-space: nowrap !important;
+  }
+  .zone-padding{
+    padding: 0px 25px !important; 
+  }
+  .location-padding{
+    padding: 0px 16px !important; 
+  }
+  
+  
+
+  .unfoldMoreStyleC{
+    color:var(--clr-tertiary-900); transform: rotate(45deg) !important;
+  }
+
+.itemNumAutostyleC{
+  padding-bottom: 16px !important; 
+  padding-top: 16px !important;
+}
+.itemNumberStyleCC{
+  padding: 0px 25px !important; 
+  border: 0 !important; 
+  text-overflow: ellipsis !important; 
+  overflow: hidden !important; 
+  width:30% !important; 
+  white-space: nowrap !important;
+}
+.DescriptionsyleCC{
+  padding: 0px 25px !important; 
+  border: 0 !important; 
+  text-overflow: ellipsis !important; 
+  overflow: hidden !important; 
+  width:70% !important; 
+  white-space: nowrap !important;
+}
+.itemNumberOptionStyleCC{
+  padding: 10px 12px !important; 
+  border: 0 !important; 
+  text-overflow: ellipsis !important; 
+  overflow: hidden !important; 
+  width:30% !important; 
+  white-space: nowrap !important;
+}
+.DescriptionOptionsyleCC{
+  padding: 10px 20px !important; 
+  border:  0 !important; 
+  text-overflow: ellipsis !important; 
+  overflow: hidden !important; 
+  width:70% !important; 
+  white-space: nowrap !important;
+}
+
+.rotate-45 {
+  transform: rotate(45deg)
+}
+.h-65vh{
+  height: 65vh;
+}
+
+.mat-tooltip {
+  font-size: 16px; /* Set the desired font size */
+  color: #ffffff; /* Optional: Change text color */
+  background-color: #333333; /* Optional: Change tooltip background color */
+  padding: 8px; /* Optional: Add some padding for better appearance */
+  border-radius: 4px; /* Optional: Add rounded corners */
+}
+.progress-container {
+    position: relative;
+    width: 100%;
+  }
+
+  .progress-labels {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 5px;
+  }
+  
+  .usable-text, .unusable-text {
+    font-size: 12px;
+    color: #090948;
+  }
+  
+  mat-progress-bar {
+    width: 100%;
+    ;
+  }
+  
+  .progress-text {
+    position: absolute;
+    top: 24%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: #f0f0f0; 
+    font-weight: bold;
+    pointer-events: none; 
+  }
+  
+  .mat-progress-bar {
+    display: block;
+    height: 20px;
+    border-radius: 6px;
+}
+
+::ng-deep .ProgressBarStyling .mat-progress-bar-fill::after {
+  background-color: #000080;
+}
+.table-container {
+  max-height: 300px; // Set a fixed height for scrolling
+  overflow-y: auto; // Enable vertical scrollbar only when needed
+  border: 1px solid #ddd; // Optional: for better visibility
+}
+
+.mat-dialog-content {
+  overflow: hidden !important; // Ensure modal does not scroll
+}

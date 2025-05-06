@@ -445,4 +445,32 @@ export class ConsolidationApiService implements IConsolidationApi {
 	
 			return this.Api.insertOrderShipping(payload);
 		}
+
+	public GetConZones() {
+			return this.Api.GetConZones();
+	}
+
+	public GetSelectedConZoneData(ConZone) {
+		return this.Api.GetSelectedConZoneData(ConZone);
+	}
+
+	public GetSelectedConZoneRouteIDCount(ConZone) {
+		return this.Api.GetSelectedConZoneRouteIDCount(ConZone);
+	}
+	
+	public updateSelectedConZoneData(ConZone: string , body:any) {
+		return this.Api.updateSelectedConZoneData(ConZone,body);
+	}
+
+	public GetSelectedConZoneConHeadersData(ConZone) {
+		return this.Api.GetSelectedConZoneConHeadersData(ConZone);
+	}
+
+	public GetRouteIDDetailsData(RouteID) {
+		return this.Api.GetRouteIDDetailsData(RouteID);
+	}
+
+	public ConHeadersRequestRelease(RouteID:string) {
+		return this.Api.ConHeadersRequestRelease(RouteID);
+	}
 }

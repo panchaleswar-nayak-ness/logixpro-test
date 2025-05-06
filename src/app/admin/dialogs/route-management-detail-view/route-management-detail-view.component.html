@@ -1,0 +1,120 @@
+<div class="d-flex justify-content-between mb-2 align-items-center">
+    <div class="divWithClass"></div>
+<h1 class="m-0" mat-dialog-title>Route ID Details</h1>
+<button mat-icon-button class="close-button dialog-close-button-fix" [mat-dialog-close]="true" (click)="dialogClose()">
+    <mat-icon class="close-icon">close</mat-icon>
+</button>
+</div>
+<div mat-dialog-content>
+    <div class="d-flex align-items-center justify-content-center flex-wrap px-5 gap-12 mb-3">
+        <div class="text-center"> <span class="label label-gray px-2 f-14 mb-1">{{HeadingconsolidationStatus}}:&nbsp;<b>{{ConsolidationStatus}}</b></span></div>
+        <div class="text-center"> <span class="label label-gray px-2 f-14 mb-1">{{HeadingrouteIDStatus}}:&nbsp;<b>{{RouteIDStatus}}</b></span></div>
+  
+    </div>
+   
+        <div class="row g-3 mb-3 mx-1">
+            <div class="col-xl-12">
+                <div class="card p-3">
+                    <div class="row g-3">
+                        <div class="col-xl-6 col-md-12">
+                            <mat-form-field class="d-block w-100 " appearance="outline">
+                                <mat-label>{{HeadingRouteID}}</mat-label>
+                                <input matInput disabled  value="{{RouteID}}">
+                            </mat-form-field>
+                        </div>
+                        <div class="col-xl-6 col-md-12">
+                            <mat-form-field class="d-block w-100 " appearance="outline">
+                                <mat-label>{{HeadingstatusDate}}</mat-label>
+                                <input matInput disabled value="{{StatusDate}}">
+                            </mat-form-field>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-7">
+            
+                <div class="d-md-flex gap-12 d-block card px-3 pt-3 pb-2">
+                  <div class="d-flex gap-12 align-items-center flex-wrap">
+                    <h6 class="text-tertiary-900 m-0"><b>{{HeadingconsolidationStatus}}</b></h6>
+                  </div>
+                  <div class="row g-3">
+                      <div class="progress-container">
+                          <mat-progress-bar mode="determinate" [value]="Percentage" 
+                          [ngClass]="getStyling(Percentage).class"
+                          ></mat-progress-bar>
+                          <div class="progress-text" [ngStyle]="{'color': getStyling(Percentage).color}">
+                            {{ progressPercentage }}
+                          </div>
+                          <div class="progress-labels">
+                            <span class="text-tertiary-900 text-12 bold">0</span>
+                            <span class="text-tertiary-900 text-12 bold">{{ProgressTotalValue}}</span>
+                          </div>
+                        </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-5">
+                <div class="d-md-flex gap-12 d-block card px-3 pt-1 pb-1">
+                  <div>
+                    <div class="d-flex align-items-center justify-content-center custom">
+                      <div class="customer text-center">
+                        <app-stats-circle value="{{progressFraction}}" title="Total Consolidation"></app-stats-circle>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-xl-12 align-items-center">
+                <div class="card br-14 table-responsive">
+                    
+                    <ng-scrollbar track="all" class="custom-scrollbar mat-table-scrollbar">
+                             <table mat-table [dataSource]="dataSource" track="all" matSort
+                            class="g-card-table employee-location-table w-100 min-h-150px"
+                            (matSortChange)="announceSortChange($event)">
+                            <!-- Order ID Column -->
+                            <ng-container matColumnDef="OrderID">
+                              <th mat-header-cell *matHeaderCellDef mat-sort-header> Order ID </th>
+                              <td mat-cell *matCellDef="let element"> {{ element.OrderID }} </td>
+                            </ng-container>
+                          
+                            <!-- Tote ID Column -->
+                            <ng-container matColumnDef="ToteID">
+                              <th mat-header-cell *matHeaderCellDef mat-sort-header> Tote ID </th>
+                              <td mat-cell *matCellDef="let element"> {{ element.ToteID }} </td>
+                            </ng-container>
+                          
+                            <!-- Tote Status Column -->
+                            <ng-container matColumnDef="ToteStatus">
+                              <th mat-header-cell *matHeaderCellDef mat-sort-header> Tote Status </th>
+                              <td mat-cell *matCellDef="let element"> {{ element.ToteStatus }} </td>
+                            </ng-container>
+                          
+                            <!-- Table Header & Rows -->
+                            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                          
+                          </table>
+                          
+                    </ng-scrollbar>
+          
+                  </div>
+              </div>
+            </div>
+   
+</div>
+
+<mat-dialog-actions>
+    <div class="d-flex gap-12 w-100">
+        <button
+          type="submit"
+          mat-flat-button
+          class="form-button-submit btn-lg flex-grow-1 flex-basis-0"
+          color="primary"
+          (click)="dialogClose()"
+         >
+          Done
+        </button>
+        
+      </div>
+      
+</mat-dialog-actions>

@@ -246,6 +246,10 @@
         "Permission": "Markout Process"
     },
     {
+        "path": "/ConsolidationManager/RouteIDM",
+        "Permission": "RouteID Management"
+    },
+    {
         "path": "/FlowrackReplenish/Flowrack",
         "Permission": "Flowrack Replenishment"
     },

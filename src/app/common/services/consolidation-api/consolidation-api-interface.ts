@@ -40,4 +40,11 @@ export interface IConsolidationApi
 	viewShipping(payload: any)
 	ShowCMPackPrintModal(payload: any)
 	insertOrderShipping(payload: any)
+	GetConZones()
+	GetSelectedConZoneData(ConZone:string)
+	GetSelectedConZoneRouteIDCount(ConZone:string)
+	updateSelectedConZoneData(ConZone: string, body:any)
+	GetSelectedConZoneConHeadersData(ConZone:string)
+	GetRouteIDDetailsData(RouteID)
+	ConHeadersRequestRelease(RouteId:string)
 }

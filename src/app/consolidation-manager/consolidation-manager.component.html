@@ -87,7 +87,19 @@
             <h4 class="main-section-title text-22">Markout</h4>
           </div>
         </div>
-  
+        <div class="col-xl-3 col-lg-6"
+        [ngClass]="{ 'isDivDisabled': isAuthorized('RouteID Management') }">
+          <div matRipple [matRippleColor]="tabHoverColor" class="main-section-option bg-white"
+          routerLink="/ConsolidationManager/RouteIDM"   (click)="updateMenu('consolidationManager', '/ConsolidationManager/RouteIDM')">
+            <a class="main-section-option-link" href="#"></a>
+            <div class="main-section-icon">
+              <span class="material-symbols-outlined">
+               schema
+              </span>
+            </div>
+            <h4 class="main-section-title text-22">Route ID Management</h4>
+          </div>
+        </div>
   
   
       </div>

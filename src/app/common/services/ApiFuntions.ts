@@ -2341,4 +2341,32 @@ export class ApiFuntions {
     return await this.ApiBase.PostAsync(`/Admin/inventorymap`, body);
   }
 
+  public  GetConZones() {
+    return this.ApiBase.GetAsync(`/Consolidation/Zones`);
+  }
+
+  public async GetSelectedConZoneData(ConZone: string) {
+    return await this.ApiBase.GetAsync(`/Consolidation/ZoneStatus/${ConZone}`);
+  }
+
+  public async GetSelectedConZoneRouteIDCount(ConZone: string) {
+    return await this.ApiBase.GetAsync(`/Consolidation/Zone/${ConZone}/RoutesStatus`);
+  }
+
+  public async updateSelectedConZoneData(ConZone,body: any) {
+    return await this.ApiBase.PutAsync(`/Consolidation/RouteThresholds/${ConZone}`,body);
+  }
+
+  public async GetSelectedConZoneConHeadersData(ConZone: string) {
+    return await this.ApiBase.GetAsync(`/Consolidation/Routes/${ConZone}`, null, false, false);
+  }
+
+  public async GetRouteIDDetailsData(RouteID: string) {
+    return await this.ApiBase.GetAsync(`/Consolidation/Route/${RouteID}`);
+  }
+ 
+  public async ConHeadersRequestRelease(routeId: string) {
+    return await this.ApiBase.PatchAsync(`/Consolidation/Route/${routeId}/RequestRelease`,null);
+  }
+
 }

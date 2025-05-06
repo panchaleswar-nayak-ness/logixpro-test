@@ -207,7 +207,13 @@ export const ToasterMessages = {
     LocationDeleted: 'Location deleted successfully',
     DeleteFailed:"Delete Failed",
     FieldEmptyDefault:"Field cannot be empty. Default value has been applied.",
-    ZoneAndLocationNameNeedToBeSet:" “Zone and Location Name need to be set via the Preferences - Location Zones screen in order to save”"
+    ZoneAndLocationNameNeedToBeSet:" “Zone and Location Name need to be set via the Preferences - Location Zones screen in order to save”",
+    Consolidationzones:"Failed to load consolidation zones.",
+    Consolidationstatuscount:"Failed to load consolidation status count.",
+    RouteidCount:"Failed to load route id status count.",
+    ConsolidationThreshold:"Failed to update threshold.",
+    ConheaderData:"Failed to load con header list data.",
+    RequestRelease:""
 }
 
 

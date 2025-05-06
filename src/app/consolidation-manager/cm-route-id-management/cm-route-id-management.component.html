@@ -1,0 +1,11 @@
+<div class="container-fluid p-0 pt-2 h-auto">
+    <div class="row">
+      <div class="col-xl-12 mb-3">
+    <app-routeid-header (RouteIDListDataChange)="RouteIDListData = $event"></app-routeid-header>
+     </div>
+    </div>
+<div class="row">
+    <div class="card bg-light-blue bg-50 br-none px-4 py-4 br-14 mb-3">
+        <app-routeid-list [RouteIDListData]="RouteIDListData"></app-routeid-list>
+    </div>
+    </div>
