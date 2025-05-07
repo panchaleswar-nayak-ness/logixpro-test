@@ -29,7 +29,7 @@
                   <mat-label>Actions</mat-label>
                   <mat-select #matRef class="employees-action" (selectionChange)="inventoryMapAction($event)" placeholder="Actions">
                     <mat-option 
-                      (click)="companyObj.locationControl && addLocDialog()" 
+                      (click)="this.employeeAccessLevel.accessAddInvMapLocation && addLocDialog()" 
                       *ngIf="companyObj.locationControl  
                               && this.userData.accessLevel.toLowerCase() == accessLevel.Administrator"
                       [disabled]="!this.employeeAccessLevel.accessAddInvMapLocation">
