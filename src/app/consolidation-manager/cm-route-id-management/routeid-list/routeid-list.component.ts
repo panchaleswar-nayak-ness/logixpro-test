@@ -347,16 +347,15 @@ export class RouteidListComponent implements OnInit {
             ReleaseStatus: { Key: "Release Requested" }
           };
     
+
           try {
             const response = await this.consolidationApiService.ConHeadersRequestRelease(conHeaderID);
           
             if (response.status === 200) {
-              console.log("Release request successful");
-            } else {
-              this.global.ShowToastr(ToasterType.Error, ToasterMessages.Consolidationstatuscount, ToasterTitle.Error);
-            }
+              this.global.ShowToastr(ToasterType.Success, ToasterMessages.RequestReleaseSuccess, ToasterTitle.Success);
+            } 
           } catch (error) {
-            this.global.ShowToastr(ToasterType.Error, ToasterMessages.Consolidationstatuscount, ToasterTitle.Error);
+            this.global.ShowToastr(ToasterType.Error, ToasterMessages.RequestReleaseFailed, ToasterTitle.Error);
           }
           
         }
@@ -368,6 +367,7 @@ export class RouteidListComponent implements OnInit {
 
   
     autoCompleteSearchColumn(){
+      
     }
   
     searchColumn(){ 

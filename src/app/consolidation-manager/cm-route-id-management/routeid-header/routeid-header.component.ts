@@ -212,31 +212,54 @@ export class RouteidHeaderComponent implements OnInit, OnDestroy {
     }
   }
 
-  // Handle upper threshold value changes
   setUpperThreshold(value: number | null) {
-    const newValue = value ?? this.upperThreshold;
-    if (newValue !== this.upperThreshold) {
-      if (this.lowerThreshold >= newValue) {
-        // Enforce lower < upper by adjusting lowerThreshold
+    let newValue = value ?? this.upperThreshold;
+  
+    // Clamp to valid range [0, 100]
+    newValue = Math.min(Math.max(newValue, 0), 100);
+  
+    if (newValue <= this.lowerThreshold) {
+      // Special case: trying to set upper to 0 — force to 1, lower to 0
+      if (newValue === 0) {
+        this.lowerThreshold = 0;
+        this.upperThreshold = 1;
+      } else {
+        // General case: make sure upper > lower
+        this.upperThreshold = newValue;
         this.lowerThreshold = newValue - 1;
       }
+    } else {
       this.upperThreshold = newValue;
-      this.debounceUpdate(); // Wait before updating backend
     }
+  
+    this.debounceUpdate();
   }
   
-  // Handle lower threshold value changes
   setLowerThreshold(value: number | null) {
-    const newValue = value ?? this.lowerThreshold;
-    if (newValue !== this.lowerThreshold) {
-      if (newValue >= this.upperThreshold) {
-        // Enforce lower < upper
+    let newValue = value ?? this.lowerThreshold;
+  
+    // Clamp to valid range [0, 100]
+    newValue = Math.min(Math.max(newValue, 0), 100);
+  
+    if (newValue >= this.upperThreshold) {
+      // Special case: trying to set lower to 100 — force to 99, upper to 100
+      if (newValue === 100) {
+        this.upperThreshold = 100;
+        this.lowerThreshold = 99;
+      } else {
+        // General case: make sure lower < upper
+        this.lowerThreshold = newValue;
         this.upperThreshold = newValue + 1;
       }
+    } else {
       this.lowerThreshold = newValue;
-      this.debounceUpdate(); // Wait before updating backend
     }
+  
+    this.debounceUpdate();
   }
+  
+
+
 
   // Delay updating backend to avoid rapid API calls
   debounceUpdate() {

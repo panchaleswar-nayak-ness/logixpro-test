@@ -103,7 +103,10 @@ export class RouteManagementDetailViewComponent implements OnInit, AfterViewInit
           ToteID: item.toteId || 'N/A',
           ToteStatus: item.toteStatusName || 'Unknown'
         }));
-        this.dataSource = new MatTableDataSource<IRouteOrderDisplay>(transformedData);
+        this.dataSource.data = transformedData;
+if (!this.dataSource.sort && this.sort) {
+  this.dataSource.sort = this.sort;
+}
       } else {
         console.warn('Unexpected API response structure:', response);
       }

@@ -3,7 +3,7 @@ import { Injectable, Injector } from '@angular/core';
 import { environment } from '../../../environments/environment';
 import { Observable, lastValueFrom, observable } from 'rxjs';
 import { GlobalService } from './global.service';
-import { ToasterTitle, ToasterType } from '../constants/strings.constants';
+import { ToasterMessages, ToasterTitle, ToasterType } from '../constants/strings.constants';
 import { ReplaySubject } from 'rxjs';
 import { of } from 'rxjs';
 import { catchError, shareReplay, take, switchMap, map ,finalize} from 'rxjs/operators';
@@ -79,7 +79,7 @@ export class BaseService {
             }
           }),
           catchError(error => {
-            this.injector.get(GlobalService).ShowToastr(ToasterType.Error, 'API request failed', ToasterTitle.Error);
+            this.injector.get(GlobalService).ShowToastr(ToasterType.Error, ToasterMessages.APIErrorMessage, ToasterTitle.Error);
             return throwError(() => error);
           })
         );

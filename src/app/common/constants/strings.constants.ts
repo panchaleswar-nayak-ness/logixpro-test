@@ -213,7 +213,9 @@ export const ToasterMessages = {
     RouteidCount:"Failed to load route id status count.",
     ConsolidationThreshold:"Failed to update threshold.",
     ConheaderData:"Failed to load con header list data.",
-    RequestRelease:""
+    RequestReleaseFailed:"Request release failed.",
+    RequestReleaseSuccess:"Request release successfully.",
+    APIErrorMessage:"API request failed."
 }
 
 
