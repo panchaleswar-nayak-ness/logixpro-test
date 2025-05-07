@@ -3,7 +3,7 @@ import { FormControl } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { FloatLabelType } from '@angular/material/form-field';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
-import { MatSelect } from '@angular/material/select';
+import { MatSelect,MatSelectChange } from '@angular/material/select';
 import { MatSort, Sort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
@@ -20,6 +20,8 @@ import { GlobalService } from 'src/app/common/services/global.service';
 import { CurrentTabDataService } from '../../../admin/inventory-master/current-tab-data-service';
 import { ConsolidationApiService } from 'src/app/common/services/consolidation-api/consolidation-api.service';
 import { TableContextMenuService } from 'src/app/common/globalComponents/table-context-menu-component/table-context-menu.service';
+import {ColumnFilterComponentComponent  } from 'src/app/common/globalComponents/column-filter-component/column-filter-component.component';
+
 
 import { DialogConstants, StringConditions, ColumnDef, UniqueConstants, ToasterMessages, ToasterTitle, ToasterType, Placeholders } from 'src/app/common/constants/strings.constants';
 import { AppRoutes } from 'src/app/common/constants/menu.constants';
@@ -123,7 +125,7 @@ export class RouteidListComponent implements OnInit {
     @ViewChild(MatSort) sort: MatSort;
     @ViewChild('matRef') matRef: MatSelect;
     @ViewChild(MatAutocompleteTrigger) autocompleteInventory: MatAutocompleteTrigger;
-  
+    @ViewChild(ColumnFilterComponentComponent) filterCmp: ColumnFilterComponentComponent;
    //---------------------for mat menu End ----------------------------
    previousUrl: string;
     constructor(
@@ -389,13 +391,7 @@ export class RouteidListComponent implements OnInit {
     {
       this.autocompleteInventory.closePanel(); 
     }
-    searchDataold() {
-      // Correct the comparison to check the specific property like colDef or colHeader
-      if (this.columnSearch.searchColumn && this.columnSearch.searchColumn.colDef !== '') {
-        this.getContentData();
-      }
-    }
-   
+
     searchData() {
   if (this.columnSearch.searchColumn?.colDef && this.columnSearch.searchValue) {
     const columnMap: { [key: string]: string } = {
@@ -421,21 +417,13 @@ export class RouteidListComponent implements OnInit {
     this.dataSource.filter = JSON.stringify(filterObject);
   }
 }
-onSelectionChange(event: Event): void {
-  const target = event.target as HTMLSelectElement;
-  if (target) {
-    this.columnSearch.searchColumn.colDef = target.value;
+
+onSelectionChange(selectedValue: string): void {
+  if (selectedValue) {
+    this.columnSearch.searchColumn.colDef = selectedValue;
     this.searchColumn();
   }
 }
-    resetOld(){
-     
-      if( this.columnSearch.searchValue==''){
-      
-        this.getContentData()
-      }
-    
-    }
     reset() {
       this.columnSearch.searchValue = '';
       this.dataSource.filter = '';

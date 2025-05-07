@@ -216,18 +216,24 @@ export class RouteidHeaderComponent implements OnInit, OnDestroy {
   setUpperThreshold(value: number | null) {
     const newValue = value ?? this.upperThreshold;
     if (newValue !== this.upperThreshold) {
+      if (this.lowerThreshold >= newValue) {
+        // Enforce lower < upper by adjusting lowerThreshold
+        this.lowerThreshold = newValue - 1;
+      }
       this.upperThreshold = newValue;
-      if (this.upperThreshold < this.lowerThreshold) this.lowerThreshold = this.upperThreshold;
       this.debounceUpdate(); // Wait before updating backend
     }
   }
-
+  
   // Handle lower threshold value changes
   setLowerThreshold(value: number | null) {
     const newValue = value ?? this.lowerThreshold;
     if (newValue !== this.lowerThreshold) {
+      if (newValue >= this.upperThreshold) {
+        // Enforce lower < upper
+        this.upperThreshold = newValue + 1;
+      }
       this.lowerThreshold = newValue;
-      if (this.lowerThreshold > this.upperThreshold) this.upperThreshold = this.lowerThreshold;
       this.debounceUpdate(); // Wait before updating backend
     }
   }

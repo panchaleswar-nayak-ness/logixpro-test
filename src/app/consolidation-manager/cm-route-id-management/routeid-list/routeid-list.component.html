@@ -14,7 +14,7 @@
                 <app-column-filter-component 
                     [tableColumns]="displayedColumns" 
                     [searchCol]="columnSearch.searchColumn.colDef"
-                    (selectionChangeEvent)="onSelectionChange($event)"
+                    (selectionChangeEvent)="onSelectionChange(filterCmp.searchCol)"
                     (colKeyUpEnterEvent)="searchColumn()"
                     (searchKeyUpEvent)="this.columnSearch.searchValue = $event; autoCompleteSearchColumn()"
                     (searchKeyUpEnterEvent)="searchData()"
