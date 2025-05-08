@@ -805,6 +805,7 @@ UserField10:string = this.fieldMappings.userField10;
         .OrdersFilterZoneSelect(payload)
         .subscribe((res) => {
           if (res.isExecuted && res.data) {
+            this.filterBatchData =[];
             res.data.map((val) => {
               this.filterBatchData.push({
                 orderNumber: val.orderNumber,
@@ -1320,7 +1321,6 @@ UserField10:string = this.fieldMappings.userField10;
                                 this.global.globalErrorMsg(),
                                 ToasterTitle.Error
                             );
-                            console.log('PickBatchFilterUpdate', res.responseMessage);
                         }
                     });
             } else {
@@ -1342,7 +1342,6 @@ UserField10:string = this.fieldMappings.userField10;
                                 this.global.globalErrorMsg(),
                                 ToasterTitle.Error
                             );
-                            console.log('PickBatchFilterInsert', res.responseMessage);
                         }
                     });
             };
@@ -1370,7 +1369,6 @@ onSaveSingleOrder(element: any) {
                       this.global.globalErrorMsg(),
                       ToasterTitle.Error
                   );
-                  console.log('PickBatchOrderUpdate', res.responseMessage);
               }
           });
   } else {
@@ -1419,10 +1417,12 @@ isUniqueSeq(element: any) {
 }
 refreshFilterDataGrid() {
   this.pickBatchFilterOrderData(this.savedFilter.value, 'filter');
+  this.ordersFilterZoneSelect();
 }
 
 refreshOrderDataGrid() {
   this.pickBatchFilterOrderData(this.savedFilter.value, 'order');
+  this.ordersFilterZoneSelect();
 }
   onDeleteSingleFilter(element: any) {
     const dialogRef: any = this.global.OpenDialog(DeleteConfirmationComponent, {
