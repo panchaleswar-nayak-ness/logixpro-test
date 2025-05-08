@@ -27,6 +27,7 @@ import { IInductionManagerApiService } from 'src/app/common/services/induction-m
 import { InductionManagerApiService } from 'src/app/common/services/induction-manager-api/induction-manager-api.service';
 import { GlobalService } from 'src/app/common/services/global.service';
 import {  TableConstant ,ToasterTitle,ResponseStrings,Column,ToasterType,zoneType,DialogConstants,ColumnDef,UniqueConstants,Style,StringConditions, Placeholders} from 'src/app/common/constants/strings.constants';
+import { FilterOrder, FilterTransaction } from 'src/app/common/Model/pick-Tote-Manager';
 
 export interface PeriodicElement {
   name: string;
@@ -777,6 +778,8 @@ UserField10:string = this.fieldMappings.userField10;
     }
   }
   onSavedFilterChange(val: any) {
+    // Clear the order selection
+    this.clearOrderSelection();
     if (val.option.value) {
       this.isFilterAdd = true;
       this.isOrderByAdd = true;
@@ -1077,8 +1080,31 @@ UserField10:string = this.fieldMappings.userField10;
       this.orderByData = [];
       this.orderBydataSource = new MatTableDataSource<any>(this.orderByData);
       this.dataSource = new MatTableDataSource<any>(this.filterData);
+      this.reFreshOrderandTransactionData();
     }
   }
+reFreshOrderandTransactionData() {
+  // Clear the orders table
+  this.filterBatchData = [];
+  this.filterBatchOrders = new MatTableDataSource<FilterOrder>(this.filterBatchData);
+
+  // Clear the transactions tables
+  this.filterOrderTransactionSource = new MatTableDataSource<FilterTransaction>([]);
+  this.zoneOrderTransactionSource = new MatTableDataSource<FilterTransaction>([]);
+}
+clearOrderSelection() {
+  // Clear selection in filterBatchData
+  if (this.filterBatchData && this.filterBatchData.length) {
+    this.filterBatchData.forEach(order => order.isSelected = false);
+  }
+  // Clear selection in zone data if needed
+  if (this.filterBatchDataZone && this.filterBatchDataZone.length) {
+    this.filterBatchDataZone.forEach(order => order.isSelected = false);
+  }
+  // Clear the selectedOrders array
+  this.selectedOrders = [];
+}
+
   onChangeOrderAction(option: any) {
     if (option === 'fill_top_orders') {
       for (let index = 0; index < this.data.pickBatchQuantity; index++) {
