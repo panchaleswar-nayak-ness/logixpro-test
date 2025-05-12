@@ -57,7 +57,7 @@ export class SuperBatchOrdersComponent implements OnInit, AfterViewInit {
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild('paginator') paginator: MatPaginator;
   @ViewChildren(MatInput) toteInputs!: QueryList<MatInput>;
-
+ 
   userData;
   @Input() zones: string[] = []; // Accept zones as input
   @Input() pickToteSuppressInfoMessages: boolean;
@@ -113,6 +113,8 @@ export class SuperBatchOrdersComponent implements OnInit, AfterViewInit {
     alias? : string,
     value? : string
   }[] = [];
+
+  public disableSBInputs: boolean = false; // Disable inputs if true
 
   ngOnInit(): void {
     this.customPagination = {
@@ -173,14 +175,17 @@ export class SuperBatchOrdersComponent implements OnInit, AfterViewInit {
   }
 
   updateSorting() {
-    if (this.dataSource && this.dataSource.filteredData.length > 0)
+    if (this.dataSource && this.dataSource.filteredData.length > 0) {
       this.dataSource.sort = this.sort;
+    }
   }
 
   announceSortChange(sortState: Sort) {
-    if (sortState.direction)
+    if (sortState.direction) {
       this._liveAnnouncer.announce(`Sorted ${sortState.direction}ending`);
-    else this._liveAnnouncer.announce(LiveAnnouncerMessage.SortingCleared);
+    } else {
+      this._liveAnnouncer.announce(LiveAnnouncerMessage.SortingCleared);
+    } 
     this.updateSorting();
   }
 
@@ -308,6 +313,9 @@ export class SuperBatchOrdersComponent implements OnInit, AfterViewInit {
       SelectedZones: this.zones, // Pass the selected zones
     };
 
+    let totes = this.toteInputs.toArray();
+    this.disableSBInputs = true;
+
     this.iInductionManagerApi.PreferenceIndex().subscribe((res: any) => {
       if (res.data && res.isExecuted) {
         const values = res.data.imPreference;
@@ -322,10 +330,10 @@ export class SuperBatchOrdersComponent implements OnInit, AfterViewInit {
 
           this.Api.PerformSuperBatchOrderInduction(valueToInduct)
             .pipe(
-              
+
               catchError((errResponse) => {
                 if (errResponse.error.statusCode === 400) {
-                  if(this.pickToteSuppressInfoMessages){
+                  if (this.pickToteSuppressInfoMessages) {
                     this.global.ShowToastr(
                       ToasterType.Error,
                       errResponse.error.responseMessage,
@@ -341,16 +349,18 @@ export class SuperBatchOrdersComponent implements OnInit, AfterViewInit {
                     1000
                   );
                 }
-                element.toteScanned = '';
+                this.disableSBInputs = false;
+                setTimeout(() => {
+                  totes[index].focus();
+                }, 0);
                 return throwError(errResponse);
               })
             )
             .subscribe((innerResponse: any) => {
               if (innerResponse.data && innerResponse.isExecuted) {
-                if (innerResponse.data.remainingQuantity > 0 &&innerResponse.data.notInductedOrders.length>1) {
+                if (innerResponse.data.remainingQuantity > 0 && innerResponse.data.notInductedOrders.length > 1) {
                   // Update the UI with the remaining quantity
 
-                  
                   const orderIndex = this.dataSource.filteredData.findIndex(
                     (item) =>
                       item.itemNumber === itemNumber &&
@@ -359,16 +369,20 @@ export class SuperBatchOrdersComponent implements OnInit, AfterViewInit {
 
                   if (orderIndex !== -1) {
                     // Update totalOrderQuantity with remainingQuantity
-                    this.dataSource.filteredData[orderIndex].totalOrderQty =
-                      innerResponse.data.remainingQuantity;
-                      this.dataSource.filteredData[orderIndex].numberOfOrders= innerResponse.data.notInductedOrders.length;
-                    
+                    this.dataSource.filteredData[orderIndex].totalOrderQty = innerResponse.data.remainingQuantity;
+                    this.dataSource.filteredData[orderIndex].numberOfOrders = innerResponse.data.notInductedOrders.length;
+                    this.disableSBInputs = false;
+
+                    setTimeout(() => {
+                      totes[index].focus();
+                    }, 0);
                     // Use setTimeout to focus on the toteScanned input box
                   }
 
                   // Retain focus on the current input element for further induction
                 } else {
                   // If no remaining quantity, remove the order row
+                  this.disableSBInputs = false;
                   let updated = this.dataSource.filteredData.filter(
                     (f) =>
                       !(
@@ -376,20 +390,19 @@ export class SuperBatchOrdersComponent implements OnInit, AfterViewInit {
                         f.priority === valueToInduct.priority
                       )
                   );
-
                   this.rebind(updated, true);
+                  this.moveFocusToNextElement(index);
                 }
-
                 // Success message if all item are successfully
                 if (
                   innerResponse?.data?.inductedOrders?.length > 0 &&
                   innerResponse?.data?.notInductedOrders?.length === 0 && this.pickToteSuppressInfoMessages
                 ) {
-                    this.global.ShowToastr(
-                      ToasterType.Success,
-                      innerResponse.responseMessage,
-                      ToasterTitle.Success
-                    );
+                  this.global.ShowToastr(
+                    ToasterType.Success,
+                    innerResponse.responseMessage,
+                    ToasterTitle.Success
+                  );
                 }
 
                 if (
@@ -401,21 +414,27 @@ export class SuperBatchOrdersComponent implements OnInit, AfterViewInit {
                     ToasterTitle.Info
                   );
                 }
-              } 
-              else if(this.pickToteSuppressInfoMessages) {
+              }
+              else if (this.pickToteSuppressInfoMessages) {
                 this.global.ShowToastr(
                   ToasterType.Info,
                   innerResponse.responseMessage,
                   ToasterTitle.Info
                 );
               }
-
-              setTimeout(() => {
-                this.moveFocusToNextElement(index);
-              }, 0);
             });
+        } else {
+          this.disableSBInputs = false;
+          setTimeout(() => {
+            totes[index].focus();
+          }, 0);
         }
       } else {
+        this.disableSBInputs = false;
+        setTimeout(() => {
+          totes[index].focus();
+        }, 0);
+
         this.global.ShowToastr(
           ToasterType.Error,
           ToasterMessages.SomethingWentWrong,
@@ -427,18 +446,15 @@ export class SuperBatchOrdersComponent implements OnInit, AfterViewInit {
   }
 
   private moveFocusToNextElement(index: number) {
-    let totes = this.toteInputs.toArray();
-
-    // Ensure that index + 1 doesn't exceed the length of totes array
-    if (totes[index + 1]) {
-      setTimeout(() => {
+    setTimeout(() => {
+      let totes = this.toteInputs.toArray();
+      // Ensure that index exists. Since this is in a timeout,
+      // the tptes query list has changed already 
+      if (totes[index]) {
         totes[index].focus();
-      }, 0); // Allow DOM update
-    } else if (totes[0]) {
-      // If there's no next item, loop back to the first item
-      setTimeout(() => {
+      } else if (totes[0]) {
         totes[0].focus();
-      }, 0);
-    }
+      }
+    }, 0);
   }
 }
