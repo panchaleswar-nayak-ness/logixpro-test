@@ -42,8 +42,9 @@
   padding-left: 65px;
   border-bottom: 1px solid var(--clr-tertiary-50); // Adjust the color as needed
 }
-.min-h-150px{
-  min-height: 150px !important;
+.min-max-h-rmdv{
+  max-height: 270px;
+  min-height: 200px;
 }
 .table-row:focus{
   background: transparent;
@@ -247,15 +248,6 @@ table.custom-action-clickable-table tr:hover td{
     border-radius: 6px;
 }
 
-::ng-deep .ProgressBarStyling .mat-progress-bar-fill::after {
+ .ProgressBarStyling .mat-progress-bar-fill::after {
   background-color: #000080;
-}
-.table-container {
-  max-height: 300px; // Set a fixed height for scrolling
-  overflow-y: auto; // Enable vertical scrollbar only when needed
-  border: 1px solid #ddd; // Optional: for better visibility
-}
-
-.mat-dialog-content {
-  overflow: hidden !important; // Ensure modal does not scroll
 }

@@ -11,6 +11,7 @@ import {
 } from 'src/app/consolidation-manager/cm-markout/models/markout-model';
 import { AddPickToteInductionFilter } from 'src/app/induction-manager/models/PickToteInductionModel';
 import { InventoryMap, UpdateSCReq } from '../Model/storage-container-management';
+import {IQueryParams} from '../../app/../consolidation-manager/cm-route-id-management/routeid-list/routeid-IQueryParams'
 
 @Injectable({
   providedIn: 'root',
@@ -2357,8 +2358,8 @@ export class ApiFuntions {
     return await this.ApiBase.PutAsync(`/Consolidation/RouteThresholds/${ConZone}`,body);
   }
 
-  public async GetSelectedConZoneConHeadersData(ConZone: string) {
-    return await this.ApiBase.GetAsync(`/Consolidation/Routes/${ConZone}`, null, false, false);
+  public async GetSelectedConZoneConHeadersData(ConZone: string,body:IQueryParams) {
+    return await this.ApiBase.GetAsync(`/Consolidation/Routes/${ConZone}`, body, false, false);
   }
 
   public async GetRouteIDDetailsData(RouteID: string) {

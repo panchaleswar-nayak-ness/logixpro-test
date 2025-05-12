@@ -2,6 +2,8 @@ import { Injectable } from '@angular/core';
 import { IConsolidationApi } from './consolidation-api-interface';
 import { ApiFuntions } from '../ApiFuntions';
 import { AuthService } from 'src/app/common/init/auth.service';
+import {IQueryParams} from '../../../app/../consolidation-manager/cm-route-id-management/routeid-list/routeid-IQueryParams'
+import {IConsolidationThresholdPayload } from '../../../app/../consolidation-manager/cm-route-id-management/routeid-header/Irouteid-ThresholdParams'
 
 @Injectable({
   providedIn: 'root'
@@ -458,12 +460,12 @@ export class ConsolidationApiService implements IConsolidationApi {
 		return this.Api.GetSelectedConZoneRouteIDCount(ConZone);
 	}
 	
-	public updateSelectedConZoneData(ConZone: string , body:any) {
+	public updateSelectedConZoneData(ConZone: string , body:IConsolidationThresholdPayload) {
 		return this.Api.updateSelectedConZoneData(ConZone,body);
 	}
 
-	public GetSelectedConZoneConHeadersData(ConZone) {
-		return this.Api.GetSelectedConZoneConHeadersData(ConZone);
+	public GetSelectedConZoneConHeadersData(ConZone:string,body:IQueryParams) {
+		return this.Api.GetSelectedConZoneConHeadersData(ConZone,body);
 	}
 
 	public GetRouteIDDetailsData(RouteID) {

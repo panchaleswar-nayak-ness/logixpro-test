@@ -1,3 +1,6 @@
+import {IQueryParams} from '../../../app/../consolidation-manager/cm-route-id-management/routeid-list/routeid-IQueryParams'
+import {IConsolidationThresholdPayload } from '../../../app/../consolidation-manager/cm-route-id-management/routeid-header/Irouteid-ThresholdParams'
+
 export interface IConsolidationApi
 {
 	ContIDShipTransUpdate(payload: any)
@@ -43,8 +46,8 @@ export interface IConsolidationApi
 	GetConZones()
 	GetSelectedConZoneData(ConZone:string)
 	GetSelectedConZoneRouteIDCount(ConZone:string)
-	updateSelectedConZoneData(ConZone: string, body:any)
-	GetSelectedConZoneConHeadersData(ConZone:string)
+	updateSelectedConZoneData(ConZone: string, body:IConsolidationThresholdPayload)
+	GetSelectedConZoneConHeadersData(ConZone:string,body:IQueryParams)
 	GetRouteIDDetailsData(RouteID)
 	ConHeadersRequestRelease(RouteId:string)
 }

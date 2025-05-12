@@ -1,5 +1,5 @@
 // Angular and RxJS imports
-import { Component, EventEmitter, OnInit, Output, OnDestroy } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output,Input, OnDestroy ,SimpleChanges} from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { FloatLabelType } from '@angular/material/form-field';
 import { Subscription } from 'rxjs';
@@ -32,10 +32,10 @@ interface Info {
 })
 export class RouteidHeaderComponent implements OnInit, OnDestroy {
   // Read field mappings from local storage
+  @Output() zoneChanged = new EventEmitter<string>();
   fieldMappings = JSON.parse(localStorage.getItem('fieldMappings') ?? '{}');
   consolidationStatusCard: string = this.fieldMappings.consolidationStatusCard;
-  routeIDStatusCountCard: string = this.fieldMappings.routeIDStatusCountCard;
-
+  routeIDStatusCountCard: string = this.fieldMappings.routeIdStatusCountCard;
   // Consolidation zones and thresholds
   consolidationZones: IConZoneResponse[] = [];
   Zone: string = '';
@@ -59,9 +59,6 @@ export class RouteidHeaderComponent implements OnInit, OnDestroy {
     ConsolidationProgress: string;
   }[] = [];
 
-  // Emit updated Route ID data
-  @Output() RouteIDListDataChange = new EventEmitter<typeof this.RouteIDListData>();
-
   // Control for float label setting in form fields
   floatLabelControl = new FormControl('auto' as FloatLabelType);
 
@@ -81,8 +78,7 @@ export class RouteidHeaderComponent implements OnInit, OnDestroy {
     'Active Release': 'StatusActiveRelease'
   };
 
-  // Interval and timeout references
-  private intervalId?: ReturnType<typeof setInterval>;
+  // timeout references
   private updateTimeout?: ReturnType<typeof setTimeout>;
   private subscription: Subscription = new Subscription();
 
@@ -104,7 +100,6 @@ export class RouteidHeaderComponent implements OnInit, OnDestroy {
 
   // OnDestroy lifecycle hook to clean up resources
   ngOnDestroy() {
-    clearInterval(this.intervalId);
     this.subscription.unsubscribe();
   }
 
@@ -124,10 +119,8 @@ export class RouteidHeaderComponent implements OnInit, OnDestroy {
 
   // Triggered when user selects a different zone
   onSelectionChange(value: string) {
+    this.zoneChanged.emit(value); // Emit zone value to parent
     this.loadSelectedConZoneData(value); // Load thresholds, statuses, etc.
-    clearInterval(this.intervalId); // Reset interval
-    this.fetchConsolidationTableData(value); // Initial fetch
-    this.intervalId = setInterval(() => this.fetchConsolidationTableData(value), 5000); // Auto-refresh
   }
 
   // Load all data associated with a selected zone
@@ -136,7 +129,6 @@ export class RouteidHeaderComponent implements OnInit, OnDestroy {
     this.loadthresholds(selectedZone);
     this.loadConsolidationStatus(selectedZone);
     this.loadRouteIDStatusCount(selectedZone);
-    this.fetchConsolidationTableData(selectedZone);
   }
 
   // Load threshold values for selected zone
@@ -203,7 +195,7 @@ export class RouteidHeaderComponent implements OnInit, OnDestroy {
     try {
       const res = await this.iConsolidationApi.updateSelectedConZoneData(this.Zone, payload);
       if (res) {
-        this.global.ShowToastr(ToasterType.Success, "threshold updated successfully", ToasterTitle.Success);
+        this.global.ShowToastr(ToasterType.Success, "Threshold updated successfully", ToasterTitle.Success);
       } else {
         this.global.ShowToastr(ToasterType.Error, ToasterMessages.ConsolidationThreshold, ToasterTitle.Error);
       }
@@ -267,44 +259,10 @@ export class RouteidHeaderComponent implements OnInit, OnDestroy {
     this.updateTimeout = setTimeout(() => this.updateConZone(), 500);
   }
 
-  // Fetch route ID consolidation table data
-  async fetchConsolidationTableData(selectedZone: string) {
-    try {
-      const response: HttpResponse<IConHeaderResponse[]> = await this.iConsolidationApi.GetSelectedConZoneConHeadersData(selectedZone);
-      const fullItems = response?.body;
-      if (Array.isArray(fullItems)) {
-        const resources = fullItems.map(x => x.resource);
-        this.processConsolidationData(resources);
-      }
-    } catch {
-      this.global.ShowToastr(ToasterType.Error, ToasterMessages.ConheaderData, ToasterTitle.Error);
-    }
-  }
-
-  // Format and emit route ID list data
-  processConsolidationData(data: IConHeaderResponse['resource'][]): void {
-    const newData = data.map((item) => ({
-      RouteID: item.routeID,
-      StatusDate: item.statusDate ? new Date(item.statusDate).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }) : '',
-      rawStatusDate: item.statusDate,
-      ConsolidationStatus: item.consolidationStatus ?? '',
-      RouteIDStatus: item.routeIdStatus ?? '',
-      ConsolidationProgress: item.consolidationProgress ?? '-'
-    }));
-
-    let dataChanged = !Array.isArray(this.RouteIDListData) || JSON.stringify(this.RouteIDListData) !== JSON.stringify(newData);
-
-    if (dataChanged) {
-      this.RouteIDListData = newData;
-      this.RouteIDListDataChange.emit(this.RouteIDListData); // Notify parent
-    }
-  }
-
   // For *ngFor trackBy
   trackByTitle(index: number, item: Info): string {
     return item.title;
   }
-
   // Get current value for float label mode
   getFloatLabelValue(): FloatLabelType {
     return this.floatLabelControl.value ?? 'auto';

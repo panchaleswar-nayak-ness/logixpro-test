@@ -93,6 +93,7 @@ export interface FieldMappingAlias {
     consolidationProgress: string;
     routeIdStatusCountCard: string;
     consolidationStatusCard: string;
+    'con.HeaderList':string;
 }
 
 export interface OSFieldFilterNames {

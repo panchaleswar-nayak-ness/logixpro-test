@@ -10,25 +10,25 @@
 
           <div class="header-filter-bar">
             <div class="header-filter-options w-100 d-xl-flex d-lg-block align-items-center justify-content-between filter">
-              <!-- <p>Selected Zone: {{ selectedZone }}</p> -->
                 <app-column-filter-component 
                     [tableColumns]="displayedColumns" 
                     [searchCol]="columnSearch.searchColumn.colDef"
                     (selectionChangeEvent)="onSelectionChange(filterCmp.searchCol)"
                     (colKeyUpEnterEvent)="searchColumn()"
-                    (searchKeyUpEvent)="this.columnSearch.searchValue = $event; autoCompleteSearchColumn()"
+                    (searchKeyUpEvent)="columnSearch.searchValue = $event"
                     (searchKeyUpEnterEvent)="searchData()"
-                    (clearInputFieldEvent)="this.columnSearch.searchColumn.colDef = '';  this.columnSearch.searchValue = ''; reset()"
+                    (clearInputFieldEvent)="onClearFilter()"
                     [searchString]="this.columnSearch.searchValue"
                     [searchAutocompleteList]="this.searchAutocompleteList"
-                    (optionSelectedEvent)="this.columnSearch.searchValue = $event; searchData()">
+                    [showNoDataMessage]="false"
+                    >
                 </app-column-filter-component>
             </div>
           </div>
 
           <div class="card br-14 table-responsive my-3"  *ngIf="hasValidColumns"
             >
-            <ng-scrollbar class="mat-table-scrollbar scroll-bar" track="all">
+            <ng-scrollbar class="mat-table-scrollbar scroll-bar min-height-300" track="all" [autoHeightDisabled]="false" style="min-height:300px">
               <table mat-table [dataSource]="dataSource" matSort
                      class="custom-table g-card-table employee-location-table w-100"
                      (matSortChange)="announceSortChange($event)">
@@ -69,14 +69,14 @@
                 </tr>
 
                 <mat-header-row *matHeaderRowDef="columnValues; sticky: true" class="border"></mat-header-row>
-                <mat-row *matRowDef="let row; columns: columnValues;" (click)="selectRow(row)"></mat-row>
+                <mat-row *matRowDef="let row; columns: columnValues;" ></mat-row>
               </table>
             </ng-scrollbar>
           </div>
 
-          <div class="table-pagination d-flex justify-content-start align-items-center"  *ngIf="hasValidColumns && dataSource"
+          <div class="table-pagination d-flex justify-content-start align-items-center" 
             >
-            <mat-paginator [length]="this.customPagination.total" [pageSize]="20" showFirstLastButtons [pageSizeOptions]="[10, 20, 100]" (page)="handlePageEvent($event)"></mat-paginator>
+            <mat-paginator [length]="this.customPagination.total" [pageSize]="10" showFirstLastButtons [pageSizeOptions]="[10, 20, 100]" (page)="handlePageEvent($event)"></mat-paginator>
           </div>
 
         </mat-card-content>

@@ -6,10 +6,15 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./cm-route-id-management.component.scss']
 })
 export class CmRouteIdManagementComponent implements OnInit {
-  RouteIDListData : any;
-  constructor() { }
+  selectedZone: string;
 
+onZoneChanged(zone: string) {
+  this.selectedZone = zone;
+}
+  
+  constructor() { }
   ngOnInit(): void {
   }
+
 
 }

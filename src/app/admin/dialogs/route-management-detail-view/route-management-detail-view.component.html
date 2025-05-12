@@ -6,23 +6,23 @@
 </button>
 </div>
 <div mat-dialog-content>
-    <div class="d-flex align-items-center justify-content-center flex-wrap px-5 gap-12 mb-3">
-        <div class="text-center"> <span class="label label-gray px-2 f-14 mb-1">{{HeadingconsolidationStatus}}:&nbsp;<b>{{ConsolidationStatus}}</b></span></div>
-        <div class="text-center"> <span class="label label-gray px-2 f-14 mb-1">{{HeadingrouteIDStatus}}:&nbsp;<b>{{RouteIDStatus}}</b></span></div>
+    <div class="d-flex align-items-center justify-content-center flex-wrap px-2 gap-12 mb-3">
+        <div class="text-center"> <span class="label label-gray px-3 f-14 mb-1">{{HeadingconsolidationStatus}}:&nbsp;<b>{{ConsolidationStatus}}</b></span></div>
+        <div class="text-center"> <span class="label label-gray px-3 f-14 mb-1">{{HeadingrouteIDStatus}}:&nbsp;<b>{{RouteIDStatus}}</b></span></div>
   
     </div>
-   
-        <div class="row g-3 mb-3 mx-1">
+   <div class="container-fluid p-0">
+        <div class="row g-3">
             <div class="col-xl-12">
                 <div class="card p-3">
                     <div class="row g-3">
-                        <div class="col-xl-6 col-md-12">
+                        <div class="col-md-6">
                             <mat-form-field class="d-block w-100 " appearance="outline">
                                 <mat-label>{{HeadingRouteID}}</mat-label>
                                 <input matInput disabled  value="{{RouteID}}">
                             </mat-form-field>
                         </div>
-                        <div class="col-xl-6 col-md-12">
+                        <div class="col-md-6">
                             <mat-form-field class="d-block w-100 " appearance="outline">
                                 <mat-label>{{HeadingstatusDate}}</mat-label>
                                 <input matInput disabled value="{{StatusDate}}">
@@ -58,18 +58,18 @@
                   <div>
                     <div class="d-flex align-items-center justify-content-center custom">
                       <div class="customer text-center">
-                        <app-stats-circle value="{{progressFraction}}" title="Total Consolidation"></app-stats-circle>
+                        <app-stats-circle class="bold" value="{{progressFraction}}" title="Total Consolidation"></app-stats-circle>
                       </div>
                     </div>
                   </div>
                 </div>
               </div>
-              <div class="col-xl-12 align-items-center">
-                <div class="card br-14 table-responsive">
+              <div class="col-xl-12">
+                <div class="card br-14 table-responsive w-100">
                     
-                    <ng-scrollbar track="all" class="custom-scrollbar mat-table-scrollbar">
-                             <table mat-table [dataSource]="dataSource" track="all" matSort
-                            class="g-card-table employee-location-table w-100 min-h-150px"
+                    <ng-scrollbar track="all" class="mat-table-scrollbar min-max-h-rmdv" [autoHeightDisabled]="false">
+                             <table mat-table [dataSource]="dataSource" matSort
+                            class="custom-table g-card-table w-100"
                             (matSortChange)="announceSortChange($event)">
                             <!-- Order ID Column -->
                             <ng-container matColumnDef="OrderID">
@@ -90,7 +90,7 @@
                             </ng-container>
                           
                             <!-- Table Header & Rows -->
-                            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                            <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
                             <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
                           
                           </table>
@@ -100,7 +100,7 @@
                   </div>
               </div>
             </div>
-   
+          </div>
 </div>
 
 <mat-dialog-actions>
