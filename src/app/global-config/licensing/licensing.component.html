@@ -81,6 +81,7 @@
                                   maxlength="50"
                                   [(ngModel)]="element.appname"
                                   (ngModelChange)="onInputValueChange(index)"
+                                  [disabled]="!element.isNewRow"
                                 />
                               </mat-form-field>
                             </div>
