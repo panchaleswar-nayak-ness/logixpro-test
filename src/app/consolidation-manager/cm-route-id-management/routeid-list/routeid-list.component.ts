@@ -223,9 +223,9 @@ zone:string;
       if (col.colDef === 'Consolidation Status') {
         switch (element[col.colHeader]) {
           case 'Initialized':
-            return 'br-14 label px-3 f-16 label-yellow';
-          case 'Induction Started':
             return 'br-14 label px-3 f-16 label-blue2';
+          case 'Induction Started':
+            return 'br-14 label px-3 f-16 label-yellow';
           case 'Con Completed':
             return 'br-14 label px-3 f-16 label-green';
             case 'Con. Completed':
