@@ -28,7 +28,7 @@
 
           <div class="card br-14 table-responsive my-3"  *ngIf="hasValidColumns"
             >
-            <ng-scrollbar class="mat-table-scrollbar scroll-bar min-height-300" track="all" [autoHeightDisabled]="false" style="min-height:300px">
+            <ng-scrollbar class="mat-table-scrollbar scroll-bar min-max-height-table" track="all" [autoHeightDisabled]="false" style="min-height:300px">
               <table mat-table [dataSource]="dataSource" matSort
                      class="custom-table g-card-table employee-location-table w-100"
                      (matSortChange)="announceSortChange($event)">

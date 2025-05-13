@@ -21,11 +21,12 @@ export class RouteManagementDetailViewComponent implements OnInit, AfterViewInit
 
   // field name mapping
   fieldMappings = JSON.parse(localStorage.getItem('fieldMappings') ?? '{}');
-  HeadingRouteID: string  = this.fieldMappings.routeID;
-  HeadingstatusDate: string  = this.fieldMappings.statusDate;
-  HeadingconsolidationStatus: string  = this.fieldMappings.consolidationStatus;
-  HeadingrouteIDStatus: string  = this.fieldMappings.routeIDStatus;
-  HeadingconsolidationProgress: string  = this.fieldMappings.consolidationProgress;
+  HeadingRouteID: string = this.fieldMappings?.routeId ?? 'RouteID';
+  HeadingstatusDate: string = this.fieldMappings?.statusDate ?? 'Status Date';
+  HeadingconsolidationStatus: string = this.fieldMappings?.consolidationStatus ?? 'Consolidation Status';
+  HeadingrouteIDStatus: string = this.fieldMappings?.routeIdStatus ?? 'Route ID Status';
+  HeadingconsolidationProgress: string = this.fieldMappings?.consolidationProgress ?? 'Consolidation Progress';
+  
 
   RouteID: any;
   StatusDate: any;
