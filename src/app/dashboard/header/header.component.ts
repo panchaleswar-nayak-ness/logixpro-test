@@ -1,15 +1,14 @@
 import { Component, EventEmitter, Output } from '@angular/core';
-import { SpinnerService } from '../../common/init/spinner.service'; 
+import { SpinnerService } from '../../common/init/spinner.service';
 import { Router,NavigationEnd  } from '@angular/router';
 import { AuthService } from '../../common/init/auth.service';
-import { SharedService } from 'src/app/common/services/shared.service'; 
+import { SharedService } from 'src/app/common/services/shared.service';
 import { Title } from '@angular/platform-browser';
 import { BreakpointObserver, Breakpoints, BreakpointState } from '@angular/cdk/layout';
 import { Subscription } from 'rxjs';
 import { DPrinterSetupComponent } from 'src/app/dialogs/d-printer-setup/d-printer-setup.component';
 import { GlobalService } from 'src/app/common/services/global.service';
 import { StylesService } from 'src/app/common/services/styles.service';
-import { IInductionManagerApiService } from 'src/app/common/services/induction-manager-api/induction-manager-api-interface';
 import { InductionManagerApiService } from 'src/app/common/services/induction-manager-api/induction-manager-api.service';
 import { IGlobalConfigApi } from 'src/app/common/services/globalConfig-api/global-config-api-interface';
 import { GlobalConfigApiService } from 'src/app/common/services/globalConfig-api/global-config-api.service';
@@ -49,7 +48,6 @@ export class HeaderComponent {
 
   themeRadio : number = 0;
 
-  public iInductionManagerApi : IInductionManagerApiService;
   public iGlobalConfigApi: IGlobalConfigApi;
   public iUserApi : IUserAPIService;
 
@@ -57,7 +55,7 @@ export class HeaderComponent {
 	  public userApi : UserApiService,
     private router: Router,
     public inductionManagerApi: InductionManagerApiService,
-    public spinnerService: SpinnerService, 
+    public spinnerService: SpinnerService,
     private authService: AuthService,
     public globalConfigApi: GlobalConfigApiService,
     private sharedService: SharedService,
@@ -67,14 +65,13 @@ export class HeaderComponent {
     private stylesService: StylesService,
     private localstorageService:LocalStorageService
   ) {
-    this.checkCurState(); 
+    this.checkCurState();
     this.iGlobalConfigApi = globalConfigApi;
     let width = 0;
-    this.iInductionManagerApi = inductionManagerApi;
     this.iUserApi = userApi;
 
     this.breakpointSubscription = this.breakpointObserver.observe([Breakpoints.Small,Breakpoints.Large]).subscribe((state: BreakpointState) => width = window.innerWidth);
-      
+
     this.isConfigUser=  this.authService.isConfigUser()
       router.events.subscribe((val: any) => {
         if((this.router.url == "/BulkTransactions/BulkPick" || this.router.url == "/BulkTransactions/BulkPutAway" || this.router.url == "/BulkTransactions/BulkCount") && localStorage.getItem("verifyBulks") == "true"){
@@ -95,9 +92,9 @@ export class HeaderComponent {
                 menu: '',
                 value:AppRoutes.Dashboard
               })
-        
+
         }
-    
+
         if(val instanceof NavigationEnd){
           let res = val.url.substring(1);
           if(!res.includes('report-view')||!res.includes('report')){
@@ -105,20 +102,20 @@ export class HeaderComponent {
           }
 
           let withoutParam = res.split('?')[0]
-          let splittedArray = withoutParam.split('/'); 
+          let splittedArray = withoutParam.split('/');
             if(splittedArray[0]==='FlowrackReplenishment'){
               splittedArray[0]='FlowrackReplenish'
             }
-          
-          
-           
-           
+
+
+
+
           splittedArray.forEach((element,i) => {
           if(element==='createCountBatches' || element==='cycleCounts'){
             element='CycleCount'
           }
 
-         
+
 
           if(element==='Flowrack'){
             element='FlowrackReplenishment'
@@ -134,12 +131,12 @@ export class HeaderComponent {
             if(element===AppNames.InductionManager){
               element='IM'
             }
-            
+
           }
-      
-          
+
+
           this.titleService.setTitle(`LogixPro  ${element.toLowerCase() !='adminprefrences'? this.capitalizeFirstLetter(element).replace(/([a-z])([A-Z])/g, "$1 $2").replace(/([A-Z]+)([A-Z][a-z])/g, "$1 $2"):'Preferences'}`);
-            
+
           this.breadcrumbList.push({
             name: element.toLowerCase() !='adminprefrences'? this.capitalizeFirstLetter(element).replace(/([a-z])([A-Z])/g, "$1 $2").replace(/([A-Z]+)([A-Z][a-z])/g, "$1 $2"):'Preferences',
             menu: element,
@@ -154,9 +151,9 @@ export class HeaderComponent {
           }
         });
         this.updateBreadcrumbList();
-        
-        }   
-      
+
+        }
+
     });
    }
 
@@ -171,32 +168,19 @@ export class HeaderComponent {
     return string.charAt(0).toUpperCase() + string.slice(1);
   }
 
-  setImPreferences(){
-    const imPreference = localStorage.getItem('InductionPreference');
-    if (imPreference) {} 
-    else {
-      let paylaod = {};
-      this.iInductionManagerApi.PickToteSetupIndex(paylaod).subscribe(res => {
-      localStorage.setItem('InductionPreference', JSON.stringify(res.data.imPreference));
-    });
-    }
-
-  }
-
   ngOnInit(): void {
-   
-    
+
+
     this.loading = false;
     this.userData = JSON.parse(localStorage.getItem('user') ?? '{}');
     this.configUser = JSON.parse(localStorage.getItem('userConfig') ?? '{}');
     if(this.router.url.indexOf('globalconfig') > -1) this.ConfigUserLogin =  true;
     else {
-      this.ConfigUserLogin =  false; 
-      this.userData = this.authService.userData(); 
+      this.ConfigUserLogin =  false;
+      this.userData = this.authService.userData();
       if(this.userData.wsid) this.GetWorkStatPrinters();
-      this.setImPreferences();
     }
-    this.userData = this.authService.userData(); 
+    this.userData = this.authService.userData();
     this.checkCurState();
   }
 
@@ -208,8 +192,8 @@ export class HeaderComponent {
   }
 
   ngAfterViewInit() {
-    
-    this.sharedService.breadCrumObserver.subscribe((res: any) => { 
+
+    this.sharedService.breadCrumObserver.subscribe((res: any) => {
       this.statusTab = res.tab.textLabel;
       this.breadcrumbList[this.breadcrumbList.length-1].name = this.statusTab
     });
@@ -223,24 +207,24 @@ export class HeaderComponent {
     this.router.navigate(['/login']);
   }
 
-  breadCrumbClick(menu,index:any = null) { 
-    if(index != null) { 
-      let Url = "";  
+  breadCrumbClick(menu,index:any = null) {
+    if(index != null) {
+      let Url = "";
       for (let i = 0; i <= index; i++) {
-        if(this.breadcrumbList[i].menu!='') Url += this.breadcrumbList[i].value; 
+        if(this.breadcrumbList[i].menu!='') Url += this.breadcrumbList[i].value;
       }
       if((this.router.url == "/BulkTransactions/BulkPick" || this.router.url == "/BulkTransactions/BulkPutAway" || this.router.url == "/BulkTransactions/BulkCount") && localStorage.getItem("verifyBulks") == "true"){
         this.sharedService.verifyBulkTransBack();
         return;
       }
-      this.router.navigate([Url]); 
+      this.router.navigate([Url]);
       this.sharedService.BroadCastMenuUpdate(Url.toString());
-    }  
+    }
     if(!menu) {
-      // Reverts side bar to it's orignal state 
+      // Reverts side bar to it's orignal state
       this.router.navigate([AppRoutes.Dashboard]);
       this.sharedService.resetSidebar();
-      let filter = this.breadcrumbList.filter(e => e.name == "Dashboard"); 
+      let filter = this.breadcrumbList.filter(e => e.name == "Dashboard");
       if (filter.length == 0) {
         this.breadcrumbList.push({
           name:'Dashboard',
@@ -248,20 +232,20 @@ export class HeaderComponent {
           value:AppRoutes.Dashboard
         });
       }
-    }    
+    }
   }
 
-  logout(){    
+  logout(){
     if(this.authService.isConfigUser()){
       this.iGlobalConfigApi.configLogout().subscribe((res:any) => {
-        if (res.isExecuted) 
+        if (res.isExecuted)
         {
           this.localstorageService.clearLocalStorage();
           localStorage.removeItem('userConfig');
           localStorage.removeItem('isConfigUser');
           this.router.navigate(['/globalconfig']);
         }
-        else 
+        else
         {
           this.global.ShowToastr(ToasterType.Error,res.responseMessage, ToasterTitle.Error);
           console.log("configLogout",res.responseMessage);
@@ -273,7 +257,7 @@ export class HeaderComponent {
           this.localstorageService.clearLocalStorage();
           localStorage.setItem("logout", new Date().toDateString());
           window.location.href = "/#/login";
-        } 
+        }
         else {
           this.global.ShowToastr(ToasterType.Error,res.responseMessage, ToasterTitle.Error);
           console.log("Logout",res.responseMessage);
@@ -325,9 +309,9 @@ export class HeaderComponent {
     this.global.setCookie(`${userName}-Theme`, theme.toString(), 525600);
     this.stylesService.setStylesheet(stylesheet);
   }
- 
-   // Function to remove all items from localStorage except the specific item
- 
 
-  
+   // Function to remove all items from localStorage except the specific item
+
+
+
 }

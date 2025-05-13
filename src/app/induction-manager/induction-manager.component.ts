@@ -18,11 +18,11 @@ export class InductionManagerComponent implements OnInit {
   fieldNames:any;
   public iinductionManagerApi:IInductionManagerApiService;
   constructor(
-    private router: Router, 
+    private router: Router,
     private sharedService: SharedService,
     private authService: AuthService,
     public inductionManagerApi: InductionManagerApiService
-    ) { 
+    ) {
       this.iinductionManagerApi = inductionManagerApi;
     router.events
       .pipe(
@@ -32,35 +32,47 @@ export class InductionManagerComponent implements OnInit {
       .subscribe((events: RoutesRecognized[]) => {
         const prevRoute= events[0].urlAfterRedirects.split('/');
         const nextRoute = events[1].urlAfterRedirects.split('/');
-    
+
         if (prevRoute[1]== AppNames.InductionManager || nextRoute[1] == AppNames.InductionManager) {
           localStorage.setItem(RouteUpdateMenu.RouteFromInduction,StringConditions.True)
-         
+
         }else{
           localStorage.setItem(RouteUpdateMenu.RouteFromInduction,'false')
         }
-       
+
       });
   }
 
   ngOnInit(): void {
     this.userData = this.authService.userData();
+    this.setImPreferences();
     this.pickToteSetupIndex();
-   
+
+  }
+
+  setImPreferences(){
+    const imPreference = localStorage.getItem('InductionPreference');
+    if (imPreference) {}
+    else {
+      let paylaod = {};
+      this.iinductionManagerApi.PickToteSetupIndex(paylaod).subscribe(res => {
+        localStorage.setItem('InductionPreference', JSON.stringify(res.data.imPreference));
+      });
+    }
   }
 
   public userData: any;
   useInZonePickScreen:boolean = false;
   pickToteSetupIndex() {
-    let paylaod = { 
+    let paylaod = {
     }
     this.iinductionManagerApi.PickToteSetupIndex(paylaod).subscribe(res => {
         this.useInZonePickScreen = res.data.imPreference.useInZonePickScreen;
-        this.sharedService.BroadCastInductionMenuUpdate(this.useInZonePickScreen);   
+        this.sharedService.BroadCastInductionMenuUpdate(this.useInZonePickScreen);
     });
   }
 
-  updateMenu(menu = '', route = ''){  
+  updateMenu(menu = '', route = ''){
     this.sharedService.updateInductionAdminMenu({menu , route});
 
   }
