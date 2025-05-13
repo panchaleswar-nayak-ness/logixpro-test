@@ -220,7 +220,7 @@ zone:string;
     
 
     getConsolidationStatusClass(col: { colHeader: string; colDef: string }, element: RouteIDItem): string {
-      if (col.colDef === 'Consolidation Status') {
+      if (col.colDef === this.consolidationStatus) {
         switch (element[col.colHeader]) {
           case 'Initialized':
             return 'br-14 label px-3 f-16 label-blue2';
