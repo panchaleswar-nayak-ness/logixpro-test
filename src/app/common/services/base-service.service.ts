@@ -3,13 +3,14 @@ import { Injectable, Injector } from '@angular/core';
 import { environment } from '../../../environments/environment';
 import { Observable, lastValueFrom, observable } from 'rxjs';
 import { GlobalService } from './global.service';
-import { ToasterTitle, ToasterType } from '../constants/strings.constants';
+import { ToasterMessages, ToasterTitle, ToasterType } from '../constants/strings.constants';
 import { ReplaySubject } from 'rxjs';
 import { of } from 'rxjs';
-import { catchError, shareReplay, take, switchMap, map } from 'rxjs/operators';
+import { catchError, shareReplay, take, switchMap, map ,finalize} from 'rxjs/operators';
+import { throwError } from 'rxjs';
+import { SpinnerService } from "../../common/init/spinner.service";
 
-
-type Method = 'GET' | 'POST' | 'PUT' | 'DELETE';
+type Method = 'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH';
 
 export interface LinkedResource<T> {
   resource: T;
@@ -29,7 +30,8 @@ export class BaseService {
 
   constructor(
     private http: HttpClient,
-    private injector: Injector
+    private injector: Injector,
+    private spinnerService: SpinnerService,
   )
   {
     this.initializeApiUrl();
@@ -49,7 +51,18 @@ export class BaseService {
     }
   }
 
-  private request<T>(method: Method, endPoint: string, options: { body?: T; params?: HttpParams } = {}, headers?: HttpHeaders,observe:any = "body"): Observable<HttpResponse<T>> {
+  private request<T>(
+    method: Method,
+    endPoint: string,
+    options: { body?: T; params?: HttpParams } = {},
+    headers?: HttpHeaders,
+    observe: any = 'body',
+    spinnershow: boolean = true
+  ): Observable<HttpResponse<T>> {
+    if (spinnershow) {
+      this.spinnerService.show();
+    }
+  
     return this.apiUrl$.pipe(
       take(1),
       switchMap(apiUrl => {
@@ -59,10 +72,21 @@ export class BaseService {
           observe: 'response',
           withCredentials: true,
           headers: headers || this.GetHeaders()
-        });
+        }).pipe(
+          finalize(() => {
+            if (spinnershow) {
+              this.spinnerService.hide();
+            }
+          }),
+          catchError(error => {
+            this.injector.get(GlobalService).ShowToastr(ToasterType.Error, ToasterMessages.APIErrorMessage, ToasterTitle.Error);
+            return throwError(() => error);
+          })
+        );
       })
     );
   }
+  
 
   public GetEndpoint(rel: string, links: Link[]): string {
     let endpoint = "";
@@ -106,21 +130,30 @@ export class BaseService {
 
   }
 
-  async GetAsync<T>(endPoint: string, payload?, isLoader: boolean = false): Promise<HttpResponse<T>> {
+  async GetAsync<T>(
+    endPoint: string,
+    payload?: any,
+    isLoader: boolean = false,
+    spinnershow: boolean = true
+  ): Promise<HttpResponse<T>> {
     let queryParams = new HttpParams();
     if (payload != null) {
       for (let key in payload) {
-        if (payload[key] !== undefined) queryParams = queryParams.append(key, payload[key]);
+        if (payload[key] !== undefined) {
+          queryParams = queryParams.append(key, payload[key]);
+        }
       }
     }
   
     try {
-      return await lastValueFrom(this.request('GET', endPoint, { params: queryParams }));
+      return await lastValueFrom(
+        this.request('GET', endPoint, { params: queryParams }, undefined, 'body', spinnershow)
+      );
     } catch (error: any) {
-      // Return error response instead of throwing an exception
       return error as HttpResponse<T>;
     }
   }
+  
 
   async HttpPutAsync<T>(endPoint: string, model: T, isLoader: boolean = false): Promise<HttpResponse<T>> {
     return await lastValueFrom(this.request('PUT', endPoint,{body:model}));
@@ -168,6 +201,10 @@ export class BaseService {
 
   async PutAsync<T>(endPoint: string, reqPaylaod: T) {
     return await lastValueFrom(this.request<T>('PUT', endPoint, { body: reqPaylaod }));
+  }
+
+  async PatchAsync<T>(endPoint: string, reqPayload: T | null) {
+    return await lastValueFrom(this.request<T>('PATCH', endPoint, reqPayload ? { body: reqPayload } : {}));
   }
 
   DownloadFile(endPoint: string) : Observable<any> {

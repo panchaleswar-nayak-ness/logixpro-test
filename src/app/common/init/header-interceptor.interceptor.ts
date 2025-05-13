@@ -70,8 +70,13 @@ export class HeaderInterceptor implements HttpInterceptor {
       }
       throw err;
     } else if(err.status === 500) {
-      if(`${err.url}`.indexOf("insertnewprinter") > -1) this.global.ShowToastr(ToasterType.Error, err.error.ResponseMessage, ToasterTitle.Error);
-      this.spinnerService.hide();
+      if(`${err.url}`.indexOf("insertnewprinter") > -1){
+        this.global.ShowToastr(ToasterType.Error, err.error.ResponseMessage, ToasterTitle.Error);
+        this.spinnerService.hide();
+      }
+        else{
+          this.global.ShowToastr(ToasterType.Error, this.global.globalErrorMsg(), ToasterTitle.Error);
+      }
     } else if(err.status === 403) {
       const responseMessage = err.error?.ResponseMessage ? `(${err.error.ResponseMessage})` : '';
       const errorMessage = 'Unauthorize access ' + responseMessage;

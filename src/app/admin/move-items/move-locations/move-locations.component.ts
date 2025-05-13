@@ -56,6 +56,8 @@ export class MoveLocationsComponent {
   @Output() activeTrigger = new EventEmitter<any>();
 
   @Output() selectedWarehouseEmit= new EventEmitter<string>();
+  @Output() fromPageSizeEmit= new EventEmitter<number>();
+@Output() toPageSizeEmit= new EventEmitter<number>();
   
 
   constructor(
@@ -66,12 +68,6 @@ export class MoveLocationsComponent {
     this.adminApiService.getWarehouses().subscribe({
       next: (res: any) => {
         this.warehouses = ['ALL', ...res.data]; 
-//this.warehouses = res.data;
-        // if (this.warehouses.length > 0) {
-        //   this.selectedWarehouse = this.warehouses[0];
-        //   this.selectedWarehouseEmit.emit( this.selectedWarehouse);
-        // }
-        console.log(res.data);
         
       },
       error: (err: any) => {
@@ -84,15 +80,15 @@ export class MoveLocationsComponent {
   ngOnChanges(changes: SimpleChanges) {
     if (changes['moveFromFilter']) {
       this.paginator.pageIndex = 0;
+      if(this.paginator?.pageSize) this.fromPageSizeEmit.emit(this.paginator?.pageSize);
     }
-
+ 
     if (changes['moveToFilter']) {
       this.paginatorTo.pageIndex = 0;
+      if(this.paginator?.pageSize) this.toPageSizeEmit.emit(this.paginator?.pageSize);
     }
   }
-  
   onWarehouseSelect(warehouse: string) {
-    console.log(warehouse);
     if(warehouse=='ALL'){
       warehouse='';
     }
@@ -118,6 +114,8 @@ export class MoveLocationsComponent {
 
   sortChange(event) {
     this.sortChangeEmit.emit(event);
+    if(event.direction != '') this.paginator.pageIndex = 0;
+    if(this.paginator?.pageSize) this.fromPageSizeEmit.emit(this.paginator?.pageSize);
   }
   
   clearItemNum() {
@@ -141,6 +139,9 @@ export class MoveLocationsComponent {
 
   sortChangeToItems(event) {
     this.sortChangeToItemsEmit.emit(event);
+    if(event.direction != '') this.paginatorTo.pageIndex = 0;
+    if(this.paginator?.pageSize) this.toPageSizeEmit.emit(this.paginator?.pageSize);
+
   }
 
   handlePageEventTo(event) {

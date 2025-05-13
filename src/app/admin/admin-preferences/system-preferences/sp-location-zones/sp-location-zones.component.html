@@ -163,18 +163,63 @@
                     />
                   </mat-form-field>
                 </div>
-                <div class="col-xl-3" *ngFor="let field of formFields">
+                <div class="col-xl-3">
                   <mat-form-field
                     class="custom-form-field custom-form-field-bg-white w-100 mb-3"
                     appearance="outline"
                   >
-                    <mat-label>{{ field.label }}</mat-label>
+                    <mat-label>Carousel</mat-label>
                     <input
                       type="text"
-                      [(ngModel)]="i[field.label]"
+                      [(ngModel)]="i.label1"
                       (ngModelChange)="zoneChange(i, false)"
                       matInput
-                      maxlength="10"
+                      maxlength="20"
+                    />
+                  </mat-form-field>
+                </div>
+                <div class="col-xl-3">
+                  <mat-form-field
+                    class="custom-form-field custom-form-field-bg-white w-100 mb-3"
+                    appearance="outline"
+                  >
+                    <mat-label>Row</mat-label>
+                    <input
+                      type="text"
+                      [(ngModel)]="i.label2"
+                      (ngModelChange)="zoneChange(i, false)"
+                      matInput
+                      maxlength="20"
+                    />
+                  </mat-form-field>
+                </div>
+                <div class="col-xl-3">
+                  <mat-form-field
+                    class="custom-form-field custom-form-field-bg-white w-100 mb-3"
+                    appearance="outline"
+                  >
+                    <mat-label>Shelf</mat-label>
+                    <input
+                      type="text"
+                      [(ngModel)]="i.label3"
+                      (ngModelChange)="zoneChange(i, false)"
+                      matInput
+                      maxlength="20"
+                    />
+                  </mat-form-field>
+                </div>
+                <div class="col-xl-3">
+                  <mat-form-field
+                    class="custom-form-field custom-form-field-bg-white w-100 mb-3"
+                    appearance="outline"
+                  >
+                    <mat-label>Bin</mat-label>
+                    <input
+                      type="text"
+                      [(ngModel)]="i.label4"
+                      (ngModelChange)="zoneChange(i, false)"
+                      matInput
+                      maxlength="20"
                     />
                   </mat-form-field>
                 </div>

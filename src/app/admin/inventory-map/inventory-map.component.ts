@@ -31,7 +31,7 @@ import { AppNames, AppRoutes, } from 'src/app/common/constants/menu.constants';
 import { ContextMenuFiltersService } from 'src/app/common/init/context-menu-filters.service';
 import { Placeholders } from 'src/app/common/constants/strings.constants';
 import { StorageContainerManagementModalComponent } from '../dialogs/storage-container-management/storage-container-management.component';
-import { AccessLevelByGroupFunctions, ApiResponse, UserSession, WorkStationSetup } from 'src/app/common/types/CommonTypes';
+import { ApiResponse, EmployeeAccessLevel, UserSession, WorkStationSetup } from 'src/app/common/types/CommonTypes';
 @Component({
   selector: 'app-inventory-map',
   templateUrl: './inventory-map.component.html',
@@ -88,9 +88,9 @@ export class InventoryMapComponent implements OnInit {
   routeFromIM:boolean=false;
   isActiveTrigger:boolean =false;
   isStorageContainer :boolean =false;
+  isLocationControl :boolean =false; 
   assignedFunctions:any;
   unassignedFunctions:any;
-  isClearWholeLocationAvailable: boolean = false;
   routeFromOM:boolean=false;
   public displayedColumns: any ;
   public dataSource: any = [];
@@ -115,6 +115,7 @@ export class InventoryMapComponent implements OnInit {
   }
   userData: UserSession;
   payload: any;
+  employeeAccessLevel: EmployeeAccessLevel;
 
   searchAutocompleteList: any;
   public iAdminApiService: IAdminApiService;
@@ -208,22 +209,16 @@ export class InventoryMapComponent implements OnInit {
       startIndex: 0,
       endIndex: 20
     }
-
     this.OSFieldFilterNames();
     this.initializeApi();
     this.getColumnsData();
     this.companyInfo();
   }
   
-  public companyInfo() {
-    this.iAdminApiService.AccessLevelByGroupFunctions().subscribe((res: ApiResponse<AccessLevelByGroupFunctions>) => {
-      if (res.isExecuted && res.data) {
-        // storage container management access level
-         this.isStorageContainer =  res.data.accessstorageContainer;
-         // inv map clear whole locaiton  access level
-         this.isClearWholeLocationAvailable =   res.data.accessClearWholeLocation;
-      }
-    });
+  public async companyInfo() {
+
+    
+    this.employeeAccessLevel = await this.iAdminApiService.AccessLevelByGroupFunctions(false);
 
     this.iAdminApiService.WorkstationSetupInfo().subscribe((res: ApiResponse<WorkStationSetup>) => {
       if (res.isExecuted && res.data) 
@@ -428,7 +423,7 @@ export class InventoryMapComponent implements OnInit {
       autoFocus: DialogConstants.autoFocus,
       disableClose:true,
       data: {
-        isClearWholeLocationAvailable: this.isClearWholeLocationAvailable,
+        isClearWholeLocationAvailable: this.employeeAccessLevel.accessClearWholeLocation,
         mode: 'editInvMapLocation',
         itemList : this.itemList,
         detailData : event,

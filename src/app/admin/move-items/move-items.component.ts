@@ -336,6 +336,7 @@ export class MoveItemsComponent implements OnInit {
     this.displayedColumns.find((x, i) => { if(x === event.active) index = i; });
     this.sortCol = index;
     this.sortOrder = event.direction;
+    this.resetFromFilters(this.pageEvent?.pageSize);    
     this.getMoveItemList(StringConditions.MoveFrom);
   }
 
@@ -345,6 +346,7 @@ export class MoveItemsComponent implements OnInit {
     this.displayedColumns.find((x, i) => { if (x === event.active) index = i; });
     this.sortColTo = index;
     this.sortOrderTo = event.direction;
+    this.resetToFilters(this.pageEventTo?.pageSize);
     this.getMoveItemList(StringConditions.MoveTo);
   }
 
@@ -818,9 +820,9 @@ formatDateTimeToLocal(dateString) {
   optionSelected(filter : string) {
     if (this.tableType === StringConditions.MoveFrom) this.moveFromFilter = filter;
     else if(this.tableType === StringConditions.MoveTo) this.moveToFilter = filter;
-    this.resetFromFilters();
-    this.resetToFilters();
-    // this.resetPaginationFrom();
+    this.resetFromFilters(this.pageEvent?.pageSize);
+    this.resetToFilters(this.pageEventTo?.pageSize);
+
     this.getMoveItemList(this.tableType);  
     this.isActiveTrigger = false;
   }
@@ -866,14 +868,14 @@ formatDateTimeToLocal(dateString) {
     this.recordsFiltered = 0;
   }
 
-  resetFromFilters() {
+  resetFromFilters(pagesize:number = 10) {
     this.startRow = 0;
-    this.endRow = 10;
+    this.endRow = pagesize; // default 10
   }
 
-  resetToFilters() {
+  resetToFilters(pagesize:number = 10) {
     this.startRowTo = 0;
-    this.endRowTo = 10;
+    this.endRowTo = pagesize;// default 10
     this.viewModeTo = ResponseStrings.AllCaps;
   }
 

@@ -126,6 +126,8 @@ export class NonSuperBatchOrdersComponent implements OnInit, AfterViewInit {
     value?: string;
   }[] = [];
 
+  public disableNonSBInputs: boolean = false; // Disable inputs if true
+
   ngOnInit(): void {
     this.customPagination = {
       total: '',
@@ -346,6 +348,9 @@ export class NonSuperBatchOrdersComponent implements OnInit, AfterViewInit {
       },
     };
 
+    let totes = this.toteInputs.toArray();
+    this.disableNonSBInputs = true;
+
     this.iInductionManagerApi.PreferenceIndex().subscribe((res: any) => {
       if (res.data && res.isExecuted) {
         const values = res.data.imPreference;
@@ -357,7 +362,7 @@ export class NonSuperBatchOrdersComponent implements OnInit, AfterViewInit {
             .pipe(
               catchError((errResponse) => {
                 if (errResponse.error.statusCode === 400) {
-                  if(this.pickToteSuppressInfoMessages){
+                  if (this.pickToteSuppressInfoMessages) {
                     this.global.ShowToastr(
                       ToasterType.Error,
                       errResponse.error.responseMessage,
@@ -372,15 +377,19 @@ export class NonSuperBatchOrdersComponent implements OnInit, AfterViewInit {
                     ToasterTitle.Error,
                     1000
                   );
-                
-               }
-               element.toteScanned = '';
+
+                }
+                element.toteScanned = '';
+                this.disableNonSBInputs = false;
+                setTimeout(() => {
+                  totes[index].focus();
+                }, 0);
                 return throwError(errResponse);
               })
             )
             .subscribe((innerResponse: any) => {
               if (innerResponse.data && innerResponse.isExecuted) {
-                if(this.pickToteSuppressInfoMessages){
+                if (this.pickToteSuppressInfoMessages) {
                   this.global.ShowToastr(
                     ToasterType.Success,
                     innerResponse.responseMessage,
@@ -396,6 +405,7 @@ export class NonSuperBatchOrdersComponent implements OnInit, AfterViewInit {
 
                   if (orderIndex !== -1) {
                     // Update totalOrderQuantity with remainingQuantity
+                    this.disableNonSBInputs = false;
                     this.dataSource.filteredData[
                       orderIndex
                     ].transactionQuantity =
@@ -403,18 +413,23 @@ export class NonSuperBatchOrdersComponent implements OnInit, AfterViewInit {
                     this.dataSource.filteredData[orderIndex].zone =
                       innerResponse.data.zone;
                     element.toteScanned = '';
+                    setTimeout(() => {
+                      totes[index].focus();
+                    }, 0);
                     // Use setTimeout to focus on the toteScanned input box
                   }
 
                   // Retain focus on the current input element for further induction
                 } else {
                   // If no remaining quantity, remove the order row
-                  let updated = this.dataSource.filteredData.filter(
-                    (f) => f.orderNumber !== valueToInduct.orderNumber
-                  );
-
-                  this.rebind(updated, true);
-                  this.moveFocusToNextElement(index);
+                  this.disableNonSBInputs = false;
+                  setTimeout(() => {
+                    let updated = this.dataSource.filteredData.filter(
+                      (f) => f.orderNumber !== valueToInduct.orderNumber
+                    );
+                    this.rebind(updated, true);
+                    this.moveFocusToNextElement(index);
+                  }, 0);
                 }
               } else {
                 this.global.ShowToastr(
@@ -425,8 +440,17 @@ export class NonSuperBatchOrdersComponent implements OnInit, AfterViewInit {
                 );
               }
             });
+        } else {
+          this.disableNonSBInputs = false;
+          setTimeout(() => {
+            totes[index].focus();
+          }, 0);
         }
       } else {
+        this.disableNonSBInputs = false;
+        setTimeout(() => {
+          totes[index].focus();
+        }, 0);
         this.global.ShowToastr(
           ToasterType.Error,
           ToasterMessages.SomethingWentWrong,

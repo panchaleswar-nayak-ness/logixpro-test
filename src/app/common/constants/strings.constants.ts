@@ -1,4 +1,4 @@
-import { AccessLevelByGroupFunctions, WorkStationSetup } from "../types/CommonTypes";
+import { EmployeeAccessLevel, WorkStationSetup } from "../types/CommonTypes";
 
 export const StringAssignments = {
     WorkstationNotAssignedToZone: 'This workstation is not assigned to a zone',
@@ -207,7 +207,15 @@ export const ToasterMessages = {
     LocationDeleted: 'Location deleted successfully',
     DeleteFailed:"Delete Failed",
     FieldEmptyDefault:"Field cannot be empty. Default value has been applied.",
-    ZoneAndLocationNameNeedToBeSet:" “Zone and Location Name need to be set via the Preferences - Location Zones screen in order to save”"
+    ZoneAndLocationNameNeedToBeSet:" “Zone and Location Name need to be set via the Preferences - Location Zones screen in order to save”",
+    Consolidationzones:"Failed to load consolidation zones.",
+    Consolidationstatuscount:"Failed to load consolidation status count.",
+    RouteidCount:"Failed to load route id status count.",
+    ConsolidationThreshold:"Failed to update threshold.",
+    ConheaderData:"Failed to load con header list data.",
+    RequestReleaseFailed:"Request release failed.",
+    RequestReleaseSuccess:"Request release successfully.",
+    APIErrorMessage:"API request failed."
 }
 
 
@@ -655,9 +663,11 @@ export const defaultWorkstationSetup: WorkStationSetup = {
     ]
 };
 
-export const defaultAccessLevelByGroupFunctions: AccessLevelByGroupFunctions = {
-    accessClearWholeLocation: false,
-    accessstorageContainer: false
+export const defaultEmployeeAccessLevels: EmployeeAccessLevel ={
+    lastRefreshedDateTime : new Date(),
+    accessStorageContainer : false,
+    accessClearWholeLocation : false,
+    accessAddInvMapLocation: false
 }
 
 export const AccessLevel = {
@@ -674,3 +684,7 @@ export const AppLicensingDisplayedColumns = {
     AppURL: 'appurl',
     Save: 'save',
 };
+
+export const LocalStorageCacheKeys = {
+    EmployeeAccessLevels: 'employeeAccessLevels',
+}

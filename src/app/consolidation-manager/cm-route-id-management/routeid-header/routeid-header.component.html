@@ -1,0 +1,162 @@
+<mat-card class="mat-elevation-z g-card h-100">
+    <mat-card-content>
+      <div class="d-block d-xl-flex justify-content-between align-items-center mb-3 flex-wrap">
+        <div class="d-flex align-items-center">
+          <h2 class="col card-header-title d-flex align-items-center mb-xl-0 mb-3">
+            <div class="mat-icon-wrap me-3">
+              <span class="material-symbols-outlined"> dns </span>
+            </div>
+            <span>Route ID Management</span>
+          </h2>
+              </div>
+        <div>
+          
+        </div>
+      </div>
+  <div class="row g-3">
+  <div class="col-xxl-7">
+      <div class="row g-3">
+        <div class="col-xl-5">
+          <div class="card px-3 py-2 w-100 h-100">
+            <mat-form-field
+              class="action-dropdown my-auto w-100 flex-1"
+              appearance="outline"
+            >
+            <mat-label>Consolidation Zone</mat-label>
+            
+            <mat-select class="employees-action" [(ngModel)]="Zone" (selectionChange)="onSelectionChange($event.value)">
+              <mat-option *ngFor="let zone of consolidationZones" [value]="zone.resource.description">
+                {{ zone.resource.description }}
+              </mat-option>
+            </mat-select>
+            
+              <span class="material-symbols-outlined icon-expand-more">
+                expand_more
+              </span>
+            </mat-form-field>
+  
+          </div>
+        </div>
+
+<div class="col-xl-7">
+    <div class="card px-3 py-2">
+        <div class="d-flex title text-tertiary-900">
+          <span class="me-2">Auto Release</span>
+          <mat-icon class="material-symbols-outlined text-16 lh-24" matTooltip="Totes start releasing at the upper threshold and 
+          stop at the lower threshold (both set between 1-100)." matTooltipPosition="above">info</mat-icon>
+        </div>
+      
+        <div class="threshold-container d-flex align-items-center text-tertiary-900">
+          <label class="w-75">Upper Threshold: <strong>{{ upperThreshold }}</strong></label>
+          <mat-slider
+            min="0"
+            max="100"
+            step="1"
+            [value]="upperThreshold"
+            (input)="setUpperThreshold($event.value)"
+            color="primary">
+          </mat-slider>
+        </div>
+        
+        <div class="threshold-container d-flex align-items-center text-tertiary-900">
+          <label class="w-75">Lower Threshold: <strong>{{ lowerThreshold }}</strong></label>
+          <mat-slider
+            min="0"
+            max="100"
+            step="1"
+            [value]="lowerThreshold"
+            (input)="setLowerThreshold($event.value)"
+            color="primary">
+          </mat-slider>
+        </div>
+    </div>
+  </div>
+  <div class="col-xl-12">
+    <div class="d-md-flex d-block card px-3 pt-3 pb-2 w-100">
+      <div class="row align-items-center mb-2">
+        <div class="col-md-12">
+          <div class="d-flex justify-content-between align-items-center">
+            <div>
+              <h2 class="d-flex align-items-center text-tertiary-900 f-16 bold">
+                {{consolidationStatusCard}}
+               
+              </h2>
+            </div>
+          </div>
+        </div>
+      </div>
+  
+      <div class="row d-flex justify-content-between align-items-center">
+        <div *ngFor="let info of info; trackBy: trackByTitle" class="col-md-4">
+          
+          <div class="row d-flex justify-content-between align-items-center ">
+            <div class="d-flex  "> 
+            <mat-card class="mat-elevation-z g-card br-14"[class]="info.colorClass + ' w-100 mb-2'">
+                <mat-card-content>
+                <div class="row">
+                    <div class="col-12 title-wrap text-14">
+                        <strong> {{ info.title }} </strong>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12">
+                    <strong>{{ info.value }}</strong>
+                    </div>
+                </div>
+                </mat-card-content>
+            </mat-card>
+        </div>
+    </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+      </div>
+  
+      
+    </div>
+    <div class="col-xxl-5">
+  <div class="custom bg-50 br-14">
+    <div class="counter bg-tertiary-10 mt-0 p-3">
+      
+     
+        <h6 class="text-tertiary-900 mb-3 bold">{{routeIDStatusCountCard}}</h6>
+        <div class="row">
+        <div class="d-md-flex ga  p-12 d-block flex-wrap justify-content-center">
+          <div class="employees text-center mb-3">
+            <app-stats-circle [value]="StatusConNotStarted" title="Con. Not Started"></app-stats-circle>
+            
+          </div>
+          <div class="customer text-center mb-3">
+          <app-stats-circle [value]="StatusInConsolidation" title="In Consolidation"></app-stats-circle>
+          
+          </div>
+          <div class="customer text-center mb-3">
+            <app-stats-circle [value]="StatusReadyForRelease" title="Ready For release"></app-stats-circle>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+          <div class="d-md-flex d-block flex-wrap justify-content-center gap-20">
+            <div class="employees text-center mb-3 mb-xl-0">
+              <app-stats-circle [value]="StatusReleaseRequested" title="Release Requested"></app-stats-circle>
+            </div>
+          
+            <div class="customer text-center">
+              <app-stats-circle [value]="StatusActiveRelease" title="Active Release"></app-stats-circle>
+            
+            </div>
+            
+          </div>
+        </div>
+ 
+    </div>
+  </div>
+
+
+    </div>
+  </div>
+    </mat-card-content>
+  </mat-card>
+  

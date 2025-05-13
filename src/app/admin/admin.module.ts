@@ -194,6 +194,7 @@ import { FilterItemNumbersComponentCycleCount } from './cycle-counts/filter-item
 import { AuthService } from '../common/init/auth.service';
 import { StorageContainerManagementComponent } from './admin-preferences/workstation-preferences/wp-workstation-setup/storage-container-management/storage-container-management.component';
 import { StorageContainerManagementModalComponent } from './dialogs/storage-container-management/storage-container-management.component';
+import { RouteManagementDetailViewComponent } from './dialogs/route-management-detail-view/route-management-detail-view.component';
 import { CycleCountConfirmMessageDialogComponent } from './dialogs/cycle-count-confirm-message-dialog/cycle-count-confirm-message-dialog.component';
 
 export function initializeApp(authService: AuthService, fieldMappingService: FieldMappingService) {
@@ -397,6 +398,7 @@ export function initializeApp(authService: AuthService, fieldMappingService: Fie
         LookupBlindInductionComponent,
         StorageContainerManagementComponent,
         StorageContainerManagementModalComponent,
+        RouteManagementDetailViewComponent,
         CycleCountConfirmMessageDialogComponent
     ],
     imports: [

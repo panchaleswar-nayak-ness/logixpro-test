@@ -195,7 +195,7 @@
         <div class="col-xl-3">
           <div class="d-flex align-items-center gap-12 mb-2">
             <mat-form-field class="w-100 action-dropdown" appearance="outline">
-              <mat-label>Carousel cell size</mat-label>
+              <mat-label>{{this.fieldMappings?.carousel || this.placeholders.carouselFallback}} cell size</mat-label>
               <mat-select formControlName="carouselCellSize" class="employees-action">
                 <mat-option value="{{cell.cells}}" *ngFor="let cell of cellSizeList">{{cell.cells}}</mat-option>
               </mat-select>
@@ -263,7 +263,7 @@
         <div class="col-xl-3">
           <div class="d-flex align-items-center gap-12 mb-2">
             <mat-form-field class="w-100 action-dropdown" appearance="outline">
-              <mat-label>Carousel velocity</mat-label>
+              <mat-label>{{this.fieldMappings?.carousel || this.placeholders.carouselFallback}} velocity</mat-label>
               <mat-select formControlName="carouselVelocity" class="employees-action">
                 <mat-option value="{{velocity}}" *ngFor="let velocity of velocityCodeList">{{velocity}}</mat-option>
               </mat-select>

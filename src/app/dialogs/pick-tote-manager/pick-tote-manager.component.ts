@@ -27,6 +27,7 @@ import { IInductionManagerApiService } from 'src/app/common/services/induction-m
 import { InductionManagerApiService } from 'src/app/common/services/induction-manager-api/induction-manager-api.service';
 import { GlobalService } from 'src/app/common/services/global.service';
 import {  TableConstant ,ToasterTitle,ResponseStrings,Column,ToasterType,zoneType,DialogConstants,ColumnDef,UniqueConstants,Style,StringConditions, Placeholders} from 'src/app/common/constants/strings.constants';
+import { FilterOrder, FilterTransaction } from 'src/app/common/Model/pick-Tote-Manager';
 
 export interface PeriodicElement {
   name: string;
@@ -777,6 +778,8 @@ UserField10:string = this.fieldMappings.userField10;
     }
   }
   onSavedFilterChange(val: any) {
+    // Clear the order selection
+    this.clearOrderSelection();
     if (val.option.value) {
       this.isFilterAdd = true;
       this.isOrderByAdd = true;
@@ -805,6 +808,7 @@ UserField10:string = this.fieldMappings.userField10;
         .OrdersFilterZoneSelect(payload)
         .subscribe((res) => {
           if (res.isExecuted && res.data) {
+            this.filterBatchData =[];
             res.data.map((val) => {
               this.filterBatchData.push({
                 orderNumber: val.orderNumber,
@@ -1076,8 +1080,31 @@ UserField10:string = this.fieldMappings.userField10;
       this.orderByData = [];
       this.orderBydataSource = new MatTableDataSource<any>(this.orderByData);
       this.dataSource = new MatTableDataSource<any>(this.filterData);
+      this.reFreshOrderandTransactionData();
     }
   }
+reFreshOrderandTransactionData() {
+  // Clear the orders table
+  this.filterBatchData = [];
+  this.filterBatchOrders = new MatTableDataSource<FilterOrder>(this.filterBatchData);
+
+  // Clear the transactions tables
+  this.filterOrderTransactionSource = new MatTableDataSource<FilterTransaction>([]);
+  this.zoneOrderTransactionSource = new MatTableDataSource<FilterTransaction>([]);
+}
+clearOrderSelection() {
+  // Clear selection in filterBatchData
+  if (this.filterBatchData && this.filterBatchData.length) {
+    this.filterBatchData.forEach(order => order.isSelected = false);
+  }
+  // Clear selection in zone data if needed
+  if (this.filterBatchDataZone && this.filterBatchDataZone.length) {
+    this.filterBatchDataZone.forEach(order => order.isSelected = false);
+  }
+  // Clear the selectedOrders array
+  this.selectedOrders = [];
+}
+
   onChangeOrderAction(option: any) {
     if (option === 'fill_top_orders') {
       for (let index = 0; index < this.data.pickBatchQuantity; index++) {
@@ -1320,7 +1347,6 @@ UserField10:string = this.fieldMappings.userField10;
                                 this.global.globalErrorMsg(),
                                 ToasterTitle.Error
                             );
-                            console.log('PickBatchFilterUpdate', res.responseMessage);
                         }
                     });
             } else {
@@ -1342,7 +1368,6 @@ UserField10:string = this.fieldMappings.userField10;
                                 this.global.globalErrorMsg(),
                                 ToasterTitle.Error
                             );
-                            console.log('PickBatchFilterInsert', res.responseMessage);
                         }
                     });
             };
@@ -1370,7 +1395,6 @@ onSaveSingleOrder(element: any) {
                       this.global.globalErrorMsg(),
                       ToasterTitle.Error
                   );
-                  console.log('PickBatchOrderUpdate', res.responseMessage);
               }
           });
   } else {
@@ -1419,10 +1443,12 @@ isUniqueSeq(element: any) {
 }
 refreshFilterDataGrid() {
   this.pickBatchFilterOrderData(this.savedFilter.value, 'filter');
+  this.ordersFilterZoneSelect();
 }
 
 refreshOrderDataGrid() {
   this.pickBatchFilterOrderData(this.savedFilter.value, 'order');
+  this.ordersFilterZoneSelect();
 }
   onDeleteSingleFilter(element: any) {
     const dialogRef: any = this.global.OpenDialog(DeleteConfirmationComponent, {

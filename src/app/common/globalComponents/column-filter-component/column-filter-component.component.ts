@@ -18,7 +18,7 @@ export class ColumnFilterComponentComponent {
   @Input() searchByInput = new Subject<string>();
   @Input() searchAutocompleteList;
   @Input() showClearBtn: boolean = false;
-
+  @Input() showNoDataMessage: boolean = true;
   @Output() selectionChangeEvent = new EventEmitter<Event>();
   @Output() colKeyUpEnterEvent = new EventEmitter<Event>();
   @Output() searchKeyUpEnterEvent = new EventEmitter<Event>();

@@ -1,9 +1,9 @@
-import { Injectable } from '@angular/core';
-import { ApiFuntions } from '../ApiFuntions';
-import { AuthService } from 'src/app/common/init/auth.service';
-import { IInductionManagerApiService } from './induction-manager-api-interface';
-import { AddPickToteInductionFilter } from 'src/app/induction-manager/models/PickToteInductionModel';
-import { Observable } from 'rxjs';
+import {Injectable} from '@angular/core';
+import {ApiFuntions} from '../ApiFuntions';
+import {AuthService} from 'src/app/common/init/auth.service';
+import {IInductionManagerApiService} from './induction-manager-api-interface';
+import {AddPickToteInductionFilter} from 'src/app/induction-manager/models/PickToteInductionModel';
+import {Observable} from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -728,7 +728,7 @@ export class InductionManagerApiService implements IInductionManagerApiService {
     return this.Api.GetPickToteInductionFilter();
   }
 
-  public DeletePickToteInductionFilter(paramname : number[]) {
+  public DeletePickToteInductionFilter(paramname: number[]) {
     return this.Api.DeletePickToteInductionFilter(paramname);
   }
 

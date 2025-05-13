@@ -66,12 +66,6 @@ export class SpLocationZonesComponent implements OnInit {
     },
 
   ];
-  formFields = [
-    { label: 'Label1', ngModel: 'i.label1' },
-    { label: 'Label2', ngModel: 'i.label2' },
-    { label: 'Label3', ngModel: 'i.label3' },
-    { label: 'Label4', ngModel: 'i.label4' },
-  ];
   
   public userData: any;
   public zone: any;

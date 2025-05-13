@@ -1,0 +1,88 @@
+<div class="container-fluid p-0">
+  <div class="row">
+    <div class="col-12">
+      <mat-card class="mat-elevation-z g-card">
+        <mat-card-content>
+          <div class="row">
+            <app-icon-heading-component heading="{{HeadingRouteIDList}}" icon="format_list_bulleted">
+            </app-icon-heading-component>
+          </div>
+
+          <div class="header-filter-bar">
+            <div class="header-filter-options w-100 d-xl-flex d-lg-block align-items-center justify-content-between filter">
+                <app-column-filter-component 
+                    [tableColumns]="displayedColumns" 
+                    [searchCol]="columnSearch.searchColumn.colDef"
+                    (selectionChangeEvent)="onSelectionChange(filterCmp.searchCol)"
+                    (colKeyUpEnterEvent)="searchColumn()"
+                    (searchKeyUpEvent)="columnSearch.searchValue = $event"
+                    (searchKeyUpEnterEvent)="searchData()"
+                    (clearInputFieldEvent)="onClearFilter()"
+                    [searchString]="this.columnSearch.searchValue"
+                    [searchAutocompleteList]="this.searchAutocompleteList"
+                    [showNoDataMessage]="false"
+                    >
+                </app-column-filter-component>
+            </div>
+          </div>
+
+          <div class="card br-14 table-responsive my-3"  *ngIf="hasValidColumns"
+            >
+            <ng-scrollbar class="mat-table-scrollbar scroll-bar min-max-height-table" track="all" [autoHeightDisabled]="false" style="min-height:300px">
+              <table mat-table [dataSource]="dataSource" matSort
+                     class="custom-table g-card-table employee-location-table w-100"
+                     (matSortChange)="announceSortChange($event)">
+
+                <ng-container matColumnDef="{{col.colHeader}}" *ngFor="let col of displayedColumns; let indexOfelement=index;">
+                  <th class="header container-table-header" mat-header-cell *matHeaderCellDef mat-sort-header>
+                    {{ col.colDef }}
+                  </th>
+                  <td class="container-table-data" mat-cell *matCellDef="let element"
+                      (contextmenu)="onContextMenu($event, element[col.colHeader], col.colDef)">
+                    <span [ngClass]="getConsolidationStatusClass(col, element)">
+                      {{ element[col.colHeader] }}
+                    </span>
+                  </td>
+                </ng-container>
+
+                <ng-container matColumnDef="actions" stickyEnd>
+                  <th class="actionContainer-Header" *matHeaderCellDef></th>
+                  <td mat-cell *matCellDef="let seletedRecord" class="actionContainerdata">
+                    <button mat-icon-button [matMenuTriggerFor]="appMenu" aria-label="" [ngClass]="{'active-btn':seletedRecord.selected}" class="circle-icon-o" appearance="outline">
+                      <mat-icon>more_horiz</mat-icon>
+                    </button>
+
+                    <mat-menu #appMenu="matMenu">
+                      <button mat-menu-item (click)="edit(seletedRecord)">View Details</button>
+                      <!-- Conditionally show the Request Release button -->
+                      <button mat-menu-item 
+                      *ngIf="seletedRecord['RouteIDStatus'] === 'In Consolidation'" 
+                      (click)="RequestRelease(seletedRecord)">
+                Request Release
+              </button>
+                    </mat-menu>
+                  </td>
+                </ng-container>
+
+                <tr class="mat-row" *matNoDataRow (contextmenu)="onContextMenu($event, undefined, '')">
+                  <td class="mat-cell border" [attr.colspan]="columnValues.length">No data available in table.</td>
+                </tr>
+
+                <mat-header-row *matHeaderRowDef="columnValues; sticky: true" class="border"></mat-header-row>
+                <mat-row *matRowDef="let row; columns: columnValues;" ></mat-row>
+              </table>
+            </ng-scrollbar>
+          </div>
+
+          <div class="table-pagination d-flex justify-content-start align-items-center" 
+            >
+            <mat-paginator [length]="this.customPagination.total" [pageSize]="10" showFirstLastButtons [pageSizeOptions]="[10, 20, 100]" (page)="handlePageEvent($event)"></mat-paginator>
+          </div>
+
+        </mat-card-content>
+      </mat-card>
+    </div>
+  </div>
+</div>
+
+<div></div>

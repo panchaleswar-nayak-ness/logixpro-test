@@ -518,5 +518,15 @@ export class GlobalService {
   jsonify(value) {
     return JSON.parse(value);
   }
-
+   
+  formatDateToYyyyMmDd(value: string | Date): string | null {
+    const parsedDate = new Date(value);
+    if (!isNaN(parsedDate.getTime())) {
+      const year = parsedDate.getFullYear();
+      const month = String(parsedDate.getMonth() + 1).padStart(2, '0');
+      const day = String(parsedDate.getDate()).padStart(2, '0');
+      return `${year}-${month}-${day}`;
+    }
+    return null;
+  }
 }

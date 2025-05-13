@@ -80,7 +80,8 @@ export class SideNavComponent implements OnInit {
     // Vector (Stroke)
     { icon: 'analytics', title: 'Reporting ', route: '/ConsolidationManager/Reports', permission: 'Consolidation Mgr Admin' },
     { icon: 'view_module', title: 'Order Status', route: '/ConsolidationManager/OrderStatus', paramsObj: { IsOrderStatus: true }, permission: 'Consolidation Order Status' },
-    { icon: 'schema', title: 'Markout', route: '/ConsolidationManager/Markout', permission: 'Markout Process' }
+    { icon: 'schema', title: 'Markout', route: '/ConsolidationManager/Markout', permission: 'Markout Process' },
+    { icon: 'dns', title: 'Route ID Management', route: '/ConsolidationManager/RouteIDM', permission: 'RouteID Management' }
     //  flex_wrap
   ];
   inductionAdminMenus: any = [

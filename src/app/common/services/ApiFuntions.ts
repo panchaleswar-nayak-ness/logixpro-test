@@ -11,6 +11,7 @@ import {
 } from 'src/app/consolidation-manager/cm-markout/models/markout-model';
 import { AddPickToteInductionFilter } from 'src/app/induction-manager/models/PickToteInductionModel';
 import { InventoryMap, UpdateSCReq } from '../Model/storage-container-management';
+import {IQueryParams} from '../../app/../consolidation-manager/cm-route-id-management/routeid-list/routeid-IQueryParams'
 
 @Injectable({
   providedIn: 'root',
@@ -2339,6 +2340,34 @@ export class ApiFuntions {
 
   public async createInventoryMapAsync(body: InventoryMap) {
     return await this.ApiBase.PostAsync(`/Admin/inventorymap`, body);
+  }
+
+  public  GetConZones() {
+    return this.ApiBase.GetAsync(`/Consolidation/Zones`);
+  }
+
+  public async GetSelectedConZoneData(ConZone: string) {
+    return await this.ApiBase.GetAsync(`/Consolidation/ZoneStatus/${ConZone}`);
+  }
+
+  public async GetSelectedConZoneRouteIDCount(ConZone: string) {
+    return await this.ApiBase.GetAsync(`/Consolidation/Zone/${ConZone}/RoutesStatus`);
+  }
+
+  public async updateSelectedConZoneData(ConZone,body: any) {
+    return await this.ApiBase.PutAsync(`/Consolidation/RouteThresholds/${ConZone}`,body);
+  }
+
+  public async GetSelectedConZoneConHeadersData(ConZone: string,body:IQueryParams) {
+    return await this.ApiBase.GetAsync(`/Consolidation/Routes/${ConZone}`, body, false, false);
+  }
+
+  public async GetRouteIDDetailsData(RouteID: string) {
+    return await this.ApiBase.GetAsync(`/Consolidation/Route/${RouteID}`);
+  }
+ 
+  public async ConHeadersRequestRelease(routeId: string) {
+    return await this.ApiBase.PatchAsync(`/Consolidation/Route/${routeId}/RequestRelease`,null);
   }
 
 }

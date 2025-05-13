@@ -1,11 +1,12 @@
-import { Component, OnInit } from '@angular/core';
-import { ToasterTitle, ToasterType } from 'src/app/common/constants/strings.constants';
+import { Component, Input, OnInit } from '@angular/core';
+import { defaultEmployeeAccessLevels, defaultWorkstationSetup, ToasterTitle, ToasterType } from 'src/app/common/constants/strings.constants';
 import { AuthService } from 'src/app/common/init/auth.service';
 import { IAdminApiService } from 'src/app/common/services/admin-api/admin-api-interface';
 import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.service';
 import { GlobalService } from 'src/app/common/services/global.service';
 import { IGlobalConfigApi } from 'src/app/common/services/globalConfig-api/global-config-api-interface';
 import { GlobalConfigApiService } from 'src/app/common/services/globalConfig-api/global-config-api.service';
+import { ApiResponse } from 'src/app/common/types/CommonTypes';
 
 @Component({
   selector: 'app-wp-ws-workstation-settings',
@@ -13,6 +14,8 @@ import { GlobalConfigApiService } from 'src/app/common/services/globalConfig-api
   styleUrls: ['./wp-ws-workstation-settings.component.scss']
 })
 export class WpWsWorkstationSettingsComponent implements OnInit {
+  @Input() workstationSetup = defaultWorkstationSetup;
+  @Input() employeeAccessLevels = defaultEmployeeAccessLevels;
   listReportPrinter:any;
   listLabelPrinter:any;
   public iAdminApiService: IAdminApiService;
@@ -44,15 +47,15 @@ export class WpWsWorkstationSettingsComponent implements OnInit {
         this.companyObj.scanPuts = res.data.scanVerifyPutAways;
         this.companyObj.quickPick = res.data.pfSettings.filter((x:any) => x.pfName == "Quick Pick")[0].pfSetting == 1 ? true : false;
         this.companyObj.defQuickPick = res.data.pfSettings.filter((x:any) => x.pfName == "Default Quick Pick")[0].pfSetting == 1 ? true : false;
+        this.companyObj.locationControl = res.data.locationControl;
       }
       else {
         this.global.ShowToastr(ToasterType.Error, this.global.globalErrorMsg(), ToasterTitle.Error);
-        console.log("AdminCompanyInfo", res.responseMessage);
       }
     })
   }
 
-  payload() {
+  savePrefs() {
     const payload: any = {
       "cartonFlowID": "",
       "podID": "",
@@ -63,6 +66,7 @@ export class WpWsWorkstationSettingsComponent implements OnInit {
       "printLabelLocation":this.companyObj.printLabelLocation,
       "quickPick": this.companyObj.quickPick,
       "defQuickPick": this.companyObj.defQuickPick,
+      "locationControl": this.workstationSetup.locationControl
     }
     this.saveForm(payload);
   }

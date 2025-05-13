@@ -19,6 +19,9 @@ import { MarkoutListComponent } from './cm-markout/markout-list/markout-list.com
 import { MarkoutSearchComponent } from './cm-markout/markout-search/markout-search.component';
 import { MarkoutStatusComponent } from './cm-markout/markout-status/markout-status.component';
 import { PreferencesMarkoutComponent } from './consolidation-preferences/preferences-markout/preferences-markout.component';
+import { CmRouteIdManagementComponent } from './cm-route-id-management/cm-route-id-management.component';
+import { RouteidListComponent } from './cm-route-id-management/routeid-list/routeid-list.component';
+import { RouteidHeaderComponent } from './cm-route-id-management/routeid-header/routeid-header.component';
 import { CmMarkoutNewComponent } from './cm-markout-new/cm-markout-new.component';
 import { MarkoutNewPickTotesComponent } from './cm-markout-new/markout-new-pick-totes/markout-new-pick-totes.component';
 import { MarkoutNewPickLinesComponent } from './cm-markout-new/markout-new-pick-lines/markout-new-pick-lines.component';
@@ -42,6 +45,9 @@ import { ToteIdDetailsComponent } from './cm-markout-new/dialogs/tote-id-details
         MarkoutStatusComponent,
         MarkoutListComponent,
         PreferencesMarkoutComponent,
+        CmRouteIdManagementComponent,
+        RouteidListComponent,
+        RouteidHeaderComponent,
         CmMarkoutNewComponent,
         MarkoutNewPickTotesComponent,
         MarkoutNewPickLinesComponent,

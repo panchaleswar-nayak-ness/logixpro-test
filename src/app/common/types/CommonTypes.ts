@@ -93,6 +93,7 @@ export interface FieldMappingAlias {
     consolidationProgress: string;
     routeIdStatusCountCard: string;
     consolidationStatusCard: string;
+    'con.HeaderList':string;
 }
 
 export interface OSFieldFilterNames {
@@ -320,7 +321,15 @@ export interface SystemPreference {
     requireHotReasons: boolean;
 }
 
+//THis interface is only used when retrieving data from the server
 export interface AccessLevelByGroupFunctions {
     accessClearWholeLocation: boolean;
     accessstorageContainer: boolean;
+}
+
+export interface EmployeeAccessLevel {
+    lastRefreshedDateTime : Date;
+    accessStorageContainer : boolean;
+    accessClearWholeLocation : boolean;
+    accessAddInvMapLocation: boolean;
 }

@@ -26,6 +26,7 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { CdkTableModule } from '@angular/cdk/table';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatExpansionModule } from '@angular/material/expansion';
+import { MatSliderModule } from '@angular/material/slider';
 
 @NgModule({
     exports: [
@@ -56,7 +57,8 @@ import { MatExpansionModule } from '@angular/material/expansion';
         CdkTableModule,
         MatDatepickerModule,
         MatNativeDateModule,
-        MatExpansionModule
+        MatExpansionModule,
+        MatSliderModule,
     ]
 })
 export class MaterialModule { }

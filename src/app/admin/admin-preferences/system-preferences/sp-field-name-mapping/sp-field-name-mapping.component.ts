@@ -62,7 +62,8 @@ export class SpFieldNameMappingComponent implements OnInit {
       routeIdStatus: '',
       consolidationProgress: '',
       routeIdStatusCountCard: '',
-      consolidationStatusCard: ''
+      consolidationStatusCard: '',
+      'con.HeaderList':''
     }
   }
 
@@ -101,7 +102,8 @@ export class SpFieldNameMappingComponent implements OnInit {
       routeIdStatus: this.columns.routeIdStatus,
       consolidationProgress: this.columns.consolidationProgress,
       routeIdStatusCountCard: this.columns.routeIdStatusCountCard,
-      consolidationStatusCard: this.columns.consolidationStatusCard
+      consolidationStatusCard: this.columns.consolidationStatusCard,
+      'con.HeaderList':this.columns['con.HeaderList']
     };
     
     const isEmptyOrWhitespace = (value: string) => !value || value.trim().length === 0;

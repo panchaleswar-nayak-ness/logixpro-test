@@ -138,6 +138,7 @@
                   matInput
                   [(ngModel)]="element.toteScanned"
                   (keyup.enter)="onEnter(element, i)"
+                  [disabled]="disableSBInputs"
                 />
               </mat-form-field>
             </td>

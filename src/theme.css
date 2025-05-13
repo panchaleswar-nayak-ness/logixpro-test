@@ -2365,7 +2365,8 @@ td.mat-footer-cell {
 }
 
 .mat-progress-bar-buffer {
-  background-color: #d5cae9
+  /* background-color: #d5cae9 */
+  background-color: var(--clr-tertiary-50);
 }
 
 .mat-progress-bar-fill::after {
@@ -2615,7 +2616,7 @@ td.mat-footer-cell {
 .mat-slider.mat-primary .mat-slider-track-fill,
 .mat-slider.mat-primary .mat-slider-thumb,
 .mat-slider.mat-primary .mat-slider-thumb-label {
-  background-color: rgba(var(--clr-primary-rgb-900), 0.6)
+  background-color: rgba(var(--clr-primary-rgb-900), 1)
 }
 
 .mat-slider.mat-primary .mat-slider-thumb-label-text {
