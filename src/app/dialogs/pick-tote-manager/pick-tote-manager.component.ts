@@ -26,8 +26,8 @@ import { MatSort } from '@angular/material/sort';
 import { IInductionManagerApiService } from 'src/app/common/services/induction-manager-api/induction-manager-api-interface';
 import { InductionManagerApiService } from 'src/app/common/services/induction-manager-api/induction-manager-api.service';
 import { GlobalService } from 'src/app/common/services/global.service';
-import {  TableConstant ,ToasterTitle,ResponseStrings,Column,ToasterType,zoneType,DialogConstants,ColumnDef,UniqueConstants,Style,StringConditions, Placeholders} from 'src/app/common/constants/strings.constants';
-import { FilterOrder, FilterTransaction } from 'src/app/common/Model/pick-Tote-Manager';
+import {  TableConstant ,ToasterTitle,ResponseStrings,Column,ToasterType,zoneType,DialogConstants,ColumnDef,UniqueConstants,Style,StringConditions, Placeholders, ToasterMessages} from 'src/app/common/constants/strings.constants';
+import { FilterOrder, FilterTransaction, SavedFilterChangeEvent, FilterData, OrderData } from 'src/app/common/Model/pick-Tote-Manager';
 
 export interface PeriodicElement {
   name: string;
@@ -475,7 +475,6 @@ UserField10:string = this.fieldMappings.userField10;
         );
       } else {
         this.global.ShowToastr(ToasterType.Error, this.global.globalErrorMsg(), ToasterTitle.Error);
-        console.log('PickBatchZonesSelect', res.responseMessage);
       }
     });
   }
@@ -525,7 +524,6 @@ UserField10:string = this.fieldMappings.userField10;
             this.global.globalErrorMsg(),
             ToasterTitle.Error
           );
-          console.log('PickBatchFilterTypeAhead', res.responseMessage);
         }
       });
   }
@@ -582,7 +580,7 @@ UserField10:string = this.fieldMappings.userField10;
     } else {
       this.orderByData.push({
         sequence: this.orderBySeq + 1,
-        field: ColumnDef.Emergency,
+        field: Column.OrderNumber,
         sortOrder: 'DESC',
         isSaved: false,
       });
@@ -681,7 +679,6 @@ UserField10:string = this.fieldMappings.userField10;
                   this.global.globalErrorMsg(),
                   ToasterTitle.Error
                 );
-                console.log('PickBatchDefaultFilterMark', res.responseMessage);
               }
             });
         }
@@ -704,7 +701,6 @@ UserField10:string = this.fieldMappings.userField10;
               this.global.globalErrorMsg(),
               ToasterTitle.Error
             );
-            console.log('PickBatchDefaultFilterClear', res.responseMessage);
           }
         });
     }
@@ -724,10 +720,9 @@ UserField10:string = this.fieldMappings.userField10;
           } else {
             this.global.ShowToastr(
               ToasterType.Error,
-              'No filter is marked as default.',
-              'Warning!'
+              ToasterMessages.NoDefaultFilter,
+              ToasterTitle.Warning
             );
-            console.log('PickBatchDefaultFilterSelect', res.responseMessage);
           }
           const matSelect: MatSelect = option.source;
           matSelect.writeValue(null);
@@ -770,14 +765,13 @@ UserField10:string = this.fieldMappings.userField10;
                   this.global.globalErrorMsg(),
                   ToasterTitle.Error
                 );
-                console.log('PickBatchFilterBatchDelete', res.responseMessage);
               }
             });
         }
       });
     }
   }
-  onSavedFilterChange(val: any) {
+  onSavedFilterChange(val: SavedFilterChangeEvent) {
     // Clear the order selection
     this.clearOrderSelection();
     if (val.option.value) {
@@ -790,6 +784,13 @@ UserField10:string = this.fieldMappings.userField10;
       this.ordersFilterZoneSelect();
     }
   }
+  private resetPagination(paginator: MatPaginator) {
+    if (paginator) {
+      paginator.firstPage();
+      paginator.pageSize = 10;
+    }
+  }
+
   ordersFilterZoneSelect(zone = '', rp = false, type = '') {
     let payload;
     this.filterBatchDataZone = [];
@@ -829,17 +830,17 @@ UserField10:string = this.fieldMappings.userField10;
               });
               this.selectedOrders = [...new Set(this.selectedOrders)];
             }
-            this.filterBatchOrders = new MatTableDataSource<any>(
+            this.filterBatchOrders = new MatTableDataSource<FilterOrder>(
               this.filterBatchData
             );
             this.filterBatchOrders.paginator = this.filterBatchOrder;
+            this.resetPagination(this.filterBatchOrder);
           } else {
             this.global.ShowToastr(
               ToasterType.Error,
               this.global.globalErrorMsg(),
               ToasterTitle.Error
             );
-            console.log('OrdersFilterZoneSelect', res.responseMessage);
           }
         });
     } else {
@@ -874,13 +875,12 @@ UserField10:string = this.fieldMappings.userField10;
                 this.selectedOrders.push(ele.orderNumber);
               });
               this.selectedOrders = [...new Set(this.selectedOrders)];
-             
-             // this.allSelectOrders = this.selectedOrders;
             }
-            this.filterBatchOrdersZone = new MatTableDataSource<any>(
+            this.filterBatchOrdersZone = new MatTableDataSource<FilterOrder>(
               this.filterBatchDataZone
             );
             this.filterBatchOrdersZone.paginator = this.zoneBatchOrder;
+            this.resetPagination(this.zoneBatchOrder);
             this.tabIndex = 1;
           } else {
             this.global.ShowToastr(
@@ -888,7 +888,6 @@ UserField10:string = this.fieldMappings.userField10;
               this.global.globalErrorMsg(),
               ToasterTitle.Error
             );
-            console.log('OrdersFilterZoneSelect', res.responseMessage);
           }
         });
     }
@@ -922,10 +921,9 @@ UserField10:string = this.fieldMappings.userField10;
     } else if (this.selectedOrders.length >= this.data.pickBatchQuantity) {
       this.global.ShowToastr(
         ToasterType.Error,
-        'No open totes in batch',
-        'Batch is Filled.'
+        ToasterMessages.NoOpenTote,
+        ToasterTitle.BatchFilled
       );
-      console.log('includes');
     } else {
       this.filterBatchData.forEach((v) => {
         if (this.selectedOrders.includes(v.orderNumber)) {
@@ -964,7 +962,6 @@ UserField10:string = this.fieldMappings.userField10;
             this.global.globalErrorMsg(),
             ToasterTitle.Error
           );
-          console.log('PickToteTransDT', res.responseMessage);
         }
       });
     }
@@ -1031,7 +1028,6 @@ UserField10:string = this.fieldMappings.userField10;
             this.global.globalErrorMsg(),
             ToasterTitle.Error
           );
-          console.log('PickToteTransDT', res.responseMessage);
         }
       });
     }
@@ -1047,7 +1043,7 @@ UserField10:string = this.fieldMappings.userField10;
                 if (target === 'filter') {
                     this.filterData = [];
                     this.pickBatchFilter = res.data.pickBatchFilter;
-                    if (!this.pickBatchFilter) {
+                    if (Array.isArray(this.pickBatchFilter) && this.pickBatchFilter.length === 0) {
                         this.onAddFilter();
                     } else {
                         this.onAddFilter(this.pickBatchFilter);
@@ -1055,7 +1051,7 @@ UserField10:string = this.fieldMappings.userField10;
                 } else if (target === 'order') {
                     this.orderByData = [];
                     this.pickBatchOrder = res.data.pickBatchOrder;
-                    if (!this.pickBatchOrder) {
+                    if (Array.isArray(this.pickBatchOrder) && this.pickBatchOrder.length === 0) {
                       this.onAddOrderBy(this.orderByData);
                     }
                     else{
@@ -1065,25 +1061,29 @@ UserField10:string = this.fieldMappings.userField10;
             } else {
                 this.global.ShowToastr(
                     ToasterType.Error,
-                    this.global.globalErrorMsg(),
+                    res.responseMessage ?? this.global.globalErrorMsg(),
                     ToasterTitle.Error
                 );
-                console.log('PickBatchFilterOrderData', res.responseMessage);
             }
         });
 }
-  savedFilClosed() {
-    if (!this.savedFilter.value) {
-      this.isFilterAdd = false;
-      this.isOrderByAdd = false;
-      this.filterData = [];
-      this.orderByData = [];
-      this.orderBydataSource = new MatTableDataSource<any>(this.orderByData);
-      this.dataSource = new MatTableDataSource<any>(this.filterData);
-      this.reFreshOrderandTransactionData();
+  savedFilClosed(): void {
+    if (!this.savedFilter?.value) {
+      this.resetFilterAndOrderData();
     }
   }
-reFreshOrderandTransactionData() {
+
+  private resetFilterAndOrderData(): void {
+    this.isFilterAdd = false;
+    this.isOrderByAdd = false;
+    this.filterData = [];
+    this.orderByData = [];
+    this.orderBydataSource = new MatTableDataSource<OrderData>(this.orderByData);
+    this.dataSource = new MatTableDataSource<FilterData>(this.filterData);
+    this.refreshOrderAndTransactionData();
+  }
+
+  refreshOrderAndTransactionData() {
   // Clear the orders table
   this.filterBatchData = [];
   this.filterBatchOrders = new MatTableDataSource<FilterOrder>(this.filterBatchData);
@@ -1198,7 +1198,6 @@ clearOrderSelection() {
             this.global.globalErrorMsg(),
             ToasterTitle.Error
           );
-          console.log('PickToteTransDT', res.responseMessage);
         }
       });
     }
@@ -1232,7 +1231,6 @@ clearOrderSelection() {
               this.global.globalErrorMsg(),
               ToasterTitle.Error
             );
-            console.log('PickToteTransDT', res.responseMessage);
           }
         });
       } else {
@@ -1269,7 +1267,6 @@ clearOrderSelection() {
             this.global.globalErrorMsg(),
             ToasterTitle.Error
           );
-          console.log('PickToteTransDT', res.responseMessage);
         }
       });
     }
@@ -1303,7 +1300,6 @@ clearOrderSelection() {
               this.global.globalErrorMsg(),
               ToasterTitle.Error
             );
-            console.log('PickToteTransDT', res.responseMessage);
           }
         });
       } else {
@@ -1419,7 +1415,6 @@ onSaveSingleOrder(element: any) {
                       this.global.globalErrorMsg(),
                       ToasterTitle.Error
                   );
-                  console.log('PickBatchOrderInsert', res.responseMessage);
               }
           });
   }
@@ -1485,7 +1480,6 @@ refreshOrderDataGrid() {
                 this.global.globalErrorMsg(),
                 ToasterTitle.Error
               );
-              console.log('PickBatchFilterDelete', res.responseMessage);
             }
           });
       }
@@ -1528,7 +1522,6 @@ refreshOrderDataGrid() {
                 this.global.globalErrorMsg(),
                 ToasterTitle.Error
               );
-              console.log('PickBatchOrderDelete', res.responseMessage);
             }
           });
       }
@@ -1609,7 +1602,6 @@ refreshOrderDataGrid() {
               );
             } else {
               this.global.ShowToastr(ToasterType.Error, res.responseMessage, ToasterTitle.Error);
-              console.log('PickBatchZoneDefaultMark', res.responseMessage);
             }
           });
       }

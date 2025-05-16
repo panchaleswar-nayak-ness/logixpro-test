@@ -60,3 +60,27 @@ export interface FilterOrder {
     exportedBy?: string;
     statusCode?: string;
   }
+
+export interface SavedFilterChangeEvent {
+  option: {
+    value: string;
+  };
+}
+
+export interface FilterData {
+  sequence: number;
+  field: string;
+  criteria: string;
+  value: string;
+  andOr: string;
+  isSaved: boolean;
+  is_db?: boolean;
+}
+
+export interface OrderData {
+  id?: number;
+  sequence: number;
+  field: string;
+  sortOrder: string;
+  isSaved: boolean;
+}
