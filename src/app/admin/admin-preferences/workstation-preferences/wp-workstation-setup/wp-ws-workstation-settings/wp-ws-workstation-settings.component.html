@@ -64,25 +64,26 @@
 
       <div class="col">
         <div class="d-flex justify-content-between mb-3">
-          Scan Verify Put Aways<mat-slide-toggle [(ngModel)]="companyObj.scanPicks" (change)="savePrefs()" color="primary">
+          Scan Verify Put Aways<mat-slide-toggle [(ngModel)]="companyObj.scanPuts" (change)="savePrefs()" color="primary">
           </mat-slide-toggle>
         </div>
         <div class="d-flex justify-content-between mb-3">
-          Scan Verify Picks<mat-slide-toggle [(ngModel)]="companyObj.scanCounts" (change)="savePrefs()" color="primary">
+          Scan Verify Picks<mat-slide-toggle [(ngModel)]="companyObj.scanPicks" (change)="savePrefs()" color="primary">
           </mat-slide-toggle>
         </div>
         <div class="d-flex justify-content-between mb-3">
-          Scan Verify Counts <mat-slide-toggle [(ngModel)]="companyObj.scanPuts" (change)="savePrefs()" color="primary">
+          Scan Verify Counts <mat-slide-toggle [(ngModel)]="companyObj.scanCounts" (change)="savePrefs()" color="primary">
           </mat-slide-toggle>
         </div>
-        <div class="d-flex justify-content-between mb-3">
+        <!-- Moved to System Perferences -->
+        <!-- <div class="d-flex justify-content-between mb-3">
           Allow Quick Picks <mat-slide-toggle [(ngModel)]="companyObj.quickPick" (change)="savePrefs()" color="primary">
           </mat-slide-toggle>
         </div>
         <div class="d-flex justify-content-between mb-3">
           Default Quick Picks <mat-slide-toggle [(ngModel)]="companyObj.defQuickPick" (change)="savePrefs()" color="primary">
           </mat-slide-toggle>
-        </div>
+        </div> -->
         <div class="d-flex justify-content-between mb-3">
           Add Inventory Map Location
           <mat-slide-toggle [(ngModel)]="workstationSetup.locationControl" (change)="savePrefs()" [disabled]="!this.employeeAccessLevels.accessAddInvMapLocation" color="primary">

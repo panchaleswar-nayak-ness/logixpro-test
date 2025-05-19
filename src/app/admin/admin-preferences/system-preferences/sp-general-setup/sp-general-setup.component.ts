@@ -85,7 +85,10 @@ export class SpGeneralSetupComponent implements OnInit {
       distinctKitOrders: false,
       printReplenPutLabels: false,
       generateQuarantineTransactions: false,
-      requireHotReasons:false
+      requireHotReasons:false,
+      allowQuickPicks:false,
+      deafultQuickPicks:false,
+      printReprocessReportAfterAllocation:false
   };
   
   }

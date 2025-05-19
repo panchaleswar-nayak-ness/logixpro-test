@@ -46,12 +46,12 @@
         Require Reason when performing Hot Trans
         <mat-slide-toggle [(ngModel)]="systemLogicPref.requireHotReasons" (change)="update()" color="primary"></mat-slide-toggle>
       </div>
-    </div>
-    <div class="col-xl-6">
       <div class="d-flex justify-content-between mb-3">
         Distinct Kit Orders
         <mat-slide-toggle [(ngModel)]="systemLogicPref.distinctKitOrders" (change)="update()" color="primary"></mat-slide-toggle>
       </div>
+    </div>
+    <div class="col-xl-6">
       <div class="d-flex justify-content-between mb-3">
         Print Replen Put Labels
         <mat-slide-toggle [(ngModel)]="systemLogicPref.printReplenPutLabels" (change)="update()" color="primary"></mat-slide-toggle>
@@ -60,9 +60,21 @@
         Create Transactions When (Un)Quarantining
         <mat-slide-toggle [(ngModel)]="systemLogicPref.generateQuarantineTransactions" (change)="update()" color="primary"></mat-slide-toggle>
       </div>
-      <div class="d-flex justify-content-between mb-0">
+      <div class="d-flex justify-content-between mb-3">
         Short Pick Find New Location
         <mat-slide-toggle [(ngModel)]="systemLogicPref.shortPickFindNewLocation" (change)="update()" color="primary"></mat-slide-toggle>
+      </div>
+      <div class="d-flex justify-content-between mb-3">
+        Allow QuickPicks
+        <mat-slide-toggle [(ngModel)]="systemLogicPref.allowQuickPicks" (change)="update()" color="primary"></mat-slide-toggle>
+      </div>
+      <div class="d-flex justify-content-between mb-3">
+        Default QuickPicks 
+        <mat-slide-toggle [(ngModel)]="systemLogicPref.deafultQuickPicks" (change)="update()" color="primary"></mat-slide-toggle>
+      </div>
+      <div class="d-flex justify-content-between mb-0">
+        Print Reprocess Report After Allocation 
+        <mat-slide-toggle [(ngModel)]="systemLogicPref.printReprocessReportAfterAllocation" (change)="update()" color="primary"></mat-slide-toggle>
       </div>
     </div>
   </div>
