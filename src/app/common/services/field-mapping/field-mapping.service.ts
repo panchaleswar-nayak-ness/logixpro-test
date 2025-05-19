@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { FieldMappingModel } from '../../types/CommonTypes';
+import { FieldMappingAlias, FieldMappingModel } from '../../types/CommonTypes';
 import { AdminApiService } from '../admin-api/admin-api.service';
 import { BehaviorSubject, firstValueFrom, Observable } from 'rxjs';
 import { AuthService } from '../../init/auth.service';
@@ -9,8 +9,8 @@ import { AuthService } from '../../init/auth.service';
 })
 
 export class FieldMappingService {
-  private fieldMappingSubject = new BehaviorSubject<FieldMappingModel | null>(null);
-
+  private fieldMappingSubject = new BehaviorSubject<FieldMappingAlias | null>(null);
+   private readonly storageKey = 'fieldMappings';
   constructor(private adminApiService: AdminApiService,
     private readonly authService: AuthService
   ) {
@@ -58,7 +58,17 @@ export class FieldMappingService {
     return this.fieldMappingSubject.asObservable();
   }
 
-  getFieldMapping(): FieldMappingModel | null {
+  getFieldMapping(): FieldMappingAlias | null {
     return this.fieldMappingSubject.value;
   }
+
+ getFieldMappingAlias(): FieldMappingAlias | null {
+  const data = localStorage.getItem(this.storageKey);
+  if (!data) {
+    return null
+  }
+  return JSON.parse(data) as FieldMappingAlias;
+}
+
+
 }

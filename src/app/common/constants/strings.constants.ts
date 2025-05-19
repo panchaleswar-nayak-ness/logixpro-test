@@ -689,3 +689,7 @@ export const AppLicensingDisplayedColumns = {
 export const LocalStorageCacheKeys = {
     EmployeeAccessLevels: 'employeeAccessLevels',
 }
+
+export const RouteIdManagement = {
+    RouteIdStatus: 'In Consolidation',
+}

@@ -3,9 +3,9 @@
     <mat-label>Select</mat-label>
     <mat-select class="employees-action" [(ngModel)]="this.searchCol" (selectionChange)="selectionChange($event.value)" (keyup.enter)="colKeyUpEnter($event)">
       <mat-option value=""></mat-option>
-      <mat-option *ngFor="let item of tableColumns | sort:'colDef':false" [value]="item.colDef" [replacePlaceholder] >
-        {{item.colDef}}
-      </mat-option>
+      <mat-option *ngFor="let colDef of filteredTableColumns" [value]="colDef">
+  {{ colDef }}
+</mat-option>
     </mat-select>
     <span class="material-symbols-outlined icon-expand-more">expand_more</span>
   </mat-form-field>
