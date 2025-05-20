@@ -140,7 +140,7 @@ export class SpGeneralSetupComponent implements OnInit {
         String(updatedInfo.zeroLocationQuantityCheck),
         StringConditions.True,
         StringConditions.True,
-        StringConditions.True,
+        String(updatedInfo.bulkBatchID),
         StringConditions.True,
         String(updatedInfo.reelTrackingPickLogic),
         StringConditions.True,
