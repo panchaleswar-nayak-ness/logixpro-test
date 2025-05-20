@@ -27,7 +27,7 @@ import { IInductionManagerApiService } from 'src/app/common/services/induction-m
 import { InductionManagerApiService } from 'src/app/common/services/induction-manager-api/induction-manager-api.service';
 import { GlobalService } from 'src/app/common/services/global.service';
 import {  TableConstant ,ToasterTitle,ResponseStrings,Column,ToasterType,zoneType,DialogConstants,ColumnDef,UniqueConstants,Style,StringConditions, Placeholders, ToasterMessages} from 'src/app/common/constants/strings.constants';
-import { FilterOrder, FilterTransaction, SavedFilterChangeEvent, FilterData, OrderData } from 'src/app/common/Model/pick-Tote-Manager';
+import { FilterOrder, FilterTransaction, SavedFilterChangeEvent, FilterData, OrderData } from 'src/app/common/types/pick-tote-manager.types';
 
 export interface PeriodicElement {
   name: string;
@@ -535,21 +535,24 @@ UserField10:string = this.fieldMappings.userField10;
     );
   }
 
-  onAddFilter(filterData?: any) {
-    if (filterData) {
-      filterData.map((obj) => {
-        this.filterData.push({
-          sequence: obj.sequence,
-          field: obj.field,
-          criteria: obj.criteria,
-          value: obj.value,
-          andOr: obj.andOr,
+  onAddFilter(filterData?: FilterData[]): void {
+    if (filterData?.length) {
+      const formattedFilters = filterData.map((filter) => {
+        const formattedValue = this.normalizeDateField(filter.field, filter.value);
+  
+        return {
+          sequence: filter.sequence,
+          field: filter.field,
+          criteria: filter.criteria,
+          value: formattedValue,
+          andOr: filter.andOr,
           isSaved: true,
           is_db: true,
-        });
-        this.filterSeq = obj.sequence;
+        };
       });
-      this.dataSource = new MatTableDataSource<any>(this.filterData);
+  
+      this.filterData.push(...formattedFilters);
+      this.filterSeq = filterData[filterData.length - 1].sequence;
     } else {
       this.filterData.push({
         sequence: this.filterSeq + 1,
@@ -559,12 +562,35 @@ UserField10:string = this.fieldMappings.userField10;
         andOr: 'And',
         isSaved: false,
       });
-
-      this.dataSource = new MatTableDataSource<any>(this.filterData);
+  
       this.isFilterAdd = false;
     }
+  
+    this.updateDataSource();
   }
-  onAddOrderBy(filterData?: any) {
+  
+  /**
+   * Normalize date string to 'YYYY-MM-DD' if the field is date-related.
+   */
+  private normalizeDateField(field: string, value: string): string {
+    const dateFields = new Set<string>([Column.RequiredDate, Column.ImportDate]);
+  
+    if (dateFields.has(field) && value && !/^\d{4}-\d{2}-\d{2}$/.test(value)) {
+      const dateParts = value.match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})$/);
+      if (dateParts) {
+        const [, month, day, year] = dateParts;
+        return `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`;
+      }
+    }
+  
+    return value;
+  }
+  
+  private updateDataSource(): void {
+    this.dataSource = new MatTableDataSource<FilterData>([...this.filterData]);
+  }
+  
+  onAddOrderBy(filterData?: OrderData[]): void {
     if (filterData) {
       filterData.map((obj) => {
         this.orderByData.push({
@@ -576,7 +602,6 @@ UserField10:string = this.fieldMappings.userField10;
         });
         this.orderBySeq = obj.sequence;
       });
-      this.orderBydataSource = new MatTableDataSource<any>(this.orderByData);
     } else {
       this.orderByData.push({
         sequence: this.orderBySeq + 1,
@@ -584,12 +609,12 @@ UserField10:string = this.fieldMappings.userField10;
         sortOrder: 'DESC',
         isSaved: false,
       });
-      this.orderBydataSource = new MatTableDataSource<any>(this.orderByData);
       this.isOrderByAdd = false;
     }
+    this.orderBydataSource = new MatTableDataSource<OrderData>(this.orderByData);
   }
-  onChangeFunctionsFields(elemet: any) {
-    elemet.isSaved = false;
+  onChangeFunctionsFields(element: FilterData): void {
+    element.isSaved = false;
   }
   clearMatSelectList() {
     this.matRef.options.forEach((data: MatOption) => data.deselect());
@@ -771,6 +796,14 @@ UserField10:string = this.fieldMappings.userField10;
       });
     }
   }
+  // Assign/map User Fields
+userFields = Array.from({ length: 9 }, (_, i) => ({
+  value: `User Field${i + 1}`,
+  placeholder: this[`UserField${i + 1}`],
+  replacePlaceholder: `placeholders.userField${i + 1}`,
+  fallbackPlaceholder: `placeholders.userField${i + 1}Fallback`
+}));
+
   onSavedFilterChange(val: SavedFilterChangeEvent) {
     // Clear the order selection
     this.clearOrderSelection();
@@ -1340,7 +1373,7 @@ clearOrderSelection() {
                         } else {
                             this.global.ShowToastr(
                                 ToasterType.Error,
-                                this.global.globalErrorMsg(),
+                                res.responseMessage?? this.global.globalErrorMsg(),
                                 ToasterTitle.Error
                             );
                         }
@@ -1607,4 +1640,13 @@ refreshOrderDataGrid() {
       }
     });
   }
+
+  getInputType(field: string): string {
+    const dateFields = new Set<string>([
+      Column.RequiredDate,
+      Column.ImportDate
+    ]);
+  
+    return dateFields.has(field) ? 'date' : 'text';
+  }  
 }

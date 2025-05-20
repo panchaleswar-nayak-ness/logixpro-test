@@ -81,6 +81,6 @@ export interface OrderData {
   id?: number;
   sequence: number;
   field: string;
-  sortOrder: string;
+  order: string;
   isSaved: boolean;
 }
