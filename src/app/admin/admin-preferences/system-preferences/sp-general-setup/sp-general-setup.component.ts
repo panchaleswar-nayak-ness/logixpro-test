@@ -27,6 +27,7 @@ interface GeneralPreferenceSaveResponse {
 export class SpGeneralSetupComponent implements OnInit {
   public iAdminApiService: IAdminApiService;
   userData: UserSession;
+  parallelPickType:string='Parallel Pick';
   generalSetupInfo: GeneralSetup;
   fieldNames: OSFieldFilterNames;
   
@@ -140,7 +141,7 @@ export class SpGeneralSetupComponent implements OnInit {
         String(updatedInfo.zeroLocationQuantityCheck),
         StringConditions.True,
         StringConditions.True,
-        String(updatedInfo.bulkBatchID),
+        updatedInfo.pickType === this.parallelPickType ? StringConditions.False : String(updatedInfo.bulkBatchID),
         StringConditions.True,
         String(updatedInfo.reelTrackingPickLogic),
         StringConditions.True,
