@@ -1,4 +1,4 @@
 # .github/CODEOWNERS
 
 # everything in this repo requires a Database-team review
-@scotttech-enterprise64/angular
+*  @scotttech-enterprise64/angular
