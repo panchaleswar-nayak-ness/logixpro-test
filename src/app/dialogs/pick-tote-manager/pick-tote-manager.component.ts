@@ -496,13 +496,12 @@ UserField10:string = this.fieldMappings.userField10;
           this.pickBatchFilter = res.data.pickBatchFilter;
           this.pickBatchOrder =  res.data.pickBatchOrder;
           this.filterData = [];
-          if (!this.pickBatchFilter || this.pickBatchFilter.length <=0 ) {
-            this.onAddFilter(this.filterData);
-        } else {
-          this.savedFilter.patchValue(this.pickBatchFilter[0].description);
-          this.onSavedFilterChange({option:{value:this.pickBatchFilter[0].description}});
-          this.onAddFilter(this.pickBatchFilter);
-        }
+          if (Array.isArray(this.pickBatchFilter) && this.pickBatchFilter.length > 0) {
+            const description = this.pickBatchFilter[0].description;
+            this.savedFilter.patchValue(description);
+            this.onSavedFilterChange({ option: { value: description } });
+            this.onAddFilter(this.pickBatchFilter);
+          }          
         this.orderByData = [];
 
           if (!this.pickBatchOrder) {
