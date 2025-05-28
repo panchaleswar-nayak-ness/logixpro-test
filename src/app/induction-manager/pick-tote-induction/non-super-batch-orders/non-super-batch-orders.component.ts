@@ -433,6 +433,11 @@ export class NonSuperBatchOrdersComponent implements OnInit, AfterViewInit {
                   }, 0);
                 }
               } else {
+                this.disableNonSBInputs = false;
+                setTimeout(() => {
+                  totes[index].focus();
+                }, 0);
+
                 this.global.ShowToastr(
                   ToasterType.Error,
                   innerResponse.responseMessage,
