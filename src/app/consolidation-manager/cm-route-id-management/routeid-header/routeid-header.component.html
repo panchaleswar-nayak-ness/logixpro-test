@@ -47,28 +47,30 @@
         </div>
       
         <div class="threshold-container d-flex align-items-center text-tertiary-900">
-          <label class="w-75">Upper Threshold: <strong>{{ upperThreshold }}</strong></label>
+          <label class="w-auto me-3">Upper Threshold: <strong>{{ upperThreshold }} % </strong></label>
           <mat-slider
             min="0"
             max="100"
             step="1"
-            [value]="upperThreshold"
-            (input)="setUpperThreshold($event.value)"
+            [(ngModel)]="upperThreshold"
+            (ngModelChange)="adjustUpperThreshold($event)"
             color="primary">
           </mat-slider>
         </div>
         
         <div class="threshold-container d-flex align-items-center text-tertiary-900">
-          <label class="w-75">Lower Threshold: <strong>{{ lowerThreshold }}</strong></label>
+          <label class="w-auto me-3">Lower Threshold: <strong>{{ lowerThreshold }} % </strong></label>
           <mat-slider
             min="0"
             max="100"
             step="1"
-            [value]="lowerThreshold"
-            (input)="setLowerThreshold($event.value)"
+            [(ngModel)]="lowerThreshold"
+            (ngModelChange)="adjustLowerThreshold($event)"
             color="primary">
           </mat-slider>
         </div>
+        
+
     </div>
   </div>
   <div class="col-xl-12">
@@ -121,30 +123,30 @@
     <div class="counter bg-tertiary-10 mt-0 p-3">
       
      
-        <h6 class="text-tertiary-900 mb-3 bold">{{routeIDStatusCountCard}}</h6>
+        <h6 class="text-tertiary-900 mb-3 bold">{{routeIdStatusCountCard}}</h6>
         <div class="row">
         <div class="d-md-flex ga  p-12 d-block flex-wrap justify-content-center">
           <div class="employees text-center mb-3">
-            <app-stats-circle [value]="StatusConNotStarted" title="Con. Not Started"></app-stats-circle>
+            <app-stats-circle [value]="statusConNotStarted" title="Con. Not Started"></app-stats-circle>
             
           </div>
           <div class="customer text-center mb-3">
-          <app-stats-circle [value]="StatusInConsolidation" title="In Consolidation"></app-stats-circle>
+          <app-stats-circle [value]="statusInConsolidation" title="In Consolidation"></app-stats-circle>
           
           </div>
           <div class="customer text-center mb-3">
-            <app-stats-circle [value]="StatusReadyForRelease" title="Ready For release"></app-stats-circle>
+            <app-stats-circle [value]="statusReadyForRelease" title="Ready For release"></app-stats-circle>
           </div>
         </div>
       </div>
       <div class="row">
           <div class="d-md-flex d-block flex-wrap justify-content-center gap-20">
             <div class="employees text-center mb-3 mb-xl-0">
-              <app-stats-circle [value]="StatusReleaseRequested" title="Release Requested"></app-stats-circle>
+              <app-stats-circle [value]="statusReleaseRequested" title="Release Requested"></app-stats-circle>
             </div>
           
             <div class="customer text-center">
-              <app-stats-circle [value]="StatusActiveRelease" title="Active Release"></app-stats-circle>
+              <app-stats-circle [value]="statusActiveRelease" title="Active Release"></app-stats-circle>
             
             </div>
             

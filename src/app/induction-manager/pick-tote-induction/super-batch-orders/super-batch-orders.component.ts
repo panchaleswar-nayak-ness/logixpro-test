@@ -33,6 +33,7 @@ import { LiveAnnouncer } from '@angular/cdk/a11y';
 import { MatInput } from '@angular/material/input';
 import { AuthService } from 'src/app/common/init/auth.service';
 import { ConfirmationDialogComponent } from 'src/app/admin/dialogs/confirmation-dialog/confirmation-dialog.component';
+import { PickToteInductionSuperBatchOrder } from 'src/app/common/types/induction-manager/pick-tote-induction';
 
 @Component({
   selector: 'app-super-batch-orders',
@@ -107,7 +108,7 @@ export class SuperBatchOrdersComponent implements OnInit, AfterViewInit {
   orderNumberFilter: string = '';
   dataSource: MatTableDataSource<any>;
   toteScanned: any;
-  filteredOrderResults = [];
+  filteredOrderResults:PickToteInductionSuperBatchOrder[] = [];
   @Output() someEvent = new EventEmitter<string>();
   tags: {
     alias? : string,
@@ -383,14 +384,12 @@ export class SuperBatchOrdersComponent implements OnInit, AfterViewInit {
                 } else {
                   // If no remaining quantity, remove the order row
                   this.disableSBInputs = false;
-                  let updated = this.dataSource.filteredData.filter(
+                  this.filteredOrderResults = this.filteredOrderResults.filter(
                     (f) =>
-                      !(
-                        f.itemNumber === valueToInduct.itemNumber &&
-                        f.priority === valueToInduct.priority
-                      )
+                      f.itemNumber !== valueToInduct.itemNumber ||
+                      f.minPriority !== valueToInduct.priority
                   );
-                  this.rebind(updated, true);
+                  this.rebind(this.filteredOrderResults, true);
                   this.moveFocusToNextElement(index);
                 }
                 // Success message if all item are successfully

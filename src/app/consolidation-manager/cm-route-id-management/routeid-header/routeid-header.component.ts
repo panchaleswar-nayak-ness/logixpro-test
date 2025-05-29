@@ -17,6 +17,7 @@ import { IConsolidationStatus } from '../routeid-header/IConsolidationStatus';
 import { IRouteIdStatusCountResponse } from '../routeid-header/IRouteStatusCount';
 
 import { HttpResponse } from '@angular/common/http';
+import { FieldMappingService } from 'src/app/common/services/field-mapping/field-mapping.service';
 
 // Interface for status card display
 interface Info {
@@ -32,10 +33,12 @@ interface Info {
 })
 export class RouteidHeaderComponent implements OnInit, OnDestroy {
   // Read field mappings from local storage
+  consolidationStatusCard:string;
+  routeIdStatusCountCard:string;
+  minThreshold = 0;
+  maxThreshold = 100;
+  minGap = 1;
   @Output() zoneChanged = new EventEmitter<string>();
-  fieldMappings = JSON.parse(localStorage.getItem('fieldMappings') ?? '{}');
-  consolidationStatusCard: string = this.fieldMappings.consolidationStatusCard;
-  routeIDStatusCountCard: string = this.fieldMappings.routeIdStatusCountCard;
   // Consolidation zones and thresholds
   consolidationZones: IConZoneResponse[] = [];
   Zone: string = '';
@@ -43,21 +46,11 @@ export class RouteidHeaderComponent implements OnInit, OnDestroy {
   lowerThreshold: number;
 
   // Route status counters
-  StatusConNotStarted: string = '0';
-  StatusInConsolidation: string = '0';
-  StatusReadyForRelease: string = '0';
-  StatusReleaseRequested: string = '0';
-  StatusActiveRelease: string = '0';
-
-  // Route ID list data to be passed to parent component
-  RouteIDListData: {
-    RouteID: string;
-    StatusDate: string;
-    rawStatusDate: string;
-    ConsolidationStatus: string;
-    RouteIDStatus: string;
-    ConsolidationProgress: string;
-  }[] = [];
+  statusConNotStarted: string = '0';
+  statusInConsolidation: string = '0';
+  statusReadyForRelease: string = '0';
+  statusReleaseRequested: string = '0';
+  statusActiveRelease: string = '0';
 
   // Control for float label setting in form fields
   floatLabelControl = new FormControl('auto' as FloatLabelType);
@@ -71,11 +64,11 @@ export class RouteidHeaderComponent implements OnInit, OnDestroy {
 
   // Maps backend status names to component property names
   statusMap = {
-    'Consolidation Not Started': 'StatusConNotStarted',
-    'In Consolidation': 'StatusInConsolidation',
-    'Ready For Release': 'StatusReadyForRelease',
-    'Release Requested': 'StatusReleaseRequested',
-    'Active Release': 'StatusActiveRelease'
+    'Consolidation Not Started': 'statusConNotStarted',
+    'In Consolidation': 'statusInConsolidation',
+    'Ready For Release': 'statusReadyForRelease',
+    'Release Requested': 'statusReleaseRequested',
+    'Active Release': 'statusActiveRelease'
   };
 
   // timeout references
@@ -88,16 +81,26 @@ export class RouteidHeaderComponent implements OnInit, OnDestroy {
   constructor(
     private global: GlobalService,
     public consolidationApiService: ConsolidationApiService,
+    private fieldNameMappingService: FieldMappingService
   ) {
     // Assign concrete service to interface property
     this.iConsolidationApi = consolidationApiService;
+    this.fieldNameMappingService=fieldNameMappingService;
   }
 
   // OnInit lifecycle hook
   ngOnInit(): void {
+    this.setFieldNameMapping();
     this.loadConsolidationZones(); // Load zones on component initialization
   }
-
+ 
+    private setFieldNameMapping(){
+    const fieldMapping = this.fieldNameMappingService.getFieldMappingAlias();
+    if (fieldMapping) {
+    this.consolidationStatusCard = fieldMapping.consolidationStatusCard;
+    this.routeIdStatusCountCard = fieldMapping.routeIdStatusCountCard;
+    }
+  }
   // OnDestroy lifecycle hook to clean up resources
   ngOnDestroy() {
     this.subscription.unsubscribe();
@@ -204,55 +207,58 @@ export class RouteidHeaderComponent implements OnInit, OnDestroy {
     }
   }
 
-  setUpperThreshold(value: number | null) {
-    let newValue = value ?? this.upperThreshold;
+  // Utility method to delay execution to the next JavaScript tick.
+// This is useful for UI components (like sliders) that may not refresh properly
+// if threshold values are updated immediately during input event handlers.
+private correctThresholdLater(setFn: () => void): void {
+  setTimeout(setFn, 0);
+}
+
+adjustUpperThreshold(value: number | null): void {
+  // Clamp input to valid threshold range
+  const newValue = this.clamp(value, this.minThreshold, this.maxThreshold);
+
+  if (newValue <= this.lowerThreshold) {
+    // If the new upper threshold would cross the lower threshold,
+    // defer the correction to prevent slider handle overlap.
+    this.correctThresholdLater(() => {
+      this.upperThreshold = Math.min(this.lowerThreshold + this.minGap, this.maxThreshold);
+    });
+  } else {
+    // Valid position: set it directly
+    this.upperThreshold = newValue;
+  }
+
+  // Trigger debounced update (e.g. for API call or UI refresh)
+  this.debounceUpdate();
+}
+
+adjustLowerThreshold(value: number | null): void {
+  // Clamp input to valid threshold range
+  const newValue = this.clamp(value, this.minThreshold, this.maxThreshold);
+
+  if (newValue >= this.upperThreshold) {
+    // If the new lower threshold would cross the upper threshold,
+    // defer the correction to prevent slider handle overlap.
+    this.correctThresholdLater(() => {
+      this.lowerThreshold = Math.max(this.upperThreshold - this.minGap, this.minThreshold);
+    });
+  } else {
+    // Valid position: set it directly
+    this.lowerThreshold = newValue;
+  }
+
+  // Trigger debounced update (e.g. for API call or UI refresh)
+  this.debounceUpdate();
+}
+
   
-    // Clamp to valid range [0, 100]
-    newValue = Math.min(Math.max(newValue, 0), 100);
-  
-    if (newValue <= this.lowerThreshold) {
-      // Special case: trying to set upper to 0 — force to 1, lower to 0
-      if (newValue === 0) {
-        this.lowerThreshold = 0;
-        this.upperThreshold = 1;
-      } else {
-        // General case: make sure upper > lower
-        this.upperThreshold = newValue;
-        this.lowerThreshold = newValue - 1;
-      }
-    } else {
-      this.upperThreshold = newValue;
-    }
-  
-    this.debounceUpdate();
+  clamp(val: number | null, min: number, max: number): number {
+    const value = val ?? 0;
+    return Math.min(Math.max(value, min), max);
   }
   
-  setLowerThreshold(value: number | null) {
-    let newValue = value ?? this.lowerThreshold;
   
-    // Clamp to valid range [0, 100]
-    newValue = Math.min(Math.max(newValue, 0), 100);
-  
-    if (newValue >= this.upperThreshold) {
-      // Special case: trying to set lower to 100 — force to 99, upper to 100
-      if (newValue === 100) {
-        this.upperThreshold = 100;
-        this.lowerThreshold = 99;
-      } else {
-        // General case: make sure lower < upper
-        this.lowerThreshold = newValue;
-        this.upperThreshold = newValue + 1;
-      }
-    } else {
-      this.lowerThreshold = newValue;
-    }
-  
-    this.debounceUpdate();
-  }
-  
-
-
-
   // Delay updating backend to avoid rapid API calls
   debounceUpdate() {
     clearTimeout(this.updateTimeout);

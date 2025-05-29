@@ -26,8 +26,8 @@ import { MatSort } from '@angular/material/sort';
 import { IInductionManagerApiService } from 'src/app/common/services/induction-manager-api/induction-manager-api-interface';
 import { InductionManagerApiService } from 'src/app/common/services/induction-manager-api/induction-manager-api.service';
 import { GlobalService } from 'src/app/common/services/global.service';
-import {  TableConstant ,ToasterTitle,ResponseStrings,Column,ToasterType,zoneType,DialogConstants,ColumnDef,UniqueConstants,Style,StringConditions, Placeholders} from 'src/app/common/constants/strings.constants';
-import { FilterOrder, FilterTransaction } from 'src/app/common/Model/pick-Tote-Manager';
+import {  TableConstant ,ToasterTitle,ResponseStrings,Column,ToasterType,zoneType,DialogConstants,ColumnDef,UniqueConstants,Style,StringConditions, Placeholders, ToasterMessages} from 'src/app/common/constants/strings.constants';
+import { FilterOrder, FilterTransaction, SavedFilterChangeEvent, FilterData, OrderData } from 'src/app/common/types/pick-tote-manager.types';
 
 export interface PeriodicElement {
   name: string;
@@ -475,7 +475,6 @@ UserField10:string = this.fieldMappings.userField10;
         );
       } else {
         this.global.ShowToastr(ToasterType.Error, this.global.globalErrorMsg(), ToasterTitle.Error);
-        console.log('PickBatchZonesSelect', res.responseMessage);
       }
     });
   }
@@ -497,13 +496,12 @@ UserField10:string = this.fieldMappings.userField10;
           this.pickBatchFilter = res.data.pickBatchFilter;
           this.pickBatchOrder =  res.data.pickBatchOrder;
           this.filterData = [];
-          if (!this.pickBatchFilter || this.pickBatchFilter.length <=0 ) {
-            this.onAddFilter(this.filterData);
-        } else {
-          this.savedFilter.patchValue(this.pickBatchFilter[0].description);
-          this.onSavedFilterChange({option:{value:this.pickBatchFilter[0].description}});
-          this.onAddFilter(this.pickBatchFilter);
-        }
+          if (Array.isArray(this.pickBatchFilter) && this.pickBatchFilter.length > 0) {
+            const description = this.pickBatchFilter[0].description;
+            this.savedFilter.patchValue(description);
+            this.onSavedFilterChange({ option: { value: description } });
+            this.onAddFilter(this.pickBatchFilter);
+          }          
         this.orderByData = [];
 
           if (!this.pickBatchOrder) {
@@ -525,7 +523,6 @@ UserField10:string = this.fieldMappings.userField10;
             this.global.globalErrorMsg(),
             ToasterTitle.Error
           );
-          console.log('PickBatchFilterTypeAhead', res.responseMessage);
         }
       });
   }
@@ -537,21 +534,24 @@ UserField10:string = this.fieldMappings.userField10;
     );
   }
 
-  onAddFilter(filterData?: any) {
-    if (filterData) {
-      filterData.map((obj) => {
-        this.filterData.push({
-          sequence: obj.sequence,
-          field: obj.field,
-          criteria: obj.criteria,
-          value: obj.value,
-          andOr: obj.andOr,
+  onAddFilter(filterData?: FilterData[]): void {
+    if (filterData?.length) {
+      const formattedFilters = filterData.map((filter) => {
+        const formattedValue = this.normalizeDateField(filter.field, filter.value);
+  
+        return {
+          sequence: filter.sequence,
+          field: filter.field,
+          criteria: filter.criteria,
+          value: formattedValue,
+          andOr: filter.andOr,
           isSaved: true,
           is_db: true,
-        });
-        this.filterSeq = obj.sequence;
+        };
       });
-      this.dataSource = new MatTableDataSource<any>(this.filterData);
+  
+      this.filterData.push(...formattedFilters);
+      this.filterSeq = filterData[filterData.length - 1].sequence;
     } else {
       this.filterData.push({
         sequence: this.filterSeq + 1,
@@ -561,12 +561,35 @@ UserField10:string = this.fieldMappings.userField10;
         andOr: 'And',
         isSaved: false,
       });
-
-      this.dataSource = new MatTableDataSource<any>(this.filterData);
+  
       this.isFilterAdd = false;
     }
+  
+    this.updateDataSource();
   }
-  onAddOrderBy(filterData?: any) {
+  
+  /**
+   * Normalize date string to 'YYYY-MM-DD' if the field is date-related.
+   */
+  private normalizeDateField(field: string, value: string): string {
+    const dateFields = new Set<string>([Column.RequiredDate, Column.ImportDate]);
+  
+    if (dateFields.has(field) && value && !/^\d{4}-\d{2}-\d{2}$/.test(value)) {
+      const dateParts = value.match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})$/);
+      if (dateParts) {
+        const [, month, day, year] = dateParts;
+        return `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`;
+      }
+    }
+  
+    return value;
+  }
+  
+  private updateDataSource(): void {
+    this.dataSource = new MatTableDataSource<FilterData>([...this.filterData]);
+  }
+  
+  onAddOrderBy(filterData?: OrderData[]): void {
     if (filterData) {
       filterData.map((obj) => {
         this.orderByData.push({
@@ -578,20 +601,19 @@ UserField10:string = this.fieldMappings.userField10;
         });
         this.orderBySeq = obj.sequence;
       });
-      this.orderBydataSource = new MatTableDataSource<any>(this.orderByData);
     } else {
       this.orderByData.push({
         sequence: this.orderBySeq + 1,
-        field: ColumnDef.Emergency,
+        field: Column.OrderNumber,
         sortOrder: 'DESC',
         isSaved: false,
       });
-      this.orderBydataSource = new MatTableDataSource<any>(this.orderByData);
       this.isOrderByAdd = false;
     }
+    this.orderBydataSource = new MatTableDataSource<OrderData>(this.orderByData);
   }
-  onChangeFunctionsFields(elemet: any) {
-    elemet.isSaved = false;
+  onChangeFunctionsFields(element: FilterData): void {
+    element.isSaved = false;
   }
   clearMatSelectList() {
     this.matRef.options.forEach((data: MatOption) => data.deselect());
@@ -681,7 +703,6 @@ UserField10:string = this.fieldMappings.userField10;
                   this.global.globalErrorMsg(),
                   ToasterTitle.Error
                 );
-                console.log('PickBatchDefaultFilterMark', res.responseMessage);
               }
             });
         }
@@ -704,7 +725,6 @@ UserField10:string = this.fieldMappings.userField10;
               this.global.globalErrorMsg(),
               ToasterTitle.Error
             );
-            console.log('PickBatchDefaultFilterClear', res.responseMessage);
           }
         });
     }
@@ -724,10 +744,9 @@ UserField10:string = this.fieldMappings.userField10;
           } else {
             this.global.ShowToastr(
               ToasterType.Error,
-              'No filter is marked as default.',
-              'Warning!'
+              ToasterMessages.NoDefaultFilter,
+              ToasterTitle.Warning
             );
-            console.log('PickBatchDefaultFilterSelect', res.responseMessage);
           }
           const matSelect: MatSelect = option.source;
           matSelect.writeValue(null);
@@ -770,14 +789,21 @@ UserField10:string = this.fieldMappings.userField10;
                   this.global.globalErrorMsg(),
                   ToasterTitle.Error
                 );
-                console.log('PickBatchFilterBatchDelete', res.responseMessage);
               }
             });
         }
       });
     }
   }
-  onSavedFilterChange(val: any) {
+  // Assign/map User Fields
+userFields = Array.from({ length: 9 }, (_, i) => ({
+  value: `User Field${i + 1}`,
+  placeholder: this[`UserField${i + 1}`],
+  replacePlaceholder: `placeholders.userField${i + 1}`,
+  fallbackPlaceholder: `placeholders.userField${i + 1}Fallback`
+}));
+
+  onSavedFilterChange(val: SavedFilterChangeEvent) {
     // Clear the order selection
     this.clearOrderSelection();
     if (val.option.value) {
@@ -790,6 +816,13 @@ UserField10:string = this.fieldMappings.userField10;
       this.ordersFilterZoneSelect();
     }
   }
+  private resetPagination(paginator: MatPaginator) {
+    if (paginator) {
+      paginator.firstPage();
+      paginator.pageSize = 10;
+    }
+  }
+
   ordersFilterZoneSelect(zone = '', rp = false, type = '') {
     let payload;
     this.filterBatchDataZone = [];
@@ -829,17 +862,17 @@ UserField10:string = this.fieldMappings.userField10;
               });
               this.selectedOrders = [...new Set(this.selectedOrders)];
             }
-            this.filterBatchOrders = new MatTableDataSource<any>(
+            this.filterBatchOrders = new MatTableDataSource<FilterOrder>(
               this.filterBatchData
             );
             this.filterBatchOrders.paginator = this.filterBatchOrder;
+            this.resetPagination(this.filterBatchOrder);
           } else {
             this.global.ShowToastr(
               ToasterType.Error,
               this.global.globalErrorMsg(),
               ToasterTitle.Error
             );
-            console.log('OrdersFilterZoneSelect', res.responseMessage);
           }
         });
     } else {
@@ -874,13 +907,12 @@ UserField10:string = this.fieldMappings.userField10;
                 this.selectedOrders.push(ele.orderNumber);
               });
               this.selectedOrders = [...new Set(this.selectedOrders)];
-             
-             // this.allSelectOrders = this.selectedOrders;
             }
-            this.filterBatchOrdersZone = new MatTableDataSource<any>(
+            this.filterBatchOrdersZone = new MatTableDataSource<FilterOrder>(
               this.filterBatchDataZone
             );
             this.filterBatchOrdersZone.paginator = this.zoneBatchOrder;
+            this.resetPagination(this.zoneBatchOrder);
             this.tabIndex = 1;
           } else {
             this.global.ShowToastr(
@@ -888,7 +920,6 @@ UserField10:string = this.fieldMappings.userField10;
               this.global.globalErrorMsg(),
               ToasterTitle.Error
             );
-            console.log('OrdersFilterZoneSelect', res.responseMessage);
           }
         });
     }
@@ -922,10 +953,9 @@ UserField10:string = this.fieldMappings.userField10;
     } else if (this.selectedOrders.length >= this.data.pickBatchQuantity) {
       this.global.ShowToastr(
         ToasterType.Error,
-        'No open totes in batch',
-        'Batch is Filled.'
+        ToasterMessages.NoOpenTote,
+        ToasterTitle.BatchFilled
       );
-      console.log('includes');
     } else {
       this.filterBatchData.forEach((v) => {
         if (this.selectedOrders.includes(v.orderNumber)) {
@@ -964,7 +994,6 @@ UserField10:string = this.fieldMappings.userField10;
             this.global.globalErrorMsg(),
             ToasterTitle.Error
           );
-          console.log('PickToteTransDT', res.responseMessage);
         }
       });
     }
@@ -1031,7 +1060,6 @@ UserField10:string = this.fieldMappings.userField10;
             this.global.globalErrorMsg(),
             ToasterTitle.Error
           );
-          console.log('PickToteTransDT', res.responseMessage);
         }
       });
     }
@@ -1047,7 +1075,7 @@ UserField10:string = this.fieldMappings.userField10;
                 if (target === 'filter') {
                     this.filterData = [];
                     this.pickBatchFilter = res.data.pickBatchFilter;
-                    if (!this.pickBatchFilter) {
+                    if (Array.isArray(this.pickBatchFilter) && this.pickBatchFilter.length === 0) {
                         this.onAddFilter();
                     } else {
                         this.onAddFilter(this.pickBatchFilter);
@@ -1055,7 +1083,7 @@ UserField10:string = this.fieldMappings.userField10;
                 } else if (target === 'order') {
                     this.orderByData = [];
                     this.pickBatchOrder = res.data.pickBatchOrder;
-                    if (!this.pickBatchOrder) {
+                    if (Array.isArray(this.pickBatchOrder) && this.pickBatchOrder.length === 0) {
                       this.onAddOrderBy(this.orderByData);
                     }
                     else{
@@ -1065,25 +1093,29 @@ UserField10:string = this.fieldMappings.userField10;
             } else {
                 this.global.ShowToastr(
                     ToasterType.Error,
-                    this.global.globalErrorMsg(),
+                    res.responseMessage ?? this.global.globalErrorMsg(),
                     ToasterTitle.Error
                 );
-                console.log('PickBatchFilterOrderData', res.responseMessage);
             }
         });
 }
-  savedFilClosed() {
-    if (!this.savedFilter.value) {
-      this.isFilterAdd = false;
-      this.isOrderByAdd = false;
-      this.filterData = [];
-      this.orderByData = [];
-      this.orderBydataSource = new MatTableDataSource<any>(this.orderByData);
-      this.dataSource = new MatTableDataSource<any>(this.filterData);
-      this.reFreshOrderandTransactionData();
+  savedFilClosed(): void {
+    if (!this.savedFilter?.value) {
+      this.resetFilterAndOrderData();
     }
   }
-reFreshOrderandTransactionData() {
+
+  private resetFilterAndOrderData(): void {
+    this.isFilterAdd = false;
+    this.isOrderByAdd = false;
+    this.filterData = [];
+    this.orderByData = [];
+    this.orderBydataSource = new MatTableDataSource<OrderData>(this.orderByData);
+    this.dataSource = new MatTableDataSource<FilterData>(this.filterData);
+    this.refreshOrderAndTransactionData();
+  }
+
+  refreshOrderAndTransactionData() {
   // Clear the orders table
   this.filterBatchData = [];
   this.filterBatchOrders = new MatTableDataSource<FilterOrder>(this.filterBatchData);
@@ -1198,7 +1230,6 @@ clearOrderSelection() {
             this.global.globalErrorMsg(),
             ToasterTitle.Error
           );
-          console.log('PickToteTransDT', res.responseMessage);
         }
       });
     }
@@ -1232,7 +1263,6 @@ clearOrderSelection() {
               this.global.globalErrorMsg(),
               ToasterTitle.Error
             );
-            console.log('PickToteTransDT', res.responseMessage);
           }
         });
       } else {
@@ -1269,7 +1299,6 @@ clearOrderSelection() {
             this.global.globalErrorMsg(),
             ToasterTitle.Error
           );
-          console.log('PickToteTransDT', res.responseMessage);
         }
       });
     }
@@ -1303,7 +1332,6 @@ clearOrderSelection() {
               this.global.globalErrorMsg(),
               ToasterTitle.Error
             );
-            console.log('PickToteTransDT', res.responseMessage);
           }
         });
       } else {
@@ -1344,7 +1372,7 @@ clearOrderSelection() {
                         } else {
                             this.global.ShowToastr(
                                 ToasterType.Error,
-                                this.global.globalErrorMsg(),
+                                res.responseMessage?? this.global.globalErrorMsg(),
                                 ToasterTitle.Error
                             );
                         }
@@ -1419,7 +1447,6 @@ onSaveSingleOrder(element: any) {
                       this.global.globalErrorMsg(),
                       ToasterTitle.Error
                   );
-                  console.log('PickBatchOrderInsert', res.responseMessage);
               }
           });
   }
@@ -1485,7 +1512,6 @@ refreshOrderDataGrid() {
                 this.global.globalErrorMsg(),
                 ToasterTitle.Error
               );
-              console.log('PickBatchFilterDelete', res.responseMessage);
             }
           });
       }
@@ -1528,7 +1554,6 @@ refreshOrderDataGrid() {
                 this.global.globalErrorMsg(),
                 ToasterTitle.Error
               );
-              console.log('PickBatchOrderDelete', res.responseMessage);
             }
           });
       }
@@ -1609,10 +1634,18 @@ refreshOrderDataGrid() {
               );
             } else {
               this.global.ShowToastr(ToasterType.Error, res.responseMessage, ToasterTitle.Error);
-              console.log('PickBatchZoneDefaultMark', res.responseMessage);
             }
           });
       }
     });
   }
+
+  getInputType(field: string): string {
+    const dateFields = new Set<string>([
+      Column.RequiredDate,
+      Column.ImportDate
+    ]);
+  
+    return dateFields.has(field) ? 'date' : 'text';
+  }  
 }

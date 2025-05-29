@@ -215,7 +215,8 @@ export const ToasterMessages = {
     ConheaderData:"Failed to load con header list data.",
     RequestReleaseFailed:"Request release failed.",
     RequestReleaseSuccess:"Request release successfully.",
-    APIErrorMessage:"API request failed."
+    APIErrorMessage:"API request failed.",
+    NoDefaultFilter:"No filter is marked as default."
 }
 
 
@@ -687,4 +688,8 @@ export const AppLicensingDisplayedColumns = {
 
 export const LocalStorageCacheKeys = {
     EmployeeAccessLevels: 'employeeAccessLevels',
+}
+
+export const RouteIdManagement = {
+    RouteIdStatus: 'In Consolidation',
 }

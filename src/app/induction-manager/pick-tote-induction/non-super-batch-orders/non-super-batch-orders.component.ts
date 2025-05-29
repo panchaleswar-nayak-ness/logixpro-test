@@ -34,6 +34,7 @@ import { MatSort, Sort } from '@angular/material/sort';
 import { LiveAnnouncer } from '@angular/cdk/a11y';
 import { AuthService } from 'src/app/common/init/auth.service';
 import { ConfirmationDialogComponent } from 'src/app/admin/dialogs/confirmation-dialog/confirmation-dialog.component';
+import { PickToteInductionNonSuperBatchOrder } from 'src/app/common/types/induction-manager/pick-tote-induction';
 
 @Component({
   selector: 'app-non-super-batch-orders',
@@ -117,7 +118,7 @@ export class NonSuperBatchOrdersComponent implements OnInit, AfterViewInit {
 
   dataSource: MatTableDataSource<any>;
   toteScanned: any;
-  filteredOrderResults = [];
+  filteredOrderResults:PickToteInductionNonSuperBatchOrder[] = [];
   @Input() zones: string[] = []; // Accept zones as input
   @Output() someEvent = new EventEmitter<string>();
   
@@ -424,14 +425,19 @@ export class NonSuperBatchOrdersComponent implements OnInit, AfterViewInit {
                   // If no remaining quantity, remove the order row
                   this.disableNonSBInputs = false;
                   setTimeout(() => {
-                    let updated = this.dataSource.filteredData.filter(
+                    this.filteredOrderResults = this.filteredOrderResults.filter(
                       (f) => f.orderNumber !== valueToInduct.orderNumber
                     );
-                    this.rebind(updated, true);
+                    this.rebind(this.filteredOrderResults, true);
                     this.moveFocusToNextElement(index);
                   }, 0);
                 }
               } else {
+                this.disableNonSBInputs = false;
+                setTimeout(() => {
+                  totes[index].focus();
+                }, 0);
+
                 this.global.ShowToastr(
                   ToasterType.Error,
                   innerResponse.responseMessage,

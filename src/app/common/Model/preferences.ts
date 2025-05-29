@@ -38,6 +38,9 @@ export interface GeneralSetup {
     printReplenPutLabels: boolean;
     generateQuarantineTransactions: boolean;
     requireHotReasons: boolean;
+    allowQuickPicks:boolean;
+    deafultQuickPicks:boolean;
+    printReprocessReportAfterAllocation:boolean;
 }
 
 interface Preferences {

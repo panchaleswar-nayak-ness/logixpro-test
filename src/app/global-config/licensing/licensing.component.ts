@@ -215,4 +215,12 @@ export class LicensingComponent implements OnInit {
       }
     });
   }
+
+  isSaveDisabled(license: AppLicense): boolean {
+    return license.isButtonDisable ||
+           !license.appname?.trim() ||
+           !license.displayname?.trim() ||
+           !license.license?.trim() ||
+           !license.appurl?.trim();
+  }
 }

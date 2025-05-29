@@ -26,6 +26,12 @@ import { AppNames, AppRoutes, RouteNames} from 'src/app/common/constants/menu.co
 import { DatePipe } from '@angular/common';
 import { ContextMenuFiltersService } from 'src/app/common/init/context-menu-filters.service';
 import { PrintApiService } from 'src/app/common/services/print-api/print-api.service';
+ 
+// Define a strongly typed enum for date types to avoid using magic strings
+enum DateType {
+  Start = 'sDate',
+  End = 'eDate'
+}
 
 @Component({
   selector: 'app-open-transaction-on-hold',
@@ -173,8 +179,8 @@ export class OpenTransactionOnHoldComponent implements OnInit, AfterViewInit {
   statusType: string = StringConditions.AllTransactions;
   orderNumber: string = '';
   toteId: string = '';
-  sDate: any = new Date(1973,10,7);
-  eDate: any = new Date();
+  sDate: Date = new Date();
+  eDate: Date = new Date();
 
   public transType: any = [
     {
@@ -604,21 +610,51 @@ export class OpenTransactionOnHoldComponent implements OnInit, AfterViewInit {
     this.columnSearch.searchColumn.colDef = '';
   }
 
-  onDateChange(event): void {
-    this.resetColumn();
-    this.resetFields();
-    this.startDateChange.emit();
-    this.sDate = new Date(event);
-    this.getContentData();
-  }
+onImportDateChange(event: Date | null): void {
+  // Reset filters and data columns
+  this.resetColumn();
+  this.resetFields();
 
-  onEndDateChange(event): void {
-    this.resetColumn();
-    this.resetFields();
-    this.endDateChange.emit();
-    this.eDate = new Date(event);
-    this.getContentData();
+  // Notify any listeners about the start date change
+  this.startDateChange.emit();
+
+  // Update the start date value with the selected or default date
+  this.setDateOnBlank(event, DateType.Start);
+
+  // Refresh content data based on the new date
+  this.getContentData();
+
+}
+
+onEndDateChange(event: Date | null): void {
+  // Reset filters and data columns
+  this.resetColumn();
+  this.resetFields();
+
+  // Notify any listeners about the end date change
+  this.endDateChange.emit();
+
+  // Update the end date value with the selected or default date
+  this.setDateOnBlank(event, DateType.End);
+
+  // Refresh content data based on the new date
+  this.getContentData();
+}
+
+/**
+ * Sets the appropriate date property (sDate or eDate) to either the given date
+ * or the current date if the input is null.
+ */
+setDateOnBlank(event: Date | null, dateType: DateType): void {
+  const date = event ? new Date(event) : new Date();
+
+  if (dateType === DateType.Start) {
+    this.sDate = date;
+  } else if (dateType === DateType.End) {
+    this.eDate = date;
   }
+}
+
 
   selectStatus(event) {
     this.resetColumn();

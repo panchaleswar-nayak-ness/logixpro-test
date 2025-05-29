@@ -197,10 +197,11 @@ export class ReprocessedTransactionComponent implements OnInit {
   }
 
   sortChange(event) {
-    if (!this.dataSource._data._value || event.direction=='' || event.direction==this.sortOrder) return;
-    let index;
-    this.displayedColumns.find((x, i) => { if (x.colDef === event.active) index = i; });
-    this.sortCol = index;
+    if (!this.dataSource._data._value || event.direction == '' || event.direction == this.sortOrder) return;
+    this.sortCol = Array.isArray(this.columnValues)
+      // Ensure columnValues is an array to safely use findIndex and avoid runtime errors
+      ? this.columnValues.findIndex(x => x === event.active)
+      : -1;
     this.sortOrder = event.direction;
     this.getContentData();
   }
