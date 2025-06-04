@@ -216,6 +216,13 @@ export const ToasterMessages = {
     RequestReleaseFailed:"Request release failed.",
     RequestReleaseSuccess:"Request release successfully.",
     APIErrorMessage:"API request failed.",
+    DeleteAllSuccess:"All records deleted successfully",
+    NoRecordFound:"No records found",
+    RecordsAddedSuccessfully: "All Records added successfully",
+    AddAllFailed: "Failed to add all records",
+    ZoneAddedSuccessfully: "Zone added successfully",
+    ZoneUpdatedSuccessfully: "Zone updated successfully",
+    ZoneDeletedSuccessfully: "Zone deleted successfully",
     NoDefaultFilter:"No filter is marked as default."
 }
 

@@ -12,6 +12,7 @@ import {
 import { AddPickToteInductionFilter } from 'src/app/induction-manager/models/PickToteInductionModel';
 import { InventoryMap, UpdateSCReq } from '../Model/storage-container-management';
 import {IQueryParams} from '../../app/../consolidation-manager/cm-route-id-management/routeid-list/routeid-IQueryParams'
+import { ZoneListPayload } from 'src/app/bulk-process/preferences/preference.models';
 
 @Injectable({
   providedIn: 'root',
@@ -2025,6 +2026,15 @@ export class ApiFuntions {
   public async deleteBulkPickBulkZone(body: any) {
     return await this.ApiBase.DeleteAsync('/zones/bulkzone', body);
   }
+
+  public async deleteAllBulkPickBulkZone(body: ZoneListPayload) {
+    return await this.ApiBase.BulkDeleteAsync('/zones/bulkzones', body);
+  }
+
+  public async addAllBulkPickBulkZone(body: ZoneListPayload) {
+    return await this.ApiBase.PostAsync('/zones/bulkzones', body);
+  }
+
 
   public WorkstationSetupInfo(): Observable<any> {
     return this.ApiBase.Get('/Admin/WorkstationSetup');
