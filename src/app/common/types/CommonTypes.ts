@@ -25,6 +25,13 @@ export interface ApiResponse<T> {
     statusCode: number;
 }
 
+export interface ApiResponseData {
+    responseMessage: string;
+    isExecuted: boolean;
+    messages: any;
+    statusCode: number;
+}
+
 export interface UserSession {
     _token: string;
     userName: string;

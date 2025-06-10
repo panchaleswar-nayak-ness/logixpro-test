@@ -91,7 +91,8 @@ export const ResponseStrings = {
     DNENP: 'DNENP',
     Fail: 'Fail',
     INVALID: 'INVALID',
-    Redirect: 'Redirect'
+    Redirect: 'Redirect',
+    Resolved: 'Resolved'
 }
 
 export const ToasterType = {
@@ -117,7 +118,8 @@ export const ToasterTitle = {
 export const ConfirmationHeadings = {
     BatchManager: 'Batch Manager',
     MoveNow: "Continue Move Now?",
-    PasswordExpiryAlert: "Password Expiry Alert"
+    PasswordExpiryAlert: "Password Expiry Alert",
+    ResolveToteId: "Resolve Tote ID"
 }
 export const ConfirmationButtonText = {
     ResetPassword: 'Reset Password Now',
@@ -135,7 +137,9 @@ export const ConfirmationMessages = {
     ClickOkToUpdateLocation: 'You will now update both locations to complete the current move',
     ConfirmationToClearAllInventoryMap : "Click OK to clear all Inventory Map records matching Location Number (Zone + Carousal + Row + Shelf + Bin) Criteria!",
     ClearWholeLocationPutAwayQuantity:"Clear Whole Location cannot proceed because the Allocated Pick or Allocated Put Away quantity is greater than zero.",
-    DeleteLicenseConfirmation:"Are you sure you want to delete this License?"
+    DeleteLicenseConfirmation:"Are you sure you want to delete this License?",
+    ResolvedToteConfirmation:"Are you sure you want to mark this Tote ID as resolved? This will remove this Tote ID from the Markout.",
+    IrreversibleActionWarning :'This action cannot be undone.'
 }
 
 export const ToasterMessages = {
@@ -223,7 +227,8 @@ export const ToasterMessages = {
     ZoneAddedSuccessfully: "Zone added successfully",
     ZoneUpdatedSuccessfully: "Zone updated successfully",
     ZoneDeletedSuccessfully: "Zone deleted successfully",
-    NoDefaultFilter:"No filter is marked as default."
+    NoDefaultFilter:"No filter is marked as default.",
+    Resolved:"Resolved Successfully."
 }
 
 
@@ -568,9 +573,9 @@ export const Placeholders = {
 
 export const MarkoutNewPickTotesKeys = {
     ToteID: 'toteId',
-    Status: 'status',
+    MarkoutStatus: 'markoutStatus',
     StatusDate: 'statusDate',
-    RouteID: 'routeID',
+    RouteId: 'routeId',
     DivertReason: 'divertReason',
     Location: 'location',
     Destination: 'destination',
@@ -579,40 +584,40 @@ export const MarkoutNewPickTotesKeys = {
 
 export const MarkoutNewPickTotesDC = {
     ToteID: 'Tote ID',
-    Status: 'Status',
+    MarkoutStatus: 'Status',
     StatusDate: 'Status Date',
-    RouteID: 'Route ID',
+    RouteId: 'Route Id',
     DivertReason: 'Divert Reason',
     Location: 'Location',
     Destination: 'Destination',
-    Details: 'Details'
+    Details: 'Details',
 }
 
 
 export const MarkoutNewPickLinesKeys = {
-    Item: 'item',
-    Qty: 'qty',
-    LocID: 'locID',
+    Item: 'itemNumber',
+    Quantity: 'quantity',
+    LocationID: 'locationId',
     Status: 'status',
     StatusDate: 'statusDate',
-    CompQty: 'compQty',
-    CompBy: 'compBy',
+    CompletedQuantity: 'completedQuantity',
+    CompletedBy: 'completedBy',
     ShortReason: 'shortReason'
 }
 
 export const MarkoutNewPickLinesDC = {
-    Item: 'Item',
-    Qty: 'Qty',
-    LocID: 'Loc ID',
+    Item: 'Item Number',
+    Quantity: 'Quantity',
+    LocationID: 'Location ID',
     Status: 'Status',
     StatusDate: 'Status Date',
-    CompQty: 'Comp Qty',
-    CompBy: 'Comp By',
+    CompletedQuantity: 'Completed Quantity',
+    CompletedBy: 'Completed by',
     ShortReason: 'Short Reason'
 }
 
 export const MarkoutNewToteAuditKeys = {
-    Time: 'time',
+    Time: 'timeStamp',
     Type: 'type',
     Scanner: 'scanner',
     Divert: 'divert',

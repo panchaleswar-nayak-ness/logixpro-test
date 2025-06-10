@@ -12,7 +12,10 @@ import {
 import { AddPickToteInductionFilter } from 'src/app/induction-manager/models/PickToteInductionModel';
 import { InventoryMap, UpdateSCReq } from '../Model/storage-container-management';
 import {IQueryParams} from '../../app/../consolidation-manager/cm-route-id-management/routeid-list/routeid-IQueryParams'
+import { MarkoutAuditResponse, MarkoutPickLinesResponse, MarkoutResponse } from 'src/app/consolidation-manager/cm-markout-new/models/cm-markout-new-models';
 import { ZoneListPayload } from 'src/app/bulk-process/preferences/preference.models';
+import { ApiResponseData } from '../types/CommonTypes';
+
 
 @Injectable({
   providedIn: 'root',
@@ -2208,6 +2211,22 @@ export class ApiFuntions {
     return this.ApiBase.Get(`/markout/totedata/`, body);
   }
 
+    //===========markout-new=============
+public GetMarkoutNewData(queryParams: IQueryParams) {
+  return this.ApiBase.Get<MarkoutResponse>('/markout/totes', queryParams);
+}
+
+public GetToteAudit(queryParams: IQueryParams, toteId: number) {
+  return this.ApiBase.Get<MarkoutAuditResponse>(`/markout/totes/${toteId}/history`, queryParams);
+}
+
+public GetTotePickLines(queryParams: IQueryParams, toteId: number) {
+  return this.ApiBase.Get<MarkoutPickLinesResponse>(`/markout/totes/${toteId}/picklines`, queryParams);
+}
+
+public ResolveMarkoutTote(toteId: number) {
+  return this.ApiBase.Put<ApiResponseData>(`/markout/totes/${toteId}/resolve`, toteId);
+}
   public UpdateMarkoutQuantity(body: UpdateQuantityRequest) {
     return this.ApiBase.Post(`/markout/updatequantity`, body);
   }
