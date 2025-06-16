@@ -66,6 +66,7 @@ export class SystemLogicPreferencesComponent {
    */
   update() { 
     this.checkIsBulkBatchDisabled(); // Handle logic to disable/reset bulkBatchID based on pickType
+    this.checkIsCarouselBatchDisabled(); // Handle logic to disable/reset carouselBatchID based on pickType
     this.updatesystemLogicPref.emit(this.systemLogicPref);    
   }
 
@@ -79,11 +80,25 @@ export class SystemLogicPreferencesComponent {
     }
   }
 
+  checkIsCarouselBatchDisabled() {
+    if (this.systemLogicPref.pickType === this.parallelPickType) {
+      this.systemLogicPref.carouselBatchID = false; // Force disable the value
+    }
+  }
+
   /**
    * Returns true if 'Parallel Pick' is selected, indicating
    * that the Maintain Bulk Batch ID toggle should be disabled
    */
   get isBulkBatchDisabled(): boolean {
+    return this.systemLogicPref.pickType === this.parallelPickType;
+  }
+
+   /**
+   * Returns true if 'Parallel Pick' is selected, indicating
+   * that the Maintain Carousel Batch ID toggle should be disabled
+   */
+  get isCarouselBatchDisabled(): boolean {
     return this.systemLogicPref.pickType === this.parallelPickType;
   }
 }

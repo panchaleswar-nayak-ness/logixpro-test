@@ -142,6 +142,7 @@ export class SpGeneralSetupComponent implements OnInit {
         StringConditions.True,
         StringConditions.True,
         updatedInfo.pickType === this.parallelPickType ? StringConditions.False : String(updatedInfo.bulkBatchID),
+        updatedInfo.pickType === this.parallelPickType ? StringConditions.False : String(updatedInfo.carouselBatchID),
         StringConditions.True,
         String(updatedInfo.reelTrackingPickLogic),
         StringConditions.True,
