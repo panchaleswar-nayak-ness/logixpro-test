@@ -65,11 +65,7 @@ export class MarkoutNewPickLinesComponent implements OnInit {
 
   onValueChange(event: { searchCol: string; searchString: string }) {
     this.searchValue = event.searchString;
-    if (!event.searchString) {
-      this.searchCol = '';
-    } else {
-      this.searchCol = event.searchCol;
-    }
+    this.searchCol = event.searchCol;
   }
 
   onFilterChange() {

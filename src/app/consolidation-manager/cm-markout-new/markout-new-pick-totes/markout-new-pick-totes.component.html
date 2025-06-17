@@ -9,16 +9,15 @@
                         <div>
                             <mat-form-field class="action-dropdown w-100 mb-2" appearance="outline">
                                 <mat-label>Actions</mat-label>
-                                <mat-select #matRef class="employees-action" placeholder="Actions">
+                                <mat-select [(ngModel)]="selectedAction" #actionModel="ngModel" (selectionChange)="onActionChange($event.value)" class="employees-action" placeholder="Actions">
                                     <mat-option disabled value="set_column_sq">Set Column Sequence</mat-option>
-                                    <mat-option value="resolved" (click)="resolved()">Resolved</mat-option>
+                                    <mat-option value="resolved">Resolved</mat-option>
                                     <mat-option disabled value="print_labels">Print Labels</mat-option>
                                 </mat-select>
                                 <span class="material-symbols-outlined icon-expand-more">expand_more</span>
                             </mat-form-field>
                         </div>
                     </div>
-
                     <div
                         class="header-filter-options w-100 d-xl-flex d-lg-block align-items-center justify-content-between filter">
                         <app-column-filter-component

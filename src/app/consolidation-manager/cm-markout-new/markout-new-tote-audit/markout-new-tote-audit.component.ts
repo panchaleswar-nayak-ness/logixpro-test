@@ -72,11 +72,7 @@ export class MarkoutNewToteAuditComponent {
   // Updates search column and value based on user input
   onValueChange(event: { searchCol: string; searchString: string }) {
     this.searchValue = event.searchString;
-    if (!event.searchString) {
-      this.searchCol = '';
-    } else {
-      this.searchCol = event.searchCol;
-    }
+    this.searchCol = event.searchCol;
   }
 
   // Fetches tote audit data with pagination, sorting, and search filters applied
@@ -137,6 +133,7 @@ export class MarkoutNewToteAuditComponent {
   dataSource: MatTableDataSource<ToteAudit> = new MatTableDataSource<ToteAudit>();
 
   onClearSearch() {
+    this.searchCol = '';
     this.searchValue = '';
     this.getToteAuditData(this.toteId);
   }

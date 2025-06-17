@@ -13,6 +13,7 @@ import { MatSort } from '@angular/material/sort';
 import { PageEvent } from '@angular/material/paginator';
 import { IQueryParams } from '../../cm-route-id-management/routeid-list/routeid-IQueryParams';
 import { switchMap, EMPTY } from 'rxjs';
+import { NgModel } from '@angular/forms';
 
 @Component({
   selector: 'app-markout-new-pick-totes',
@@ -22,6 +23,8 @@ import { switchMap, EMPTY } from 'rxjs';
 export class MarkoutNewPickTotesComponent implements OnInit {
   @Output() rowSelected = new EventEmitter<PickTotes>();
   @ViewChild(MatSort) sort!: MatSort;
+  @ViewChild('actionModel') actionModel: NgModel;
+  selectedAction: string = '';
 
   placeholders = Placeholders;
 
@@ -177,7 +180,7 @@ export class MarkoutNewPickTotesComponent implements OnInit {
       disableClose: true,
     });
   }
-
+  
   // Opens confirmation dialog to resolve the tote; calls API and shows appropriate toast message based on response
   resolved() {
     this.dialog
@@ -196,6 +199,7 @@ export class MarkoutNewPickTotesComponent implements OnInit {
       .afterClosed()
       .pipe(
         switchMap((result: string) => {
+          this.actionModel.reset();
           if (result === ResponseStrings.Yes) {
              const selectedTote = this.dataSource.data.find(tote => tote.selected);
               if (selectedTote) {
@@ -209,22 +213,29 @@ export class MarkoutNewPickTotesComponent implements OnInit {
           }
         })
       )
-      .subscribe((res: ApiResponseData | null) => {
-        if (res?.isExecuted) {
-          this.global.ShowToastr(
-            ToasterType.Success,
-            ToasterMessages.Resolved,
-            ToasterTitle.Success
-          );
-          this.refresh();
-        } else if (res) {
-          this.global.ShowToastr(
-            ToasterType.Error,
-            res.responseMessage,
-            ToasterTitle.Error
-          );
-        }
-      });
+     .subscribe((res: ApiResponseData | null) => {
+      if (res?.status === 'Success') {
+        this.global.ShowToastr(
+          ToasterType.Success,
+          ToasterMessages.Resolved,
+          ToasterTitle.Success
+        );
+        this.refresh();
+      } else if (res?.errors?.length) {
+        this.global.ShowToastr(
+          ToasterType.Error,
+          res.errors.join(', '),
+          ToasterTitle.Error
+        );
+      } else {
+        this.global.ShowToastr(
+          ToasterType.Error,
+          ToasterMessages.ErrorOccured, // fallback generic message
+          ToasterTitle.Error
+        );
+      }
+    });
+      
   }
   // Called when filter value changes (column or search string)
   onFilterChange() {
@@ -233,17 +244,20 @@ export class MarkoutNewPickTotesComponent implements OnInit {
 
   onValueChange(event: { searchCol: string; searchString: string }) {
     this.searchValue = event.searchString;
-    if (!event.searchString) {
-      this.searchCol = '';
-    } else {
-      this.searchCol = event.searchCol;
-    }
+    this.searchCol = event.searchCol;
   }
 
   // Called when input field is cleared
   onClearSearch() {
+    this.searchCol='';
     this.searchValue = '';
     this.getToteData();
+  }
+  
+  onActionChange(value: string) {
+    if (value === 'resolved') {
+      this.resolved();
+    }
   }
 
 }

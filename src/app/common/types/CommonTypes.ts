@@ -340,3 +340,9 @@ export interface EmployeeAccessLevel {
     accessClearWholeLocation : boolean;
     accessAddInvMapLocation: boolean;
 }
+
+export interface ApiResponseData {
+  status: 'Success' | 'Fail' | string;  // or use the same enum if shared
+  value?: string | null;
+  errors?: string[] | null;
+}
