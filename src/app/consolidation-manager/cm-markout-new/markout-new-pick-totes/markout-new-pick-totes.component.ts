@@ -160,7 +160,7 @@ export class MarkoutNewPickTotesComponent implements OnInit {
         (x: PickTotes) => x === row
       );
       if (selectedRow) {
-        selectedRow.selected = !selectedRow.selected;
+        selectedRow.selected = true;
         this.rowSelected.emit(row);
       }
     }, 250);
@@ -232,8 +232,12 @@ export class MarkoutNewPickTotesComponent implements OnInit {
   }
 
   onValueChange(event: { searchCol: string; searchString: string }) {
-    this.searchCol = event.searchCol;
     this.searchValue = event.searchString;
+    if (!event.searchString) {
+      this.searchCol = '';
+    } else {
+      this.searchCol = event.searchCol;
+    }
   }
 
   // Called when input field is cleared

@@ -64,8 +64,12 @@ export class MarkoutNewPickLinesComponent implements OnInit {
   };
 
   onValueChange(event: { searchCol: string; searchString: string }) {
-    this.searchCol = event.searchCol;
     this.searchValue = event.searchString;
+    if (!event.searchString) {
+      this.searchCol = '';
+    } else {
+      this.searchCol = event.searchCol;
+    }
   }
 
   onFilterChange() {
@@ -75,6 +79,7 @@ export class MarkoutNewPickLinesComponent implements OnInit {
   }
 
     onClearSearch() {
+    this.searchCol = '';
     this.searchValue = '';
     this.onFilterChange();
   }
