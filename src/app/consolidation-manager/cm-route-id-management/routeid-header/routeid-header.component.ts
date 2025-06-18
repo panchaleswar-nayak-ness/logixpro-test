@@ -12,7 +12,6 @@ import { ToasterTitle, ToasterType, ToasterMessages } from 'src/app/common/const
 
 // Interfaces for API response
 import { IConZoneResponse } from '../routeid-header/Irouteid-header';
-import { IConHeaderResponse } from '../routeid-header/Irouteid-list';
 import { IConsolidationStatus } from '../routeid-header/IConsolidationStatus';
 import { IRouteIdStatusCountResponse } from '../routeid-header/IRouteStatusCount';
 
@@ -51,6 +50,7 @@ export class RouteidHeaderComponent implements OnInit, OnDestroy {
   statusReadyForRelease: string = '0';
   statusReleaseRequested: string = '0';
   statusActiveRelease: string = '0';
+  statusInShipping: string = '0';
 
   // Control for float label setting in form fields
   floatLabelControl = new FormControl('auto' as FloatLabelType);
@@ -68,7 +68,8 @@ export class RouteidHeaderComponent implements OnInit, OnDestroy {
     'In Consolidation': 'statusInConsolidation',
     'Ready For Release': 'statusReadyForRelease',
     'Release Requested': 'statusReleaseRequested',
-    'Active Release': 'statusActiveRelease'
+    'Active Release': 'statusActiveRelease',
+    'In Shipping': 'statusInShipping'
   };
 
   // timeout references
