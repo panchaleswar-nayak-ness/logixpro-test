@@ -59,7 +59,7 @@ export class RouteidHeaderComponent implements OnInit, OnDestroy {
   info: Info[] = [
     { title: 'Initialized', value: '0', colorClass: 'label-blue2' },
     { title: 'Induction Started', value: '0', colorClass: 'Open-card' },
-    { title: 'Complete', value: '0', colorClass: 'Compete-cart' }
+    { title: 'Consolidation Complete', value: '0', colorClass: 'Compete-cart' }
   ];
 
   // Maps backend status names to component property names

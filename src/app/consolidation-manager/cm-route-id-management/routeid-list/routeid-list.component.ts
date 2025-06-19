@@ -498,10 +498,7 @@ export class RouteidListComponent implements OnInit, OnDestroy {
     const statusClassMap: { [key: string]: string } = {
       initialized: 'label-blue2',
       'induction started': 'label-yellow',
-      'con completed': 'label-green',
-      'con. completed': 'label-green',
-      'con. complete': 'label-green',
-      complete: 'label-green',
+      'consolidation complete': 'label-green'
     };
   
     const statusClass = statusClassMap[rawStatus ?? ''];
