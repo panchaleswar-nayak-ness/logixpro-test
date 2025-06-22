@@ -52,8 +52,8 @@ export class SystemLogicPreferencesComponent {
     lateBreakTime: '',
     lateBreakDuration: 0,
     requireHotReasons: false,
-    allowQuickPicks: false,
-    deafultQuickPicks: false,
+    quickPicks: false,
+    defaultQuickPicks: false,
     printReprocessReportAfterAllocation: false
   };
 

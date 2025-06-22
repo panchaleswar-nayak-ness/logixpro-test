@@ -1,5 +1,4 @@
 import { Time } from "@angular/common";
-import { Call } from "@angular/compiler";
 
 export class OrderBatchToteQtyRequest {
     type: string;

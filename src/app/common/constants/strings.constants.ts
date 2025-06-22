@@ -6,7 +6,8 @@ export const StringAssignments = {
 
 export const localStorageKeys = {
     UserRights: 'userRights',
-    TransactionTabIndex: 'TransactionTabIndex'
+    TransactionTabIndex: 'TransactionTabIndex',
+    VerifyBulks: "verifyBulks"
 }
 
 export const TransactionType = {
@@ -19,6 +20,10 @@ export const DialogConstants = {
     auto: 'auto',
     close: 'close',
     autoFocus: '__non_existing_element__'
+}
+
+export const DialogsCloseMessage = {
+    Yes: 'Yes',
 }
 
 export const StringConditions = {
@@ -119,6 +124,10 @@ export const ConfirmationHeadings = {
     BatchManager: 'Batch Manager',
     MoveNow: "Continue Move Now?",
     PasswordExpiryAlert: "Password Expiry Alert",
+    PrintItemLabelsNow: "Print Item Labels Now?",
+    CreateBatchNow: "Create Batch Now?",
+    PrintBatchOrOrder:"Print Batch Or Order",
+    NoOffCarouselPicksFound:"No Off-Carousel Picks Found",
     ResolveToteId: "Resolve Tote ID"
 }
 export const ConfirmationButtonText = {
@@ -138,6 +147,12 @@ export const ConfirmationMessages = {
     ConfirmationToClearAllInventoryMap : "Click OK to clear all Inventory Map records matching Location Number (Zone + Carousal + Row + Shelf + Bin) Criteria!",
     ClearWholeLocationPutAwayQuantity:"Clear Whole Location cannot proceed because the Allocated Pick or Allocated Put Away quantity is greater than zero.",
     DeleteLicenseConfirmation:"Are you sure you want to delete this License?",
+    TouchYesToPrintlabelForItemInBatch: "Touch ‘Yes’ to print a label for each item in this batch",
+    TouchYesToPrintAllAsBatch:"Touch ‘Yes’ to print all orders as a batch",
+    TouchNoToPrintEachOrder: "Touch 'No' to print a page for each order.",
+    AssignOrdersToBatch: (batchId: string | number) =>
+        `Touch ‘Yes’ to Assign the Selected Orders to Batch ID ${batchId}. Touch ‘No’ to Cancel Batching.`,
+    NoOffCarouselPicks:"There are no off-carousel picks for the order(s) selected.",    
     ResolvedToteConfirmation:"Are you sure you want to mark this Tote ID as resolved? This will remove this Tote ID from the Markout.",
     IrreversibleActionWarning :'This action cannot be undone.'
 }
@@ -220,6 +235,7 @@ export const ToasterMessages = {
     RequestReleaseFailed:"Request release failed.",
     RequestReleaseSuccess:"Request release successfully.",
     APIErrorMessage:"API request failed.",
+    ZoneNotSelected: "Zone not selected",
     DeleteAllSuccess:"All records deleted successfully",
     NoRecordFound:"No records found",
     RecordsAddedSuccessfully: "All Records added successfully",
@@ -420,7 +436,12 @@ export const TableName = {
     OpenTransactions: 'Open Transactions',
     OpenTransactionsTemp: 'Open Transactions Temp',
     ReProcessed: 'ReProcessed',
-    TransactionHistory: 'Transaction History'
+    TransactionHistory: 'Transaction History',
+    BatchSelectionList: "Batch Selection List",
+    ToteSelectionList: "Tote Selection List",
+    OrderSelectionList: "Order Selection List",
+    SelectedOrders: "Selected Orders",
+    SelectedTotes: "Selected Totes",
 }
 export const TableConstant = {
     CompletedDate: 'Completed Date',
@@ -485,11 +506,13 @@ export const Style = {
     w560px: '560px',
     w100vw: '100vw',
     w50vw: '50vw',
+    w96vw:'96vw',
     w480px: '480px',
     w600px: '600px',
     w786px: '786px',
     w402px: '402px',
     w1080px: '1080px',
+    w990px: '990px',
 }
 
 export const FilterColumnName = {

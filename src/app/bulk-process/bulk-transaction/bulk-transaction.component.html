@@ -1,30 +1,41 @@
 <div class="container-fluid p-0" *ngIf="!verifyBulks">
     <div class="row">
         <div class="col-xxl-7 mb-3">
-            <app-search-bar (changeViewEmitter)="changeView($event)" [url]="capitalizeWords(url)" [status]="status" [view]="view" [orders]="orders" [batchSeleted]="batchSeleted"
-             [selectedOrders]="selectedOrders" [allowQuickPick]="allowQuickPick" [defaultQuickPick]="defaultQuickPick" (addItemEmitter)="selectOrder($event)" (printDetailList)="printDetailList()"
-             (createBatchEmit)="createBatchNow($event)" (isQuickPickChange)="this.isQuickPick = $event;quickPickViewChange()"></app-search-bar>
+            <app-search-bar (changeViewEmitter)="changeView($event)" [bulkTransactionType]="this.bulkTransactionTypeAllCaps"
+                [status]="status" [view]="view" [orders]="orders" [batchSeleted]="batchSeleted"
+                [selectedOrders]="selectedOrders" [allowQuickPick]="allowQuickPick" [isQuickPick]="isQuickPick"
+                [defaultQuickPick]="defaultQuickPick" (addItemEmitter)="selectOrder($event)"
+                (printDetailList)="printDetailList()" (createBatchEmit)="createBatchNow($event)"
+                (isQuickPickChange)="this.isQuickPick = $event;quickPickViewChange()"></app-search-bar>
         </div>
         <div class="col-xxl-5 mb-3">
-            <app-status [status]="status"></app-status>
+            <app-status [status]="status" [isQuickPick]="isQuickPick" [bulkTransactionType]="this.bulkTransactionTypeAllCaps"></app-status>
         </div>
     </div>
     <div class="row">
         <div class="col-xxl-7 mb-3">
-            <app-order-selection-list  [batchSeleted]="batchSeleted" [url]="capitalizeWords(url)" [orders]="orders" [view]="view" [ordersDisplayedColumns]="ordersDisplayedColumns" (selectOrderEmitter)="selectOrder($event)" (appendAllEmitter)="appendAll()"></app-order-selection-list>
+            <app-order-selection-list [batchSeleted]="batchSeleted" [url]="this.bulkTransactionTypeAllCaps"
+                [orders]="orders" [view]="view" [displayedColumns]="displayedColumns"
+                (selectOrderEmitter)="selectOrder($event)" (appendAllEmitter)="appendAll()"></app-order-selection-list>
         </div>
         <div class="col-xxl-5 mb-3">
-            <app-selected-orders [selectedOrders]="selectedOrders" [url]="capitalizeWords(url)" [view]="view" [selectedOrdersDisplayedColumns]="selectedOrdersDisplayedColumns" (removeOrderEmitter)="removeOrder($event)" (removeAllEmitter)="removeAll()"></app-selected-orders>
+            <app-selected-orders [selectedOrders]="selectedOrders" [view]="view"
+                [selectedDisplayedColumns]="selectedDisplayedColumns"
+                (removeOrderEmitter)="removeOrder($event)" (removeAllEmitter)="removeAll()"></app-selected-orders>
         </div>
     </div>
     <div>
-        <button mat-flat-button color="primary" class="btn-lg w-100" *ngIf="!isQuickPick" (click)="Process()" [disabled]="!(selectedOrders.length > 0)">
-            Verify Bulk {{capitalizeWords(url)}}
+        <button mat-flat-button color="primary" class="btn-lg w-100" *ngIf="!isQuickPick" (click)="Process()"
+            [disabled]="!(selectedOrders.length > 0)">
+            Verify Bulk {{this.bulkTransactionTypeAllCaps}}
         </button>
-        <button mat-flat-button color="primary" class="btn-lg w-100" *ngIf="isQuickPick" (click)="ProcessQuickPick()" [disabled]="!(selectedOrders.length > 0)">
+        <button mat-flat-button color="primary" class="btn-lg w-100" *ngIf="isQuickPick" (click)="ProcessQuickPick()"
+            [disabled]="!(selectedOrders.length > 0)">
             Process Quick Pick
         </button>
     </div>
 </div>
 
-<app-verify-bulk *ngIf="verifyBulks" [orderLines]="orderLines" [Prefernces]="Prefernces" [url]="capitalizeWords(url)" [NextToteID]="this.NextToteID" (back)="changeVisibiltyVerifyBulk(true)"></app-verify-bulk>
+<app-verify-bulk *ngIf="verifyBulks" [orderLines]="orderLines" [Prefernces]="Prefernces"
+    [bulkTransactionType]="this.bulkTransactionTypeAllCaps" [NextToteID]="this.NextToteID"
+    (back)="changeVisibiltyVerifyBulk(true)"></app-verify-bulk>

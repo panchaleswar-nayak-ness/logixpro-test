@@ -1,10 +1,11 @@
 import { LiveAnnouncer } from '@angular/cdk/a11y';
-import { Component, EventEmitter, Input, OnInit, Output, SimpleChanges, ViewChild } from '@angular/core';
+import { Component, EventEmitter, Input, Output, ViewChild } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort, Sort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
-import { Order } from 'src/app/common/Model/bulk-transactions';
-import { DialogConstants, LiveAnnouncerMessage } from 'src/app/common/constants/strings.constants';
+import { BatchesResponse, Order, OrderResponse, TotesResponse } from 'src/app/common/Model/bulk-transactions';
+import { BulkTransactionView } from 'src/app/common/constants/bulk-process/bulk-transactions';
+import { DialogConstants, LiveAnnouncerMessage, Style, TableName } from 'src/app/common/constants/strings.constants';
 import { GlobalService } from 'src/app/common/services/global.service';
 import { OrderDetailsComponent } from 'src/app/dialogs/order-details/order-details.component';
 
@@ -13,32 +14,57 @@ import { OrderDetailsComponent } from 'src/app/dialogs/order-details/order-detai
   templateUrl: './order-selection-list.component.html',
   styleUrls: ['./order-selection-list.component.scss']
 })
-export class OrderSelectionListComponent implements OnInit {
+export class OrderSelectionListComponent {
   @Input() url: string;
-  @Input() ordersDisplayedColumns: string[];
-  @Input() orders: Order[];
-  @Input() view: string;
+  @Input() displayedColumns: string[];
   @Input() batchSeleted: boolean;
-  datasource: MatTableDataSource<Order>;
   @ViewChild(MatSort) sort: MatSort;
   @Output() selectOrderEmitter = new EventEmitter<Order>();
-  @Output() appendAllEmitter = new EventEmitter<any>(); 
-  tableHeading: string = "Batch Selection List";
+  @Output() appendAllEmitter = new EventEmitter<any>();
   @ViewChild('paginator1') paginator1: MatPaginator;
 
+  private _view: string;
+  @Input() set view(value: string) {
+    this._view = value;
+    this.setTableHeading();
+  }
+
+  get view(): string {
+    return this._view;
+  }
+
+  private _orders: (OrderResponse | TotesResponse | BatchesResponse)[];
+  @Input() set orders(value: (OrderResponse | TotesResponse | BatchesResponse)[]) {
+    this._orders = value;
+    this.updateDatasource();
+  }
+
+  tableHeading: string = TableName.BatchSelectionList;
+  datasource: MatTableDataSource<(OrderResponse | TotesResponse | BatchesResponse)>;
+
   constructor(
-    private _liveAnnouncer: LiveAnnouncer,
-    private global: GlobalService,
+    private readonly _liveAnnouncer: LiveAnnouncer,
+    private readonly global: GlobalService,
   ) { }
 
-  ngOnInit(): void {}
+  private setTableHeading(): void {
+    switch (this._view) {
+      case BulkTransactionView.BATCH:
+        this.tableHeading = TableName.BatchSelectionList;
+        break;
+      case BulkTransactionView.TOTE:
+        this.tableHeading = TableName.ToteSelectionList;
+        break;
+      case BulkTransactionView.ORDER:
+        this.tableHeading = TableName.OrderSelectionList;
+        break;
+    }
+  }
 
-  ngOnChanges(changes: SimpleChanges) {
-    if(this.view == "batch") this.tableHeading = "Batch Selection List";
-    else if(this.view == "tote") this.tableHeading = "Tote Selection List";
-    else if(this.view == "order") this.tableHeading = "Order Selection List";
-    this.datasource = new MatTableDataSource(this.orders);
-    if(this.orders.length) this.datasource.sort = this.sort;
+  private updateDatasource(): void {
+    if (!this._orders) return;
+    this.datasource = new MatTableDataSource(this._orders);
+    if (this._orders.length) this.datasource.sort = this.sort;
     this.datasource.paginator = this.paginator1;
   }
 
@@ -48,10 +74,9 @@ export class OrderSelectionListComponent implements OnInit {
     this.datasource.sort = this.sort;
   }
 
-  selectOrder(order : any) {
+  selectOrder(order : Order) {
     if(!this.batchSeleted){
       this.selectOrderEmitter.emit(order);
-      this.datasource = new MatTableDataSource(this.datasource.filteredData.filter((x:any) => x.id != order.id));
       this.datasource.paginator = this.paginator1;
       this.datasource.sort = this.sort;
     }
@@ -62,16 +87,14 @@ export class OrderSelectionListComponent implements OnInit {
   }
 
   viewDetails(element : Order) {
-    const dialogRefTote = this.global.OpenDialog(OrderDetailsComponent, {
+    this.global.OpenDialog(OrderDetailsComponent, {
       height: DialogConstants.auto,
-      width: '96vw',
+      width: Style.w96vw,
       autoFocus: DialogConstants.autoFocus,
       disableClose: true,
       data: {
-        from: 'BulkTransaction',
         details: element.orderLines
       }
     });
-    dialogRefTote.afterClosed().subscribe((result) => {});
   }
 }

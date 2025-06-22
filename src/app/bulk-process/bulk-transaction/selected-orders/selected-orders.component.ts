@@ -1,55 +1,76 @@
 import { LiveAnnouncer } from '@angular/cdk/a11y';
-import { Component, EventEmitter, Input, OnInit, Output, SimpleChanges, ViewChild } from '@angular/core';
+import { Component, EventEmitter, Input, Output, ViewChild } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort, Sort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
-import { LiveAnnouncerMessage } from 'src/app/common/constants/strings.constants';
+import { BulkTransactionView } from 'src/app/common/constants/bulk-process/bulk-transactions';
+import { LiveAnnouncerMessage, TableName } from 'src/app/common/constants/strings.constants';
+import { BatchesResponse, OrderResponse, TotesResponse } from 'src/app/common/Model/bulk-transactions';
 
 @Component({
   selector: 'app-selected-orders',
   templateUrl: './selected-orders.component.html',
   styleUrls: ['./selected-orders.component.scss']
 })
-export class SelectedOrdersComponent implements OnInit {
+export class SelectedOrdersComponent {
 
-  @Input() selectedOrdersDisplayedColumns: string[];
-  @Input() selectedOrders: any = [];
-  @Input() view;
-  @ViewChild(MatSort) sort: MatSort;
-  @Output() removeOrderEmitter = new EventEmitter<any>();
-  @Output() removeAllEmitter = new EventEmitter<any>(); 
-  @ViewChild('paginator1') paginator1: MatPaginator;
-  tableHeading = "Selected Batches";
-  datasource:any = [];
-  @Input() url:any;
-  constructor(private _liveAnnouncer: LiveAnnouncer) { }
+  @Input() selectedDisplayedColumns: string[];
+  @Output() removeOrderEmitter = new EventEmitter<(OrderResponse | TotesResponse | BatchesResponse)>();
+  @Output() removeAllEmitter = new EventEmitter();
 
-  ngOnInit(): void {
+  private _view: string;
+  @Input()
+  set view(value: string) {
+    this._view = value;
+    this.updateTableHeading();
   }
 
-  ngOnChanges(changes: SimpleChanges) {
-    if(this.view == "batch"){
-      this.tableHeading = "Selected Orders";
-    } 
-    else if(this.view  == "tote"){
-      this.tableHeading = "Selected Totes";
-    }
-    else if(this.view  == "order"){
-      this.tableHeading = "Selected Orders";
-    }
+  get view(): string {
+    return this._view;
+  }
+
+  private _selectedOrders: (OrderResponse | TotesResponse)[] = [];
+  @Input()
+  set selectedOrders(value: (OrderResponse | TotesResponse)[]) {
+    this._selectedOrders = value ?? [];
+    this.updateDataSource();
+  }
+
+  get selectedOrders(): (OrderResponse | TotesResponse)[] {
+    return this._selectedOrders;
+  }
+
+  tableHeading = TableName.SelectedOrders;
+  datasource: MatTableDataSource<(OrderResponse | TotesResponse)>;
+  @ViewChild('paginator1') paginator1: MatPaginator;
+  @ViewChild(MatSort) sort: MatSort;
+
+  constructor(
+    private readonly _liveAnnouncer: LiveAnnouncer
+  ) { }
+
+
+  private updateTableHeading() {
+    this.tableHeading = (this.view === BulkTransactionView.BATCH || this.view === BulkTransactionView.ORDER)
+      ? TableName.SelectedOrders
+      : TableName.SelectedTotes;
+  }
+
+  private updateDataSource() {
     this.datasource = new MatTableDataSource(this.selectedOrders);
-    if(this.selectedOrders.length) this.datasource.sort = this.sort;
+    if (this.selectedOrders.length) {
+      this.datasource.sort = this.sort;
+    }
     this.datasource.paginator = this.paginator1;
   }
 
-  removeOrder(order: any) {
+  removeOrder(order: OrderResponse | TotesResponse | BatchesResponse) {
     this.removeOrderEmitter.emit(order);
-    this.datasource = new MatTableDataSource(this.datasource.filteredData.filter((x: any) => x.id != order.id));
     this.datasource.sort = this.sort;
     this.datasource.paginator = this.paginator1;
   }
 
-  announceSortChange(sortState: Sort) { 
+  announceSortChange(sortState: Sort) {
     if (sortState.direction) {
       this._liveAnnouncer.announce(`Sorted ${sortState.direction}ending`);
     } else {
@@ -57,7 +78,8 @@ export class SelectedOrdersComponent implements OnInit {
     }
     this.datasource.sort = this.sort;
   }
-  removeAll(){
+
+  removeAll() {
     this.removeAllEmitter.emit();
   }
 

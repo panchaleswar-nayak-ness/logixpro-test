@@ -14,15 +14,14 @@
                   <h6 class="text-tertiary-900"><b>System Status</b></h6>
                   <div class="d-flex gap-12 justify-content-center flex-wrap">
                     <div class="employees text-center">
-                      <app-stats-circle [value]="status?.orderCount" title="Orders"></app-stats-circle>
+                      <app-stats-circle [value]="status.orderCount.toString()" title="Orders"></app-stats-circle>
                     </div>
-                    <div class="customer text-center">
-                      <app-stats-circle [value]="status?.batchCount" title="Batches"></app-stats-circle>
+                    <div class="customer text-center" *ngIf="bulkTransactionType !== BulkTransactionType.PICK || !isQuickPick">
+                      <app-stats-circle [value]="status.batchCount.toString()" title="Batches"></app-stats-circle>
                     </div>
-                    <div class="customer text-center">
-                      <app-stats-circle [value]="status?.toteCount" title="Totes"></app-stats-circle>
+                    <div class="customer text-center" *ngIf="bulkTransactionType !== BulkTransactionType.PICK  || !isQuickPick">
+                      <app-stats-circle [value]="status.toteCount.toString()" title="Totes"></app-stats-circle>
                     </div>
-                    
                   </div>
                 </div>
               </div>
@@ -33,7 +32,7 @@
                   <h6 class="text-tertiary-900"><b>Batch Status</b></h6>
                   <div class="d-flex gap-20 justify-content-center flex-wrap">
                     <div class="customer text-center">
-                      <app-stats-circle [value]="status?.orderLinesCount" title="Lines"></app-stats-circle>
+                      <app-stats-circle [value]="status.orderLinesCount.toString()" title="Lines"></app-stats-circle>
                     </div>
                   </div>
                 </div>

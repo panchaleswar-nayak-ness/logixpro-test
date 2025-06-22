@@ -537,6 +537,9 @@ export class GlobalService {
     });
   }
 
+  insertSpaceInCamelOrPascal(input: string): string {
+    return input.replace(/(.)([A-Z][a-z])/g, '$1 $2');
+  }
 
   getFormattedDateTime(date: string | Date, includeTime: boolean = false): string {
   let dateObj: Date;

@@ -3,12 +3,14 @@ import {AssignToteToOrderDto, NextToteId} from "../../Model/bulk-transactions";
 
 export interface IBulkProcessApiService {
   bulkPickoOrderBatchToteQty(payload: any);
-  bulkPickBatches(payload:any);
-  bulkPickBatchId(payload:any);
-  bulkPickOrders(payload:any);
-  bulkPickTotes(payload:any);
-  bulkPickOrdersQuickpick(payload:any);
-  bulkPickOrdersLocationAssignment(payload:any);
+  bulkPickBatches(paylaod:any);
+  bulkPickBatchId(paylaod:any);
+  bulkPickOrders(paylaod:any);
+  bulkPickTotes(paylaod:any);
+  bulkPickOrdersQuickpick(paylaod:any);
+  bulkPickOrdersLocationAssignment(paylaod:any);
+  bulkPickOrdersCheckLocationAssignment(paylaod:string[]);
+  bulkPickOrdersCheckOffCarouselPicks(paylaod:string[]);
   bulkPickZones();
   bulkPickBulkZone();
   addBulkPickBulkZone(payload:any);

@@ -1,22 +1,23 @@
 <mat-card class="mat-elevation-z g-card">
     <mat-card-content>
         <div class="row flex-row align-items-center mb-2">
-            <div class="col mb-3 mb-xl-0">
-                <app-icon-heading-component heading="Bulk {{this.url}}" icon="unarchive">
+            <div class="col mb-3 mb-xl-0 d-flex align-items-center">
+                <app-icon-heading-component heading="Bulk {{this.bulkTransactionType}}" icon="unarchive">
                 </app-icon-heading-component>
+                <span *ngIf="this.bulkTransactionType == BulkTransactionType.PICK && isQuickPick" class="label bg-secondary-100 text-secondary-900  px-2 mb-xl-0 mb-1 mx-2 text-16">Mode:&nbsp;<b class="badge-ch-limit">Quick Pick</b></span>
             </div>
             <div class="col mb-3 mb-xl-0">
                 <div class="w-100 d-flex d-xl-block">
                     <mat-form-field class="action-dropdown custom-form-field-bg-white float-end flex-grow-1 flexOne"
                         appearance="outline">
                         <mat-label>Actions</mat-label>
-                        <mat-select class="employees-action" #openAction (selectionChange)="generateTranscAction($event)">
+                        <mat-select class="employees-action" #openAction (selectionChange)="clearMatSelectList()">
                             <mat-option value="add_new_transaction" (click)="PrintDetailList()" *ngIf="!isQuickPick"
                             [matTooltip]="selectedOrders.length == 0 ? '':'Press to a print detail list for the Batch of orders in the Queue.'"
                             [disabled]="selectedOrders.length == 0">Print Detail List</mat-option>
-                            <mat-option value="add_new_transaction" *ngIf="['Put Away','Count'].indexOf(url) > -1 && !isQuickPick" (click)="CreateBatch()"  
+                            <mat-option value="add_new_transaction" *ngIf="['Put Away','Count'].indexOf(bulkTransactionType) > -1 && !isQuickPick" (click)="CreateBatch()"  
                             [disabled]="selectedOrders.length == 0">Create Batch</mat-option>
-                            <mat-option value="add_new_transaction" *ngIf="isQuickPick"  
+                            <mat-option value="add_new_transaction" *ngIf="isQuickPick" (click)="printShortageZone()"
                                 [disabled]="selectedOrders.length == 0">Print Shortage</mat-option>
                         </mat-select>
                         <span class="material-symbols-outlined icon-expand-more">
@@ -26,35 +27,40 @@
                 </div>
             </div>
         </div>
-        <div class="bg-light-blue bg-50 br-none px-4 py-4 br-20 m-h-140 d-flex">
-            <div class="d-xl-flex d-block justify-content-between align-items-center gap-12 w-100">
-                <mat-form-field class="action-dropdown w-100 mb-3 mb-xl-0" appearance="outline" *ngIf="!isQuickPick">
-                    <mat-select class="employees-action" [(ngModel)]="view" [value]="view" (selectionChange)="changeView($event)">
-                        <mat-option value="batch" matTooltip='Press to change the Order Selection List to view all current "batch" order.' matTooltipPosition="above"  [disabled]="status?.batchCount < 1">Batches</mat-option>
-                        <mat-option value="tote" matTooltip='Press to change the Order Selection List to view all current "Tote" order.' [disabled]="status?.toteCount < 1">Totes</mat-option>
-                        <mat-option value="order" matTooltip='Press to change the Order Selection List to view all "Orders".' [disabled]="status?.orderCount < 1">Orders</mat-option>
-                    </mat-select>
-                    <span class="material-symbols-outlined icon-expand-more">expand_more</span>
-                </mat-form-field>
+        <div class="d-flex gap-12 w-100">
+            <div class="bg-light-blue bg-50 br-none px-4 py-4 br-20 m-h-140 d-flex flex-fill ">
+                <div class="d-xl-flex d-block justify-content-between align-items-center gap-12 w-100">
+                    <mat-form-field class="action-dropdown w-100 mb-3 mb-xl-0" appearance="outline">
+                        <mat-select class="employees-action" [(ngModel)]="view" [value]="view" (selectionChange)="changeView($event)">
+                            <mat-option value="batch" matTooltip='Press to change the Order Selection List to view all current "batch" order.' matTooltipPosition="above"  [disabled]="(this.bulkTransactionType == BulkTransactionType.PICK && isQuickPick) || status.batchCount < 1">Batches</mat-option>
+                            <mat-option value="tote" matTooltip='Press to change the Order Selection List to view all current "Tote" order.' [disabled]="(this.bulkTransactionType == BulkTransactionType.PICK && isQuickPick) || status.toteCount < 1">Totes</mat-option>
+                            <mat-option value="order" matTooltip='Press to change the Order Selection List to view all "Orders".' [disabled]="status.orderCount < 1">Orders</mat-option>
+                        </mat-select>
+                        <span class="material-symbols-outlined icon-expand-more">expand_more</span>
+                    </mat-form-field>
 
-                <span class="v-br d-xl-block d-none mb-3 mb-xl-0" *ngIf="!isQuickPick">-</span>
-                <mat-form-field class="w-100 br-14 custom-form-field-bg-white" appearance="outline">
-                    <span class="material-symbols-outlined text-20 icon-search pe-2">search</span>
-                    <input type="text"  class="suggest" matInput  [matAutocomplete]="auto1" (ngModelChange)="search($event)" [(ngModel)]="searchText" (keyup.enter)="addItem()"  #autoFocusField/>
-                    <input type="text" class="suggest autocomplete" disabled [value]="suggestion" matInput [placeholder]="searchText ? '' : 'Search'"/>
-                    <button matSuffix class="clear-btn" (click)="ClearSearch()" *ngIf="searchText.length > 0" ><mat-icon 
-                        class="text-22 text-chrome-600  d-flex align-items-center">cancel</mat-icon></button>
-                    <mat-autocomplete #auto1="matAutocomplete" (optionSelected)="dropdownSelect($event)"
-                        #autocompleteMesaage>
-                        <mat-option *ngFor="let option of filteredOrders" [value]="option">
-                            {{view == "batch" ? option.batchId : (view == "tote" ? option.toteId : option.orderNumber)}}
-                        </mat-option>
-                        <mat-option *ngIf="filteredOrders?.length ==0" disabled>
-                            No data found
-                        </mat-option>
-                    </mat-autocomplete>
-                </mat-form-field>
-                <mat-checkbox *ngIf="allowQuickPick" (change)="changeQuickPick($event)" [checked]="isQuickPick" [(ngModel)]="isQuickPick" class="example-margin custom-checkbox" color="primary">Quick Pick</mat-checkbox>
+                    <span class="v-br d-xl-block d-none mb-3 mb-xl-0">-</span>
+                    <mat-form-field class="w-100 br-14 custom-form-field-bg-white" appearance="outline">
+                        <span class="material-symbols-outlined text-20 icon-search pe-2">search</span>
+                        <input type="text"  class="suggest" matInput  [matAutocomplete]="auto1" (ngModelChange)="search($event)" [(ngModel)]="searchText" (keyup.enter)="addItem()"  #autoFocusField/>
+                        <input type="text" class="suggest autocomplete" disabled [value]="suggestion" matInput [placeholder]="searchText ? '' : 'Search'"/>
+                        <button matSuffix class="clear-btn" (click)="ClearSearch()" *ngIf="searchText.length > 0" ><mat-icon 
+                            class="text-22 text-chrome-600  d-flex align-items-center">cancel</mat-icon></button>
+                        <mat-autocomplete #auto1="matAutocomplete" (optionSelected)="dropdownSelect($event)"
+                            #autocompleteMesaage>
+                            <mat-option *ngFor="let option of filteredOrders" [value]="option">
+                                {{ getDisplayValue(option) }}
+                            </mat-option>
+                            <mat-option *ngIf="filteredOrders?.length ==0" disabled>
+                                No data found
+                            </mat-option>
+                        </mat-autocomplete>
+                    </mat-form-field>
+                </div>
+            </div>
+            <div class="bg-light-blue bg-50 br-none px-4 py-4 br-20 m-h-140 d-flex align-items-center" *ngIf="this.bulkTransactionType == BulkTransactionType.PICK && allowQuickPick" >
+                <mat-checkbox (change)="changeQuickPick($event)" [checked]="isQuickPick" [(ngModel)]="isQuickPick" class="example-margin custom-checkbox" color="primary">Quick Pick</mat-checkbox>
+                <mat-icon #quickPickTooltip="matTooltip" class="material-symbols-outlined text-20 ms-2 lh-24" matTooltip="Check to view unallocated orders" matTooltipPosition="above" >info</mat-icon>
             </div>
         </div>
     </mat-card-content>

@@ -87,8 +87,8 @@ export class SpGeneralSetupComponent implements OnInit {
       printReplenPutLabels: false,
       generateQuarantineTransactions: false,
       requireHotReasons:false,
-      allowQuickPicks:false,
-      deafultQuickPicks:false,
+      quickPicks:false,
+      defaultQuickPicks:false,
       printReprocessReportAfterAllocation:false
   };
   
@@ -156,7 +156,10 @@ export class SpGeneralSetupComponent implements OnInit {
         String(updatedInfo.distinctKitOrders),
         String(updatedInfo.printReplenPutLabels),
         String(updatedInfo.generateQuarantineTransactions),
-        String(updatedInfo.requireHotReasons)
+        String(updatedInfo.requireHotReasons),
+        String(updatedInfo.quickPicks),
+        String(updatedInfo.defaultQuickPicks),
+        String(updatedInfo.printReprocessReportAfterAllocation)
       ]
     } else if(panelNumber == 4){
       return [

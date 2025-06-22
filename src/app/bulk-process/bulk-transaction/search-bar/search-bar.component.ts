@@ -1,46 +1,44 @@
-import { Component, ElementRef, EventEmitter, Input, OnInit, Output, SimpleChanges, ViewChild } from '@angular/core';
+import { Component, ElementRef, EventEmitter, Input, NgZone, Output, SimpleChanges, ViewChild } from '@angular/core';
 import { MatOption } from '@angular/material/core';
 import { MatSelect } from '@angular/material/select';
+import { MatTooltip } from '@angular/material/tooltip';
+import { take, timer } from 'rxjs';
+import { BulkTransactionType, BulkTransactionView } from 'src/app/common/constants/bulk-process/bulk-transactions';
+import { BatchesResponse, OrderBatchToteQtyResponse, OrderResponse, TotesResponse } from 'src/app/common/Model/bulk-transactions';
+import { GlobalService } from 'src/app/common/services/global.service';
 
 @Component({
   selector: 'app-search-bar',
   templateUrl: './search-bar.component.html',
   styleUrls: ['./search-bar.component.scss']
 })
-export class SearchBarComponent implements OnInit {
+export class SearchBarComponent {
 
-  @Input() view;
-  @Input() orders;
-  @Input() selectedOrders;
-  @Input() status;
+  @Input() view: string;
+  @Input() orders: (OrderResponse | TotesResponse | BatchesResponse)[];
+  @Input() selectedOrders: (OrderResponse | TotesResponse)[];
+  @Input() status:OrderBatchToteQtyResponse;
   @Input() batchSeleted: boolean;
   @Input() allowQuickPick: boolean;
   @Input() defaultQuickPick: boolean;
-  isQuickPick:boolean = false;
+  @Input() isQuickPick: boolean = false;
   @Output() changeViewEmitter = new EventEmitter<any>();
   @Output() addItemEmitter = new EventEmitter<any>();
   @Output() printDetailList = new EventEmitter<any>();
   @Output() isQuickPickChange = new EventEmitter<any>();
   searchText: string = "";
   suggestion: string = "";
-  @Input() url:any;
-  filteredOrders: any = [];
+  @Input() bulkTransactionType: string;
+  filteredOrders:(OrderResponse | TotesResponse | BatchesResponse)[];
   @ViewChild('openAction') openAction: MatSelect;
   @ViewChild('autoFocusField') searchBoxField: ElementRef;
-  @Output() createBatchEmit = new EventEmitter<any>();
+  @Output() createBatchEmit = new EventEmitter<boolean>();
+  BulkTransactionType = BulkTransactionType;
+  @ViewChild('quickPickTooltip') quickPickTooltip!: MatTooltip;
 
-  constructor() { }
+  constructor(private ngZone: NgZone,private global: GlobalService) {}
 
-  ngOnInit(): void {
-  }
-  
-  ngOnChanges(changes: SimpleChanges) {
-    if (changes['defaultQuickPick']) {
-      this.isQuickPick = changes['defaultQuickPick'].currentValue;
-    }
-  }
-
-  changeQuickPick(event){
+  changeQuickPick(event) {
     this.isQuickPick = event.checked;
     this.isQuickPickChange.emit(this.isQuickPick);
   }
@@ -50,38 +48,59 @@ export class SearchBarComponent implements OnInit {
       this.createBatchEmit.emit(true);
     }
   }
-  ngAfterViewInit() {
-    setTimeout(() => {
+
+  ngAfterViewInit(): void {
+    this.ngZone.onStable.pipe(take(1)).subscribe(() => {
       this.searchBoxField?.nativeElement.focus();
-    }, 500);
+    });
+
+    this.quickPickTooltip.show();
+
+    timer(10000).pipe(take(1)).subscribe(() => {
+      this.quickPickTooltip.hide();
+    });
   }
+
+
   ClearSearch() {
     this.suggestion = "";
     this.searchText = ""
     this.filteredOrders = [];
   }
+
   changeView(event: any) {
     this.changeViewEmitter.emit(event.value);
   }
 
   search(event: string) {
-    if (this.view == "batch") {
-      this.filteredOrders = this.orders.filter(function (str) { return str.batchId.toLowerCase().startsWith(event.toLowerCase()); });
-      this.suggestion = this.filteredOrders[0]?.batchId;
-    }
-    else if (this.view == "tote") {
-      this.filteredOrders = this.orders.filter(function (str) { return str.toteId.toString().toLowerCase().startsWith(event.toLowerCase()); });
-      this.suggestion = this.filteredOrders[0]?.toteId;
-    }
-    else if (this.view == "order") {
-      this.filteredOrders = this.orders.filter(function (str) { return str.orderNumber.toLowerCase().startsWith(event.toLowerCase()); });
-      this.suggestion = this.filteredOrders[0]?.orderNumber;
-    }
-    if (event == "" || this.filteredOrders.length == 0) {
+    if (!event) {
       this.filteredOrders = [];
       this.suggestion = "";
+      return;
     }
+
+    const getId = (item: any): string | undefined => {
+      switch (this.view) {
+        case BulkTransactionView.BATCH:
+          return (item as BatchesResponse).batchId;
+        case BulkTransactionView.TOTE:
+          return (item as TotesResponse).toteId;
+        case BulkTransactionView.ORDER:
+          return (item as OrderResponse).orderNumber;
+        default:
+          return undefined;
+      }
+    };
+
+    this.filteredOrders = this.orders.filter(item => {
+      const id = getId(item);
+      return !!id && id.toLowerCase().startsWith(event.toLowerCase());
+    });
+
+    const firstId = getId(this.filteredOrders[0]);
+    this.suggestion = firstId ?? "";
   }
+
 
   addItem() {
     if (!this.batchSeleted && this.filteredOrders.length > 0) {
@@ -111,8 +130,23 @@ export class SearchBarComponent implements OnInit {
     this.openAction?.options.forEach((data: MatOption) => data.deselect());
   }
 
-  generateTranscAction(event: any) {
-    this.clearMatSelectList();
+  getDisplayValue(option: OrderResponse | TotesResponse | BatchesResponse): string {
+    switch (this.view) {
+      case BulkTransactionView.BATCH:
+        return 'batchId' in option ? option.batchId ?? '' : '';
+      case BulkTransactionView.TOTE:
+        return 'toteId' in option ? option.toteId ?? '' : '';
+      case BulkTransactionView.ORDER:
+        return 'orderNumber' in option ? option.orderNumber ?? '' : '';
+      default:
+        return '';
+    }
+  }
+
+  printShortageZone() {
+    if (Array.isArray(this.selectedOrders) && this.selectedOrders.length !== 0) {
+      this.global.Print(`FileName:PreviewLocAssPickShortFPZ`);
+    }
   }
 
 }
