@@ -5,19 +5,9 @@ import { IAdminApiService } from 'src/app/common/services/admin-api/admin-api-in
 import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.service';
 import { StringConditions, ToasterTitle, ToasterType } from 'src/app/common/constants/strings.constants';
 import { ApiResponse, OSFieldFilterNames, UserSession } from 'src/app/common/types/CommonTypes';
-import { GeneralSetup } from 'src/app/common/Model/preferences';
+import { GeneralPreferenceSaveResponse, GeneralSetup, SaveSystemPreferenceRequest } from 'src/app/common/Model/preferences';
 
-interface Payload {
-  preference: string[];
-  panel: number;
-  username: string;
-  wsid: string;
-}
 
-interface GeneralPreferenceSaveResponse {
-  preference: string[];
-  panel: number;
-}
 
 @Component({
   selector: 'app-sp-general-setup',
@@ -171,17 +161,18 @@ export class SpGeneralSetupComponent implements OnInit {
   }
 
   generatePayload(panelNumber: number, updatedInfo: GeneralSetup){ 
-    const payload : Payload = {
-      "preference": this.buildPreferenceArray(panelNumber, updatedInfo),
-      "panel": panelNumber,
-      "username": this.userData.userName,
-      "wsid": this.userData.wsid
+    const payload : SaveSystemPreferenceRequest = {
+      preference : this.buildPreferenceArray(panelNumber, updatedInfo),
+      ThirdPanelCompanyInfo : updatedInfo,
+      panel: panelNumber,
+      username: this.userData.userName,
+      wsid: this.userData.wsid
     };
     
     this.saveForm(payload); 
   }
 
-  async saveForm(paylaod: Payload){ 
+  async saveForm(paylaod: SaveSystemPreferenceRequest){ 
     this.iAdminApiService.GeneralPreferenceSave(paylaod).subscribe((res: ApiResponse<GeneralPreferenceSaveResponse>) => {});
   }
 }
