@@ -28,6 +28,7 @@ import { InductionManagerApiService } from 'src/app/common/services/induction-ma
 import { GlobalService } from 'src/app/common/services/global.service';
 import {  TableConstant ,ToasterTitle,ResponseStrings,Column,ToasterType,zoneType,DialogConstants,ColumnDef,UniqueConstants,Style,StringConditions, Placeholders, ToasterMessages} from 'src/app/common/constants/strings.constants';
 import { FilterOrder, FilterTransaction, SavedFilterChangeEvent, FilterData, OrderData } from 'src/app/common/types/pick-tote-manager.types';
+import { TableContextMenuService } from 'src/app/common/globalComponents/table-context-menu-component/table-context-menu.service';
 
 export interface PeriodicElement {
   name: string;
@@ -41,6 +42,9 @@ export interface PeriodicElement {
   styleUrls: ['./pick-tote-manager.component.scss'],
 })
 export class PickToteManagerComponent implements OnInit {
+  selectedOrderValue: string = '';
+  filterString : string = UniqueConstants.OneEqualsOne;
+
 fieldMappings = JSON.parse(localStorage.getItem('fieldMappings') ?? '{}');
 ItemNumber: string = this.fieldMappings.itemNumber;
 UnitOfMeasure: string = this.fieldMappings.unitOfMeasure;
@@ -77,6 +81,7 @@ UserField10:string = this.fieldMappings.userField10;
   useDefaultZone;
   batchByZoneData: any[] = []; 
   tabIndex: number = 0;
+  isActiveTrigger:boolean =false;
  
   isAllSelected() {
     const numSelected = this.selection.selected.length;
@@ -439,11 +444,12 @@ UserField10:string = this.fieldMappings.userField10;
   }
   public iInductionManagerApi: IInductionManagerApiService;
   constructor(
+    private contextMenuService : TableContextMenuService,
     private global: GlobalService,
     public inductionManagerApi: InductionManagerApiService,
     private authService: AuthService,
     public dialogRef: MatDialogRef<any>,
-    @Inject(MAT_DIALOG_DATA) public data: any
+    @Inject(MAT_DIALOG_DATA) public data: any,
   ) {
     this.iInductionManagerApi = inductionManagerApi;
   }
@@ -972,6 +978,7 @@ userFields = Array.from({ length: 9 }, (_, i) => ({
         }
       });
       this.isOrderSelect = false;
+      this.selectedOrderValue =row.orderNumber; 
       let paylaod = {
         Draw: 0,
         OrderNumber: row.orderNumber,
@@ -1648,4 +1655,51 @@ refreshOrderDataGrid() {
   
     return dateFields.has(field) ? 'date' : 'text';
   }  
-}
+  onContextMenu(event: MouseEvent, SelectedItem: any, FilterColumnName?: any, FilterConditon?: any, FilterItemType?: any) {
+    event.preventDefault()
+    this.isActiveTrigger = true;
+    setTimeout(() => {
+      this.contextMenuService.updateContextMenuState(event, SelectedItem, FilterColumnName, FilterConditon, FilterItemType);
+    }, 100);
+  }
+
+  optionSelected(filter : string) {
+    this.filterString = filter;
+    this.getContentData();
+    this.isActiveTrigger = false;
+  }
+
+  getContentData(){
+
+    if(this.filterString == "")
+    {
+      this.filterString = UniqueConstants.OneEqualsOne
+    }
+    let paylaod = {
+      Draw: 0,
+      OrderNumber: this.selectedOrderValue,
+      sRow: 1,
+      eRow: 10,
+      SortColumnNumber: 0,
+      SortOrder: UniqueConstants.Asc,
+      Filter: this.filterString
+    };
+    this.iInductionManagerApi.PickToteTransDT(paylaod).subscribe((res) => {
+      if (res) {
+        this.filterOrderTransactionSource = new MatTableDataSource<any>(
+          res.data.pickToteManTrans
+        );
+        this.filterOrderTransactionSource.paginator = this.filterBatchTrans;
+        this.filterOrderTransactionSource.sort = this.viewFilterTransSort;
+      } else {
+        this.global.ShowToastr(
+          ToasterType.Error,
+          this.global.globalErrorMsg(),
+          ToasterTitle.Error
+        );
+      }
+    });
+
+   }
+  }
+
