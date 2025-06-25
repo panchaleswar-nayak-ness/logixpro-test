@@ -47,7 +47,7 @@ export class BulkTransactionComponent implements OnInit {
   isZoneSelected: boolean = false;
   stopAssigningLocations: boolean = false;
   generalSetupInfo: GeneralSetup;
-
+  isBatchIdGenerationEnabled:boolean=false;
   public iBulkProcessApiService: IBulkProcessApiService;
   public iAdminApiService: IAdminApiService;
   constructor(
@@ -230,6 +230,8 @@ export class BulkTransactionComponent implements OnInit {
           this.view = BulkTransactionView.BATCH
           this.displayedColumns = BATCH_DISPLAYED_COLUMNS;
           this.selectedDisplayedColumns = SELECTED_BATCH_DISPLAYED_COLUMNS;
+           // We don't need to create a batch id manually as it is already created for batches
+           this.isBatchIdGenerationEnabled=false;
         }
         else if (this.status.toteCount > 0) {
           this.orders = totesResult;
@@ -237,6 +239,8 @@ export class BulkTransactionComponent implements OnInit {
           this.view = BulkTransactionView.TOTE;
           this.displayedColumns = TOTE_DISPLAYED_COLUMNS;
           this.selectedDisplayedColumns = SELECTED_TOTE_DISPLAYED_COLUMNS;
+           // We don't need to create a batch id manually for totes
+           this.isBatchIdGenerationEnabled=false;
         }
         else {
           this.orders = ordersResult;
@@ -244,6 +248,8 @@ export class BulkTransactionComponent implements OnInit {
           this.view = BulkTransactionView.ORDER;
           this.displayedColumns = ORDER_DISPLAYED_COLUMNS;
           this.selectedDisplayedColumns = SELECTED_ORDER_DISPLAYED_COLUMNS;
+          // We need to create a batch id manually for orders
+          this.isBatchIdGenerationEnabled=true;
         }
       },
       error: (error) => {
@@ -320,16 +326,22 @@ export class BulkTransactionComponent implements OnInit {
       this.bulkBatchesObservable().subscribe((res) => this.orders = res);
       this.displayedColumns = BATCH_DISPLAYED_COLUMNS;
       this.selectedDisplayedColumns = SELECTED_BATCH_DISPLAYED_COLUMNS;
+      // We don't need to create a batch id manually as it is already created for batches
+      this.isBatchIdGenerationEnabled=false;
     }
     else if (event == BulkTransactionView.TOTE) {
       this.bulkTotesObservable().subscribe((res) => this.orders = res);
       this.displayedColumns = TOTE_DISPLAYED_COLUMNS;
       this.selectedDisplayedColumns = SELECTED_TOTE_DISPLAYED_COLUMNS;
+      // We don't need to create a batch id manually for totes
+      this.isBatchIdGenerationEnabled=false;   
     }
     else if (event == BulkTransactionView.ORDER) {
       this.bulkOrdersObservable().subscribe((res) => this.orders = res);
       this.displayedColumns = ORDER_DISPLAYED_COLUMNS;
       this.selectedDisplayedColumns = SELECTED_ORDER_DISPLAYED_COLUMNS;
+       // We need to create a batch id manually for orders
+      this.isBatchIdGenerationEnabled=true;
     }
     this.batchSeleted = false;
   }

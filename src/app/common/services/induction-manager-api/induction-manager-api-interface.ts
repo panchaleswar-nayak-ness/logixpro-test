@@ -10,8 +10,6 @@ export interface IInductionManagerApiService {
 
   SuperBatchIndex();
 
-  NextBatchID();
-
   ProcessPutAwayIndex();
 
   NextTote();

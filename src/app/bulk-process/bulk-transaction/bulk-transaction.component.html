@@ -36,6 +36,6 @@
     </div>
 </div>
 
-<app-verify-bulk *ngIf="verifyBulks" [orderLines]="orderLines" [Prefernces]="Prefernces"
+<app-verify-bulk *ngIf="verifyBulks" [isBatchIdGenerationEnabled]="isBatchIdGenerationEnabled" [orderLines]="orderLines" [Prefernces]="Prefernces"
     [bulkTransactionType]="this.bulkTransactionTypeAllCaps" [NextToteID]="this.NextToteID"
     (back)="changeVisibiltyVerifyBulk(true)"></app-verify-bulk>

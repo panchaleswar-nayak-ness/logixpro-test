@@ -31,7 +31,7 @@ import { Router } from '@angular/router';
 import { ToasterTitle, ToasterType ,LiveAnnouncerMessage,ResponseStrings,KeyboardKeys, ToasterMessages,DialogConstants,Style,UniqueConstants,StringConditions,ColumnDef, Placeholders } from 'src/app/common/constants/strings.constants';
 import { ApiResponse, ColumnAlias } from 'src/app/common/types/CommonTypes';
 import { PrintApiService} from "../../common/services/print-api/print-api.service";
-
+import {CommonApiService } from 'src/app/common/services/common-api/common-api.service';
 export interface PeriodicElement {
   position: string;
 }
@@ -145,6 +145,7 @@ export class ProcessPutAwaysComponent implements OnInit {
 
   public iInductionManagerApi: IInductionManagerApiService;
   public iAdminApiService: IAdminApiService;
+  public commonApiService: CommonApiService;
 
   constructor(
     private global: GlobalService,
@@ -154,10 +155,11 @@ export class ProcessPutAwaysComponent implements OnInit {
     private _liveAnnouncer: LiveAnnouncer,
     private router: Router,
     private sharedService: SharedService,
-    private printApiService: PrintApiService
+    private printApiService: PrintApiService,
+     private CommonApiService:CommonApiService
   ) {
     this.iAdminApiService = adminApiService;
-    this.iInductionManagerApi = inductionManagerApi;
+    this.commonApiService=CommonApiService;
   }
 
   ngAfterViewInit() {
@@ -650,8 +652,7 @@ export class ProcessPutAwaysComponent implements OnInit {
   }
 
   getNextBatchID() {
-    this.iInductionManagerApi.NextBatchID().subscribe(
-      (res: any) => {
+     this.commonApiService.NextBatchID().subscribe((res: ApiResponse<string>) => {
         if (res.data && res.isExecuted) {
           this.batchId = res.data;
           if(this.autoAssignAllZones){
