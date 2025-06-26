@@ -222,6 +222,14 @@ type PFSetting = {
     pfSetting: string;
 };
 
+export type ClearType = 'all' | 'order' | 'item';
+
+export const ClearTypes = {
+  All: 'all' as ClearType,
+  Order: 'order' as ClearType,
+  Item: 'item' as ClearType
+};
+
 export interface SystemPreference {
     id: number;
     maximumOrders: number;
