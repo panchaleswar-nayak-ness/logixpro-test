@@ -2011,11 +2011,11 @@ export class ApiFuntions {
   }
 
   public async bulkPickOrdersCheckLocationAssignment(body: string[]) {
-    return await this.ApiBase.PostAsync('/orders/checklocationassignment', body);
+    return await this.ApiBase.PostAsync('/orders/checklocationassignment', body, false, false);
   }
 
   public async bulkPickOrdersCheckOffCarouselPicks(body: string[]) {
-    return await this.ApiBase.PostAsync('/orders/checkoffcarouselpicks', body);
+    return await this.ApiBase.PostAsync('/orders/checkoffcarouselpicks', body, false, false);
   }
 
   public async bulkPickZones() {

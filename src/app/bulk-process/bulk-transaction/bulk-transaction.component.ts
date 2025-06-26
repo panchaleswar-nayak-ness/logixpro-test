@@ -40,16 +40,16 @@ export class BulkTransactionComponent implements OnInit {
   bulkTransactionType: string;
   bulkTransactionTypeAllCaps: string;
   IsBatch: boolean = false;
-  allowQuickPick: boolean = true;
-  defaultQuickPick: boolean = true;
-  isQuickPick: boolean = true;
-  bulkZones: BulkZone[] = [];
+  allowQuickPick: boolean = false;
+  defaultQuickPick: boolean = false;
+  isQuickPick: boolean = false;
   isZoneSelected: boolean = false;
-  stopAssigningLocations: boolean = false;
   generalSetupInfo: GeneralSetup;
   isBatchIdGenerationEnabled:boolean=false;
   public iBulkProcessApiService: IBulkProcessApiService;
   public iAdminApiService: IAdminApiService;
+  // isViewLoaded Ensures that required data for both Quick Pick and non-Quick Pick flows is loaded before rendering UI components
+  isViewLoaded:boolean = false;
   constructor(
     public bulkProcessApiService: BulkProcessApiService,
     public adminApiService: AdminApiService,
@@ -68,6 +68,7 @@ export class BulkTransactionComponent implements OnInit {
       this.getGeneralSetupInfo();
     }
     else {
+      this.isViewLoaded = true;
       this.bulkOrderBatchToteQty();
     }
     this.getworkstationbulkzone();
@@ -87,6 +88,7 @@ export class BulkTransactionComponent implements OnInit {
             this.defaultQuickPick = false;
           }
           this.isQuickPick = this.defaultQuickPick;
+          this.isViewLoaded = true;
           this.quickPickViewChange();
         }
       },
@@ -129,9 +131,8 @@ export class BulkTransactionComponent implements OnInit {
     let orderNumbers: string[] = Array.from(orderNumberSet);
     this.iBulkProcessApiService.bulkPickOrdersLocationAssignment(orderNumbers).subscribe(async () => {
       this.showLoader();
-      await this.bulkPickBulkZone();
-      let locationAssigned = await this.bulkPickOrdersCheckLocationAssignment(orderNumbers);
-      if (!this.stopAssigningLocations && locationAssigned) {
+      const locationAssigned:boolean = await this.bulkPickOrdersCheckLocationAssignment(orderNumbers);
+      if (locationAssigned) {
         let offCarouselPicks = await this.bulkPickOrdersCheckOffCarouselPicks(orderNumbers);
         if(offCarouselPicks){
           this.showNoOffCarouselPicksMessage();
@@ -173,35 +174,22 @@ export class BulkTransactionComponent implements OnInit {
     this.quickPickViewChange();
   }
 
-  async bulkPickBulkZone() {
-    let res = await this.iBulkProcessApiService.bulkPickBulkZone();
-    if (res?.status == HttpStatusCode.Ok) {
-      this.bulkZones = res.body;
-    }
-  }
 
   async bulkPickOrdersCheckLocationAssignment(orderNumbers: string[]): Promise<boolean> {
     if (this.Prefernces.systemPreferences.shortPickFindNewLocation && this.Prefernces.systemPreferences.displayEob) {
       for (let i = 0; i < 30; i++) {
-        if (!this.stopAssigningLocations) {
-          await new Promise(resolve => setTimeout(resolve, 2000));
-          try {
-            const res = await this.iBulkProcessApiService.bulkPickOrdersCheckLocationAssignment(orderNumbers);
-            if (res?.body?.data) {
-              return true;
-            }
-          } catch {
-            return false;
+        await new Promise(resolve => setTimeout(resolve, 2000));
+        try {
+          const res = await this.iBulkProcessApiService.bulkPickOrdersCheckLocationAssignment(orderNumbers);
+          if (res?.body?.data) {
+            return true;
           }
+        } catch {
+          return false;
         }
       }
     }
     return false;
-  }
-
-  @HostListener('document:keydown.escape', ['$event'])
-  handleEscapeKey() {
-    this.stopAssigningLocations = true;
   }
 
   showLoader() {

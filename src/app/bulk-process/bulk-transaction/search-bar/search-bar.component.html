@@ -18,7 +18,7 @@
                             <mat-option value="add_new_transaction" *ngIf="['Put Away','Count'].indexOf(bulkTransactionType) > -1 && !isQuickPick" (click)="CreateBatch()"  
                             [disabled]="selectedOrders.length == 0">Create Batch</mat-option>
                             <mat-option value="add_new_transaction" *ngIf="isQuickPick" (click)="printShortageZone()"
-                                [disabled]="selectedOrders.length == 0">Print Shortage</mat-option>
+                                [disabled]="selectedOrders.length == 0">Print Pick Shortage</mat-option>
                         </mat-select>
                         <span class="material-symbols-outlined icon-expand-more">
                             expand_more
@@ -43,10 +43,9 @@
                     <mat-form-field class="w-100 br-14 custom-form-field-bg-white" appearance="outline">
                         <span class="material-symbols-outlined text-20 icon-search pe-2">search</span>
                         <input type="text"  class="suggest" matInput  [matAutocomplete]="auto1" (ngModelChange)="search($event)" [(ngModel)]="searchText" (keyup.enter)="addItem()"  #autoFocusField/>
-                        <input type="text" class="suggest autocomplete" disabled [value]="suggestion" matInput [placeholder]="searchText ? '' : 'Search'"/>
                         <button matSuffix class="clear-btn" (click)="ClearSearch()" *ngIf="searchText.length > 0" ><mat-icon 
                             class="text-22 text-chrome-600  d-flex align-items-center">cancel</mat-icon></button>
-                        <mat-autocomplete #auto1="matAutocomplete" (optionSelected)="dropdownSelect($event)"
+                        <mat-autocomplete #auto1="matAutocomplete" (optionSelected)="dropdownSelect($event.option.value)"
                             #autocompleteMesaage>
                             <mat-option *ngFor="let option of filteredOrders" [value]="option">
                                 {{ getDisplayValue(option) }}

@@ -1,4 +1,4 @@
-<div class="container-fluid p-0" *ngIf="!verifyBulks">
+<div class="container-fluid p-0" *ngIf="this.isViewLoaded && !verifyBulks">
     <div class="row">
         <div class="col-xxl-7 mb-3">
             <app-search-bar (changeViewEmitter)="changeView($event)" [bulkTransactionType]="this.bulkTransactionTypeAllCaps"

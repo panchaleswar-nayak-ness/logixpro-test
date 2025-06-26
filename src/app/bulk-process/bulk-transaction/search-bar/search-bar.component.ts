@@ -27,7 +27,6 @@ export class SearchBarComponent {
   @Output() printDetailList = new EventEmitter<any>();
   @Output() isQuickPickChange = new EventEmitter<any>();
   searchText: string = "";
-  suggestion: string = "";
   @Input() bulkTransactionType: string;
   filteredOrders:(OrderResponse | TotesResponse | BatchesResponse)[];
   @ViewChild('openAction') openAction: MatSelect;
@@ -41,6 +40,7 @@ export class SearchBarComponent {
   changeQuickPick(event) {
     this.isQuickPick = event.checked;
     this.isQuickPickChange.emit(this.isQuickPick);
+    this.ClearSearch();
   }
 
   CreateBatch() {
@@ -63,7 +63,6 @@ export class SearchBarComponent {
 
 
   ClearSearch() {
-    this.suggestion = "";
     this.searchText = ""
     this.filteredOrders = [];
   }
@@ -75,7 +74,6 @@ export class SearchBarComponent {
   search(event: string) {
     if (!event) {
       this.filteredOrders = [];
-      this.suggestion = "";
       return;
     }
 
@@ -96,28 +94,28 @@ export class SearchBarComponent {
       const id = getId(item);
       return !!id && id.toLowerCase().startsWith(event.toLowerCase());
     });
-
-    const firstId = getId(this.filteredOrders[0]);
-    this.suggestion = firstId ?? "";
   }
-
 
   addItem() {
-    if (!this.batchSeleted && this.filteredOrders.length > 0) {
-      this.addItemEmitter.emit(this.filteredOrders[0]);
-      this.filteredOrders = [];
+
+    const matchedOrder = this.filteredOrders.find(
+      (o): o is OrderResponse =>
+        'orderNumber' in o && o.orderNumber === this.searchText
+    );
+
+    if (!this.batchSeleted && matchedOrder) {
+      this.addItemEmitter.emit(matchedOrder);
     }
+    this.filteredOrders = [];
     this.searchText = "";
-    this.suggestion = "";
   }
 
-  dropdownSelect(event: any) {
+  dropdownSelect(event: string) {
     if (!this.batchSeleted) {
-      this.addItemEmitter.emit(event.option.value);
+      this.addItemEmitter.emit(event);
       this.filteredOrders = [];
     }
     this.searchText = "";
-    this.suggestion = "";
   }
 
   PrintDetailList() {
