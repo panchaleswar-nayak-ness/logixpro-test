@@ -1650,6 +1650,7 @@ refreshOrderDataGrid() {
   }  
 
   isTooltipDisabled(value: string): boolean {
-    return value.length < 10;
+    return value.length < 25;
+    
   }
 }

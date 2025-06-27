@@ -12,8 +12,8 @@
 table {
     th {
         white-space: nowrap;
-        padding-left: 12px;
-        padding-right: 12px;
+        // padding-left: 12px;
+        // padding-right: 12px;
 
         &:first-child {
             padding-left: 20px;
@@ -25,9 +25,10 @@ table {
     }
 
     td {
-        padding-left: 12px;
-        padding-right: 12px;
-        max-width: 10ch;
+        // padding-left: 12px;
+        // padding-right: 12px;
+        width: auto;
+        max-width: 25ch;
         text-overflow: ellipsis;
         overflow: hidden;
         white-space: nowrap;
@@ -105,49 +106,49 @@ table {
   }
 
 // Remove the custom sticky-action-column class and replace with standard classes
-.custom-header-cell {
-  border: 0;
-  height: 67px;
-  padding-left: 65px;
-  border-bottom: 1px solid var(--clr-tertiary-50);
-  min-width: 120px;
-  width: 120px;
-  position: sticky;
-  right: 0;
-  background: var(--clr-table-header);
-  z-index: 10;
-}
+// .custom-header-cell {
+//   border: 0;
+//   height: 67px;
+//   padding-left: 65px;
+//   border-bottom: 1px solid var(--clr-tertiary-50);
+//   min-width: 120px;
+//   width: 120px;
+//   position: sticky;
+//   right: 0;
+//   background: var(--clr-table-header);
+//   z-index: 10;
+// }
 
-.custom-cell {
-  border: 0;
-  padding-left: 24px;
-  background: var(--clr-pure-white);
-  min-width: 120px;
-  width: 120px;
-  position: sticky;
-  right: 0;
-  z-index: 10;
-}
+// .custom-cell {
+//   border: 0;
+//   padding-left: 24px;
+//   background: var(--clr-pure-white);
+//   min-width: 120px;
+//   width: 120px;
+//   position: sticky;
+//   right: 0;
+//   z-index: 10;
+// }
 
 // Table overflow styles
-.table-overflow-x {
-    overflow-x: auto;
-}
+// .table-overflow-x {
+//     overflow-x: auto;
+// }
 
 // Table minimum width styles - increase to prevent overlap
-.table-min-width-filter {
-    min-width: 1200px;
-}
+// .table-min-width-filter {
+//     min-width: 1200px;
+// }
 
-.table-min-width-order {
-    min-width: 800px;
-}
+// .table-min-width-order {
+//     min-width: 800px;
+// }
 
 // Ensure proper table cell spacing
 table {
     th {
         white-space: nowrap;
-        padding-left: 12px;
+        padding-left: 0px;
         padding-right: 12px;
 
         &:first-child {
@@ -160,12 +161,14 @@ table {
     }
 
     td {
-        padding-left: 12px;
+        padding-left: 0px;
         padding-right: 12px;
-        max-width: 10ch;
+        width: auto;
+        max-width: 25ch;
         text-overflow: ellipsis;
         overflow: hidden;
         white-space: nowrap;
+        white-space-collapse: collapse;
 
         &:first-child {
             padding-left: 20px;
