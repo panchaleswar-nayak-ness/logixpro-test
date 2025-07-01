@@ -231,6 +231,13 @@ refreshData() {
   if (this.hasSubscribedToRefresh) return;
   this.hasSubscribedToRefresh = true;
 
+  // Fetch once immediately
+  if (this.isAutoRefreshEnabled) {
+    this.fetchConsolidationTableData(this.zone);
+  }
+
+  // Start polling
+
   this.refreshService.start();
 
   this.refreshService.refresh$
