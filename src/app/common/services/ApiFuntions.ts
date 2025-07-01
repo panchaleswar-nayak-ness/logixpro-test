@@ -2384,11 +2384,11 @@ public ResolveMarkoutTote(toteId: number) {
   }
 
   public async GetSelectedConZoneData(ConZone: string) {
-    return await this.ApiBase.GetAsync(`/Consolidation/ZoneStatus/${ConZone}`);
+    return await this.ApiBase.GetAsync(`/Consolidation/ZoneStatus/${ConZone}`, null, false, false); // pass false to hide loader and spinner 
   }
 
   public async GetSelectedConZoneRouteIDCount(ConZone: string) {
-    return await this.ApiBase.GetAsync(`/Consolidation/Zone/${ConZone}/RoutesStatus`);
+    return await this.ApiBase.GetAsync(`/Consolidation/Zone/${ConZone}/RoutesStatus`, null, false, false); // pass false to hide loader and spinner
   }
 
   public async updateSelectedConZoneData(ConZone,body: any) {

@@ -2,7 +2,7 @@
 import { Component, EventEmitter, OnInit, Output,Input, OnDestroy ,SimpleChanges} from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { FloatLabelType } from '@angular/material/form-field';
-import { Subscription } from 'rxjs';
+import { Subject, Subscription, takeUntil } from 'rxjs';
 
 // Services and interfaces
 import { ConsolidationApiService } from 'src/app/common/services/consolidation-api/consolidation-api.service';
@@ -17,6 +17,7 @@ import { IRouteIdStatusCountResponse } from '../routeid-header/IRouteStatusCount
 
 import { HttpResponse } from '@angular/common/http';
 import { FieldMappingService } from 'src/app/common/services/field-mapping/field-mapping.service';
+import { SharedService } from 'src/app/common/services/shared.service';
 
 // Interface for status card display
 interface Info {
@@ -72,17 +73,19 @@ export class RouteidHeaderComponent implements OnInit, OnDestroy {
     'In Shipping': 'statusInShipping'
   };
 
+  onDestroy$: Subject<boolean> = new Subject();
   // timeout references
   private updateTimeout?: ReturnType<typeof setTimeout>;
   private subscription: Subscription = new Subscription();
-
+  
   // Interface-based abstraction of API service
   public iConsolidationApi: IConsolidationApi;
 
   constructor(
     private global: GlobalService,
     public consolidationApiService: ConsolidationApiService,
-    private fieldNameMappingService: FieldMappingService
+    private fieldNameMappingService: FieldMappingService,
+    private refreshService: SharedService
   ) {
     // Assign concrete service to interface property
     this.iConsolidationApi = consolidationApiService;
@@ -93,6 +96,28 @@ export class RouteidHeaderComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.setFieldNameMapping();
     this.loadConsolidationZones(); // Load zones on component initialization
+
+    // Subscribe to shared refresh stream and reload status data
+    this.refreshdata();
+  }
+
+  // to refresh table data in every 5 seconds 
+  refreshdata(){
+     this.refreshService.refresh$
+      .pipe(takeUntil(this.onDestroy$))
+      .subscribe(() => {
+        if (this.Zone) {
+          this.loadConsolidationStatus(this.Zone);
+          this.loadRouteIDStatusCount(this.Zone);
+        }
+      });
+  }
+
+  // OnDestroy lifecycle hook to clean up resources
+  ngOnDestroy(): void {
+    this.onDestroy$.next(true);
+    this.onDestroy$.complete();
+    this.refreshService.stop();
   }
  
     private setFieldNameMapping(){
@@ -101,10 +126,6 @@ export class RouteidHeaderComponent implements OnInit, OnDestroy {
     this.consolidationStatusCard = fieldMapping.consolidationStatusCard;
     this.routeIdStatusCountCard = fieldMapping.routeIdStatusCountCard;
     }
-  }
-  // OnDestroy lifecycle hook to clean up resources
-  ngOnDestroy() {
-    this.subscription.unsubscribe();
   }
 
   // Fetch list of consolidation zones from API
@@ -275,3 +296,5 @@ adjustLowerThreshold(value: number | null): void {
     return this.floatLabelControl.value ?? 'auto';
   }
 }
+
+
