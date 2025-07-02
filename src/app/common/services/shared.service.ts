@@ -3,6 +3,7 @@ import { Subject } from 'rxjs';
 import { ICommonApi } from './common-api/common-api-interface';
 import { CommonApiService } from './common-api/common-api.service';
 import { GlobalService } from './global.service';
+import { BehaviorSubject, interval, Subscription } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -57,6 +58,11 @@ export class SharedService {
 
   verifyBulkTransBackObserver: Subject<any> = new Subject<any>();
   
+// Subject used to emit refresh signals
+private refreshSubject = new Subject<void>();
+
+// Holds the active interval subscription for cleanup
+private intervalSubscription: Subscription | null = null;
   
   verifyBulkTransBack(){
     this.verifyBulkTransBackObserver.next(true);
@@ -228,4 +234,42 @@ export class SharedService {
   updateBreadcrumb(breadCrumb: any) {
     this.breadCrumObserver.next(breadCrumb);
   }
+
+ /**
+ * Starts emitting a refresh signal at the specified interval (default: 5000ms).
+ * Ensures that only one interval is active at a time to prevent duplicate polling.
+ * If an interval is already running, it exits early without restarting it.
+ */
+start(intervalMs = 5000): void {
+  // Avoid restarting if an active interval is already running
+  if (this.intervalSubscription && !this.intervalSubscription.closed) {
+    return;
+  }
+
+  // Start a new interval and emit refresh signals to all subscribers
+  this.intervalSubscription = interval(intervalMs).subscribe(() => {
+    this.refreshSubject.next();
+  });
+}
+
+
+/**
+   * Stops the refresh interval if it's active, unsubscribes to free memory,
+   * and clears the reference to avoid memory retention or stale state.
+   */
+  stop(): void {
+    if (this.intervalSubscription && !this.intervalSubscription.closed) {
+      this.intervalSubscription.unsubscribe(); // Safely unsubscribe
+    }
+    this.intervalSubscription = null; // Clear reference
+  }
+
+ /**
+   * Exposes the refresh observable so components can subscribe and react
+   * to the emitted signals (e.g., for polling data every 5 seconds).
+   */
+get refresh$() {
+  return this.refreshSubject.asObservable();
+}
+
 }

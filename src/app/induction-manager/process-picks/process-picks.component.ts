@@ -29,7 +29,7 @@ import {
   ToasterTitle,
   ToasterType
 ,ResponseStrings,DialogConstants,Style,UniqueConstants,TableConstant} from 'src/app/common/constants/strings.constants';
-
+import {CommonApiService } from 'src/app/common/services/common-api/common-api.service';
 @Component({
   selector: 'app-process-picks',
   templateUrl: './process-picks.component.html',
@@ -64,6 +64,7 @@ export class ProcessPicksComponent implements OnInit {
 
   dataSource: any;
   public iinductionManagerApi: IInductionManagerApiService;
+  public commonApiService: CommonApiService;
   nxtToteID: any;
   onDestroy$: Subject<boolean> = new Subject();
   @ViewChild(TableConstant.BatchPickID) batchPickID: TemplateRef<any>;
@@ -81,9 +82,11 @@ export class ProcessPicksComponent implements OnInit {
     private authService: AuthService,
     public router: Router,
     public inductionManagerApi: InductionManagerApiService,
-    private printApiService: PrintApiService
+    private printApiService: PrintApiService,
+    private CommonApiService:CommonApiService
   ) {
     this.iinductionManagerApi = inductionManagerApi;
+    this.commonApiService=CommonApiService;
   }
 
   ngOnInit(): void {
@@ -381,7 +384,7 @@ export class ProcessPicksComponent implements OnInit {
     dialogRef.afterClosed().subscribe(() => {
       if (this.dialogClose) {
         if (val === StringConditions.BatchWithID) {
-          this.iinductionManagerApi.NextBatchID().subscribe((res) => {
+          this.commonApiService.NextBatchID().subscribe((res) => {
             this.batchID = res.data;
             let payload = {
               type: this.pickType,

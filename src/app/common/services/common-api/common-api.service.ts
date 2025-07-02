@@ -323,4 +323,8 @@ export class CommonApiService implements ICommonApi{
 		return this.Api.getItemQuantityDetail(payloadParams);
 	}
 
+  public NextBatchID() {
+    return this.Api.NextBatchID();
+  }	
+
 }

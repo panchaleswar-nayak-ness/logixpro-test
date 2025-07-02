@@ -8,6 +8,7 @@
       </div>
       <div class="row px-3">
         <button mat-stroked-button color="warn" class="button-add-all mb-3 float-end count-primary-button"
+        [disabled]="selectedOrders.length == 0"
           (click)="removeAll()">
           Remove All
         </button>
@@ -49,8 +50,8 @@
               </td>
             </ng-container>
   
-            <tr mat-header-row *matHeaderRowDef="selectedOrdersDisplayedColumns; sticky:true"></tr>
-            <tr mat-row *matRowDef="let row; columns: selectedOrdersDisplayedColumns;"></tr>
+            <tr mat-header-row *matHeaderRowDef="selectedDisplayedColumns; sticky:true"></tr>
+            <tr mat-row *matRowDef="let row; columns: selectedDisplayedColumns;"></tr>
           </table>
         </ng-scrollbar>
       </div>

@@ -1,5 +1,4 @@
 import { Time } from "@angular/common";
-import { Call } from "@angular/compiler";
 
 export class OrderBatchToteQtyRequest {
     type: string;
@@ -316,6 +315,7 @@ export class TaskCompleteNewRequest {
   id: number;
   completedQty: number;
   newLocationQty?: number;
+  BatchID?:string
 }
 
 export class ValidateToteRequest {

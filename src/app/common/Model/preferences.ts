@@ -38,8 +38,8 @@ export interface GeneralSetup {
     printReplenPutLabels: boolean;
     generateQuarantineTransactions: boolean;
     requireHotReasons: boolean;
-    allowQuickPicks:boolean;
-    deafultQuickPicks:boolean;
+    quickPicks:boolean;
+    defaultQuickPicks:boolean;
     printReprocessReportAfterAllocation:boolean;
 }
 
@@ -132,3 +132,16 @@ export interface PutAwayOption {
     id: string;
     name: string;
 }
+
+export interface SaveSystemPreferenceRequest {
+    preference: string[];
+    ThirdPanelCompanyInfo: GeneralSetup;
+    panel: number;
+    username: string;
+    wsid: string;
+  }
+  
+export interface GeneralPreferenceSaveResponse {
+    preference: string[];
+    panel: number;
+  }

@@ -55,21 +55,12 @@ mat-footer-row {
 }
 
 table {
-
-    mat-row,
-    mat-header-row {
-        display: table-row !important;
-        white-space: nowrap;
-
-        th,
-        td {
-            vertical-align: middle;
-            border-bottom: 1px solid var(--clr-pure-white);
-
-            &:first-child {
-                padding-left: 28px !important;
-            }
-        }
+    th{
+        z-index: 1;
+        border: none;
+    }
+    tr{
+        border-radius: 14px;
     }
 
     .selected {
@@ -99,7 +90,7 @@ table.custom-action-clickable-table tr {
     bottom: 0;
     cursor: pointer;
     color: #fff;
-    border-radius: 8px !important;
+    border-radius: 14px !important;
     margin-left: 15px;
 }
 
@@ -109,7 +100,7 @@ table.custom-action-clickable-table tr:hover {
     background: var(--clr-primary-300);
     position: relative;
     border-radius: 8px !important;
-    z-index: 0;
+    // z-index: 100;
     cursor: pointer;
 
     .custom-add-button-color {
@@ -120,4 +111,15 @@ table.custom-action-clickable-table tr:hover {
 table.custom-action-clickable-table tr:hover td {
     color: #fff !important;
     border: none;
+}
+
+.custom-table {
+  th.mat-header-cell {
+    &:first-child {
+      border-top-left-radius: 0px;
+    }
+    &:last-child {
+      border-top-right-radius: 0px;
+    }
+  }
 }

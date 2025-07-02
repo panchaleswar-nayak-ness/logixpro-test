@@ -31,7 +31,7 @@ import { Router } from '@angular/router';
 import { ToasterTitle, ToasterType ,LiveAnnouncerMessage,ResponseStrings,KeyboardKeys, ToasterMessages,DialogConstants,Style,UniqueConstants,StringConditions,ColumnDef, Placeholders } from 'src/app/common/constants/strings.constants';
 import { ApiResponse, ColumnAlias } from 'src/app/common/types/CommonTypes';
 import { PrintApiService} from "../../common/services/print-api/print-api.service";
-
+import {CommonApiService } from 'src/app/common/services/common-api/common-api.service';
 export interface PeriodicElement {
   position: string;
 }
@@ -145,6 +145,7 @@ export class ProcessPutAwaysComponent implements OnInit {
 
   public iInductionManagerApi: IInductionManagerApiService;
   public iAdminApiService: IAdminApiService;
+  public commonApiService: CommonApiService;
 
   constructor(
     private global: GlobalService,
@@ -154,10 +155,11 @@ export class ProcessPutAwaysComponent implements OnInit {
     private _liveAnnouncer: LiveAnnouncer,
     private router: Router,
     private sharedService: SharedService,
-    private printApiService: PrintApiService
+    private printApiService: PrintApiService,
+     private CommonApiService:CommonApiService
   ) {
     this.iAdminApiService = adminApiService;
-    this.iInductionManagerApi = inductionManagerApi;
+    this.commonApiService=CommonApiService;
   }
 
   ngAfterViewInit() {
@@ -315,7 +317,9 @@ export class ProcessPutAwaysComponent implements OnInit {
   getCurrentToteID() {
     this.iInductionManagerApi.NextTote().subscribe(
       (res: ApiResponse<number>) => {
-        if (res.data && res.isExecuted) this.currentToteID = res.data
+        if (res.data && res.isExecuted) {
+          this.currentToteID = res.data;
+        } 
         else {
           this.global.ShowToastr(ToasterType.Error, ToasterMessages.SomethingWentWrong, ToasterTitle.Error);
           console.log("NextTote", res.responseMessage);
@@ -331,15 +335,26 @@ export class ProcessPutAwaysComponent implements OnInit {
 
   gridAction(action: any) {
     if (action == 'assignAll') {
-      this.getCurrentToteID();
-      for (let index = 0; index < this.pickBatchQuantity; index++) {
-        if (!this.ELEMENT_DATA[index].locked) {
-          this.ELEMENT_DATA[index].toteid = this.currentToteID.toString();
-          this.currentToteID++;
-        }
-      }
-      this.updateNxtTote();
-      this.actionDropDown = null;
+      this.iInductionManagerApi.NextTote().subscribe(
+        (res: ApiResponse<number>) => {
+          if (res.data && res.isExecuted) {
+            this.currentToteID = res.data;
+            for (let index = 0; index < this.pickBatchQuantity; index++) {
+              if (!this.ELEMENT_DATA[index].locked) {
+                this.ELEMENT_DATA[index].toteid = this.currentToteID.toString();
+                this.currentToteID++;
+              }
+            }
+            this.updateNxtTote();
+            this.actionDropDown = null;
+          }
+          else {
+            this.global.ShowToastr(ToasterType.Error, ToasterMessages.SomethingWentWrong, ToasterTitle.Error);
+            console.log("NextTote", res.responseMessage);
+          }
+        },
+        (error) => { }
+      );
     } else this.actionDropDown = null;
     this.clearMatSelectList()
   }
@@ -637,8 +652,7 @@ export class ProcessPutAwaysComponent implements OnInit {
   }
 
   getNextBatchID() {
-    this.iInductionManagerApi.NextBatchID().subscribe(
-      (res: any) => {
+     this.commonApiService.NextBatchID().subscribe((res: ApiResponse<string>) => {
         if (res.data && res.isExecuted) {
           this.batchId = res.data;
           if(this.autoAssignAllZones){
@@ -660,12 +674,13 @@ export class ProcessPutAwaysComponent implements OnInit {
     let updatePayload = { "tote": this.currentToteID }
     this.iInductionManagerApi.NextToteUpdate(updatePayload).subscribe(res => {
       if (!res.isExecuted) {
-        this.global.ShowToastr(ToasterType.Error,'Something is wrong.', ToasterTitle.Error);
-        console.log("NextToteUpdate",res.responseMessage);
+        this.global.ShowToastr(ToasterType.Error, 'Something is wrong.', ToasterTitle.Error);
+        console.log("NextToteUpdate", res.responseMessage);
+      } else {
+        //This helps prevent a bug where the request for next tote seems to go through before the update takes, resulting in repeated tote IDs
+        this.getCurrentToteID();
       }
     });
-    //This helps prevent a bug where the request for next tote seems to go through before the update takes, resulting in repeated tote IDs
-    this.getCurrentToteID();
   }
 
   startNewBatchWithID() {
@@ -682,30 +697,42 @@ export class ProcessPutAwaysComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe((result) => {
-      this.getCurrentToteID();
-      if(result){
-        this.ELEMENT_DATA.length = 0;
-        for (let index = 0; index < this.pickBatchQuantity; index++) {
-          if (!this.autoPutToteIDS) {
-            this.ELEMENT_DATA.push({
-              position: index + 1,
-              cells: this.cellSize,
-              toteid: '',
-              locked: ""
-            });
-          } else {
-            this.ELEMENT_DATA.push({
-              position: index + 1,
-              cells: this.cellSize,
-              toteid: this.currentToteID.toString(),
-              locked: ""
-            });
-            this.currentToteID++;
+      this.iInductionManagerApi.NextTote().subscribe(
+        (res: ApiResponse<number>) => {
+          if (res.data && res.isExecuted) {
+            this.currentToteID = res.data;
+
+            if (result) {
+              this.ELEMENT_DATA.length = 0;
+              for (let index = 0; index < this.pickBatchQuantity; index++) {
+                if (!this.autoPutToteIDS) {
+                  this.ELEMENT_DATA.push({
+                    position: index + 1,
+                    cells: this.cellSize,
+                    toteid: '',
+                    locked: ""
+                  });
+                } else {
+                  this.ELEMENT_DATA.push({
+                    position: index + 1,
+                    cells: this.cellSize,
+                    toteid: this.currentToteID.toString(),
+                    locked: ""
+                  });
+                  this.currentToteID++;
+                }
+              }
+              this.updateNxtTote();
+              this.dataSource = new MatTableDataSource<any>(this.ELEMENT_DATA);
+            }
           }
-        }
-        this.updateNxtTote();
-        this.dataSource = new MatTableDataSource<any>(this.ELEMENT_DATA);
-      }
+          else {
+            this.global.ShowToastr(ToasterType.Error, ToasterMessages.SomethingWentWrong, ToasterTitle.Error);
+            console.log("NextTote", res.responseMessage);
+          }
+        },
+        (error) => { }
+      );
     });
   }
 
@@ -713,29 +740,40 @@ export class ProcessPutAwaysComponent implements OnInit {
     //Getting and setting next batch ID
     this.getNextBatchID();
     //setup totes
-    this.getCurrentToteID();
-    this.ELEMENT_DATA.length = 0;
-    for (let index = 0; index < this.pickBatchQuantity; index++) {
-      if (!this.autoPutToteIDS) {
-        this.ELEMENT_DATA.push({
-          position: index + 1,
-          cells: this.cellSize,
-          toteid: '',
-          locked: ""
-        });
-      } else {
-        this.ELEMENT_DATA.push({
-          position: index + 1,
-          cells: this.cellSize,
-          toteid: this.currentToteID.toString(),
-          locked: ""
-        });
-        this.currentToteID++;
-      }
-    }
+    this.iInductionManagerApi.NextTote().subscribe(
+      (res: ApiResponse<number>) => {
+        if (res.data && res.isExecuted) {
+          this.currentToteID = res.data;
+          this.ELEMENT_DATA.length = 0;
+          for (let index = 0; index < this.pickBatchQuantity; index++) {
+            if (!this.autoPutToteIDS) {
+              this.ELEMENT_DATA.push({
+                position: index + 1,
+                cells: this.cellSize,
+                toteid: '',
+                locked: ""
+              });
+            } else {
+              this.ELEMENT_DATA.push({
+                position: index + 1,
+                cells: this.cellSize,
+                toteid: this.currentToteID.toString(),
+                locked: ""
+              });
+              this.currentToteID++;
+            }
+          }
 
-    this.dataSource = new MatTableDataSource<any>(this.ELEMENT_DATA);
-    this.updateNxtTote();
+          this.dataSource = new MatTableDataSource<any>(this.ELEMENT_DATA);
+          this.updateNxtTote();
+        }
+        else {
+          this.global.ShowToastr(ToasterType.Error, ToasterMessages.SomethingWentWrong, ToasterTitle.Error);
+          console.log("NextTote", res.responseMessage);
+        }
+      },
+      (error) => { }
+    );
   }
 
   startNewBatchWithOutID() {
@@ -841,11 +879,20 @@ async clearBatchData(){
 
   assignToteAtPosition(element: any, clear = 0,index?) {
     if (clear == 0) {
-      this.getCurrentToteID();
-      this.ELEMENT_DATA[index].toteid =
-        this.currentToteID.toString();
-      this.currentToteID++;
-      this.updateNxtTote();
+      this.iInductionManagerApi.NextTote().subscribe((res: ApiResponse<number>) => {
+          if (res.data && res.isExecuted) {
+            this.currentToteID = res.data;
+            this.ELEMENT_DATA[index].toteid = this.currentToteID.toString();
+            this.currentToteID++;
+            this.updateNxtTote();
+          }
+          else {
+            this.global.ShowToastr(ToasterType.Error, ToasterMessages.SomethingWentWrong, ToasterTitle.Error);
+            console.log("NextTote", res.responseMessage);
+          }
+        },
+        (error) => { }
+      );
     } else {
       this.ELEMENT_DATA[index].toteid = '';
     }

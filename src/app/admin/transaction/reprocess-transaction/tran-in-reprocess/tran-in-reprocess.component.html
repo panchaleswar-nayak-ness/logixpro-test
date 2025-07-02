@@ -64,20 +64,23 @@
                     <mat-form-field class="w-100 bg-white" appearance="outline">
                         <mat-label>Order Number</mat-label>
                         <input type="text" maxlength="50" aria-label="Number" matInput
-                            [matAutocomplete]="autoOrder" [(ngModel)]="orderNumber" (keypress)="getFilteredList()" (keyup)="orderSelected()">
-                            <button matSuffix *ngIf="orderNumber" class="clear-btn"  (click)="orderNumber=''"><mat-icon class="text-20 text-chrome-600">cancel</mat-icon></button>
+                            [matAutocomplete]="autoOrder" [(ngModel)]="orderNumber" (input)="onOrderInputChange()"
+  (paste)="onOrderPaste($event)" (keyup)="orderSelected()">
+                            <button matSuffix (click)="orderClear(true)" *ngIf="orderNumber" class="clear-btn"><mat-icon class="text-20 text-chrome-600">cancel</mat-icon></button>
 
-                        <mat-autocomplete class="card custom-scroll" panelWidth="auto" autoActiveFirstOption
+                        <mat-autocomplete class="card custom-scroll" panelWidth="auto" 
                             #autoOrder="matAutocomplete" (optionSelected)="orderSelected()">
                             <h6 class="card-header matAutoCompHeader ">
-                                <span class="w-140px">Order Number</span> <span class="w-200px">Date</span>
-                                <span class="w-160px">Transaction Type</span> <span class="w-140px" replacePlaceholder [replacePlaceHolder]="placeholders.itemNumber" [fallbackPlaceHolder]="placeholders.itemNumberFallback">{{LabelitemNumber}}</span> <span class="w-180px">Transaction Quantity</span>
+                                <span class="w-140px table-cell-style pe-2">Order Number</span> <span class="w-200px">Date</span>
+                                <span class="w-160px">Transaction Type</span> <span class="w-140px table-cell-style pe-2" replacePlaceholder [replacePlaceHolder]="placeholders.itemNumber" [fallbackPlaceHolder]="placeholders.itemNumberFallback">{{LabelitemNumber}}</span> <span class="w-180px">Transaction Quantity</span>
                             </h6>
                             <mat-option class="matAutoCompTableContent" *ngFor="let option of orderList"
                                 [value]="option.orderNumber">
                                 <div class="loc_option">
-                                    <span class="searchColumn w-140px">{{option.orderNumber}}</span> <span class="searchColumn w-200px">{{option.dateField}}</span>
-                                    <span class="searchColumn w-160px">{{option.transType}}</span><span class="searchColumn w-140px">{{option.itemNumber}}</span><span class="searchColumn w-180px">{{option.qty}}</span>
+                                    <span class="searchColumn w-140px table-cell-style pe-2" matTooltip={{option.orderNumber}}
+          matTooltipPosition="above">{{option.orderNumber}}</span> <span class="searchColumn w-200px">{{option.dateField}}</span>
+                                    <span class="searchColumn w-160px">{{option.transType}}</span><span class="searchColumn w-140px table-cell-style pe-2" matTooltip={{option.itemNumber}}
+          matTooltipPosition="above">{{option.itemNumber}}</span><span class="searchColumn w-180px">{{option.qty}}</span>
                                 </div>
                             </mat-option>
                         </mat-autocomplete>
@@ -89,20 +92,23 @@
                 <div class="d-flex w-100 mb-3 flex-grow-1">
                     <mat-form-field class="w-100 bg-white" appearance="outline">
                         <mat-label replacePlaceholder [replacePlaceHolder]="placeholders.itemNumber" [fallbackPlaceHolder]="placeholders.itemNumberFallback">{{LabelitemNumber}}</mat-label>
-                        <input type="text" maxlength="50" matInput [matAutocomplete]="auto" [(ngModel)]="itemNumber" class="ps-0">
-                        <button matSuffix *ngIf="itemNumber" class="clear-btn"  (click)="itemNumber=''"><mat-icon class="text-20 text-chrome-600">cancel</mat-icon></button>
-                        <mat-autocomplete class="card custom-scroll" panelWidth="auto" autoActiveFirstOption
+                        <input type="text" maxlength="50" matInput [matAutocomplete]="auto" [(ngModel)]="itemNumber" (input)="onItemInputChange()"
+  (paste)="onItemPaste($event)" class="ps-0">
+                        <button matSuffix *ngIf="itemNumber" class="clear-btn"  (click)="itemClear(true)"><mat-icon class="text-20 text-chrome-600">cancel</mat-icon></button>
+                        <mat-autocomplete class="card custom-scroll" panelWidth="auto" 
                             #auto="matAutocomplete" (optionSelected)="listSelected()">
                             <h6 class="card-header matAutoCompHeader ">
-                                <span class="w-140px" replacePlaceholder [replacePlaceHolder]="placeholders.itemNumber" [fallbackPlaceHolder]="placeholders.itemNumberFallback">{{LabelitemNumber}}</span> <span class="searchColumn w-200px">Date</span>
-                                <span class="w-140px">Transaction Type</span> <span class="w-140px">Order Number</span> <span class="w-180px">Transaction
+                                <span class="w-140px table-cell-style pe-2" replacePlaceholder [replacePlaceHolder]="placeholders.itemNumber" [fallbackPlaceHolder]="placeholders.itemNumberFallback">{{LabelitemNumber}}</span> <span class="searchColumn w-200px">Date</span>
+                                <span class="w-140px">Transaction Type</span> <span class="w-140px table-cell-style pe-2">Order Number</span> <span class="w-180px">Transaction
                                     Quantity</span>
                             </h6>
                             <mat-option class="matAutoCompTableContent" *ngFor="let option of itemNumberList"
                                 [value]="option.itemNumber">
                                 <div class="loc_option">
-                                    <span class="searchColumn w-140px">{{option.itemNumber}}</span> <span class="searchColumn w-200px">{{option.dateField}}</span>
-                                    <span class="searchColumn w-140px">{{option.transType}}</span><span class="searchColumn w-140px">{{option.orderNumber}}</span><span class="searchColumn w-180px">{{option.qty}}</span>
+                                    <span class="searchColumn w-140px table-cell-style pe-2" matTooltip={{option.itemNumber}}
+          matTooltipPosition="above">{{option.itemNumber}}</span> <span class="searchColumn w-200px">{{option.dateField}}</span>
+                                    <span class="searchColumn w-140px">{{option.transType}}</span><span class="searchColumn w-140px table-cell-style pe-2" matTooltip={{option.orderNumber}}
+          matTooltipPosition="above">{{option.orderNumber}}</span><span class="searchColumn w-180px">{{option.qty}}</span>
                                 </div>
                             </mat-option>
                         </mat-autocomplete>

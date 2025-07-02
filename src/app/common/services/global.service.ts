@@ -16,7 +16,7 @@ import {
   ToasterType,
 } from '../constants/strings.constants';
 import { BaseService } from 'src/app/common/services/base-service.service';
-import { ApiResponse, UserSession } from '../types/CommonTypes';
+import { ApiResponse, TableHeaderDefinitions, UserSession } from '../types/CommonTypes';
 import { OrderManagerSettings, PickToteSetupIndex } from '../Model/preferences';
 import { BehaviorSubject } from 'rxjs';
 
@@ -536,4 +536,79 @@ export class GlobalService {
       day: "2-digit",
     });
   }
+
+  insertSpaceInCamelOrPascal(input: string): string {
+    return input.replace(/(.)([A-Z][a-z])/g, '$1 $2');
+  }
+
+  getFormattedDateTime(date: string | Date, includeTime: boolean = false): string {
+  let dateObj: Date;
+
+  if (typeof date === 'string') {
+    // Make sure it's ISO format for reliable parsing
+    dateObj = new Date(date.replace(' ', 'T'));
+  } else {
+    dateObj = date;
+  }
+
+  if (isNaN(dateObj.getTime())) {
+    return ''; // or 'Invalid date'
+  }
+
+  const options: Intl.DateTimeFormatOptions = {
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit',
+    ...(includeTime && {
+      hour: '2-digit',
+      minute: '2-digit',
+      second: '2-digit',
+      hour12: true,
+    }),
+  };
+
+  return dateObj.toLocaleString('en-US', options);
+}
+
+  getColDefForSearchCol(searchCol: string, tableColumns: TableHeaderDefinitions[]): string | '' {
+    if (!searchCol) return '';
+
+    const found = tableColumns.find(
+      (tc) => tc.colDef === searchCol || tc.colHeader === searchCol
+    );
+
+    return found ? found.colHeader : '';
+  }
+
+
+  filterQueryParams<T extends object>(params: T): Partial<T> {
+  return Object.fromEntries(
+    Object.entries(params).filter(([_, value]) => value != null && value !== '')
+  ) as Partial<T>;
+}
+
+formatSearchDateTimeValue(dateStr: string): string | null {
+  // Example input: '05/07/2025, 18:13:38'
+  if (!dateStr) return null;
+
+  try {
+    // Split date and time
+    const [datePart, timePart] = dateStr.split(',');
+
+    if (!datePart || !timePart) return null;
+
+    const [month, day, year] = datePart.trim().split('/');
+
+    if (!month || !day || !year) return null;
+
+    const formattedDate = `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`;
+    const formattedTime = timePart.trim(); // should already be in HH:mm:ss
+
+    return `${formattedDate} ${formattedTime}`;
+  } catch (error) {
+    console.error('Error formatting search datetime value:', error);
+    return null;
+  }
+}
+
 }

@@ -42,6 +42,7 @@ import {
 import { AppRoutes } from "src/app/common/constants/menu.constants";
 import { IConsolidationApi } from "src/app/common/services/consolidation-api/consolidation-api-interface";
 import { FieldMappingService } from "src/app/common/services/field-mapping/field-mapping.service";
+import { SharedService } from 'src/app/common/services/shared.service';
 
 type RouteIDItem = {
   RouteID: string;
@@ -155,7 +156,7 @@ export class RouteidListComponent implements OnInit, OnDestroy {
   autocompleteInventory: MatAutocompleteTrigger;
   @ViewChild(ColumnFilterComponentComponent)
   filterCmp: ColumnFilterComponentComponent;
-
+  private hasSubscribedToRefresh = false;
   //---------------------for mat menu End ----------------------------
   previousUrl: string;
   constructor(
@@ -167,7 +168,8 @@ export class RouteidListComponent implements OnInit, OnDestroy {
     private currentTabDataService: CurrentTabDataService,
     private contextMenuService: TableContextMenuService,
     private cdr: ChangeDetectorRef,
-    private fieldNameMappingService: FieldMappingService
+    private fieldNameMappingService: FieldMappingService,
+    private refreshService: SharedService
   ) {
     this.previousUrl = this.routeHistoryService.getPreviousUrl();
     this.iConsolidationApi = consolidationApiService;
@@ -207,8 +209,7 @@ export class RouteidListComponent implements OnInit, OnDestroy {
   ngOnChanges(changes: SimpleChanges) {
     if (changes["selectedZone"] && changes["selectedZone"].currentValue) {
       this.zone = changes["selectedZone"].currentValue;
-      this.fetchConsolidationTableData(this.zone);
-      this.startAutoRefresh();
+      this.refreshData()
     }
   }
 
@@ -222,11 +223,32 @@ export class RouteidListComponent implements OnInit, OnDestroy {
     this.initializePagination();
     this.loadInitialData();
     this.setupFilterPredicate();
-    
-  
   }
 
-  
+// to refresh table data in every 5 seconds  
+refreshData() {
+  // Only subscribe once
+  if (this.hasSubscribedToRefresh) return;
+  this.hasSubscribedToRefresh = true;
+
+  // Fetch once immediately
+  if (this.isAutoRefreshEnabled) {
+    this.fetchConsolidationTableData(this.zone);
+  }
+
+  // Start polling
+
+  this.refreshService.start();
+
+  this.refreshService.refresh$
+    .pipe(takeUntil(this.onDestroy$))
+    .subscribe(() => {
+      if (this.isAutoRefreshEnabled) {
+        this.fetchConsolidationTableData(this.zone);
+      }
+    });
+}
+
  //Sets up field name mappings and initializes related configurations.
   private setFieldNameMapping(): void {
   // Retrieve field mappings from the FieldMappingService
@@ -306,7 +328,7 @@ export class RouteidListComponent implements OnInit, OnDestroy {
   
   onClearFilter() {
     this.isAutoRefreshEnabled = true;
-    this.startAutoRefresh();
+    
     this.reset();
   }
 
@@ -332,7 +354,6 @@ export class RouteidListComponent implements OnInit, OnDestroy {
 
   searchColumn() {
     this.isAutoRefreshEnabled = false;
-    this.clearExistingInterval();
     if (
       this.columnSearch.searchColumn &&
       this.columnSearch.searchColumn.colDef === ""
@@ -368,7 +389,6 @@ export class RouteidListComponent implements OnInit, OnDestroy {
     // If user cleared input (e.g., with backspace), reset filter and refresh
     if (Value.trim() === "") {
       this.isAutoRefreshEnabled = true;
-      this.startAutoRefresh();
       this.resetPagination();
       this.reset();
       this.fetchConsolidationTableData(this.zone); // Refresh without filter
@@ -498,10 +518,7 @@ export class RouteidListComponent implements OnInit, OnDestroy {
     const statusClassMap: { [key: string]: string } = {
       initialized: 'label-blue2',
       'induction started': 'label-yellow',
-      'con completed': 'label-green',
-      'con. completed': 'label-green',
-      'con. complete': 'label-green',
-      complete: 'label-green',
+      'consolidation complete': 'label-green'
     };
   
     const statusClass = statusClassMap[rawStatus ?? ''];
@@ -591,7 +608,6 @@ export class RouteidListComponent implements OnInit, OnDestroy {
 
   searchData() {
     this.isAutoRefreshEnabled = false;
-    this.clearExistingInterval();
 
     const searchParams = this.extractSearchParams();
     if (!searchParams) return;
@@ -672,30 +688,14 @@ export class RouteidListComponent implements OnInit, OnDestroy {
     this.params.page = 1;
     // Immediately fetch unfiltered data
     this.fetchConsolidationTableData(this.zone);
-
-    // Restart auto-refresh
-    this.startAutoRefresh();
   }
 
-    startAutoRefresh(): void {
-      this.clearExistingInterval();
-      this.intervalId = window.setInterval(() => {
-      this.fetchConsolidationTableData(this.zone);
-    }, 5000);
-    }
-
-   private clearExistingInterval(): void {
-    if (this.intervalId !== null) {
-      clearInterval(this.intervalId);
-      this.intervalId = null;
-    }
-  }
+   
+  
 
   ngOnDestroy(): void {
     this.onDestroy$.next(true);
     this.onDestroy$.complete();
-    if (this.intervalId) {
-      clearInterval(this.intervalId);
-    }
+    this.refreshService.stop(); // clean up interval
   }
 }

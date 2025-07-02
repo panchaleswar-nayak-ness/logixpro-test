@@ -6,6 +6,11 @@ import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.ser
 import { GlobalService } from 'src/app/common/services/global.service';
 import { Placeholders, StringConditions, ToasterTitle, ToasterType } from 'src/app/common/constants/strings.constants';
 import { CurrentTabDataService } from 'src/app/admin/inventory-master/current-tab-data-service';
+import { ClearType, ClearTypes } from 'src/app/common/types/CommonTypes';
+
+// Constants for default values
+const DEFAULT_REASON_FILTER = 'none';
+const DEFAULT_SELECTED_OPTION = 'reprocess';
 
 @Component({
   selector: 'app-tran-in-reprocess',
@@ -17,8 +22,8 @@ export class TranInReprocessComponent implements OnInit {
   itemNumber: string = this.fieldMappings.itemNumber;
   LabelitemNumber: string = this.fieldMappings.itemNumber;
   placeholders = Placeholders;
-  selectedOption = "reprocess";
-  reasonFilter = "none";
+  selectedOption = DEFAULT_SELECTED_OPTION;
+  reasonFilter = DEFAULT_REASON_FILTER;
 
   @Input() selectedOrder: any;
 
@@ -102,30 +107,53 @@ export class TranInReprocessComponent implements OnInit {
     this.clear();
   }
 
-  clear(reset : boolean = false) {
-    if(reset) {
-      this.setResetValues();
+  clear(reset: boolean = false, clearType: ClearType = ClearTypes.All) {
+    if (reset) {
+      this.setResetValues(clearType);
       this.filterCleared.emit('cleared');
-      this.getFilteredList();
-      this.getItemList();
     } else {
-      this.getFilteredList();
-      this.getItemList();
       this.filterCleared.emit();
     }
+
+    this.getFilteredList();
+    this.getItemList();
   }
 
-  setResetValues() {
-    this.orderNumber = "";
-    this.itemNumber = "";
-    this.reasonFilter = 'none';
-    this.selectedOption = 'reprocess';
+  setResetValues(clearType: ClearType = ClearTypes.All) {
+    // Reset common values
+    this.reasonFilter = DEFAULT_REASON_FILTER;
+    this.selectedOption = DEFAULT_SELECTED_OPTION;
     this.history = false;
 
-    this.updateService('orderNumber', this.orderNumber);
-    this.updateService('itemNumber', this.itemNumber);
+    // Reset specific values based on clear type
+    switch (clearType) {
+      case ClearTypes.All:
+        this.orderNumber = "";
+        this.itemNumber = "";
+        this.updateService('orderNumber', this.orderNumber);
+        this.updateService('itemNumber', this.itemNumber);
+        break;
+      case ClearTypes.Order:
+        this.orderNumber = "";
+        this.updateService('orderNumber', this.orderNumber);
+        break;
+      case ClearTypes.Item:
+        this.itemNumber = "";
+        this.updateService('itemNumber', this.itemNumber);
+        break;
+    }
+
+    // Update common service values
     this.updateService('reasonFilter', this.reasonFilter);
     this.updateService('selectedOption', this.selectedOption);
+  }
+
+  orderClear(reset: boolean = false) {
+    this.clear(reset,  ClearTypes.Order);
+  }
+
+  itemClear(reset: boolean = false) {
+    this.clear(reset, ClearTypes.Item);
   }
 
   getFilteredList() {
@@ -143,15 +171,40 @@ export class TranInReprocessComponent implements OnInit {
     });
   }
 
-  orderSelected() { 
+  orderSelected() {
+    if (!this.orderNumber || this.orderNumber.trim() === '') {
+      this.orderClear(true);  // trigger the same logic as clear button
+      return;
+    }
     this.selectedOrderNumber.emit(this.orderNumber);
     this.updateService('orderNumber', this.orderNumber);
     this.getItemList();
   }
 
-  listSelected() { 
+  listSelected() {
+    if (!this.itemNumber || this.itemNumber.trim() === '') {
+      this.itemClear(true);
+      return;
+    }
     this.selectedItemNum.emit(this.itemNumber);
     this.updateService('itemNumber', this.itemNumber);
+  }
+
+  onOrderInputChange() {
+    // Whenever user types or pastes, we refresh the dropdown
+    this.getFilteredList();
+  }
+
+  onOrderPaste(event: ClipboardEvent) {
+    this.getFilteredList();
+  }
+
+  onItemInputChange() {
+    this.getItemList();
+  }
+
+  onItemPaste(event: ClipboardEvent) {
+    this.getItemList();
   }
 
   getItemList() {

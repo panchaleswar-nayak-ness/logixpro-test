@@ -25,6 +25,13 @@ export interface ApiResponse<T> {
     statusCode: number;
 }
 
+export interface ApiResponseData {
+    responseMessage: string;
+    isExecuted: boolean;
+    messages: any;
+    statusCode: number;
+}
+
 export interface UserSession {
     _token: string;
     userName: string;
@@ -215,6 +222,14 @@ type PFSetting = {
     pfSetting: string;
 };
 
+export type ClearType = 'all' | 'order' | 'item';
+
+export const ClearTypes = {
+  All: 'all' as ClearType,
+  Order: 'order' as ClearType,
+  Item: 'item' as ClearType
+};
+
 export interface SystemPreference {
     id: number;
     maximumOrders: number;
@@ -332,4 +347,10 @@ export interface EmployeeAccessLevel {
     accessStorageContainer : boolean;
     accessClearWholeLocation : boolean;
     accessAddInvMapLocation: boolean;
+}
+
+export interface ApiResponseData {
+  status: 'Success' | 'Fail' | string;  // or use the same enum if shared
+  value?: string | null;
+  errors?: string[] | null;
 }
