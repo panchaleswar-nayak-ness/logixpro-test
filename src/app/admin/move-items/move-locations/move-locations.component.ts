@@ -3,7 +3,7 @@ import { FormControl } from '@angular/forms';
 import { FloatLabelType } from '@angular/material/form-field';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTab, MatTabChangeEvent } from '@angular/material/tabs';
-import { Placeholders, ToasterTitle, ToasterType } from 'src/app/common/constants/strings.constants';
+import { Placeholders, ToasterTitle, ToasterType, StringConditions } from 'src/app/common/constants/strings.constants';
 import { TableContextMenuService } from 'src/app/common/globalComponents/table-context-menu-component/table-context-menu.service';
 import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.service';
 import { GlobalService } from 'src/app/common/services/global.service';
@@ -134,7 +134,11 @@ export class MoveLocationsComponent {
    
     this.getMoveFromDetailsEmit.emit({ element, i, tableName });
     //this.tabChangedEmit.emit({index:1,tab:MatTab});
-     this.tabChanged({index:1,tab:MatTab})
+
+    if (tableName === StringConditions.MoveFrom) {
+      this.tabChanged({ index: 1, tab: MatTab })
+    };
+   
   }
 
   sortChangeToItems(event) {
