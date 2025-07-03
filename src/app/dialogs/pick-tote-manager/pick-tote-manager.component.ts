@@ -30,6 +30,16 @@ import {  TableConstant ,ToasterTitle,ResponseStrings,Column,ToasterType,zoneTyp
 import { FilterOrder, FilterTransaction, SavedFilterChangeEvent, FilterData, OrderData } from 'src/app/common/types/pick-tote-manager.types';
 import { TableContextMenuService } from 'src/app/common/globalComponents/table-context-menu-component/table-context-menu.service';
 
+// filteration-columns.ts
+export interface FilterationColumns {
+  ColumnType: string;
+  ColumnName: string;
+  Value: any; // Use 'any' to accommodate string, number, or Date
+  Value2: any;
+  GridOperation: string; // Assuming GridOperation is an enum, use string or specific values
+  IsInput: boolean;
+}
+
 export interface PeriodicElement {
   name: string;
   position: number;
@@ -986,7 +996,8 @@ userFields = Array.from({ length: 9 }, (_, i) => ({
         eRow: 10,
         SortColumnNumber: 0,
         SortOrder: UniqueConstants.Asc,
-        Filter: UniqueConstants.OneEqualsOne
+        Filter: UniqueConstants.OneEqualsOne,
+        FilterationColumns :  this.filterationColumns
       };
       this.iInductionManagerApi.PickToteTransDT(paylaod).subscribe((res) => {
         if (res) {
@@ -1669,7 +1680,37 @@ refreshOrderDataGrid() {
     this.isActiveTrigger = false;
   }
 
+
+  filterationColumns : FilterationColumns[] = [];
   getContentData(){
+
+    // Create objects and push them to the array
+    this.filterationColumns.push({
+      ColumnType: 'string',
+      ColumnName: 'Location',
+      Value: '0322801 A1',
+      Value2: "", // Set to null or appropriate value if needed
+      GridOperation: 'NotEquals', // Example value; replace with actual GridOperation value
+      IsInput: false,
+    });
+
+    this.filterationColumns.push({
+      ColumnType: 'int',
+      ColumnName: 'TransactionQuantity',
+      Value: 10, // Integer value
+      Value2: "",
+      GridOperation: 'GreaterThan', // Example value
+      IsInput: false,
+    });
+
+    // this.filterationColumns.push({
+    //   ColumnType: 'datetime',
+    //   ColumnName: 'RequiredDate',
+    //   Value: '2025-06-25', // Date object
+    //   Value2: "",
+    //   GridOperation: 'Equals', // Example value
+    //   IsInput: false,
+    // });
 
     if(this.filterString == "")
     {
@@ -1682,7 +1723,9 @@ refreshOrderDataGrid() {
       eRow: 10,
       SortColumnNumber: 0,
       SortOrder: UniqueConstants.Asc,
-      Filter: this.filterString
+      searchFilter: this.filterString,
+      Filter: this.filterString,
+      FilterationColumns :  this.filterationColumns
     };
     this.iInductionManagerApi.PickToteTransDT(paylaod).subscribe((res) => {
       if (res) {

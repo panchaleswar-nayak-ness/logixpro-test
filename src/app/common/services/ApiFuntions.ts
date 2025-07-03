@@ -841,7 +841,7 @@ export class ApiFuntions {
   }
 
   public PickToteTransDT(body: any): Observable<any> {
-    return this.ApiBase.Get('/Induction/picktotetransdt', body);
+    return this.ApiBase.Post('/Induction/picktotetransdt', body);
   }
 
   public PickBatchFilterOrderData(body: any): Observable<any> {

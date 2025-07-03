@@ -110,7 +110,8 @@ export class TableContextMenuComponentComponent implements OnInit{
   onContextMenuCommand(SelectedItem: any, FilterColumnName: any, Condition: any, Type: any) 
   {
     if (this.componentName == 'InvMap' || this.componentName == 'moveItem' || this.componentName == 'sysRepCurOrd' || this.componentName == 'sysRepNewOrd' 
-        || this.componentName == 'omCreateOrd' || this.componentName == 'omOrderManager' || this.componentName == 'eventLog' || this.componentName == 'toteTransManager')
+        || this.componentName == 'omCreateOrd' || this.componentName == 'omOrderManager' || this.componentName == 'eventLog' || this.componentName == 'toteTransManager' 
+  || this.componentName == 'orderTransactions')
     {
       if(SelectedItem != undefined && Condition !== 'clear') {
         this.filterString = this.filterService.onContextMenuCommand(SelectedItem, FilterColumnName, Condition, Type);
