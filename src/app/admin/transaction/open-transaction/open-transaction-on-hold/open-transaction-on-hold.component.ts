@@ -405,26 +405,30 @@ export class OpenTransactionOnHoldComponent implements OnInit, AfterViewInit {
   }
 
   //Toggles the emergency flag and updates the backend, showing success or error feedback based on the response.
-onCheckboxToggle(id: number, isChecked: boolean): void {
+onCheckboxToggle(
+  element: Record<string, boolean | string | number>,
+  column: string,
+  isChecked: boolean
+): void {
+  const previousValue = element[column];
+  element[column] = isChecked;
+
   const payload: UpdateEmergencyRequest = {
-    id: id,
+    id: element['id'] as number,
     emergency: isChecked
   };
 
   this.iAdminApiService.UpdateEmergency(payload).subscribe({
     next: (response) => {
-      if (!response) {
-        this.global.ShowToastr(ToasterType.Error, this.global.globalErrorMsg(), ToasterTitle.Error);
-        return;
-      }
-
-      if (response.isExecuted) {
-        this.global.ShowToastr(ToasterType.Success, ToasterMessages.RecordUpdatedSuccessful, ToasterTitle.Success);
-      } else {
+      if (!response || !response.isExecuted) {
+        element[column] = previousValue;
         this.global.ShowToastr(ToasterType.Error, ToasterMessages.RecordUpdateFailed, ToasterTitle.Error);
+      } else {
+        this.global.ShowToastr(ToasterType.Success, ToasterMessages.RecordUpdatedSuccessful, ToasterTitle.Success);
       }
     },
     error: (err) => {
+      element[column] = previousValue;
       console.error('UpdateEmergency API error:', err);
       this.global.ShowToastr(ToasterType.Error, this.global.globalErrorMsg(), ToasterTitle.Error);
     }
