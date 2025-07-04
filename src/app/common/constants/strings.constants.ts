@@ -154,7 +154,9 @@ export const ConfirmationMessages = {
         `Touch ‘Yes’ to Assign the Selected Orders to Batch ID ${batchId}. Touch ‘No’ to Cancel Batching.`,
     NoOffCarouselPicks:"There are no off-carousel picks for the order(s) selected.",    
     ResolvedToteConfirmation:"Are you sure you want to mark this Tote ID as resolved? This will remove this Tote ID from the Markout.",
-    IrreversibleActionWarning :'This action cannot be undone.'
+    IrreversibleActionWarning :'This action cannot be undone.',
+    UpdateAllInterface: 'Click OK to update all devices with Com Port: {{comPort}}',
+    UpdateAllInterfaceWithZone: 'Click OK to update all devices with Com Port: {{comPort}} and Zone: {{zone}}'
 }
 
 export const ToasterMessages = {
@@ -334,7 +336,10 @@ export const alertMessage = {
     ErrorValidatingSerialNoMsg: 'There was an error validating serial number',
     EnterSerialNo: 'Please enter a serial number',
     SerialNoAlreadyScan: 'Serial Number already scanned',
-    DeleteMessage: 'You are about to mark the scanned reels as empty. This will delete ALL current open transactions associated with the scanned reels.'
+    DeleteMessage: 'You are about to mark the scanned reels as empty. This will delete ALL current open transactions associated with the scanned reels.',
+    ZoneCannotBeLeftBlank:'Zone cannot be left blank.',
+    DeviceTypeCannotBeLeftBlank:'Device Type cannot be left blank.',
+    DeviceNumberCannotBeLeftBlank:'Device Number cannot be left blank.'
 }
 
 export const showNotificationHeading = {
@@ -512,7 +517,8 @@ export const Style = {
     w786px: '786px',
     w402px: '402px',
     w1080px: '1080px',
-    w990px: '990px',
+    auto:'auto',
+    w990px: '990px'
 }
 
 export const FilterColumnName = {

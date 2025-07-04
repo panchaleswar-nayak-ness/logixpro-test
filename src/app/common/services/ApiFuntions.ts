@@ -15,6 +15,7 @@ import {IQueryParams} from '../../app/../consolidation-manager/cm-route-id-manag
 import { MarkoutAuditResponse, MarkoutPickLinesResponse, MarkoutResponse } from 'src/app/consolidation-manager/cm-markout-new/models/cm-markout-new-models';
 import { ZoneListPayload } from 'src/app/bulk-process/preferences/preference.models';
 import { ApiResponseData } from '../types/CommonTypes';
+import { DevicePreferenceRequest, DevicePreferencesTableRequest } from '../interface/admin/device-preferences';
 
 
 @Injectable({
@@ -1719,8 +1720,8 @@ export class ApiFuntions {
     return this.ApiBase.Put(`/Admin/workstationsettings`, body);
   }
 
-  public DevicePreferencesTable(body) {
-    return this.ApiBase.Get(`/Admin/deviceperference`, body);
+  public DevicePreferencesTable(body:DevicePreferencesTableRequest) {
+    return this.ApiBase.Get(`/Admin/devicepreference`, body);
   }
 
   public LocationNamesSave(body) {
@@ -1743,8 +1744,8 @@ export class ApiFuntions {
     return this.ApiBase.Get(`/Admin/deviceinformation`, body);
   }
 
-  public DevicePreference(body) {
-    return this.ApiBase.Post(`/Admin/deviceperference`, body);
+  public DevicePreference(payload : DevicePreferenceRequest) {
+    return this.ApiBase.Post(`/Admin/devicepreference`, payload);
   }
 
   public LocationZoneSave(body) {

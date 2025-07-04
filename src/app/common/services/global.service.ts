@@ -611,4 +611,10 @@ formatSearchDateTimeValue(dateStr: string): string | null {
   }
 }
 
+  // Replaces placeholders in the given template string (e.g., '{{key}}') with provided values.
+  // Example usage: formatMessage('Value 1: {{key1}}, Value 2: {{key2}}', { key1: 'A', key2: 'B' }) → 'Value 1: A, Value 2: B'
+  formatMessage(template: string, values: { [key: string]: string }): string {
+    return template.replace(/{{(\w+)}}/g, (_, key) => values[key] || '');
+  }
+
 }
