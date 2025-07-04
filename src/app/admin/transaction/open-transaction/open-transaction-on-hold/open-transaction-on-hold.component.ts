@@ -26,6 +26,8 @@ import { AppNames, AppRoutes, RouteNames} from 'src/app/common/constants/menu.co
 import { DatePipe } from '@angular/common';
 import { ContextMenuFiltersService } from 'src/app/common/init/context-menu-filters.service';
 import { PrintApiService } from 'src/app/common/services/print-api/print-api.service';
+import { UpdateEmergencyRequest } from 'src/app/common/interface/admin/opentransaction.interfaces';
+
  
 // Define a strongly typed enum for date types to avoid using magic strings
 enum DateType {
@@ -401,6 +403,33 @@ export class OpenTransactionOnHoldComponent implements OnInit, AfterViewInit {
       error: (error) => {}
     });
   }
+
+  //Toggles the emergency flag and updates the backend, showing success or error feedback based on the response.
+onCheckboxToggle(id: number, isChecked: boolean): void {
+  const payload: UpdateEmergencyRequest = {
+    id: id,
+    emergency: isChecked
+  };
+
+  this.iAdminApiService.UpdateEmergency(payload).subscribe({
+    next: (response) => {
+      if (!response) {
+        this.global.ShowToastr(ToasterType.Error, this.global.globalErrorMsg(), ToasterTitle.Error);
+        return;
+      }
+
+      if (response.isExecuted) {
+        this.global.ShowToastr(ToasterType.Success, ToasterMessages.RecordUpdatedSuccessful, ToasterTitle.Success);
+      } else {
+        this.global.ShowToastr(ToasterType.Error, ToasterMessages.RecordUpdateFailed, ToasterTitle.Error);
+      }
+    },
+    error: (err) => {
+      console.error('UpdateEmergency API error:', err);
+      this.global.ShowToastr(ToasterType.Error, this.global.globalErrorMsg(), ToasterTitle.Error);
+    }
+  });
+}
 
   viewInInventoryMaster(row) {
     clearTimeout(this.clickTimeout); 

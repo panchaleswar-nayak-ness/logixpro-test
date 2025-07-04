@@ -246,7 +246,8 @@ export const ToasterMessages = {
     ZoneUpdatedSuccessfully: "Zone updated successfully",
     ZoneDeletedSuccessfully: "Zone deleted successfully",
     NoDefaultFilter:"No filter is marked as default.",
-    Resolved:"Resolved Successfully."
+    Resolved:"Resolved Successfully.",
+    RecordUpdateFailed:'Failed to update record'
 }
 
 
