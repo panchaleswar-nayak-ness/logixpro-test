@@ -34,6 +34,10 @@ import { MatInput } from '@angular/material/input';
 import { AuthService } from 'src/app/common/init/auth.service';
 import { ConfirmationDialogComponent } from 'src/app/admin/dialogs/confirmation-dialog/confirmation-dialog.component';
 import { PickToteInductionSuperBatchOrder } from 'src/app/common/types/induction-manager/pick-tote-induction';
+import { FilterTotalQuantityComponent, TotalQuantityFilter, FilterTotalQuantityDialogData } from '../filter-total-quantity/filter-total-quantity.component';
+import { FilterType } from 'src/app/common/enums/CommonEnums';
+import { MAT_DIALOG_DATA, MatDialogRef, MatDialog, MatDialogConfig } from '@angular/material/dialog';
+import { TotalQuantityDialogResult } from '../../../common/interface/induction-manager/pick-tote-induction.interface';
 
 @Component({
   selector: 'app-super-batch-orders',
@@ -48,7 +52,8 @@ export class SuperBatchOrdersComponent implements OnInit, AfterViewInit {
     private global: GlobalService,
     private Api: ApiFuntions,
     public inductionManagerApi: InductionManagerApiService,
-    private authService: AuthService
+    private authService: AuthService,
+    private dialog: MatDialog
   ) {
     this.iInductionManagerApi = inductionManagerApi;
     this.userData = this.authService.userData();
@@ -116,6 +121,7 @@ export class SuperBatchOrdersComponent implements OnInit, AfterViewInit {
   }[] = [];
 
   public disableSBInputs: boolean = false; // Disable inputs if true
+  totalQuantityFilter: TotalQuantityFilter | null = null;
 
   ngOnInit(): void {
     this.customPagination = {
@@ -273,6 +279,7 @@ export class SuperBatchOrdersComponent implements OnInit, AfterViewInit {
   retrieveFilteredSuperBatchOrders(values: any) {
     this.Api.RetrieveSuperBatchOrders({
       ...values,
+      totalQuantityFilter: this.totalQuantityFilter,
       wsId: this.userData.wsid,
     }).subscribe((filteredOrders) => {
       let response = filteredOrders.data;
@@ -309,7 +316,8 @@ export class SuperBatchOrdersComponent implements OnInit, AfterViewInit {
       wsId: this.userData.wsid,
       filterResultsRequestParams: {
         ColumnFilters:  this.filters,
-        Zones: this.zones
+        Zones: this.zones,
+        TotalQuantityFilter: this.totalQuantityFilter,
       },
       SelectedZones: this.zones, // Pass the selected zones
     };
@@ -455,5 +463,90 @@ export class SuperBatchOrdersComponent implements OnInit, AfterViewInit {
         totes[0].focus();
       }
     }, 0);
+  }
+
+  filterTotalQuantity() {
+    const config: MatDialogConfig<FilterTotalQuantityDialogData> = {
+      data: { TotalQuantityFilter: this.totalQuantityFilter ?? undefined },
+      height: DialogConstants.auto,
+      minHeight: DialogConstants.auto,
+      width: Style.w560px,
+      autoFocus: DialogConstants.autoFocus,
+      disableClose: true,
+    };
+
+    const dialogRef = this.dialog.open<
+      FilterTotalQuantityComponent,
+      FilterTotalQuantityDialogData
+    >(FilterTotalQuantityComponent, config);
+
+    dialogRef.afterClosed().subscribe((result: TotalQuantityDialogResult | undefined) => {
+      if (!result) return;
+      if (result.totalQuantityFilter) {
+        this.applyTotalQuantityFilter(result.totalQuantityFilter);
+      } else {
+        this.clearAllFilters(false);
+      }
+    });
+  }
+
+  private applyTotalQuantityFilter(totalQuantityFilter: TotalQuantityFilter) {
+    this.totalQuantityFilter = totalQuantityFilter;
+    let tagValue = '';
+    switch (totalQuantityFilter.filterType) {
+      case FilterType.Equals:
+        tagValue = `Equals ${totalQuantityFilter.value}`;
+        break;
+      case FilterType.GreaterThan:
+        tagValue = `Greater than ${totalQuantityFilter.value}`;
+        break;
+      case FilterType.GreaterThanEqual:
+        tagValue = `Greater than or equal to ${totalQuantityFilter.value}`;
+        break;
+      case FilterType.LessThan:
+        tagValue = `Less than ${totalQuantityFilter.value}`;
+        break;
+      case FilterType.LessThanEqual:
+        tagValue = `Less than or equal to ${totalQuantityFilter.value}`;
+        break;
+      case FilterType.Range:
+        tagValue = `Between ${totalQuantityFilter.lowerBound} and ${totalQuantityFilter.upperBound}`;
+        break;
+    }
+    this.updateTag('Filter Total Quantity', tagValue);
+    this.global.sendMessage({
+      columnFilters: this.filters,
+      orderNumberFilters: this.orderNumberFilter,
+      totalQuantityFilter: this.totalQuantityFilter,
+    });
+  }
+
+  clearAllFilters(isFilterByOrderNumbers: boolean) {
+    if (isFilterByOrderNumbers) {
+      this.orderNumberFilter = '';
+      this.tags = this.tags.filter(tag => tag.alias !== 'Filter Order Number');
+      this.global.sendMessage({
+        columnFilters: this.filters,
+        orderNumberFilters: '',
+        totalQuantityFilter: this.totalQuantityFilter,
+      });
+    } else {
+      this.totalQuantityFilter = null;
+      this.tags = this.tags.filter(tag => tag.alias !== 'Filter Total Quantity');
+      this.global.sendMessage({
+        columnFilters: this.filters,
+        orderNumberFilters: this.orderNumberFilter,
+        totalQuantityFilter: null,
+      });
+    }
+  }
+
+  private updateTag(alias: string, value: string) {
+    const existingTag = this.tags.find(tag => tag.alias === alias);
+    if (existingTag) {
+      existingTag.value = value;
+    } else {
+      this.tags.push({ alias, value });
+    }
   }
 }

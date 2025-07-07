@@ -35,6 +35,11 @@ import { LiveAnnouncer } from '@angular/cdk/a11y';
 import { AuthService } from 'src/app/common/init/auth.service';
 import { ConfirmationDialogComponent } from 'src/app/admin/dialogs/confirmation-dialog/confirmation-dialog.component';
 import { PickToteInductionNonSuperBatchOrder } from 'src/app/common/types/induction-manager/pick-tote-induction';
+import { FilterTotalQuantityComponent, TotalQuantityFilter, FilterTotalQuantityDialogData } from '../filter-total-quantity/filter-total-quantity.component';
+import { FilterType } from 'src/app/common/enums/CommonEnums';
+import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
+import { TotalQuantityDialogResult } from '../../../common/interface/induction-manager/pick-tote-induction.interface';
+import { ComponentType } from '@angular/cdk/overlay';
 
 @Component({
   selector: 'app-non-super-batch-orders',
@@ -45,6 +50,7 @@ export class NonSuperBatchOrdersComponent implements OnInit, AfterViewInit {
   constructor(
     private _liveAnnouncer: LiveAnnouncer,
     private global: GlobalService,
+    private dialog: MatDialog,
     private Api: ApiFuntions,
     public inductionManagerApi: InductionManagerApiService,
     private authService: AuthService
@@ -111,6 +117,7 @@ export class NonSuperBatchOrdersComponent implements OnInit, AfterViewInit {
   filters: PickToteInductionFilter[] = [];
   orderNumberFilters: string[] = [];
   orderNumberFilter: string = '';
+  totalQuantityFilter: TotalQuantityFilter | null = null;
   orderRange: { lowerBound: string; upperBound: string } = {
     lowerBound: '',
     upperBound: '',
@@ -223,6 +230,7 @@ export class NonSuperBatchOrdersComponent implements OnInit, AfterViewInit {
             this.tags = [];
             this.orderNumberFilter = '';
             this.orderNumberFilters = [];
+            this.totalQuantityFilter = null;
             this.filters = [];
             this.someEvent.next('nonsuperbatchfilterclear');
           }
@@ -254,6 +262,31 @@ export class NonSuperBatchOrdersComponent implements OnInit, AfterViewInit {
       }
     });
   }
+  filterTotalQuantity() {
+    const config: MatDialogConfig<FilterTotalQuantityDialogData> = {
+      data: { TotalQuantityFilter: this.totalQuantityFilter ?? undefined },
+      height: DialogConstants.auto,
+      minHeight: DialogConstants.auto,
+      width: Style.w560px,
+      autoFocus: DialogConstants.autoFocus,
+      disableClose: true,
+    };
+
+    const dialogRef = this.dialog.open<
+      FilterTotalQuantityComponent,
+      FilterTotalQuantityDialogData
+    >(FilterTotalQuantityComponent, config);
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (!result) return;
+      if (result.totalQuantityFilter) {
+        this.applyTotalQuantityFilter(result.totalQuantityFilter);
+      } else {
+        this.clearAllFilters(false);
+      }
+    });
+  }
+
   openColumnFilter() {
     const dialogRef: any = this.global.OpenDialog(PickToteInFilterComponent, {
       height: 'auto',
@@ -275,7 +308,7 @@ export class NonSuperBatchOrdersComponent implements OnInit, AfterViewInit {
             // Remove all related tags
         this.tags = this.tags.filter(
         (tag) =>
-          tag.alias == 'Filter Order Number' || tag.alias === 'Filter Order Number (Range)'
+          tag.alias == 'Filter Order Number' || tag.alias === 'Filter Order Number (Range)' || tag.alias === 'Filter Total Quantity'
 
       );
         }
@@ -293,6 +326,7 @@ export class NonSuperBatchOrdersComponent implements OnInit, AfterViewInit {
         this.global.sendMessage({
           columnFilters: this.filters,
           orderNumberFilters: this.orderNumberFilters,
+          totalQuantityFilter: this.totalQuantityFilter,
         });
       }
     });
@@ -301,6 +335,7 @@ export class NonSuperBatchOrdersComponent implements OnInit, AfterViewInit {
   retrieveFilteredNonSuperBatchOrders(values: any) {
     this.Api.RetrieveNonSuperBatchOrders({
       ...values,
+      totalQuantityFilter: this.totalQuantityFilter,
       wsId: this.userData.wsid,
     }).subscribe((filteredOrders) => {
       let response = filteredOrders.data.result;
@@ -345,6 +380,7 @@ export class NonSuperBatchOrdersComponent implements OnInit, AfterViewInit {
       filterResultsRequestParams: {
         ColumnFilters: this.filters,
         OrderNumberFilters: this.orderNumberFilters,
+        TotalQuantityFilter: this.totalQuantityFilter,
         Zones: this.zones,
       },
     };
@@ -494,7 +530,7 @@ export class NonSuperBatchOrdersComponent implements OnInit, AfterViewInit {
       columnFilters: this.filters,
       orderNumberFilters: this.orderNumberFilters,
       orderRange: this.orderRange,
-
+      totalQuantityFilter: this.totalQuantityFilter,
     });
   }
 
@@ -516,7 +552,43 @@ export class NonSuperBatchOrdersComponent implements OnInit, AfterViewInit {
       columnFilters: this.filters,
       orderRange: this.orderRange,
       orderNumberFilters: this.orderNumberFilters,
+      totalQuantityFilter: this.totalQuantityFilter,
+    });
+  }
 
+  private applyTotalQuantityFilter(totalQuantityFilter: TotalQuantityFilter) {
+    this.totalQuantityFilter = totalQuantityFilter;
+
+    // Create appropriate tag value based on filter type
+    let tagValue = '';
+    switch (totalQuantityFilter.filterType) {
+      case FilterType.Equals:
+        tagValue = `Equals ${totalQuantityFilter.value}`;
+        break;
+      case FilterType.GreaterThan:
+        tagValue = `Greater than ${totalQuantityFilter.value}`;
+        break;
+      case FilterType.GreaterThanEqual:
+        tagValue = `Greater than or equal to ${totalQuantityFilter.value}`;
+        break;
+      case FilterType.LessThan:
+        tagValue = `Less than ${totalQuantityFilter.value}`;
+        break;
+      case FilterType.LessThanEqual:
+        tagValue = `Less than or equal to ${totalQuantityFilter.value}`;
+        break;
+      case FilterType.Range:
+        tagValue = `Between ${totalQuantityFilter.lowerBound} and ${totalQuantityFilter.upperBound}`;
+        break;
+    }
+
+    this.updateTag('Filter Total Quantity', tagValue);
+
+    this.global.sendMessage({
+      columnFilters: this.filters,
+      orderNumberFilters: this.orderNumberFilters,
+      orderRange: this.orderRange,
+      totalQuantityFilter: this.totalQuantityFilter,
     });
   }
 
@@ -536,21 +608,24 @@ export class NonSuperBatchOrdersComponent implements OnInit, AfterViewInit {
         columnFilters: this.filters,
         orderNumberFilters: [],
         orderRange:this.orderRange,
+        totalQuantityFilter: this.totalQuantityFilter,
       });
     }
     else{
       this.orderRange = { lowerBound: '', upperBound: '' };
+      this.totalQuantityFilter = null;
   
       // Remove all related tags
       this.tags = this.tags.filter(
         (tag) =>
-          tag.alias !== 'Filter Order Number (Range)'
+          tag.alias !== 'Filter Order Number (Range)' && tag.alias !== 'Filter Total Quantity'
       );
   
       this.global.sendMessage({
         columnFilters: this.filters,
         orderNumberFilters:  this.orderNumberFilters,
         orderRange: { lowerBound: '', upperBound: '' },
+        totalQuantityFilter: null,
       });
     }
   

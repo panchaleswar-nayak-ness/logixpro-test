@@ -147,11 +147,11 @@ export const ConfirmationMessages = {
     ConfirmationToClearAllInventoryMap : "Click OK to clear all Inventory Map records matching Location Number (Zone + Carousal + Row + Shelf + Bin) Criteria!",
     ClearWholeLocationPutAwayQuantity:"Clear Whole Location cannot proceed because the Allocated Pick or Allocated Put Away quantity is greater than zero.",
     DeleteLicenseConfirmation:"Are you sure you want to delete this License?",
-    TouchYesToPrintlabelForItemInBatch: "Touch ‘Yes’ to print a label for each item in this batch",
-    TouchYesToPrintAllAsBatch:"Touch ‘Yes’ to print all orders as a batch",
+    TouchYesToPrintlabelForItemInBatch: "Touch 'Yes' to print a label for each item in this batch",
+    TouchYesToPrintAllAsBatch:"Touch 'Yes' to print all orders as a batch",
     TouchNoToPrintEachOrder: "Touch 'No' to print a page for each order.",
     AssignOrdersToBatch: (batchId: string | number) =>
-        `Touch ‘Yes’ to Assign the Selected Orders to Batch ID ${batchId}. Touch ‘No’ to Cancel Batching.`,
+        `Touch 'Yes' to Assign the Selected Orders to Batch ID ${batchId}. Touch 'No' to Cancel Batching.`,
     NoOffCarouselPicks:"There are no off-carousel picks for the order(s) selected.",    
     ResolvedToteConfirmation:"Are you sure you want to mark this Tote ID as resolved? This will remove this Tote ID from the Markout.",
     IrreversibleActionWarning :'This action cannot be undone.',
@@ -228,7 +228,7 @@ export const ToasterMessages = {
     LocationDeleted: 'Location deleted successfully',
     DeleteFailed:"Delete Failed",
     FieldEmptyDefault:"Field cannot be empty. Default value has been applied.",
-    ZoneAndLocationNameNeedToBeSet:" “Zone and Location Name need to be set via the Preferences - Location Zones screen in order to save”",
+    ZoneAndLocationNameNeedToBeSet: 'Zone and Location Name need to be set via the Preferences - Location Zones screen in order to save.',
     Consolidationzones:"Failed to load consolidation zones.",
     Consolidationstatuscount:"Failed to load consolidation status count.",
     RouteidCount:"Failed to load route id status count.",
@@ -246,7 +246,11 @@ export const ToasterMessages = {
     ZoneUpdatedSuccessfully: "Zone updated successfully",
     ZoneDeletedSuccessfully: "Zone deleted successfully",
     NoDefaultFilter:"No filter is marked as default.",
-    Resolved:"Resolved Successfully."
+    Resolved:"Resolved Successfully.",
+    LowerBoundAndUpperBoundRequired: 'Both Lower Bound and Upper Bound must be filled before applying the filter.',
+    LowerBoundCannotBeGreater: 'Lower Bound cannot be greater than Upper Bound. Please adjust the range.',
+    EnterQuantityValueBeforeApplying: 'Please enter a quantity value before applying the filter.',
+    EnterValidPositiveQuantity: 'Please enter a valid positive number for the quantity.',
 }
 
 

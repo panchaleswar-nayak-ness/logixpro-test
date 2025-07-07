@@ -110,3 +110,20 @@ export enum LocationZoneType {
     Location = 'Location',
     Zone = 'Zone'
 }
+
+export enum FilterType {
+    Equals = 'equals',
+    GreaterThan = 'greaterThan',
+    GreaterThanEqual = 'greaterThanEqual',
+    LessThan = 'lessThan',
+    LessThanEqual = 'lessThanEqual',
+    Range = 'range'
+  }
+  
+export type QuantityFilterTypeUnion =
+| FilterType.Equals
+| FilterType.GreaterThan
+| FilterType.GreaterThanEqual
+| FilterType.LessThan
+| FilterType.LessThanEqual
+| FilterType.Range; 
