@@ -22,11 +22,14 @@
                         class="header-filter-options w-100 d-xl-flex d-lg-block align-items-center justify-content-between filter">
                         <app-column-filter-component
                             [tableColumns]="tableColumns"
-                            [searchCol]="searchCol"
+                            [searchCol]="selectedColumnDisplay"
                             [searchString]="searchValue"
-                             (valueChangeEvent)="onValueChange($event)"
+                            (valueChangeEvent)="onValueChange($event)"
                             (searchKeyUpEnterEvent)="onFilterChange()"
-                            (clearInputFieldEvent)="onClearSearch()">
+                            (clearInputFieldEvent)="onClearSearch()"
+                            [searchByInput]="searchByColumn"
+                            [searchAutocompleteList]="searchAutocompleteListByCol"
+                            (autoCompleteEvent)="searchValue = $event; searchByColumn.next($event)">
                         </app-column-filter-component>
                         <div class="d-xl-flex d-lg-block align-items-center gap-12">
                             <div class="p-xl-3 mt-3 mt-xl-0 mt-sm-3 text-14">

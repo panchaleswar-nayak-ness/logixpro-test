@@ -12,8 +12,9 @@ import { MarkoutNewApiService } from 'src/app/common/services/markout-new-api/ma
 import { MatSort } from '@angular/material/sort';
 import { PageEvent } from '@angular/material/paginator';
 import { IQueryParams } from '../../cm-route-id-management/routeid-list/routeid-IQueryParams';
-import { switchMap, EMPTY } from 'rxjs';
+import { switchMap, EMPTY, Subject } from 'rxjs';
 import { NgModel } from '@angular/forms';
+import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 
 @Component({
   selector: 'app-markout-new-pick-totes',
@@ -72,16 +73,42 @@ export class MarkoutNewPickTotesComponent implements OnInit {
 
   searchCol: string = '';
   searchValue: string;
+  selectedColumnDisplay = '';
   dataSource: MatTableDataSource<PickTotes> = new MatTableDataSource<PickTotes>(
     []
   );
   clickTimeout: ReturnType<typeof setTimeout>;
 
+  // --- Suggestive search additions ---
+  searchByColumn = new Subject<string>();
+  searchAutocompleteListByCol: any[] = [];
+  // --- End suggestive search additions ---
+
+  // Mapping from display name to internal key for search columns
+  displayNameToKey = {
+    "tote id": MarkoutNewPickTotesKeys.ToteID,
+    "status": MarkoutNewPickTotesKeys.MarkoutStatus,
+    "markout status": MarkoutNewPickTotesKeys.MarkoutStatus,
+    "status date": MarkoutNewPickTotesKeys.StatusDate,
+    "route id": MarkoutNewPickTotesKeys.RouteId,
+    "routeid": MarkoutNewPickTotesKeys.RouteId,
+    "divert reason": MarkoutNewPickTotesKeys.DivertReason,
+    "location": MarkoutNewPickTotesKeys.Location,
+    "destination": MarkoutNewPickTotesKeys.Destination,
+    // Add more mappings as needed
+  };
+
   constructor(
     public iMarkoutApiService: MarkoutNewApiService,
     public readonly global: GlobalService,
     private readonly dialog: MatDialog
-  ) { }
+  ) {
+    // --- Suggestive search: debounce and API call ---
+    this.searchByColumn.pipe(debounceTime(400), distinctUntilChanged()).subscribe((value) => {
+      this.autoCompleteSearchColumn();
+    });
+    // --- End suggestive search ---
+  }
 
   ngOnInit(): void {
     this.refresh();
@@ -244,19 +271,77 @@ export class MarkoutNewPickTotesComponent implements OnInit {
 
   onValueChange(event: { searchCol: string; searchString: string }) {
     this.searchValue = event.searchString;
-    this.searchCol = event.searchCol;
+    this.selectedColumnDisplay = event.searchCol;
+    // Normalize the searchCol for robust mapping
+    const normalizedCol = event.searchCol.replace(/\s+/g, '').toLowerCase();
+    // Try with spaces removed, then with spaces
+    this.searchCol = this.displayNameToKey[normalizedCol] || this.displayNameToKey[event.searchCol.toLowerCase()] || event.searchCol;
+    // --- Suggestive search: trigger suggestions ---
+    this.searchByColumn.next(event.searchString);
+    // --- End suggestive search ---
   }
 
   // Called when input field is cleared
   onClearSearch() {
-    this.searchCol='';
+    this.searchCol = '';
     this.searchValue = '';
+    this.selectedColumnDisplay = '';
+    this.searchAutocompleteListByCol = [];
     this.getToteData();
   }
   
   onActionChange(value: string) {
     if (value === 'resolved') {
       this.resolved();
+    }
+  }
+
+  // --- Suggestive search: API call for column autocomplete ---
+  autoCompleteSearchColumn() {
+    // 1) bail out if there's nothing to search
+    if (!this.searchCol || !this.searchValue) {
+      this.searchAutocompleteListByCol = [];
+      return;
+    }
+    // 2) build a "suggestions only" payload
+    const rawPayload: IQueryParams = {
+      page:        1,
+      pageSize:    10,
+      searchColumn: this.searchCol,
+      searchValue:  this.searchValue,
+      sortColumn:   '',
+      sortOrder:    ''
+    };
+    // 3) hit the same API and pull out .suggestions
+    this.iMarkoutApiService
+      .GetMarkoutNewData(rawPayload)
+      .subscribe((res: any) => {
+        this.searchAutocompleteListByCol = this.mapSuggestions(
+          res.suggestions || []
+        );
+      });
+  }
+  // --- End suggestive search ---
+
+  private mapSuggestions(raw: any[]): string[] {
+    switch (this.searchCol) {
+      case MarkoutNewPickTotesKeys.ToteID:
+        return raw.map((x) => String(x.toteId));
+      case MarkoutNewPickTotesKeys.MarkoutStatus:
+        return raw.map((x) => x.markoutStatus);
+      case MarkoutNewPickTotesKeys.StatusDate:
+        return raw.map((x) => x.statusDate);
+      case MarkoutNewPickTotesKeys.RouteId:
+        return raw.map((x) => x.routeId);
+      case MarkoutNewPickTotesKeys.DivertReason:
+        return raw.map((x) => x.divertReason);
+      case MarkoutNewPickTotesKeys.Location:
+        return raw.map((x) => x.location);
+      case MarkoutNewPickTotesKeys.Destination:
+        return raw.map((x) => x.destination);
+      default:
+        // fallback if you ever support other columns
+        return raw.map((x) => JSON.stringify(x));
     }
   }
 

@@ -5,7 +5,7 @@ export interface MarkoutPickLine {
   locationId: string;
   status: string;
   statusDate: string;
-  completeQuantity: number | null;
+  completeQty: number | null;
   completedBy: string;
   shortReason: string;
 }
@@ -60,4 +60,15 @@ export interface MarkoutResponse {
 export interface MarkoutPickLinesResponse {
   items: MarkoutPickLine[];
   meta:  PaginationMeta;
+  suggestions?: MarkoutPickLine[];
+}
+
+// Suggestive search response for Pick Lines
+export interface PickLineSuggestionResponse {
+  data: string[];
+}
+
+// Suggestive search response for Pick Totes
+export interface PickTotesSuggestionResponse {
+  data: string[];
 }
