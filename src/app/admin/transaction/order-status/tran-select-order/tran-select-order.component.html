@@ -2,7 +2,7 @@
   <mat-card-content>
     <div class="d-block d-xl-flex justify-content-between align-items-center mb-3 flex-wrap">
       <div class="d-flex align-items-center">
-        <h2 class="col card-header-title d-flex align-items-center mb-xl-0 mb-3">
+        <h2 class="col card-header-title d-flex align-items-center mb-xl-0 mb-3" data-automation-id="select-order-heading">
           <div class="mat-icon-wrap me-3">
             <span class="material-symbols-outlined"> filter_frames </span>
           </div>
@@ -26,6 +26,7 @@
             'disabled-button': totalLinesOrder == 0,
             'delete-button': totalLinesOrder > 0
           }"
+          data-automation-id="delete-order-button"
         >
           Delete Order
         </button>
@@ -39,14 +40,15 @@
             class="action-dropdown mb-3 mb-xl-0 w-100 flex-1"
             appearance="outline"
           >
-            <mat-label>Select</mat-label>
+            <mat-label data-automation-id="select-label">Select</mat-label>
             <mat-select
               class="employees-action"
               [(ngModel)]="columnSelect"
               (selectionChange)="onSelectionChange($event.value)"
+              data-automation-id="select-dropdown"
             >
-              <mat-option selected value="Order Number"> Order No. </mat-option>
-              <mat-option value="Tote ID"> Tote ID </mat-option>
+              <mat-option selected value="Order Number" data-automation-id="option-order-number"> Order No. </mat-option>
+              <mat-option value="Tote ID" data-automation-id="option-tote-id"> Tote ID </mat-option>
             </mat-select>
             <span class="material-symbols-outlined icon-expand-more">
               expand_more
@@ -76,12 +78,14 @@
                 [disabled]="!columnSelect"
                 [(ngModel)]="searchField"
                 [matAutocomplete]="auto"
+                data-automation-id="search-input"
               />
               <button
                 matSuffix
                 *ngIf="searchField"
                 class="clear-btn"
                 (click)="searchField = ''; clear()"
+                data-automation-id="clear-search-button"
               >
                 <mat-icon class="text-20 text-chrome-600">cancel</mat-icon>
               </button>
@@ -89,9 +93,10 @@
                 class="card custom-scroll panel-custom-scroll d-table"
                 #auto="matAutocomplete"
                 (optionSelected)="selectOrderByTote();this.searchField = ''"
+                data-automation-id="autocomplete-dropdown"
               >
                 <ng-container *ngIf="columnSelect == 'Order Number'">
-                  <h6 class="card-header matAutoCompHeader stickyHeader">
+                  <h6 class="card-header matAutoCompHeader stickyHeader" data-automation-id="autocomplete-header-order-number">
                     <span class="order-no-col px-2">Order Number</span>
                     <span class="com-date-col px-2">Completed Date</span>
                   </h6>
@@ -99,6 +104,7 @@
                     *ngFor="let option of searchAutocompleteList"
                     [value]="option.orderNumber"
                     class="matAutoCompTableContent"
+                    [attr.data-automation-id]="'autocomplete-option-order-number-' + option.orderNumber"
                   >
                     <div class="loc_option">
                       <span class="order-no-col px-2">{{
@@ -115,6 +121,7 @@
                   <mat-option
                     *ngFor="let option of searchAutocompleteList"
                     [value]="option"
+                    [attr.data-automation-id]="'autocomplete-option-tote-id-' + option"
                   >
                     {{ option }}
                   </mat-option>
@@ -131,6 +138,7 @@
           mat-flat-button
           color="primary"
           class="button-remove-all-w-stroke w-100 mb-3 mb-xl-0 text-pure-white"
+          data-automation-id="clear-button"
         >
           Clear
         </button>
@@ -141,13 +149,14 @@
       <div class="col-md-12">
         <div class="d-flex justify-content-between align-items-center">
           <div>
-            <h2 class="mb-2 mt-3 d-flex align-items-center f-16">
+            <h2 class="mb-2 mt-3 d-flex align-items-center f-16" data-automation-id="lines-heading">
               <b>Lines</b>
               <mat-checkbox
                 [checked]="filterByTote"
                 (change)="checkFilter($event.checked)"
                 class="example-margin custom-checkbox ms-3"
                 color="primary"
+                data-automation-id="filter-by-tote-checkbox"
                 >Filter Info by Tote</mat-checkbox
               >
             </h2>

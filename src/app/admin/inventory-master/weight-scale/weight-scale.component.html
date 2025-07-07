@@ -4,36 +4,39 @@
     <div class="row d-flex justify-content-between display">
       <div class="col-lg-4 mb-3">
           <mat-form-field class="filter w-100 stats-filters" appearance="outline">
-            <mat-label>Average Piece Weight</mat-label>
+            <mat-label data-automation-id="avg-piece-weight-label">Average Piece Weight</mat-label>
             <input  (input)="handleInputChange($event)"  matInput type="number" class="custom-input-number" formControlName="avgPieceWeight" 
             (contextmenu)="onContextMenu($event, 'Avg Piece Weight')"
-            oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" type = "number" maxlength = "11">
+            oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" type = "number" maxlength = "11"
+            data-automation-id="avg-piece-weight-input">
           </mat-form-field>
         </div>
 
         <div class="col-lg-4 mb-3">
             <mat-form-field class="filter w-100 stats-filters" appearance="outline">
-              <mat-label>Sample Quantity</mat-label>
+              <mat-label data-automation-id="sample-quantity-label">Sample Quantity</mat-label>
               <input  (input)="handleInputChange($event)"  matInput type="number" class="custom-input-number" formControlName="sampleQuantity"
               (contextmenu)="onContextMenu($event, 'Sample Quantity')"
-              oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" type = "number" maxlength = "9">
+              oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" type = "number" maxlength = "9"
+              data-automation-id="sample-quantity-input">
             </mat-form-field>
           </div>
 
           <div class="col-lg-4 mb-3">
             <mat-form-field class="filter w-100 stats-filters" appearance="outline">
-              <mat-label>Min. Use Scale Trans. Quantity</mat-label>
+              <mat-label data-automation-id="min-use-scale-qty-label">Min. Use Scale Trans. Quantity</mat-label>
               <input  (input)="handleInputChange($event)"  matInput type="number" class="custom-input-number" (contextmenu)="onContextMenu($event, 'Minimum Use Scale Quantity')" formControlName="minimumUseScaleQuantity"
-              oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" type = "number" maxlength = "9">
+              oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" type = "number" maxlength = "9"
+              data-automation-id="min-use-scale-qty-input">
             </mat-form-field>
           </div>
     </div>
     <div class="row">
       <div class="px-3">
-        <mat-checkbox (change)="handleInputChange($event)"  class="example-margin custom-checkbox" color="primary" formControlName="useScale">Use Scale</mat-checkbox>
+        <mat-checkbox (change)="handleInputChange($event)"  class="example-margin custom-checkbox" color="primary" formControlName="useScale" data-automation-id="use-scale-checkbox">Use Scale</mat-checkbox>
       </div>
     </div>
   
   </div>
-  <app-table-context-menu-component *ngIf="isActiveTrigger" (optionSelected)="optionSelected($event)" [componentName]="'InvMap'"></app-table-context-menu-component>
+  <app-table-context-menu-component *ngIf="isActiveTrigger" (optionSelected)="optionSelected($event)" [componentName]="'InvMap'" data-automation-id="table-context-menu"></app-table-context-menu-component>
   

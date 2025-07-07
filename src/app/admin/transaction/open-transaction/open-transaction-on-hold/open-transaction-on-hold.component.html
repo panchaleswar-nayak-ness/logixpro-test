@@ -5,15 +5,15 @@
         <mat-card-content>
             <div class="d-flex justify-content-between align-items-center mb-4">
                 <div>
-                    <app-icon-heading-component heading="Filters" icon="filter_list"></app-icon-heading-component>
+                    <app-icon-heading-component heading="Filters" icon="filter_list" data-automation-id="filters-heading"></app-icon-heading-component>
                 </div>
             </div>
 
             <div class="row">
                 <div class="col-xl-3">
                     <mat-form-field class="custom-form-field w-100 __grab_cursor mb-3" appearance="outline">
-                        <mat-label>Import Date(Start)</mat-label>
-                        <input matInput  [(ngModel)]="sDate" [matDatepicker]="start" (dateChange)="onImportDateChange($event.value)">
+                        <mat-label data-automation-id="label-import-date-start">Import Date(Start)</mat-label>
+                        <input matInput  [(ngModel)]="sDate" [matDatepicker]="start" (dateChange)="onImportDateChange($event.value)" data-automation-id="input-import-date-start">
                         <mat-datepicker-toggle matSuffix [for]="start" ngDefaultControl></mat-datepicker-toggle>
                         <mat-datepicker #start></mat-datepicker>
                     </mat-form-field>
@@ -21,8 +21,8 @@
 
                 <div class="col-xl-3">
                     <mat-form-field class="custom-form-field w-100 __grab_cursor mb-3" appearance="outline">
-                        <mat-label>End Date</mat-label>
-                        <input matInput [(ngModel)]="eDate" [matDatepicker]="end" (dateChange)="onEndDateChange($event.value)">
+                        <mat-label data-automation-id="label-end-date">End Date</mat-label>
+                        <input matInput [(ngModel)]="eDate" [matDatepicker]="end" (dateChange)="onEndDateChange($event.value)" data-automation-id="input-end-date">
                         <mat-datepicker-toggle matSuffix [for]="end" ngDefaultControl></mat-datepicker-toggle>
                         <mat-datepicker #end></mat-datepicker>
                     </mat-form-field>
@@ -30,9 +30,9 @@
 
                 <div class="col-xl-3">
                     <mat-form-field class=" custom-form-field w-100 __grab_cursor mb-3" appearance="outline">
-                        <mat-label>By Status</mat-label>
-                        <mat-select [(ngModel)]="statusType" (selectionChange)="selectStatus($event.value)">
-                            <mat-option *ngFor="let option of transStatus" [value]="option.value">{{option.type}}</mat-option>
+                        <mat-label data-automation-id="label-by-status">By Status</mat-label>
+                        <mat-select [(ngModel)]="statusType" (selectionChange)="selectStatus($event.value)" data-automation-id="select-status">
+                            <mat-option *ngFor="let option of transStatus" [value]="option.value" [attr.data-automation-id]="'option-status-' + option.value">{{option.type}}</mat-option>
                         </mat-select>
                         <span class="material-symbols-outlined icon-expand-more">
                             expand_more
@@ -42,11 +42,11 @@
 
                 <div class="col-xl-3 d-flex  justify-content-center ">
                     <mat-form-field c class="custom-form-field w-100 __grab_cursor mb-3" appearance="outline" [floatLabel]="getFloatLabelValue()" [hideRequiredMarker]="hideRequiredControl.value">
-                        <mat-label>Order Number</mat-label>
-                        <input type="text" placeholder="" aria-label="Number"  name="searchByorderNumber" id="searchByorderNumber" matInput [(ngModel)]='orderNumber' [matAutocomplete]="auto" (ngModelChange)="this.searchByOrderNumber.next($event)">
-                        <button matSuffix *ngIf="orderNumber" class="clear-btn" (click)="clearFilter('orderNumber');"><mat-icon class="text-20 text-chrome-600">cancel</mat-icon></button>
-                        <mat-autocomplete #auto="matAutocomplete" (optionSelected)="searchData()">
-                            <mat-option *ngFor="let option of searchAutocompleteList" [value]="option">{{option}}</mat-option>
+                        <mat-label data-automation-id="label-order-number">Order Number</mat-label>
+                        <input type="text" placeholder="" aria-label="Number"  name="searchByorderNumber" id="searchByorderNumber" matInput [(ngModel)]='orderNumber' [matAutocomplete]="auto" (ngModelChange)="this.searchByOrderNumber.next($event)" data-automation-id="input-order-number">
+                        <button matSuffix *ngIf="orderNumber" class="clear-btn" (click)="clearFilter('orderNumber');" data-automation-id="clear-order-number-button"><mat-icon class="text-20 text-chrome-600">cancel</mat-icon></button>
+                        <mat-autocomplete #auto="matAutocomplete" (optionSelected)="searchData()" data-automation-id="autocomplete-order-number">
+                            <mat-option *ngFor="let option of searchAutocompleteList" [value]="option" [attr.data-automation-id]="'autocomplete-option-order-number-' + option">{{option}}</mat-option>
                         </mat-autocomplete>
                     </mat-form-field>
                 </div>
@@ -55,19 +55,17 @@
             <div class="row">
                 <div class="col-xl-3">
                     <mat-form-field class="custom-form-field w-100 __grab_cursor mb-3" appearance="outline">
-                        <mat-label>Tote ID</mat-label>
-                        <input [(ngModel)]="toteId" matInput class="" value="" type="text" name="searchByToteId" id="searchByToteId" (ngModelChange)="this.searchByToteId.next($event)">
-                        <button matSuffix *ngIf="toteId" class="clear-btn"  (click)="clearFilter('toteId');"><mat-icon class="text-20 text-chrome-600">cancel</mat-icon></button>
+                        <mat-label data-automation-id="label-tote-id">Tote ID</mat-label>
+                        <input [(ngModel)]="toteId" matInput class="" value="" type="text" name="searchByToteId" id="searchByToteId" (ngModelChange)="this.searchByToteId.next($event)" data-automation-id="input-tote-id">
+                        <button matSuffix *ngIf="toteId" class="clear-btn"  (click)="clearFilter('toteId');" data-automation-id="clear-tote-id-button"><mat-icon class="text-20 text-chrome-600">cancel</mat-icon></button>
                     </mat-form-field>
                 </div>
 
                 <div class="col-xl-3">
                     <mat-form-field class=" custom-form-field w-100 __grab_cursor mb-3" appearance="outline">
-                        <mat-label>By Trans Type</mat-label>
-                        <mat-select [(ngModel)]="transTypeSelect" (selectionChange)="selectTransType($event.value)">
-                            <mat-option *ngFor="let option of transType" [value]="option.value">
-                                {{option.type}}
-                            </mat-option>
+                        <mat-label data-automation-id="label-by-trans-type">By Trans Type</mat-label>
+                        <mat-select [(ngModel)]="transTypeSelect" (selectionChange)="selectTransType($event.value)" data-automation-id="select-trans-type">
+                            <mat-option *ngFor="let option of transType" [value]="option.value" [attr.data-automation-id]="'option-trans-type-' + option.value">{{option.type}}</mat-option>
                         </mat-select>
                         <span class="material-symbols-outlined icon-expand-more">
                             expand_more
@@ -80,7 +78,7 @@
             <div class="row" *ngIf="hideDelete ">
                 <div class="col-xl-3 offset-xl-6"></div>
                 <div class="col-xl-3">
-                    <button mat-flat-button color="primary" class="btn-regular w-100 mb-3" (click)="resetToTodaysDate()">
+                    <button mat-flat-button color="primary" class="btn-regular w-100 mb-3" (click)="resetToTodaysDate()" data-automation-id="reset-todays-date-button">
                         Reset to Today's Date
                     </button>
                 </div>
@@ -90,7 +88,7 @@
                 <div class="row">
                     <div class="col-xl-3 offset-xl-6"></div>
                     <div class="col-xl-3">
-                        <button mat-flat-button color="primary" class="btn-regular w-100 mb-3" (click)="resetToTodaysDate()">
+                        <button mat-flat-button color="primary" class="btn-regular w-100 mb-3" (click)="resetToTodaysDate()" data-automation-id="reset-todays-date-button">
                             Reset to Today's Date
                         </button>
                     </div>
@@ -101,12 +99,12 @@
             <div *ngIf="directAdmin">
                 <div class="row" *ngIf="!hideDelete">
                     <div class="col-xl-3 offset-xl-6">
-                        <button mat-flat-button color="primary" class="btn-regular w-100 mb-3" (click)="resetToTodaysDate()">
+                        <button mat-flat-button color="primary" class="btn-regular w-100 mb-3" (click)="resetToTodaysDate()" data-automation-id="reset-todays-date-button">
                             Reset to Today's Date
                         </button>
                     </div>
                     <div class="col-xl-3">
-                        <button (click)="retunrToPrev()" mat-stroked-button color="primary" class="btn-regular w-100 mb-3">
+                        <button (click)="retunrToPrev()" mat-stroked-button color="primary" class="btn-regular w-100 mb-3" data-automation-id="place-trans-on-hold-button">
                             Place Trans. on Hold
                         </button>
                     </div>
@@ -122,7 +120,7 @@
         <mat-card-content>
             <div class="d-flex justify-content-between align-items-center mb-4">
                 <div>
-                    <app-icon-heading-component heading="Order Selection List" icon="list_alt"></app-icon-heading-component>
+                    <app-icon-heading-component heading="Order Selection List" icon="list_alt" data-automation-id="order-selection-list-heading"></app-icon-heading-component>
                 </div>
             </div>
             <div class="row">
@@ -143,12 +141,12 @@
                 <div class="col-xl-2 offset-xl-5 d-flex justify-content-end">
                     <div class="d-block d-lg-flex d-flex w-100 justify-content-end">
                         <mat-form-field class="action-dropdown mb-3 flex-grow-1" appearance="outline">
-                            <mat-label>Action</mat-label>
-                            <mat-select [(value)]="selectedVariable" class="employees-action" (openedChange)="actionDialog($event)">
-                                <mat-option value="set_column_sq">Set Column Sequence</mat-option>
-                                <mat-option (click)="printCycleCountReport()">Print Cycle Count Report</mat-option>
-                                <mat-option (click)="previewFiftyPagesOnly()">Preview 50 Pages Only</mat-option>
-                                <mat-option (click)="sendCompletedToHistory()" *ngIf="authService.UserPermissonByFuncName('Transaction Journal Send To History') && !throughOrderManager">Send Completed to History</mat-option>
+                            <mat-label data-automation-id="label-action">Action</mat-label>
+                            <mat-select [(value)]="selectedVariable" class="employees-action" (openedChange)="actionDialog($event)" data-automation-id="select-action">
+                                <mat-option value="set_column_sq" data-automation-id="option-action-set_column_sq">Set Column Sequence</mat-option>
+                                <mat-option (click)="printCycleCountReport()" data-automation-id="option-action-print_cycle_count_report">Print Cycle Count Report</mat-option>
+                                <mat-option (click)="previewFiftyPagesOnly()" data-automation-id="option-action-preview_50_pages_only">Preview 50 Pages Only</mat-option>
+                                <mat-option (click)="sendCompletedToHistory()" *ngIf="authService.UserPermissonByFuncName('Transaction Journal Send To History') && !throughOrderManager" data-automation-id="option-action-send_completed_to_history">Send Completed to History</mat-option>
                             </mat-select>
                             <span class="material-symbols-outlined icon-expand-more">
                                 expand_more
@@ -162,25 +160,25 @@
                     <table mat-table class="custom-table table-fix" #table [dataSource]="dataSource" matSort (matSortChange)="sortChange($event)">
                         
                         <ng-container class="d-table-row"[matColumnDef]="col.colDef" *ngFor="let col of displayedColumns; let indexOfelement=index;">
-                            <th class="header" mat-header-cell *matHeaderCellDef mat-sort-header (sortActionDescription)="indexOfelement">{{ col.colTitle }} </th>
-                            <td *matCellDef="let element"
+                            <th class="header" mat-header-cell *matHeaderCellDef mat-sort-header (sortActionDescription)="indexOfelement" [attr.data-automation-id]="'table-header-' + col.colDef">{{ col.colTitle }} </th>
+                            <td *matCellDef="let element; let rowIndex = index"
                             (dblclick)="col.colDef == 'Item Number' && viewInInventoryMaster(element)"
                                 (contextmenu)="onContextMenu($event, element[col.colHeader], col.colDef)" mat-cell class="table-cell-style"
                                  #tooltip="matTooltip" matTooltipPosition="above"
-                                [matTooltip]="element[col.colHeader]" [matTooltipDisabled]="element[col.colHeader] && element[col.colHeader].length > 19 ? false : true">
+                                [matTooltip]="element[col.colHeader]" [matTooltipDisabled]="element[col.colHeader] && element[col.colHeader].length > 19 ? false : true" [attr.data-automation-id]="'table-row-' + rowIndex + '-' + col.colDef + '-' + element[col.colHeader]">
                                 {{ element[col.colHeader] }}</td>
                         </ng-container>
 
                         <ng-container matColumnDef="actions" stickyEnd>
-                            <th mat-header-cell *matHeaderCellDef class="custom-header-cell"></th>
-                            <td mat-cell *matCellDef="let seletedRecord" class="custom-cell">
-                                <button mat-icon-button [matMenuTriggerFor]="appMenu" [ngClass]="{'active-btn':seletedRecord.selected}" class="circle-icon-o active-btn" appearance="outline">
+                            <th mat-header-cell *matHeaderCellDef class="custom-header-cell" data-automation-id="table-header-actions"></th>
+                            <td mat-cell *matCellDef="let seletedRecord; let rowIndex = index" class="custom-cell" [attr.data-automation-id]="'table-row-actions-' + rowIndex + '-' + seletedRecord.id">
+                                <button mat-icon-button [matMenuTriggerFor]="appMenu" [ngClass]="{'active-btn':seletedRecord.selected}" class="circle-icon-o active-btn" appearance="outline" [attr.data-automation-id]="'actions-menu-button-' + rowIndex + '-' + seletedRecord.id">
                                     <mat-icon>more_horiz</mat-icon>
                                 </button>
                                 <mat-menu #appMenu="matMenu">
-                                    <button mat-menu-item (click)="viewInInventoryMaster(seletedRecord)">View Item in Inventory Master</button>
-                                    <button mat-menu-item (click)="viewOrderInOrder(seletedRecord)">View Order in Order Status</button>
-                                    <button mat-menu-item *ngIf="!hideDelete && !throughOrderManager && authService.UserPermissonByFuncName('Transaction Journal Delete') " (click)="deleteItem(seletedRecord)">Delete Transaction</button>
+                                    <button mat-menu-item (click)="viewInInventoryMaster(seletedRecord)" [attr.data-automation-id]="'actions-menu-view-inventory-' + rowIndex + '-' + seletedRecord.id">View Item in Inventory Master</button>
+                                    <button mat-menu-item (click)="viewOrderInOrder(seletedRecord)" [attr.data-automation-id]="'actions-menu-view-order-' + rowIndex + '-' + seletedRecord.id">View Order in Order Status</button>
+                                    <button mat-menu-item *ngIf="!hideDelete && !throughOrderManager && authService.UserPermissonByFuncName('Transaction Journal Delete') " (click)="deleteItem(seletedRecord)" [attr.data-automation-id]="'actions-menu-delete-transaction-' + rowIndex + '-' + seletedRecord.id">Delete Transaction</button>
                                 </mat-menu>
                             </td>
                         </ng-container>
@@ -196,7 +194,7 @@
                 </ng-scrollbar>
             </div>
             <div class="table-pagination d-flex justify-content-start" *ngIf="columnValues.length>0 && displayedColumns && dataSource">
-                <mat-paginator [length]="this.customPagination.total" [pageSize]="20" showFirstLastButtons [pageSizeOptions]="[10, 20, 100]" (page)="handlePageEvent($event)"></mat-paginator>
+                <mat-paginator [length]="this.customPagination.total" [pageSize]="20" showFirstLastButtons [pageSizeOptions]="[10, 20, 100]" (page)="handlePageEvent($event)" data-automation-id="table-paginator"></mat-paginator>
             </div>
         </mat-card-content>
     </mat-card>

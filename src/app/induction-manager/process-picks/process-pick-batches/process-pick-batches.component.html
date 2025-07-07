@@ -3,34 +3,34 @@
         <mat-card class="mat-elevation-z g-card mb-3 h-100">
             <mat-card-content class=" h-100">
                 <div class="d-flex justify-content-between align-items-center mb-3">
-                    <app-icon-heading-component heading="Print Existing Pick Batches" icon="print">
+                    <app-icon-heading-component heading="Print Existing Pick Batches" icon="print" data-automation-id="print-existing-pick-batches-heading">
                     </app-icon-heading-component>
                     <button type="submit" mat-stroked-button class="btn-regular" color="primary"
-                        [matMenuTriggerFor]="appMenu1">
+                        [matMenuTriggerFor]="appMenu1" data-automation-id="print-menu-button">
                         <mat-icon class="material-symbols-outlined">print</mat-icon>
                         <span class="material-symbols-outlined icon-expand-more">
                             expand_more
                         </span>
                     </button>
                     <mat-menu #appMenu1="matMenu">
-                        <button (click)="printExisting('PrintTote')" mat-menu-item><b>Print Tote/Location Labels</b></button>
-                        <button  (click)="printExisting('PrintPickLabel')" mat-menu-item>Print Pick Labels</button>
-                        <button  (click)="printExisting('PrintPickList')" mat-menu-item>Print Pick List</button>
-                        <button  (click)="printExisting('PrintCase')" mat-menu-item>Print Case Labels</button>
-                        <button  (click)="printExisting('PrintBatch')" mat-menu-item>Print Pick Batch List</button>
+                        <button (click)="printExisting('PrintTote')" mat-menu-item data-automation-id="print-menu-option-PrintToteLabels"><b>Print Tote/Location Labels</b></button>
+                        <button (click)="printExisting('PrintPickLabel')" mat-menu-item data-automation-id="print-menu-option-PrintPickLabel">Print Pick Labels</button>
+                        <button (click)="printExisting('PrintPickList')" mat-menu-item data-automation-id="print-menu-option-PrintPickList">Print Pick List</button>
+                        <button (click)="printExisting('PrintCase')" mat-menu-item data-automation-id="print-menu-option-PrintCaseLabels">Print Case Labels</button>
+                        <button (click)="printExisting('PrintBatch')" mat-menu-item data-automation-id="print-menu-option-PrintBatchList">Print Pick Batch List</button>
                     </mat-menu>
                 </div>
                 <div class="card p-3 mb-2">
                     <div class="row">
                         <div class="col-xl-12">
                             <mat-form-field class="custom-form-field w-100 position-relative" appearance="outline">
-                                <mat-label>Batch ID</mat-label>
+                                <mat-label data-automation-id="batch-id-label">Batch ID</mat-label>
                                 <input type="text" [formControl]="pickBatches" aria-label="Number" matInput
-                                    [matAutocomplete]="auto" [(ngModel)]="pickBatchesCrossbtn">
-                                    <button matSuffix *ngIf="pickBatchesCrossbtn" class="clear-btn" (click)="pickBatchesCrossbtn= ''" ><mat-icon class="text-20 text-chrome-600">cancel</mat-icon></button>                              
+                                    [matAutocomplete]="auto" [(ngModel)]="pickBatchesCrossbtn" [attr.data-automation-id]="'batch-id-input-' + (pickBatchesCrossbtn || '')">
+                                    <button matSuffix *ngIf="pickBatchesCrossbtn" class="clear-btn" (click)="pickBatchesCrossbtn= ''" data-automation-id="batch-id-clear-button"><mat-icon class="text-20 text-chrome-600">cancel</mat-icon></button>                              
                                 <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete">
                                     <h6 class="ctl_name ac-dropdown-label"><span>Batch ID</span></h6>
-                                    <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
+                                    <mat-option *ngFor="let option of filteredOptions | async" [value]="option" [attr.data-automation-id]="'batch-id-option-' + option">
                                         <div class="ctl_option ac-dropdown-option">
                                             <span>{{option}}</span>
                                         </div>
@@ -48,7 +48,7 @@
         <mat-card class="mat-elevation-z g-card mb-3 h-100">
             <mat-card-content>
                 <div class="d-flex justify-content-between align-items-center mb-3">
-                    <app-icon-heading-component heading="Order Number Select" icon="filter_frames">
+                    <app-icon-heading-component heading="Order Number Select" icon="filter_frames" data-automation-id="order-number-select-heading">
                     </app-icon-heading-component>
                     <div class="text-center"> <span class="label label-gray px-2 f-14">Zones:&nbsp;<b><span
                                     *ngFor="let zone of allZones"> {{zone}} </span></b></span></div>
@@ -57,13 +57,13 @@
                 <div class="row align-items-center">
                     <div class="col-xl-8">
                         <mat-form-field class="custom-form-field w-100 position-relative mb-2" appearance="outline">
-                            <mat-label>Order No.</mat-label>
+                            <mat-label data-automation-id="order-no-label">Order No.</mat-label>
                             <input type="text" [formControl]="orderNumber" aria-label="Number" matInput
-                                [matAutocomplete]="auto" [(ngModel)]="orderInput" (keyup.enter)="ifOrderExits(orderInput)">
-                                <button matSuffix *ngIf="orderInput" class="clear-btn" (click)="orderInput = ''" ><mat-icon class="text-20 text-chrome-600">cancel</mat-icon></button>  
+                                [matAutocomplete]="auto" [(ngModel)]="orderInput" (keyup.enter)="ifOrderExits(orderInput)" [attr.data-automation-id]="'order-no-input-' + (orderInput || '')">
+                                <button matSuffix *ngIf="orderInput" class="clear-btn" (click)="orderInput = ''" data-automation-id="order-no-clear-button"><mat-icon class="text-20 text-chrome-600">cancel</mat-icon></button>  
                             <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete" (optionSelected)="ifOrderExits(orderInput)">
                                 <h6 class="ctl_name ac-dropdown-label"><span>Batch ID</span></h6>
-                                <mat-option *ngFor="let option of filteredOrderNum | async" [value]="option">
+                                <mat-option *ngFor="let option of filteredOrderNum | async" [value]="option" [attr.data-automation-id]="'order-no-option-' + option">
                                     <div class="ctl_option ac-dropdown-option">
                                         <span>{{option}}</span>
                                     </div>
@@ -74,23 +74,23 @@
                     </div>
                     <div class="col-xl-4">
                         <a mat-flat-button [matMenuTriggerFor]="orderMenu" color="primary"
-                            class="primary-button btn-regular w-100 mb-2 matFlatButton-style">
+                            class="primary-button btn-regular w-100 mb-2 matFlatButton-style" data-automation-id="view-orders-button">
                             View Orders
                             <mat-icon matSuffix> expand_more</mat-icon>
                         </a>
                         <mat-menu #orderMenu="matMenu" xPosition="before">
-                            <button type="button" mat-menu-item (click)="openViewOrdersDialogue('All')"><b
+                            <button type="button" mat-menu-item (click)="openViewOrdersDialogue('All')" data-automation-id="view-orders-option-All"><b
                                     class="text-tertiary-900">View All Orders</b></button>
-                            <button type="button" mat-menu-item (click)="openViewOrdersDialogue('NonReplen')">View Non Replenishment
+                            <button type="button" mat-menu-item (click)="openViewOrdersDialogue('NonReplen')" data-automation-id="view-orders-option-NonReplen">View Non Replenishment
                                 Orders</button>
-                            <button type="button" mat-menu-item (click)="openViewOrdersDialogue('Replen')">View Replenishment
+                            <button type="button" mat-menu-item (click)="openViewOrdersDialogue('Replen')" data-automation-id="view-orders-option-Replen">View Replenishment
                                 Orders</button>
                         </mat-menu>
                     </div>
                 </div>
                 <div class="mt-2">
                     <button type="button" mat-flat-button color="primary" class="primary-button btn-regular w-100 matFlatButton-style"
-                         (click)="openWorkstationZone()">
+                         (click)="openWorkstationZone()" data-automation-id="select-workstation-zones-button">
                         Select Workstation Zones
                     </button>
                 </div>
