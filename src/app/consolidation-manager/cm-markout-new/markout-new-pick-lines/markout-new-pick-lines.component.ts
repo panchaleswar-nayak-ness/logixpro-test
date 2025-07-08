@@ -226,7 +226,6 @@ export class MarkoutNewPickLinesComponent implements OnInit {
   // --- End suggestive search ---
 
   private mapSuggestions(raw: MarkoutPickLine[]): string[] {
-    // debugger;
     switch (this.searchCol) {
       case MarkoutNewPickLinesKeys.Item:
         return raw.map((x) => x.itemNumber);
