@@ -410,7 +410,7 @@
 
                       <table mat-table #table [dataSource]="filterOrderTransactionSource" matSort>
 
-                        <ng-container *ngFor="let column of filterBatchTransColumns">
+                        <ng-container *ngFor="let column of filterBatchTransColumns" [cdkColumnDef]="column.columnDef">
                           <th mat-header-cell *cdkHeaderCellDef mat-sort-header [attr.data-automation-id]="'batch-results-trans-table-header-' + column.columnDef">{{ column.header }}</th>
                           <td mat-cell *cdkCellDef="let row"
                               [matTooltip]="column.cell(row)"
@@ -619,7 +619,7 @@
                     <ng-scrollbar track="all" class="mat-table-scrollbar h-280" >
                       <table mat-table #table [dataSource]="zoneOrderTransactionSource" matSort>
 
-                        <ng-container *ngFor="let column of filterBatchTransColumns">
+                        <ng-container *ngFor="let column of filterBatchTransColumns"  [cdkColumnDef]="column.columnDef">
                           <th mat-header-cell *cdkHeaderCellDef mat-sort-header [attr.data-automation-id]="'zone-batch-results-trans-table-header-' + column.columnDef">{{ column.header }}</th>
                           <td mat-cell *cdkCellDef="let row"
                               [matTooltip]="column.cell(row)"
