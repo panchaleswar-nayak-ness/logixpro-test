@@ -1,56 +1,59 @@
   <div class="d-flex justify-content-between mb-4 align-items-center">
     <div class="w-48px"></div>
-    <h1 class="m-0" mat-dialog-title data-automation-id="pick-tote-manager-title">Pick Tote Manager - Select Order Number</h1>
-    <button mat-icon-button class="close-button dialog-close-button-fix" (click)="onClosePickToteManager()" data-automation-id="btn-close-pick-tote-manager">
+    <h1 class="m-0" mat-dialog-title>Pick Tote Manager - Select Order Number</h1>
+    <button mat-icon-button class="close-button dialog-close-button-fix" (click)="onClosePickToteManager()">
       <mat-icon class="close-icon">close</mat-icon>
     </button>
   </div>
 <div mat-dialog-content>
   <div>
     <div class="row mb-3 px-3">
-      <mat-label class="mb-2" data-automation-id="label-batch-by"><b>Batch By:</b></mat-label>
-      <mat-radio-group color="primary" [(ngModel)]="isFilter" data-automation-id="radio-group-batch-by">
-        <mat-radio-button class="me-3" value="filter" data-automation-id="radio-filter">Filter</mat-radio-button>
-        <mat-radio-button value="zone" data-automation-id="radio-zone">Zone</mat-radio-button>
+      <mat-label class="mb-2"><b>Batch By:</b></mat-label>
+      <mat-radio-group color="primary" [(ngModel)]="isFilter">
+        <mat-radio-button class="me-3" value="filter">Filter</mat-radio-button>
+        <mat-radio-button value="zone">Zone</mat-radio-button>
       </mat-radio-group>
     </div>
   </div>
 
   <ng-container *ngIf="isFilter=='filter'; else zone">
     <div class="card p-3">
-      <mat-tab-group data-automation-id="tab-group-batch-by-filter">
-        <mat-tab label="Batch By Filters" data-automation-id="tab-batch-by-filters">
+      <mat-tab-group>
+        <mat-tab label="Batch By Filters">
             <div class="d-block overflow-hidden" >
             <div class="my-3">
-              <app-icon-heading-component heading="Filter Functions" icon="filter_list" data-automation-id="icon-heading-filter-functions">
+              <app-icon-heading-component heading="Filter Functions" icon="filter_list">
               </app-icon-heading-component>
             </div>
             <div class="header-filter-bar mb-3">
               <div class="d-flex justify-content-between">
                 <mat-form-field class="custom-form-field custom-form-field-bg-white position-relative" appearance="outline">
-                  <mat-label data-automation-id="label-select-saved-filter">Select Saved filter</mat-label>
-                  <input #field_focus type="text" [formControl]="savedFilter" aria-label="Number" matInput [matAutocomplete]="auto" data-automation-id="input-select-saved-filter">
+                  <mat-label>Select Saved filter</mat-label>
+                  <input #field_focus type="text" [formControl]="savedFilter" aria-label="Number" matInput [matAutocomplete]="auto">
                   <mat-autocomplete class="br-14 auto-com"  autoActiveFirstOption
                     #auto="matAutocomplete" (optionSelected)="onSavedFilterChange($event)" (closed)="savedFilClosed()">
                     <h6 class="card-header matAutoCompHeader stickyHeader"><span
                       class="span-batch"
-                      data-automation-id="autocomplete-header-batch-id">Batch ID</span></h6>
-                    <mat-option *ngFor="let option of filteredOptions | async" [value]="option" [attr.data-automation-id]="'option-saved-filter-' + option">
+                      >Batch ID</span></h6>
+                    <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
                       <div class="loc_option">
                         <span class="span-option">{{option}}</span>
                       </div>
                     </mat-option>
                   </mat-autocomplete>
+
+
+
                 </mat-form-field>
                 <mat-form-field class="action-dropdown" appearance="outline">
-                  <mat-label data-automation-id="label-actions">Actions</mat-label>
-                  <mat-select #matRef class="employees-action" placeholder="Actions" (selectionChange)="onFilterAction($event)" data-automation-id="select-actions">
-                    <mat-option value="rename" [disabled]="!isFilterAdd" data-automation-id="option-rename-filter">Rename Filter</mat-option>
-                    <mat-option value="view_default" data-automation-id="option-view-default">View Default</mat-option>
-                    <mat-option value="set_default" [disabled]="!isFilterAdd" data-automation-id="option-set-default">Set Default</mat-option>
-                    <mat-option value="clear_default" data-automation-id="option-clear-default">Clear Default</mat-option>
-                    <mat-option value="delete_selected_filter" [disabled]="!isFilterAdd" data-automation-id="option-delete-selected-filter">Deleted Selected Filter</mat-option>
-                    <mat-option value="add_new_filter" data-automation-id="option-add-new-filter">Add New Filter</mat-option>
+                  <mat-label>Actions</mat-label>
+                  <mat-select #matRef class="employees-action" placeholder="Actions" (selectionChange)="onFilterAction($event)">
+                    <mat-option value="rename" [disabled]="!isFilterAdd">Rename Filter</mat-option>
+                    <mat-option value="view_default">View Default</mat-option>
+                    <mat-option value="set_default" [disabled]="!isFilterAdd">Set Default</mat-option>
+                    <mat-option value="clear_default" >Clear Default</mat-option>
+                    <mat-option value="delete_selected_filter" [disabled]="!isFilterAdd">Deleted Selected Filter</mat-option>
+                    <mat-option value="add_new_filter">Add New Filter</mat-option>
                   </mat-select>
                   <span class="material-symbols-outlined icon-expand-more">
                     expand_more
@@ -62,11 +65,11 @@
               <div class="col-xl-7 mb-xl-0 mb-3">
                 <div class="card p-3">
                   <div>
-                    <app-icon-heading-component heading="Filter" icon="filter_alt" data-automation-id="icon-heading-filter">
+                    <app-icon-heading-component heading="Filter" icon="filter_alt">
                     </app-icon-heading-component>
                   </div>
                   <div class="d-flex gap-12 mb-2 justify-content-end">
-                    <button mat-flat-button color="primary" class="add-icon-button" (click)="onAddFilter()" [disabled]="!isFilterAdd" data-automation-id="btn-add-filter">
+                    <button mat-flat-button color="primary" class="add-icon-button" (click)="onAddFilter()" [disabled]="!isFilterAdd">
                       <span class="material-symbols-outlined">
                         add
                       </span>
@@ -79,11 +82,11 @@
 
                         <!-- Position Column -->
                         <ng-container matColumnDef="sequence">
-                          <th mat-header-cell *matHeaderCellDef data-automation-id="filter-table-header-sequence"> Sequence </th>
+                          <th mat-header-cell *matHeaderCellDef> Sequence </th>
                           <td mat-cell *matCellDef="let element">
                             <div>
                               <mat-form-field class="custom-form-field w-80" appearance="outline">
-                                <input matInput type="text" maxlength="255" [(ngModel)]="element.sequence" disabled data-automation-id="input-sequence">
+                                <input matInput type="text" maxlength="255" [(ngModel)]="element.sequence" disabled>
                               </mat-form-field>
                             </div>
                           </td>
@@ -91,24 +94,26 @@
 
                         <!-- Name Column -->
                         <ng-container matColumnDef="field">
-                          <th mat-header-cell *matHeaderCellDef data-automation-id="filter-table-header-field"> Field </th>
+                          <th mat-header-cell *matHeaderCellDef> Field </th>
                           <td mat-cell *matCellDef="let element">
                             <div>
                               <mat-form-field class="custom-form-field w-160" appearance="outline"  >
-                                <mat-select #matRef class="employees-action" [(ngModel)]="element.field" (ngModelChange)="onChangeFunctionsFields(element)" data-automation-id="select-field">
-                                  <mat-option value="Order Number" data-automation-id="option-field-order-number">Order Number</mat-option>
-                                  <mat-option value="Required Date" data-automation-id="option-field-required-date">Required Date</mat-option>
-                                  <mat-option value="Priority" data-automation-id="option-field-priority">Priority</mat-option>
-                                  <mat-option value="Emergency" data-automation-id="option-field-emergency">Emergency</mat-option>
-                                  <mat-option value="Host Transaction ID" data-automation-id="option-field-host-transaction-id">Host Transaction ID</mat-option>
-                                  <mat-option value="Import Date" data-automation-id="option-field-import-date">Import Date</mat-option>
-                                  <mat-option value="Item Number" data-automation-id="option-field-item-number">{{ItemNumber}}</mat-option>
-                                  <mat-option value="Notes" data-automation-id="option-field-notes">Notes</mat-option>
-                                  <mat-option *ngFor="let field of userFields; let i = index" [value]="field.value" [attr.data-automation-id]="'option-field-user-' + i">
+                                <mat-select #matRef class="employees-action" [(ngModel)]="element.field" (ngModelChange)="onChangeFunctionsFields(element)">
+                                  <mat-option value="Order Number">Order Number</mat-option>
+                                  <mat-option value="Required Date">Required Date</mat-option>
+                                  <mat-option value="Priority">Priority</mat-option>
+                                  <mat-option value="Emergency" >Emergency</mat-option>
+                                  <mat-option value="Host Transaction ID" >Host Transaction ID</mat-option>
+                                  <mat-option value="Import Date" >Import Date</mat-option>
+                                  <mat-option value="Item Number" >{{ItemNumber}}</mat-option>
+                                  <mat-option value="Notes" >Notes</mat-option>
+                               
+                                  <mat-option *ngFor="let field of userFields" [value]="field.value" replacePlaceholder [replacePlaceHolder]="field.replacePlaceholder" [fallbackPlaceHolder]="field.fallbackPlaceholder">
                                     {{ field.placeholder }}
                                   </mat-option>
-                                  <mat-option value="Warehouse" data-automation-id="option-field-warehouse">Warehouse</mat-option>
-                                  <mat-option value="Zone" data-automation-id="option-field-zone">Zone</mat-option>
+                                                                 
+                                  <mat-option value="Warehouse" >Warehouse</mat-option>
+                                  <mat-option value="Zone" >Zone</mat-option>
                                 </mat-select>
                                 <span matSuffix class="material-symbols-outlined icon-expand-more">
                                   expand_more
@@ -120,20 +125,20 @@
 
                         <!-- Name Column -->
                         <ng-container matColumnDef="criteria">
-                          <th mat-header-cell *matHeaderCellDef data-automation-id="filter-table-header-criteria"> Criteria </th>
+                          <th mat-header-cell *matHeaderCellDef> Criteria </th>
                           <td mat-cell *matCellDef="let element">
                             <div>
                               <mat-form-field class="custom-form-field w-160" appearance="outline">
-                                <mat-select #matRef class="employees-action" [(ngModel)]="element.criteria" (ngModelChange)="onChangeFunctionsFields(element)" data-automation-id="select-criteria">
-                                  <mat-option value="Equals" data-automation-id="option-criteria-equals">Equals</mat-option>
-                                  <mat-option value="Not Equal To" data-automation-id="option-criteria-not-equal-to">Not Equal To</mat-option>
-                                  <mat-option value="Greater Than" data-automation-id="option-criteria-greater-than">Greater Than</mat-option>
-                                  <mat-option value="Greater or Equal" data-automation-id="option-criteria-greater-or-equal">Greater or Equal</mat-option>
-                                  <mat-option value="Less Than" data-automation-id="option-criteria-less-than">Less Than</mat-option>
-                                  <mat-option value="Less or Equal" data-automation-id="option-criteria-less-or-equal">Less or Equal</mat-option>
-                                  <mat-option value="Is Like" data-automation-id="option-criteria-is-like">Is Like</mat-option>
-                                  <mat-option value="Contains Data" data-automation-id="option-criteria-contains-data">Contains Data</mat-option>
-                                  <mat-option value="Has No Data" data-automation-id="option-criteria-has-no-data">Has No Data</mat-option>
+                                <mat-select #matRef class="employees-action" [(ngModel)]="element.criteria" (ngModelChange)="onChangeFunctionsFields(element)">
+                                  <mat-option value="Equals">Equals</mat-option>
+                                  <mat-option value="Not Equal To">Not Equal To</mat-option>
+                                  <mat-option value="Greater Than">Greater Than</mat-option>
+                                  <mat-option value="Greater or Equal">Greater or Equal</mat-option>
+                                  <mat-option value="Less Than">Less Than</mat-option>
+                                  <mat-option value="Less or Equal">Less or Equal</mat-option>
+                                  <mat-option value="Is Like">Is Like</mat-option>
+                                  <mat-option value="Contains Data">Contains Data</mat-option>
+                                  <mat-option value="Has No Data">Has No Data</mat-option>
                                 </mat-select>
                                 <span matSuffix class="material-symbols-outlined icon-expand-more">
                                   expand_more
@@ -144,11 +149,11 @@
                         </ng-container>
                         <!-- Name Column -->
                         <ng-container matColumnDef="value">
-                          <th mat-header-cell *matHeaderCellDef data-automation-id="filter-table-header-value"> Value </th>
+                          <th mat-header-cell *matHeaderCellDef> Value </th>
                           <td mat-cell *matCellDef="let element">
                             <div>
                               <mat-form-field class="custom-form-field" appearance="outline">
-                                <input matInput [type]="getInputType(element.field)" maxlength="255" [(ngModel)]="element.value" (ngModelChange)="onChangeFunctionsFields(element)" data-automation-id="input-value">
+                                <input matInput [type]="getInputType(element.field)" maxlength="255" [(ngModel)]="element.value" (ngModelChange)="onChangeFunctionsFields(element)">
                               </mat-form-field>
                             </div>
                           </td>
@@ -156,13 +161,13 @@
 
                         <!-- Name Column -->
                         <ng-container matColumnDef="andOr">
-                          <th mat-header-cell *matHeaderCellDef data-automation-id="filter-table-header-and-or"> And/Or </th>
+                          <th mat-header-cell *matHeaderCellDef> And/Or </th>
                           <td mat-cell *matCellDef="let element">
                             <div>
                               <mat-form-field class="custom-form-field w-90" appearance="outline"  >
-                                <mat-select #matRef class="employees-action" [(ngModel)]="element.andOr" (ngModelChange)="onChangeFunctionsFields(element)" data-automation-id="select-and-or">
-                                  <mat-option value="And" data-automation-id="option-and">And</mat-option>
-                                  <mat-option value="Or" data-automation-id="option-or">Or</mat-option>
+                                <mat-select #matRef class="employees-action" [(ngModel)]="element.andOr" (ngModelChange)="onChangeFunctionsFields(element)">
+                                  <mat-option value="And">And</mat-option>
+                                  <mat-option value="Or">Or</mat-option>
                                 </mat-select>
                                 <span matSuffix class="material-symbols-outlined icon-expand-more">
                                   expand_more
@@ -177,10 +182,10 @@
                           <td mat-cell *matCellDef="let element" class="custom-cell">
                             <div class="d-flex justify-content-end">
                               <div class="d-flex gap-12">
-                                <button mat-flat-button color="primary" class="xsm-icon-button" (click)="onSaveSingleFilter(element)" [disabled]="element.isSaved" [attr.data-automation-id]="'btn-save-filter-' + element.sequence">
+                                <button mat-flat-button color="primary" class="xsm-icon-button" (click)="onSaveSingleFilter(element)" [disabled]="element.isSaved">
                                   <mat-icon class="material-symbols-outlined">save</mat-icon>
                                 </button>
-                                <button mat-flat-button color="warn" class="xsm-icon-button" (click)="onDeleteSingleFilter(element)" [attr.data-automation-id]="'btn-delete-filter-' + element.sequence">
+                                <button mat-flat-button color="warn" class="xsm-icon-button" (click)="onDeleteSingleFilter(element)">
                                   <mat-icon class="material-symbols-outlined">close</mat-icon>
                                 </button>
                               </div>
@@ -198,11 +203,11 @@
               <div class="col-xl-5">
                 <div class="card p-3">
                   <div>
-                    <app-icon-heading-component heading="Order By" icon="filter_frames" data-automation-id="icon-heading-order-by">
+                    <app-icon-heading-component heading="Order By" icon="filter_frames">
                     </app-icon-heading-component>
                   </div>
                   <div class="d-flex gap-12 mb-2 justify-content-end">
-                    <button mat-flat-button color="primary" class="add-icon-button" (click)="onAddOrderBy();" [disabled]="!isOrderByAdd" data-automation-id="btn-add-order-by">
+                    <button mat-flat-button color="primary" class="add-icon-button" (click)="onAddOrderBy();" [disabled]="!isOrderByAdd">
                       <span class="material-symbols-outlined">
                         add
                       </span>
@@ -214,54 +219,63 @@
 
                         <!-- Position Column -->
                         <ng-container matColumnDef="sequence">
-                          <th mat-header-cell *matHeaderCellDef data-automation-id="order-table-header-sequence"> Sequence </th>
+                          <th mat-header-cell *matHeaderCellDef> Sequence </th>
                           <td mat-cell *matCellDef="let element">
-                            <mat-form-field class="custom-form-field w-80" appearance="outline"  >
-                              <input matInput type="number" min="0" #specialFeature maxlength="255" [(ngModel)]="element.sequence" (ngModelChange)="onChangeFunctionsFields(element)" (focusout)="isUniqueSeq(element)" data-automation-id="input-order-sequence">
-                            </mat-form-field>
+                            
+                              <mat-form-field class="custom-form-field w-80" appearance="outline"  >
+                                <input matInput type="number" min="0" #specialFeature maxlength="255" [(ngModel)]="element.sequence" (ngModelChange)="onChangeFunctionsFields(element)" (focusout)="isUniqueSeq(element)">
+                              </mat-form-field>
+                            
                           </td>
                         </ng-container>
 
                         <!-- Name Column -->
                         <ng-container matColumnDef="field">
-                          <th mat-header-cell *matHeaderCellDef data-automation-id="order-table-header-field"> Field </th>
+                          <th mat-header-cell *matHeaderCellDef> Field </th>
                           <td mat-cell *matCellDef="let element">
-                            <mat-form-field class="custom-form-field w-170" appearance="outline" >
-                              <mat-select #matRef class="employees-action" [(ngModel)]="element.field" (ngModelChange)="onChangeFunctionsFields(element)" data-automation-id="select-order-field">
-                                <mat-option value="Order Number" data-automation-id="option-order-field-order-number">Order Number</mat-option>
-                                <mat-option value="Required Date" data-automation-id="option-order-field-required-date">Required Date</mat-option>
-                                <mat-option value="Priority" data-automation-id="option-order-field-priority">Priority</mat-option>
-                                <mat-option value="OTLines" data-automation-id="option-order-field-total-lines">Total Lines</mat-option>
-                                <mat-option value="Emergency" disabled data-automation-id="option-order-field-emergency">Emergency</mat-option>
-                                <mat-option value="Host Transaction ID" disabled data-automation-id="option-order-field-host-transaction-id">Host Transaction ID</mat-option>
-                                <mat-option value="Import Date" disabled data-automation-id="option-order-field-import-date">Import Date</mat-option>
-                                <mat-option value="Item Number" disabled data-automation-id="option-order-field-item-number">{{ItemNumber}}</mat-option>
-                                <mat-option value="Notes" disabled data-automation-id="option-order-field-notes">Notes</mat-option>
-                                <mat-option *ngFor="let field of userFields; let i = index" 
-                                  [value]="'UF' + (field.value.split(' ')[2])" 
-                                  disabled 
-                                  [attr.data-automation-id]="'option-order-field-user-' + i">
-                                  {{ field.placeholder }}
-                                </mat-option>
-                                <mat-option value="Warehouse" disabled data-automation-id="option-order-field-warehouse">Warehouse</mat-option>
-                                <mat-option value="Zone" disabled data-automation-id="option-order-field-zone">Zone</mat-option>
-                              </mat-select>
-                              <span matSuffix class="material-symbols-outlined icon-expand-more">
-                                expand_more
-                              </span>
-                            </mat-form-field>
+                            
+                              <mat-form-field class="custom-form-field w-170" appearance="outline" >
+
+                                <mat-select #matRef class="employees-action" [(ngModel)]="element.field" (ngModelChange)="onChangeFunctionsFields(element)">
+                                  <mat-option value="Order Number">Order Number</mat-option>
+                                  <mat-option value="Required Date">Required Date</mat-option>
+                                  <mat-option value="Priority">Priority</mat-option>
+                                  <mat-option value="OTLines">Total Lines</mat-option>
+                                  <mat-option value="Emergency" disabled>Emergency</mat-option>
+                                  <mat-option value="Host Transaction ID" disabled>Host Transaction ID</mat-option>
+                                  <mat-option value="Import Date" disabled>Import Date</mat-option>
+                                  <mat-option value="Item Number" disabled>{{ItemNumber}}</mat-option>
+                                  <mat-option value="Notes" disabled>Notes</mat-option>
+
+                                  <mat-option *ngFor="let field of userFields" 
+                                    [value]="'UF' + (field.value.split(' ')[2])" 
+                                    disabled 
+                                    replacePlaceholder 
+                                    [replacePlaceHolder]="field.replacePlaceholder" 
+                                    [fallbackPlaceHolder]="field.fallbackPlaceholder">
+                                    {{ field.placeholder }}
+                                  </mat-option>
+
+                                  <mat-option value="Warehouse" disabled>Warehouse</mat-option>
+                                  <mat-option value="Zone" disabled>Zone</mat-option>
+                                </mat-select>
+                                <span matSuffix class="material-symbols-outlined icon-expand-more">
+                                  expand_more
+                                </span>
+                              </mat-form-field>
+                            
                           </td>
                         </ng-container>
 
                         <!-- Name Column -->
                         <ng-container matColumnDef="sortOrder">
-                          <th mat-header-cell *matHeaderCellDef data-automation-id="order-table-header-sort-order"> Sort Order</th>
+                          <th mat-header-cell *matHeaderCellDef> Sort Order</th>
                           <td mat-cell *matCellDef="let element">
                             <div>
                               <mat-form-field class="custom-form-field w-100" appearance="outline">
-                                <mat-select #matRef class="employees-action"  [(ngModel)]="element.sortOrder" (ngModelChange)="onChangeFunctionsFields(element)" data-automation-id="select-sort-order">
-                                  <mat-option value="DESC" data-automation-id="option-sort-order-desc">DESC</mat-option>
-                                  <mat-option value="ASC" data-automation-id="option-sort-order-asc">ASC</mat-option>
+                                <mat-select #matRef class="employees-action"  [(ngModel)]="element.sortOrder" (ngModelChange)="onChangeFunctionsFields(element)">
+                                  <mat-option value="DESC">DESC</mat-option>
+                                  <mat-option value="ASC">ASC</mat-option>
                                 </mat-select>
                                 <span matSuffix class="material-symbols-outlined icon-expand-more">
                                   expand_more
@@ -290,12 +304,14 @@
                           <td mat-cell *matCellDef="let element" class="custom-cell">
                             <div class="d-flex justify-content-end">
                               <div class="d-flex gap-12">
-                                <button mat-flat-button color="primary" class="xsm-icon-button" (click)="onSaveSingleOrder(element)" [disabled]="element.isSaved" [attr.data-automation-id]="'btn-save-order-' + element.sequence">
+                                <button mat-flat-button color="primary" class="xsm-icon-button" (click)="onSaveSingleOrder(element)" [disabled]="element.isSaved">
                                   <mat-icon class="material-symbols-outlined">save</mat-icon>
                                 </button>
-                                <button mat-flat-button color="warn" class="xsm-icon-button" (click)="onDeleteSingleOrder(element)" [attr.data-automation-id]="'btn-delete-order-' + element.sequence">
+                                <button mat-flat-button color="warn" class="xsm-icon-button" (click)="onDeleteSingleOrder(element)">
                                   <mat-icon class="material-symbols-outlined">close</mat-icon>
                                 </button>
+
+
                               </div>
                             </div>
                           </td>
@@ -311,18 +327,18 @@
             </div>
             </div>
         </mat-tab>
-        <mat-tab label="Batch Results" data-automation-id="tab-batch-results">
+        <mat-tab label="Batch Results">
             <div class="d-block overflow-hidden"  >
             <div class="p-3">
               <div class="mb-2">
-                <mat-label data-automation-id="label-view-order-lines"><b>View Order Lines</b></mat-label>
+                <mat-label><b>View Order Lines</b></mat-label>
               </div>
-              <mat-radio-group color="primary" class="d-flex" value="vSelectedOrderFilter" (change)="onViewOrderLineFilter($event)" data-automation-id="radio-group-view-order-lines">
-                <mat-radio-button class="d-flex pe-4 custom-horizontal-radio" value="vSelectedOrderFilter" data-automation-id="radio-view-selected-order-lines">
-                  <mat-label data-automation-id="label-view-selected-order-lines">View Selected Order Lines</mat-label>
+              <mat-radio-group color="primary" class="d-flex" value="vSelectedOrderFilter" (change)="onViewOrderLineFilter($event)">
+                <mat-radio-button class="d-flex pe-4 custom-horizontal-radio" value="vSelectedOrderFilter">
+                  <mat-label>View Selected Order Lines</mat-label>
                 </mat-radio-button>
-                <mat-radio-button class="d-flex pe-2 custom-horizontal-radio" value="vAllOrderFilter" data-automation-id="radio-view-all-order-lines">
-                  <mat-label data-automation-id="label-view-all-order-lines">View All Order Lines</mat-label>
+                <mat-radio-button class="d-flex pe-2 custom-horizontal-radio" value="vAllOrderFilter">
+                  <mat-label>View All Order Lines</mat-label>
                 </mat-radio-button>
               </mat-radio-group>
             </div>
@@ -330,14 +346,14 @@
               <div class="col-xl-5 mb-xl-0 mb-3">
                 <div class="card p-3">
                   <div class="d-flex justify-content-between align-items-center mb-3">
-                    <app-icon-heading-component heading="Orders" icon="filter_frames" data-automation-id="icon-heading-orders">
+                    <app-icon-heading-component heading="Orders" icon="filter_frames">
                     </app-icon-heading-component>
                     <mat-form-field class="action-dropdown" appearance="outline">
-                      <mat-label data-automation-id="label-order-actions">Actions</mat-label>
-                      <mat-select #orderRef class="employees-action" placeholder="Actions" (selectionChange)="onChangeOrderAction($event.value)" data-automation-id="select-order-actions">
-                        <mat-option value="fill_top_orders" data-automation-id="option-select-all">Select All</mat-option>
-                        <mat-option value="unselect_all_orders" data-automation-id="option-unselect-all-orders">Un-Select All Orders</mat-option>
-                        <mat-option value="select_order" [disabled]="isOrderSelect" data-automation-id="option-select-order">Select Order</mat-option>
+                      <mat-label>Actions</mat-label>
+                      <mat-select #orderRef class="employees-action" placeholder="Actions" (selectionChange)="onChangeOrderAction($event.value)">
+                        <mat-option value="fill_top_orders">Select All</mat-option>
+                        <mat-option value="unselect_all_orders">Un-Select All Orders</mat-option>
+                        <mat-option value="select_order" [disabled]="isOrderSelect">Select Order</mat-option>
                       </mat-select>
                       <span class="material-symbols-outlined icon-expand-more">
                         expand_more
@@ -350,7 +366,7 @@
 
                         <!-- Position Column -->
                         <ng-container matColumnDef="orderno">
-                          <th mat-header-cell *matHeaderCellDef data-automation-id="batch-results-table-header-order-number"> Order Number </th>
+                          <th mat-header-cell *matHeaderCellDef> Order Number </th>
                           <td mat-cell *matCellDef="let element"  [class.selected]="element.isSelected">
                             <div class="pe-2">
                               {{element.orderNumber}}
@@ -360,7 +376,7 @@
 
                         <!-- Name Column -->
                         <ng-container matColumnDef="requireddate">
-                          <th mat-header-cell *matHeaderCellDef data-automation-id="batch-results-table-header-required-date"> Required Date </th>
+                          <th mat-header-cell *matHeaderCellDef> Required Date </th>
                           <td mat-cell *matCellDef="let element" [class.selected]="element.isSelected">
                             <div class="pe-2">
                               {{element.reqDate}}
@@ -369,7 +385,7 @@
                         </ng-container>
                          <!-- Name Column -->
                          <ng-container matColumnDef="transactionsline">
-                          <th mat-header-cell *matHeaderCellDef data-automation-id="batch-results-table-header-total-lines"> Total Lines </th>
+                          <th mat-header-cell *matHeaderCellDef> Total Lines </th>
                           <td mat-cell *matCellDef="let element" [class.selected]="element.isSelected">
                             <div class="pe-2">
                               {{element.otLines}}
@@ -379,7 +395,7 @@
 
                         <!-- Name Column -->
                         <ng-container matColumnDef="priority">
-                          <th mat-header-cell *matHeaderCellDef data-automation-id="batch-results-table-header-priority"> Priority </th>
+                          <th mat-header-cell *matHeaderCellDef> Priority </th>
                           <td mat-cell *matCellDef="let element" [class.selected]="element.isSelected">
                             <div class="pe-2">
                               {{element.priority}}
@@ -402,7 +418,7 @@
               <div class="col-xl-7">
                 <div class="card p-3">
                   <div class="d-flex justify-content-between align-items-center mb-4">
-                    <app-icon-heading-component heading="Transactions" icon="dvr" data-automation-id="icon-heading-transactions">
+                    <app-icon-heading-component heading="Transactions" icon="dvr">
                     </app-icon-heading-component>
                   </div>
                   <div class="card br-14 table-responsive borderless px-0 mb-3">
@@ -411,7 +427,7 @@
                       <table mat-table #table [dataSource]="filterOrderTransactionSource" matSort>
 
                         <ng-container *ngFor="let column of filterBatchTransColumns" [cdkColumnDef]="column.columnDef">
-                          <th mat-header-cell *cdkHeaderCellDef mat-sort-header [attr.data-automation-id]="'batch-results-trans-table-header-' + column.columnDef">{{ column.header }}</th>
+                          <th mat-header-cell *cdkHeaderCellDef mat-sort-header>{{ column.header }}</th>
                           <td mat-cell *cdkCellDef="let row"
                               [matTooltip]="column.cell(row)"
                               matTooltipPosition="above"
@@ -439,27 +455,27 @@
 </div>
   <ng-template #zone>
     <div class="card p-3">
-      <mat-tab-group [(selectedIndex)]="tabIndex" data-automation-id="tab-group-batch-by-zone">
-        <mat-tab label="Batch By Zone" data-automation-id="tab-batch-by-zone">
+      <mat-tab-group [(selectedIndex)]="tabIndex">
+        <mat-tab label="Batch By Zone">
           <div class="card br-14 table-responsive borderless px-0 mt-3">
               <table mat-table [dataSource]="batchByZoneSource" class="w-100">
 
                 <ng-container matColumnDef="default">
-                  <th mat-header-cell *matHeaderCellDef data-automation-id="zone-table-header-default">Default</th>
+                  <th mat-header-cell *matHeaderCellDef>Default</th>
                   <td mat-cell *matCellDef="let row">
                     <div class="px-2">
-                      <mat-radio-button color="primary" [checked]="row.defaultZone" (change)="onSelectBatchZone(row)" [attr.data-automation-id]="'radio-default-zone-' + row.zone"></mat-radio-button>
+                      <mat-radio-button color="primary" [checked]="row.defaultZone" (change)="onSelectBatchZone(row)"></mat-radio-button>
                     </div>
                   </td>
                 </ng-container>
 
                 <!-- Position Column -->
                 <ng-container matColumnDef="zone">
-                  <th mat-header-cell *matHeaderCellDef data-automation-id="zone-table-header-zone"> Zone </th>
+                  <th mat-header-cell *matHeaderCellDef> Zone </th>
                   <td mat-cell *matCellDef="let element">
                     <div class="pe-2">
                       <mat-form-field class="custom-form-field w-100" appearance="outline">
-                        <input matInput type="text" #specialFeature maxlength="255" [(ngModel)]="element.zone" data-automation-id="input-zone">
+                        <input matInput type="text" #specialFeature maxlength="255" [(ngModel)]="element.zone">
                       </mat-form-field>
                     </div>
                   </td>
@@ -467,11 +483,12 @@
 
                 <!-- Name Column -->
                 <ng-container matColumnDef="batchtype">
-                  <th mat-header-cell *matHeaderCellDef data-automation-id="zone-table-header-batch-type"> Batch Type </th>
+                  <th mat-header-cell *matHeaderCellDef> Batch Type </th>
                   <td mat-cell *matCellDef="let element">
                     <div class="pe-2">
                       <mat-form-field class="custom-form-field w-100" appearance="outline">
-                        <input matInput type="text" #specialFeature maxlength="255"  [(ngModel)]="element.type" data-automation-id="input-batch-type">
+
+                        <input matInput type="text" #specialFeature maxlength="255"  [(ngModel)]="element.type">
                       </mat-form-field>
                     </div>
                   </td>
@@ -479,22 +496,24 @@
 
                 <!-- Name Column -->
                 <ng-container matColumnDef="totalorders">
-                  <th mat-header-cell *matHeaderCellDef data-automation-id="zone-table-header-total-orders"> Total Orders </th>
+                  <th mat-header-cell *matHeaderCellDef> Total Orders </th>
                   <td mat-cell *matCellDef="let element">
                     <div class="pe-2">
                       <mat-form-field class="custom-form-field w-100" appearance="outline">
-                        <input matInput type="text" #specialFeature maxlength="255"  [(ngModel)]="element.totalOrders" data-automation-id="input-total-orders">
+
+                        <input matInput type="text" #specialFeature maxlength="255"  [(ngModel)]="element.totalOrders">
                       </mat-form-field>
                     </div>
                   </td>
                 </ng-container>
                 <!-- Name Column -->
                 <ng-container matColumnDef="totallocations">
-                  <th mat-header-cell *matHeaderCellDef data-automation-id="zone-table-header-total-locations"> Total Locations </th>
+                  <th mat-header-cell *matHeaderCellDef> Total Locations </th>
                   <td mat-cell *matCellDef="let element">
                     <div class="pe-2">
                       <mat-form-field class="custom-form-field w-100" appearance="outline">
-                        <input matInput type="text" #specialFeature maxlength="255"  [(ngModel)]="element.totalLocations" data-automation-id="input-total-locations">
+
+                        <input matInput type="text" #specialFeature maxlength="255"  [(ngModel)]="element.totalLocations">
                       </mat-form-field>
                     </div>
                   </td>
@@ -505,13 +524,13 @@
                   <td mat-cell *matCellDef="let element">
                     <div class="d-flex justify-content-end">
                       <button mat-icon-button [matMenuTriggerFor]="appMenu" aria-label="" class="circle-icon-o"
-                        appearance="outline" [attr.data-automation-id]="'btn-zone-actions-' + element.zone">
+                        appearance="outline">
                         <mat-icon>more_horiz</mat-icon>
                       </button>
 
                       <mat-menu #appMenu="matMenu" xPosition="before">
-                        <button mat-menu-item (click)="viewReplenishZoneRecord(element,true,'')" [attr.data-automation-id]="'btn-view-replenish-orders-' + element.zone"><b class="text-tertiary-900">View Replenish Orders</b></button>
-                        <button mat-menu-item (click)="viewReplenishZoneRecord(element,false,'1')" [attr.data-automation-id]="'btn-view-non-replenish-orders-' + element.zone">View Non Replenish Orders</button>
+                        <button mat-menu-item (click)="viewReplenishZoneRecord(element,true,'')"><b class="text-tertiary-900">View Replenish Orders</b></button>
+                        <button mat-menu-item (click)="viewReplenishZoneRecord(element,false,'1')">View Non Replenish Orders</button>
                       </mat-menu>
                     </div>
                   </td>
@@ -528,17 +547,18 @@
             </mat-paginator>
           </div>
         </mat-tab>
-        <mat-tab label="Batch Results" class="b-result" data-automation-id="tab-batch-results-zone">
+        <mat-tab label="Batch Results" class="b-result">
+            
             <div class="p-3">
               <div class="mb-2">
-                <mat-label data-automation-id="label-view-order-lines-zone"><b>View Order Lines</b></mat-label>
+                <mat-label><b>View Order Lines</b></mat-label>
               </div>
-              <mat-radio-group color="primary" class="d-flex" value="vSelectedOrderZone" (change)="onViewOrderLineZone($event)" data-automation-id="radio-group-view-order-lines-zone">
-                <mat-radio-button class="d-flex pe-4 custom-horizontal-radio" value="vSelectedOrderZone" data-automation-id="radio-view-selected-order-lines-zone">
-                  <mat-label data-automation-id="label-view-selected-order-lines-zone">View Selected Order Lines</mat-label>
+              <mat-radio-group color="primary" class="d-flex" value="vSelectedOrderZone" (change)="onViewOrderLineZone($event)">
+                <mat-radio-button class="d-flex pe-4 custom-horizontal-radio" value="vSelectedOrderZone">
+                  <mat-label>View Selected Order Lines</mat-label>
                 </mat-radio-button>
-                <mat-radio-button class="d-flex pe-2 custom-horizontal-radio" value="vAllOrderZone" data-automation-id="radio-view-all-order-lines-zone">
-                  <mat-label data-automation-id="label-view-all-order-lines-zone">View All Order Lines</mat-label>
+                <mat-radio-button class="d-flex pe-2 custom-horizontal-radio" value="vAllOrderZone">
+                  <mat-label>View All Order Lines</mat-label>
                 </mat-radio-button>
               </mat-radio-group>
             </div>
@@ -547,14 +567,14 @@
               <div class="col-xl-5 mb-xl-0 mb-3">
                 <div class="card p-3">
                   <div class="d-flex justify-content-between align-items-center mb-3">
-                    <app-icon-heading-component heading="Orders" icon="filter_frames" data-automation-id="icon-heading-orders-zone">
+                    <app-icon-heading-component heading="Orders" icon="filter_frames">
                     </app-icon-heading-component>
                     <mat-form-field class="action-dropdown" appearance="outline">
-                      <mat-label data-automation-id="label-order-actions-zone">Actions</mat-label>
-                      <mat-select #orderZoneRef class="employees-action" placeholder="Actions" (selectionChange)="onChangeOrderActionZone($event.value)" data-automation-id="select-order-actions-zone">
-                        <mat-option value="fill_top_orders" data-automation-id="option-select-all-zone">Select All</mat-option>
-                        <mat-option value="unselect_all_orders" data-automation-id="option-unselect-all-orders-zone">Un-Select All Orders</mat-option>
-                        <mat-option value="select_order" [disabled]="isOrderSelectZone" data-automation-id="option-select-order-zone">Select Order</mat-option>
+                      <mat-label>Actions</mat-label>
+                      <mat-select #orderZoneRef class="employees-action" placeholder="Actions" (selectionChange)="onChangeOrderActionZone($event.value)">
+                        <mat-option value="fill_top_orders">Select All</mat-option>
+                        <mat-option value="unselect_all_orders">Un-Select All Orders</mat-option>
+                        <mat-option value="select_order" [disabled]="isOrderSelectZone">Select Order</mat-option>
                       </mat-select>
                       <span class="material-symbols-outlined icon-expand-more">
                         expand_more
@@ -567,7 +587,7 @@
 
                         <!-- Position Column -->
                         <ng-container matColumnDef="orderno">
-                          <th mat-header-cell *matHeaderCellDef data-automation-id="zone-batch-results-table-header-order-number"> Order Number </th>
+                          <th mat-header-cell *matHeaderCellDef> Order Number </th>
                           <td mat-cell *matCellDef="let element"  [class.selected]="element.isSelected">
                               {{element.orderNumber}}
                           </td>
@@ -575,14 +595,14 @@
 
                         <!-- Name Column -->
                         <ng-container matColumnDef="requireddate">
-                          <th mat-header-cell *matHeaderCellDef data-automation-id="zone-batch-results-table-header-required-date"> Required Date </th>
+                          <th mat-header-cell *matHeaderCellDef> Required Date </th>
                           <td mat-cell *matCellDef="let element" [class.selected]="element.isSelected">
                               {{element.reqDate}}
                           </td>
                         </ng-container>
 
                         <ng-container matColumnDef="transactionsline">
-                          <th mat-header-cell *matHeaderCellDef data-automation-id="zone-batch-results-table-header-total-lines"> Total Lines</th>
+                          <th mat-header-cell *matHeaderCellDef> Total Lines</th>
                           <td mat-cell *matCellDef="let element" [class.selected]="element.isSelected">
                             {{element.otLines}}
                           </td>
@@ -590,7 +610,7 @@
 
                         <!-- Name Column -->
                         <ng-container matColumnDef="priority">
-                          <th mat-header-cell *matHeaderCellDef data-automation-id="zone-batch-results-table-header-priority"> Priority </th>
+                          <th mat-header-cell *matHeaderCellDef> Priority </th>
                           <td mat-cell *matCellDef="let element" [class.selected]="element.isSelected">
                               {{element.priority}}
                           </td>
@@ -612,15 +632,15 @@
               <div class="col-xl-7">
                 <div class="card p-3">
                   <div class="d-flex justify-content-between align-items-center mb-4">
-                    <app-icon-heading-component heading="Transactions" icon="dvr" data-automation-id="icon-heading-transactions-zone">
+                    <app-icon-heading-component heading="Transactions" icon="dvr">
                     </app-icon-heading-component>
                   </div>
                   <div class="card br-14 table-responsive borderless px-0 mb-3">
                     <ng-scrollbar track="all" class="mat-table-scrollbar h-280" >
                       <table mat-table #table [dataSource]="zoneOrderTransactionSource" matSort>
 
-                        <ng-container *ngFor="let column of filterBatchTransColumns"  [cdkColumnDef]="column.columnDef">
-                          <th mat-header-cell *cdkHeaderCellDef mat-sort-header [attr.data-automation-id]="'zone-batch-results-trans-table-header-' + column.columnDef">{{ column.header }}</th>
+                        <ng-container *ngFor="let column of filterBatchTransColumns" [cdkColumnDef]="column.columnDef">
+                          <th mat-header-cell *cdkHeaderCellDef mat-sort-header>{{ column.header }}</th>
                           <td mat-cell *cdkCellDef="let row"
                               [matTooltip]="column.cell(row)"
                               matTooltipPosition="above"
