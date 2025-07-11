@@ -176,7 +176,6 @@ export class BulkTransactionComponent implements OnInit {
 
 
   async bulkPickOrdersCheckLocationAssignment(orderNumbers: string[]): Promise<boolean> {
-    if (this.Prefernces.systemPreferences.shortPickFindNewLocation && this.Prefernces.systemPreferences.displayEob) {
       for (let i = 0; i < 30; i++) {
         await new Promise(resolve => setTimeout(resolve, 2000));
         try {
@@ -188,7 +187,6 @@ export class BulkTransactionComponent implements OnInit {
           return false;
         }
       }
-    }
     return false;
   }
 
