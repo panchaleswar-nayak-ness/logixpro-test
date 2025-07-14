@@ -137,7 +137,7 @@ export class BulkTransactionComponent implements OnInit {
         if(offCarouselPicks){
           this.showNoOffCarouselPicksMessage();
         }else{
-          this.quickPickToNonQuickPick();
+          this.changeVisibiltyVerifyBulk(true);
         }
       }
       this.hideLoader();
