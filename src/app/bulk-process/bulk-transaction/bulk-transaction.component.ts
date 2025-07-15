@@ -143,6 +143,13 @@ export class BulkTransactionComponent implements OnInit {
         if(offCarouselPicks){
           this.showNoOffCarouselPicksMessage();
         }else{
+          if(this.Prefernces?.workstationPreferences){
+            const { pickToTotes } = this.Prefernces.workstationPreferences;
+            if(pickToTotes){
+              await this.OpenNextToteId();
+              this.hideLoader();
+            }
+          }
           this.changeVisibiltyVerifyBulk(true);
         }
       }
@@ -428,6 +435,7 @@ export class BulkTransactionComponent implements OnInit {
         });
         this.verifyBulks = !this.verifyBulks;
         localStorage.setItem(localStorageKeys.VerifyBulks, this.verifyBulks.toString());
+        this.changeVisibiltyVerifyBulk(true);
       }
     });
   }
