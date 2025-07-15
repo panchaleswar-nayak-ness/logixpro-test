@@ -228,6 +228,7 @@ export class SuperBatchOrdersComponent implements OnInit, AfterViewInit {
           if (confirm) {
             this.tags = [];
             this.filters = [];
+            this.totalQuantityFilter = null;
             this.someEvent.next('superbatchfilterclear');
           }
         }
@@ -277,11 +278,15 @@ export class SuperBatchOrdersComponent implements OnInit, AfterViewInit {
   }
 
   retrieveFilteredSuperBatchOrders(values: any) {
-    this.Api.RetrieveSuperBatchOrders({
+    const params = {
       ...values,
-      totalQuantityFilter: this.totalQuantityFilter,
+      FilterResultsRequestParams: {
+        ...values.FilterResultsRequestParams,
+        totalQuantityFilter: this.totalQuantityFilter,
+      },
       wsId: this.userData.wsid,
-    }).subscribe((filteredOrders) => {
+    };
+    this.Api.RetrieveSuperBatchOrders(params).subscribe((filteredOrders) => {
       let response = filteredOrders.data;
       this.filteredOrderResults = response;
 
@@ -317,7 +322,7 @@ export class SuperBatchOrdersComponent implements OnInit, AfterViewInit {
       filterResultsRequestParams: {
         ColumnFilters:  this.filters,
         Zones: this.zones,
-        TotalQuantityFilter: this.totalQuantityFilter,
+        totalQuantityFilter: this.totalQuantityFilter,
       },
       SelectedZones: this.zones, // Pass the selected zones
     };
@@ -480,7 +485,7 @@ export class SuperBatchOrdersComponent implements OnInit, AfterViewInit {
       FilterTotalQuantityDialogData
     >(FilterTotalQuantityComponent, config);
 
-    dialogRef.afterClosed().subscribe((result: TotalQuantityDialogResult | undefined) => {
+    dialogRef.afterClosed().subscribe(result => {
       if (!result) return;
       if (result.totalQuantityFilter) {
         this.applyTotalQuantityFilter(result.totalQuantityFilter);
