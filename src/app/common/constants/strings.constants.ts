@@ -7,7 +7,9 @@ export const StringAssignments = {
 export const localStorageKeys = {
     UserRights: 'userRights',
     TransactionTabIndex: 'TransactionTabIndex',
-    VerifyBulks: "verifyBulks"
+    VerifyBulks: "verifyBulks",
+    SelectedReportPrinter: "SelectedReportPrinter",
+    SelectedLabelPrinter: "SelectedLabelPrinter"
 }
 
 export const TransactionType = {
@@ -251,6 +253,8 @@ export const ToasterMessages = {
     LowerBoundCannotBeGreater: 'Lower Bound cannot be greater than Upper Bound. Please adjust the range.',
     EnterQuantityValueBeforeApplying: 'Please enter a quantity value before applying the filter.',
     EnterValidPositiveQuantity: 'Please enter a valid positive number for the quantity.',
+    PrintSuccessfullyCompleted:'Print successfully completed',
+    UnableToPrint: 'Unable to print'
 }
 
 
@@ -737,4 +741,11 @@ export const LocalStorageCacheKeys = {
 
 export const RouteIdManagement = {
     RouteIdStatus: 'In Consolidation',
+}
+
+export const REPORT_REPOSITORY_ID = 'BCAEC8B2-9D16-4ACD-94EC-74932157BF82';
+
+export class PrintReports {
+    static readonly REPROCESS_TRANSACTIONS = "ReprocessTransactions-lst";
+    static readonly LOC_ASS_PICK_SHORTAGE = "LocAssPickShortage-lst";
 }

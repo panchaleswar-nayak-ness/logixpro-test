@@ -17,7 +17,7 @@
                             [disabled]="selectedOrders.length == 0">Print Detail List</mat-option>
                             <mat-option value="add_new_transaction" *ngIf="['Put Away','Count'].indexOf(bulkTransactionType) > -1 && !isQuickPick" (click)="CreateBatch()"  
                             [disabled]="selectedOrders.length == 0">Create Batch</mat-option>
-                            <mat-option value="add_new_transaction" *ngIf="isQuickPick" (click)="printShortageZone()"
+                            <mat-option value="add_new_transaction" *ngIf="isQuickPick" (click)="printPickShortage()"
                                 [disabled]="selectedOrders.length == 0">Print Pick Shortage</mat-option>
                         </mat-select>
                         <span class="material-symbols-outlined icon-expand-more">

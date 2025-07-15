@@ -48,6 +48,10 @@ export class BulkProcessApiService implements IBulkProcessApiService {
     return this.Api.bulkPickOrdersCheckOffCarouselPicks(body);
   }
 
+  public GetOrdersMovedToReprocessAsync(body: string[]) {
+    return this.Api.GetOrdersMovedToReprocessAsync(body);
+  }
+
   public bulkPickZones() {
     return this.Api.bulkPickZones();
   }

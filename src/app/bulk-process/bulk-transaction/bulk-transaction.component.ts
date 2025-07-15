@@ -1,10 +1,10 @@
 import { HttpStatusCode } from '@angular/common/http';
-import { Component, HostListener, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { BmToteidEntryComponent } from 'src/app/admin/dialogs/bm-toteid-entry/bm-toteid-entry.component';
 import { ConfirmationDialogComponent } from 'src/app/admin/dialogs/confirmation-dialog/confirmation-dialog.component';
-import { BatchesRequest, BatchesResponse, BulkPreferences, BulkZone, CreateBatchRequest, OrderBatchToteQtyResponse, OrderLineResource, OrderResponse, OrdersRequest, QuickPickOrdersRequest, TotesRequest, TotesResponse } from 'src/app/common/Model/bulk-transactions';
-import { ConfirmationHeadings, ConfirmationMessages, DialogConstants, localStorageKeys, ResponseStrings, Style, ToasterMessages, ToasterTitle, ToasterType } from 'src/app/common/constants/strings.constants';
+import { BatchesRequest, BatchesResponse, BulkPreferences, CreateBatchRequest, OrderBatchToteQtyResponse, OrderLineResource, OrderResponse, OrdersRequest, QuickPickOrdersRequest, TotesRequest, TotesResponse } from 'src/app/common/Model/bulk-transactions';
+import { ConfirmationHeadings, ConfirmationMessages, DialogConstants, localStorageKeys, PrintReports, ResponseStrings, Style } from 'src/app/common/constants/strings.constants';
 import { IBulkProcessApiService } from 'src/app/common/services/bulk-process-api/bulk-process-api-interface';
 import { BulkProcessApiService } from 'src/app/common/services/bulk-process-api/bulk-process-api.service';
 import { GlobalService } from 'src/app/common/services/global.service';
@@ -16,6 +16,8 @@ import { SpinnerService } from 'src/app/common/init/spinner.service';
 import { BATCH_DISPLAYED_COLUMNS, BulkTransactionType, BulkTransactionView, ORDER_DISPLAYED_COLUMNS, SELECTED_BATCH_DISPLAYED_COLUMNS, SELECTED_ORDER_DISPLAYED_COLUMNS, SELECTED_TOTE_DISPLAYED_COLUMNS, TOTE_DISPLAYED_COLUMNS } from 'src/app/common/constants/bulk-process/bulk-transactions';
 import { ApiResponse } from 'src/app/common/types/CommonTypes';
 import { GeneralSetup } from 'src/app/common/Model/preferences';
+import { PrintApiService } from 'src/app/common/services/print-api/print-api.service';
+import { IPrintApiService } from 'src/app/common/services/print-api/print-api-interface';
 
 @Component({
   selector: 'app-bulk-transaction',
@@ -48,17 +50,20 @@ export class BulkTransactionComponent implements OnInit {
   isBatchIdGenerationEnabled:boolean=false;
   public iBulkProcessApiService: IBulkProcessApiService;
   public iAdminApiService: IAdminApiService;
+  public iPrintApiService: IPrintApiService;
   // isViewLoaded Ensures that required data for both Quick Pick and non-Quick Pick flows is loaded before rendering UI components
   isViewLoaded:boolean = false;
   constructor(
     public bulkProcessApiService: BulkProcessApiService,
     public adminApiService: AdminApiService,
+    public printApiService: PrintApiService,
     public readonly global: GlobalService,
     public readonly route: Router,
     private readonly spinnerService: SpinnerService
   ) {
     this.iBulkProcessApiService = bulkProcessApiService;
     this.iAdminApiService = adminApiService;
+    this.iPrintApiService = printApiService;
     this.bulkTransactionType = route.url.split("/")[2].replace("Bulk", "");
     this.bulkTransactionTypeAllCaps = this.global.insertSpaceInCamelOrPascal(this.bulkTransactionType);
   }
@@ -133,6 +138,7 @@ export class BulkTransactionComponent implements OnInit {
       this.showLoader();
       const locationAssigned:boolean = await this.bulkPickOrdersCheckLocationAssignment(orderNumbers);
       if (locationAssigned) {
+        await this.printReprocessReportAfterAllocationIfRequired(orderNumbers);
         let offCarouselPicks = await this.bulkPickOrdersCheckOffCarouselPicks(orderNumbers);
         if(offCarouselPicks){
           this.showNoOffCarouselPicksMessage();
@@ -143,6 +149,20 @@ export class BulkTransactionComponent implements OnInit {
       this.hideLoader();
     })
   }
+
+  private async printReprocessReportAfterAllocationIfRequired(orderNumbers: string[]): Promise<void> {
+    if (!this.generalSetupInfo?.printReprocessReportAfterAllocation) return;
+
+    const reprocessOrders = await this.GetOrdersMovedToReprocessAsync(orderNumbers);
+    if (Array.isArray(reprocessOrders) && reprocessOrders.length > 0) {
+      await this.global.printReportForSelectedOrders(
+        reprocessOrders,
+        PrintReports.REPROCESS_TRANSACTIONS,
+        false
+      );
+    }
+  }
+
 
   showNoOffCarouselPicksMessage(){
     this.selectedOrders = [];
@@ -168,6 +188,19 @@ export class BulkTransactionComponent implements OnInit {
     }
   }
 
+  async GetOrdersMovedToReprocessAsync(orderNumbers: string[]): Promise<string[]> {
+    if (!orderNumbers || orderNumbers.length === 0) {
+      return [];
+    }
+    try {
+      const res = await this.iBulkProcessApiService.GetOrdersMovedToReprocessAsync(orderNumbers);
+      const data = res?.body?.data;
+      return Array.isArray(data) ? data : [];
+    } catch (error) {
+      return [];
+    }
+  }
+
   quickPickToNonQuickPick(){
     this.selectedOrders = [];
     this.isQuickPick = false;
@@ -176,17 +209,17 @@ export class BulkTransactionComponent implements OnInit {
 
 
   async bulkPickOrdersCheckLocationAssignment(orderNumbers: string[]): Promise<boolean> {
-      for (let i = 0; i < 30; i++) {
-        await new Promise(resolve => setTimeout(resolve, 2000));
-        try {
-          const res = await this.iBulkProcessApiService.bulkPickOrdersCheckLocationAssignment(orderNumbers);
-          if (res?.body?.data) {
-            return true;
-          }
-        } catch {
-          return false;
+    for (let i = 0; i < 30; i++) {
+      await new Promise(resolve => setTimeout(resolve, 2000));
+      try {
+        const res = await this.iBulkProcessApiService.bulkPickOrdersCheckLocationAssignment(orderNumbers);
+        if (res?.body?.data) {
+          return true;
         }
+      } catch {
+        return false;
       }
+    }
     return false;
   }
 
@@ -429,7 +462,6 @@ export class BulkTransactionComponent implements OnInit {
     this.orderLines = this.sortByLocation(this.orderLines);
   }
   
-
   appendAll() {
     this.orderLines = [];
     this.selectedOrders = [

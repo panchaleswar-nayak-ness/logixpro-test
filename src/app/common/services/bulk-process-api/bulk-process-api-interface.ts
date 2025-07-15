@@ -11,6 +11,7 @@ export interface IBulkProcessApiService {
   bulkPickOrdersLocationAssignment(paylaod:any);
   bulkPickOrdersCheckLocationAssignment(paylaod:string[]);
   bulkPickOrdersCheckOffCarouselPicks(paylaod:string[]);
+  GetOrdersMovedToReprocessAsync(paylaod:string[]);
   bulkPickZones();
   bulkPickBulkZone();
   addBulkPickBulkZone(payload:any);

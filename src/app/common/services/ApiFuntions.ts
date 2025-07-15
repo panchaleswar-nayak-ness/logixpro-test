@@ -16,6 +16,7 @@ import { MarkoutAuditResponse, MarkoutPickLinesResponse, MarkoutResponse } from 
 import { ZoneListPayload } from 'src/app/bulk-process/preferences/preference.models';
 import { ApiResponseData } from '../types/CommonTypes';
 import { DevicePreferenceRequest, DevicePreferencesTableRequest } from '../interface/admin/device-preferences';
+import { PrintOrdersPayload } from '../interface/bulk-transactions/bulk-pick';
 
 
 @Injectable({
@@ -2019,6 +2020,10 @@ export class ApiFuntions {
     return await this.ApiBase.PostAsync('/orders/checkoffcarouselpicks', body, false, false);
   }
 
+  public async GetOrdersMovedToReprocessAsync(body: string[]) {
+    return await this.ApiBase.PostAsync('/Admin/orders-moved-to-reprocess', body, false, false);
+  }
+
   public async bulkPickZones() {
     return await this.ApiBase.GetAsync('/zones');
   }
@@ -2408,4 +2413,16 @@ public ResolveMarkoutTote(toteId: number) {
     return await this.ApiBase.PatchAsync(`/Consolidation/Route/${routeId}/RequestRelease`,null);
   }
 
+  public async printSelectedOrdersReport(
+    body: PrintOrdersPayload,
+    showLoader: boolean = true
+  ) {
+    return await this.ApiBase.PostAsync(
+      `/print/selectedordersreport`,
+      body,
+      false,
+      showLoader
+    );
+  }
+  
 }
