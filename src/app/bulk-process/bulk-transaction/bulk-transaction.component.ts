@@ -4,12 +4,13 @@ import { Router } from '@angular/router';
 import { BmToteidEntryComponent } from 'src/app/admin/dialogs/bm-toteid-entry/bm-toteid-entry.component';
 import { ConfirmationDialogComponent } from 'src/app/admin/dialogs/confirmation-dialog/confirmation-dialog.component';
 import { BatchesRequest, BatchesResponse, BulkPreferences, CreateBatchRequest, OrderBatchToteQtyResponse, OrderLineResource, OrderResponse, OrdersRequest, QuickPickOrdersRequest, TotesRequest, TotesResponse } from 'src/app/common/Model/bulk-transactions';
-import { ConfirmationHeadings, ConfirmationMessages, DialogConstants, localStorageKeys, PrintReports, ResponseStrings, Style, ConsoleErrorMessages} from 'src/app/common/constants/strings.constants';
+import { ConfirmationHeadings, ConfirmationMessages, DialogConstants, localStorageKeys, PrintReports, ResponseStrings, Style, ConsoleErrorMessages, ToasterMessages, ToasterType, ToasterTitle} from 'src/app/common/constants/strings.constants';
 import { IBulkProcessApiService } from 'src/app/common/services/bulk-process-api/bulk-process-api-interface';
 import { BulkProcessApiService } from 'src/app/common/services/bulk-process-api/bulk-process-api.service';
 import { GlobalService } from 'src/app/common/services/global.service';
 import { forkJoin, take } from "rxjs";
 import { Observable } from "rxjs/internal/Observable";
+import { firstValueFrom } from 'rxjs';
 import { IAdminApiService } from 'src/app/common/services/admin-api/admin-api-interface';
 import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.service';
 import { SpinnerService } from 'src/app/common/init/spinner.service';
@@ -125,38 +126,66 @@ export class BulkTransactionComponent implements OnInit {
       this.selectedDisplayedColumns = SELECTED_ORDER_DISPLAYED_COLUMNS;
     })
   }
-
   async ProcessQuickPick() {
-    let orderNumberSet: Set<string> = new Set();
-    this.selectedOrders.forEach((x) => {
-      x.orderLines.forEach((orderLine: OrderLineResource) => {
-        orderNumberSet.add(orderLine.orderNumber);
-      });
-    });
-    let orderNumbers: string[] = Array.from(orderNumberSet);
-    this.iBulkProcessApiService.bulkPickOrdersLocationAssignment(orderNumbers).subscribe(async () => {
-      this.showLoader();
-      const locationAssigned:boolean = await this.bulkPickOrdersCheckLocationAssignment(orderNumbers);
+    if (!this.Prefernces || !this.Prefernces.workstationPreferences) {
+      return;
+    }
+    const extractOrderNumbers = (orders: (OrderResponse | TotesResponse)[]): string[] =>
+      orders.flatMap((x) => x.orderLines?.map((orderLine: OrderLineResource) => orderLine.orderNumber) || []);
+
+    const orderNumbers = extractOrderNumbers(this.selectedOrders);
+
+    const handleAfterLocationAssignment = async () => {
+      const locationAssigned: boolean = await this.bulkPickOrdersCheckLocationAssignment(orderNumbers);
       if (locationAssigned) {
-        await this.printReprocessReportAfterAllocationIfRequired(orderNumbers);
-        let offCarouselPicks = await this.bulkPickOrdersCheckOffCarouselPicks(orderNumbers);
-        if(offCarouselPicks){
+        const offCarouselPicks = await this.bulkPickOrdersCheckOffCarouselPicks(orderNumbers);
+        if (offCarouselPicks) {
           this.showNoOffCarouselPicksMessage();
-        }else{
-          if(this.Prefernces?.workstationPreferences){
-            const { pickToTotes } = this.Prefernces.workstationPreferences;
-            if(pickToTotes){
-              await this.OpenNextToteId();
-              this.hideLoader();
-            }
+        } else {
+          if (this.Prefernces?.workstationPreferences?.pickToTotes) {
+            const dialogRefTote = this.global.OpenDialog(BmToteidEntryComponent, {
+              height: DialogConstants.auto,
+              width: Style.w990px,
+              autoFocus: DialogConstants.autoFocus,
+              disableClose: true,
+              data: {
+                selectedOrderList: this.selectedOrders,
+                nextToteID: this.NextToteID,
+                BulkProcess: true,
+                autoPrintPickToteLabels: this.Prefernces?.workstationPreferences?.autoPrintPickToteLabels,
+                view: this.view,
+                type: this.bulkTransactionType,
+              },
+            });
+            dialogRefTote.afterClosed().subscribe((result) => {
+              if (result && result.length > 0) {
+                this.selectedOrders = result;
+                this.selectedOrders.forEach((order) => {
+                  order.orderLines?.forEach((orderLine) => {
+                    orderLine.toteId = order.toteId;
+                  });
+                });
+                this.changeVisibiltyVerifyBulk(true);
+              }
+            });
+          } else {
+            this.changeVisibiltyVerifyBulk(true);
           }
-          this.changeVisibiltyVerifyBulk(true);
         }
       }
-      this.hideLoader();
-    })
-  }
+    };
 
+    this.showLoader();
+    try {
+      await firstValueFrom(this.iBulkProcessApiService.bulkPickOrdersLocationAssignment(orderNumbers));
+      await handleAfterLocationAssignment();
+    } catch (error) {
+      this.global.ShowToastr(ToasterType.Error, ToasterMessages.SomethingWentWrong, ToasterTitle.Error);
+    } finally {
+      this.hideLoader();
+    }
+  }
+  
   private async printReprocessReportAfterAllocationIfRequired(orderNumbers: string[]): Promise<void> {
     try {
       if (!this.generalSetupInfo?.printReprocessReportAfterAllocation) return;
@@ -439,7 +468,6 @@ export class BulkTransactionComponent implements OnInit {
         });
         this.verifyBulks = !this.verifyBulks;
         localStorage.setItem(localStorageKeys.VerifyBulks, this.verifyBulks.toString());
-        this.changeVisibiltyVerifyBulk(true);
       }
     });
   }
