@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 import { BmToteidEntryComponent } from 'src/app/admin/dialogs/bm-toteid-entry/bm-toteid-entry.component';
 import { ConfirmationDialogComponent } from 'src/app/admin/dialogs/confirmation-dialog/confirmation-dialog.component';
 import { BatchesRequest, BatchesResponse, BulkPreferences, CreateBatchRequest, OrderBatchToteQtyResponse, OrderLineResource, OrderResponse, OrdersRequest, QuickPickOrdersRequest, TotesRequest, TotesResponse } from 'src/app/common/Model/bulk-transactions';
-import { ConfirmationHeadings, ConfirmationMessages, DialogConstants, localStorageKeys, PrintReports, ResponseStrings, Style } from 'src/app/common/constants/strings.constants';
+import { ConfirmationHeadings, ConfirmationMessages, DialogConstants, localStorageKeys, PrintReports, ResponseStrings, Style, ConsoleErrorMessages} from 'src/app/common/constants/strings.constants';
 import { IBulkProcessApiService } from 'src/app/common/services/bulk-process-api/bulk-process-api-interface';
 import { BulkProcessApiService } from 'src/app/common/services/bulk-process-api/bulk-process-api.service';
 import { GlobalService } from 'src/app/common/services/global.service';
@@ -158,15 +158,19 @@ export class BulkTransactionComponent implements OnInit {
   }
 
   private async printReprocessReportAfterAllocationIfRequired(orderNumbers: string[]): Promise<void> {
-    if (!this.generalSetupInfo?.printReprocessReportAfterAllocation) return;
+    try {
+      if (!this.generalSetupInfo?.printReprocessReportAfterAllocation) return;
 
-    const reprocessOrders = await this.GetOrdersMovedToReprocessAsync(orderNumbers);
-    if (Array.isArray(reprocessOrders) && reprocessOrders.length > 0) {
-      await this.global.printReportForSelectedOrders(
-        reprocessOrders,
-        PrintReports.REPROCESS_TRANSACTIONS,
-        false
-      );
+      const reprocessOrders = await this.GetOrdersMovedToReprocessAsync(orderNumbers);
+      if (Array.isArray(reprocessOrders) && reprocessOrders.length > 0) {
+        await this.global.printReportForSelectedOrders(
+          reprocessOrders,
+          PrintReports.REPROCESS_TRANSACTIONS,
+          false
+        );
+      }
+    } catch (err) {
+      console.error(ConsoleErrorMessages.ErrorPrintingReprocessReport, err);
     }
   }
 

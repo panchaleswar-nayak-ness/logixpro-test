@@ -749,3 +749,7 @@ export class PrintReports {
     static readonly REPROCESS_TRANSACTIONS = "ReprocessTransactions-lst";
     static readonly LOC_ASS_PICK_SHORTAGE = "LocAssPickShortage-lst";
 }
+
+export class ConsoleErrorMessages {
+    static readonly ErrorPrintingReprocessReport = "Error occurred while printing reprocess report after allocation:"
+}
