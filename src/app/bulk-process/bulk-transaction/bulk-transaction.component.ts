@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 import { BmToteidEntryComponent } from 'src/app/admin/dialogs/bm-toteid-entry/bm-toteid-entry.component';
 import { ConfirmationDialogComponent } from 'src/app/admin/dialogs/confirmation-dialog/confirmation-dialog.component';
 import { BatchesRequest, BatchesResponse, BulkPreferences, CreateBatchRequest, OrderBatchToteQtyResponse, OrderLineResource, OrderResponse, OrdersRequest, QuickPickOrdersRequest, TotesRequest, TotesResponse } from 'src/app/common/Model/bulk-transactions';
-import { ConfirmationHeadings, ConfirmationMessages, DialogConstants, localStorageKeys, PrintReports, ResponseStrings, Style, ConsoleErrorMessages, ToasterMessages, ToasterType, ToasterTitle} from 'src/app/common/constants/strings.constants';
+import { ConfirmationHeadings, ConfirmationMessages, DialogConstants, localStorageKeys, PrintReports, ResponseStrings, Style, ToasterMessages, ToasterType, ToasterTitle, ConsoleErrorMessages} from 'src/app/common/constants/strings.constants';
 import { IBulkProcessApiService } from 'src/app/common/services/bulk-process-api/bulk-process-api-interface';
 import { BulkProcessApiService } from 'src/app/common/services/bulk-process-api/bulk-process-api.service';
 import { GlobalService } from 'src/app/common/services/global.service';
@@ -138,6 +138,7 @@ export class BulkTransactionComponent implements OnInit {
     const handleAfterLocationAssignment = async () => {
       const locationAssigned: boolean = await this.bulkPickOrdersCheckLocationAssignment(orderNumbers);
       if (locationAssigned) {
+        await this.printReprocessReportAfterAllocationIfRequired(orderNumbers);
         const offCarouselPicks = await this.bulkPickOrdersCheckOffCarouselPicks(orderNumbers);
         if (offCarouselPicks) {
           this.showNoOffCarouselPicksMessage();
@@ -200,6 +201,7 @@ export class BulkTransactionComponent implements OnInit {
       }
     } catch (err) {
       console.error(ConsoleErrorMessages.ErrorPrintingReprocessReport, err);
+      this.global.ShowToastr(ToasterType.Error,ToasterMessages.UnableToPrint,ToasterTitle.Error);
     }
   }
 
