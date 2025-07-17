@@ -32,7 +32,8 @@
                             (clearInputFieldEvent)="onClearSearch()"
                             [searchByInput]="searchByColumn"
                             [searchAutocompleteList]="searchAutocompleteListByCol"
-                            (autoCompleteEvent)="searchValue = $event; searchByColumn.next($event)">
+                            (autoCompleteEvent)="searchValue = $event; searchByColumn.next($event)"
+                            (optionSelectedEvent)="onAutocompleteOptionSelected()">
                         </app-column-filter-component>
                     </div>
 

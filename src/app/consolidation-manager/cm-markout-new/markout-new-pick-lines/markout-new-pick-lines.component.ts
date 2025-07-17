@@ -249,6 +249,9 @@ export class MarkoutNewPickLinesComponent implements OnInit {
         return raw.map((x) => 'N/A');
     }
   }
+  // Called when an autocomplete option is selected
+  onAutocompleteOptionSelected() {
+    this.getTotePickLines(this.toteId);
+  }
 }
-
 

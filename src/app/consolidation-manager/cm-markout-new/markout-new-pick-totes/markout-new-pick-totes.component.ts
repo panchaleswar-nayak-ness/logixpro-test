@@ -345,4 +345,9 @@ export class MarkoutNewPickTotesComponent implements OnInit {
     }
   }
 
+  // Called when an autocomplete option is selected
+  onAutocompleteOptionSelected() {
+    this.getToteData();
+  }
+
 }

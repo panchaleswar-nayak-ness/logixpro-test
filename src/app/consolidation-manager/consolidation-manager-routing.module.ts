@@ -35,10 +35,10 @@ component: ReportsComponent,
 canActivate: [AuthGuardGuard],
 },
 { path: 'Markout', 
-  // component: CmMarkoutComponent, 
+  component: CmMarkoutComponent, 
   
   //opening new markout and closing old markout for testing of 8137
-  component: CmMarkoutNewComponent, 
+  // component: CmMarkoutNewComponent, 
   canActivate: [AuthGuardGuard],
 },
 { path: 'RouteIDM',
