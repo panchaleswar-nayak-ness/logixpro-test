@@ -328,10 +328,9 @@ clearToteID() {
         quantity: this.processForm.value.quantity,
         lotNumber: this.processForm.value.lotNumber,
         ExpirationDate: this['expirationDate'],
-        id: this.processForm.value.id,
+        id: Number(this.processForm.value.id),
         split: split, // Assuming `split` is defined elsewhere in your component
       };
-    
       this.iInductionManagerApi.ProcessPallet(payload).subscribe((response: any) => {
         if (response.isExecuted) {
           this.global.ShowToastr(
