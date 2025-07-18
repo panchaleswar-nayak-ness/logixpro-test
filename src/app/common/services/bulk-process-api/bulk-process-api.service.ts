@@ -52,6 +52,10 @@ export class BulkProcessApiService implements IBulkProcessApiService {
     return this.Api.GetOrdersMovedToReprocessAsync(body);
   }
 
+  public getOrderLinesAssignedLocations(body: string[]) {
+    return this.Api.getOrderLinesAssignedLocations(body);
+  }
+
   public bulkPickZones() {
     return this.Api.bulkPickZones();
   }

@@ -10,7 +10,6 @@ import { BulkProcessApiService } from 'src/app/common/services/bulk-process-api/
 import { GlobalService } from 'src/app/common/services/global.service';
 import { forkJoin, take } from "rxjs";
 import { Observable } from "rxjs/internal/Observable";
-import { firstValueFrom } from 'rxjs';
 import { IAdminApiService } from 'src/app/common/services/admin-api/admin-api-interface';
 import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.service';
 import { SpinnerService } from 'src/app/common/init/spinner.service';
@@ -126,6 +125,7 @@ export class BulkTransactionComponent implements OnInit {
       this.selectedDisplayedColumns = SELECTED_ORDER_DISPLAYED_COLUMNS;
     })
   }
+  
   async ProcessQuickPick() {
     if (!this.Prefernces || !this.Prefernces.workstationPreferences) {
       return;
@@ -138,7 +138,33 @@ export class BulkTransactionComponent implements OnInit {
     const handleAfterLocationAssignment = async () => {
       const locationAssigned: boolean = await this.bulkPickOrdersCheckLocationAssignment(orderNumbers);
       if (locationAssigned) {
-        await this.printReprocessReportAfterAllocationIfRequired(orderNumbers);
+        const reprocessOrders = await this.GetOrdersMovedToReprocessAsync(orderNumbers);
+        const assignedOrderLines = await this.getOrderLinesAssignedLocations(orderNumbers);
+
+        // Filter out reprocess order lines
+        this.orderLines = this.orderLines.filter(line => !reprocessOrders.includes(line.orderNumber));
+
+        // Create a Map for quick lookup by id
+        const assignedMap = new Map<number, { id: number; location: string | null }>(
+          assignedOrderLines.map(line => [line.id, line])
+        );
+
+        // Update locations using the Map
+        this.orderLines.forEach((line) => {
+          const assignedLine = assignedMap.get(line.id);
+          if (assignedLine?.location != null) {
+            line.location = assignedLine.location;
+          }
+        });
+
+        // Filter out reprocess orders
+        const reprocessSet = new Set(reprocessOrders);
+
+        const nonReprocessOrders = this.selectedOrders.filter(order =>
+          (order.orderLines ?? []).every(line => !reprocessSet.has(line.orderNumber))
+        );
+
+        await this.printReprocessReportAfterAllocationIfRequired(reprocessOrders);
         const offCarouselPicks = await this.bulkPickOrdersCheckOffCarouselPicks(orderNumbers);
         if (offCarouselPicks) {
           this.showNoOffCarouselPicksMessage();
@@ -150,7 +176,7 @@ export class BulkTransactionComponent implements OnInit {
               autoFocus: DialogConstants.autoFocus,
               disableClose: true,
               data: {
-                selectedOrderList: this.selectedOrders,
+                selectedOrderList: nonReprocessOrders,
                 nextToteID: this.NextToteID,
                 BulkProcess: true,
                 autoPrintPickToteLabels: this.Prefernces?.workstationPreferences?.autoPrintPickToteLabels,
@@ -178,7 +204,7 @@ export class BulkTransactionComponent implements OnInit {
 
     this.showLoader();
     try {
-      await firstValueFrom(this.iBulkProcessApiService.bulkPickOrdersLocationAssignment(orderNumbers));
+      if(! await this.bulkPickOrdersLocationAssignment(orderNumbers)) return;
       await handleAfterLocationAssignment();
     } catch (error) {
       this.global.ShowToastr(ToasterType.Error, ToasterMessages.SomethingWentWrong, ToasterTitle.Error);
@@ -186,12 +212,25 @@ export class BulkTransactionComponent implements OnInit {
       this.hideLoader();
     }
   }
+
+  async bulkPickOrdersLocationAssignment(orderNumbers: string[]) {
+    try {
+      const res = await this.iBulkProcessApiService.bulkPickOrdersLocationAssignment(orderNumbers);
+      if(res?.body?.isExecuted){
+        return true;
+      }
+    } catch (error) {
+      this.global.ShowToastr(ToasterType.Error,ToasterMessages.UnableToAssignLocation,ToasterTitle.Error);
+      return false;
+    }
+    return false;
+  }
+
+
   
-  private async printReprocessReportAfterAllocationIfRequired(orderNumbers: string[]): Promise<void> {
+  private async printReprocessReportAfterAllocationIfRequired(reprocessOrders: string[]): Promise<void> {
     try {
       if (!this.generalSetupInfo?.printReprocessReportAfterAllocation) return;
-
-      const reprocessOrders = await this.GetOrdersMovedToReprocessAsync(orderNumbers);
       if (Array.isArray(reprocessOrders) && reprocessOrders.length > 0) {
         await this.global.printReportForSelectedOrders(
           reprocessOrders,
@@ -239,6 +278,20 @@ export class BulkTransactionComponent implements OnInit {
       const data = res?.body?.data;
       return Array.isArray(data) ? data : [];
     } catch (error) {
+      return [];
+    }
+  }
+
+  async getOrderLinesAssignedLocations(orderNumbers: string[]) {
+    if (!orderNumbers || orderNumbers.length === 0) {
+      return [];
+    }
+    try {
+      const res = await this.iBulkProcessApiService.getOrderLinesAssignedLocations(orderNumbers);
+      const data = res?.body?.data;
+      return Array.isArray(data) ? data : [];
+    } catch (error) {
+      console.error(ConsoleErrorMessages.ErrorFindingAssignedOrderLines, error);
       return [];
     }
   }

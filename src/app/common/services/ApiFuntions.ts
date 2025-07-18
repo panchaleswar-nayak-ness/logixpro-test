@@ -2008,8 +2008,8 @@ export class ApiFuntions {
     return this.ApiBase.Get('/orders/quickpick', body);
   }
 
-  public bulkPickOrdersLocationAssignment(body: any): Observable<any> {
-    return this.ApiBase.Put('/orders/locationassignment', body);
+  public async bulkPickOrdersLocationAssignment(body: string[]) {
+    return await this.ApiBase.PutAsync('/orders/locationassignment', body,false);
   }
 
   public async bulkPickOrdersCheckLocationAssignment(body: string[]) {
@@ -2022,6 +2022,10 @@ export class ApiFuntions {
 
   public async GetOrdersMovedToReprocessAsync(body: string[]) {
     return await this.ApiBase.PostAsync('/Admin/orders-moved-to-reprocess', body, false, false);
+  }
+
+  public async getOrderLinesAssignedLocations(body: string[]) {
+    return await this.ApiBase.PostAsync('/Admin/order-lines-assigned-locations', body, false, false);
   }
 
   public async bulkPickZones() {

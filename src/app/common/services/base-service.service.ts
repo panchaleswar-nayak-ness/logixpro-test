@@ -205,8 +205,8 @@ export class BaseService {
     }));
   }
 
-  async PutAsync<T>(endPoint: string, reqPaylaod: T) {
-    return await lastValueFrom(this.request<T>('PUT', endPoint, { body: reqPaylaod }));
+  async PutAsync<T>(endPoint: string, reqPaylaod: T, spinnerShow: boolean = true) {
+    return await lastValueFrom(this.request<T>('PUT', endPoint, { body: reqPaylaod }, undefined, 'body', spinnerShow));
   }
 
   async PatchAsync<T>(endPoint: string, reqPayload: T | null) {

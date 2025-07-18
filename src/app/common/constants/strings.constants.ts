@@ -254,7 +254,8 @@ export const ToasterMessages = {
     EnterQuantityValueBeforeApplying: 'Please enter a quantity value before applying the filter.',
     EnterValidPositiveQuantity: 'Please enter a valid positive number for the quantity.',
     PrintSuccessfullyCompleted:'Print successfully completed',
-    UnableToPrint: 'Unable to print'
+    UnableToPrint: 'Unable to print',
+    UnableToAssignLocation: "Unable to assign location"
 }
 
 
@@ -752,4 +753,5 @@ export class PrintReports {
 
 export class ConsoleErrorMessages {
     static readonly ErrorPrintingReprocessReport = "Error occurred while printing reprocess report after allocation:"
+    static readonly ErrorFindingAssignedOrderLines = "Error occurred while finding order lines assigned locations:"
 }
