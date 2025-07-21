@@ -1,8 +1,8 @@
 <div class="container-fluid p-0 mt-2">
     <mat-card class="mat-elevation-z g-card mb-4">
     <mat-card-content>
-        <h2 class="card-header-title mb-0 d-flex align-items-center mb-3">
-            <div (click)="goToOnHold()" class="mat-icon-wrap me-lg-3 cursor-pointer">
+        <h2 class="card-header-title mb-0 d-flex align-items-center mb-3" data-automation-id="filters-heading">
+            <div (click)="goToOnHold()" class="mat-icon-wrap me-lg-3 cursor-pointer" data-automation-id="back-arrow">
                 <span class="material-symbols-outlined ">
                     arrow_back
                 </span>
@@ -17,19 +17,19 @@
         <div class="row align-items-center mb-3">
             <div class="col-xl-4 mb-4 mb-xl-0">
                 <div>
-                    <h2 class="mb-2 mt-3 d-flex align-items-center f-16">
+                    <h2 class="mb-2 mt-3 d-flex align-items-center f-16" data-automation-id="transaction-type-heading">
                       <b>Transaction Type</b> 
                     </h2>
                 </div>
                 <div>
-                    <mat-radio-group class="d-xl-flex gap-12 " [(ngModel)]="selectedCheck" color="primary" (change)="radioChange($event)">
-                        <mat-radio-button value="non" color="primary" class="me-3 me-xl-0">
+                    <mat-radio-group class="d-xl-flex gap-12 " [(ngModel)]="selectedCheck" color="primary" (change)="radioChange($event)" data-automation-id="transaction-type-radio-group">
+                        <mat-radio-button value="non" color="primary" class="me-3 me-xl-0" data-automation-id="radio-non-reel">
                             Non-Reel
                         </mat-radio-button>
-                        <mat-radio-button value="reel" color="primary" class="me-3 me-xl-0">
+                        <mat-radio-button value="reel" color="primary" class="me-3 me-xl-0" data-automation-id="radio-reel">
                             Reel
                         </mat-radio-button>
-                        <mat-radio-button value="both" color="primary" class="me-3 me-xl-0">
+                        <mat-radio-button value="both" color="primary" class="me-3 me-xl-0" data-automation-id="radio-both">
                             Both
                         </mat-radio-button>
                     </mat-radio-group>
@@ -37,12 +37,12 @@
             </div>
             <div class="col-xl-4">
                 <mat-form-field class="custom-form-field w-100 __grab_cursor" appearance="outline">
-                    <mat-label>Enter Filter Type</mat-label>
-                    <mat-select [(ngModel)]="selectedOption" (selectionChange)="selectedItem($event.value)">
-                        <mat-option value="Order Number">
+                    <mat-label data-automation-id="label-filter-type">Enter Filter Type</mat-label>
+                    <mat-select [(ngModel)]="selectedOption" (selectionChange)="selectedItem($event.value)" data-automation-id="select-filter-type">
+                        <mat-option value="Order Number" data-automation-id="option-filter-type-order-number">
                             Order Number
                         </mat-option>
-                        <mat-option value="Item Number" replacePlaceholder [replacePlaceHolder]="placeholders.itemNumber" [fallbackPlaceHolder]="placeholders.itemNumberFallback">
+                        <mat-option value="Item Number" replacePlaceholder [replacePlaceHolder]="placeholders.itemNumber" [fallbackPlaceHolder]="placeholders.itemNumberFallback" data-automation-id="option-filter-type-item-number">
                            Item Number
                         </mat-option>
                     </mat-select>
@@ -53,13 +53,13 @@
             </div>
             <div class="col-xl-4">
                 <mat-form-field class="custom-form-field w-100 __grab_cursor" appearance="outline" [floatLabel]="getFloatLabelValue()" [hideRequiredMarker]="hideRequiredControl.value">
-                    <mat-label>{{selectedOption === 'Item Number' ? fieldNames?.itemNumber : selectedOption}}</mat-label>
-                    <input [matAutocomplete]="auto" [(ngModel)]="searchValue" (ngModelChange)="this.searchDeb.next($event)" matInput type="text" />
-                    <button matSuffix *ngIf="searchValue" class="clear-btn" (click)="searchValue = ''">
+                    <mat-label data-automation-id="label-search">{{selectedOption === 'Item Number' ? fieldNames?.itemNumber : selectedOption}}</mat-label>
+                    <input [matAutocomplete]="auto" [(ngModel)]="searchValue" (ngModelChange)="this.searchDeb.next($event)" matInput type="text" data-automation-id="input-search" />
+                    <button matSuffix *ngIf="searchValue" class="clear-btn" (click)="searchValue = ''" data-automation-id="clear-search-button">
                         <mat-icon class="text-20 text-chrome-600">cancel</mat-icon>
                     </button>
-                    <mat-autocomplete #auto="matAutocomplete">
-                        <mat-option *ngFor="let option of autoCompleteSearchResult" [value]="option"> {{option}} </mat-option>
+                    <mat-autocomplete #auto="matAutocomplete" data-automation-id="autocomplete-search">
+                        <mat-option *ngFor="let option of autoCompleteSearchResult" [value]="option" [attr.data-automation-id]="'autocomplete-option-search-' + option"> {{option}} </mat-option>
                     </mat-autocomplete>
                 </mat-form-field>
             </div>

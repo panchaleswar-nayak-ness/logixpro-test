@@ -12,6 +12,10 @@ import { InductionManagerApiService } from 'src/app/common/services/induction-ma
 import { ToastrService } from 'ngx-toastr';
 import {
   DialogConstants,
+  localStorageKeys,
+  PrintReports,
+  REPORT_REPOSITORY_ID,
+  ToasterMessages,
   ToasterTitle,
   ToasterType,
 } from '../constants/strings.constants';
@@ -19,6 +23,9 @@ import { BaseService } from 'src/app/common/services/base-service.service';
 import { ApiResponse, TableHeaderDefinitions, UserSession } from '../types/CommonTypes';
 import { OrderManagerSettings, PickToteSetupIndex } from '../Model/preferences';
 import { BehaviorSubject } from 'rxjs';
+import { PrintOrdersPayload } from '../interface/bulk-transactions/bulk-pick';
+import { IPrintApiService } from './print-api/print-api-interface';
+import { PrintApiService } from './print-api/print-api.service';
 
 @Injectable({
   providedIn: 'root',
@@ -62,6 +69,7 @@ export class GlobalService {
   public iinductionManagerApi: IInductionManagerApiService;
   public iOrderManagerApi: IOrderManagerAPIService;
   public iAdminApiService: IAdminApiService;
+  public iPrintApiService: IPrintApiService;
 
   constructor(
     private apiBase: BaseService,
@@ -70,12 +78,14 @@ export class GlobalService {
     private toastr: ToastrService,
     public inductionManagerApi: InductionManagerApiService,
     public adminApiService: AdminApiService,
-    private authService: AuthService
+    private authService: AuthService,
+    public printApiService: PrintApiService
   ) {
     this.userData = this.authService.userData();
     this.iOrderManagerApi = orderManagerApi;
     this.iAdminApiService = adminApiService;
     this.iinductionManagerApi = inductionManagerApi;
+    this.iPrintApiService = printApiService;
   }
 
   private lastMessage: string | null = null;
@@ -300,6 +310,23 @@ export class GlobalService {
         ToasterTitle.Error
       );
       return false;
+    }
+  }
+
+
+  async printReportForSelectedOrders(orderNumbers: string[],reportName:PrintReports,isLoader:boolean){
+    const paylaod: PrintOrdersPayload = {
+      clientCustomData: reportName,
+      repositoryIdOfProject: REPORT_REPOSITORY_ID,
+      printerReportName: localStorage.getItem(localStorageKeys.SelectedReportPrinter),
+      printerLabelName: localStorage.getItem(localStorageKeys.SelectedLabelPrinter),
+      orderNumbers: orderNumbers
+    };
+    const res = await this.iPrintApiService.printSelectedOrdersReport(paylaod,isLoader);
+    if (res?.body?.isExecuted) {
+      this.ShowToastr(ToasterType.Success,ToasterMessages.PrintSuccessfullyCompleted,ToasterTitle.Success);
+    } else {
+      this.ShowToastr(ToasterType.Error,ToasterMessages.UnableToPrint,ToasterTitle.Error);
     }
   }
 
@@ -610,5 +637,11 @@ formatSearchDateTimeValue(dateStr: string): string | null {
     return null;
   }
 }
+
+  // Replaces placeholders in the given template string (e.g., '{{key}}') with provided values.
+  // Example usage: formatMessage('Value 1: {{key1}}, Value 2: {{key2}}', { key1: 'A', key2: 'B' }) → 'Value 1: A, Value 2: B'
+  formatMessage(template: string, values: { [key: string]: string }): string {
+    return template.replace(/{{(\w+)}}/g, (_, key) => values[key] || '');
+  }
 
 }

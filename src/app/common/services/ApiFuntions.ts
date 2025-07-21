@@ -15,6 +15,8 @@ import {IQueryParams} from '../../app/../consolidation-manager/cm-route-id-manag
 import { MarkoutAuditResponse, MarkoutPickLinesResponse, MarkoutResponse } from 'src/app/consolidation-manager/cm-markout-new/models/cm-markout-new-models';
 import { ZoneListPayload } from 'src/app/bulk-process/preferences/preference.models';
 import { ApiResponseData } from '../types/CommonTypes';
+import { DevicePreferenceRequest, DevicePreferencesTableRequest } from '../interface/admin/device-preferences';
+import { PrintOrdersPayload } from '../interface/bulk-transactions/bulk-pick';
 
 
 @Injectable({
@@ -1719,8 +1721,8 @@ export class ApiFuntions {
     return this.ApiBase.Put(`/Admin/workstationsettings`, body);
   }
 
-  public DevicePreferencesTable(body) {
-    return this.ApiBase.Get(`/Admin/deviceperference`, body);
+  public DevicePreferencesTable(body:DevicePreferencesTableRequest) {
+    return this.ApiBase.Get(`/Admin/devicepreference`, body);
   }
 
   public LocationNamesSave(body) {
@@ -1743,8 +1745,8 @@ export class ApiFuntions {
     return this.ApiBase.Get(`/Admin/deviceinformation`, body);
   }
 
-  public DevicePreference(body) {
-    return this.ApiBase.Post(`/Admin/deviceperference`, body);
+  public DevicePreference(payload : DevicePreferenceRequest) {
+    return this.ApiBase.Post(`/Admin/devicepreference`, payload);
   }
 
   public LocationZoneSave(body) {
@@ -2006,8 +2008,8 @@ export class ApiFuntions {
     return this.ApiBase.Get('/orders/quickpick', body);
   }
 
-  public bulkPickOrdersLocationAssignment(body: any): Observable<any> {
-    return this.ApiBase.Put('/orders/locationassignment', body);
+  public async bulkPickOrdersLocationAssignment(body: string[]) {
+    return await this.ApiBase.PutAsync('/orders/locationassignment', body,false);
   }
 
   public async bulkPickOrdersCheckLocationAssignment(body: string[]) {
@@ -2016,6 +2018,14 @@ export class ApiFuntions {
 
   public async bulkPickOrdersCheckOffCarouselPicks(body: string[]) {
     return await this.ApiBase.PostAsync('/orders/checkoffcarouselpicks', body, false, false);
+  }
+
+  public async GetOrdersMovedToReprocessAsync(body: string[]) {
+    return await this.ApiBase.PostAsync('/Admin/orders-moved-to-reprocess', body, false, false);
+  }
+
+  public async getOrderLinesAssignedLocations(body: string[]) {
+    return await this.ApiBase.PostAsync('/Admin/order-lines-assigned-locations', body, false, false);
   }
 
   public async bulkPickZones() {
@@ -2407,4 +2417,16 @@ public ResolveMarkoutTote(toteId: number) {
     return await this.ApiBase.PatchAsync(`/Consolidation/Route/${routeId}/RequestRelease`,null);
   }
 
+  public async printSelectedOrdersReport(
+    body: PrintOrdersPayload,
+    showLoader: boolean = true
+  ) {
+    return await this.ApiBase.PostAsync(
+      `/print/selectedordersreport`,
+      body,
+      false,
+      showLoader
+    );
+  }
+  
 }

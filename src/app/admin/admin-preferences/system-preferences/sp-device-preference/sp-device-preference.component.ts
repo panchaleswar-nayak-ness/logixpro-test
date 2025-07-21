@@ -10,6 +10,9 @@ import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.ser
 import { SharedService } from 'src/app/common/services/shared.service';
 import {  StringConditions, ToasterTitle, ToasterType ,DialogConstants,Style,TableConstant,UniqueConstants,ColumnDef} from 'src/app/common/constants/strings.constants';
 import { ApiResponse, CustomPagination, UserSession } from 'src/app/common/types/CommonTypes';
+import { Sort } from '@angular/material/sort';
+import { DevicePreferencesTableRequest } from 'src/app/common/interface/admin/device-preferences';
+import { DevicePreferencesColumnMap } from 'src/app/common/constants/admin/device-preferences-constants';
 
 interface DevicePreference {
   zone: string;
@@ -46,7 +49,7 @@ export class SpDevicePreferenceComponent implements OnInit {
   public userData: UserSession;
   pageEvent: PageEvent;
   public iAdminApiService: IAdminApiService;
-  sortCol: number = 0;
+  sortColName: string = 'Zone';
   sortDir: string = UniqueConstants.Asc;
   customPagination: CustomPagination = {
     total: 0,
@@ -74,7 +77,6 @@ export class SpDevicePreferenceComponent implements OnInit {
     public authService: AuthService,
     private global:GlobalService,
     public adminApiService: AdminApiService,  
-    private sharedService: SharedService
   ) {
     this.iAdminApiService = adminApiService;
   }
@@ -86,17 +88,16 @@ export class SpDevicePreferenceComponent implements OnInit {
 
   ngAfterViewInit() {
     this.dataSource.paginator = this.paginator;
-    this.sharedService.devicePrefObserver.subscribe((evt) => this.getDevicePrefTable());
   }
 
   getDevicePrefTable() {
-    let payload = {
-      draw: 0,
-      start: this.customPagination.startIndex,
-      length: this.customPagination.recordsPerPage,
-      column: this.sortCol,
-      sortDir: this.sortDir,
-      zone: '', 
+    const payload: DevicePreferencesTableRequest = {
+      // Convert to 1-based index for backend
+      startRow: this.customPagination.startIndex,
+      endRow: this.customPagination.startIndex + this.customPagination.recordsPerPage,
+      sortColumn: this.sortColName,
+      sortOrder: this.sortDir, // should ideally be 'asc' | 'desc'
+      zone: '',
     };
 
     this.iAdminApiService.DevicePreferencesTable(payload).subscribe((res: ApiResponse<DevicePreferencesTableResponse>) => {
@@ -119,6 +120,7 @@ export class SpDevicePreferenceComponent implements OnInit {
       data: {
         isEdit: isEdit,
         item: item,
+        onSave: () => this.getDevicePrefTable()
       },
     });
 
@@ -159,17 +161,18 @@ export class SpDevicePreferenceComponent implements OnInit {
       }
     });
   }
-  sortChange(event) {
-    if (
-      // !this.dataSource._data._value ||
-      event.direction == '' ||
-      event.direction == this.sortCol
-    )
-      return;
-    let index;
-    this.displayedColumns.forEach((x, i) => { if (x === event.active) index = i + 1 });
-    this.sortCol = index;
+
+  sortChange(event: Sort): void {
+    if (!event.direction || !event.active) return;
+
+    // Skip if sort is unchanged
+    if (event.direction === this.sortDir && event.active === this.sortColName) return;
+
     this.sortDir = event.direction;
+
+    const sortColKey = event.active;
+    this.sortColName = DevicePreferencesColumnMap[sortColKey] || '';
+
     this.getDevicePrefTable();
   }
 

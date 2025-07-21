@@ -1,38 +1,38 @@
 <div class="d-flex justify-content-between mb-4 align-items-center">
     <div class="w-48px"></div>
-    <h1 class="m-0" mat-dialog-title>Batch - Delete and Deallocate</h1>
-    <button mat-icon-button class="close-button dialog-close-button-fix" [mat-dialog-close]="true">
+    <h1 class="m-0" mat-dialog-title data-automation-id="batch-delete-title">Batch - Delete and Deallocate</h1>
+    <button mat-icon-button class="close-button dialog-close-button-fix" [mat-dialog-close]="true" data-automation-id="close-dialog-button">
         <mat-icon class="close-icon">close</mat-icon>
     </button>
 </div>
 <div class="pb-3">
     <mat-radio-group color="primary" [(ngModel)]="clearBatchTote" *ngIf="!this.enableClear">
-        <mat-radio-button class="me-3" value="clearBatch" [disabled]="deleteAllDisable">Clear Batch </mat-radio-button>
-        <mat-radio-button value="clearTote"  >Clear Tote</mat-radio-button>
+        <mat-radio-button class="me-3" value="clearBatch" [disabled]="deleteAllDisable" data-automation-id="radio-clear-batch">Clear Batch </mat-radio-button>
+        <mat-radio-button value="clearTote" data-automation-id="radio-clear-tote">Clear Tote</mat-radio-button>
     </mat-radio-group>
     <mat-radio-group color="primary" [(ngModel)]="clearBatchTote" *ngIf="this.enableClear">
-        <mat-radio-button class="me-3" value="clearBatch" >Clear Batch </mat-radio-button>
-        <mat-radio-button value="clearTote"  >Clear Tote</mat-radio-button>
+        <mat-radio-button class="me-3" value="clearBatch" data-automation-id="radio-clear-batch">Clear Batch </mat-radio-button>
+        <mat-radio-button value="clearTote" data-automation-id="radio-clear-tote">Clear Tote</mat-radio-button>
     </mat-radio-group>
 </div>
 
 <div class="row my-4">
     <div class="col-xl-4">
         <mat-form-field class="custom-form-field w-100" appearance="outline">
-            <mat-label>Batch ID</mat-label>
-            <input  #batchIdFocus [(ngModel)]="batchID" (keydown.shift.enter)="$event.preventDefault()" matInput type="text" [value]="batchID" disabled>
+            <mat-label data-automation-id="batch-id-label">Batch ID</mat-label>
+            <input  #batchIdFocus [(ngModel)]="batchID" (keydown.shift.enter)="$event.preventDefault()" matInput type="text" [value]="batchID" disabled data-automation-id="batch-id-input">
         </mat-form-field>
     </div>
     <div class="col-xl-4">
         <mat-form-field class="custom-form-field w-100" appearance="outline">
-            <mat-label>Tote ID</mat-label>
-            <input [(ngModel)]="toteID" (keydown.shift.enter)="$event.preventDefault()" matInput type="text" [value]="toteID" disabled>
+            <mat-label data-automation-id="tote-id-label">Tote ID</mat-label>
+            <input [(ngModel)]="toteID" (keydown.shift.enter)="$event.preventDefault()" matInput type="text" [value]="toteID" disabled data-automation-id="tote-id-input">
         </mat-form-field>
     </div>
     <div class="col-xl-4">
         <mat-form-field class="custom-form-field w-100" appearance="outline">
-            <mat-label>Transaction Type</mat-label>
-            <input [(ngModel)]="transType"  (keydown.shift.enter)="$event.preventDefault()" matInput type="text" [value]="transType" disabled>
+            <mat-label data-automation-id="transaction-type-label">Transaction Type</mat-label>
+            <input [(ngModel)]="transType"  (keydown.shift.enter)="$event.preventDefault()" matInput type="text" [value]="transType" disabled data-automation-id="transaction-type-input">
         </mat-form-field>
     </div>
 </div>
@@ -42,7 +42,7 @@
         'col-xl-6': deleteAllDisable,
         'mb-2': true
       }">
-        <button mat-flat-button color="warn" class="btn-lg w-100" (click)="batchTotesDelete(true)">
+        <button mat-flat-button color="warn" class="btn-lg w-100" (click)="batchTotesDelete(true)" data-automation-id="clear-deallocate-button">
           Clear/De-Allocate
         </button>
       </div>
@@ -51,12 +51,12 @@
         'col-xl-6': deleteAllDisable,
         'mb-2': true
       }">
-        <button mat-flat-button color="warn" class="btn-lg w-100" (click)="batchTotesDelete(false)">
+        <button mat-flat-button color="warn" class="btn-lg w-100" (click)="batchTotesDelete(false)" data-automation-id="clear-only-button">
           Clear Only
         </button>
       </div>
       <div class="col-xl-4 mb-2">
-        <button mat-flat-button color="warn" class="btn-lg w-100" [disabled]="deleteAllDisable" *ngIf="!deleteBtnHide" (click)="allBatchDelete()">
+        <button mat-flat-button color="warn" class="btn-lg w-100" [disabled]="deleteAllDisable" *ngIf="!deleteBtnHide" (click)="allBatchDelete()" data-automation-id="delete-all-batches-button">
           Delete All Batches
         </button>
       </div>

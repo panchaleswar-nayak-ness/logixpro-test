@@ -4,35 +4,39 @@
     <div class="row d-flex justify-content-between display">
       <div class="col-lg-4 mb-3">
         <mat-form-field class="filter w-100 stats-filters" appearance="outline">
-          <mat-label>Unit Cost</mat-label>
+          <mat-label data-automation-id="unit-cost-label">Unit Cost</mat-label>
             <mat-icon class="margin-right" matPrefix >attach_money</mat-icon>
             <input (input)="handleInputChange($event)" matInput type="number" (contextmenu)="onContextMenu($event, 'Unit Cost')" class="custom-input-number"
              formControlName="unitCost"
-            oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" type = "number" maxlength = "11">
+            oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" type = "number" maxlength = "11"
+            data-automation-id="unit-cost-input">
         </mat-form-field>
       </div>
 
         <div class="col-lg-4 mb-3">
             <mat-form-field class="filter w-100 stats-filters" appearance="outline">
-              <mat-label>Supplier ID</mat-label>
-              <input (input)="handleInputChange($event)" matInput type="text"  (contextmenu)="onContextMenu($event, 'Supplier ItemID')" class="custom-input-number" formControlName="supplierItemID"  maxlength="50">
+              <mat-label data-automation-id="supplier-id-label">Supplier ID</mat-label>
+              <input (input)="handleInputChange($event)" matInput type="text"  (contextmenu)="onContextMenu($event, 'Supplier ItemID')" class="custom-input-number" formControlName="supplierItemID"  maxlength="50"
+              data-automation-id="supplier-id-input">
             </mat-form-field>
           </div>
 
           <div class="col-lg-4 mb-3">
             <mat-form-field class="filter w-100 stats-filters" appearance="outline">
-              <mat-label>Manufacturer ID</mat-label>
+              <mat-label data-automation-id="manufacturer-id-label">Manufacturer ID</mat-label>
               <input (input)="handleInputChange($event)" matInput type="text" class="custom-input-number"
-              (contextmenu)="onContextMenu($event, 'Manu Facturer')" formControlName="manufacturer"  maxlength="50">
+              (contextmenu)="onContextMenu($event, 'Manu Facturer')" formControlName="manufacturer"  maxlength="50"
+              data-automation-id="manufacturer-id-input">
             </mat-form-field>
           </div>
     </div>
     <div class="row">
         <div class="col-lg-12 mb-3">
             <mat-form-field class="filter w-100 stats-filters" appearance="outline">
-              <mat-label>Special Features</mat-label>
+              <mat-label data-automation-id="special-features-label">Special Features</mat-label>
               <textarea (input)="handleInputChange($event)" matInput type="text" class="custom-input-number" 
-              (contextmenu)="onContextMenu($event, 'Special Features')" formControlName="specialFeatures"  maxlength="255">
+              (contextmenu)="onContextMenu($event, 'Special Features')" formControlName="specialFeatures"  maxlength="255"
+              data-automation-id="special-features-textarea">
                 </textarea>
             </mat-form-field>
           </div>
@@ -40,4 +44,4 @@
   
   </div>
   
-<app-table-context-menu-component *ngIf="isActiveTrigger" (optionSelected)="optionSelected($event)" [componentName]="'InvMap'"></app-table-context-menu-component>
+<app-table-context-menu-component *ngIf="isActiveTrigger" (optionSelected)="optionSelected($event)" [componentName]="'InvMap'" data-automation-id="table-context-menu"></app-table-context-menu-component>

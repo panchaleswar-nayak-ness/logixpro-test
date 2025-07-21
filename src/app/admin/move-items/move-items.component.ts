@@ -255,8 +255,8 @@ export class MoveItemsComponent implements OnInit {
       sortOrder: tableName === StringConditions.MoveFrom ? this.sortOrder : this.sortOrderTo,
       tableName: tableName,
       cellSize: this.from_cellSize,
-      warehouse: this.seletedWarehouse|| '',
-      invMapid: tableName === StringConditions.MoveFrom ? this.invMapID : this.invMapIDToItem,
+      warehouse: this.seletedWarehouse || '',
+      InventoryMapID: this.invMapmoveFromID,
       viewMode: tableName === StringConditions.MoveFrom ? this.viewMode : this.viewModeTo,
       filter: tableName === StringConditions.MoveFrom ? this.moveFromFilter : this.moveToFilter,
     };
@@ -264,7 +264,7 @@ export class MoveItemsComponent implements OnInit {
     if(payload.searchString == "" && !this.isRowSelected){
       payload.viewMode = ResponseStrings.AllCaps
     }
-  
+
     this.iAdminApiService.GetMoveItemsTable(payload).subscribe((res: any) => {
       if (res.isExecuted) {
         if (res?.data && res.data['moveMapItems'].length === 0) {
@@ -381,6 +381,7 @@ export class MoveItemsComponent implements OnInit {
 
     
     let isMoveFromSelected = false;
+    console.log('getMoveFromDetails ROW '  + type)
     console.log(row)
 
     if (type === StringConditions.MoveTo) 
@@ -401,7 +402,7 @@ export class MoveItemsComponent implements OnInit {
         });
       }
 
-      this.invMapIDToItem = row.inventoryMapID;
+      this.invMapIDToItem = row.invMapID;
       this.to_warehouse = row.warehouse;
       this.to_location = row.location;
       this.to_locationShow = row.locationNumber;
@@ -414,7 +415,7 @@ export class MoveItemsComponent implements OnInit {
       this.to_serialNo = row.serialNumber;
       this.to_itemQuantity = row.itemQuantity;
       this.to_zone = row.zone;
-      this.invMapmoveToID = row.inventoryMapID;
+      this.invMapmoveToID = row.invMapID;
       this.isDedicated = row.dedicated ;
       this.fillQty = row.itemQuantity - row.maximumQuantity - row.quantityAllocatedPutAway;
       this.fillQtytoShow = this.fillQty;
@@ -455,7 +456,7 @@ export class MoveItemsComponent implements OnInit {
         return;
       }
 
-      this.invMapmoveFromID = row.inventoryMapID;
+      this.invMapmoveFromID = row.invMapID;
       this.from_warehouse = row.warehouse;
       this.from_location = row.location;
       this.from_locationShow = row.locationNumber;
@@ -725,7 +726,7 @@ formatDateTimeToLocal(dateString) {
     };
     console.log("Local DateTime String:", localDateTimeString);
     console.log("Payload DateTime:", payload.requestedDate);
-
+    
     this.iAdminApiService.MoveNow(payload).subscribe((res: any) => {
 
       if(res.isExecuted){
