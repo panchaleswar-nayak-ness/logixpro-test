@@ -5,84 +5,84 @@
         
         <div class="row">
           <div class="col-xl-6">
-            <mat-form-field class="custom-form-field w-100 __grab_cursor mb-3" appearance="outline" (click)="openItemNumDialog()">
-              <mat-label replacePlaceholder [replacePlaceHolder]="placeholders.itemNumber" [fallbackPlaceHolder]="placeholders.itemNumberFallback">{{ItemNumber}} </mat-label>
+            <mat-form-field class="custom-form-field w-100 __grab_cursor mb-3" appearance="outline" (click)="openItemNumDialog()" >
+              <mat-label replacePlaceholder [replacePlaceHolder]="placeholders.itemNumber" [fallbackPlaceHolder]="placeholders.itemNumberFallback" data-automation-id="item-number-label">{{ItemNumber}} </mat-label>
               <span matSuffix>
                 <mat-icon class="unfold_more">unfold_more</mat-icon>
               </span>
-              <input matInput readonly class="__grab_cursor readonly" type="text" formControlName="itemNumber"  (contextmenu)=" onContextMenu($event, 'Item Number')" maxlength="50">
+              <input matInput readonly class="__grab_cursor readonly" type="text" formControlName="itemNumber"  (contextmenu)=" onContextMenu($event, 'Item Number')" maxlength="50" data-automation-id="item-number-input">
             </mat-form-field>
           </div>
           <div class="col-xl-6">
-            <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline">
-              <mat-label>Supplier Item ID</mat-label>
-              <input (keyup)="handleInputChange($event)" (contextmenu)=" onContextMenu($event, 'Supplier Item ID')"  matInput type="text" formControlName="supplierItemID" maxlength="50">
+            <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline" >
+              <mat-label data-automation-id="supplier-item-id-label">Supplier Item ID</mat-label>
+              <input (keyup)="handleInputChange($event)" (contextmenu)=" onContextMenu($event, 'Supplier Item ID')"  matInput type="text" formControlName="supplierItemID" maxlength="50" data-automation-id="supplier-item-id-input">
             </mat-form-field>
           </div>
 
         </div>
 
         <div class="mb-3">
-          <mat-form-field class="filter w-100 stats-filters" appearance="outline" (click)="openDescriptionDialog()">
-            <mat-label>Description</mat-label>
+          <mat-form-field class="filter w-100 stats-filters" appearance="outline" (click)="openDescriptionDialog()" >
+            <mat-label data-automation-id="description-label">Description</mat-label>
             <span matSuffix>
               <mat-icon class="unfold_more">unfold_more</mat-icon>
             </span>
-            <input readonly class="__grab_cursor readonly" matInput type="text" formControlName="description"   (contextmenu)=" onContextMenu($event, 'Description')"  maxlength="255"/>
+            <input readonly class="__grab_cursor readonly" matInput type="text" formControlName="description"   (contextmenu)=" onContextMenu($event, 'Description')"  maxlength="255" data-automation-id="description-input"/>
           </mat-form-field>
         </div>
 
         <div class="row">
           <div class="col-xl-4">
-            <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline">
-              <mat-label>Reorder Point</mat-label>
+            <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline" >
+              <mat-label data-automation-id="reorder-point-label">Reorder Point</mat-label>
    
-              <input (keyup)="handleInputChange($event)" [NumbersOnly]="true"   (contextmenu)=" onContextMenu($event, 'Reorder Point')"  matInput type="text" formControlName="reorderPoint" maxlength="9">
+              <input (keyup)="handleInputChange($event)" [NumbersOnly]="true"   (contextmenu)=" onContextMenu($event, 'Reorder Point')"  matInput type="text" formControlName="reorderPoint" maxlength="9" data-automation-id="reorder-point-input">
    
             </mat-form-field>
           </div>
           <div class="col-xl-4">
-          <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline">
-            <mat-label>Replenishment Point</mat-label>
+          <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline" >
+            <mat-label data-automation-id="replenishment-point-label">Replenishment Point</mat-label>
  
-            <input  (input)="handleInputChange($event)" [NumbersOnly]="true"  matInput type="text"(contextmenu)=" onContextMenu($event, 'Replenishment Point')"  formControlName="replenishmentPoint" maxlength="9">
+            <input  (input)="handleInputChange($event)" [NumbersOnly]="true"  matInput type="text"(contextmenu)=" onContextMenu($event, 'Replenishment Point')"  formControlName="replenishmentPoint" maxlength="9" data-automation-id="replenishment-point-input">
  
           </mat-form-field>
           </div>
           <div class="col-xl-4">
           <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline" (click)="openCategoryDialog()">
-            <mat-label>Category</mat-label>
+            <mat-label data-automation-id="category-label">Category</mat-label>
             <span matSuffix>
               <mat-icon class="unfold_more">unfold_more</mat-icon>
             </span>
-            <input matInput type="text"  (contextmenu)=" onContextMenu($event, 'Category')" formControlName="category" maxlength="50" readonly>
+            <input matInput type="text"  (contextmenu)=" onContextMenu($event, 'Category')" formControlName="category" maxlength="50" readonly data-automation-id="category-input">
           </mat-form-field>
           </div>
         </div>
 
         <div class="row">
           <div class="col-xl-4">
-            <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline">
-              <mat-label>Reorder Quantity</mat-label> 
-              <input (input)="handleInputChange($event)" [NumbersOnly]="true" matInput type="text" (contextmenu)=" onContextMenu($event, 'Reorder Quantity')"  formControlName="reorderQuantity" maxlength="9">
+            <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline" >
+              <mat-label data-automation-id="reorder-quantity-label">Reorder Quantity</mat-label> 
+              <input (input)="handleInputChange($event)" [NumbersOnly]="true" matInput type="text" (contextmenu)=" onContextMenu($event, 'Reorder Quantity')"  formControlName="reorderQuantity" maxlength="9" data-automation-id="reorder-quantity-input">
    
             </mat-form-field>
           </div>
           <div class="col-xl-4">
-            <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline">
-              <mat-label>Replenishment Level</mat-label>
+            <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline" >
+              <mat-label data-automation-id="replenishment-level-label">Replenishment Level</mat-label>
    
-              <input (input)="handleInputChange($event)" [NumbersOnly]="true"  (contextmenu)=" onContextMenu($event, 'Replenishment Level')"   matInput type="text" formControlName="replenishmentLevel" maxlength="9" >
+              <input (input)="handleInputChange($event)" [NumbersOnly]="true"  (contextmenu)=" onContextMenu($event, 'Replenishment Level')"   matInput type="text" formControlName="replenishmentLevel" maxlength="9" data-automation-id="replenishment-level-input" >
    
             </mat-form-field>
           </div>
           <div class="col-xl-4">
-            <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline" (click)="openCategoryDialog()">
-              <mat-label>Sub Category</mat-label>
+            <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline" (click)="openCategoryDialog()" >
+              <mat-label data-automation-id="sub-category-label">Sub Category</mat-label>
               <span matSuffix>
                 <mat-icon class="unfold_more">unfold_more</mat-icon>
               </span>
-              <input matInput type="text"  (contextmenu)=" onContextMenu($event, 'Sub Category')" formControlName="subCategory" maxlength="50" readonly >
+              <input matInput type="text"  (contextmenu)=" onContextMenu($event, 'Sub Category')" formControlName="subCategory" maxlength="50" readonly data-automation-id="sub-category-input" >
             </mat-form-field>
           </div>
         </div>
@@ -90,24 +90,24 @@
         <div class="row">
           <div class="col-xl-4">
             <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline" (click)="openUmDialog()" >
-              <mat-label>{{this.fieldNameDetails?.currentValue?.unitOfMeasure}}</mat-label>
+              <mat-label data-automation-id="unit-of-measure-label">{{this.fieldNameDetails?.currentValue?.unitOfMeasure}}</mat-label>
               <span matSuffix>
                 <mat-icon class="unfold_more">unfold_more</mat-icon>
               </span>
-              <input matInput type="text" formControlName="unitOfMeasure"  (contextmenu)=" onContextMenu($event, 'Unit Of Measure')" maxlength="50" readonly >
+              <input matInput type="text" formControlName="unitOfMeasure"  (contextmenu)=" onContextMenu($event, 'Unit Of Measure')" maxlength="50" readonly data-automation-id="unit-of-measure-input" >
             </mat-form-field>
           </div>
           <div class="col-xl-4">
-            <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline">
-              <mat-label>KanBan Replenishment Point </mat-label> 
-              <input [NumbersOnly]="true" (input)="handleInputChange($event)" matInput type="text" (contextmenu)=" onContextMenu($event, 'Kanban Replenishment Point')"  formControlName="kanbanReplenishmentPoint"  maxlength="9">
+            <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline" >
+              <mat-label data-automation-id="kanban-replenishment-point-label">KanBan Replenishment Point </mat-label> 
+              <input [NumbersOnly]="true" (input)="handleInputChange($event)" matInput type="text" (contextmenu)=" onContextMenu($event, 'Kanban Replenishment Point')"  formControlName="kanbanReplenishmentPoint"  maxlength="9" data-automation-id="kanban-replenishment-point-input">
             </mat-form-field>
           </div>
           <div class="col-xl-4">
-            <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline">
-              <mat-label>KanBan Replenishment Level</mat-label>                            
+            <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline" >
+              <mat-label data-automation-id="kanban-replenishment-level-label">KanBan Replenishment Level</mat-label>                            
               <input [NumbersOnly]="true" (input)="handleInputChange($event)"  (contextmenu)=" onContextMenu($event, 'Kanban Replenishment Level')"  
-              matInput type="text" formControlName="kanbanReplenishmentLevel" maxlength="9" >
+              matInput type="text" formControlName="kanbanReplenishmentLevel" maxlength="9" data-automation-id="kanban-replenishment-level-input" >
             </mat-form-field>
           </div>
         </div>
@@ -119,13 +119,13 @@
       <div class="custom bg-white bg-50 br-14 mb-3">
         <div class="counter bg-tertiary-10">
           <div>
-            <h6 class="text-tertiary-900"><b>Quantity</b></h6>
+            <h6 class="text-tertiary-900" data-automation-id="quantity-heading"><b>Quantity</b></h6>
             <div class="d-flex gap-20 justify-content-center flex-wrap">
               <div class="employees text-center">
-                <app-stats-circle value="{{details.controls['totalQuantity'].value}}" title="Total"></app-stats-circle>
+                <app-stats-circle value="{{details.controls['totalQuantity'].value}}" title="Total" data-automation-id="total-quantity-circle"></app-stats-circle>
               </div>
               <div class="customer text-center">
-                <app-stats-circle value="{{this.details.controls['wipCount'].value}}" title="WIP"></app-stats-circle>
+                <app-stats-circle value="{{this.details.controls['wipCount'].value}}" title="WIP" data-automation-id="wip-quantity-circle"></app-stats-circle>
               </div>
             </div>
           </div>
@@ -134,13 +134,13 @@
       <div class="custom bg-white bg-50 br-14">
         <div class="counter bg-tertiary-10">
           <div>
-            <h6 class="text-tertiary-900"><b>Allocated</b></h6>
+            <h6 class="text-tertiary-900" data-automation-id="allocated-heading"><b>Allocated</b></h6>
             <div class="d-flex gap-20 justify-content-center flex-wrap">
               <div class="employees text-center">
-                <app-stats-circle value="{{this.details.controls['totalPicks'].value}}" title="Picks"></app-stats-circle>
+                <app-stats-circle value="{{this.details.controls['totalPicks'].value}}" title="Picks" data-automation-id="picks-allocated-circle"></app-stats-circle>
               </div>
               <div class="customer text-center">
-                <app-stats-circle value="{{this.details.controls['totalPuts'].value}}" title="PutAway"></app-stats-circle>
+                <app-stats-circle value="{{this.details.controls['totalPuts'].value}}" title="PutAway" data-automation-id="putaway-allocated-circle"></app-stats-circle>
               </div>
             </div>
           </div>
@@ -149,23 +149,23 @@
       <div class="custom bg-white bg-50 br-14">
         <div class="counter bg-tertiary-10">
           <div>
-            <h6 class="text-tertiary-900"><b>Transaction</b></h6>
+            <h6 class="text-tertiary-900" data-automation-id="transaction-heading"><b>Transaction</b></h6>
             <div class="d-flex gap-20 justify-content-center flex-wrap">
               <div class="employees text-center">
-                <app-stats-circle value="{{this.details.controls['openCount'].value}}" title="Open"></app-stats-circle>
-                <button (click)="RedirectInv('OpenTransaction')" mat-flat-button color="button-default" [disabled]="this.details.controls['openCount'].value==0" [class.disabledBtn] = "this.details.controls['openCount'].value==0" class="default-btn   btn-md  " >
+                <app-stats-circle value="{{this.details.controls['openCount'].value}}" title="Open" data-automation-id="open-transaction-circle"></app-stats-circle>
+                <button (click)="RedirectInv('OpenTransaction')" mat-flat-button color="button-default" [disabled]="this.details.controls['openCount'].value==0" [class.disabledBtn] = "this.details.controls['openCount'].value==0" class="default-btn   btn-md  " data-automation-id="open-transaction-view-button" >
                   View
                 </button>
               </div>
               <div class="customer text-center">
-                <app-stats-circle value="{{this.details.controls['histCount'].value}}" title="History"></app-stats-circle>
-                <button (click)="RedirectInv('TransactionHistory')" mat-flat-button color="button-default" [disabled]="this.details.controls['histCount'].value==0" [class.disabledBtn] = "this.details.controls['histCount'].value==0" class="default-btn   btn-md  " >
+                <app-stats-circle value="{{this.details.controls['histCount'].value}}" title="History" data-automation-id="history-transaction-circle"></app-stats-circle>
+                <button (click)="RedirectInv('TransactionHistory')" mat-flat-button color="button-default" [disabled]="this.details.controls['histCount'].value==0" [class.disabledBtn] = "this.details.controls['histCount'].value==0" class="default-btn   btn-md  " data-automation-id="transaction-history-view-button" >
                   View
                 </button>
               </div>
               <div class="customer text-center">
-                <app-stats-circle value="{{this.details.controls['procCount'].value}}" title="Reprocess"></app-stats-circle>
-                <button (click)="RedirectInv('ReprocessTransaction')" mat-flat-button color="button-default" [class.disabledBtn] = "this.details.controls['procCount'].value==0"  [disabled]="this.details.controls['procCount'].value==0" class="default-btn  btn-md  " >
+                <app-stats-circle value="{{this.details.controls['procCount'].value}}" title="Reprocess" data-automation-id="reprocess-transaction-circle"></app-stats-circle>
+                <button (click)="RedirectInv('ReprocessTransaction')" mat-flat-button color="button-default" [class.disabledBtn] = "this.details.controls['procCount'].value==0"  [disabled]="this.details.controls['procCount'].value==0" class="default-btn  btn-md  " data-automation-id="reprocess-transaction-view-button" >
                   View
                 </button>
               </div>
@@ -177,4 +177,4 @@
     
 </div>
 
-<app-table-context-menu-component *ngIf="isActiveTrigger" (optionSelected)="optionSelected($event)" [componentName]="'InvMap'"></app-table-context-menu-component>
+<app-table-context-menu-component *ngIf="isActiveTrigger" (optionSelected)="optionSelected($event)" [componentName]="'InvMap'" data-automation-id="table-context-menu"></app-table-context-menu-component>

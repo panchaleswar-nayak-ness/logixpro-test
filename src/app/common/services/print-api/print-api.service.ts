@@ -2,6 +2,7 @@ import {Injectable} from '@angular/core';
 import {ApiFuntions} from "../ApiFuntions";
 import {AuthService} from "../../init/auth.service";
 import {IPrintApiService} from "./print-api-interface";
+import { PrintOrdersPayload } from '../../interface/bulk-transactions/bulk-pick';
 
 @Injectable({
   providedIn: 'root'
@@ -372,5 +373,9 @@ export class PrintApiService implements IPrintApiService {
     }
 
     return await this.Api.OpenTransactionsPrintCycleCount(payload);
+  }
+
+  public async printSelectedOrdersReport(payload:PrintOrdersPayload,showLoader:boolean) {
+    return await this.Api.printSelectedOrdersReport(payload,showLoader);
   }
 }

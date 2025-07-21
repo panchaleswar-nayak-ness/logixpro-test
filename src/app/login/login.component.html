@@ -6,7 +6,7 @@
           <div class="me-2">
             <img src="../../assets/images/scottech-white.png" alt="">
           </div>
-          <h2 class="app-heading m-0">PickPro</h2>
+          <h2 class="app-heading m-0" data-automation-id="pickpro-heading">PickPro</h2>
         </div>
 
         <div class="card bg-tertiary-10 login-card-border">
@@ -27,16 +27,16 @@
 
 <div   >
                   <div class="text-center  mb-2 pb-1">
-                    <h2 class="text-tertiary-900 text-24 fw-bold">Account Login</h2>
+                    <h2 class="text-tertiary-900 text-24 fw-bold" data-automation-id="account-login-heading">Account Login</h2>
                   </div>
                   <div class="form-outline mb-2">
                     <mat-form-field appearance="outline" class="w-100">
-                      <mat-label>Username</mat-label>
+                      <mat-label data-automation-id="username-label">Username</mat-label>
                       <input type="text" matInput placeholder="Enter Username"
                       (keyup.enter)="enterUserName()"
                       [(ngModel)]="addLoginForm.username" name="username" #userName="ngModel" maxlength="50"
                         
-                        required autocomplete="off"    />
+                        required autocomplete="off" data-automation-id="username-input"    />
                       <mat-icon matPrefix class="text-tertiary-900">account_circle</mat-icon>
                     </mat-form-field>
                     <mat-hint class="error-message text-danger-shade text-14"
@@ -49,14 +49,14 @@
                   </div>
                   <div class="form-outline mb-1">
                     <mat-form-field appearance="outline" class="w-100">
-                      <mat-label>Password</mat-label>
+                      <mat-label data-automation-id="password-label">Password</mat-label>
                       <input #passwordInput placeholder="Password" [(ngModel)]="addLoginForm.password" #password="ngModel"   maxlength="50"
                       (keyup.enter)="loginUser()"
                       matInput
-                        [type]="toggle_password == true ? 'password' : 'text'" autocomplete="false"   required="" >
+                        [type]="toggle_password == true ? 'password' : 'text'" autocomplete="false"   required="" data-automation-id="password-input" >
                       <mat-icon matPrefix class="text-tertiary-900">lock</mat-icon>
                       <button type="button" mat-icon-button matSuffix (click)="toggle_password = !toggle_password"
-                        [attr.aria-label]="'Hide password'" [attr.aria-pressed]="toggle_password">
+                        [attr.aria-label]="'Hide password'" [attr.aria-pressed]="toggle_password" data-automation-id="toggle-password-visibility-button">
                         <mat-icon>{{toggle_password ? 'visibility_off' : 'visibility'}}</mat-icon>
                       </button>
                     </mat-form-field>
@@ -75,7 +75,7 @@
                   </ng-container>
                   <div class="d-flex justify-content-center my-3">  
                     <button class="form-button-submit w-100" (click)="loginUser()" [disabled]="(userName.invalid || password.invalid)" mat-flat-button
-                      color="primary">Login</button>
+                      color="primary" data-automation-id="login-button">Login</button>
                   </div>
                   </div>
 

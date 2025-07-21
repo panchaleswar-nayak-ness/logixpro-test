@@ -1,9 +1,10 @@
-import { Component, ElementRef, EventEmitter, Input, NgZone, Output, SimpleChanges, ViewChild } from '@angular/core';
+import { Component, ElementRef, EventEmitter, Input, NgZone, Output, ViewChild } from '@angular/core';
 import { MatOption } from '@angular/material/core';
 import { MatSelect } from '@angular/material/select';
 import { MatTooltip } from '@angular/material/tooltip';
 import { take, timer } from 'rxjs';
 import { BulkTransactionType, BulkTransactionView } from 'src/app/common/constants/bulk-process/bulk-transactions';
+import { PrintReports } from 'src/app/common/constants/strings.constants';
 import { BatchesResponse, OrderBatchToteQtyResponse, OrderResponse, TotesResponse } from 'src/app/common/Model/bulk-transactions';
 import { GlobalService } from 'src/app/common/services/global.service';
 
@@ -141,9 +142,13 @@ export class SearchBarComponent {
     }
   }
 
-  printShortageZone() {
+  async printPickShortage() {
     if (Array.isArray(this.selectedOrders) && this.selectedOrders.length !== 0) {
-      this.global.Print(`FileName:PreviewLocAssPickShortFPZ`);
+      const orders: string[] = this.selectedOrders
+        .map(order => order.orderNumber)
+        .filter((orderNumber): orderNumber is string => orderNumber !== undefined);
+
+      await this.global.printReportForSelectedOrders(orders, PrintReports.LOC_ASS_PICK_SHORTAGE,true);
     }
   }
 

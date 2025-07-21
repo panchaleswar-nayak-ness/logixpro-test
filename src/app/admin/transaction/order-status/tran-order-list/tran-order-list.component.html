@@ -23,12 +23,10 @@
             class="action-dropdown flex-grow-1"
             appearance="outline"
           >
-            <mat-label>Action</mat-label>
+            <mat-label data-automation-id="action-label">Action</mat-label>
             <mat-select class="employees-action">
-              <mat-option (click)="previewReport()"
-                >Preview 50 Pages Only</mat-option
-              >
-              <mat-option (click)="printReport()">Print Report</mat-option>
+              <mat-option (click)="previewReport()" data-automation-id="option-preview-50-pages">Preview 50 Pages Only</mat-option>
+              <mat-option (click)="printReport()" data-automation-id="option-print-report">Print Report</mat-option>
             </mat-select>
             <span class="material-symbols-outlined icon-expand-more"
               >expand_more</span
@@ -50,7 +48,7 @@
               (matSortChange)="announceSortChange($event)"
             >
               <ng-container matColumnDef="status" sticky>
-                <th mat-header-cell mat-sort-header *matHeaderCellDef>
+                <th mat-header-cell mat-sort-header *matHeaderCellDef data-automation-id="table-header-status">
                   Status
                 </th>
                 <td mat-cell *matCellDef="let element">
@@ -65,7 +63,7 @@
               </ng-container>
 
               <ng-container matColumnDef="transactionType" sticky>
-                <th mat-header-cell mat-sort-header *matHeaderCellDef>
+                <th mat-header-cell mat-sort-header *matHeaderCellDef data-automation-id="table-header-transaction-type">
                   Transaction Type
                 </th>
                 <td mat-cell *matCellDef="let element">
@@ -81,7 +79,7 @@
 
               <!-- Name Column -->
               <ng-container matColumnDef="completedDate">
-                <th mat-header-cell mat-sort-header *matHeaderCellDef>
+                <th mat-header-cell mat-sort-header *matHeaderCellDef data-automation-id="table-header-completed-date">
                   Completed Date
                 </th>
                 <td
@@ -110,7 +108,7 @@
 
               <!-- Weight Column -->
               <ng-container matColumnDef="location">
-                <th mat-header-cell mat-sort-header *matHeaderCellDef>
+                <th mat-header-cell mat-sort-header *matHeaderCellDef data-automation-id="table-header-location">
                   Location
                 </th>
                 <td
@@ -138,7 +136,7 @@
 
               <!-- Symbol Column -->
               <ng-container matColumnDef="transactionQuantity">
-                <th mat-header-cell mat-sort-header *matHeaderCellDef>
+                <th mat-header-cell mat-sort-header *matHeaderCellDef data-automation-id="table-header-transaction-quantity">
                   Transaction Quantity
                 </th>
                 <td
@@ -166,7 +164,9 @@
               </ng-container>
 
               <ng-container matColumnDef="itemNumber">
-                <th mat-header-cell mat-sort-header *matHeaderCellDef > {{itemNumber}}</th>
+                <th mat-header-cell mat-sort-header *matHeaderCellDef data-automation-id="table-header-item-number">
+                  {{itemNumber}}
+                </th>
                 <td
                   mat-cell
                   *matCellDef="let element"
@@ -192,7 +192,7 @@
               </ng-container>
 
               <ng-container matColumnDef="lineNumber">
-                <th mat-header-cell mat-sort-header *matHeaderCellDef>
+                <th mat-header-cell mat-sort-header *matHeaderCellDef data-automation-id="table-header-line-number">
                   Line Number
                 </th>
                 <td
@@ -219,7 +219,7 @@
               </ng-container>
 
               <ng-container matColumnDef="requiredDate">
-                <th mat-header-cell mat-sort-header *matHeaderCellDef>
+                <th mat-header-cell mat-sort-header *matHeaderCellDef data-automation-id="table-header-required-date">
                   Required Date
                 </th>
                 <td
@@ -246,7 +246,7 @@
               </ng-container>
 
               <ng-container matColumnDef="description">
-                <th mat-header-cell mat-sort-header *matHeaderCellDef>
+                <th mat-header-cell mat-sort-header *matHeaderCellDef data-automation-id="table-header-description">
                   Description
                 </th>
                 <td
@@ -273,7 +273,7 @@
               </ng-container>
 
               <ng-container matColumnDef="completedQuantity">
-                <th mat-header-cell mat-sort-header *matHeaderCellDef>
+                <th mat-header-cell mat-sort-header *matHeaderCellDef data-automation-id="table-header-completed-quantity">
                   Completed Quantity
                 </th>
                 <td
@@ -301,7 +301,7 @@
               </ng-container>
 
               <ng-container matColumnDef="toteID">
-                <th mat-header-cell mat-sort-header *matHeaderCellDef>
+                <th mat-header-cell mat-sort-header *matHeaderCellDef data-automation-id="table-header-tote-id">
                   Tote ID
                 </th>
                 <td
@@ -322,7 +322,7 @@
               </ng-container>
 
               <ng-container matColumnDef="priority">
-                <th mat-header-cell mat-sort-header *matHeaderCellDef>
+                <th mat-header-cell mat-sort-header *matHeaderCellDef data-automation-id="table-header-priority">
                   Priority
                 </th>
                 <td
@@ -349,7 +349,7 @@
               </ng-container>
 
               <ng-container matColumnDef="completedBy">
-                <th mat-header-cell mat-sort-header *matHeaderCellDef>
+                <th mat-header-cell mat-sort-header *matHeaderCellDef data-automation-id="table-header-completed-by">
                   Completed By
                 </th>
                 <td
@@ -376,7 +376,7 @@
               </ng-container>
 
               <ng-container matColumnDef="unitOfMeasure">
-                <th mat-header-cell mat-sort-header *matHeaderCellDef replacePlaceholder [replacePlaceHolder]="placeholders.unitOfMeasure" [fallbackPlaceHolder]="placeholders.unitOfMeasureFallback">
+                <th mat-header-cell mat-sort-header *matHeaderCellDef replacePlaceholder [replacePlaceHolder]="placeholders.unitOfMeasure" [fallbackPlaceHolder]="placeholders.unitOfMeasureFallback" data-automation-id="table-header-unit-of-measure">
                   {{UnitOfMeasure}}
                 </th>
                 <td
@@ -403,7 +403,7 @@
               </ng-container>
 
               <ng-container matColumnDef="lotNumber">
-                <th mat-header-cell mat-sort-header *matHeaderCellDef>
+                <th mat-header-cell mat-sort-header *matHeaderCellDef data-automation-id="table-header-lot-number">
                   Lot Number
                 </th>
                 <td
@@ -430,7 +430,7 @@
               </ng-container>
 
               <ng-container matColumnDef="expirationDate">
-                <th mat-header-cell mat-sort-header *matHeaderCellDef>
+                <th mat-header-cell mat-sort-header *matHeaderCellDef data-automation-id="table-header-expiration-date">
                   Expiration Date
                 </th>
                 <td
@@ -458,7 +458,7 @@
               </ng-container>
 
               <ng-container matColumnDef="serialNumber">
-                <th mat-header-cell mat-sort-header *matHeaderCellDef>
+                <th mat-header-cell mat-sort-header *matHeaderCellDef data-automation-id="table-header-serial-number">
                   Serial Number
                 </th>
                 <td
@@ -485,7 +485,7 @@
               </ng-container>
 
               <ng-container matColumnDef="revision">
-                <th mat-header-cell mat-sort-header *matHeaderCellDef>
+                <th mat-header-cell mat-sort-header *matHeaderCellDef data-automation-id="table-header-revision">
                   Revision
                 </th>
                 <td
@@ -512,7 +512,7 @@
               </ng-container>
 
               <ng-container matColumnDef="wareHouse">
-                <th mat-header-cell mat-sort-header *matHeaderCellDef>
+                <th mat-header-cell mat-sort-header *matHeaderCellDef data-automation-id="table-header-warehouse">
                   Warehouse
                 </th>
                 <td
@@ -539,7 +539,7 @@
               </ng-container>
 
               <ng-container matColumnDef="importDate">
-                <th mat-header-cell mat-sort-header *matHeaderCellDef>
+                <th mat-header-cell mat-sort-header *matHeaderCellDef data-automation-id="table-header-import-date">
                   Import Date
                 </th>
                 <td
@@ -566,7 +566,7 @@
               </ng-container>
 
               <ng-container matColumnDef="batchPickID">
-                <th mat-header-cell mat-sort-header *matHeaderCellDef>
+                <th mat-header-cell mat-sort-header *matHeaderCellDef data-automation-id="table-header-batch-pick-id">
                   Batch Pick ID
                 </th>
                 <td
@@ -593,7 +593,7 @@
               </ng-container>
 
               <ng-container matColumnDef="statusCode">
-                <th mat-header-cell mat-sort-header *matHeaderCellDef>
+                <th mat-header-cell mat-sort-header *matHeaderCellDef data-automation-id="table-header-status-code">
                   Status Code
                 </th>
                 <td
@@ -620,7 +620,7 @@
               </ng-container>
 
               <ng-container matColumnDef="userField1">
-                <th mat-header-cell mat-sort-header *matHeaderCellDef replacePlaceholder [replacePlaceHolder]="placeholders.userField1" [fallbackPlaceHolder]="placeholders.userField1Fallback">
+                <th mat-header-cell mat-sort-header *matHeaderCellDef replacePlaceholder [replacePlaceHolder]="placeholders.userField1" [fallbackPlaceHolder]="placeholders.userField1Fallback" data-automation-id="table-header-user-field-1">
                   UF1
                 </th>
                 <td
@@ -647,7 +647,7 @@
               </ng-container>
 
               <ng-container matColumnDef="userField2">
-                <th mat-header-cell mat-sort-header *matHeaderCellDef replacePlaceholder [replacePlaceHolder]="placeholders.userField2" [fallbackPlaceHolder]="placeholders.userField2Fallback">
+                <th mat-header-cell mat-sort-header *matHeaderCellDef replacePlaceholder [replacePlaceHolder]="placeholders.userField2" [fallbackPlaceHolder]="placeholders.userField2Fallback" data-automation-id="table-header-user-field-2">
                   UF2
                 </th>
                 <td
@@ -674,7 +674,7 @@
               </ng-container>
 
               <ng-container matColumnDef="userField3">
-                <th mat-header-cell mat-sort-header *matHeaderCellDef replacePlaceholder [replacePlaceHolder]="placeholders.userField3" [fallbackPlaceHolder]="placeholders.userField3Fallback">
+                <th mat-header-cell mat-sort-header *matHeaderCellDef replacePlaceholder [replacePlaceHolder]="placeholders.userField3" [fallbackPlaceHolder]="placeholders.userField3Fallback" data-automation-id="table-header-user-field-3">
                   UF3
                 </th>
                 <td
@@ -701,7 +701,7 @@
               </ng-container>
 
               <ng-container matColumnDef="userField4">
-                <th mat-header-cell mat-sort-header *matHeaderCellDef replacePlaceholder [replacePlaceHolder]="placeholders.userField4" [fallbackPlaceHolder]="placeholders.userField4Fallback">
+                <th mat-header-cell mat-sort-header *matHeaderCellDef replacePlaceholder [replacePlaceHolder]="placeholders.userField4" [fallbackPlaceHolder]="placeholders.userField4Fallback" data-automation-id="table-header-user-field-4">
                   UF4
                 </th>
                 <td
@@ -728,7 +728,7 @@
               </ng-container>
 
               <ng-container matColumnDef="userField5">
-                <th mat-header-cell mat-sort-header *matHeaderCellDef replacePlaceholder [replacePlaceHolder]="placeholders.userField5" [fallbackPlaceHolder]="placeholders.userField5Fallback">
+                <th mat-header-cell mat-sort-header *matHeaderCellDef replacePlaceholder [replacePlaceHolder]="placeholders.userField5" [fallbackPlaceHolder]="placeholders.userField5Fallback" data-automation-id="table-header-user-field-5">
                   UF5
                 </th>
                 <td
@@ -755,7 +755,7 @@
               </ng-container>
 
               <ng-container matColumnDef="userField6">
-                <th mat-header-cell mat-sort-header *matHeaderCellDef replacePlaceholder [replacePlaceHolder]="placeholders.userField6" [fallbackPlaceHolder]="placeholders.userField6Fallback">
+                <th mat-header-cell mat-sort-header *matHeaderCellDef replacePlaceholder [replacePlaceHolder]="placeholders.userField6" [fallbackPlaceHolder]="placeholders.userField6Fallback" data-automation-id="table-header-user-field-6">
                   UF6
                 </th>
                 <td
@@ -782,7 +782,7 @@
               </ng-container>
 
               <ng-container matColumnDef="userField7">
-                <th mat-header-cell mat-sort-header *matHeaderCellDef replacePlaceholder [replacePlaceHolder]="placeholders.userField7" [fallbackPlaceHolder]="placeholders.userField7Fallback">
+                <th mat-header-cell mat-sort-header *matHeaderCellDef replacePlaceholder [replacePlaceHolder]="placeholders.userField7" [fallbackPlaceHolder]="placeholders.userField7Fallback" data-automation-id="table-header-user-field-7">
                   UF7
                 </th>
                 <td
@@ -809,7 +809,7 @@
               </ng-container>
 
               <ng-container matColumnDef="userField8">
-                <th mat-header-cell mat-sort-header *matHeaderCellDef replacePlaceholder [replacePlaceHolder]="placeholders.userField8" [fallbackPlaceHolder]="placeholders.userField8Fallback">
+                <th mat-header-cell mat-sort-header *matHeaderCellDef replacePlaceholder [replacePlaceHolder]="placeholders.userField8" [fallbackPlaceHolder]="placeholders.userField8Fallback" data-automation-id="table-header-user-field-8">
                   UF8
                 </th>
                 <td
@@ -836,7 +836,7 @@
               </ng-container>
 
               <ng-container matColumnDef="userField9">
-                <th mat-header-cell mat-sort-header *matHeaderCellDef replacePlaceholder [replacePlaceHolder]="placeholders.userField9" [fallbackPlaceHolder]="placeholders.userField9Fallback">
+                <th mat-header-cell mat-sort-header *matHeaderCellDef replacePlaceholder [replacePlaceHolder]="placeholders.userField9" [fallbackPlaceHolder]="placeholders.userField9Fallback" data-automation-id="table-header-user-field-9">
                   UF9
                 </th>
                 <td
@@ -863,7 +863,7 @@
               </ng-container>
 
               <ng-container matColumnDef="userField10">
-                <th mat-header-cell mat-sort-header *matHeaderCellDef replacePlaceholder [replacePlaceHolder]="placeholders.userField10" [fallbackPlaceHolder]="placeholders.userField10Fallback">
+                <th mat-header-cell mat-sort-header *matHeaderCellDef replacePlaceholder [replacePlaceHolder]="placeholders.userField10" [fallbackPlaceHolder]="placeholders.userField10Fallback" data-automation-id="table-header-user-field-10">
                   UF10
                 </th>
                 <td
@@ -890,7 +890,7 @@
               </ng-container>
 
               <ng-container matColumnDef="toteNumber">
-                <th mat-header-cell mat-sort-header *matHeaderCellDef>
+                <th mat-header-cell mat-sort-header *matHeaderCellDef data-automation-id="table-header-tote-number">
                   Tote Number
                 </th>
                 <td
@@ -917,7 +917,7 @@
               </ng-container>
 
               <ng-container matColumnDef="cell">
-                <th mat-header-cell mat-sort-header *matHeaderCellDef>Cell</th>
+                <th mat-header-cell mat-sort-header *matHeaderCellDef data-automation-id="table-header-cell">Cell</th>
                 <td
                   mat-cell
                   *matCellDef="let element"
@@ -936,7 +936,7 @@
               </ng-container>
 
               <ng-container matColumnDef="zone">
-                <th mat-header-cell mat-sort-header *matHeaderCellDef>Zone</th>
+                <th mat-header-cell mat-sort-header *matHeaderCellDef data-automation-id="table-header-zone">Zone</th>
                 <td
                   mat-cell
                   *matCellDef="let element"
@@ -955,7 +955,7 @@
               </ng-container>
 
               <ng-container matColumnDef="hostTransactionID">
-                <th mat-header-cell mat-sort-header *matHeaderCellDef>
+                <th mat-header-cell mat-sort-header *matHeaderCellDef data-automation-id="table-header-host-transaction-id">
                   Host Transaction ID
                 </th>
                 <td
@@ -983,7 +983,7 @@
               </ng-container>
 
               <ng-container matColumnDef="emergency">
-                <th mat-header-cell mat-sort-header *matHeaderCellDef>
+                <th mat-header-cell mat-sort-header *matHeaderCellDef data-automation-id="table-header-emergency">
                   Emergency
                 </th>
                 <td
@@ -1010,7 +1010,7 @@
               </ng-container>
 
               <ng-container matColumnDef="id">
-                <th mat-header-cell mat-sort-header *matHeaderCellDef>ID</th>
+                <th mat-header-cell mat-sort-header *matHeaderCellDef data-automation-id="table-header-id">ID</th>
                 <td
                   mat-cell
                   *matCellDef="let element"
@@ -1110,6 +1110,7 @@
         class="btn-lg mx-2 w-100"
         (click)="completeOrder()"
         [disabled]="isOrderCompleted"
+        data-automation-id="complete-order-button"
       >
         Put Away - Complete Order
       </button>
@@ -1121,6 +1122,7 @@
         color="primary"
         class="btn-lg mx-2 w-100"
         (click)="shippingCompleteDialog()"
+        data-automation-id="shipping-complete-button"
       >
         Shipping Complete
       </button>
@@ -1130,6 +1132,7 @@
         color="primary"
         class="btn-lg w-100"
         (click)="openGcBeginTest()"
+        data-automation-id="change-priority-button"
       >
         Change Priority
       </button>

@@ -1,10 +1,10 @@
 import { HttpStatusCode } from '@angular/common/http';
-import { Component, HostListener, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { BmToteidEntryComponent } from 'src/app/admin/dialogs/bm-toteid-entry/bm-toteid-entry.component';
 import { ConfirmationDialogComponent } from 'src/app/admin/dialogs/confirmation-dialog/confirmation-dialog.component';
-import { BatchesRequest, BatchesResponse, BulkPreferences, BulkZone, CreateBatchRequest, OrderBatchToteQtyResponse, OrderLineResource, OrderResponse, OrdersRequest, QuickPickOrdersRequest, TotesRequest, TotesResponse } from 'src/app/common/Model/bulk-transactions';
-import { ConfirmationHeadings, ConfirmationMessages, DialogConstants, localStorageKeys, ResponseStrings, Style, ToasterMessages, ToasterTitle, ToasterType } from 'src/app/common/constants/strings.constants';
+import { BatchesRequest, BatchesResponse, BulkPreferences, CreateBatchRequest, OrderBatchToteQtyResponse, OrderLineResource, OrderResponse, OrdersRequest, QuickPickOrdersRequest, TotesRequest, TotesResponse } from 'src/app/common/Model/bulk-transactions';
+import { ConfirmationHeadings, ConfirmationMessages, DialogConstants, localStorageKeys, PrintReports, ResponseStrings, Style, ToasterMessages, ToasterType, ToasterTitle, ConsoleErrorMessages} from 'src/app/common/constants/strings.constants';
 import { IBulkProcessApiService } from 'src/app/common/services/bulk-process-api/bulk-process-api-interface';
 import { BulkProcessApiService } from 'src/app/common/services/bulk-process-api/bulk-process-api.service';
 import { GlobalService } from 'src/app/common/services/global.service';
@@ -16,6 +16,8 @@ import { SpinnerService } from 'src/app/common/init/spinner.service';
 import { BATCH_DISPLAYED_COLUMNS, BulkTransactionType, BulkTransactionView, ORDER_DISPLAYED_COLUMNS, SELECTED_BATCH_DISPLAYED_COLUMNS, SELECTED_ORDER_DISPLAYED_COLUMNS, SELECTED_TOTE_DISPLAYED_COLUMNS, TOTE_DISPLAYED_COLUMNS } from 'src/app/common/constants/bulk-process/bulk-transactions';
 import { ApiResponse } from 'src/app/common/types/CommonTypes';
 import { GeneralSetup } from 'src/app/common/Model/preferences';
+import { PrintApiService } from 'src/app/common/services/print-api/print-api.service';
+import { IPrintApiService } from 'src/app/common/services/print-api/print-api-interface';
 
 @Component({
   selector: 'app-bulk-transaction',
@@ -48,17 +50,20 @@ export class BulkTransactionComponent implements OnInit {
   isBatchIdGenerationEnabled:boolean=false;
   public iBulkProcessApiService: IBulkProcessApiService;
   public iAdminApiService: IAdminApiService;
+  public iPrintApiService: IPrintApiService;
   // isViewLoaded Ensures that required data for both Quick Pick and non-Quick Pick flows is loaded before rendering UI components
   isViewLoaded:boolean = false;
   constructor(
     public bulkProcessApiService: BulkProcessApiService,
     public adminApiService: AdminApiService,
+    public printApiService: PrintApiService,
     public readonly global: GlobalService,
     public readonly route: Router,
     private readonly spinnerService: SpinnerService
   ) {
     this.iBulkProcessApiService = bulkProcessApiService;
     this.iAdminApiService = adminApiService;
+    this.iPrintApiService = printApiService;
     this.bulkTransactionType = route.url.split("/")[2].replace("Bulk", "");
     this.bulkTransactionTypeAllCaps = this.global.insertSpaceInCamelOrPascal(this.bulkTransactionType);
   }
@@ -120,29 +125,125 @@ export class BulkTransactionComponent implements OnInit {
       this.selectedDisplayedColumns = SELECTED_ORDER_DISPLAYED_COLUMNS;
     })
   }
-
+  
   async ProcessQuickPick() {
-    let orderNumberSet: Set<string> = new Set();
-    this.selectedOrders.forEach((x) => {
-      x.orderLines.forEach((orderLine: OrderLineResource) => {
-        orderNumberSet.add(orderLine.orderNumber);
-      });
-    });
-    let orderNumbers: string[] = Array.from(orderNumberSet);
-    this.iBulkProcessApiService.bulkPickOrdersLocationAssignment(orderNumbers).subscribe(async () => {
-      this.showLoader();
-      const locationAssigned:boolean = await this.bulkPickOrdersCheckLocationAssignment(orderNumbers);
+    if (!this.Prefernces || !this.Prefernces.workstationPreferences) {
+      return;
+    }
+    const extractOrderNumbers = (orders: (OrderResponse | TotesResponse)[]): string[] =>
+      orders.flatMap((x) => x.orderLines?.map((orderLine: OrderLineResource) => orderLine.orderNumber) || []);
+
+    const orderNumbers = extractOrderNumbers(this.selectedOrders);
+
+    const handleAfterLocationAssignment = async () => {
+      const locationAssigned: boolean = await this.bulkPickOrdersCheckLocationAssignment(orderNumbers);
       if (locationAssigned) {
-        let offCarouselPicks = await this.bulkPickOrdersCheckOffCarouselPicks(orderNumbers);
-        if(offCarouselPicks){
+        const reprocessOrders = await this.GetOrdersMovedToReprocessAsync(orderNumbers);
+        const assignedOrderLines = await this.getOrderLinesAssignedLocations(orderNumbers);
+
+        // Filter out reprocess order lines
+        this.orderLines = this.orderLines.filter(line => !reprocessOrders.includes(line.orderNumber));
+
+        // Create a Map for quick lookup by id
+        const assignedMap = new Map<number, { id: number; location: string | null }>(
+          assignedOrderLines.map(line => [line.id, line])
+        );
+
+        // Update locations using the Map
+        this.orderLines.forEach((line) => {
+          const assignedLine = assignedMap.get(line.id);
+          if (assignedLine?.location != null) {
+            line.location = assignedLine.location;
+          }
+        });
+
+        // Filter out reprocess orders
+        const reprocessSet = new Set(reprocessOrders);
+
+        const nonReprocessOrders = this.selectedOrders.filter(order =>
+          (order.orderLines ?? []).every(line => !reprocessSet.has(line.orderNumber))
+        );
+
+        await this.printReprocessReportAfterAllocationIfRequired(reprocessOrders);
+        const offCarouselPicks = await this.bulkPickOrdersCheckOffCarouselPicks(orderNumbers);
+        if (offCarouselPicks) {
           this.showNoOffCarouselPicksMessage();
-        }else{
-          this.quickPickToNonQuickPick();
+        } else {
+          if (this.Prefernces?.workstationPreferences?.pickToTotes) {
+            const dialogRefTote = this.global.OpenDialog(BmToteidEntryComponent, {
+              height: DialogConstants.auto,
+              width: Style.w990px,
+              autoFocus: DialogConstants.autoFocus,
+              disableClose: true,
+              data: {
+                selectedOrderList: nonReprocessOrders,
+                nextToteID: this.NextToteID,
+                BulkProcess: true,
+                autoPrintPickToteLabels: this.Prefernces?.workstationPreferences?.autoPrintPickToteLabels,
+                view: this.view,
+                type: this.bulkTransactionType,
+              },
+            });
+            dialogRefTote.afterClosed().subscribe((result) => {
+              if (result && result.length > 0) {
+                this.selectedOrders = result;
+                this.selectedOrders.forEach((order) => {
+                  order.orderLines?.forEach((orderLine) => {
+                    orderLine.toteId = order.toteId;
+                  });
+                });
+                this.changeVisibiltyVerifyBulk(true);
+              }
+            });
+          } else {
+            this.changeVisibiltyVerifyBulk(true);
+          }
         }
       }
+    };
+
+    this.showLoader();
+    try {
+      if(! await this.bulkPickOrdersLocationAssignment(orderNumbers)) return;
+      await handleAfterLocationAssignment();
+    } catch (error) {
+      this.global.ShowToastr(ToasterType.Error, ToasterMessages.SomethingWentWrong, ToasterTitle.Error);
+    } finally {
       this.hideLoader();
-    })
+    }
   }
+
+  async bulkPickOrdersLocationAssignment(orderNumbers: string[]) {
+    try {
+      const res = await this.iBulkProcessApiService.bulkPickOrdersLocationAssignment(orderNumbers);
+      if(res?.body?.isExecuted){
+        return true;
+      }
+    } catch (error) {
+      this.global.ShowToastr(ToasterType.Error,ToasterMessages.UnableToAssignLocation,ToasterTitle.Error);
+      return false;
+    }
+    return false;
+  }
+
+
+  
+  private async printReprocessReportAfterAllocationIfRequired(reprocessOrders: string[]): Promise<void> {
+    try {
+      if (!this.generalSetupInfo?.printReprocessReportAfterAllocation) return;
+      if (Array.isArray(reprocessOrders) && reprocessOrders.length > 0) {
+        await this.global.printReportForSelectedOrders(
+          reprocessOrders,
+          PrintReports.REPROCESS_TRANSACTIONS,
+          false
+        );
+      }
+    } catch (err) {
+      console.error(ConsoleErrorMessages.ErrorPrintingReprocessReport, err);
+      this.global.ShowToastr(ToasterType.Error,ToasterMessages.UnableToPrint,ToasterTitle.Error);
+    }
+  }
+
 
   showNoOffCarouselPicksMessage(){
     this.selectedOrders = [];
@@ -168,6 +269,33 @@ export class BulkTransactionComponent implements OnInit {
     }
   }
 
+  async GetOrdersMovedToReprocessAsync(orderNumbers: string[]): Promise<string[]> {
+    if (!orderNumbers || orderNumbers.length === 0) {
+      return [];
+    }
+    try {
+      const res = await this.iBulkProcessApiService.GetOrdersMovedToReprocessAsync(orderNumbers);
+      const data = res?.body?.data;
+      return Array.isArray(data) ? data : [];
+    } catch (error) {
+      return [];
+    }
+  }
+
+  async getOrderLinesAssignedLocations(orderNumbers: string[]) {
+    if (!orderNumbers || orderNumbers.length === 0) {
+      return [];
+    }
+    try {
+      const res = await this.iBulkProcessApiService.getOrderLinesAssignedLocations(orderNumbers);
+      const data = res?.body?.data;
+      return Array.isArray(data) ? data : [];
+    } catch (error) {
+      console.error(ConsoleErrorMessages.ErrorFindingAssignedOrderLines, error);
+      return [];
+    }
+  }
+
   quickPickToNonQuickPick(){
     this.selectedOrders = [];
     this.isQuickPick = false;
@@ -176,17 +304,15 @@ export class BulkTransactionComponent implements OnInit {
 
 
   async bulkPickOrdersCheckLocationAssignment(orderNumbers: string[]): Promise<boolean> {
-    if (this.Prefernces.systemPreferences.shortPickFindNewLocation && this.Prefernces.systemPreferences.displayEob) {
-      for (let i = 0; i < 30; i++) {
-        await new Promise(resolve => setTimeout(resolve, 2000));
-        try {
-          const res = await this.iBulkProcessApiService.bulkPickOrdersCheckLocationAssignment(orderNumbers);
-          if (res?.body?.data) {
-            return true;
-          }
-        } catch {
-          return false;
+    for (let i = 0; i < 30; i++) {
+      await new Promise(resolve => setTimeout(resolve, 2000));
+      try {
+        const res = await this.iBulkProcessApiService.bulkPickOrdersCheckLocationAssignment(orderNumbers);
+        if (res?.body?.data) {
+          return true;
         }
+      } catch {
+        return false;
       }
     }
     return false;
@@ -431,7 +557,6 @@ export class BulkTransactionComponent implements OnInit {
     this.orderLines = this.sortByLocation(this.orderLines);
   }
   
-
   appendAll() {
     this.orderLines = [];
     this.selectedOrders = [

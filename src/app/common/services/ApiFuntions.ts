@@ -17,6 +17,8 @@ import { ZoneListPayload } from 'src/app/bulk-process/preferences/preference.mod
 import { DevicePreferenceRequest, DevicePreferencesTableRequest } from '../interface/admin/device-preferences';
 import { UpdateEmergencyRequest } from '../interface/admin/opentransaction.interfaces';
 import { ApiResponse, ApiResponseData } from '../types/CommonTypes';
+import { PrintOrdersPayload } from '../interface/bulk-transactions/bulk-pick';
+
 
 
 @Injectable({
@@ -2012,8 +2014,8 @@ public updateEmergency(payload: UpdateEmergencyRequest): Observable<ApiResponse<
     return this.ApiBase.Get('/orders/quickpick', body);
   }
 
-  public bulkPickOrdersLocationAssignment(body: any): Observable<any> {
-    return this.ApiBase.Put('/orders/locationassignment', body);
+  public async bulkPickOrdersLocationAssignment(body: string[]) {
+    return await this.ApiBase.PutAsync('/orders/locationassignment', body,false);
   }
 
   public async bulkPickOrdersCheckLocationAssignment(body: string[]) {
@@ -2022,6 +2024,14 @@ public updateEmergency(payload: UpdateEmergencyRequest): Observable<ApiResponse<
 
   public async bulkPickOrdersCheckOffCarouselPicks(body: string[]) {
     return await this.ApiBase.PostAsync('/orders/checkoffcarouselpicks', body, false, false);
+  }
+
+  public async GetOrdersMovedToReprocessAsync(body: string[]) {
+    return await this.ApiBase.PostAsync('/Admin/orders-moved-to-reprocess', body, false, false);
+  }
+
+  public async getOrderLinesAssignedLocations(body: string[]) {
+    return await this.ApiBase.PostAsync('/Admin/order-lines-assigned-locations', body, false, false);
   }
 
   public async bulkPickZones() {
@@ -2413,4 +2423,16 @@ public ResolveMarkoutTote(toteId: number) {
     return await this.ApiBase.PatchAsync(`/Consolidation/Route/${routeId}/RequestRelease`,null);
   }
 
+  public async printSelectedOrdersReport(
+    body: PrintOrdersPayload,
+    showLoader: boolean = true
+  ) {
+    return await this.ApiBase.PostAsync(
+      `/print/selectedordersreport`,
+      body,
+      false,
+      showLoader
+    );
+  }
+  
 }

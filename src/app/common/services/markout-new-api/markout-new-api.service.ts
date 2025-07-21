@@ -3,6 +3,8 @@ import { IMarkoutNewApiService } from './markout-new-api-interface';
 import { ApiFuntions } from '../ApiFuntions';
 import { AuthService } from '../../init/auth.service';
 import { IQueryParams } from 'src/app/consolidation-manager/cm-route-id-management/routeid-list/routeid-IQueryParams';
+import { Observable, of } from 'rxjs';
+import { PickLineSuggestionResponse, PickTotesSuggestionResponse } from 'src/app/consolidation-manager/cm-markout-new/models/cm-markout-new-models';
 
 @Injectable({
   providedIn: 'root'
@@ -27,4 +29,12 @@ export class MarkoutNewApiService implements IMarkoutNewApiService {
    ResolveMarkoutTote(toteId :number) {
     return this.Api.ResolveMarkoutTote(toteId);
   }
+
+
+  // --- Suggestive search placeholder for Pick Totes ---
+  NextSuggestedPickTotesColumn(payload: { query: string; column: string }): Observable<PickTotesSuggestionResponse> {
+    // TODO: Implement real API call
+    return of({ data: [] });
+  }
+  // --- End suggestive search placeholder for Pick Totes ---
 }

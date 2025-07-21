@@ -3,16 +3,16 @@
   <div class="row d-flex justify-content-between">
     <div class="col-xl-5 mb-3">
       <mat-form-field class="filter w-100 stats-filters" appearance="outline">
-        <mat-label>Minimum RTS Reel Quantity</mat-label>
+        <mat-label data-automation-id="minimum-rts-reel-qty-label">Minimum RTS Reel Quantity</mat-label>
         <input (input)="handleInputChange($event)" matInput placeholder="Minimum RTS Reel Qty" type="number" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength); this.value = 
           !!this.value && Math.abs(this.value) >= 0 ? Math.abs(this.value) : null" maxlength="9"  (contextmenu)="onContextMenu($event, 'Minimum RTS Reel Quantity')"
-          class="custom-input-number" formControlName="minimumRTSReelQuantity" (focusout)="onFocusOutEvent($event)">
+          class="custom-input-number" formControlName="minimumRTSReelQuantity" (focusout)="onFocusOutEvent($event)" data-automation-id="minimum-rts-reel-qty-input">
       </mat-form-field>
     </div>
 
     <div class="col-xl-4 mb-3">
       <button type="button" mat-flat-button color="primary"
-        class="mat-focus-indicator primary-button btn-regular w-100 mat-flat-button mat-button-base mat-primary " (click)="updateReelQty()">Update Min. Reel Qty for All
+        class="mat-focus-indicator primary-button btn-regular w-100 mat-flat-button mat-button-base mat-primary " (click)="updateReelQty()" data-automation-id="update-min-reel-qty-button">Update Min. Reel Qty for All
 
         <span matSuffix>
 
@@ -26,10 +26,10 @@
   <div class="row">
     <div class="px-3">
       <mat-checkbox  class="example-margin custom-checkbox" color="primary" formControlName="includeInAutoRTSUpdate"
-        [disabled]="btnDisabled" (change)="onChangeRTSUpdate($event)">Include in Auto RTS update</mat-checkbox>
+        [disabled]="btnDisabled" (change)="onChangeRTSUpdate($event)" data-automation-id="include-auto-rts-checkbox">Include in Auto RTS update</mat-checkbox>
     </div>
   </div>
 
 </div>
 
-<app-table-context-menu-component *ngIf="isActiveTrigger" (optionSelected)="optionSelected($event)" [componentName]="'InvMap'"></app-table-context-menu-component>
+<app-table-context-menu-component *ngIf="isActiveTrigger" (optionSelected)="optionSelected($event)" [componentName]="'InvMap'" data-automation-id="table-context-menu"></app-table-context-menu-component>
