@@ -1513,8 +1513,8 @@ export class ApiFuntions {
     return this.ApiBase.Get(`/Admin/opentransaction`, Body);
   }
 
-public updateEmergency(payload: UpdateEmergencyRequest): Observable<ApiResponse<UpdateEmergencyRequest | string> | null> {
-  return this.ApiBase.Put<ApiResponse<UpdateEmergencyRequest | string>>('/Admin/updateEmergency', payload);
+public updateEmergency(payload: UpdateEmergencyRequest): Observable<ApiResponse<UpdateEmergencyRequest> | null> {
+  return this.ApiBase.Put<ApiResponse<UpdateEmergencyRequest>>('/Admin/updateEmergency', payload);
 }
 
   public HoldTransactionsData(Body: any): Observable<any> {
