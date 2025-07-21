@@ -24,3 +24,7 @@
   width: 14px;
   height:2px;
 }
+.table-cell-style{
+  text-overflow: ellipsis; overflow: hidden; max-width: 20ch; white-space: nowrap;
+}
+

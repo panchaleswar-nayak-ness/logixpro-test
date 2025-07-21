@@ -1,9 +1,9 @@
-.count-table-scrollbar{
-    height: calc(64vh - 60px);
+.count-table-scrollbar {
+  height: calc(45vh); // Compact height to prevent scrolling
+  overflow-y: auto;
 }
-.verify-table-height{
-    height: calc(60vh - 60px);
+
+.verify-table-height {
+  height: calc(60vh - 60px);
 }
-.round{
-    border-radius: 999px !important;
-}
+

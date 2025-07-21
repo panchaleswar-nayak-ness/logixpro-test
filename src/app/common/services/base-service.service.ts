@@ -9,6 +9,7 @@ import { of } from 'rxjs';
 import { catchError, shareReplay, take, switchMap, map ,finalize} from 'rxjs/operators';
 import { throwError } from 'rxjs';
 import { SpinnerService } from "../../common/init/spinner.service";
+import { ZoneListPayload } from 'src/app/bulk-process/preferences/preference.models';
 
 type Method = 'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH';
 
@@ -159,8 +160,8 @@ export class BaseService {
     return await lastValueFrom(this.request('PUT', endPoint,{body:model}));
   }
 
-  async PostAsync<T>(endPoint: string, model: T, isLoader: boolean = false): Promise<HttpResponse<T>> {
-    return await lastValueFrom(this.request('POST', endPoint,{body:model}));
+  async PostAsync<T>(endPoint: string, model: T, isLoader: boolean = false, spinnerShow: boolean = true): Promise<HttpResponse<T>> {
+    return await lastValueFrom(this.request('POST', endPoint,{body:model}, undefined, 'body', spinnerShow));
   }
 
   public Post<T>(endPoint: string, reqPaylaod: T) {
@@ -198,9 +199,14 @@ export class BaseService {
 
     return await lastValueFrom(this.request<any>('DELETE', endPoint, { params: queryParams }));
   }
+  public async BulkDeleteAsync(endPoint: string, reqPayload: ZoneListPayload) {
+    return await lastValueFrom(this.request<ZoneListPayload>('DELETE', endPoint, {
+      body: reqPayload,
+    }));
+  }
 
-  async PutAsync<T>(endPoint: string, reqPaylaod: T) {
-    return await lastValueFrom(this.request<T>('PUT', endPoint, { body: reqPaylaod }));
+  async PutAsync<T>(endPoint: string, reqPaylaod: T, spinnerShow: boolean = true) {
+    return await lastValueFrom(this.request<T>('PUT', endPoint, { body: reqPaylaod }, undefined, 'body', spinnerShow));
   }
 
   async PatchAsync<T>(endPoint: string, reqPayload: T | null) {

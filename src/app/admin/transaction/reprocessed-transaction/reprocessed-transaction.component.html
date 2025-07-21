@@ -2,14 +2,14 @@
     <mat-card-content>
         <div class="row">
             <div class="col mb-3">
-                <app-icon-heading-component class="card-header-title mb-0 d-flex align-items-center mb-3" heading="Reprocessed Transactions" icon="tab_unselected"></app-icon-heading-component>
+                <app-icon-heading-component class="card-header-title mb-0 d-flex align-items-center mb-3" heading="Reprocessed Transactions" icon="tab_unselected" data-automation-id="reprocessed-transactions-heading"></app-icon-heading-component>
             </div>
             <div class="col-xl-2 offset-xl-5 d-flex justify-content-end mb-3">
                 <div class="d-block d-lg-flex d-flex w-100 justify-content-end">
                 <mat-form-field class="action-dropdown flex-grow-1" appearance="outline">
-                    <mat-label>Action</mat-label>
-                    <mat-select  #matRef  class="employees-action" (openedChange)="actionDialog($event)" [(value)]="selectedVariable" placeholder="Actions">
-                        <mat-option value="set_column_sq">Set Column Sequence</mat-option>
+                    <mat-label data-automation-id="label-action">Action</mat-label>
+                    <mat-select  #matRef  class="employees-action" (openedChange)="actionDialog($event)" [(value)]="selectedVariable" placeholder="Actions" data-automation-id="select-action">
+                        <mat-option value="set_column_sq" data-automation-id="option-action-set_column_sq">Set Column Sequence</mat-option>
                     </mat-select>
                     <span class="material-symbols-outlined icon-expand-more">expand_more</span>
                 </mat-form-field>
@@ -28,7 +28,8 @@
                         [searchString]="this.columnSearch.searchValue"
                         [searchByInput]="this.searchBar"
                         [searchAutocompleteList]="this.searchAutocompleteList"
-                        (autoCompleteEvent)="this.columnSearch.searchValue = $event; this.searchBar.next($event)">
+                        (autoCompleteEvent)="this.columnSearch.searchValue = $event; this.searchBar.next($event)"
+                        data-automation-id="column-filter-component">
                     </app-column-filter-component>
                 </div>
             </div>
@@ -40,16 +41,18 @@
                 <table mat-table class="custom-table  table-fix" #table [dataSource]="dataSource" matSort (matSortChange)="sortChange($event)">
 
                     <ng-container class="d-table-row" [matColumnDef]="col.colDef" *ngFor="let col of displayedColumns; let indexOfelement=index;">
-                        <th class="header reprocessed-header-custom" mat-header-cell *matHeaderCellDef mat-sort-header (sortActionDescription)="indexOfelement">
+                        <th class="header reprocessed-header-custom" mat-header-cell *matHeaderCellDef mat-sort-header (sortActionDescription)="indexOfelement" [attr.data-automation-id]="'table-header-' + col.colDef">
                             {{ col.colTitle }}
                         </th>
 
-                        <td *matCellDef="let element"  mat-cell class="reprocessed-cell-custom" #tooltip="matTooltip"
-                         [matTooltip]="element[col.colHeader]" matTooltipPosition="above" [matTooltipDisabled]="element[col.colHeader] && element[col.colHeader].length>=20?false:true"> {{element[col.colHeader] }}</td>
+                        <td *matCellDef="let element; let rowIndex = index"  mat-cell class="reprocessed-cell-custom" #tooltip="matTooltip"
+                            [matTooltip]="element[col.colHeader]" matTooltipPosition="above" [matTooltipDisabled]="element[col.colHeader] && element[col.colHeader].length>=20?false:true"
+                            [attr.data-automation-id]="'table-row-' + rowIndex + '-' + col.colDef + '-' + element[col.colHeader]"> {{element[col.colHeader] }}
+                        >{{ element[col.colHeader] }}</td>
                     </ng-container>
 
                     <ng-container matColumnDef="actions" stickyEnd>
-                        <th mat-header-cell *matHeaderCellDef class="reprocessed-action-cell"></th>
+                        <th mat-header-cell *matHeaderCellDef class="reprocessed-action-cell" data-automation-id="table-header-actions"></th>
                     </ng-container>
 
                     <tr class="mat-row d-flex w-100 justify-content-center position-absolute" *matNoDataRow [attr.colspan]="displayedColumns && displayedColumns.length">
@@ -57,13 +60,13 @@
                     </tr>
 
                     <mat-header-row *matHeaderRowDef="columnValues;sticky: true" class="border-0"></mat-header-row>
-                    <mat-row *matRowDef="let row; columns: columnValues;"></mat-row>
+                    <mat-row *matRowDef="let row; columns: columnValues; let rowIndex = index" [attr.data-automation-id]="'table-data-row-' + rowIndex + '-' + row.id"></mat-row>
                 </table>
             </ng-scrollbar>
         </div>
 
         <div class="table-pagination d-flex justify-content-start" *ngIf="columnValues.length>0 && displayedColumns && dataSource">
-            <mat-paginator [length]="this.customPagination.total" [pageSize]="20" showFirstLastButtons [pageSizeOptions]="[10, 20, 100]" (page)="handlePageEvent($event)"></mat-paginator>
+            <mat-paginator [length]="this.customPagination.total" [pageSize]="20" showFirstLastButtons [pageSizeOptions]="[10, 20, 100]" (page)="handlePageEvent($event)" data-automation-id="table-paginator"></mat-paginator>
         </div>
     </mat-card-content>
 </mat-card>

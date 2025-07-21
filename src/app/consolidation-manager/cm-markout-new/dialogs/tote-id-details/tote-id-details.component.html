@@ -12,7 +12,7 @@
             <span><b class="badge-ch-limit">Route ID</b></span>
         </div>
         <div class="col-xl-9">
-            <span>00009999990536805584</span>
+            <span>{{ data.routeId }}</span>
         </div>
     </div>
     <div class="row p-2 item-bottom">
@@ -20,7 +20,7 @@
             <span><b class="badge-ch-limit">Order Number</b></span>
         </div>
         <div class="col-xl-9">
-            <span>6731457</span>
+            <span>{{ data.orderNumber }}</span>
         </div>
     </div>
     <div class="row p-2 item-bottom">
@@ -28,7 +28,7 @@
             <span><b class="badge-ch-limit">Host Rec ID</b></span>
         </div>
         <div class="col-xl-9">
-            <span>1038314036</span>
+            <span>{{ data.hostRecordId }}</span>
         </div>
     </div>
     <div class="row p-2 item-bottom">
@@ -36,7 +36,7 @@
             <span><b class="badge-ch-limit">Tote Type</b></span>
         </div>
         <div class="col-xl-9">
-            <span>J-100</span>
+            <span>{{ data.type }}</span>
         </div>
     </div>
     <div class="row p-2 item-bottom">
@@ -45,7 +45,11 @@
         </div>
         <div class="col-xl-9">
             <div class="d-flex align-items-center ">
-                <span class="br-14  label px-3 f-16 label-red">EXCEPTION</span>
+                <span [ngClass]="{
+                      'label-red' : data.markoutStatus == 'Exception',
+                      'label-green' : data.markoutStatus == 'Complete',
+                      'not-inducted-status' : data.markoutStatus == 'Not Inducted'  }"
+                    class="br-14  label px-3 f-16">{{data.markoutStatus }}</span>
             </div>
         </div>
     </div>
@@ -54,7 +58,7 @@
             <span><b class="badge-ch-limit">Status Date</b></span>
         </div>
         <div class="col-xl-9">
-            <span>2023-05-30, 10:12:12 </span>
+            <span>{{ data.statusDate | date:'MM/dd/yyyy h:mm:ss a' }}</span>
         </div>
     </div>
     <div class="row p-2 item-bottom">
@@ -62,13 +66,13 @@
             <span><b class="badge-ch-limit">Add Date</b></span>
         </div>
         <div class="col-xl-9">
-            <span>None</span>
+            <span>{{ data.addedDate | date:'MM/dd/yyyy h:mm:ss a'}}</span>
         </div>
     </div>
 </div>
 
-<div class="row d-flex gap-12 mt-3" mat-dialog-actions>
-    <button mat-stroked-button color="primary" class="col btn-lg" disabled>
+<div mat-dialog-actions>
+    <button mat-stroked-button color="primary" class="btn-lg w-100" disabled>
         Show / Hide Fields
     </button>
 </div>

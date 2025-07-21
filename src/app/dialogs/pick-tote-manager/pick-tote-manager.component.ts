@@ -1648,4 +1648,9 @@ refreshOrderDataGrid() {
   
     return dateFields.has(field) ? 'date' : 'text';
   }  
+
+  isTooltipDisabled(value: string): boolean {
+    return value.length < 25;
+    
+  }
 }

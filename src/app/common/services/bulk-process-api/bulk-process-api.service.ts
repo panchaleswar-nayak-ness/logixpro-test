@@ -3,6 +3,7 @@ import { ApiFuntions } from '../ApiFuntions';
 import { AuthService } from 'src/app/common/init/auth.service';
 import { IBulkProcessApiService } from './bulk-process-api-interface'
 import {AssignToteToOrderDto, NextToteId} from "../../Model/bulk-transactions";
+import { ZoneListPayload } from 'src/app/bulk-process/preferences/preference.models';
 
 @Injectable({
   providedIn: 'root'
@@ -38,6 +39,23 @@ export class BulkProcessApiService implements IBulkProcessApiService {
   public bulkPickOrdersLocationAssignment(body: any) {
     return this.Api.bulkPickOrdersLocationAssignment(body);
   }
+
+  public bulkPickOrdersCheckLocationAssignment(body: string[]) {
+    return this.Api.bulkPickOrdersCheckLocationAssignment(body);
+  }
+
+  public bulkPickOrdersCheckOffCarouselPicks(body: string[]) {
+    return this.Api.bulkPickOrdersCheckOffCarouselPicks(body);
+  }
+
+  public GetOrdersMovedToReprocessAsync(body: string[]) {
+    return this.Api.GetOrdersMovedToReprocessAsync(body);
+  }
+
+  public getOrderLinesAssignedLocations(body: string[]) {
+    return this.Api.getOrderLinesAssignedLocations(body);
+  }
+
   public bulkPickZones() {
     return this.Api.bulkPickZones();
   }
@@ -56,6 +74,12 @@ export class BulkProcessApiService implements IBulkProcessApiService {
   }
   public deleteBulkPickBulkZone(body: any) {
     return this.Api.deleteBulkPickBulkZone(body);
+  }
+  public deleteAllBulkPickBulkZone(body: ZoneListPayload) {
+    return this.Api.deleteAllBulkPickBulkZone(body);
+  }
+  public addAllBulkPickBulkZone(body: ZoneListPayload) {
+    return this.Api.addAllBulkPickBulkZone(body);
   }
   public bulkPreferences() {
     return this.Api.bulkPreferences();

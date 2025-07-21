@@ -124,35 +124,36 @@
       
      
         <h6 class="text-tertiary-900 mb-3 bold">{{routeIdStatusCountCard}}</h6>
-        <div class="row">
-        <div class="d-md-flex ga  p-12 d-block flex-wrap justify-content-center">
-          <div class="employees text-center mb-3">
+        <div>
+        <div class="row g-0">
+          <div class="col employees text-center mb-3">
             <app-stats-circle [value]="statusConNotStarted" title="Con. Not Started"></app-stats-circle>
             
           </div>
-          <div class="customer text-center mb-3">
+          <div class="col customer text-center mb-3">
           <app-stats-circle [value]="statusInConsolidation" title="In Consolidation"></app-stats-circle>
           
           </div>
-          <div class="customer text-center mb-3">
+          <div class="col customer text-center mb-3">
             <app-stats-circle [value]="statusReadyForRelease" title="Ready For release"></app-stats-circle>
           </div>
         </div>
       </div>
-      <div class="row">
-          <div class="d-md-flex d-block flex-wrap justify-content-center gap-20">
-            <div class="employees text-center mb-3 mb-xl-0">
-              <app-stats-circle [value]="statusReleaseRequested" title="Release Requested"></app-stats-circle>
-            </div>
-          
-            <div class="customer text-center">
-              <app-stats-circle [value]="statusActiveRelease" title="Active Release"></app-stats-circle>
-            
-            </div>
+      <div>
+        <div class="row g-0">
+          <div class="col employees text-center mb-3">
+             <app-stats-circle [value]="statusReleaseRequested" title="Release Requested"></app-stats-circle>
             
           </div>
+          <div class="col customer text-center mb-3">
+         <app-stats-circle [value]="statusActiveRelease" title="Active Release"></app-stats-circle>
+          
+          </div>
+          <div class="col customer text-center mb-3">
+            <app-stats-circle [value]="statusInShipping" title="In Shipping"></app-stats-circle>
+          </div>
         </div>
- 
+      </div>
     </div>
   </div>
 

@@ -34,4 +34,5 @@ export interface ICommonApi
 	dltVelocityCode(payload: any)
 	getAdjustmentReasonsList(payload: any)
 	getItemQuantityDetail(payload: any)
+	NextBatchID()
 }

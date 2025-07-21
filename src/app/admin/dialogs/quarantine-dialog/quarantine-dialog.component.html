@@ -3,14 +3,14 @@
     <mat-icon color="warn">vpn_lock</mat-icon>
   </div>
   <div>
-    <p class="bold text-tritary-900 mb-4">Click submit to quarantine item {{currentPageItemNo}}. This will cause any allocated orders and locations with this item to be deallocated.</p>
+    <p class="bold text-tritary-900 mb-4" data-automation-id="quarantine-message">Click submit to quarantine item {{currentPageItemNo}}. This will cause any allocated orders and locations with this item to be deallocated.</p>
     <div class="mb-3">
-      <button mat-flat-button color="warn" class="custom-btn button-delete-flat bg-white w-100 btn-lg" [mat-dialog-close]="true">
+      <button mat-flat-button color="warn" class="custom-btn button-delete-flat bg-white w-100 btn-lg" [mat-dialog-close]="true" data-automation-id="submit-button">
         Submit
       </button>
     </div>
     <div>
-      <button mat-stroked-button color="basic" class="custom-btn bg-white w-100 btn-lg" [mat-dialog-close]="false">
+      <button mat-stroked-button color="basic" class="custom-btn bg-white w-100 btn-lg" [mat-dialog-close]="false" data-automation-id="cancel-button">
         Cancel
       </button>
     </div>

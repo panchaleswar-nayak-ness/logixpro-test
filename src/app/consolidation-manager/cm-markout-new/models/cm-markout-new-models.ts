@@ -1,23 +1,29 @@
-export interface PickLines {
-    item: number;
-    qty: number;
-    locID: string;
-    status: string;
-    statusDate: string;
-    compQty: string;
-    compBy: string;
-    shortReason: string;
+export interface MarkoutPickLine {
+  orderId: string;
+  itemNumber: string;
+  quantity: number | null;
+  locationId: string;
+  status: string;
+  statusDate: string;
+  completeQty: number | null;
+  completedBy: string;
+  shortReason: string;
 }
 
 export interface PickTotes {
     toteId: number;
-    status: string;
+    markoutStatus: string;
     statusDate: string;
-    routeID: string;
+    routeId: string;
     divertReason: string;
     location: string;
     destination: string;
+    orderNumber: string;
+    hostRecordId: string;
+    type:string;
     selected: boolean;
+    addedDate:string;
+
 }
 
 export interface ToteAudit {
@@ -29,4 +35,40 @@ export interface ToteAudit {
     status: string;
     statusDate: string;
     divertReason: string;
+}
+
+
+export interface PaginationMeta {
+  totalCount: number;
+  page: number;
+  pageSize: number;
+  totalPages: number;
+  hasNext: boolean;
+  hasPrevious: boolean;
+}
+
+export interface MarkoutAuditResponse {
+  items: ToteAudit[];
+  meta: PaginationMeta;
+}
+
+export interface MarkoutResponse {
+  items: PickTotes[];
+  meta: PaginationMeta;
+}
+
+export interface MarkoutPickLinesResponse {
+  items: MarkoutPickLine[];
+  meta:  PaginationMeta;
+  suggestions?: MarkoutPickLine[];
+}
+
+// Suggestive search response for Pick Lines
+export interface PickLineSuggestionResponse {
+  data: string[];
+}
+
+// Suggestive search response for Pick Totes
+export interface PickTotesSuggestionResponse {
+  data: string[];
 }

@@ -54,6 +54,10 @@
         Maintain Bulk Batch ID 
       <mat-slide-toggle [(ngModel)]="systemLogicPref.bulkBatchID" [disabled]="isBulkBatchDisabled" (change)="update()" color="primary"> </mat-slide-toggle>
       </div>
+      <div class="d-flex justify-content-between mb-3">
+        Maintain Carousel Batch ID 
+      <mat-slide-toggle [(ngModel)]="systemLogicPref.carouselBatchID" [disabled]="isCarouselBatchDisabled" (change)="update()" color="primary"> </mat-slide-toggle>
+      </div>
     </div>
     <div class="col-xl-6">
       <div class="d-flex justify-content-between mb-3">
@@ -70,15 +74,15 @@
       </div>
       <div class="d-flex justify-content-between mb-3">
         Allow QuickPicks
-        <mat-slide-toggle [(ngModel)]="systemLogicPref.allowQuickPicks" (change)="update()" color="primary"></mat-slide-toggle>
+        <mat-slide-toggle [(ngModel)]="systemLogicPref.quickPicks" (change)="update()" color="primary" matTooltip="Turn on to allow Carousel and Bulk Quick Picks" matTooltipPosition="above"></mat-slide-toggle>
       </div>
       <div class="d-flex justify-content-between mb-3">
         Default QuickPicks 
-        <mat-slide-toggle [(ngModel)]="systemLogicPref.deafultQuickPicks" (change)="update()" color="primary"></mat-slide-toggle>
+        <mat-slide-toggle [(ngModel)]="systemLogicPref.defaultQuickPicks" (change)="update()" color="primary" matTooltip="Turn on to see the Quick Pick view by default on PickFace Induction and on LogixPro Bulk Pick" matTooltipPosition="above"></mat-slide-toggle>
       </div>
       <div class="d-flex justify-content-between mb-0">
         Print Reprocess Report After Allocation 
-        <mat-slide-toggle [(ngModel)]="systemLogicPref.printReprocessReportAfterAllocation" (change)="update()" color="primary"></mat-slide-toggle>
+        <mat-slide-toggle [(ngModel)]="systemLogicPref.printReprocessReportAfterAllocation" (change)="update()" color="primary" matTooltip="Turn on to automatically print the Reprocess report after Location Assignment." matTooltipPosition="above"></mat-slide-toggle>
       </div>
     </div>
   </div>

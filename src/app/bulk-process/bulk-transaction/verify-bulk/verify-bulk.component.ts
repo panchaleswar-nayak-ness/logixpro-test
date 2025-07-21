@@ -26,6 +26,11 @@ import { SpinnerService } from 'src/app/common/init/spinner.service';
 import { SharedService } from 'src/app/common/services/shared.service';
 import { MatTooltip } from '@angular/material/tooltip';
 import { PrintApiService } from 'src/app/common/services/print-api/print-api.service';
+import {CommonApiService } from 'src/app/common/services/common-api/common-api.service';
+import { firstValueFrom } from 'rxjs';
+import { ApiResponse} from 'src/app/common/types/CommonTypes';
+import { DisplayEOBResponse } from 'src/app/common/types/bulk-process/bulk-transactions';
+import { BulkTransactionType } from 'src/app/common/constants/bulk-process/bulk-transactions';
 
 @Component({
   selector: 'app-verify-bulk',
@@ -36,16 +41,15 @@ export class VerifyBulkComponent implements OnInit {
   fieldMappings = JSON.parse(localStorage.getItem('fieldMappings') ?? '{}');
   itemNumber: string = this.fieldMappings.itemNumber;
   placeholders = Placeholders;
-  @Output() back = new EventEmitter<any>();
-  @Input() orderLines: any = [];
-  // TODO: BulkPreferences contains workstationPreferences which we are already getting below
+  @Output() back = new EventEmitter<boolean>();
+  @Input() orderLines;
   @Input() Prefernces: BulkPreferences;
-  @Input() url: any;
+  @Input() bulkTransactionType: string;
   IsLoading: boolean = true;
   OldSelectedList: any = [];
-  taskCompleteNewRequest: TaskCompleteNewRequest [] = [];
+  taskCompleteNewRequest: TaskCompleteNewRequest[] = [];
   filteredData: any = [];
-  @Input() NextToteID: any;
+  @Input() NextToteID: number;
   @ViewChild('paginator') paginator: MatPaginator;
   @Input() ordersDisplayedColumns: string[] = ["ItemNo", "Description", "LineNo", "Whse", "Location", "LotNo", "SerialNo", "OrderNo", "OrderQty", "CompletedQty", "ToteID", "Action"];
   suggestion: string = "";
@@ -53,9 +57,12 @@ export class VerifyBulkComponent implements OnInit {
   taskCompleted: boolean = false;
   backSubscription;
   backCount: number = 0;
+  batchId:string="";
   workstationPreferences: WorkStationSetupResponse;
+  @Input() isBatchIdGenerationEnabled:boolean; 
   public iBulkProcessApiService: IBulkProcessApiService;
   public iAdminApiService: IAdminApiService;
+ public commonApiService: CommonApiService;
 
   @ViewChild('openAction') openAction: MatSelect;
   @ViewChild('autoFocusField') searchBoxField: ElementRef;
@@ -63,13 +70,15 @@ export class VerifyBulkComponent implements OnInit {
   constructor(
     public bulkProcessApiService: BulkProcessApiService,
     public adminApiService: AdminApiService,
-    private global: GlobalService,
-    private spinnerService: SpinnerService,
-    private sharedService: SharedService,
-    private printApiService: PrintApiService
+    private CommonApiService:CommonApiService,
+    private readonly global: GlobalService,
+    private readonly spinnerService: SpinnerService,
+    private readonly sharedService: SharedService,
+    private readonly printApiService: PrintApiService
   ) {
     this.iBulkProcessApiService = bulkProcessApiService;
     this.iAdminApiService = adminApiService;
+    this.commonApiService=CommonApiService;
   }
 
   ngOnInit(): void {
@@ -176,7 +185,7 @@ export class VerifyBulkComponent implements OnInit {
         data: {
           message: `Transaction verification is currently underway.
           Leaving will remove transactions, otherwise continue with transaction verification`,
-          heading: `Verify Bulk ${this.url}`,
+          heading: `Verify Bulk ${this.bulkTransactionType}`,
           buttonFields: true,
           customButtonText: true,
           btn1Text: 'Continue Verification',
@@ -202,7 +211,7 @@ export class VerifyBulkComponent implements OnInit {
       autoFocus: DialogConstants.autoFocus,
       disableClose: true,
       data: {
-        url: this.url,
+        url: this.bulkTransactionType,
         completedQuantity: element.completedQuantity,
         from: "completed quantity"
       }
@@ -222,7 +231,7 @@ export class VerifyBulkComponent implements OnInit {
           height: DialogConstants.auto,
           width: '480px',
           data: {
-            FilterColumnName: `Enter the Location Quantity after this ${this.url}`,
+            FilterColumnName: `Enter the Location Quantity after this ${this.bulkTransactionType}`,
             dynamicText: 'Enter Location Quantity'
           },
           autoFocus: DialogConstants.autoFocus,
@@ -232,8 +241,8 @@ export class VerifyBulkComponent implements OnInit {
           if (record == undefined || resp.type == undefined) {
             return;
           }
-            record.newLocationQty = parseInt(result.SelectedItem);
-            element.completedQuantity = resp.newQuantity;
+          record.newLocationQty = parseInt(result.SelectedItem);
+          element.completedQuantity = resp.newQuantity;
         });
       } else if (resp.type == ResponseStrings.Cancel) {
         element.completedQuantity = resp.newQuantity;
@@ -299,29 +308,61 @@ export class VerifyBulkComponent implements OnInit {
         buttonFields: true,
       },
     });
-    dialogRef1.afterClosed().subscribe(async (resp: any) => {
+    dialogRef1.afterClosed().subscribe(async (resp: string) => {
       if (resp == ResponseStrings.Yes) {
+        const batchId = this.isBatchIdGenerationEnabled ? await this.getNextBatchID() : null;
         let ordersNew: TaskCompleteNewRequest[] = new Array();
-        orderLines.forEach((x: any) => {
-          let record = this.taskCompleteNewRequest.find((r: TaskCompleteNewRequest) => r.id == x.id);
-          if (record != undefined) {
-            record.completedQty = parseInt(x.completedQuantity);
+        orderLines.forEach((orderLine: OrderLineResource) => {
+          let record = this.taskCompleteNewRequest.find((r: TaskCompleteNewRequest) => r.id == orderLine.id);
+          if (record) {
+            record.completedQty =orderLine.completedQuantity;
+            // Only assign BatchID if generateBatchID is true and batchId is valid
+            if (this.isBatchIdGenerationEnabled && batchId) {
+            record.BatchID = batchId;
+          }
             ordersNew.push(record);
           }
         });
 
+        
         let res = await this.iBulkProcessApiService.bulkPickTaskComplete(ordersNew);
         if (res?.status == HttpStatusCode.Ok) {
-          if (this.url == "Pick" && res?.body.length > 0) {
+          if (this.bulkTransactionType == BulkTransactionType.PICK && res?.body.length > 0) {
             await this.TaskCompleteEOB(res?.body);
           }
-          else{
+          else {
             this.taskCompleteFinished();
           }
         }
       }
     });
   }
+
+  
+  getNextBatchID(): Promise<string> {
+  return firstValueFrom(this.commonApiService.NextBatchID())
+    .then((res: ApiResponse<string>) => {
+      if (res?.data && res?.isExecuted) {
+        return res.data;
+      } else {
+        this.global.ShowToastr(
+          ToasterType.Error,
+          ToasterMessages.SomethingWentWrong,
+          ToasterTitle.Error
+        );
+        return ''; // fallback if response is invalid
+      }
+    })
+    .catch((error) => {
+      this.global.ShowToastr(
+        ToasterType.Error,
+        ToasterMessages.SomethingWentWrong,
+        ToasterTitle.Error
+      );
+      return ''; // fallback if observable throws
+    });
+}
+
 
   async validateTaskComplete() {
     let isZeroCompletedQuantity: boolean = false;
@@ -352,7 +393,7 @@ export class VerifyBulkComponent implements OnInit {
     else await this.taskComplete(this.orderLines.filteredData);
   }
 
-  async TaskCompleteEOB(orderId : number[]) {
+  async TaskCompleteEOB(orderId: number[]) {
     let order = this.orderLines.filteredData.filter(x => (x.transactionQuantity > x.completedQuantity));
     if (order.length > 0) {
       this.showLoader();
@@ -382,7 +423,7 @@ export class VerifyBulkComponent implements OnInit {
 
   async callEndOfBatch(order: any[]) {
     const orderNumbers: string[] = Array.from(new Set(order.map(item => item.orderNumber)));
-    const res: any = await this.iAdminApiService.endofbatch({ orderNumbers: orderNumbers }).toPromise();
+    const res: DisplayEOBResponse[] = await this.iAdminApiService.endofbatch({ orderNumbers: orderNumbers }).toPromise();
     if (res.length > 0) {
       const dialogRef1: any = this.global.OpenDialog(PickRemainingComponent, {
         height: 'auto',
@@ -391,7 +432,7 @@ export class VerifyBulkComponent implements OnInit {
         disableClose: true,
         data: res
       });
-      dialogRef1.afterClosed().subscribe(async (resp: any) => this.taskCompleteFinished());
+      dialogRef1.afterClosed().subscribe(() => this.taskCompleteFinished());
     } else this.taskCompleteFinished();
   }
 
@@ -416,9 +457,9 @@ export class VerifyBulkComponent implements OnInit {
       autoFocus: DialogConstants.autoFocus,
       disableClose: true,
       data: {
-        message: `There are no remaining ${this.url}s for the selected orders.`,
+        message: `There are no remaining ${this.bulkTransactionType}s for the selected orders.`,
         message2: `Please move the order to Packaging/Shipping.`,
-        heading: `No Remaining ${this.url}s`,
+        heading: `No Remaining ${this.bulkTransactionType}s`,
         singleButton: true
       },
     });
@@ -443,15 +484,15 @@ export class VerifyBulkComponent implements OnInit {
     }
   }
   printAllToteLabels() {
-    if (this.url != 'Count'){
+    if (this.bulkTransactionType != BulkTransactionType.COUNT) {
       let orderNumbers = this.orderLines.filteredData.map(o => o['orderNumber']);
       let toteIds = this.orderLines.filteredData.map(o => o['toteId']);
-      this.iAdminApiService.PrintTotes(orderNumbers, toteIds, this.url);
+      this.iAdminApiService.PrintTotes(orderNumbers, toteIds, this.bulkTransactionType);
     }
   }
 
   printTote(index) {
-    const transactionType = this.url;
+    const transactionType = this.bulkTransactionType;
     let orderNumber = [this.orderLines.filteredData[index]['orderNumber']];
     let toteId = [this.orderLines.filteredData[index]['toteId']];
     this.iAdminApiService.PrintTotes(orderNumber, toteId, transactionType, index);

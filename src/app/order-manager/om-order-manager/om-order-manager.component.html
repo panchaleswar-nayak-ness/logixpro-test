@@ -194,7 +194,7 @@
 
         <div class="card br-14 borderless px-0 overflow-x-auto">
             <ng-scrollbar track="all" class="mat-table-scrollbar h-545px">
-                <table class="w-100 table-borderless" mat-table matSort [dataSource]="orderTable" (matSortChange)="announceSortChange($event)">                                                        
+                <table class="w-100 custom-table table-borderless" mat-table matSort [dataSource]="orderTable" (matSortChange)="announceSortChange($event)">                                                        
 
                     <ng-container *ngFor="let col of allColumns; let i = index;" matColumnDef="{{col.colDef}}">
                         <th mat-header-cell *matHeaderCellDef mat-sort-header> {{col.key}} </th>

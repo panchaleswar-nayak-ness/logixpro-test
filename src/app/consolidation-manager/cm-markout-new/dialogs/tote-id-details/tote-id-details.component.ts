@@ -1,4 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
+import { MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { PickTotes } from '../../models/cm-markout-new-models';
+import { GlobalService } from 'src/app/common/services/global.service';
 
 @Component({
   selector: 'app-tote-id-details',
@@ -7,9 +10,10 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ToteIdDetailsComponent implements OnInit {
 
-  constructor() { }
+  constructor(@Inject(MAT_DIALOG_DATA) public data: PickTotes,public global : GlobalService,) { }
 
   ngOnInit(): void {
+   
   }
 
 }

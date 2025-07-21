@@ -1,3 +1,4 @@
+import { DevicePreferenceRequest, DevicePreferencesTableRequest } from "../../interface/admin/device-preferences";
 import { InventoryMap, UpdateSCReq } from "../../Model/storage-container-management";
 
 export interface IAdminApiService
@@ -195,12 +196,12 @@ export interface IAdminApiService
     DevicePreferencesDelete(payload : any);
     GetCartonFlow(payload : any)
     UpdateCartonFlow(payload : any);
-    DevicePreferencesTable(payload : any);
+    DevicePreferencesTable(payload : DevicePreferencesTableRequest);
     LocationNamesSave(payload : any);
     DeleteLocationNames(payload : any);
     ZoneDevicePreferencesUpdateAll(payload : any);
     DeviceInformation(payload : any);
-    DevicePreference(payload : any);
+    DevicePreference(payload : DevicePreferenceRequest);
     LocationZoneSave(payload : any);
       LocationZoneDelete(payload : any);
     LocationZoneNewSave(payload : any);

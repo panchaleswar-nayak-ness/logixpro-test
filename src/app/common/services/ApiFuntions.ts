@@ -12,6 +12,12 @@ import {
 import { AddPickToteInductionFilter } from 'src/app/induction-manager/models/PickToteInductionModel';
 import { InventoryMap, UpdateSCReq } from '../Model/storage-container-management';
 import {IQueryParams} from '../../app/../consolidation-manager/cm-route-id-management/routeid-list/routeid-IQueryParams'
+import { MarkoutAuditResponse, MarkoutPickLinesResponse, MarkoutResponse } from 'src/app/consolidation-manager/cm-markout-new/models/cm-markout-new-models';
+import { ZoneListPayload } from 'src/app/bulk-process/preferences/preference.models';
+import { ApiResponseData } from '../types/CommonTypes';
+import { DevicePreferenceRequest, DevicePreferencesTableRequest } from '../interface/admin/device-preferences';
+import { PrintOrdersPayload } from '../interface/bulk-transactions/bulk-pick';
+
 
 @Injectable({
   providedIn: 'root',
@@ -1715,8 +1721,8 @@ export class ApiFuntions {
     return this.ApiBase.Put(`/Admin/workstationsettings`, body);
   }
 
-  public DevicePreferencesTable(body) {
-    return this.ApiBase.Get(`/Admin/deviceperference`, body);
+  public DevicePreferencesTable(body:DevicePreferencesTableRequest) {
+    return this.ApiBase.Get(`/Admin/devicepreference`, body);
   }
 
   public LocationNamesSave(body) {
@@ -1739,8 +1745,8 @@ export class ApiFuntions {
     return this.ApiBase.Get(`/Admin/deviceinformation`, body);
   }
 
-  public DevicePreference(body) {
-    return this.ApiBase.Post(`/Admin/deviceperference`, body);
+  public DevicePreference(payload : DevicePreferenceRequest) {
+    return this.ApiBase.Post(`/Admin/devicepreference`, payload);
   }
 
   public LocationZoneSave(body) {
@@ -2002,8 +2008,24 @@ export class ApiFuntions {
     return this.ApiBase.Get('/orders/quickpick', body);
   }
 
-  public bulkPickOrdersLocationAssignment(body: any): Observable<any> {
-    return this.ApiBase.Put('/orders/locationassignment', body);
+  public async bulkPickOrdersLocationAssignment(body: string[]) {
+    return await this.ApiBase.PutAsync('/orders/locationassignment', body,false);
+  }
+
+  public async bulkPickOrdersCheckLocationAssignment(body: string[]) {
+    return await this.ApiBase.PostAsync('/orders/checklocationassignment', body, false, false);
+  }
+
+  public async bulkPickOrdersCheckOffCarouselPicks(body: string[]) {
+    return await this.ApiBase.PostAsync('/orders/checkoffcarouselpicks', body, false, false);
+  }
+
+  public async GetOrdersMovedToReprocessAsync(body: string[]) {
+    return await this.ApiBase.PostAsync('/Admin/orders-moved-to-reprocess', body, false, false);
+  }
+
+  public async getOrderLinesAssignedLocations(body: string[]) {
+    return await this.ApiBase.PostAsync('/Admin/order-lines-assigned-locations', body, false, false);
   }
 
   public async bulkPickZones() {
@@ -2025,6 +2047,15 @@ export class ApiFuntions {
   public async deleteBulkPickBulkZone(body: any) {
     return await this.ApiBase.DeleteAsync('/zones/bulkzone', body);
   }
+
+  public async deleteAllBulkPickBulkZone(body: ZoneListPayload) {
+    return await this.ApiBase.BulkDeleteAsync('/zones/bulkzones', body);
+  }
+
+  public async addAllBulkPickBulkZone(body: ZoneListPayload) {
+    return await this.ApiBase.PostAsync('/zones/bulkzones', body);
+  }
+
 
   public WorkstationSetupInfo(): Observable<any> {
     return this.ApiBase.Get('/Admin/WorkstationSetup');
@@ -2198,6 +2229,22 @@ export class ApiFuntions {
     return this.ApiBase.Get(`/markout/totedata/`, body);
   }
 
+    //===========markout-new=============
+public GetMarkoutNewData(queryParams: IQueryParams) {
+  return this.ApiBase.Get<MarkoutResponse>('/markout/totes', queryParams);
+}
+
+public GetToteAudit(queryParams: IQueryParams, toteId: number) {
+  return this.ApiBase.Get<MarkoutAuditResponse>(`/markout/totes/${toteId}/history`, queryParams);
+}
+
+public GetTotePickLines(queryParams: IQueryParams, toteId: number) {
+  return this.ApiBase.Get<MarkoutPickLinesResponse>(`/markout/totes/${toteId}/picklines`, queryParams);
+}
+
+public ResolveMarkoutTote(toteId: number) {
+  return this.ApiBase.Put<ApiResponseData>(`/markout/totes/${toteId}/resolve`, toteId);
+}
   public UpdateMarkoutQuantity(body: UpdateQuantityRequest) {
     return this.ApiBase.Post(`/markout/updatequantity`, body);
   }
@@ -2347,11 +2394,11 @@ export class ApiFuntions {
   }
 
   public async GetSelectedConZoneData(ConZone: string) {
-    return await this.ApiBase.GetAsync(`/Consolidation/ZoneStatus/${ConZone}`);
+    return await this.ApiBase.GetAsync(`/Consolidation/ZoneStatus/${ConZone}`, null, false, false); // pass false to hide loader and spinner 
   }
 
   public async GetSelectedConZoneRouteIDCount(ConZone: string) {
-    return await this.ApiBase.GetAsync(`/Consolidation/Zone/${ConZone}/RoutesStatus`);
+    return await this.ApiBase.GetAsync(`/Consolidation/Zone/${ConZone}/RoutesStatus`, null, false, false); // pass false to hide loader and spinner
   }
 
   public async updateSelectedConZoneData(ConZone,body: any) {
@@ -2370,4 +2417,16 @@ export class ApiFuntions {
     return await this.ApiBase.PatchAsync(`/Consolidation/Route/${routeId}/RequestRelease`,null);
   }
 
+  public async printSelectedOrdersReport(
+    body: PrintOrdersPayload,
+    showLoader: boolean = true
+  ) {
+    return await this.ApiBase.PostAsync(
+      `/print/selectedordersreport`,
+      body,
+      false,
+      showLoader
+    );
+  }
+  
 }

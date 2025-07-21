@@ -35,10 +35,6 @@ export class InductionManagerApiService implements IInductionManagerApiService {
     return this.Api.SuperBatchIndex();
   }
 
-  public NextBatchID() {
-    return this.Api.NextBatchID();
-  }
-
   public ProcessPutAwayIndex() {
     return this.Api.ProcessPutAwayIndex();
   }

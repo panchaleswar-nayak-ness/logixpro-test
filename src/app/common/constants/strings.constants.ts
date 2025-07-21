@@ -6,7 +6,10 @@ export const StringAssignments = {
 
 export const localStorageKeys = {
     UserRights: 'userRights',
-    TransactionTabIndex: 'TransactionTabIndex'
+    TransactionTabIndex: 'TransactionTabIndex',
+    VerifyBulks: "verifyBulks",
+    SelectedReportPrinter: "SelectedReportPrinter",
+    SelectedLabelPrinter: "SelectedLabelPrinter"
 }
 
 export const TransactionType = {
@@ -19,6 +22,10 @@ export const DialogConstants = {
     auto: 'auto',
     close: 'close',
     autoFocus: '__non_existing_element__'
+}
+
+export const DialogsCloseMessage = {
+    Yes: 'Yes',
 }
 
 export const StringConditions = {
@@ -91,7 +98,8 @@ export const ResponseStrings = {
     DNENP: 'DNENP',
     Fail: 'Fail',
     INVALID: 'INVALID',
-    Redirect: 'Redirect'
+    Redirect: 'Redirect',
+    Resolved: 'Resolved'
 }
 
 export const ToasterType = {
@@ -117,7 +125,12 @@ export const ToasterTitle = {
 export const ConfirmationHeadings = {
     BatchManager: 'Batch Manager',
     MoveNow: "Continue Move Now?",
-    PasswordExpiryAlert: "Password Expiry Alert"
+    PasswordExpiryAlert: "Password Expiry Alert",
+    PrintItemLabelsNow: "Print Item Labels Now?",
+    CreateBatchNow: "Create Batch Now?",
+    PrintBatchOrOrder:"Print Batch Or Order",
+    NoOffCarouselPicksFound:"No Off-Carousel Picks Found",
+    ResolveToteId: "Resolve Tote ID"
 }
 export const ConfirmationButtonText = {
     ResetPassword: 'Reset Password Now',
@@ -135,7 +148,17 @@ export const ConfirmationMessages = {
     ClickOkToUpdateLocation: 'You will now update both locations to complete the current move',
     ConfirmationToClearAllInventoryMap : "Click OK to clear all Inventory Map records matching Location Number (Zone + Carousal + Row + Shelf + Bin) Criteria!",
     ClearWholeLocationPutAwayQuantity:"Clear Whole Location cannot proceed because the Allocated Pick or Allocated Put Away quantity is greater than zero.",
-    DeleteLicenseConfirmation:"Are you sure you want to delete this License?"
+    DeleteLicenseConfirmation:"Are you sure you want to delete this License?",
+    TouchYesToPrintlabelForItemInBatch: "Touch 'Yes' to print a label for each item in this batch",
+    TouchYesToPrintAllAsBatch:"Touch 'Yes' to print all orders as a batch",
+    TouchNoToPrintEachOrder: "Touch 'No' to print a page for each order.",
+    AssignOrdersToBatch: (batchId: string | number) =>
+        `Touch 'Yes' to Assign the Selected Orders to Batch ID ${batchId}. Touch 'No' to Cancel Batching.`,
+    NoOffCarouselPicks:"There are no off-carousel picks for the order(s) selected.",    
+    ResolvedToteConfirmation:"Are you sure you want to mark this Tote ID as resolved? This will remove this Tote ID from the Markout.",
+    IrreversibleActionWarning :'This action cannot be undone.',
+    UpdateAllInterface: 'Click OK to update all devices with Com Port: {{comPort}}',
+    UpdateAllInterfaceWithZone: 'Click OK to update all devices with Com Port: {{comPort}} and Zone: {{zone}}'
 }
 
 export const ToasterMessages = {
@@ -207,7 +230,7 @@ export const ToasterMessages = {
     LocationDeleted: 'Location deleted successfully',
     DeleteFailed:"Delete Failed",
     FieldEmptyDefault:"Field cannot be empty. Default value has been applied.",
-    ZoneAndLocationNameNeedToBeSet:" “Zone and Location Name need to be set via the Preferences - Location Zones screen in order to save”",
+    ZoneAndLocationNameNeedToBeSet: 'Zone and Location Name need to be set via the Preferences - Location Zones screen in order to save.',
     Consolidationzones:"Failed to load consolidation zones.",
     Consolidationstatuscount:"Failed to load consolidation status count.",
     RouteidCount:"Failed to load route id status count.",
@@ -216,7 +239,23 @@ export const ToasterMessages = {
     RequestReleaseFailed:"Request release failed.",
     RequestReleaseSuccess:"Request release successfully.",
     APIErrorMessage:"API request failed.",
-    NoDefaultFilter:"No filter is marked as default."
+    ZoneNotSelected: "Zone not selected",
+    DeleteAllSuccess:"All records deleted successfully",
+    NoRecordFound:"No records found",
+    RecordsAddedSuccessfully: "All Records added successfully",
+    AddAllFailed: "Failed to add all records",
+    ZoneAddedSuccessfully: "Zone added successfully",
+    ZoneUpdatedSuccessfully: "Zone updated successfully",
+    ZoneDeletedSuccessfully: "Zone deleted successfully",
+    NoDefaultFilter:"No filter is marked as default.",
+    Resolved:"Resolved Successfully.",
+    LowerBoundAndUpperBoundRequired: 'Both Lower Bound and Upper Bound must be filled before applying the filter.',
+    LowerBoundCannotBeGreater: 'Lower Bound cannot be greater than Upper Bound. Please adjust the range.',
+    EnterQuantityValueBeforeApplying: 'Please enter a quantity value before applying the filter.',
+    EnterValidPositiveQuantity: 'Please enter a valid positive number for the quantity.',
+    PrintSuccessfullyCompleted:'Print successfully completed',
+    UnableToPrint: 'Unable to print',
+    UnableToAssignLocation: "Unable to assign location"
 }
 
 
@@ -306,7 +345,10 @@ export const alertMessage = {
     ErrorValidatingSerialNoMsg: 'There was an error validating serial number',
     EnterSerialNo: 'Please enter a serial number',
     SerialNoAlreadyScan: 'Serial Number already scanned',
-    DeleteMessage: 'You are about to mark the scanned reels as empty. This will delete ALL current open transactions associated with the scanned reels.'
+    DeleteMessage: 'You are about to mark the scanned reels as empty. This will delete ALL current open transactions associated with the scanned reels.',
+    ZoneCannotBeLeftBlank:'Zone cannot be left blank.',
+    DeviceTypeCannotBeLeftBlank:'Device Type cannot be left blank.',
+    DeviceNumberCannotBeLeftBlank:'Device Number cannot be left blank.'
 }
 
 export const showNotificationHeading = {
@@ -408,7 +450,12 @@ export const TableName = {
     OpenTransactions: 'Open Transactions',
     OpenTransactionsTemp: 'Open Transactions Temp',
     ReProcessed: 'ReProcessed',
-    TransactionHistory: 'Transaction History'
+    TransactionHistory: 'Transaction History',
+    BatchSelectionList: "Batch Selection List",
+    ToteSelectionList: "Tote Selection List",
+    OrderSelectionList: "Order Selection List",
+    SelectedOrders: "Selected Orders",
+    SelectedTotes: "Selected Totes",
 }
 export const TableConstant = {
     CompletedDate: 'Completed Date',
@@ -466,18 +513,21 @@ export const UniqueConstants = {
     Blue: 'Blue',
     Ibl: 'lbl',
     OrderNumber: 'orderNumber',
-    Regx: "^[0-9]*$"
+    Regx: "^[0-9]*$",
 
 }
 export const Style = {
     w560px: '560px',
     w100vw: '100vw',
     w50vw: '50vw',
+    w96vw:'96vw',
     w480px: '480px',
     w600px: '600px',
     w786px: '786px',
     w402px: '402px',
     w1080px: '1080px',
+    auto:'auto',
+    w990px: '990px'
 }
 
 export const FilterColumnName = {
@@ -561,9 +611,9 @@ export const Placeholders = {
 
 export const MarkoutNewPickTotesKeys = {
     ToteID: 'toteId',
-    Status: 'status',
+    MarkoutStatus: 'markoutStatus',
     StatusDate: 'statusDate',
-    RouteID: 'routeID',
+    RouteId: 'routeId',
     DivertReason: 'divertReason',
     Location: 'location',
     Destination: 'destination',
@@ -572,40 +622,40 @@ export const MarkoutNewPickTotesKeys = {
 
 export const MarkoutNewPickTotesDC = {
     ToteID: 'Tote ID',
-    Status: 'Status',
+    MarkoutStatus: 'Status',
     StatusDate: 'Status Date',
-    RouteID: 'Route ID',
+    RouteId: 'Route Id',
     DivertReason: 'Divert Reason',
     Location: 'Location',
     Destination: 'Destination',
-    Details: 'Details'
+    Details: 'Details',
 }
 
 
 export const MarkoutNewPickLinesKeys = {
-    Item: 'item',
-    Qty: 'qty',
-    LocID: 'locID',
+    Item: 'itemNumber',
+    Quantity: 'quantity',
+    LocationID: 'locationId',
     Status: 'status',
     StatusDate: 'statusDate',
-    CompQty: 'compQty',
-    CompBy: 'compBy',
+    CompletedQuantity: 'completedQuantity',
+    CompletedBy: 'completedBy',
     ShortReason: 'shortReason'
 }
 
 export const MarkoutNewPickLinesDC = {
-    Item: 'Item',
-    Qty: 'Qty',
-    LocID: 'Loc ID',
+    Item: 'Item Number',
+    Quantity: 'Quantity',
+    LocationID: 'Location ID',
     Status: 'Status',
     StatusDate: 'Status Date',
-    CompQty: 'Comp Qty',
-    CompBy: 'Comp By',
+    CompletedQuantity: 'Completed Quantity',
+    CompletedBy: 'Completed by',
     ShortReason: 'Short Reason'
 }
 
 export const MarkoutNewToteAuditKeys = {
-    Time: 'time',
+    Time: 'timeStamp',
     Type: 'type',
     Scanner: 'scanner',
     Divert: 'divert',
@@ -692,4 +742,16 @@ export const LocalStorageCacheKeys = {
 
 export const RouteIdManagement = {
     RouteIdStatus: 'In Consolidation',
+}
+
+export const REPORT_REPOSITORY_ID = 'BCAEC8B2-9D16-4ACD-94EC-74932157BF82';
+
+export class PrintReports {
+    static readonly REPROCESS_TRANSACTIONS = "ReprocessTransactions-lst";
+    static readonly LOC_ASS_PICK_SHORTAGE = "LocAssPickShortage-lst";
+}
+
+export class ConsoleErrorMessages {
+    static readonly ErrorPrintingReprocessReport = "Error occurred while printing reprocess report after allocation:"
+    static readonly ErrorFindingAssignedOrderLines = "Error occurred while finding order lines assigned locations:"
 }
