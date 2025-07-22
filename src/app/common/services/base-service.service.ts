@@ -80,6 +80,9 @@ export class BaseService {
             }
           }),
           catchError(error => {
+            if(error?.error?.statusCode == 555){ //Unable to print
+              this.injector.get(GlobalService).ShowToastr(ToasterType.Error, ToasterMessages.UnableToPrint, ToasterTitle.Error);
+            }else
             this.injector.get(GlobalService).ShowToastr(ToasterType.Error, ToasterMessages.APIErrorMessage, ToasterTitle.Error);
             return throwError(() => error);
           })
