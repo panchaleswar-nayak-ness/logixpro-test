@@ -5,15 +5,15 @@
     </div>
 
     <div class="d-flex justify-content-end">
-        <button mat-flat-button color="primary" class="add-icon-button mb-2 flex-grow-1"  (click)="addEmptyRow()" [disabled]="AddBtn">
-            <span class="material-symbols-outlined" matTooltip="Add new" matTooltipPosition="above">
+        <button mat-flat-button color="primary" class="add-icon-button mb-2 flex-grow-1"  (click)="addEmptyRow()" [disabled]="AddBtn" data-automation-id="button-add">
+            <span class="material-symbols-outlined" matTooltip="Add new" matTooltipPosition="above" data-automation-id="label-add-tote">
                 add
             </span>
         </button>
     </div>
     <div >
         <div class="d-flex justify-content-end">
-            <button mat-flat-button color="primary" class="mat-primary btn-md mb-3" (click)="clearAllTotes()" >Clear All Totes</button>
+            <button mat-flat-button color="primary" class="mat-primary btn-md mb-3" (click)="clearAllTotes()" data-automation-id="button-clear-all-totes">Clear All Totes</button>
         </div>
     </div>
 </div>
@@ -23,31 +23,31 @@
         <table class="w-100 table-borderless" mat-table #matSort3="matSort" matSort [dataSource]="tableData">
 
             <ng-container matColumnDef="tote_id"> 
-                <th mat-header-cell *matHeaderCellDef> Tote ID </th>
+                <th mat-header-cell *matHeaderCellDef data-automation-id="label-tote-id"> Tote ID </th>
                 <td mat-cell *matCellDef="let element; let i = index">
                     <mat-form-field class="custom-form-field w-100 pr-15px" appearance="outline">
-                        <input matInput type="text" [(ngModel)]="element.toteID" (keyup)="check(element.toteID,i)">
+                        <input matInput type="text" [(ngModel)]="element.toteID" (keyup)="check(element.toteID,i)" data-automation-id="input-tote-id">
                     </mat-form-field>
                 </td>
             </ng-container>
             <ng-container matColumnDef="cells"> 
-                <th mat-header-cell *matHeaderCellDef> Cells </th>
+                <th mat-header-cell *matHeaderCellDef data-automation-id="label-cells"> Cells </th>
                 <td mat-cell *matCellDef="let element; let i = index">
                     <mat-form-field class="custom-form-field w-100 pr-15px" appearance="outline">
-                        <input matInput type="number" [(ngModel)]="element.cells" >
+                        <input matInput type="number" [(ngModel)]="element.cells" data-automation-id="input-cells">
                     </mat-form-field>
                 </td>
             </ng-container>
             <ng-container matColumnDef="actions" stickyEnd>
-                <th width="10%" mat-header-cell *matHeaderCellDef class="px-2"> Actions </th>
+                <th width="10%" mat-header-cell *matHeaderCellDef class="px-2" data-automation-id="label-actions"> Actions </th>
                 <td width="10%" mat-cell *matCellDef="let element;let i=index" class="px-2">
                     <div class="d-flex gap-12 align-items-center">
                         <!-- {{OldtableData[i].toteID}}{{element.toteID}} -->
-                        <button mat-flat-button color="primary" [disabled]="((OldtableData.length > i && OldtableData[i].toteID==element.toteID) || element.IsDisabled || (element.toteID == ''))" class="xsm-icon-button"  
+                        <button mat-flat-button color="primary" data-automation-id="button-save" [disabled]="((OldtableData.length > i && OldtableData[i].toteID==element.toteID) || element.IsDisabled || (element.toteID == ''))" class="xsm-icon-button"  
                             (click)="saveTotes(element,i)">
                             <mat-icon class="material-symbols-outlined">save</mat-icon>
                         </button>
-                        <button mat-flat-button color="warn" class="xsm-icon-button" (click)="deleteTote(element)">
+                        <button mat-flat-button color="warn" class="xsm-icon-button" (click)="deleteTote(element)" data-automation-id="button-delete">
                             <mat-icon class="material-symbols-outlined">close</mat-icon>
                         </button>
                     </div>

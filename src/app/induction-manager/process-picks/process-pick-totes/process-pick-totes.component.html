@@ -30,7 +30,7 @@
                             <div class="pe-2">
                                 <mat-form-field class="custom-form-field w-100" appearance="outline">
                                     <input matInput type="text" #specialFeature maxlength="255"
-                                        value="{{element.position}}" disabled [attr.data-automation-id]="'position-input-' + i + '-' + (element.position || '')">
+                                        value="{{element.position}}" disabled [attr.data-automation-id]="'position-input-' + i">
                                 </mat-form-field>
                             </div>
                         </td>
@@ -43,7 +43,7 @@
                             <div class="pe-2">
                                 <mat-form-field class="custom-form-field w-100" appearance="outline">
                                     <input matInput type="text" #specialFeature maxlength="255"
-                                        [(ngModel)]="element.toteID" (focusout)="checkDuplicateTote(element, i)" [attr.data-automation-id]="'tote-id-input-' + i + '-' + (element.toteID || '')">
+                                        [(ngModel)]="element.toteID" (focusout)="checkDuplicateTote(element, i)" [attr.data-automation-id]="'tote-id-input-' + i">
                                 </mat-form-field>
                             </div>
                         </td>
@@ -56,7 +56,7 @@
                             <div class="pe-2">
                                 <mat-form-field class="custom-form-field w-100" appearance="outline">
                                     <input matInput type="text" #specialFeature maxlength="255"
-                                        [(ngModel)]="element.orderNumber" disabled="{{useInZonePickScreen}}" [attr.data-automation-id]="'order-no-input-' + i + '-' + (element.orderNumber || '')">
+                                        [(ngModel)]="element.orderNumber" disabled="{{useInZonePickScreen}}" [attr.data-automation-id]="'order-no-input-' + i">
                                 </mat-form-field>
                             </div>
                         </td>
@@ -67,7 +67,7 @@
                         <td mat-cell *matCellDef="let element; let i = index;" [hidden]="useInZonePickScreen">
                             <div class="pe-2">
                                 <mat-form-field class="custom-form-field w-100" appearance="outline">
-                                    <input matInput [(ngModel)]="element.priority" type="text" #specialFeature maxlength="255" disabled [attr.data-automation-id]="'priority-input-' + i + '-' + (element.priority || '')">
+                                    <input matInput [(ngModel)]="element.priority" type="text" #specialFeature maxlength="255" disabled [attr.data-automation-id]="'priority-input-' + i">
                                 </mat-form-field>
                             </div>
                         </td>
@@ -83,13 +83,13 @@
                                 </button>
 
                                 <mat-menu #appMenu="matMenu">
-                                    <button type="button" mat-menu-item (click)="onViewOrder(element)" [attr.data-automation-id]="'row-action-' + i + '-view-order'">
+                                    <button type="button" mat-menu-item (click)="onViewOrder(element)" [attr.data-automation-id]="'row-action-' + i">
                                         <b class="text-tertiary-900">View Order</b>
                                     </button>
-                                    <button type="button" mat-menu-item (click)="clearOrderNumber(i)" [attr.data-automation-id]="'row-action-' + i + '-clear'">Clear</button>
-                                    <button type="button" (click)="printToteLabels(element)" mat-menu-item [attr.data-automation-id]="'row-action-' + i + '-print-tote-labels'">Print Tote Labels</button>
-                                    <button type="button" (click)="printPickLabels(element)" mat-menu-item [attr.data-automation-id]="'row-action-' + i + '-print-pick-labels'">Print Pick Labels</button>
-                                    <button type="button" mat-menu-item (click)="fillNextToteID(i)" [attr.data-automation-id]="'row-action-' + i + '-next-tote-id'">Next Tote ID</button>
+                                    <button type="button" mat-menu-item (click)="clearOrderNumber(i)" [attr.data-automation-id]="'row-action-' + i">Clear</button>
+                                    <button type="button" (click)="printToteLabels(element)" mat-menu-item [attr.data-automation-id]="'row-action-' + i">Print Tote Labels</button>
+                                    <button type="button" (click)="printPickLabels(element)" mat-menu-item [attr.data-automation-id]="'row-action-' + i">Print Pick Labels</button>
+                                    <button type="button" mat-menu-item (click)="fillNextToteID(i)" [attr.data-automation-id]="'row-action-' + i">Next Tote ID</button>
                                 </mat-menu>
                             </div>
                         </td>

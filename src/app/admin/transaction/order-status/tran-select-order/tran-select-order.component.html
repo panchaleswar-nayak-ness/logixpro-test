@@ -101,10 +101,10 @@
                     <span class="com-date-col px-2">Completed Date</span>
                   </h6>
                   <mat-option
-                    *ngFor="let option of searchAutocompleteList"
+                    *ngFor="let option of searchAutocompleteList; let i = index"
                     [value]="option.orderNumber"
                     class="matAutoCompTableContent"
-                    [attr.data-automation-id]="'autocomplete-option-order-number-' + option.orderNumber"
+                    [attr.data-automation-id]="'autocomplete-option-order-number-' + i"
                   >
                     <div class="loc_option">
                       <span class="order-no-col px-2">{{
@@ -119,9 +119,9 @@
 
                 <ng-container *ngIf="columnSelect == 'Tote ID'">
                   <mat-option
-                    *ngFor="let option of searchAutocompleteList"
+                    *ngFor="let option of searchAutocompleteList; let i = index"
                     [value]="option"
-                    [attr.data-automation-id]="'autocomplete-option-tote-id-' + option"
+                    [attr.data-automation-id]="'autocomplete-option-tote-id-' + i"
                   >
                     {{ option }}
                   </mat-option>

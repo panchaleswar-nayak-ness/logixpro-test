@@ -1,11 +1,11 @@
 <div class="search-box mb-3">
   <div class="d-flex g-mini-search-box">
     <mat-form-field class="w-100" appearance="fill">
-      <span class="material-symbols-outlined icon-search">
+      <span class="material-symbols-outlined icon-search" data-automation-id="label-search-icon">
         search
       </span>
-      <input type="text" [(ngModel)]="searchGrp"  placeholder="Search Groups" maxlength="50" aria-label="Search Groups" matInput (keyup)="applyFilter($event)" [matAutocomplete]="auto"  #autoFocusField>
-      <button matSuffix *ngIf="searchGrp" class="clear-btn" (click)="clearFields()" ><mat-icon class="text-20 text-chrome-600">cancel</mat-icon></button>
+      <input type="text" [(ngModel)]="searchGrp"  placeholder="Search Groups" maxlength="50" aria-label="Search Groups" matInput (keyup)="applyFilter($event)" [matAutocomplete]="auto"  #autoFocusField data-automation-id="groups-lookup-search-input">
+      <button matSuffix *ngIf="searchGrp" class="clear-btn" (click)="clearFields()" data-automation-id="button-cancel"><mat-icon class="text-20 text-chrome-600">cancel</mat-icon></button>
       <mat-autocomplete #auto="matAutocomplete">
         <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
           {{option}}
@@ -23,7 +23,7 @@
         The actual rendered columns are set as a property on the row definition" -->
           
   <ng-container matColumnDef="groupName">
-    <th mat-header-cell *matHeaderCellDef mat-sort-header>Group Name</th>
+    <th mat-header-cell *matHeaderCellDef mat-sort-header data-automation-id="label-group-name">Group Name</th>
     <td mat-cell *matCellDef="let element"> {{element.groupName}} </td>
   </ng-container>
 

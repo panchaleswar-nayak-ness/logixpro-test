@@ -5,15 +5,15 @@
                 <mat-card-content>
                     <div class="d-xl-flex justify-content-between">
                         <div class="d-flex align-items-center justify-content-between mb-3">
-                            <app-icon-heading-component class="card-header-title d-flex align-items-center mb-0" heading="Report Label Or Export Description" icon="short_text"></app-icon-heading-component>
+                            <app-icon-heading-component class="card-header-title d-flex align-items-center mb-0" heading="Report Label Or Export Description" icon="short_text" [automationId]="'custom-reports-header-title'"></app-icon-heading-component>
                         </div>
                     </div>
                     <div class="px-2 my-3">
                         <mat-radio-group class="d-flex align-items-center gap-12 flex-wrap" aria-label="Select an option">
-                            <mat-radio-button color="primary" (click)="changeReport(true)" value="none" [checked]="isSystemReport == true">
+                            <mat-radio-button color="primary" (click)="changeReport(true)" value="none" [checked]="isSystemReport == true" data-automation-id="custom-reports-radio-system">
                                 System
                             </mat-radio-button>
-                            <mat-radio-button color="primary" (click)="changeReport(false)" value="hold" [checked]="isSystemReport == false">
+                            <mat-radio-button color="primary" (click)="changeReport(false)" value="hold" [checked]="isSystemReport == false" data-automation-id="custom-reports-radio-user-created">
                                 User Created
                             </mat-radio-button>
                         </mat-radio-group>
@@ -21,7 +21,7 @@
                     <div class="card report-label-list">
                         <ul class="">
                             <ng-scrollbar class="NGscrolbar-style" track="all">
-                                <li class="my-2 px-2" *ngFor="let item of listReports ; index as i" (click)="getReportDetails(item.fileName,i ,item)" [class.selected]="item.isSelected">
+                                <li class="my-2 px-2" *ngFor="let item of listReports ; index as i" (click)="getReportDetails(item.fileName,i ,item)" [class.selected]="item.isSelected" [attr.data-automation-id]="'custom-reports-list-item-'  + item.fileName">
                                     {{item.title}}
                                 </li>
                             </ng-scrollbar>
@@ -37,21 +37,21 @@
                     <div class="d-xl-flex justify-content-between">
                         <div class="d-flex align-items-center justify-content-between mb-3">
                             
-                            <app-icon-heading-component class="card-header-title d-flex align-items-center mb-0" heading="Report Or Label details" icon="comment_bank"></app-icon-heading-component>
+                            <app-icon-heading-component class="card-header-title d-flex align-items-center mb-0" heading="Report Or Label details" icon="comment_bank" [automationId]="'custom-reports-details-header-title'"></app-icon-heading-component>
                         </div>
                         <div class="d-flex d-lg-block">
-                            <mat-form-field class="action-dropdown mb-3 flex-1" appearance="outline">
-                                <mat-label>Actions</mat-label>
-                                <mat-select  #matRef  class="employees-action" value="pick"  (selectionChange)="openAction()">
-                                    <mat-option value="123456"(click)="crAddNewCustomReportDialogue()">Add New</mat-option>
-                                    <mat-option [value]="detail.testData" [disabled]="!detail.testData" (click)="this.global.OpenExportModal(this.detail.fileName,this.detail.fileName)">Export</mat-option>
-                                    <mat-option [value]="detail.testData" [disabled]="!detail.testData" (click)="this.global.Print(this.detail.fileName.replace('.','-'))">Print</mat-option>
-                                    <mat-option [value]="detail.testData" [disabled]="!detail.testData" (click)="openListAndLabel('report')">Design</mat-option>
-                                    <mat-option (click)="openDeleteDialogue()" [disabled]="!detail.testData" >Delete</mat-option>
-                                    <mat-option (click)="fileInput.click()"[disabled]="!detail.testData"  >Import</mat-option>
+                            <mat-form-field class="action-dropdown mb-3 flex-1" appearance="outline" data-automation-id="custom-reports-actions-form-field">
+                                <mat-label data-automation-id="custom-reports-actions-label">Actions</mat-label>
+                                <mat-select  #matRef  class="employees-action" value="pick"  (selectionChange)="openAction()" data-automation-id="custom-reports-actions-select">
+                                    <mat-option value="123456"(click)="crAddNewCustomReportDialogue()" data-automation-id="custom-reports-action-add-new">Add New</mat-option>
+                                    <mat-option [value]="detail.testData" [disabled]="!detail.testData" (click)="this.global.OpenExportModal(this.detail.fileName,this.detail.fileName)" data-automation-id="custom-reports-action-export">Export</mat-option>
+                                    <mat-option [value]="detail.testData" [disabled]="!detail.testData" (click)="this.global.Print(this.detail.fileName.replace('.','-'))" data-automation-id="custom-reports-action-print">Print</mat-option>
+                                    <mat-option [value]="detail.testData" [disabled]="!detail.testData" (click)="openListAndLabel('report')" data-automation-id="custom-reports-action-design">Design</mat-option>
+                                    <mat-option (click)="openDeleteDialogue()" [disabled]="!detail.testData" data-automation-id="custom-reports-action-delete">Delete</mat-option>
+                                    <mat-option (click)="fileInput.click()"[disabled]="!detail.testData" data-automation-id="custom-reports-action-import">Import</mat-option>
                                 </mat-select>
-                                <input class="fileInput-style" type="file" accept=".lst,.lbl" id="ImportFileVal" (change)="onFileSelected($event)"  #fileInput>
-                                <span class="material-symbols-outlined icon-expand-more" >
+                                <input class="fileInput-style" type="file" accept=".lst,.lbl" id="ImportFileVal" (change)="onFileSelected($event)"  #fileInput data-automation-id="custom-reports-import-file-input">
+                                <span class="material-symbols-outlined icon-expand-more" data-automation-id="custom-reports-actions-select-expand-more">
                                     expand_more
                                 </span>
                             </mat-form-field>
@@ -59,58 +59,58 @@
                     </div>
                     <div class="d-flex flex-column flex-1">
                         <div class="flex-1">
-                    <mat-form-field class="custom-form-field custom-form-field-bg-white w-100 mb-2" appearance="outline" (click)="openEditDesign()">
-                        <mat-label>Test and Design Data</mat-label>
-                        <input type="text" [(ngModel)]="detail.testData"  matInput >
+                    <mat-form-field class="custom-form-field custom-form-field-bg-white w-100 mb-2" appearance="outline" (click)="openEditDesign()" data-automation-id="custom-reports-test-design-form-field">
+                        <mat-label data-automation-id="custom-reports-test-design-label">Test and Design Data</mat-label>
+                        <input type="text" [(ngModel)]="detail.testData"  matInput data-automation-id="custom-reports-test-and-design-input">
                         <span class="material-symbols-outlined icon-expand-more">
                             expand_content
                         </span>
                     </mat-form-field>
-                    <mat-form-field class="action-dropdown custom-form-fileInput-stylefield-bg-white w-100 mb-2" appearance="outline">
-                        <mat-label>Test/Design Data Type</mat-label>
-                        <mat-select class="employees-action"  [(ngModel)]="detail.testDataType" (ngModelChange)="saveInput()">
-                            <mat-option value=""></mat-option>
-                            <mat-option value="SP">Stored Procedure</mat-option>
-                            <mat-option value="SQL">Raw SQL</mat-option>
+                    <mat-form-field class="action-dropdown custom-form-fileInput-stylefield-bg-white w-100 mb-2" appearance="outline" data-automation-id="custom-reports-test-design-data-type-form-field">
+                        <mat-label data-automation-id="custom-reports-test-design-data-type-label">Test/Design Data Type</mat-label>
+                        <mat-select class="employees-action"  [(ngModel)]="detail.testDataType" (ngModelChange)="saveInput()" data-automation-id="custom-reports-test-design-data-type-select">
+                            <mat-option value="" data-automation-id="test-design-data-type-option-empty"></mat-option>
+                            <mat-option value="SP" data-automation-id="test-design-data-type-option-sp">Stored Procedure</mat-option>
+                            <mat-option value="SQL" data-automation-id="test-design-type-option-raw-sql">Raw SQL</mat-option>
                         </mat-select>
                         <span class="material-symbols-outlined icon-expand-more">
                             expand_more
                         </span>
                     </mat-form-field>
 
-                    <mat-form-field class="custom-form-field w-100 mb-2" appearance="outline">
-                        <mat-label>System or Custom Report/Label</mat-label>
-                        <input matInput type="text" maxlength="50" value="{{detail.systemOutput == true ? 'System':'Custom'}}" disabled (ngModelChange)="saveInput()" >
+                    <mat-form-field class="custom-form-field w-100 mb-2" appearance="outline" data-automation-id="custom-reports-system-or-custom-form-field">
+                        <mat-label data-automation-id="custom-reports-system-or-custom-report-label">System or Custom Report/Label</mat-label>
+                        <input matInput type="text" maxlength="50" value="{{detail.systemOutput == true ? 'System':'Custom'}}" disabled (ngModelChange)="saveInput()" data-automation-id="custom-reports-system-or-custom-report-input">
                     </mat-form-field>
 
-                    <mat-form-field class="custom-form-field w-100 mb-2" appearance="outline">
-                        <mat-label>File Name</mat-label>
-                        <input matInput type="text" [(ngModel)]="detail.fileName" maxlength="50" disabled  (ngModelChange)="saveInput()">
+                    <mat-form-field class="custom-form-field w-100 mb-2" appearance="outline" data-automation-id="custom-reports-file-name-form-field">
+                        <mat-label data-automation-id="custom-reports-file-name-label">File Name</mat-label>
+                        <input matInput type="text" [(ngModel)]="detail.fileName" maxlength="50" disabled  (ngModelChange)="saveInput()" data-automation-id="custom-reports-file-name-input">
                     </mat-form-field>
 
-                    <mat-form-field class="custom-form-field w-100 mb-2" appearance="outline">
-                        <mat-label>Description</mat-label>
-                        <input matInput type="text" maxlength="550" [(ngModel)]="detail.description" disabled  (ngModelChange)="saveInput()">
+                    <mat-form-field class="custom-form-field w-100 mb-2" appearance="outline" data-automation-id="custom-reports-description-form-field">
+                        <mat-label data-automation-id="custom-reports-description-label">Description</mat-label>
+                        <input matInput type="text" maxlength="550" [(ngModel)]="detail.description" disabled  (ngModelChange)="saveInput()" data-automation-id="custom-reports-description-input">
                     </mat-form-field>
 
-                    <mat-form-field class="action-dropdown custom-form-field w-100 mb-2" appearance="outline">
-                        <mat-label>Output Type</mat-label>
-                        <mat-select class="employees-action" [(ngModel)]="detail.outputType" disabled (ngModelChange)="saveInput()">
-                            <mat-option [value]="detail.outputType" >{{detail.outputType}}</mat-option>
+                    <mat-form-field class="action-dropdown custom-form-field w-100 mb-2" appearance="outline" data-automation-id="custom-reports-output-type-form-field">
+                        <mat-label data-automation-id="custom-reports-output-type-label">Output Type</mat-label>
+                        <mat-select class="employees-action" [(ngModel)]="detail.outputType" disabled (ngModelChange)="saveInput()" data-automation-id="custom-reports-output-type-select">
+                            <mat-option [value]="detail.outputType" data-automation-id="custom-reports-output-type-option">{{detail.outputType}}</mat-option>
 
                         </mat-select>
-                        <span class="material-symbols-outlined icon-expand-more expandMore-style">
+                        <span class="material-symbols-outlined icon-expand-more expandMore-style" data-automation-id="custom-reports-output-type-select-expand-more">
                             expand_more
                         </span>
                     </mat-form-field>
 
-                    <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline">
-                        <mat-label>Export Filename</mat-label>
-                        <input matInput type="text"  [(ngModel)]="detail.exportFileName" maxlength="50" (ngModelChange)="saveInput()">
+                    <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline" data-automation-id="custom-reports-export-filename-form-field">
+                        <mat-label data-automation-id="custom-reports-export-filename-label">Export Filename</mat-label>
+                        <input matInput type="text"  [(ngModel)]="detail.exportFileName" maxlength="50" (ngModelChange)="saveInput()" data-automation-id="custom-reports-export-filename-input">
                     </mat-form-field>
                 </div>
                 <div class="text-center">
-                    <button mat-flat-button color="primary" class="w-100 btn-lg" (click)="pushReports()">Push Changes</button>
+                    <button mat-flat-button color="primary" class="w-100 btn-lg" (click)="pushReports()" data-automation-id="custom-reports-push-changes-button">Push Changes</button>
                     </div>
                 </div>
                     
