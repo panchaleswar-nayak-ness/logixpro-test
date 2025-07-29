@@ -160,6 +160,7 @@ export class ProcessPutAwaysComponent implements OnInit {
   ) {
     this.iAdminApiService = adminApiService;
     this.commonApiService=CommonApiService;
+    this.iInductionManagerApi=inductionManagerApi;
   }
 
   ngAfterViewInit() {
