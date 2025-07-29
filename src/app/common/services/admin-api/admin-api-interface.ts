@@ -1,5 +1,4 @@
 import { DevicePreferenceRequest, DevicePreferencesTableRequest } from "../../interface/admin/device-preferences";
-import { UpdateEmergencyRequest } from "../../interface/admin/opentransaction.interfaces";
 import { InventoryMap, UpdateSCReq } from "../../Model/storage-container-management";
 
 export interface IAdminApiService
@@ -161,7 +160,6 @@ export interface IAdminApiService
     ScanValidateOrder(payload : any); 
     DeleteOrder(payload : any); 
     OrderStatusData(payload : any); 
-    UpdateEmergency(payload : UpdateEmergencyRequest); 
     OpenTransactionTable(payload : any); 
     HoldTransactionsData(payload : any);  
     UpdateTransaction(payload : any); 

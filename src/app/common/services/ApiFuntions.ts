@@ -14,11 +14,9 @@ import { InventoryMap, UpdateSCReq } from '../Model/storage-container-management
 import {IQueryParams} from '../../app/../consolidation-manager/cm-route-id-management/routeid-list/routeid-IQueryParams'
 import { MarkoutAuditResponse, MarkoutPickLinesResponse, MarkoutResponse } from 'src/app/consolidation-manager/cm-markout-new/models/cm-markout-new-models';
 import { ZoneListPayload } from 'src/app/bulk-process/preferences/preference.models';
+import { ApiResponseData } from '../types/CommonTypes';
 import { DevicePreferenceRequest, DevicePreferencesTableRequest } from '../interface/admin/device-preferences';
-import { UpdateEmergencyRequest } from '../interface/admin/opentransaction.interfaces';
-import { ApiResponse, ApiResponseData } from '../types/CommonTypes';
 import { PrintOrdersPayload } from '../interface/bulk-transactions/bulk-pick';
-
 
 
 @Injectable({
@@ -1514,10 +1512,6 @@ export class ApiFuntions {
   public OpenTransactionTable(Body: any): Observable<any> {
     return this.ApiBase.Get(`/Admin/opentransaction`, Body);
   }
-
-public updateEmergency(payload: UpdateEmergencyRequest): Observable<ApiResponse<UpdateEmergencyRequest> | null> {
-  return this.ApiBase.Put<ApiResponse<UpdateEmergencyRequest>>('/Admin/updateEmergency', payload);
-}
 
   public HoldTransactionsData(Body: any): Observable<any> {
     return this.ApiBase.Get(`/Admin/holdtransactionsdata`, Body);
