@@ -427,7 +427,7 @@ UserField10:string = this.fieldMappings.userField10;
   ];
 
   displayedTransColumns = this.filterBatchTransColumns.map((c) => c.columnDef);
-
+filterationColumns : FilterationColumns[] = [];
   displayedColumns4: string[] = [
     UniqueConstants.Select,
     TableConstant.zone,
@@ -997,7 +997,7 @@ userFields = Array.from({ length: 9 }, (_, i) => ({
         SortColumnNumber: 0,
         SortOrder: UniqueConstants.Asc,
         Filter: UniqueConstants.OneEqualsOne,
-        FilterationColumns :  this.filterationColumns
+        FiltrationColumns :  this.filterationColumns
       };
       this.iInductionManagerApi.PickToteTransDT(paylaod).subscribe((res) => {
         if (res) {
@@ -1674,44 +1674,15 @@ refreshOrderDataGrid() {
     }, 100);
   }
 
-  optionSelected(filter : string) {
-    this.filterString = filter;
+  directFilterationColumnsSelected(filterationColumns: FilterationColumns[]) {
+    // Directly use the FilterationColumns objects
+    this.filterationColumns = filterationColumns;
+    
+    // Call the existing method to get content data
     this.getContentData();
     this.isActiveTrigger = false;
   }
-
-
-  filterationColumns : FilterationColumns[] = [];
   getContentData(){
-
-    // Create objects and push them to the array
-    this.filterationColumns.push({
-      ColumnType: 'string',
-      ColumnName: 'Location',
-      Value: '0322801 A1',
-      Value2: "", // Set to null or appropriate value if needed
-      GridOperation: 'NotEquals', // Example value; replace with actual GridOperation value
-      IsInput: false,
-    });
-
-    this.filterationColumns.push({
-      ColumnType: 'int',
-      ColumnName: 'TransactionQuantity',
-      Value: 10, // Integer value
-      Value2: "",
-      GridOperation: 'GreaterThan', // Example value
-      IsInput: false,
-    });
-
-    // this.filterationColumns.push({
-    //   ColumnType: 'datetime',
-    //   ColumnName: 'RequiredDate',
-    //   Value: '2025-06-25', // Date object
-    //   Value2: "",
-    //   GridOperation: 'Equals', // Example value
-    //   IsInput: false,
-    // });
-
     if(this.filterString == "")
     {
       this.filterString = UniqueConstants.OneEqualsOne
@@ -1725,7 +1696,7 @@ refreshOrderDataGrid() {
       SortOrder: UniqueConstants.Asc,
       searchFilter: this.filterString,
       Filter: this.filterString,
-      FilterationColumns :  this.filterationColumns
+      filtrationColumns :  this.filterationColumns
     };
     this.iInductionManagerApi.PickToteTransDT(paylaod).subscribe((res) => {
       if (res) {

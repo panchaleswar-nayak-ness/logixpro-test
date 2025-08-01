@@ -671,4 +671,8 @@
     </div>
   </ng-template>
   
-<app-table-context-menu-component *ngIf="isActiveTrigger" (optionSelected)="optionSelected($event)" [componentName]="'orderTransactions'"></app-table-context-menu-component>
+<!-- Add this new component alongside the existing one -->
+<app-direct-filteration-columns-menu
+  [componentName]="'toteTransManager'"
+  (filterationColumnsSelected)="directFilterationColumnsSelected($event)">
+</app-direct-filteration-columns-menu>

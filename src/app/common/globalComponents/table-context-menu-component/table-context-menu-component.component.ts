@@ -52,7 +52,7 @@ export class TableContextMenuComponentComponent implements OnInit{
   @ViewChild('trigger') trigger: MatMenuTrigger;
 
   constructor(
-    private global : GlobalService,
+    public global : GlobalService,
     private filterService : ContextMenuFiltersService,
     public contextMenuService : TableContextMenuService
   ) {
