@@ -436,7 +436,7 @@
                         <ng-container matColumnDef="{{col.columnDef}}" *ngFor="let col of filterBatchTransColumns; let indexOfelement=index;">
                           <th class="header container-table-header" mat-header-cell  *matHeaderCellDef mat-sort-header >{{ col.header }}</th>
                           <td class="container-table-data" mat-cell *matCellDef="let element" 
-                          (contextmenu)=" onContextMenu($event,  element[col.columnDef], col.header)" >
+                          (contextmenu)=" onContextMenu($event, element[col.columnDef], col.columnDef)" >
                           {{ col.cell(element) }}
                         </td>
                         </ng-container>

@@ -34,9 +34,6 @@ export class DirectFilterationColumnsService {
     if (!selectedItem || !filterColumnName) {
       return this.filterationColumns;
     }
-
-    // Remove spaces from column name (e.g., "Transaction Quantity" -> "TransactionQuantity")
-    const columnName = this.removeSpacesFromColumnName(filterColumnName);
     
     // Determine column type based on the value type
     let columnType = this.determineColumnType(type, filterColumnName);
@@ -53,7 +50,7 @@ export class DirectFilterationColumnsService {
 
     // Create the FilterationColumns object
     const filterationColumn: FilterationColumns = {
-      ColumnName: columnName,
+      ColumnName: filterColumnName,
       ColumnType: columnType,
       Value: value,
       Value2: value2 || '',
@@ -75,8 +72,6 @@ export class DirectFilterationColumnsService {
    * @returns The updated array of FilterationColumns objects
    */
   updateFilterationColumnWithInput(columnName: string, condition: string, value: any, value2?: any): FilterationColumns[] {
-    // Remove spaces from column name
-    const formattedColumnName = this.removeSpacesFromColumnName(columnName);
     
     // Determine column type based on value
     let columnType = 'string';
@@ -91,7 +86,7 @@ export class DirectFilterationColumnsService {
     
     // Create the FilterationColumns object
     const filterationColumn: FilterationColumns = {
-      ColumnName: formattedColumnName,
+      ColumnName: columnName,
       ColumnType: columnType,
       Value: value,
       Value2: value2 || '',
@@ -100,7 +95,7 @@ export class DirectFilterationColumnsService {
     };
 
     // Check if we already have a filter for this column
-    const existingIndex = this.filterationColumns.findIndex(f => f.ColumnName === formattedColumnName);
+    const existingIndex = this.filterationColumns.findIndex(f => f.ColumnName === columnName);
     if (existingIndex >= 0) {
       // Replace existing filter
       this.filterationColumns[existingIndex] = filterationColumn;
@@ -122,8 +117,7 @@ export class DirectFilterationColumnsService {
       return this.filterationColumns;
     }
 
-    const formattedColumnName = this.removeSpacesFromColumnName(columnName);
-    this.filterationColumns = this.filterationColumns.filter(f => f.ColumnName !== formattedColumnName);
+    this.filterationColumns = this.filterationColumns.filter(f => f.ColumnName !== columnName);
     return [...this.filterationColumns];
   }
 
@@ -226,18 +220,6 @@ export class DirectFilterationColumnsService {
       // For string values, we don't need to add wildcards here as that's handled by the GridOperation
       return value;
     }
-  }
-
-  /**
-   * Removes spaces from column names and formats them in camelCase
-   * @param columnName The column name with spaces
-   * @returns The column name without spaces
-   */
-  private removeSpacesFromColumnName(columnName: string): string {
-    if (!columnName) return '';
-    // Remove spaces and ensure proper casing (e.g., "Transaction Quantity" -> "TransactionQuantity")
-    return columnName.replace(/\s+(.)/g, (_, char) => char.toUpperCase())
-                     .replace(/\s+/g, '');
   }
 
   /**
