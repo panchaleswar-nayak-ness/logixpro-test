@@ -10,7 +10,7 @@ import { catchError, shareReplay, take, switchMap, map ,finalize} from 'rxjs/ope
 import { throwError } from 'rxjs';
 import { SpinnerService } from "../../common/init/spinner.service";
 import { ZoneListPayload } from 'src/app/bulk-process/preferences/preference.models';
-
+import { ErrorCode} from '../enums/CommonEnums';
 type Method = 'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH';
 
 export interface LinkedResource<T> {
@@ -80,8 +80,8 @@ export class BaseService {
             }
           }),
           catchError(error => {
-            if(error?.error?.statusCode == 555){ //Unable to print
-              this.injector.get(GlobalService).ShowToastr(ToasterType.Error, ToasterMessages.UnableToPrint, ToasterTitle.Error);
+            if(error?.error?.messageCode == ErrorCode.UnableToPrint){ //Unable to print
+              this.injector.get(GlobalService).ShowToastr(ToasterType.Error, error?.error.error, ToasterTitle.Error);
             }else
             this.injector.get(GlobalService).ShowToastr(ToasterType.Error, ToasterMessages.APIErrorMessage, ToasterTitle.Error);
             return throwError(() => error);
