@@ -43,7 +43,7 @@
                         <input [(ngModel)]="orderNumber" [min]="0" [matAutocomplete]="auto" matInput class="" value="" type="text" (ngModelChange)="this.searchByOrderNumber.next($event)" type="text" placeholder="Search" aria-label="Number" matInput data-automation-id="input-order-number">
                         <button matSuffix *ngIf="orderNumber" class="clear-btn"  (click)="clear()" data-automation-id="clear-order-number-button"><mat-icon class="text-20 text-chrome-600">cancel</mat-icon></button>
                         <mat-autocomplete #auto="matAutocomplete" (optionSelected)="searchData($event.option.value)" data-automation-id="autocomplete-order-number">
-                            <mat-option *ngFor="let option of searchAutocompleteList" [value]="option" [attr.data-automation-id]="'autocomplete-option-order-number-' + option">
+                            <mat-option *ngFor="let option of searchAutocompleteList; let i= index" [value]="option" [attr.data-automation-id]="'autocomplete-option-order-number-' + i">
                                 {{option}}
                             </mat-option>
                         </mat-autocomplete>

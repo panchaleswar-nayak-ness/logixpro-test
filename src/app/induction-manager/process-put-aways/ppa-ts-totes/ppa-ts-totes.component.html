@@ -38,7 +38,7 @@
                             <div class="pe-2">
                                 <mat-form-field class="custom-form-field w-100" appearance="outline">
                                     <input matInput type="text" #specialFeature maxlength="255"
-                                        [value]="element.position" disabled [attr.data-automation-id]="'position-input-' + i + '-' + element.position">
+                                        [value]="element.position" disabled [attr.data-automation-id]="'position-input-' + i">
                                 </mat-form-field>
                             </div>
                         </td>
@@ -57,7 +57,7 @@
                                         (change)="callFun('onToteChange',$event,element.position,'1')"
                                         (keypress)="callFun('onToteChange',$event,element.position,'1')"
                                         (keypress)="callFun('onToteChange',$event,element.position,'1')"
-                                        [attr.data-automation-id]="'cells-input-' + i + '-' + element.cells">
+                                        [attr.data-automation-id]="'cells-input-' + i">
                                 </mat-form-field>
                             </div>
                         </td>
@@ -68,7 +68,7 @@
                             <div class="pe-2 d-flex gap-12 align-items-center">
                                 <mat-form-field class="custom-form-field w-100" appearance="outline"
                                     (click)="element.locked ? false : callFun('openTotesDialogue',element.position,i)"
-                                    [attr.data-automation-id]="'tote-id-field-' + i + '-' + element.cells">
+                                    [attr.data-automation-id]="'tote-id-field-' + i">
                                     <span matSuffix>
                                         <mat-icon class="unfold_more-styleClass"
                                            data-automation-id="unfold-more-icon">unfold_more</mat-icon>
@@ -79,10 +79,10 @@
                                         (change)="callFun('onToteChange',$event,element.position)"
                                         (keypress)="callFun('onToteChange',$event,element.position)"
                                         (keypress)="callFun('onToteChange',$event,element.position)"
-                                        [attr.data-automation-id]="'tote-id-input-' + i + '-'  + element.toteid">
+                                        [attr.data-automation-id]="'tote-id-input-' + i">
                                 </mat-form-field>
                                 <button *ngIf="element.locked" matTooltip="Allocated in Open Transaction" mat-mini-fab
-                                    color="Default" class="button-default-i icon-button-8br" [attr.data-automation-id]="'locked-flag-button-' + i + '-' + element.position">
+                                    color="Default" class="button-default-i icon-button-8br" [attr.data-automation-id]="'locked-flag-button-' + i">
                                     <mat-icon class="flagIcon-styleclass">flag</mat-icon>
                                 </button>
                             </div>

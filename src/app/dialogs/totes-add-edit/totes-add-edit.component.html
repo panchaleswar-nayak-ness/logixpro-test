@@ -141,7 +141,7 @@
               <div class="pe-2">
                 <mat-radio-button [disabled]="!row.toteID || !row.cells || row.isInserted==0 || row.isEdit" color="primary" 
                   (click)="selectTote(row.toteID,row.cells,!row.toteID?false:!row.cells?false:row.isInserted==0?false:row.isEdit?false:true)"
-                  [attr.data-automation-id]="'managed-tote-radio-' + i + '-' + (row.toteID || '') + '-' + (row.cells || '')">
+                  [attr.data-automation-id]="'managed-tote-radio-' + i">
                 </mat-radio-button>
               </div>
             </td>
@@ -150,14 +150,14 @@
           <ng-container matColumnDef="zone">
             <th mat-header-cell *matHeaderCellDef data-automation-id="managed-tote-id-header">Tote IDs</th>
             <td mat-cell *matCellDef="let element; let i = index">
-              <div class="pe-2" [attr.data-automation-id]="'managed-tote-id-cell-' + i + '-' + (element.toteID || '')">
+              <div class="pe-2" [attr.data-automation-id]="'managed-tote-id-cell-' + i">
                 <mat-form-field class="custom-form-field w-100" appearance="outline">
                   <input matInput type="text" #specialFeature maxlength="255" [value]="element.toteID" #category_category [autofocus]="i === 0" 
                     (keydown.shift.enter)="$event.preventDefault()"  
                     (keydown)="onToteChange($event,i,'')" (keyup)="onToteChange($event,i,'')"
                     (change)="onToteChange($event,i,'')" (keypress)="onToteChange($event,i,'')"
                     (keypress)="onToteChange($event,i,'')"
-                    [attr.data-automation-id]="'managed-tote-id-input-' + i + '-' + (element.toteID || '')">
+                    [attr.data-automation-id]="'managed-tote-id-input-' + i">
                 </mat-form-field>
               </div>
             </td>
@@ -166,14 +166,14 @@
           <ng-container matColumnDef="locationdesc">
             <th mat-header-cell *matHeaderCellDef data-automation-id="managed-cells-header">Cells</th>
             <td mat-cell *matCellDef="let element; let i = index">
-              <div class="pe-2" [attr.data-automation-id]="'managed-cells-cell-' + i + '-' + (element.cells || '')">
+              <div class="pe-2" [attr.data-automation-id]="'managed-cells-cell-' + i">
                 <mat-form-field class="custom-form-field w-100" appearance="outline">
                   <input matInput type="text" #specialFeature maxlength="6" [value]="element.cells"
                     oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');"
                     (keydown)="onToteChange($event,i,'1')" (keyup)="onToteChange($event,i,'1')"
                     (change)="onToteChange($event,i,'1')" (keypress)="onToteChange($event,i,'1')"
                     (keypress)="onToteChange($event,i,'1')"
-                    [attr.data-automation-id]="'managed-cells-input-' + i + '-' + (element.cells || '')">
+                    [attr.data-automation-id]="'managed-cells-input-' + i">
                 </mat-form-field>
               </div>
             </td>
@@ -186,19 +186,19 @@
                 <button (click)="printTote('tote',element)" [disabled]="!element.toteID || !element.cells || element.isInserted==0 || element.isEdit" 
                   matTooltip="Print" mat-flat-button color="primary" class="xsm-icon-button"
                   [attr.data-automation-id]="'print-tote-btn-' + i">
-                  <mat-icon class="material-symbols-outlined" [attr.data-automation-id]="'print-tote-icon-' + i + '-' + (element.toteID || '') + '-' + (element.cells || '')">print</mat-icon>
+                  <mat-icon class="material-symbols-outlined" [attr.data-automation-id]="'print-tote-icon-' + i">print</mat-icon>
                 </button>
                 <button [disabled]="!element.toteID || !element.cells || !element.isEdit" matTooltip="Save" 
                   mat-flat-button color="primary" class="xsm-icon-button"
                   (click)="saveTote(element.toteID,element.cells,element.oldToteID,element.isInserted,i)"
                   [attr.data-automation-id]="'save-tote-btn-' + i">
-                  <mat-icon class="material-symbols-outlined" [attr.data-automation-id]="'save-tote-icon-' + i + '-' + (element.toteID || '') + '-' + (element.cells || '')">save</mat-icon>
+                  <mat-icon class="material-symbols-outlined" [attr.data-automation-id]="'save-tote-icon-' + i">save</mat-icon>
                 </button>
                 <button [disabled]="!element.toteID || !element.cells" matTooltip="Delete" 
                   mat-flat-button color="warn" class="xsm-icon-button" 
                   (click)="deleteTote(element.toteID,i)"
                   [attr.data-automation-id]="'delete-tote-btn-' + i">
-                  <mat-icon class="material-symbols-outlined" [attr.data-automation-id]="'delete-tote-icon-' + i + '-' + (element.toteID || '') + '-' + (element.cells || '')">close</mat-icon>
+                  <mat-icon class="material-symbols-outlined" [attr.data-automation-id]="'delete-tote-icon-' + i">close</mat-icon>
                 </button>
               </div>
             </td>

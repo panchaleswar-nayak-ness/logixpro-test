@@ -91,11 +91,11 @@
               <div class="d-flex align-items-center">
                 <h2 class="card-header-title mb-3 me-4 d-flex align-items-center">
                   <div class="mat-icon-wrap me-1 me-lg-3">
-                    <span class="material-symbols-outlined">
+                    <span class="material-symbols-outlined" data-automation-id="label-button-access-icon">
                       switch
                     </span>
                   </div>
-                  <span>Button Access</span>
+                  <span data-automation-id="label-button-access">Button Access</span>
                 </h2>
               </div>
 
@@ -107,15 +107,15 @@
                     <table class="w-100 g-card-table table-borderless table-minimal-action-buttons" mat-table matSort
                       [dataSource]="ButtonAccessList">
                       <ng-container matColumnDef="controlName">
-                        <th mat-header-cell *matHeaderCellDef mat-sort-header> Control Name </th>
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header data-automation-id="label-control-name"> Control Name </th>
                         <td mat-cell *matCellDef="let element">{{element.controlName}}</td>
                       </ng-container>
                       <ng-container matColumnDef="function">
-                        <th mat-header-cell *matHeaderCellDef mat-sort-header> Function </th>
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header data-automation-id="label-function"> Function </th>
                         <td mat-cell *matCellDef="let element">{{element.function}}</td>
                       </ng-container>
                       <ng-container matColumnDef="adminLevel">
-                        <th width="10%" class="text-center" mat-header-cell *matHeaderCellDef mat-sort-header> Admin
+                        <th width="10%" class="text-center" mat-header-cell *matHeaderCellDef mat-sort-header data-automation-id="label-admin-level"> Admin
                           Level </th>
                         <td width="10%" class="text-center" mat-cell *matCellDef="let element">
                           <mat-checkbox color="primary" [checked]="element.adminLevel" [(ngModel)]="element.adminLevel"

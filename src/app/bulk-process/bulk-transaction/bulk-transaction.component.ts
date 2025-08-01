@@ -156,6 +156,15 @@ export class BulkTransactionComponent implements OnInit {
             line.location = assignedLine.location;
           }
         });
+        
+        if (Array.isArray(assignedOrderLines) && Array.isArray(this.orderLines)) {
+          const assignedLineIDSet = new Set(
+            assignedOrderLines
+              .filter(x => x?.id != null)
+              .map(x => x.id)
+          );
+          this.orderLines = this.orderLines.filter(x => x?.id != null && assignedLineIDSet.has(x.id));
+        }
 
         // Filter out reprocess orders
         const reprocessSet = new Set(reprocessOrders);

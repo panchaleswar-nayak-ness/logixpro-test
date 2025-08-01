@@ -2,13 +2,13 @@
     <mat-card-content>
         <div class="row">
         
-             <app-icon-heading-component class="col card-header-title mb-3 d-flex align-items-center" heading="Item Details" icon="category">
+             <app-icon-heading-component class="col card-header-title mb-3 d-flex align-items-center" heading="Item Details" icon="category" data-automation-id="heading-item-details">
 
             </app-icon-heading-component> 
             
             <div class="col-xl-6">
             <div class="d-xl-block d-flex mb-3 w-100">
-            <button [disabled]="!item || this.orderNumber==''" mat-flat-button color="primary" class="btn-regular float-end view-user-fields" color="primary" (click)="openUserFieldsEditDialogue()">
+            <button [disabled]="!item || this.orderNumber==''" mat-flat-button color="primary" class="btn-regular float-end view-user-fields" color="primary" (click)="openUserFieldsEditDialogue()" data-automation-id="button-view-set-user-fields">
                 View/Set User Fields
             </button>
         </div>
@@ -17,64 +17,56 @@
         <div class="row">
             <div class="col-xl-3">
                 
-                <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline"
-                    (click)="this.openSetItemLocationDialogue.emit()">
-                    <mat-label> Item Number</mat-label>
-                    <input readonly [disabled]="!item || this.orderNumber==''"  [(ngModel)]="itemNumber" (ngModelChange)="onFieldChange(itemNumber)"  matInput type="text" maxlength="255" value="Value"> 
+                <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline" (click)="this.openSetItemLocationDialogue.emit()" data-automation-id="form-field-item-number">
+                    <mat-label data-automation-id="label-item-number"> Item Number</mat-label>
+                    <input readonly [disabled]="!item || this.orderNumber==''"  [(ngModel)]="itemNumber" (ngModelChange)="onFieldChange(itemNumber)"  matInput type="text" maxlength="255" value="Value" data-automation-id="input-item-number"> 
                     <span matSuffix>
                         <mat-icon class="custom-icon">unfold_more</mat-icon>
                     </span>
                 </mat-form-field>
             </div>
             <div class="col-xl-3">
-                <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline"
-                    (click)="openSupplierItemDialogue()">
-                    <mat-label>Supplier Item ID</mat-label>
-                    <input  [disabled]="!item" [(ngModel)]="supplierID"  matInput type="text" maxlength="255" value="Value" (ngModelChange)="onFieldChange(supplierID)" (ngModelChange)="onFieldChange(userData)">
+                <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline" (click)="openSupplierItemDialogue()" data-automation-id="form-field-supplier-item-id">
+                    <mat-label data-automation-id="label-supplier-item-id">Supplier Item ID</mat-label>
+                    <input  [disabled]="!item" [(ngModel)]="supplierID"  matInput type="text" maxlength="255" value="Value" (ngModelChange)="onFieldChange(supplierID)" (ngModelChange)="onFieldChange(userData)" data-automation-id="input-supplier-item-id">
                     <span matSuffix>
                         <mat-icon class="custom-icon">unfold_more</mat-icon>
                     </span>
                 </mat-form-field>
             </div>
             <div class="col-xl-3">
-                <mat-form-field class="custom-form-field w-100 __grab_cursor mb-3" appearance="outline"
-                [class.mat-form-field-invalid]="isInvalid" >
-                    <mat-label>Expiration Date</mat-label>
-                    <input [disabled]="!item" maxlength="11" matInput [matDatepicker]="expirationDate"
-                    [(ngModel)]="expDate" (focusout)="this.onFormFieldFocusOut.emit()" (ngModelChange)="onFieldChange(expDate)">
+                <mat-form-field class="custom-form-field w-100 __grab_cursor mb-3" appearance="outline" [class.mat-form-field-invalid]="isInvalid" data-automation-id="form-field-expiration-date">
+                    <mat-label data-automation-id="label-expiration-date">Expiration Date</mat-label>
+                    <input [disabled]="!item" maxlength="11" matInput [matDatepicker]="expirationDate" [(ngModel)]="expDate" (focusout)="this.onFormFieldFocusOut.emit()" (ngModelChange)="onFieldChange(expDate)" data-automation-id="input-expiration-date">
                     <mat-datepicker-toggle matSuffix [for]="expirationDate" ngDefaultControl></mat-datepicker-toggle>
                     <mat-datepicker   #expirationDate></mat-datepicker>
                 </mat-form-field>
 
             </div>
             <div class="col-xl-3">
-                <mat-form-field class="custom-form-field w-100 mb-3"
-                    appearance="outline">
-                    <mat-label>Revision</mat-label>
-                    <input [disabled]="!item" [(ngModel)]="revision" matInput type="text" maxlength="50" value="Value" (ngModelChange)="onFieldChange(revision)">
+                <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline" data-automation-id="form-field-revision">
+                    <mat-label data-automation-id="label-revision">Revision</mat-label>
+                    <input [disabled]="!item" [(ngModel)]="revision" matInput type="text" maxlength="50" value="Value" (ngModelChange)="onFieldChange(revision)" data-automation-id="input-revision">
                 </mat-form-field>
             </div>
         </div>
         <div class="row">
             <div class="col-xl-6">
-                <mat-form-field class="custom-form-field w-100 mb-3"
-                    appearance="outline">
-                    <mat-label>Description</mat-label>
-                    <input readonly [disabled]="!item" [(ngModel)]="description" matInput type="text" maxlength="255"  value="Value" (ngModelChange)="onFieldChange(description)">
+                <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline" data-automation-id="form-field-description">
+                    <mat-label data-automation-id="label-description">Description</mat-label>
+                    <input readonly [disabled]="!item" [(ngModel)]="description" matInput type="text" maxlength="255"  value="Value" (ngModelChange)="onFieldChange(description)" data-automation-id="input-description">
                 </mat-form-field>
             </div>
             <div class="col-xl-3">
-                <mat-form-field class="custom-form-field w-100 mb-3"
-                    appearance="outline">
-                    <mat-label>Lot Number</mat-label>
-                    <input [disabled]="!item" [(ngModel)]="lotNumber" (ngModelChange)="onFieldChange(lotNumber)"   matInput type="text" maxlength="50" value="Value">
+                <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline" data-automation-id="form-field-lot-number">
+                    <mat-label data-automation-id="label-lot-number">Lot Number</mat-label>
+                    <input [disabled]="!item" [(ngModel)]="lotNumber" (ngModelChange)="onFieldChange(lotNumber)"   matInput type="text" maxlength="50" value="Value" data-automation-id="input-lot-number">
                 </mat-form-field>
             </div>
             <div class="col-xl-3">
-                <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline"
-                    (click)="openUnitOfMeasureDialogue()">
-                    <mat-label>{{columns?.unitOfMeasure}}</mat-label>
-                    <input readonly [disabled]="!item" [(ngModel)]="uom" matInput type="text" maxlength="255" value="Value" (ngModelChange)="onFieldChange(uom)">
+                <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline" (click)="openUnitOfMeasureDialogue()" data-automation-id="form-field-unit-of-measure">
+                    <mat-label data-automation-id="label-unit-of-measure">{{columns?.unitOfMeasure}}</mat-label>
+                    <input readonly [disabled]="!item" [(ngModel)]="uom" matInput type="text" maxlength="255" value="Value" (ngModelChange)="onFieldChange(uom)" data-automation-id="input-unit-of-measure">
                     <span matSuffix>
                         <mat-icon class="custom-icon">unfold_more</mat-icon>
                     </span>
@@ -83,20 +75,18 @@
         </div>
         <div class="row">
             <div class="col-xl-6">
-                <mat-form-field class="custom-form-field w-100 mb-3"
-                (click)="openNotes()"  appearance="outline">
-                    <mat-label>Notes</mat-label>
-                    <input readonly [disabled]="!item" [(ngModel)]="notes" matInput type="text" maxlength="255" value="Value"  (ngModelChange)="onFieldChange(notes)" >
+                <mat-form-field class="custom-form-field w-100 mb-3" (click)="openNotes()"  appearance="outline" data-automation-id="form-field-notes">
+                    <mat-label data-automation-id="label-notes">Notes</mat-label>
+                    <input readonly [disabled]="!item" [(ngModel)]="notes" matInput type="text" maxlength="255" value="Value"  (ngModelChange)="onFieldChange(notes)" data-automation-id="input-notes">
                     <span matSuffix>
                         <mat-icon class="custom-icon">unfold_more</mat-icon>
                     </span>
                 </mat-form-field>
             </div>
             <div class="col-xl-3">
-                <mat-form-field class="custom-form-field w-100 mb-3"
-                    appearance="outline">
-                    <mat-label>Serial Number</mat-label>
-                    <input [disabled]="!item" [(ngModel)]="serialNumber" matInput type="text" maxlength="50" value="Value"  (ngModelChange)="onFieldChange(serialNumber)" >
+                <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline" data-automation-id="form-field-serial-number">
+                    <mat-label data-automation-id="label-serial-number">Serial Number</mat-label>
+                    <input [disabled]="!item" [(ngModel)]="serialNumber" matInput type="text" maxlength="50" value="Value"  (ngModelChange)="onFieldChange(serialNumber)" data-automation-id="input-serial-number">
                 </mat-form-field>
             </div>
         </div>

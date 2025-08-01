@@ -1,4 +1,6 @@
 import { Injectable } from '@angular/core';
+import {PickToteFilterpreferences } from '../constants/strings.constants';
+import { PickToteFilterPreference } from '../Model/pick-Tote-Manager';
 
 @Injectable({
   providedIn: 'root'

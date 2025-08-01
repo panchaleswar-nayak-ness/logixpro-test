@@ -35,10 +35,9 @@ component: ReportsComponent,
 canActivate: [AuthGuardGuard],
 },
 { path: 'Markout', 
-  component: CmMarkoutComponent, 
-  
-  //opening new markout and closing old markout for testing of 8137
-  // component: CmMarkoutNewComponent, 
+  //opening new markout and closing old markout for testing of PLST-5522
+  component: CmMarkoutNewComponent, 
+  // component: CmMarkoutComponent, 
   canActivate: [AuthGuardGuard],
 },
 { path: 'RouteIDM',

@@ -15,10 +15,10 @@
 
         <div class="d-flex align-items-center gap-12">
                 <button type="button" mat-flat-button color="primary" class="button-primary-i btn-regular w-100"
-                    (click)="openScanVerification()">Manage Default Scan Verification(S)</button>
+                    (click)="openScanVerification()" data-automation-id="button-manage-default-scan-verification">Manage Default Scan Verification(S)</button>
 
-            <button mat-flat-button color="primary" class="add-icon-button">
-                <span class="material-symbols-outlined" matTooltip="Add New Device" matTooltipPosition="above">
+            <button mat-flat-button color="primary" class="add-icon-button" data-automation-id="button-add">
+                <span class="material-symbols-outlined" matTooltip="Add New Device" matTooltipPosition="above" data-automation-id="label-add">
                     add
                 </span>
             </button>
@@ -34,13 +34,13 @@
                     <ng-scrollbar class="mat-table-scrollbar h-295px" track="all">
                         <table mat-table [dataSource]="displayedColumns" class="w-100 table1">
                             <ng-container matColumnDef="transType">
-                                <th mat-header-cell *matHeaderCellDef> Trans. Type </th>
+                                <th mat-header-cell *matHeaderCellDef data-automation-id="label-trans-type"> Trans. Type </th>
                                 <td mat-cell *matCellDef="let element">
                                     <mat-form-field
                                         class="action-dropdown custom-form-field custom-form-field-bg-white w-100"
                                         appearance="outline">
-                                        <mat-label>Trans. Type</mat-label>
-                                        <mat-select class="employees-action" placeholder="Actions">
+                                        <mat-label data-automation-id="label-trans-type">Trans. Type</mat-label>
+                                        <mat-select class="employees-action" placeholder="Actions" data-automation-id="select-trans-type">
                                             <mat-option value="Pick">Pick</mat-option>
                                             <mat-option value="Put Away">Put Away</mat-option>
                                             <mat-option value="Count">Count</mat-option>
@@ -54,22 +54,22 @@
                             </ng-container>
 
                             <ng-container matColumnDef="scanSequence">
-                                <th mat-header-cell *matHeaderCellDef>Scan Sequence</th>
+                                <th mat-header-cell *matHeaderCellDef data-automation-id="label-scan-sequence">Scan Sequence</th>
                                 <td mat-cell *matCellDef="let element">
                                     <mat-form-field class="custom-form-field w-100" appearance="outline">
-                                        <input matInput type="text" value="{{element.totalTransactions}}" />
+                                        <input matInput type="text" value="{{element.totalTransactions}}" data-automation-id="input-scan-sequence" />
                                     </mat-form-field>
                                 </td>
                             </ng-container>
 
                             <ng-container matColumnDef="field">
-                                <th mat-header-cell *matHeaderCellDef> Field</th>
+                                <th mat-header-cell *matHeaderCellDef data-automation-id="label-field"> Field</th>
                                 <td mat-cell *matCellDef="let element; let i = index;">
                                     <mat-form-field
                                         class="action-dropdown custom-form-field custom-form-field-bg-white w-100"
                                         appearance="outline">
-                                        <mat-label>Expiration Date</mat-label>
-                                        <mat-select class="employees-action" placeholder="Actions">
+                                        <mat-label data-automation-id="label-expiration-date">Expiration Date</mat-label>
+                                        <mat-select class="employees-action" placeholder="Actions" data-automation-id="select-field">
                                             <mat-option value="Expiration Date">Expiration Date</mat-option>
                                             <mat-option value="Item Number" replacePlaceholder [replacePlaceHolder]="placeholders.itemNumber" [fallbackPlaceHolder]="placeholders.itemNumberFallback">Item Number</mat-option>
                                             <mat-option value="Location Number">Location Number</mat-option>
@@ -88,13 +88,13 @@
                             </ng-container>
 
                             <ng-container matColumnDef="verifyType">
-                                <th mat-header-cell *matHeaderCellDef>Verify Type</th>
+                                <th mat-header-cell *matHeaderCellDef data-automation-id="label-verify-type">Verify Type</th>
                                 <td mat-cell *matCellDef="let element">
                                     <mat-form-field
                                         class="action-dropdown custom-form-field custom-form-field-bg-white w-100"
                                         appearance="outline">
-                                        <mat-label>All</mat-label>
-                                        <mat-select class="employees-action" placeholder="Actions">
+                                        <mat-label data-automation-id="label-verify-type">All</mat-label>
+                                        <mat-select class="employees-action" placeholder="Actions" data-automation-id="select-verify-type">
                                             <mat-option value="All">All</mat-option>
                                             <mat-option value="Range">Range</mat-option>
 
@@ -107,37 +107,37 @@
                             </ng-container>
 
                             <ng-container matColumnDef="verifyStringStart">
-                                <th mat-header-cell *matHeaderCellDef>Verify String Start</th>
+                                <th mat-header-cell *matHeaderCellDef data-automation-id="label-verify-string-start">Verify String Start</th>
                                 <td mat-cell *matCellDef="let element">
                                     <mat-form-field class="custom-form-field w-100" appearance="outline">
-                                        <input matInput [NumbersOnly]="true" />
+                                        <input matInput [NumbersOnly]="true" data-automation-id="input-verify-string-start" />
                                     </mat-form-field>
                                 </td>
                             </ng-container>
 
                             <ng-container matColumnDef="verifyStringLength">
-                                <th mat-header-cell *matHeaderCellDef>Verify String Length</th>
+                                <th mat-header-cell *matHeaderCellDef data-automation-id="label-verify-string-length">Verify String Length</th>
                                 <td mat-cell *matCellDef="let element">
                                     <mat-form-field class="custom-form-field w-100" appearance="outline">
-                                        <input matInput [NumbersOnly]="true" />
+                                        <input matInput [NumbersOnly]="true" data-automation-id="input-verify-string-length" />
                                     </mat-form-field>
                                 </td>
                             </ng-container>
 
                             <ng-container matColumnDef="actions" stickyEnd>
-                                <th mat-header-cell *matHeaderCellDef class="ps-2">Actions</th>
+                                <th mat-header-cell *matHeaderCellDef class="ps-2" data-automation-id="label-actions">Actions</th>
                                 <td mat-cell *matCellDef="let element; let i = index" class="ps-2">
                                     <div class="d-flex gap-12">
 
                                         <button matTooltip="Print" mat-flat-button color="primary"
-                                            class="xsm-icon-button">
+                                            class="xsm-icon-button" data-automation-id="button-print">
                                             <mat-icon class="material-symbols-outlined">
                                                 print
                                             </mat-icon>
                                         </button>
 
                                         <button matTooltip="Delete" mat-flat-button color="warn"
-                                            class="xsm-icon-button">
+                                            class="xsm-icon-button" data-automation-id="button-delete">
                                             <mat-icon class="material-symbols-outlined">
                                                 close
                                             </mat-icon>

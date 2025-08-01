@@ -27,10 +27,11 @@
             </div>
             <div class="header-filter-bar mb-3">
               <div class="d-flex justify-content-between">
-                <mat-form-field class="custom-form-field custom-form-field-bg-white position-relative" appearance="outline">
-                  <mat-label>Select Saved filter</mat-label>
-                  <input #field_focus type="text" [formControl]="savedFilter" aria-label="Number" matInput [matAutocomplete]="auto">
-                  <mat-autocomplete class="br-14 auto-com"  autoActiveFirstOption
+                <div class="d-flex align-items-end">
+                  <mat-form-field class="custom-form-field custom-form-field-bg-white position-relative" appearance="outline">
+                    <mat-label>Select Saved filter</mat-label>
+                    <input #field_focus type="text" [formControl]="savedFilter" aria-label="Number" matInput [matAutocomplete]="auto">
+                    <mat-autocomplete class="br-14 auto-com"  autoActiveFirstOption
                     #auto="matAutocomplete" (optionSelected)="onSavedFilterChange($event)" (closed)="savedFilClosed()">
                     <h6 class="card-header matAutoCompHeader stickyHeader"><span
                       class="span-batch"
@@ -45,6 +46,16 @@
 
 
                 </mat-form-field>
+                
+                <div class="row px-3">
+                  <mat-label class="mb-2"><b>Filter Order / Item By:</b></mat-label>
+                  <mat-radio-group color="primary" [(ngModel)]="filterByNumeric" (change)="onFilterByChanged($event.value)">
+                    <mat-radio-button class="me-3" [value]="true">Numeric</mat-radio-button>
+                    <mat-radio-button [value]="false">Alphanumeric</mat-radio-button>
+                  </mat-radio-group>
+                </div>
+              </div>
+
                 <mat-form-field class="action-dropdown" appearance="outline">
                   <mat-label>Actions</mat-label>
                   <mat-select #matRef class="employees-action" placeholder="Actions" (selectionChange)="onFilterAction($event)">

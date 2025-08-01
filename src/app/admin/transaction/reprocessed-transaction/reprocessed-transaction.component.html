@@ -46,9 +46,9 @@
                         </th>
 
                         <td *matCellDef="let element; let rowIndex = index"  mat-cell class="reprocessed-cell-custom" #tooltip="matTooltip"
-                            [matTooltip]="element[col.colHeader]" matTooltipPosition="above" [matTooltipDisabled]="element[col.colHeader] && element[col.colHeader].length>=20?false:true"
-                            [attr.data-automation-id]="'table-row-' + rowIndex + '-' + col.colDef + '-' + element[col.colHeader]"> {{element[col.colHeader] }}
-                        >{{ element[col.colHeader] }}</td>
+                         [matTooltip]="element[col.colHeader]" matTooltipPosition="above" [matTooltipDisabled]="element[col.colHeader] && element[col.colHeader].length>=20?false:true" 
+                          [attr.data-automation-id]="'table-row-' + rowIndex + '-' + col.colDef + '-' + element[col.colHeader]"> {{element[col.colHeader] }}</td>
+
                     </ng-container>
 
                     <ng-container matColumnDef="actions" stickyEnd>

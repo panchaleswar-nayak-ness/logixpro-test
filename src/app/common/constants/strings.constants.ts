@@ -755,3 +755,6 @@ export class ConsoleErrorMessages {
     static readonly ErrorPrintingReprocessReport = "Error occurred while printing reprocess report after allocation:"
     static readonly ErrorFindingAssignedOrderLines = "Error occurred while finding order lines assigned locations:"
 }
+export const PickToteFilterpreferences = {
+    preferences: "PickToteFilterPrefs",
+}

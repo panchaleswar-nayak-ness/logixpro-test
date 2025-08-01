@@ -46,7 +46,8 @@
                                     [searchByInput]="this.searchByColumn"
                                     [searchAutocompleteList]="this.searchAutocompleteListByCol"
                                     (autoCompleteEvent)="this.columnSearch.searchValue = $event; this.searchByColumn.next($event)"
-                                    (valueChangeEvent)="valueChanges($event)">
+                                    (valueChangeEvent)="valueChanges($event)"
+                                    data-automation-id="column-filter-component">
                                 </app-column-filter-component>
 
                             </div>
@@ -131,6 +132,7 @@
                                         (dblclick)="col.colDef == 'Item Number' && viewInInventoryMaster(element)"
                                         #tooltip="matTooltip" [matTooltip]="element[col.colHeader]"
                                         matTooltipPosition="above"
+
                                         [matTooltipDisabled]="element[col.colHeader] && element[col.colHeader].length>=25?false:true"
                                         [attr.data-automation-id]="'table-row-' + i + '-' + col.colDef + '-' + element[col.colHeader]"
                                     >{{ element[col.colHeader] }}</td>
@@ -143,7 +145,7 @@
                                             <mat-icon>more_horiz</mat-icon>
                                         </button>
                                         <mat-menu #appMenu="matMenu">
-                                            <button mat-menu-item (click)="viewInInventoryMaster(seletedRecord)" [attr.data-automation-id]="'actions-menu-view-inventory-' + i + '-' + seletedRecord.id">View Item in Inventory Master</button>
+                                            <button mat-menu-item (click)="viewInInventoryMaster(seletedRecord)" [attr.data-automation-id]="'actions-menu-view-inventory-' + i ">View Item in Inventory Master</button>
                                         </mat-menu>
                                     </td>
                                 </ng-container>
@@ -165,7 +167,7 @@
                     <div class="table-pagination d-flex justify-content-start"
                         *ngIf="columnValues.length>0 && displayedColumns && dataSource">
                         <mat-paginator [length]="this.customPagination.total" [pageSize]="20" showFirstLastButtons
-                            [pageSizeOptions]="[10, 20, 100]" (page)="handlePageEvent($event)"></mat-paginator>
+                            [pageSizeOptions]="[10, 20, 100]" (page)="handlePageEvent($event)" data-automation-id="paginator"></mat-paginator>
                     </div>
                 </mat-card-content>
             </mat-card>
@@ -210,7 +212,7 @@
                                                     </span>
                                                     <button mat-icon-button aria-label="Delete Function"
                                                         (click)="deleteOrder(order.id,'reprocess')" matTooltip="Remove"
-                                                        matTooltipPosition="above">
+                                                        matTooltipPosition="above" [attr.data-automation-id]="'delete-order-reprocess-' + i">
                                                         <mat-icon class="icon-circle-cancel">close</mat-icon>
                                                     </button>
                                                 </mat-list-item>
@@ -246,7 +248,7 @@
                                                     </span>
                                                     <button mat-icon-button aria-label="Delete Function"
                                                         (click)="deleteOrder(order.id,'complete')" matTooltip="Remove"
-                                                        matTooltipPosition="above">
+                                                        matTooltipPosition="above" [attr.data-automation-id]="'delete-order-complete-' + i">
                                                         <mat-icon class="icon-circle-cancel">close</mat-icon>
                                                     </button>
                                                 </mat-list-item>
@@ -281,7 +283,7 @@
                                                     </span>
                                                     <button mat-icon-button aria-label="Delete Function"
                                                         (click)="deleteOrder(order.id,'history')" matTooltip="Remove"
-                                                        matTooltipPosition="above">
+                                                        matTooltipPosition="above" [attr.data-automation-id]="'delete-order-history-' + i">
                                                         <mat-icon class="icon-circle-cancel">close</mat-icon>
                                                     </button>
                                                 </mat-list-item>

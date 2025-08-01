@@ -6,7 +6,7 @@
    
 
     <div class="d-flex justify-content-end">
-        <button mat-flat-button color="primary" class="add-icon-button mb-2 flex-grow-1"  [disabled]="AddBtn" (click)="addNewAdjust()" >
+        <button mat-flat-button color="primary" class="add-icon-button mb-2 flex-grow-1"  [disabled]="AddBtn" (click)="addNewAdjust()" data-automation-id="add-adjustment-lookup-button">
             <span class="material-symbols-outlined" matTooltip="Add new" matTooltipPosition="above" >
                 add
             </span>
@@ -18,15 +18,15 @@
 <ng-container *ngFor="let element of adjustmentLookUp.data">
     <div class="col-xl-4 d-flex align-items-center">
         <mat-form-field class="action-dropdown custom-form-field-bg-white w-100" appearance="outline">
-            <input matInput type="text" [(ngModel)]="element.currentVal" >
+            <input matInput type="text" [(ngModel)]="element.currentVal" data-automation-id="adjustment-lookup-input-{{element.currentVal}}">
         </mat-form-field>
     
         <div class="ms-5 d-flex align-items-center gap-12" >
             <button mat-flat-button color="primary" class="xsm-icon-button" [disabled]="element.currentVal == element.oldVal"
-            (click)="saveAdjustLookUp(element)">
+            (click)="saveAdjustLookUp(element)" data-automation-id="button-save">
                 <mat-icon class="material-symbols-outlined">save</mat-icon>
             </button>
-            <button mat-flat-button color="warn" class="xsm-icon-button" (click)="deleteAdjust(element)">
+            <button mat-flat-button color="warn" class="xsm-icon-button" (click)="deleteAdjust(element)" data-automation-id="button-close">
                 <mat-icon class="material-symbols-outlined">close</mat-icon>
             </button>
         </div>

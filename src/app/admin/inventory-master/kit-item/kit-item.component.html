@@ -3,13 +3,13 @@
     <mat-card-content>
         <div class="row mb-3">
             <div class="d-flex gap-12 mb-3 justify-content-end">
-                <button mat-flat-button color="primary" class="add-icon-button" (click)="addCatRow($event)">
+                <button mat-flat-button color="primary" class="add-icon-button" (click)="addCatRow($event)" data-automation-id="add-kit-item-button">
                     <span class="material-symbols-outlined" matTooltip="Add Kit Item" matTooltipPosition="above">
                         add
                     </span>
                 </button>
                 <button mat-flat-button color="default" class="icon-button secondary-button"
-                    (click)="openPrintRangeDialog()" matTooltip="Print" matTooltipPosition="above">
+                    (click)="openPrintRangeDialog()" matTooltip="Print" matTooltipPosition="above" data-automation-id="print-kit-item-button">
                     <mat-icon class="material-symbols-outlined">print</mat-icon>
                 </button>
             </div>
@@ -19,8 +19,8 @@
             <ng-scrollbar track="all" class="mat-table-scrollbar h-390px">
                 <table class="w-100 table-borderless" mat-table #matSort3="matSort" matSort [dataSource]="kitItemsList">
                     <ng-container matColumnDef="ItemNumber">
-                        <th mat-header-cell *matHeaderCellDef > {{itemNumber}} </th>
-                        <td mat-cell *matCellDef="let element">
+                        <th mat-header-cell *matHeaderCellDef data-automation-id="table-header-item-number"> {{itemNumber}} </th>
+                        <td mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'table-row-' + i + '-' + element.itemNumber">
                             <mat-form-field class="custom-form-field w-100" class="padding-right-15" appearance="outline"
                                 (click)="openAddItemNumDialog(element)">
                                 <span matSuffix>
@@ -28,13 +28,13 @@
                                 </span>
                                 <input (ngModelChange)="changesMade()" (keydown.shift.enter)="$event.preventDefault()" matInput type="text" readonly
                                 (contextmenu)="onContextMenu($event, 'Item Number')"
-                                    #itemNum name="{{element.itemNumber}}" [(ngModel)]="element.itemNumber" required>
+                                    #itemNum name="{{element.itemNumber}}" [(ngModel)]="element.itemNumber" required [attr.data-automation-id]="'item-number-input-' + i + '-' + element.itemNumber">
                             </mat-form-field>
                         </td>
                     </ng-container>
                     <ng-container matColumnDef="Description">
-                        <th mat-header-cell *matHeaderCellDef> Description </th>
-                        <td mat-cell *matCellDef="let element">
+                        <th mat-header-cell *matHeaderCellDef data-automation-id="table-header-description"> Description </th>
+                        <td mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'table-row-description-' + i + '-' + element.itemNumber">
                             <mat-form-field class="custom-form-field w-100" class="padding-right-15" appearance="outline"
                                 (click)="openDescriptionDialog(element)">
                                 <span matSuffix>
@@ -42,43 +42,43 @@
                                 </span>
                                 <input (ngModelChange)="changesMade()" (keydown.shift.enter)="$event.preventDefault()" matInput type="text"
                                     name="{{element.description}}" [(ngModel)]="element.description" (contextmenu)="onContextMenu($event, 'Description')"
-                                    (ngModelChange)="checkIfFilled($event)" readonly #itemDesc>
+                                    (ngModelChange)="checkIfFilled($event)" readonly #itemDesc [attr.data-automation-id]="'description-input-' + i + '-' + element.description">
                             </mat-form-field>
                         </td>
                     </ng-container>
                     <ng-container matColumnDef="SpecialFeatures">
-                        <th mat-header-cell *matHeaderCellDef> Special Features </th>
-                        <td mat-cell *matCellDef="let element; let i = index">
+                        <th mat-header-cell *matHeaderCellDef data-automation-id="table-header-special-features"> Special Features </th>
+                        <td mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'table-row-special-features-' + i + '-' + element.itemNumber">
                             <mat-form-field class="custom-form-field w-100" class="padding-right-15" appearance="outline">
                                 <input (keyup)="changesMade()" (keydown.shift.enter)="$event.preventDefault()" matInput type="text"
                                     name="{{element.specialFeatures}}"  (contextmenu)="onContextMenu($event, 'Special Features')"
                                     (ngModelChange)="onRowUpdate(element.specialFeatures,$event,i)"
-                                    [(ngModel)]="element.specialFeatures" #specialFeature maxlength="255">
+                                    [(ngModel)]="element.specialFeatures" #specialFeature maxlength="255" [attr.data-automation-id]="'special-features-input-' + i + '-' + element.specialFeatures">
                             </mat-form-field>
                         </td>
                     </ng-container>
                     <ng-container matColumnDef="KitQuantity">
-                        <th mat-header-cell *matHeaderCellDef> Kit Quantity </th>
-                        <td mat-cell *matCellDef="let element; let i = index">
+                        <th mat-header-cell *matHeaderCellDef data-automation-id="table-header-kit-quantity"> Kit Quantity </th>
+                        <td mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'table-row-kit-quantity-' + i + '-' + element.itemNumber">
                             <mat-form-field class="custom-form-field w-100" class="padding-right-15" appearance="outline">
                                 <input (keyup)="changesMade()" (keydown.shift.enter)="$event.preventDefault()" matInput type="text"
                                     (ngModelChange)="onRowUpdate(element.kitQuantity, $event,i)"  (contextmenu)="onContextMenu($event, 'Kit Quantity')"
                                     name="{{element.kitQuantity}}" [(ngModel)]="element.kitQuantity" #kitQuantity
-                                    maxlength="9" required>
+                                    maxlength="9" required [attr.data-automation-id]="'kit-quantity-input-' + i + '-' + element.kitQuantity">
                             </mat-form-field>
                         </td>
                     </ng-container>
                     <ng-container matColumnDef="Actions" stickyEnd>
-                        <th mat-header-cell *matHeaderCellDef class="ps-2"> Actions </th>
-                        <td mat-cell *matCellDef="let element" class="ps-2">
+                        <th mat-header-cell *matHeaderCellDef class="ps-2" data-automation-id="table-header-actions"> Actions </th>
+                        <td mat-cell *matCellDef="let element; let i = index" class="ps-2" [attr.data-automation-id]="'table-row-actions-' + i + '-' + element.itemNumber">
                             <div class="d-flex gap-12 align-items-center">
                                 <button mat-flat-button color="primary" class="xsm-icon-button"
-                                    (click)="saveKit(element.itemNumber,  element)" #namebutton [disabled]="element.isSaved">
-                                    <mat-icon class="material-symbols-outlined">save</mat-icon>
+                                    (click)="saveKit(element.itemNumber,  element)" #namebutton [disabled]="element.isSaved" [attr.data-automation-id]="'save-kit-button-' + i">
+                                    <mat-icon class="material-symbols-outlined" [attr.data-automation-id]="'save-kit-icon-' + i">save</mat-icon>
                                 </button>
                                 <button mat-flat-button color="warn" class="xsm-icon-button"
-                                    (click)="dltCategory(element);" [disabled]="!element.isSaved">
-                                    <mat-icon class="material-symbols-outlined">close</mat-icon>
+                                    (click)="dltCategory(element);" [disabled]="!element.isSaved" [attr.data-automation-id]="'delete-kit-button-' + i">
+                                    <mat-icon class="material-symbols-outlined" [attr.data-automation-id]="'delete-kit-icon-' + i">close</mat-icon>
                                 </button>
                             </div>
                         </td>
@@ -103,10 +103,10 @@
 <ng-template #additemNumber>
     <div class="d-flex justify-content-between mb-4 align-items-center">
         <div class="width-480"></div>
-        <h1 class="m-0" mat-dialog-title replacePlaceholder [replacePlaceHolder]="placeholders.itemNumber" [fallbackPlaceHolder]="placeholders.itemNumberFallback">Item Number</h1>
+        <h1 class="m-0" mat-dialog-title replacePlaceholder [replacePlaceHolder]="placeholders.itemNumber" [fallbackPlaceHolder]="placeholders.itemNumberFallback" data-automation-id="dialog-title-item-number">Item Number</h1>
 
-        <button mat-icon-button class="close-button dialog-close-button-fix" (click)="closeDialog()">
-            <mat-icon class="close-icon">close</mat-icon>
+        <button mat-icon-button class="close-button dialog-close-button-fix" (click)="closeDialog()" data-automation-id="close-button">
+            <mat-icon class="close-icon" data-automation-id="close-icon">close</mat-icon>
         </button>
     </div>
 
@@ -117,17 +117,17 @@
                 <mat-form-field class="custom-form-field w-100" appearance="outline">
 
                     <input [matAutocomplete]="searchauto" type="text" placeholder="Search" aria-label="Search" matInput
-                        (keyup)="getSearchList($event)" [(ngModel)]="dialogItemNumberDisplay">
-                        <button matSuffix *ngIf="dialogItemNumberDisplay" class="clear-btn"  (click)="dialogItemNumberDisplay=''"><mat-icon class="text-20 text-chrome-600">cancel</mat-icon></button>
+                        (keyup)="getSearchList($event)" [(ngModel)]="dialogItemNumberDisplay" data-automation-id="search-input">
+                        <button matSuffix *ngIf="dialogItemNumberDisplay" class="clear-btn"  (click)="dialogItemNumberDisplay=''" data-automation-id="clear-button"><mat-icon class="text-20 text-chrome-600">cancel</mat-icon></button>
                     <mat-autocomplete class="card custom-scroll" #searchauto="matAutocomplete"
-                        (optionSelected)="onSearchSelect($event)" [displayWith]="displayFn">
+                        (optionSelected)="onSearchSelect($event)" [displayWith]="displayFn" data-automation-id="search-item-number-autocomplete">
                         <h6 class="card-header matAutoCompHeader ">
-                            <span class="width-140" replacePlaceholder [replacePlaceHolder]="placeholders.itemNumber" [fallbackPlaceHolder]="placeholders.itemNumberFallback">Item Number</span> 
-                            <span class="width-140">Description</span></h6>
-                        <mat-option *ngFor="let option of searchList" [value]="option" class="matAutoCompTableContent">
+                            <span class="width-140" replacePlaceholder [replacePlaceHolder]="placeholders.itemNumber" [fallbackPlaceHolder]="placeholders.itemNumberFallback" data-automation-id="autocomplete-header-item-number">Item Number</span> 
+                            <span class="width-140" data-automation-id="autocomplete-header-description">Description</span></h6>
+                        <mat-option *ngFor="let option of searchList; let i = index" [value]="option" class="matAutoCompTableContent" [attr.data-automation-id]="'autocomplete-option-' + option.itemNumber">
                             <div class="loc_option">
-                                <span class="searchColumn" class="width-140">{{option?.itemNumber}}</span> <span
-                                    class="searchColumn" class="width-140">{{option.description}}</span>
+                                <span class="searchColumn" class="width-140" [attr.data-automation-id]="'autocomplete-option-item-number-' + option.itemNumber">{{option?.itemNumber}}</span> <span
+                                    class="searchColumn" class="width-140" [attr.data-automation-id]="'autocomplete-option-description-' + option.itemNumber">{{option.description}}</span>
                             </div>
                         </mat-option>
                     </mat-autocomplete>
@@ -136,7 +136,7 @@
             </div>
             <div class="d-flex justify-content-end pt-3">
                 <button mat-flat-button color="primary" (click)="submitFunc()" class="btn-lg w-100"
-                    [disabled]="!isValidForm" [mat-dialog-close]="true" cdkFocusInitial>Submit</button>
+                    [disabled]="!isValidForm" [mat-dialog-close]="true" cdkFocusInitial data-automation-id="submit-item-number-button">Submit</button>
             </div>
         </div>
 
@@ -148,10 +148,10 @@
 
     <div class="d-flex justify-content-between mb-4 align-items-center">
         <div class="width-480"></div>
-        <h1 class="m-0" mat-dialog-title>Description</h1>
+        <h1 class="m-0" mat-dialog-title data-automation-id="dialog-title-description">Description</h1>
 
-        <button mat-icon-button class="close-button dialog-close-button-fix" [mat-dialog-close]="true">
-            <mat-icon class="close-icon">close</mat-icon>
+        <button mat-icon-button class="close-button dialog-close-button-fix" [mat-dialog-close]="true" data-automation-id="close-dialog-description-button">
+            <mat-icon class="close-icon" data-automation-id="close-dialog-description-icon">close</mat-icon>
         </button>
     </div>
 
@@ -161,12 +161,12 @@
                 <mat-form-field class="custom-form-field w-100" appearance="outline">
 
                     <textarea matInput [(ngModel)]="dialogDescription" readonly="true"
-                        class="height-100"></textarea>
+                        class="height-100" data-automation-id="dialog-description-textarea"></textarea>
                 </mat-form-field>
             </div>
             <div class="d-flex justify-content-end pt-3">
                 <button mat-flat-button color="primary" class="button-primary btn-lg w-100" [mat-dialog-close]="true"
-                    cdkFocusInitial>Submit</button>
+                    cdkFocusInitial data-automation-id="submit-description-button">Submit</button>
             </div>
         </div>
 

@@ -1,8 +1,8 @@
 
 <div class="d-flex justify-content-between mb-4 align-items-center">
     <div class="divWithClass"></div>
-    <h1 class="m-0" mat-dialog-title>Adjust Quantity</h1>
-    <button mat-icon-button class="close-button dialog-close-button-fix" [mat-dialog-close]="false">
+    <h1 class="m-0" mat-dialog-title data-automation-id="adjqty-title">Adjust Quantity</h1>
+    <button mat-icon-button class="close-button dialog-close-button-fix" [mat-dialog-close]="false" data-automation-id="adjqty-close-btn">
         <mat-icon class="close-icon">close</mat-icon>
     </button>
 </div>
@@ -10,66 +10,66 @@
         <div class="card p-3 mb-3">
             <div class="row">
             <div class="col-xl-4">
-                <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline">
-                    <mat-label> {{itemNumber}} </mat-label>
+                <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline" data-automation-id="adjqty-itemnum-ff">
+                    <mat-label data-automation-id="adjqty-itemnum-lbl"> {{itemNumber}} </mat-label>
                     <input matInput class="" [value]="this.getAdjustQuantityData.itemNumber"   name="this.getAdjustQuantityData.itemNumber"
-                        disabled>
+                        disabled data-automation-id="adjqty-itemnum-inp">
                 </mat-form-field>
             </div>
             <div class="col-xl-8">
-                <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline"aria-disabled="true">
-                    <mat-label>Description</mat-label>
+                <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline"aria-disabled="true" data-automation-id="adjqty-desc-ff">
+                    <mat-label data-automation-id="adjqty-desc-lbl">Description</mat-label>
                     <input matInput class="" [value]="this.getAdjustQuantityData.description"   name="this.getAdjustQuantityData.itemNumber"
-                    disabled>
+                    disabled data-automation-id="adjqty-desc-inp">
                 </mat-form-field>
             </div>
             <div class="col-xl-4">
-                <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline" aria-disabled="true">
-                    <mat-label>Location Zone</mat-label>
+                <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline" aria-disabled="true" data-automation-id="adjqty-zone-ff">
+                    <mat-label data-automation-id="adjqty-zone-lbl">Location Zone</mat-label>
                     <input matInput class="" [value]="this.getAdjustQuantityData.zone"   name="this.getAdjustQuantityData.itemNumber"
-                    disabled>
+                    disabled data-automation-id="adjqty-zone-inp">
                 </mat-form-field>
             </div>
             <div class="col-xl-4">
-                <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline" aria-disabled="true">
-                    <mat-label>Location</mat-label>
+                <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline" aria-disabled="true" data-automation-id="adjqty-location-ff">
+                    <mat-label data-automation-id="adjqty-location-lbl">Location</mat-label>
                     <input matInput class="" [value]="this.getAdjustQuantityData.location"   name="this.getAdjustQuantityData.itemNumber"
-                    disabled>
+                    disabled data-automation-id="adjqty-location-inp">
                 </mat-form-field>
             </div>
             <div class="col-xl-4">
-                <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline" aria-disabled="true">
-                    <mat-label>Qty Put Away</mat-label>
+                <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline" aria-disabled="true" data-automation-id="adjqty-putaway-ff">
+                    <mat-label data-automation-id="adjqty-putaway-lbl">Qty Put Away</mat-label>
                     <input matInput class="" [value]="this.getAdjustQuantityData.quantityAllocatedPutAway"   name="this.getAdjustQuantityData.itemNumber"
-                    disabled>
+                    disabled data-automation-id="adjqty-putaway-inp">
                 </mat-form-field>
             </div>
             <div class="col-xl-4">
-                <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline" aria-disabled="true">
-                    <mat-label>Qty Pick</mat-label>
+                <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline" aria-disabled="true" data-automation-id="adjqty-pick-ff">
+                    <mat-label data-automation-id="adjqty-pick-lbl">Qty Pick</mat-label>
                     <input matInput class="" [value]="this.getAdjustQuantityData.quantityAllocatedPick"   name="this.getAdjustQuantityData.itemNumber"
-                    disabled>
+                    disabled data-automation-id="adjqty-pick-inp">
                 </mat-form-field>
             </div>
             <div class="col-xl-4">
-                <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline" aria-disabled="true">
-                    <mat-label>Current Location Qty</mat-label>
+                <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline" aria-disabled="true" data-automation-id="adjqty-curlocqty-ff">
+                    <mat-label data-automation-id="adjqty-curlocqty-lbl">Current Location Qty</mat-label>
                     <input matInput class="" [value]="this.getAdjustQuantityData.itemQuantity? this.getAdjustQuantityData.itemQuantity : '-' "   name="this.getAdjustQuantityData.itemNumber"
-                    disabled>
+                    disabled data-automation-id="adjqty-curlocqty-inp">
                 </mat-form-field>
             </div>
             <div class="col-xl-4">
-                <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline" aria-disabled="true">
-                    <mat-label>Current Max. Qty</mat-label>
+                <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline" aria-disabled="true" data-automation-id="adjqty-curmaxqty-ff">
+                    <mat-label data-automation-id="adjqty-curmaxqty-lbl">Current Max. Qty</mat-label>
                     <input matInput class="" [value]="this.getAdjustQuantityData.currentMaxQty? this.getAdjustQuantityData.currentMaxQty : '-'"   name="this.getAdjustQuantityData.itemNumber"
-                    disabled>
+                    disabled data-automation-id="adjqty-curmaxqty-inp">
                 </mat-form-field>
             </div>
             <div class="col-xl-4">
-                <mat-form-field class="custom-form-field w-100" appearance="outline" aria-disabled="true">
-                    <mat-label>Current Min. Qty</mat-label>
+                <mat-form-field class="custom-form-field w-100" appearance="outline" aria-disabled="true" data-automation-id="adjqty-curminqty-ff">
+                    <mat-label data-automation-id="adjqty-curminqty-lbl">Current Min. Qty</mat-label>
                     <input matInput class="" [value]="this.getAdjustQuantityData.currentMinQty? this.getAdjustQuantityData.currentMinQty : '-'"   name="this.getAdjustQuantityData.itemNumber"
-                    disabled>
+                    disabled data-automation-id="adjqty-curminqty-inp">
                 </mat-form-field>
             </div>
         </div>
@@ -80,36 +80,36 @@
       <div class="row mb-3">
 
         <div class="col-4">
-          <mat-form-field class="custom-form-field w-100" appearance="outline">
-            <mat-label>Enter New Quantity</mat-label>
-            <input matInput #newQty [NumbersOnly]="true" type="number" formControlName="quantity" maxlength="9" name="quantity">
+          <mat-form-field class="custom-form-field w-100" appearance="outline" data-automation-id="adjqty-newqty-ff">
+            <mat-label data-automation-id="adjqty-newqty-lbl">Enter New Quantity</mat-label>
+            <input matInput #newQty [NumbersOnly]="true" type="number" formControlName="quantity" maxlength="9" name="quantity" data-automation-id="adjqty-newqty-inp">
           </mat-form-field>
-          <div class="error" *ngIf="hasError('quantity', 'required')">This field is required.</div>
+          <div class="error" *ngIf="hasError('quantity', 'required')" data-automation-id="adjqty-newqty-required-error">This field is required.</div>
         </div>
 
         <div class="col-6">
-          <mat-form-field class="custom-form-field w-100" appearance="outline">
-            <mat-label>Reason For Adjustment</mat-label>
+          <mat-form-field class="custom-form-field w-100" appearance="outline" data-automation-id="adjqty-reason-ff">
+            <mat-label data-automation-id="adjqty-reason-lbl">Reason For Adjustment</mat-label>
             <input placeholder="Reason For Adjustment" aria-label="Reason For Adjustment" matInput
                    formControlName="description" [(ngModel)]='searchReasonValue' [matAutocomplete]="auto"
-                   (ngModelChange)="this.searchReasonByInput.next($event)">
-            <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete">
-              <mat-option *ngFor="let option of getAdjustReasonsList"
-                          [value]="option">
+                   (ngModelChange)="this.searchReasonByInput.next($event)" data-automation-id="adjqty-reason-inp">
+            <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete" data-automation-id="adjqty-reason-auto">
+              <mat-option *ngFor="let option of getAdjustReasonsList; let i = index"
+                          [value]="option" [attr.data-automation-id]="'adjqty-reason-opt-' + i">
                 {{option}}
               </mat-option>
             </mat-autocomplete>
           </mat-form-field>
-          <div class="error" *ngIf="hasError('description', 'required')">This field is required.</div>
+          <div class="error" *ngIf="hasError('description', 'required')" data-automation-id="adjqty-reason-required-error">This field is required.</div>
         </div>
 
-        <mat-checkbox formControlName="dedicated" class="ld_checkbox col-1 cb-center" color="primary" [checked]="this.getAdjustQuantityData.dedicated">
+        <mat-checkbox formControlName="dedicated" class="ld_checkbox col-1 cb-center" color="primary" [checked]="this.getAdjustQuantityData.dedicated" data-automation-id="adjqty-dedicated-chk">
           Dedicated
         </mat-checkbox>
       </div>
 
     <mat-dialog-actions>
-        <button type="submit" mat-flat-button class="btn-lg flex-grow-1" color="primary" [disabled]="!isValid()">Save Changes</button>
+        <button type="submit" mat-flat-button class="btn-lg flex-grow-1" color="primary" [disabled]="!isValid()" data-automation-id="adjqty-save-btn">Save Changes</button>
     </mat-dialog-actions>
 </form>
 

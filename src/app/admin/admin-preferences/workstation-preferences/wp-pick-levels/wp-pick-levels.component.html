@@ -4,7 +4,7 @@
             <app-icon-heading-component heading="Pick Levels" icon="approval">
             </app-icon-heading-component>
             <button mat-flat-button color="primary" class="add-icon-button-lg" matTooltip="Add New Printer"
-                matTooltipPosition="above">
+                matTooltipPosition="above" data-automation-id="add-new-printer-btn">
                 <span class="material-symbols-outlined">
                     add
                 </span>
@@ -18,27 +18,27 @@
 
                     <ng-container matColumnDef="pickLevel">
                         <th mat-header-cell *matHeaderCellDef>Pick Level</th>
-                        <td mat-cell *matCellDef="let element">
+                        <td mat-cell *matCellDef="let element; let i = index">
                             <mat-form-field class="custom-form-field w-100" appearance="outline">
-                                <input matInput type="text" value="{{element.pickLevel}}" />
+                                <input matInput type="text" value="{{element.pickLevel}}" data-automation-id="pick-level-input-{{i}}" />
                             </mat-form-field>
                         </td>
                     </ng-container>
 
                     <ng-container matColumnDef="startShelf">
                         <th mat-header-cell *matHeaderCellDef>Start Shelf</th>
-                        <td mat-cell *matCellDef="let element">
+                        <td mat-cell *matCellDef="let element; let i = index">
                             <mat-form-field class="custom-form-field w-100" appearance="outline">
-                                <input matInput type="text" value="{{element.startShelf}}" />
+                                <input matInput type="text" value="{{element.startShelf}}" data-automation-id="start-shelf-input-{{i}}" />
                             </mat-form-field>
                         </td>
                     </ng-container>
 
                     <ng-container matColumnDef="endShelf">
                         <th mat-header-cell *matHeaderCellDef>End Shelf</th>
-                        <td mat-cell *matCellDef="let element">
+                        <td mat-cell *matCellDef="let element; let i = index">
                             <mat-form-field class="custom-form-field w-100" appearance="outline">
-                                <input matInput type="text" value="{{element.startShelf}}" />
+                                <input matInput type="text" value="{{element.startShelf}}" data-automation-id="end-shelf-input-{{i}}" />
                             </mat-form-field>
                         </td>
                     </ng-container>
@@ -48,13 +48,13 @@
                         <td mat-cell *matCellDef="let element; let i = index" class="ps-2">
                             <div class="d-flex gap-12 align-items-center">
 
-                                <button mat-flat-button color="primary" class="xsm-icon-button" >
+                                <button mat-flat-button color="primary" class="xsm-icon-button" data-automation-id="save-btn-{{i}}" >
                                     <mat-icon class="material-symbols-outlined" matTooltip="Save" matTooltipPosition="above">
                                         save
                                     </mat-icon>
                                 </button>
 
-                                <button matTooltip="Delete" mat-flat-button color="warn" class="xsm-icon-button">
+                                <button matTooltip="Delete" mat-flat-button color="warn" class="xsm-icon-button" data-automation-id="delete-btn-{{i}}">
                                     <mat-icon class="material-symbols-outlined">
                                         close
                                     </mat-icon>

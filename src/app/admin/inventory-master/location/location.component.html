@@ -116,7 +116,7 @@
       </tr>
 
       <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
-      <tr mat-row *matRowDef="let row; let i = index; columns: displayedColumns;" [attr.data-automation-id]="'table-row-' + i + '-' + row.location + '-' + row.warehouse"></tr>
+      <tr mat-row *matRowDef="let row; let i = index; columns: displayedColumns;" [attr.data-automation-id]="'table-row-' + i"></tr>
     </table>
   </ng-scrollbar>
 </div>

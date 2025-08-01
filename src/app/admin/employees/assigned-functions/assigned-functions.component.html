@@ -2,17 +2,17 @@
   <div class="search-box zone-search-box">
     <div class="d-flex g-mini-search-box pb-4">
       <mat-form-field class="w-100" appearance="fill">
-        <span class="material-symbols-outlined icon-search">
+        <span class="material-symbols-outlined icon-search" data-automation-id="label-search-icon">
           search
         </span>
         <input type="text" placeholder="Search Assigned Function" aria-label="Search Groups Allowed" matInput
-          [(ngModel)]="filterName" maxlength="50">
-        <button matSuffix *ngIf="filterName" class="clear-btn" (click)="clearFields()"><mat-icon
+          [(ngModel)]="filterName" maxlength="50" data-automation-id="assigned-functions-search-input">
+        <button matSuffix *ngIf="filterName" class="clear-btn" (click)="clearFields()" data-automation-id="button-clear-search"><mat-icon
             class="text-20 text-chrome-600">cancel</mat-icon></button>
       </mat-form-field>
     </div>
     <button mat-stroked-button color="warn" class="button-remove-all-w-stroke w-100 mb-3" onclick="this.blur()"
-      (click)="unassignFunction(assignedFunctions)" [disabled]="!isGroupLookUp">
+      (click)="unassignFunction(assignedFunctions)" [disabled]="!isGroupLookUp" data-automation-id="remove-all-functions-button">
       Remove All
     </button>
     <div class="card w-100">
@@ -24,11 +24,11 @@
           <ng-scrollbar *ngIf="!filterValue" class="ng-scrollbar-height" pointerEventsMethod="scrollbar">
             <mat-list-item class="pt-2" role="listitem"
               *ngFor="let groupname of assignedFunctions | filterUnassignedFunc:filterName">
-              <span class="list-label zone-list-label">
+              <span class="list-label zone-list-label" data-automation-id="label-assigned-function">
                 {{groupname}}
               </span>
               <button mat-icon-button aria-label="Delete Function" (click)="unassignFunction(groupname)"
-                matTooltip="Remove" matTooltipPosition="above">
+                matTooltip="Remove" matTooltipPosition="above" data-automation-id="button-close">
                 <mat-icon class="icon-circle-cancel">close</mat-icon>
               </button>
             </mat-list-item>

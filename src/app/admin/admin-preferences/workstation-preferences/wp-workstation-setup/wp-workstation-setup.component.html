@@ -2,20 +2,20 @@
   <div class="col-xl-4 mb-3 mb-xl-0">
     <app-wp-ws-workstation-settings
     [employeeAccessLevels]="employeeAccessLevels"
-    [workstationSetup]="workStationSetup"
+    [workstationSetup]="workStationSetup" data-automation-id="section-workstation-settings"
     ></app-wp-ws-workstation-settings>
   </div>
   <div class="col-xl-4 mb-3 mb-xl-0">
    <div class="mb-3">
-     <app-wp-ws-tote-management></app-wp-ws-tote-management>
+     <app-wp-ws-tote-management data-automation-id="section-tote-management"></app-wp-ws-tote-management>
    </div>
    <div>
      <app-storage-container-management 
       [employeeAccessLevels]="employeeAccessLevels"
-      [workstationSetup]="workStationSetup"></app-storage-container-management>
+      [workstationSetup]="workStationSetup" data-automation-id="section-storage-container-management"></app-storage-container-management>
    </div>
   </div>
   <div class="col-xl-4 mb-3 mb-xl-0">
-    <app-wp-ws-location-assignment-functions></app-wp-ws-location-assignment-functions>
+    <app-wp-ws-location-assignment-functions data-automation-id="section-location-assignment-functions"></app-wp-ws-location-assignment-functions>
   </div>
 </div>
