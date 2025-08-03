@@ -38,7 +38,7 @@ export class PalletReceivingComponent implements OnInit {
   public iInductionManagerApi:IInductionManagerApiService;
   @ViewChild('autoFocusField') searchBoxField: ElementRef;
   formValues: any;
-  
+
   constructor(
     public inductionManagerApi : InductionManagerApiService,
     private authService: AuthService,
@@ -53,7 +53,7 @@ export class PalletReceivingComponent implements OnInit {
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild('quantityInput') quantityInput!: ElementRef;
-  
+
   ifAllowed: boolean = false
   @ViewChild('inputVal') inputVal: ElementRef;
   inputType: string = "Any";
@@ -83,7 +83,7 @@ export class PalletReceivingComponent implements OnInit {
   dataSource: any;
   tote: any;
   toteQuantity: any;
-  [key: string]: any; 
+  [key: string]: any;
   assignedZonesArray: { zone: string }[] = [{ zone: '' }];
 
   ngOnInit(): void {
@@ -126,7 +126,7 @@ export class PalletReceivingComponent implements OnInit {
     }
 
   }
-  
+
   getCurrentToteID() {
     this.iInductionManagerApi.NextTote().subscribe(
       (res: ApiResponse<number>) => {
@@ -135,7 +135,7 @@ export class PalletReceivingComponent implements OnInit {
           // this.global.ShowToastr(ToasterType.Error, ToasterMessages.SomethingWentWrong, ToasterTitle.Error);
           console.log("NextTote", res.responseMessage);
         }
-      
+
       },
       (error) => { }
     );
@@ -163,7 +163,7 @@ export class PalletReceivingComponent implements OnInit {
               this.inputVal.nativeElement.focus();
               this.autocompleteSearchColumnItem2();
           }
-        } 
+        }
         else {
           this.global.ShowToastr(ToasterType.Error,ToasterMessages.SomethingWentWrong, ToasterTitle.Error);
           console.log("ProcessPutAwayIndex",res.responseMessage);
@@ -200,10 +200,9 @@ export class PalletReceivingComponent implements OnInit {
 
   openST(event: any) {
     if (event.key === KeyboardKeys.Enter){
-      this.inputValue = event.target.value;    
+      this.inputValue = event.target.value;
       this.openSelectionTransactionDialogue();
   }
-  else this.global.ShowToastr(ToasterType.Error,`Invalid Item Entered. This Item does not exist as Item Number.`, ToasterTitle.Error); 
 }
 
 clearToteID() {
@@ -264,19 +263,19 @@ clearToteID() {
 
       dialogRef.afterClosed().subscribe((res) => {
         if (res.refreshdata==true) {
-            this.selectedValues(res.id, res.itemNumber, res.lotNumber, res.quantity, res.expirationDate); 
-            
+            this.selectedValues(res.id, res.itemNumber, res.lotNumber, res.quantity, res.expirationDate);
+
         } else {
             this.resetFormValues();
-        }         
+        }
         });
-      
+
       this.applyStripIfApplicable();
     }
-  
+
     resetFormValues() {
       this.processForm.reset({
-        toteID: this.processForm.value.toteID, 
+        toteID: this.processForm.value.toteID,
         itemNo: this.processForm.value.itemNo,
         quantity: '',
         lotNumber: '',
@@ -287,15 +286,15 @@ clearToteID() {
         this.quantityInput.nativeElement.focus();
     }
 
-    selectedValues(id, itemNumber, lotNumber, transactionQuantity, expirationDate) {   
+    selectedValues(id, itemNumber, lotNumber, transactionQuantity, expirationDate) {
 
       // const [day, month, year] = expirationDate.split(' ')[0].split('/'); // Split date part
       // const time = expirationDate.split(' ')[1] + ' ' + expirationDate.split(' ')[2]; // Handle time
-      
+
       // expirationDate = new Date(`${month}/${day}/${year} ${time}`);
 
       this.processForm.reset({
-        toteID: this.processForm.value.toteID, 
+        toteID: this.processForm.value.toteID,
         itemNo: itemNumber,
         lotNumber: lotNumber,
         quantity: transactionQuantity,
@@ -307,20 +306,20 @@ clearToteID() {
     }
 
     savePallet(split: boolean) {
-      
+
       var expirationDate =this['expirationDate'];
-      
-      if (expirationDate) 
+
+      if (expirationDate)
       {
           this.onDateChange(this.processForm.value.expirationDate,'1')
           let finalExpiryDate = new Date(this['expirationDate']);
 
-        if (this.isValidDate(finalExpiryDate)) 
+        if (this.isValidDate(finalExpiryDate))
           {
            this['expirationDate'] = this['expirationDate'] !== '' ? format(new Date(this['expirationDate']), "yyyy-MM-dd'T'HH:mm:ss.SSSxxx") : '';
           }
       }
-      
+
 
       const payload = {
         toteId: this.processForm.value.toteID,
@@ -348,9 +347,9 @@ clearToteID() {
         }
       });
     }
-    
+
     async processPallet() {
-    
+
       if (
         this.processForm.value.toteID === '' || this.processForm.value.toteID == undefined ||
         this.processForm.value.itemNo === '' || this.processForm.value.itemNo == undefined ||
@@ -387,16 +386,16 @@ clearToteID() {
                       console.log(this.processForm.value);
 
                       if (
-                        this.processPutAwayIndex.imPreference.dontAllowOverReceipt === true && 
+                        this.processPutAwayIndex.imPreference.dontAllowOverReceipt === true &&
                         this.processForm.value.quantity > this.processForm.value.orgQty
                       ) {
                         this.global.ShowToastr(ToasterType.Error, 'Quantity cannot be greater than current transaction quantity:' + this.processForm.value.orgQty.toString(), ToasterTitle.Error);
                         return;
                       }
-                     
+
 
                       if (
-                        this.processPutAwayIndex.imPreference.splitShortPutAway === true && 
+                        this.processPutAwayIndex.imPreference.splitShortPutAway === true &&
                         this.processForm.value.quantity < this.processForm.value.orgQty
                       ) {
                         const dialogRef = this.global.OpenDialog(ConfirmationDialogComponent, {
@@ -408,18 +407,18 @@ clearToteID() {
                             message: 'This transaction quantity is greater than the assigned quantity. Click OK if you will receive more of this order/item. Click Cancel to mark this transaction as received short.',
                           },
                         });
-                      
+
                         dialogRef.afterClosed().subscribe((result: boolean) => {
                           if (result) {
                             split = true;
                           } else {
-                            split = false;                            
+                            split = false;
                           }
                           this.savePallet(split);
                         });
                         return;
                       }
-                      
+
                     } else this.processForm.value.id = 0;
 
                     this.savePallet(split);
@@ -433,15 +432,15 @@ clearToteID() {
             } else {
               // Show error in toaster if tote ID is not valid
               this.global.ShowToastr(ToasterType.Error,
-                "Invalid Tote Entered", 
+                "Invalid Tote Entered",
                 ToasterTitle.Error
               );
               console.log("Invalid Tote ID");
             }
           });
       }
-    }   
-          
+    }
+
   resetForm() {
     this.processForm.reset();
     this.processForm.get('quantity')?.setValue(0);
@@ -455,13 +454,13 @@ clearToteID() {
   isValidDate(date: any) {
     // Check for falsy values like '', null, undefined
     if (!date) return false;
-  
+
     // Convert to a Date object if it's not already one
     const parsedDate = new Date(date);
-  
+
     // Check if the date is valid
     if (isNaN(parsedDate.getTime())) return false;
-  
+
     // Check if the date is not 01-01-1970
     const epochDate = new Date('1970-01-01T00:00:00Z');
     return parsedDate.getTime() !== epochDate.getTime();
