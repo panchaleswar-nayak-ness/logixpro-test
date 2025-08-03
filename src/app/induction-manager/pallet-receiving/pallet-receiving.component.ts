@@ -277,7 +277,7 @@ clearToteID() {
       this.processForm.reset({
         toteID: this.processForm.value.toteID,
         itemNo: this.processForm.value.itemNo,
-        quantity: '',
+        quantity: 0,
         lotNumber: '',
         expirationDate: '',
         id: '',
