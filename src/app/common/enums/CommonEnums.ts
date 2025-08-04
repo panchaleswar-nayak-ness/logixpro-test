@@ -121,7 +121,7 @@ export enum FilterType {
   }
   
 export enum ErrorCode {
-    UnableToPrint = 500
+    UnableToPrint = 555
 }
 export type QuantityFilterTypeUnion =
 | FilterType.Equals
