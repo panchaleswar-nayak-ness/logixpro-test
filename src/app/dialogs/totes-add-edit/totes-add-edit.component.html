@@ -25,7 +25,7 @@
         [hideRequiredMarker]="hideRequiredControl.value"  >
         <mat-label data-automation-id="from-tote-label">From Tote ID</mat-label>
         <input #fieldFocus type="text" placeholder="Search" aria-label="Number" matInput maxlength="255"
-          [(ngModel)]='fromTote' [matAutocomplete]="auto1" [attr.data-automation-id]="'from-tote-input-' + (fromTote || '')"
+          [(ngModel)]='fromTote' [matAutocomplete]="auto1" data-automation-id="from-tote-input"
           (keyup)="searchAutocompleteListFilter1()" (ngModelChange)="searchAutocompleteListFilter1()">
           <button matSuffix *ngIf="fromTote" class="clear-btn" data-automation-id="from-tote-clear" (click)="fromTote='';searchAutocompleteListFilter1()"><mat-icon class="text-20 text-chrome-600">cancel</mat-icon></button>
         <mat-autocomplete #auto1="matAutocomplete"  #autocompleteInventory1>
@@ -47,7 +47,7 @@
         [hideRequiredMarker]="hideRequiredControl.value"  >
         <mat-label data-automation-id="to-tote-label">To Tote ID</mat-label>
         <input type="text" placeholder="Search" aria-label="Number" matInput maxlength="255"
-          [(ngModel)]='toTote' [matAutocomplete]="auto2" [disabled]="!fromTote" [attr.data-automation-id]="'to-tote-input-' + (toTote || '')"
+          [(ngModel)]='toTote' [matAutocomplete]="auto2" [disabled]="!fromTote" data-automation-id="to-tote-input"
           (keyup)="searchAutocompleteListFilter2()" (ngModelChange)="searchAutocompleteListFilter2()">
           <button matSuffix *ngIf="toTote" class="clear-btn" data-automation-id="to-tote-clear" (click)="toTote='';searchAutocompleteListFilter2()"><mat-icon class="text-20 text-chrome-600">cancel</mat-icon></button>
           <mat-autocomplete #auto2="matAutocomplete"  #autocompleteInventory2>
@@ -94,7 +94,7 @@
             <td mat-cell *matCellDef="let element">
               <div class="pe-2">
                 <mat-form-field class="custom-form-field w-100" appearance="outline">
-                  <input matInput type="text" #specialFeature maxlength="255" [(ngModel)]="toteID" [attr.data-automation-id]="'unmanaged-tote-id-input-' + (toteID || '')">
+                  <input matInput type="text" #specialFeature maxlength="255" [(ngModel)]="toteID" data-automation-id="unmanaged-tote-id-input">
                 </mat-form-field>
               </div>
             </td>
@@ -107,7 +107,7 @@
                 <mat-form-field class="custom-form-field w-100" appearance="outline">
                   <input matInput
                     oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');" type="text"
-                    #specialFeature maxlength="6" [(ngModel)]="cellID" [attr.data-automation-id]="'unmanaged-cells-input-' +  (cellID || '')">
+                    #specialFeature maxlength="6" [(ngModel)]="cellID" data-automation-id="unmanaged-cells-input">
                 </mat-form-field>
               </div>
             </td>
@@ -141,7 +141,7 @@
               <div class="pe-2">
                 <mat-radio-button [disabled]="!row.toteID || !row.cells || row.isInserted==0 || row.isEdit" color="primary" 
                   (click)="selectTote(row.toteID,row.cells,!row.toteID?false:!row.cells?false:row.isInserted==0?false:row.isEdit?false:true)"
-                  [attr.data-automation-id]="'managed-tote-radio-' + i">
+                  [attr.data-automation-id]="'managed-tote-radio-' + + row.toteID">
                 </mat-radio-button>
               </div>
             </td>
@@ -157,7 +157,7 @@
                     (keydown)="onToteChange($event,i,'')" (keyup)="onToteChange($event,i,'')"
                     (change)="onToteChange($event,i,'')" (keypress)="onToteChange($event,i,'')"
                     (keypress)="onToteChange($event,i,'')"
-                    [attr.data-automation-id]="'managed-tote-id-input-' + i">
+                    data-automation-id="managed-tote-id-input">
                 </mat-form-field>
               </div>
             </td>
@@ -173,7 +173,7 @@
                     (keydown)="onToteChange($event,i,'1')" (keyup)="onToteChange($event,i,'1')"
                     (change)="onToteChange($event,i,'1')" (keypress)="onToteChange($event,i,'1')"
                     (keypress)="onToteChange($event,i,'1')"
-                    [attr.data-automation-id]="'managed-cells-input-' + i">
+                    data-automation-id="managed-cells-input">
                 </mat-form-field>
               </div>
             </td>

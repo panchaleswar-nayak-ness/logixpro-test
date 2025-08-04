@@ -13,7 +13,7 @@
                 <mat-form-field class="action-dropdown w-100" appearance="outline">
                     <mat-label data-automation-id="label-count-type">Count Type</mat-label>
                     <mat-select [(ngModel)]="selection" #matRef class="employees-action" value="location"
-                        (selectionChange)="resetVal()" (valueChange)="checkvalue($event)" data-automation-id="select-count-type">
+                        (selectionChange)="resetVal()" (valueChange)="checkvalue($event)" [attr.data-automation-id]="'select-count-type-' + (matRef.value || '')">
                         <mat-option value="LocationRange" data-automation-id="option-location-range">Locations Range</mat-option>
                         <mat-option value="ItemNumber" replacePlaceholder [replacePlaceHolder]="placeholders.itemNumber"
                             [fallbackPlaceHolder]="placeholders.itemNumberFallback" data-automation-id="option-item-number">Item Number</mat-option>
@@ -37,7 +37,7 @@
                 <mat-form-field class="action-dropdown w-100" appearance="outline">
                     <mat-label data-automation-id="label-warehouse">Warehouse</mat-label>
                     <mat-select [(ngModel)]="warehouse" (ngModelChange)="this.searchField.next($event)" #matRef
-                        class="employees-action" placeholder="No Warehouse" data-automation-id="select-warehouse">
+                        class="employees-action" placeholder="No Warehouse" [attr.data-automation-id]="'select-warehouse-' + warehouse">
                         <mat-option [value]='' data-automation-id="option-no-warehouse">No Warehouse</mat-option>
                         <mat-option *ngFor="let items of warehouses; let i = index" [value]="items" [attr.data-automation-id]="'option-warehouse-' + i"> {{items}}</mat-option>
                     </mat-select>
@@ -55,7 +55,7 @@
                             <input matInput type="datetime-local"
                                 (ngModelChange)="this.searchField.next($event)"
                                 formControlName="pickedStartLocation" id="completionDate"
-                                [ngModel]="localCompleteDate" placeholder="yyyy-MM-ddTHH:mm" class="" data-automation-id="input-from-date" />
+                                [ngModel]="localCompleteDate" placeholder="yyyy-MM-ddTHH:mm" class="" [attr.data-automation-id]="'input-from-date-' + filtersForm.value.pickedStartLocation" />
                         </mat-form-field>
                     </div>
                     <div class="col-xl-6">
@@ -64,7 +64,7 @@
                             <input matInput type="datetime-local"
                                 (ngModelChange)="this.searchField.next($event)"
                                 formControlName="pickedEndLocation" [ngModel]="localCompleteDate"
-                                placeholder="yyyy-MM-ddTHH:mm" data-automation-id="input-to-date">
+                                placeholder="yyyy-MM-ddTHH:mm" [attr.data-automation-id]="'input-to-date-' + filtersForm.value.pickedEndLocation">
                         </mat-form-field>
                     </div>
                 </div>
@@ -78,7 +78,7 @@
                             <input matInput type="datetime-local"
                                 (ngModelChange)="this.searchField.next($event)"
                                 formControlName="PutAwayStartLocation" id="completionDate"
-                                [ngModel]="localCompleteDate" placeholder="yyyy-MM-ddTHH:mm" class="" data-automation-id="input-from-date" />
+                                [ngModel]="localCompleteDate" placeholder="yyyy-MM-ddTHH:mm" class="" [attr.data-automation-id]="'input-from-date-' + filtersForm.value.PutAwayStartLocation" />
                         </mat-form-field>
                     </div>
                     <div class="col-xl-6">
@@ -87,7 +87,7 @@
                             <input matInput type="datetime-local"
                                 (ngModelChange)="this.searchField.next($event)"
                                 formControlName="PutAwayEndLocation" [ngModel]="localCompleteDate"
-                                placeholder="yyyy-MM-ddTHH:mm" data-automation-id="input-to-date">
+                                placeholder="yyyy-MM-ddTHH:mm" [attr.data-automation-id]="'input-to-date-' + filtersForm.value.PutAwayEndLocation">
                         </mat-form-field>
                     </div>
                 </div>
@@ -101,7 +101,7 @@
                             <mat-label data-automation-id="label-from-date">From Date</mat-label>
                             <input matInput type="datetime-local" (ngModelChange)="this.searchField.next($event)"
                                 formControlName="pickedStart" id="completionDate" [ngModel]="localCompleteDate"
-                                placeholder="yyyy-MM-ddTHH:mm" class="form-control" data-automation-id="input-from-date" />
+                                placeholder="yyyy-MM-ddTHH:mm" class="form-control" [attr.data-automation-id]="'input-from-date-' + filtersForm.value.pickedStart" />
                         </mat-form-field>
                     </div>
                     <div class="col">
@@ -109,7 +109,7 @@
                             <mat-label data-automation-id="label-to-date">To Date</mat-label>
                             <input matInput type="datetime-local" (ngModelChange)="this.searchField.next($event)"
                                 formControlName="pickedEnd" [ngModel]="localCompleteDate"
-                                placeholder="yyyy-MM-ddTHH:mm" data-automation-id="input-to-date">
+                                placeholder="yyyy-MM-ddTHH:mm" [attr.data-automation-id]="'input-to-date-' + filtersForm.value.pickedEnd">
                         </mat-form-field>
                     </div>
                 </div>
@@ -121,7 +121,7 @@
                             <mat-label data-automation-id="label-from-date">From Date</mat-label>
                             <input matInput type="datetime-local" (ngModelChange)="this.searchField.next($event)" formControlName="putStart"
                             [ngModel] = "localCompleteDate"
-                            placeholder="yyyy-MM-ddTHH:mm" data-automation-id="input-from-date" >
+                            placeholder="yyyy-MM-ddTHH:mm" [attr.data-automation-id]="'input-from-date-' + filtersForm.value.putStart" >
                         </mat-form-field>
                     </div>
                     <div class="col">
@@ -129,7 +129,7 @@
                             <mat-label data-automation-id="label-to-date">To Date</mat-label>
                             <input matInput type="datetime-local" (ngModelChange)="this.searchField.next($event)" formControlName="putEnd"
                             [ngModel] = "localCompleteDate"
-                            placeholder="yyyy-MM-ddTHH:mm" data-automation-id="input-to-date" >
+                            placeholder="yyyy-MM-ddTHH:mm" [attr.data-automation-id]="'input-to-date-' + filtersForm.value.putEnd" >
                         </mat-form-field>
                     </div>
                 </div>
@@ -149,7 +149,7 @@
                             <mat-label>From Location</mat-label>
                             <input [matAutocomplete]="fromLocation" (ngModelChange)="this.fromLocationTA.next($event)"
                                 formControlName="fromLocation" matInput type="text" maxlength="50"
-                                [(ngModel)]="fromLocationCrossbtn" data-automation-id="form-location-input">
+                                [(ngModel)]="fromLocationCrossbtn" [attr.data-automation-id]="'form-location-input-' + fromLocationCrossbtn">
                             <button matSuffix *ngIf="fromLocationCrossbtn" class="clear-btn"
                                 (click)=" fromLocationCrossbtn='' " data-automation-id="clear-button"><mat-icon
                                     class="text-20 text-chrome-600">cancel</mat-icon></button>
@@ -189,7 +189,7 @@
                             <mat-label data-automation-id="label-from-item-number">From <span replacePlaceholder [replacePlaceHolder]="placeholders.itemNumber" [fallbackPlaceHolder]="placeholders.itemNumberFallback">Item Number</span></mat-label>
                             <input [matAutocomplete]="fromItem" (ngModelChange)="this.fromItemTA.next($event)"
                                 formControlName="fromItem" matInput class=" " type="text" maxlength="50"
-                                [(ngModel)]="fromItemCrossbtn" data-automation-id="input-from-item-number">
+                                [(ngModel)]="fromItemCrossbtn" [attr.data-automation-id]="'input-from-item-number-' + fromItemCrossbtn">
                             <button matSuffix *ngIf="fromItemCrossbtn" class="clear-btn"
                                 (click)=" fromItemCrossbtn='' " data-automation-id="clear-from-item-number-button"><mat-icon
                                     class="text-20 text-chrome-600">cancel</mat-icon></button>
@@ -207,7 +207,7 @@
                             <mat-label data-automation-id="label-to-item-number">To <span replacePlaceholder [replacePlaceHolder]="placeholders.itemNumber" [fallbackPlaceHolder]="placeholders.itemNumberFallback">Item Number</span></mat-label>
                             <input [matAutocomplete]="toItem" (ngModelChange)="this.toItemTA.next($event)"
                                 formControlName="toItem" matInput class=" " type="text" maxlength="50"
-                                [(ngModel)]="toItemCrossbtn" data-automation-id="input-to-item-number">
+                                [(ngModel)]="toItemCrossbtn" [attr.data-automation-id]="'input-to-item-number-' + toItemCrossbtn">
                             <button matSuffix *ngIf="toItemCrossbtn" class="clear-btn"
                                 (click)=" toItemCrossbtn='' " data-automation-id="clear-to-item-number-button"><mat-icon
                                     class="text-20 text-chrome-600">cancel</mat-icon></button>
@@ -651,7 +651,7 @@
                         <mat-form-field class="action-dropdown w-100" appearance="outline" data-automation-id="form-field-current-count-orders">
                             <mat-label data-automation-id="label-current-count-orders">Current Count Orders</mat-label>
                             <mat-select [(ngModel)]="orderNumber" (selectionChange)="changeCountOrder($event.value)"
-                                #matRef class="employees-action" placeholder="Actions" data-automation-id="select-current-count-orders">
+                                #matRef class="employees-action" placeholder="Actions" [attr.data-automation-id]="'select-current-count-orders-' + (orderNumber || '')">
                                 <h6 class="ctl_name ac-dropdown-label">
                                     <span class="span-orderNumber-style">Order Number</span> <span
                                         class="span-EntriesNum-style">&nbsp;No. Of Entries</span>
@@ -684,7 +684,7 @@
                     <mat-form-field class="action-dropdown w-100" appearance="outline" data-automation-id="form-field-actions">
                         <mat-label data-automation-id="label-actions">Actions</mat-label>
                         <mat-select #matRefAction class="employees-action" placeholder="Actions"
-                            (selectionChange)="countAction($event)" data-automation-id="select-actions">
+                            (selectionChange)="countAction($event)" [attr.data-automation-id]="'select-actions-' + (matRefAction.value || '')">
                             <mat-option (click)="printCountOrders()" value="print" data-automation-id="option-print-count-orders">Print Count Orders</mat-option>
                             <mat-option (click)="deleteCycleCount(1)"
                                 [disabled]="orderNumber===''||orderNumber===undefined" value="1" data-automation-id="option-delete-incomplete-orders">Delete Incomplete

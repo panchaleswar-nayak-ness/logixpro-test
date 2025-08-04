@@ -21,53 +21,53 @@
 
           <ng-container matColumnDef="itemNumber">
             <th mat-header-cell *matHeaderCellDef mat-sort-header data-automation-id="table-header-item-number"> {{ItemNumber}} </th>
-            <td mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'table-data-item-number-' + i + '-' + element.itemNumber" [matTooltip]="element.itemNumber"   matTooltipPosition="above" [matTooltipDisabled]="element.itemNumber && element.itemNumber.length>=12?false:true"> {{element.itemNumber}} </td>
+            <td mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'table-data-item-number-' + i " [matTooltip]="element.itemNumber"   matTooltipPosition="above" [matTooltipDisabled]="element.itemNumber && element.itemNumber.length>=12?false:true"> {{element.itemNumber}} </td>
           </ng-container>
 
           <ng-container matColumnDef="description">
             <th mat-header-cell *matHeaderCellDef mat-sort-header data-automation-id="table-header-description"> Description </th>
-            <td mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'table-data-description-' + i + '-' + element.description" [matTooltip]="element.description"   matTooltipPosition="above" [matTooltipDisabled]="element.description && element.description.length>=15?false:true"> {{element.description}} </td>
+            <td mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'table-data-description-' + i " [matTooltip]="element.description"   matTooltipPosition="above" [matTooltipDisabled]="element.description && element.description.length>=15?false:true"> {{element.description}} </td>
           </ng-container>
 
           <ng-container matColumnDef="locationQty">
             <th mat-header-cell *matHeaderCellDef mat-sort-header data-automation-id="table-header-location-quantity"> Location Quantity </th>
-            <td mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'table-data-location-quantity-' + i + '-' + element.itemQuantity"> {{element.itemQuantity}} </td>
+            <td mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'table-data-location-quantity-' + i "> {{element.itemQuantity}} </td>
           </ng-container>
 
           <ng-container matColumnDef="um">
             <th mat-header-cell *matHeaderCellDef mat-sort-header data-automation-id="table-header-um"> {{UnitOfMeasure}} </th> 
-            <td mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'table-data-um-' + i + '-' + element.unitOfMeasure"> {{element.unitOfMeasure}} </td>
+            <td mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'table-data-um-' + i "> {{element.unitOfMeasure}} </td>
           </ng-container>
 
           <ng-container matColumnDef="warehouse">
             <th mat-header-cell *matHeaderCellDef mat-sort-header data-automation-id="table-header-warehouse"> Warehouse </th>
-            <td mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'table-data-warehouse-' + i + '-' + element.wareHouse"> {{element.wareHouse}} </td>
+            <td mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'table-data-warehouse-' + i"> {{element.wareHouse}} </td>
           </ng-container>
 
           <ng-container matColumnDef="location">
             <th mat-header-cell *matHeaderCellDef mat-sort-header data-automation-id="table-header-location"> Location </th>
-            <td mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'table-data-location-' + i + '-' + element.location"> {{element.location}} </td>
+            <td mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'table-data-location-' + i"> {{element.location}} </td>
           </ng-container>
 
           <ng-container matColumnDef="velocityCode">
             <th mat-header-cell *matHeaderCellDef mat-sort-header data-automation-id="table-header-velocity-code"> Velocity Code</th>
-            <td mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'table-data-velocity-code-' + i + '-' + element.goldenZone"> {{element.goldenZone}} </td>
+            <td mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'table-data-velocity-code-' + i "> {{element.goldenZone}} </td>
           </ng-container>
           <ng-container matColumnDef="cellSize">
             <th mat-header-cell *matHeaderCellDef mat-sort-header data-automation-id="table-header-cell-size"> Cell Size	 </th>
-            <td mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'table-data-cell-size-' + i + '-' + element.cellSize"> {{element.cellSize}} </td>
+            <td mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'table-data-cell-size-' + i "> {{element.cellSize}} </td>
           </ng-container>
           <ng-container matColumnDef="serialNo">
             <th mat-header-cell *matHeaderCellDef mat-sort-header data-automation-id="table-header-serial-number"> Serial Number	 </th>
-            <td mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'table-data-serial-number-' + i + '-' + element.serialNumber"> {{element.serialNumber}} </td>
+            <td mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'table-data-serial-number-' + i "> {{element.serialNumber}} </td>
           </ng-container>
           <ng-container matColumnDef="lotNo">
             <th mat-header-cell *matHeaderCellDef mat-sort-header data-automation-id="table-header-lot-number"> Lot Number	 </th>
-            <td mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'table-data-lot-number-' + i + '-' + element.lotNumber"> {{element.lotNumber}} </td>
+            <td mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'table-data-lot-number-' + i "> {{element.lotNumber}} </td>
           </ng-container>
           <ng-container matColumnDef="expDate">
             <th mat-header-cell *matHeaderCellDef mat-sort-header data-automation-id="table-header-expiration-date"> Expiration Date </th>
-            <td mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'table-data-expiration-date-' + i + '-' + element.expirationDate"> {{element.expirationDate}} </td>
+            <td mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'table-data-expiration-date-' + i "> {{element.expirationDate}} </td>
           </ng-container>
 
      

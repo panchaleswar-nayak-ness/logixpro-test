@@ -16,7 +16,7 @@
                     <mat-form-field class="custom-form-field w-100 __grab_cursor mb-3" appearance="outline">
                         <mat-label data-automation-id="label-completed-date-start">Completed Date (Start)</mat-label>
                         <input matInput [(ngModel)]="sDate" [matDatepicker]="start"
-                            (dateChange)="onDateChange($event.value)" data-automation-id="input-completed-date-start">
+                            (dateChange)="onDateChange($event.value)" [attr.data-automation-id]="'input-completed-date-start-' + sDate">
                         <mat-datepicker-toggle matSuffix [for]="start" ngDefaultControl></mat-datepicker-toggle>
                         <mat-datepicker #start></mat-datepicker>
                     </mat-form-field>
@@ -28,7 +28,7 @@
                     <mat-form-field class="custom-form-field w-100 __grab_cursor mb-3" appearance="outline">
                         <mat-label data-automation-id="label-end-date">End Date</mat-label>
                         <input matInput [matDatepicker]="end" [(ngModel)]="eDate" 
-                            (dateChange)="onEndDateChange($event.value)" data-automation-id="input-end-date">
+                            (dateChange)="onEndDateChange($event.value)" [attr.data-automation-id]="'input-end-date-' + eDate">
                         <mat-datepicker-toggle matSuffix [for]="end" ngDefaultControl></mat-datepicker-toggle>
                         <mat-datepicker #end></mat-datepicker>
                     </mat-form-field>

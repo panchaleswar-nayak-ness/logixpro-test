@@ -13,7 +13,7 @@
                 <div class="col-xl-3">
                     <mat-form-field class="custom-form-field w-100 __grab_cursor mb-3" appearance="outline">
                         <mat-label data-automation-id="label-import-date-start">Import Date(Start)</mat-label>
-                        <input matInput  [(ngModel)]="sDate" [matDatepicker]="start" (dateChange)="onImportDateChange($event.value)" data-automation-id="input-import-date-start">
+                        <input matInput  [(ngModel)]="sDate" [matDatepicker]="start" (dateChange)="onImportDateChange($event.value)" [attr.data-automation-id]="'input-import-date-start-' + sDate">
                         <mat-datepicker-toggle matSuffix [for]="start" ngDefaultControl></mat-datepicker-toggle>
                         <mat-datepicker #start></mat-datepicker>
                     </mat-form-field>
@@ -22,7 +22,7 @@
                 <div class="col-xl-3">
                     <mat-form-field class="custom-form-field w-100 __grab_cursor mb-3" appearance="outline">
                         <mat-label data-automation-id="label-end-date">End Date</mat-label>
-                        <input matInput [(ngModel)]="eDate" [matDatepicker]="end" (dateChange)="onEndDateChange($event.value)" data-automation-id="input-end-date">
+                        <input matInput [(ngModel)]="eDate" [matDatepicker]="end" (dateChange)="onEndDateChange($event.value)" [attr.data-automation-id]="'input-end-date-' + eDate">
                         <mat-datepicker-toggle matSuffix [for]="end" ngDefaultControl></mat-datepicker-toggle>
                         <mat-datepicker #end></mat-datepicker>
                     </mat-form-field>
@@ -31,7 +31,7 @@
                 <div class="col-xl-3">
                     <mat-form-field class=" custom-form-field w-100 __grab_cursor mb-3" appearance="outline">
                         <mat-label data-automation-id="label-by-status">By Status</mat-label>
-                        <mat-select [(ngModel)]="statusType" (selectionChange)="selectStatus($event.value)" data-automation-id="select-status">
+                        <mat-select [(ngModel)]="statusType" (selectionChange)="selectStatus($event.value)" [attr.data-automation-id]="'select-status-' + (statusType || '')">
                             <mat-option *ngFor="let option of transStatus; let i = index" [value]="option.value" [attr.data-automation-id]="'option-status-' + i">{{option.type}}</mat-option>
                         </mat-select>
                         <span class="material-symbols-outlined icon-expand-more">
@@ -64,7 +64,7 @@
                 <div class="col-xl-3">
                     <mat-form-field class=" custom-form-field w-100 __grab_cursor mb-3" appearance="outline">
                         <mat-label data-automation-id="label-by-trans-type">By Trans Type</mat-label>
-                        <mat-select [(ngModel)]="transTypeSelect" (selectionChange)="selectTransType($event.value)" data-automation-id="select-trans-type">
+                        <mat-select [(ngModel)]="transTypeSelect" (selectionChange)="selectTransType($event.value)" [attr.data-automation-id]="'select-trans-type-' + (transTypeSelect || '')">
                             <mat-option *ngFor="let option of transType; let i = index" [value]="option.value" [attr.data-automation-id]="'option-trans-type-' + i">{{option.type}}</mat-option>
                         </mat-select>
                         <span class="material-symbols-outlined icon-expand-more">
@@ -143,7 +143,7 @@
                     <div class="d-block d-lg-flex d-flex w-100 justify-content-end">
                         <mat-form-field class="action-dropdown mb-3 flex-grow-1" appearance="outline">
                             <mat-label data-automation-id="label-action">Action</mat-label>
-                            <mat-select [(value)]="selectedVariable" class="employees-action" (openedChange)="actionDialog($event)" data-automation-id="select-action">
+                            <mat-select [(value)]="selectedVariable" class="employees-action" (openedChange)="actionDialog($event)" [attr.data-automation-id]="'select-action-' + (selectedVariable || '')">
                                 <mat-option value="set_column_sq" data-automation-id="option-action-set_column_sq">Set Column Sequence</mat-option>
                                 <mat-option (click)="printCycleCountReport()" data-automation-id="option-action-print_cycle_count_report">Print Cycle Count Report</mat-option>
                                 <mat-option (click)="previewFiftyPagesOnly()" data-automation-id="option-action-preview_50_pages_only">Preview 50 Pages Only</mat-option>

@@ -42,7 +42,7 @@
                         <div class="d-flex d-lg-block">
                             <mat-form-field class="action-dropdown mb-3 flex-1" appearance="outline" data-automation-id="custom-reports-actions-form-field">
                                 <mat-label data-automation-id="custom-reports-actions-label">Actions</mat-label>
-                                <mat-select  #matRef  class="employees-action" value="pick"  (selectionChange)="openAction()" data-automation-id="custom-reports-actions-select">
+                                <mat-select  #matRef  class="employees-action" value="pick"  (selectionChange)="openAction()" [attr.data-automation-id]="'custom-reports-actions-select'+ (matRef.value || '')">
                                     <mat-option value="123456"(click)="crAddNewCustomReportDialogue()" data-automation-id="custom-reports-action-add-new">Add New</mat-option>
                                     <mat-option [value]="detail.testData" [disabled]="!detail.testData" (click)="this.global.OpenExportModal(this.detail.fileName,this.detail.fileName)" data-automation-id="custom-reports-action-export">Export</mat-option>
                                     <mat-option [value]="detail.testData" [disabled]="!detail.testData" (click)="this.global.Print(this.detail.fileName.replace('.','-'))" data-automation-id="custom-reports-action-print">Print</mat-option>
@@ -50,7 +50,7 @@
                                     <mat-option (click)="openDeleteDialogue()" [disabled]="!detail.testData" data-automation-id="custom-reports-action-delete">Delete</mat-option>
                                     <mat-option (click)="fileInput.click()"[disabled]="!detail.testData" data-automation-id="custom-reports-action-import">Import</mat-option>
                                 </mat-select>
-                                <input class="fileInput-style" type="file" accept=".lst,.lbl" id="ImportFileVal" (change)="onFileSelected($event)"  #fileInput data-automation-id="custom-reports-import-file-input">
+                                <input class="fileInput-style" type="file" accept=".lst,.lbl" id="ImportFileVal" (change)="onFileSelected($event)"  #fileInput [attr.data-automation-id]="'custom-reports-import-file-input-' + detail.fileName">
                                 <span class="material-symbols-outlined icon-expand-more" data-automation-id="custom-reports-actions-select-expand-more">
                                     expand_more
                                 </span>
@@ -68,7 +68,7 @@
                     </mat-form-field>
                     <mat-form-field class="action-dropdown custom-form-fileInput-stylefield-bg-white w-100 mb-2" appearance="outline" data-automation-id="custom-reports-test-design-data-type-form-field">
                         <mat-label data-automation-id="custom-reports-test-design-data-type-label">Test/Design Data Type</mat-label>
-                        <mat-select class="employees-action"  [(ngModel)]="detail.testDataType" (ngModelChange)="saveInput()" data-automation-id="custom-reports-test-design-data-type-select">
+                        <mat-select class="employees-action"  [(ngModel)]="detail.testDataType" (ngModelChange)="saveInput()" [attr.data-automation-id]="'custom-reports-test-design-data-type-select-' + detail.testDataType">
                             <mat-option value="" data-automation-id="test-design-data-type-option-empty"></mat-option>
                             <mat-option value="SP" data-automation-id="test-design-data-type-option-sp">Stored Procedure</mat-option>
                             <mat-option value="SQL" data-automation-id="test-design-type-option-raw-sql">Raw SQL</mat-option>
@@ -85,7 +85,7 @@
 
                     <mat-form-field class="custom-form-field w-100 mb-2" appearance="outline" data-automation-id="custom-reports-file-name-form-field">
                         <mat-label data-automation-id="custom-reports-file-name-label">File Name</mat-label>
-                        <input matInput type="text" [(ngModel)]="detail.fileName" maxlength="50" disabled  (ngModelChange)="saveInput()" data-automation-id="custom-reports-file-name-input">
+                        <input matInput type="text" [(ngModel)]="detail.fileName" maxlength="50" disabled  (ngModelChange)="saveInput()" [attr.data-automation-id]="'custom-reports-file-name-input-' + detail.fileName">
                     </mat-form-field>
 
                     <mat-form-field class="custom-form-field w-100 mb-2" appearance="outline" data-automation-id="custom-reports-description-form-field">
@@ -95,8 +95,8 @@
 
                     <mat-form-field class="action-dropdown custom-form-field w-100 mb-2" appearance="outline" data-automation-id="custom-reports-output-type-form-field">
                         <mat-label data-automation-id="custom-reports-output-type-label">Output Type</mat-label>
-                        <mat-select class="employees-action" [(ngModel)]="detail.outputType" disabled (ngModelChange)="saveInput()" data-automation-id="custom-reports-output-type-select">
-                            <mat-option [value]="detail.outputType" data-automation-id="custom-reports-output-type-option">{{detail.outputType}}</mat-option>
+                        <mat-select class="employees-action" [(ngModel)]="detail.outputType" disabled (ngModelChange)="saveInput()" [attr.data-automation-id]="'custom-reports-output-type-select-' + detail.outputType">
+                            <mat-option [value]="detail.outputType" [attr.data-automation-id]="'custom-reports-output-type-option-' + detail.outputType">{{detail.outputType}}</mat-option>
 
                         </mat-select>
                         <span class="material-symbols-outlined icon-expand-more expandMore-style" data-automation-id="custom-reports-output-type-select-expand-more">
@@ -106,7 +106,7 @@
 
                     <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline" data-automation-id="custom-reports-export-filename-form-field">
                         <mat-label data-automation-id="custom-reports-export-filename-label">Export Filename</mat-label>
-                        <input matInput type="text"  [(ngModel)]="detail.exportFileName" maxlength="50" (ngModelChange)="saveInput()" data-automation-id="custom-reports-export-filename-input">
+                        <input matInput type="text"  [(ngModel)]="detail.exportFileName" maxlength="50" (ngModelChange)="saveInput()" [attr.data-automation-id]="'custom-reports-export-filename-input-' + detail.exportFileName">
                     </mat-form-field>
                 </div>
                 <div class="text-center">

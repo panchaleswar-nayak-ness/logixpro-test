@@ -20,7 +20,7 @@
                             <mat-label data-automation-id="label-order-number">Order Number</mat-label>
                             <input type="text" placeholder="Search" aria-label="Number" matInput autoFocus
                                 #publicSearchBox [(ngModel)]='orderNumber' maxlength="255" [matAutocomplete]="auto"
-                                (ngModelChange)="this.searchByInput.next($event)" data-automation-id="input-order-number">
+                                (ngModelChange)="this.searchByInput.next($event)" [attr.data-automation-id]="'input-order-number-' + orderNumber">
 
                             <button matSuffix *ngIf="orderNumber" class="clear-btn"
                                 (click)=" orderNumber = '';autocompleteSearchColumn();clearFields();" data-automation-id="clear-button"><mat-icon
@@ -34,13 +34,13 @@
                                     <span class="w-140px" data-automation-id="option-header-item-number" replacePlaceholder [replacePlaceHolder]="placeholders.itemNumber" [fallbackPlaceHolder]="placeholders.itemNumberFallback">{{LabelItemNumber}}</span> 
                                     <span class="w-140px" data-automation-id="option-header-transaction-quantity">Trans. Quantity</span></h6>
 
-                                <mat-option *ngFor="let option of searchAutocompleteList; let i = index" [value]="option.orderNumber"
-                                    class="matAutoCompTableContent" [attr.data-automation-id]="'option-order-number-' + i + '-' + option.orderNumber">
+                                <mat-option *ngFor="let option of searchAutocompleteList" [value]="option.orderNumber"
+                                    class="matAutoCompTableContent" [attr.data-automation-id]="'option-order-number-'  + option.orderNumber">
                                     <div class="loc_option" (click)="getRow(option)">
-                                        <span class="searchColumn w-140px" [attr.data-automation-id]="'option-order-number-value-' + i + '-' + option.orderNumber">{{option.orderNumber}}</span>
-                                        <span class="searchColumn" w-140px [attr.data-automation-id]="'option-transaction-type-value-' + i + '-' + option.transactionType">{{option.transactionType}}</span> <span
-                                            class="searchColumn w-140px" [attr.data-automation-id]="'option-item-number-value-' + i + '-' + option.itemNumber">{{option.itemNumber}}</span>
-                                        <span class="searchColumn w-140px" [attr.data-automation-id]="'option-transaction-quantity-value-' + i + '-' + option.transactionQuantity">{{option.transactionQuantity}}</span>
+                                        <span class="searchColumn w-140px" [attr.data-automation-id]="'option-order-number-value-'  + option.orderNumber">{{option.orderNumber}}</span>
+                                        <span class="searchColumn" w-140px [attr.data-automation-id]="'option-transaction-type-value-' + option.transactionType">{{option.transactionType}}</span> <span
+                                            class="searchColumn w-140px" [attr.data-automation-id]="'option-item-number-value-'  + option.itemNumber">{{option.itemNumber}}</span>
+                                        <span class="searchColumn w-140px" [attr.data-automation-id]="'option-transaction-quantity-value-' + option.transactionQuantity">{{option.transactionQuantity}}</span>
                                     </div>
                                 </mat-option>
                             </mat-autocomplete>
@@ -52,7 +52,7 @@
                             <mat-form-field class="action-dropdown custom-form-field-bg-white float-end flex-grow-1"
                                 appearance="outline" data-automation-id="form-field-actions">
                                 <mat-select #openAction [(ngModel)]="selectedAction" class="employees-action"
-                                    placeholder="Actions" (selectionChange)="generateTranscAction($event)" data-automation-id="select-actions">
+                                    placeholder="Actions" (selectionChange)="generateTranscAction($event)" [attr.data-automation-id]="'select-actions-' + selectedAction">
 
                                     <mat-option value="0" (click)="openTemporaryManualOrderDialogue()" data-automation-id="option-action-add-new-transaction">Add New
                                         Transaction</mat-option>
