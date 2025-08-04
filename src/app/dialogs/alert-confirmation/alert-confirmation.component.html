@@ -3,20 +3,20 @@
       <div class="prompt-wrap">
         <div class="d-flex justify-content-center prompt-icon-wrap">
           <ng-container *ngIf="!isAlert; else elseBlock">
-            <span #cancel class="material-symbols-outlined prompt-icon-delete mb-4">
+            <span #cancel class="material-symbols-outlined prompt-icon-delete mb-4" data-automation-id="alert-confirmation-icon">
                 notification_important
             </span>
           </ng-container>
           <ng-template #elseBlock>
-            <span #cancel class="material-symbols-outlined prompt-icon-add text-24">
+            <span #cancel class="material-symbols-outlined prompt-icon-add text-24" data-automation-id="alert-confirmation-icon">
               notification_important
           </span>
           </ng-template>
         </div>
-        <h1 class="mat-card-title text-error">
+        <h1 class="mat-card-title text-error" data-automation-id="alert-confirmation-heading">
            {{heading}}
         </h1>
-        <p class="prompt-message py-4 mb-0 ">
+        <p class="prompt-message py-4 mb-0 " data-automation-id="alert-confirmation-message">
             <b>{{message}}</b>
         </p>
       </div>
@@ -24,12 +24,12 @@
     <mat-dialog-actions class="d-flex flex-column justify-content-center">
 
       <ng-container *ngIf="!isAlert; else primaryBlock">
-      <button  class=" prompt-action-danger-button mb-3 w-100 btn-lg" mat-stroked-button  [mat-dialog-close]="true" >{{buttonFields?'YES':'OK'}}</button>
-      <button  class="  prompt-action-basic-button mb-3 w-100 btn-lg" mat-stroked-button  [mat-dialog-close]="false" *ngIf="!disableCancel">{{buttonFields?'NO':'Cancel'}}</button>
+      <button  class=" prompt-action-danger-button mb-3 w-100 btn-lg" mat-stroked-button  [mat-dialog-close]="true" data-automation-id="alert-confirmation-ok-btn">{{buttonFields?'YES':'OK'}}</button>
+      <button  class="  prompt-action-basic-button mb-3 w-100 btn-lg" mat-stroked-button  [mat-dialog-close]="false" *ngIf="!disableCancel" data-automation-id="alert-confirmation-cancel-btn">{{buttonFields?'NO':'Cancel'}}</button>
       </ng-container>
       <ng-template #primaryBlock>
-        <button  class="prompt-action-accent-button mb-3 w-100 btn-lg" mat-stroked-button  [mat-dialog-close]="true" >{{buttonFields?'YES':'OK'}}</button>
-        <button  class="  prompt-action-basic-button mb-3 w-100 btn-lg" mat-stroked-button  [mat-dialog-close]="false" *ngIf="!disableCancel">{{buttonFields?'NO':'Cancel'}}</button>
+        <button  class="prompt-action-accent-button mb-3 w-100 btn-lg" mat-stroked-button  [mat-dialog-close]="true" data-automation-id="alert-confirmation-ok-btn">{{buttonFields?'YES':'OK'}}</button>
+        <button  class="  prompt-action-basic-button mb-3 w-100 btn-lg" mat-stroked-button  [mat-dialog-close]="false" *ngIf="!disableCancel" data-automation-id="alert-confirmation-cancel-btn">{{buttonFields?'NO':'Cancel'}}</button>
         </ng-template>
     </mat-dialog-actions>
     

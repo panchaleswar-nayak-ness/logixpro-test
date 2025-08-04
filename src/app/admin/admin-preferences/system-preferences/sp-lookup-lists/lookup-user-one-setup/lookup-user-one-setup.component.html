@@ -1,6 +1,6 @@
 <div class="d-block d-xl-flex justify-content-between align-items-center w-100 gap-12 mt-3">
     <div class="label-blue3 p-3 d-flex br-8 mb-3">
-        <mat-icon class="material-symbols-outlined">info</mat-icon>
+        <mat-icon class="material-symbols-outlined" data-automation-id="user-field1-info-icon">info</mat-icon>
         <span class="ps-2 w-100">The {{fieldNames?.userField1}} Lookup List can be configured by adding, deleting or modifying the
             suggestions that will be rendered to the user on related screens. </span>
     </div>
@@ -17,17 +17,17 @@
 
 <ng-container *ngFor="let element of userF1List.data">
     <div class="col-xl-4 d-flex align-items-center">
-        <mat-form-field class="action-dropdown custom-form-field-bg-white w-100" appearance="outline">
-            <input matInput type="text" [(ngModel)]="element.currentVal" data-automation-id="input-user-field1">
+        <mat-form-field class="action-dropdown custom-form-field-bg-white w-100" appearance="outline" data-automation-id="user-field1-form-field">
+            <input matInput type="text" [(ngModel)]="element.currentVal" [attr.data-automation-id]="'input-user-field1-' + element.currentVal">
         </mat-form-field>
     
         <div class="ms-5 d-flex align-items-center gap-12" >
             <button mat-flat-button color="primary" data-automation-id="button-save" class="xsm-icon-button" [disabled]="element.currentVal == element.oldVal"
             (click)="saveUserF1(element)">
-                <mat-icon class="material-symbols-outlined">save</mat-icon>
+                <mat-icon class="material-symbols-outlined" data-automation-id="user-field1-save-icon">save</mat-icon>
             </button>
             <button mat-flat-button color="warn" class="xsm-icon-button" (click)="deleteUserF1(element)" data-automation-id="button-delete">
-                <mat-icon class="material-symbols-outlined">close</mat-icon>
+                <mat-icon class="material-symbols-outlined" data-automation-id="user-field1-delete-icon">close</mat-icon>
             </button>
         </div>
     

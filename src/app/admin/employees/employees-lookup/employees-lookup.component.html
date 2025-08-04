@@ -1,6 +1,6 @@
 <div class="search-box">
   <div class="d-flex justify-content-between g-mini-search-box">
-    <mat-form-field class="w-100 align-items-center" appearance="fill">
+    <mat-form-field class="w-100 align-items-center" appearance="fill" data-automation-id="employee-lookup-search-formfield">
       <span class="material-symbols-outlined icon-search" data-automation-id="label-search-icon">
         search
       </span>
@@ -15,40 +15,40 @@
 <div class="card br-14 table-responsive my-3">
   <ng-scrollbar class="mat-table-scrollbar scrollbar-hover-padding scroll-fix h-860px" appearance="compact" pointerEventsMethod="scrollbar">
     <table mat-table [dataSource]="employee_data_source" matSort
-      (matSortChange)="announceSortChange($event)" class="g-card-table table1 employee-location-table custom-action-clickable-table w-100">
+      (matSortChange)="announceSortChange($event)" class="g-card-table table1 employee-location-table custom-action-clickable-table w-100" data-automation-id="employee-lookup-table">
       <ng-container matColumnDef="id">
         <th width="25%" mat-header-cell *matHeaderCellDef mat-sort-header data-automation-id="label-id">ID</th>
-        <td width="25%" mat-cell *matCellDef="let element"> {{element?.id}} </td>
+        <td width="25%" mat-cell *matCellDef="let element" [attr.data-automation-id]="'employee-lookup-td-id-' + element.id"> {{element?.id}} </td>
       </ng-container>
 
       <ng-container matColumnDef="lastName">
         <th width="25%" mat-header-cell *matHeaderCellDef mat-sort-header data-automation-id="label-last-name">Last Name</th>
-        <td width="25%"  mat-cell *matCellDef="let element"> {{element.lastName}} </td>
+        <td width="25%" mat-cell *matCellDef="let element" [attr.data-automation-id]="'employee-lookup-td-lastname-' + element.id"> {{element.lastName}} </td>
       </ng-container>
 
       <!-- End Location Column -->
       <ng-container matColumnDef="firstName">
         <th width="25%" mat-header-cell *matHeaderCellDef mat-sort-header data-automation-id="label-first-name">First Name</th>
-        <td width="25%" mat-cell *matCellDef="let element"> {{element.firstName}} </td>
+        <td width="25%" mat-cell *matCellDef="let element" [attr.data-automation-id]="'employee-lookup-td-firstname-' + element.id"> {{element.firstName}} </td>
       </ng-container>
 
       <ng-container matColumnDef="mi">
         <th width="25%" mat-header-cell *matHeaderCellDef mat-sort-header data-automation-id="label-mi">MI</th>
-        <td width="25%" mat-cell *matCellDef="let element"> {{element.mi}} </td>
+        <td width="25%" mat-cell *matCellDef="let element" [attr.data-automation-id]="'employee-lookup-td-mi-' + element.id"> {{element.mi}} </td>
       </ng-container>
       <ng-container matColumnDef="userName">
         <th width="25%" mat-header-cell *matHeaderCellDef mat-sort-header data-automation-id="label-username">Username</th>
-        <td width="25%" mat-cell *matCellDef="let element"> {{element.userName}} </td>
+        <td width="25%" mat-cell *matCellDef="let element" [attr.data-automation-id]="'employee-lookup-td-username-' + element.id"> {{element.userName}} </td>
       </ng-container>
 
-      <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky:true" class="table-header-color"></tr>
+      <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky:true" class="table-header-color" data-automation-id="employee-lookup-header-row"></tr>
       <tr class="mat-row" *matNoDataRow>
-        <td class="mat-cell" [attr.colspan]="displayedColumns.length">
+        <td class="mat-cell" [attr.colspan]="displayedColumns.length" data-automation-id="employee-lookup-no-data-cell">
           No data matching the filter.
         </td>
       </tr>
       <tr mat-row class="table-row" tabindex="1" *matRowDef="let row; columns: displayedColumns;"
-        (click)="getEmpDetails(row)"></tr>
+        (click)="getEmpDetails(row)" [attr.data-automation-id]="'employee-lookup-row-' + row.id"></tr>
 
     </table>
   </ng-scrollbar>

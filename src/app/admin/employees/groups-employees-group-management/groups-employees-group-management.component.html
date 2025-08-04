@@ -1,5 +1,5 @@
 <div class="d-xl-flex justify-content-between align-items-center">
-    <h2 class="card-header-title mb-0 mb-sm-3 mb-md-3 mb-lg-0 d-flex align-items-center">
+    <h2 class="card-header-title mb-0 mb-sm-3 mb-md-3 mb-lg-0 d-flex align-items-center" data-automation-id="group-mgmt-heading">
       <div class="mat-icon-wrap me-lg-3" *ngIf="isGroupLookUp" (click)="backGroupAction()">
         <span class="material-symbols-outlined cursor-pointer" matTooltip="Back to group list"
           matTooltipPosition="above" data-automation-id="button-back">
@@ -13,10 +13,10 @@
       </div>
       <span data-automation-id="label-employee-group-management">Employee Group Management</span>
     </h2>
-    <mat-form-field class="action-dropdown d-block" appearance="outline">
+    <mat-form-field class="action-dropdown d-block" appearance="outline" data-automation-id="group-mgmt-actions-ff">
       <mat-label data-automation-id="label-actions">Actions</mat-label>
       <mat-select class="employees-action"
-        (selectionChange)="actionGroupDialog($event.value, grpData, $event)">
+        (selectionChange)="actionGroupDialog($event.value, grpData, $event)" data-automation-id="group-mgmt-actions-select">
         <mat-option *ngIf="!isGroupLookUp" (click)="openGroupDialog()" data-automation-id="add-group-option">Add new group</mat-option>
         <mat-option *ngIf="isGroupLookUp" value="delete" data-automation-id="button-delete">Delete</mat-option>
         <mat-option value="clone" *ngIf="env !== 'SD' && isGroupLookUp" data-automation-id="clone-group-option">Clone</mat-option>
@@ -39,6 +39,6 @@
   <div class="group-details details-wrap g-details-wrap" *ngIf="isGroupLookUp">
     <div class="g-detail">
       <label class="g-field-label" data-automation-id="label-group-name">Group Name</label>
-      <div class="g-field-content">{{grpData.groupName }}</div>
+      <div class="g-field-content" data-automation-id="group-mgmt-groupname-content">{{grpData.groupName }}</div>
     </div>
   </div>

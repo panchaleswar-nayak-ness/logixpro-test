@@ -8,12 +8,12 @@
           <div class="col-xl-3">
             <div class="w-100 d-flex d-lg-block">
             <mat-form-field class="action-dropdown float-end mb-3 flex-grow-1" appearance="outline" data-automation-id="light-tree-action-dropdown">
-                <mat-label>Action</mat-label>
+                <mat-label data-automation-id="light-tree-action-label">Action</mat-label>
                 <mat-select #matRef class="employees-action" data-automation-id="light-tree-action-select">
-                    <mat-option value="pagesNumber">Reset All Alternate Light Positions</mat-option>
-                    <mat-option value="set_column_sq">Display Bin Light Positions</mat-option>
+                    <mat-option value="pagesNumber" data-automation-id="light-tree-reset-all-opt">Reset All Alternate Light Positions</mat-option>
+                    <mat-option value="set_column_sq" data-automation-id="light-tree-display-bin-opt">Display Bin Light Positions</mat-option>
                 </mat-select>
-                <span class="material-symbols-outlined icon-expand-more">
+                <span class="material-symbols-outlined icon-expand-more" data-automation-id="light-tree-action-expand-icon">
                     expand_more
                 </span>
             </mat-form-field>
@@ -24,65 +24,65 @@
             <div class="row">
                 <div class="col-xl-3">
                     <mat-form-field class=" custom-form-field w-100 __grab_cursor" appearance="outline" data-automation-id="zone-field">
-                        <mat-label>Zone</mat-label>
+                        <mat-label data-automation-id="zone-label">Zone</mat-label>
                         <mat-select formControlName="zone" data-automation-id="zone-select">
-                            <mat-option value="Order Number">
+                            <mat-option value="Order Number" data-automation-id="zone-opt-order-number">
                                 Order Number
                             </mat-option>
-                            <mat-option value="Item Number" replacePlaceholder [replacePlaceHolder]="placeholders.itemNumber" [fallbackPlaceHolder]="placeholders.itemNumberFallback">
+                            <mat-option value="Item Number" replacePlaceholder [replacePlaceHolder]="placeholders.itemNumber" [fallbackPlaceHolder]="placeholders.itemNumberFallback" data-automation-id="zone-opt-item-number">
                                 Item Number
                             </mat-option>
                         </mat-select>
-                        <span class="material-symbols-outlined icon-expand-more">
+                        <span class="material-symbols-outlined icon-expand-more" data-automation-id="zone-expand-icon">
                             expand_more
                         </span>
                     </mat-form-field>
                 </div>
                 <div class="col-xl-3">
                     <mat-form-field class=" custom-form-field w-100 __grab_cursor" appearance="outline" data-automation-id="carousel-field">
-                        <mat-label>Carousel</mat-label>
+                        <mat-label data-automation-id="carousel-label">Carousel</mat-label>
                         <mat-select formControlName="zone" data-automation-id="carousel-select">
-                            <mat-option value="Order Number">
+                            <mat-option value="Order Number" data-automation-id="carousel-opt-order-number">
                                 Order Number
                             </mat-option>
-                            <mat-option value="Item Number" replacePlaceholder [replacePlaceHolder]="placeholders.itemNumber" [fallbackPlaceHolder]="placeholders.itemNumberFallback">
+                            <mat-option value="Item Number" replacePlaceholder [replacePlaceHolder]="placeholders.itemNumber" [fallbackPlaceHolder]="placeholders.itemNumberFallback" data-automation-id="carousel-opt-item-number">
                                 Item Number
                             </mat-option>
                         </mat-select>
-                        <span class="material-symbols-outlined icon-expand-more">
+                        <span class="material-symbols-outlined icon-expand-more" data-automation-id="carousel-expand-icon">
                             expand_more
                         </span>
                     </mat-form-field>
                 </div>
                 <div class="col-xl-3">
                     <mat-form-field class=" custom-form-field w-100 __grab_cursor" appearance="outline" data-automation-id="bin-location-field">
-                        <mat-label>Bin Location</mat-label>
+                        <mat-label data-automation-id="bin-location-label">Bin Location</mat-label>
                         <mat-select formControlName="zone" data-automation-id="bin-location-select">
-                            <mat-option value="Order Number">
+                            <mat-option value="Order Number" data-automation-id="bin-location-opt-order-number">
                                 Order Number
                             </mat-option>
-                            <mat-option value="Item Number" replacePlaceholder [replacePlaceHolder]="placeholders.itemNumber" [fallbackPlaceHolder]="placeholders.itemNumberFallback">
+                            <mat-option value="Item Number" replacePlaceholder [replacePlaceHolder]="placeholders.itemNumber" [fallbackPlaceHolder]="placeholders.itemNumberFallback" data-automation-id="bin-location-opt-item-number">
                                 Item Number
                             </mat-option>
                         </mat-select>
-                        <span class="material-symbols-outlined icon-expand-more">
+                        <span class="material-symbols-outlined icon-expand-more" data-automation-id="bin-location-expand-icon">
                             expand_more
                         </span>
                     </mat-form-field>
                 </div>
                 <div class="col-xl-3">
                     <mat-form-field class=" custom-form-field w-100 __grab_cursor" appearance="outline" data-automation-id="shelf-direction-field">
-                        <mat-label>Shelf Direction</mat-label>
+                        <mat-label data-automation-id="shelf-direction-label">Shelf Direction</mat-label>
                         <mat-select formControlName="zone" data-automation-id="shelf-direction-select">
 
-                            <mat-option value="Order Number">
+                            <mat-option value="Order Number" data-automation-id="shelf-direction-opt-order-number">
                                 Order Number
                             </mat-option>
-                            <mat-option value="Item Number" replacePlaceholder [replacePlaceHolder]="placeholders.itemNumber" [fallbackPlaceHolder]="placeholders.itemNumberFallback">
+                            <mat-option value="Item Number" replacePlaceholder [replacePlaceHolder]="placeholders.itemNumber" [fallbackPlaceHolder]="placeholders.itemNumberFallback" data-automation-id="shelf-direction-opt-item-number">
                                 Item Number
                             </mat-option>
                         </mat-select>
-                        <span class="material-symbols-outlined icon-expand-more">
+                        <span class="material-symbols-outlined icon-expand-more" data-automation-id="shelf-direction-expand-icon">
                             expand_more
                         </span>
                     </mat-form-field>
@@ -98,7 +98,7 @@
                 <table mat-table [dataSource]="this.ELEMENT_DATA" class="w-100" data-automation-id="alternate-light-settings-table">
                     <ng-container matColumnDef="position">
                         <th mat-header-cell *matHeaderCellDef> Position </th>
-                        <td mat-cell *matCellDef="let seletedRecord">
+                        <td mat-cell *matCellDef="let seletedRecord" [attr.data-automation-id]="'alt-light-cell-position-' + seletedRecord.position">
                             <div class="p-2">
                                 <mat-form-field class="custom-form-field w-100" appearance="outline">
                                     <input matInput type="text" #specialFeature maxlength="255"
@@ -109,7 +109,7 @@
                     </ng-container>
                     <ng-container matColumnDef="shelf">
                         <th mat-header-cell *matHeaderCellDef> Shelf </th>
-                        <td mat-cell *matCellDef="let seletedRecord; let i = index;">
+                        <td mat-cell *matCellDef="let seletedRecord; let i = index;" [attr.data-automation-id]="'alt-light-cell-shelf-' + seletedRecord.shelf">
                             <div class="p-2">
                                 <mat-form-field class="custom-form-field w-100" appearance="outline">
                                     <input matInput type="text" #specialFeature maxlength="255"
@@ -120,7 +120,7 @@
                     </ng-container>
                     <ng-container matColumnDef="alternate_light_positions_no">
                         <th mat-header-cell *matHeaderCellDef> Alternate Light Positions No. </th>
-                        <td mat-cell *matCellDef="let seletedRecord">
+                        <td mat-cell *matCellDef="let seletedRecord" [attr.data-automation-id]="'alt-light-cell-altno-' + seletedRecord.alternate_light_positions_no">
                             <div class="p-2">
                                 <mat-form-field class="custom-form-field w-100" appearance="outline">
                                     <input matInput type="text" #specialFeature maxlength="255"
@@ -134,7 +134,7 @@
                     </ng-container>
                     <ng-container matColumnDef="other" stickyEnd>
                         <th mat-header-cell *matHeaderCellDef class="ps-2"></th>
-                        <td mat-cell *matCellDef="let seletedRecord; let i = index;" class="ps-2">
+                        <td mat-cell *matCellDef="let seletedRecord; let i = index;" class="ps-2" [attr.data-automation-id]="'alt-light-cell-actions-' + seletedRecord.position">
                             <div class="d-flex justify-content-end">
                                 <button type="button" mat-icon-button [matMenuTriggerFor]="appMenu" aria-label=""
                                 [ngClass]="{'active-btn':seletedRecord.selected}" class="circle-icon-o active-btn" 
@@ -149,7 +149,7 @@
                         </td>
                     </ng-container>
                     <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky:true"></tr>
-                    <tr mat-row *matRowDef="let row; columns: displayedColumns;" (click)="selectRow(row)">
+                    <tr mat-row *matRowDef="let row; columns: displayedColumns;" (click)="selectRow(row)" [attr.data-automation-id]="'alt-light-row-' + row.position">
                     </tr>
                 </table>
             </ng-scrollbar>

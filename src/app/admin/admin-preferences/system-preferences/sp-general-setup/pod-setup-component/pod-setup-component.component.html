@@ -4,13 +4,13 @@
 <div class="card p-3">
   <h2 class="text-18 bold my-3" data-automation-id="Order-Selection-Heading">Order Selection Color Filter</h2>
   <mat-form-field class="action-dropdown custom-form-field-bg-white w-100 mb-3" appearance="outline" data-automation-id="red-filter-field">
-    <mat-label>Red Filter Field</mat-label>
+    <mat-label data-automation-id="red-filter-label">Red Filter Field</mat-label>
     <mat-select class="employees-action" data-automation-id="red-filter-field-select">
       <ng-container *ngFor="let item of fieldNames | keyvalue">
-        <mat-option [value]="item.key">{{ item.value }}</mat-option>
+        <mat-option [value]="item.key" [attr.data-automation-id]="'red-filter-field-opt-' + item.key">{{ item.value }}</mat-option>
       </ng-container>
     </mat-select>
-    <span class="material-symbols-outlined icon-expand-more">
+    <span class="material-symbols-outlined icon-expand-more" data-automation-id="red-filter-expand-icon">
       expand_more
     </span>
   </mat-form-field>
@@ -19,13 +19,13 @@
     <input type="text" matInput maxlength="255" data-automation-id="red-filter-value-input"/>
   </mat-form-field>
   <mat-form-field class="action-dropdown custom-form-field-bg-white w-100 mb-3" appearance="outline" data-automation-id="green-filter-field">
-    <mat-label>Green Filter Field</mat-label>
+    <mat-label data-automation-id="green-filter-label">Green Filter Field</mat-label>
     <mat-select class="employees-action" data-automation-id="green-filter-field-select">
       <ng-container *ngFor="let item of fieldNames | keyvalue">
-        <mat-option [value]="item.key">{{ item.value }}</mat-option>
+        <mat-option [value]="item.key" [attr.data-automation-id]="'green-filter-field-opt-' + item.key">{{ item.value }}</mat-option>
       </ng-container>
     </mat-select>
-    <span class="material-symbols-outlined icon-expand-more">
+    <span class="material-symbols-outlined icon-expand-more" data-automation-id="green-filter-expand-icon">
       expand_more
     </span>
   </mat-form-field>
@@ -34,13 +34,13 @@
     <input type="text" matInput maxlength="255" data-automation-id="green-filter-value-input"/>
   </mat-form-field>
   <mat-form-field class="action-dropdown custom-form-field-bg-white w-100 mb-3" appearance="outline" data-automation-id="blue-filter-field">
-    <mat-label>Blue Filter Field</mat-label>
+    <mat-label data-automation-id="blue-filter-label">Blue Filter Field</mat-label>
     <mat-select class="employees-action" data-automation-id="blue-filter-field-select">
       <ng-container *ngFor="let item of fieldNames | keyvalue">
-        <mat-option [value]="item.key">{{ item.value }}</mat-option>
+        <mat-option [value]="item.key" [attr.data-automation-id]="'blue-filter-field-opt-' + item.key">{{ item.value }}</mat-option>
       </ng-container>
     </mat-select>
-    <span class="material-symbols-outlined icon-expand-more">
+    <span class="material-symbols-outlined icon-expand-more" data-automation-id="blue-filter-expand-icon">
       expand_more
     </span>
   </mat-form-field>
