@@ -32,7 +32,7 @@ export class BaseService {
   constructor(
     private http: HttpClient,
     private injector: Injector,
-    private spinnerService: SpinnerService,
+    private spinnerService: SpinnerService
   )
   {
     this.initializeApiUrl();
@@ -79,7 +79,8 @@ export class BaseService {
               this.spinnerService.hide();
             }
           }),
-          catchError(error => {
+          catchError(err => {
+            const error = err as HttpErrorResponse;
             if(error?.error?.messageCode == ErrorCode.UnableToPrint){ //Unable to print
               this.injector.get(GlobalService).ShowToastr(ToasterType.Error, error?.error.error, ToasterTitle.Error);
             }else
