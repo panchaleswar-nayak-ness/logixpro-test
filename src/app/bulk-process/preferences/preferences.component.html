@@ -12,7 +12,7 @@
     
       <div class="col-xl-7 d-flex align-items-start flex-wrap">
         <div class="row g-2">
-          <app-icon-heading-component heading="Bulk Zone" icon="activity_zone"></app-icon-heading-component>
+          <app-icon-heading-component heading="Bulk Zone" icon="activity_zone" [automationId]="'bulkzone-heading'"></app-icon-heading-component>
           <p>
             Select the Bulk storage Zone(s) (Including carton flow to include in Bulk picking, Put Aways and Cycle
             Count).
@@ -29,13 +29,13 @@
                   <span class="material-symbols-outlined icon-search text-chrome-600 me-2">
                     Search
                   </span>
-                  <input matInput type="text" [(ngModel)]="allZonesFilter" placeholder="Search Zones" />
-                  <button *ngIf="allZonesFilter" matSuffix mat-icon-button aria-label="Clear" (click)="allZonesFilter=''">
+                  <input matInput type="text" [(ngModel)]="allZonesFilter" placeholder="Search Zones" data-automation-id="allzones-search-inp" />
+                  <button *ngIf="allZonesFilter" matSuffix mat-icon-button aria-label="Clear" (click)="allZonesFilter=''" data-automation-id="allzones-clear-btn">
                     <mat-icon>close</mat-icon>
                   </button>
                 </mat-form-field>
               </div>
-              <button mat-stroked-button color="primary" class="button-add-all w-100 mb-2" (click)="addAllZones()">Add
+              <button mat-stroked-button color="primary" class="button-add-all w-100 mb-2" (click)="addAllZones()" data-automation-id="addall-btn">Add
                 All</button>
               <div class="card table-responsive br-14 borderless">
                 <ng-scrollbar class="mat-table-scrollbar scrollbar-hover-padding count-table-scrollbar" track="all">
@@ -46,7 +46,7 @@
                         <div class="d-flex align-items-center justify-content-between mt-2">
                           <div class="selected-zone-text w-100">
                             {{ zone.zone }}</div>
-                          <button class="xsm-icon-button" mat-flat-button color="primary" matTooltip="Add" matTooltipPosition="left" matTooltipShowDelay="500" (click)="addZone(zone)">
+                          <button class="xsm-icon-button" mat-flat-button color="primary" matTooltip="Add" matTooltipPosition="left" matTooltipShowDelay="500" (click)="addZone(zone)" [attr.data-automation-id]="'addzone-btn-' + zone.zone">
                             <mat-icon>add</mat-icon>
                           </button>
                         </div>
@@ -71,15 +71,15 @@
                   <span class="material-symbols-outlined icon-search text-chrome-600 me-2">
                     Search
                   </span>
-                  <input matInput type="text" [(ngModel)]="selectedZonesFilter" placeholder="Search Selected Zones" />
+                  <input matInput type="text" [(ngModel)]="selectedZonesFilter" placeholder="Search Selected Zones" data-automation-id="selzones-search-inp" />
                   <button *ngIf="selectedZonesFilter" matSuffix mat-icon-button aria-label="Clear"
-                    (click)="selectedZonesFilter=''">
+                    (click)="selectedZonesFilter=''" data-automation-id="selzones-clear-btn">
                     <mat-icon>close</mat-icon>
                   </button>
                 </mat-form-field>
               </div>
               <button mat-stroked-button color="warn" class="button-remove-all-w-stroke w-100 mb-2"
-                (click)="removeAllZones()">Remove All</button>
+                (click)="removeAllZones()" data-automation-id="removeall-btn">Remove All</button>
               <div class="card table-responsive br-14 borderless">
     
                 <ng-scrollbar class="mat-table-scrollbar scrollbar-hover-padding count-table-scrollbar" track="all">
@@ -92,7 +92,7 @@
                             {{ element.zone }}
                           </div>
                           <button mat-flat-button color="warn" class="xsm-icon-button ms-2"
-                            (click)="deleteBulkPickBulkZone(i)" matTooltip="Remove" matTooltipPosition="left" matTooltipShowDelay="500">
+                            (click)="deleteBulkPickBulkZone(i)" matTooltip="Remove" matTooltipPosition="left" matTooltipShowDelay="500" [attr.data-automation-id]="'removezone-btn-' + i">
                             <mat-icon class="material-symbols-outlined">close</mat-icon>
                           </button>
                         </div>
@@ -113,14 +113,14 @@
       </div>
       <div class="col-xl-5">
         <div class="row g-2">
-          <app-icon-heading-component heading="Sorting Configuration" icon="sort"></app-icon-heading-component>
+          <app-icon-heading-component heading="Sorting Configuration" icon="sort" [automationId]="'sortconf-heading'"></app-icon-heading-component>
           <div class="card p-3">
             <mat-form-field class="action-dropdown custom-form-field-bg-white w-100" appearance="outline"
-              *ngIf="companyInfo">
-              <mat-label>Order Sort</mat-label>
-              <mat-select class="employees-action" [(ngModel)]="companyInfo.orderSort" (ngModelChange)="payload()" [disableOptionCentering]="true">
-                <ng-container *ngFor="let item of orderSortOptions">
-                  <mat-option [value]="item">{{ item }}</mat-option>
+              *ngIf="companyInfo" data-automation-id="sortconf-ff">
+              <mat-label data-automation-id="sortconf-lbl">Order Sort</mat-label>
+              <mat-select class="employees-action" [(ngModel)]="companyInfo.orderSort" (ngModelChange)="payload()" [disableOptionCentering]="true" data-automation-id="sortconf-sel">
+                <ng-container *ngFor="let item of orderSortOptions; let i = index">
+                  <mat-option [value]="item" [attr.data-automation-id]="'sortconf-opt-' + i">{{ item }}</mat-option>
                 </ng-container>
               </mat-select>
               <span class="material-symbols-outlined icon-expand-more">expand_more</span>

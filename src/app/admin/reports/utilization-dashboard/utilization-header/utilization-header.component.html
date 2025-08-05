@@ -2,18 +2,18 @@
   <mat-card-content>
     <div class="d-xl-flex align-items-center justify-content-between mb-2">
       <div class="d-flex align-items-center">
-        <button mat-icon-button class="dialog-close-button-fix close-button d-flex justify-content-center align-items-center me-lg-3 me-2" (click)="onBackButtonClick()">
+        <button mat-icon-button class="dialog-close-button-fix close-button d-flex justify-content-center align-items-center me-lg-3 me-2" (click)="onBackButtonClick()" data-automation-id="utilization-header-back-button">
           <span class="material-symbols-outlined cursor-pointer" matTooltipPosition="above">
             arrow_back
           </span>
         </button>
-        <app-icon-heading-component icon="data_usage" heading="Utilization Dashboard"></app-icon-heading-component>
+        <app-icon-heading-component icon="data_usage" heading="Utilization Dashboard" [automationId]="'utilization-header-title'"></app-icon-heading-component>
       </div>
 
-      <mat-form-field class="" appearance="outline">
-        <mat-label>Actions</mat-label>
-        <mat-select #matRef class="employees-action" placeholder="Actions">
-          <mat-option>Print Report</mat-option>
+      <mat-form-field class="" appearance="outline" data-automation-id="utilization-header-actions-form-field">
+        <mat-label data-automation-id="utilization-header-actions-label">Actions</mat-label>
+        <mat-select #matRef class="employees-action" placeholder="Actions" data-automation-id="utilization-header-actions-select">
+          <mat-option data-automation-id="utilization-header-action-print-report">Print Report</mat-option>
         </mat-select>
         <span class="material-symbols-outlined icon-expand-more">expand_more</span>
       </mat-form-field>
@@ -22,10 +22,10 @@
     <div class="">
       <div class="row g-2 bg-light-blue bg-50 br-none w-100 px-3 py-3 br-20 m-h-140 d-flex justify-content-between">
         <div class="col-xl-4">
-          <mat-form-field class="action-dropdown w-100 mb-3 mb-xl-0" appearance="outline">
-            <mat-label>Zones</mat-label>
-            <mat-select class="employees-action" (selectionChange)="onZoneSelect($event.value)">
-              <mat-option *ngFor="let item of zones" [value]="item">
+          <mat-form-field class="action-dropdown w-100 mb-3 mb-xl-0" appearance="outline" data-automation-id="utilization-header-zones-form-field">
+            <mat-label data-automation-id="utilization-header-zones-label">Zones</mat-label>
+            <mat-select class="employees-action" (selectionChange)="onZoneSelect($event.value)" data-automation-id="utilization-header-zones-select">
+              <mat-option *ngFor="let item of zones; let i=index" [value]="item" [attr.data-automation-id]="'utilization-header-zones-option-' + i">
                 {{ item.zone }}
               </mat-option>
             </mat-select>
@@ -35,11 +35,11 @@
 
         <!-- Velocity Code Dropdown, Enabled or Disabled based on isCarousel -->
         <div class="col-xl-4">
-          <mat-form-field class="action-dropdown w-100 mb-3 mb-xl-0" appearance="outline">
-            <mat-label>Velocity Code</mat-label>
-            <mat-select class="employees-action" [(value)]="selectedBulkVelocity" (selectionChange)="onBulkVelocitiesSelect($event.value)" [disabled]="isCarousel">
-              <mat-option [value]="''">All</mat-option> 
-              <mat-option *ngFor="let item of BulkVelocities" [value]="item">
+          <mat-form-field class="action-dropdown w-100 mb-3 mb-xl-0" appearance="outline" data-automation-id="utilization-header-velocity-form-field">
+            <mat-label data-automation-id="utilization-header-velocity-label">Velocity Code</mat-label>
+            <mat-select class="employees-action" [(value)]="selectedBulkVelocity" (selectionChange)="onBulkVelocitiesSelect($event.value)" [disabled]="isCarousel" data-automation-id="utilization-header-velocity-select">
+              <mat-option [value]="''" data-automation-id="utilization-header-velocity-option-all">All</mat-option> 
+              <mat-option *ngFor="let item of BulkVelocities; let i = index" [value]="item" [attr.data-automation-id]="'utilization-header-velocity-option-' + i">
                 {{ item }}
               </mat-option>
             </mat-select>
@@ -49,11 +49,11 @@
 
         <!-- Cell Size Dropdown, Enabled or Disabled based on isCarousel -->
         <div class="col-xl-4">
-          <mat-form-field class="action-dropdown w-100 mb-3 mb-xl-0" appearance="outline">
-            <mat-label>Cell Size</mat-label>
-            <mat-select class="employees-action" [(value)]="selectedBulkCellSize" (selectionChange)="onBulkCellSizesSelect($event.value)" [disabled]="isCarousel">
-              <mat-option [value]="''">All</mat-option> 
-              <mat-option *ngFor="let item of BulkCellSizes" [value]="item">
+          <mat-form-field class="action-dropdown w-100 mb-3 mb-xl-0" appearance="outline" data-automation-id="utilization-header-cellsize-form-field">
+            <mat-label data-automation-id="utilization-header-cellsize-label">Cell Size</mat-label>
+            <mat-select class="employees-action" [(value)]="selectedBulkCellSize" (selectionChange)="onBulkCellSizesSelect($event.value)" [disabled]="isCarousel" data-automation-id="utilization-header-cellsize-select">
+              <mat-option [value]="''" data-automation-id="utilization-header-cellsize-option-all">All</mat-option> 
+              <mat-option *ngFor="let item of BulkCellSizes; let i = index" [value]="item" [attr.data-automation-id]="'utilization-header-cellsize-option-' + i">
                 {{ item }}
               </mat-option>
             </mat-select>

@@ -1,12 +1,12 @@
 <div class="row w-100 mt-4 mx-0">
     <div class="col-xl-12 mb-3 mb-xl-0">
         <div class="d-flex justify-content-between align-items-center mb-3">
-            <app-icon-heading-component heading="Sort Bar Setup" icon="sort">
+            <app-icon-heading-component heading="Sort Bar Setup" icon="sort" [automationId]="'sort-bar-setup-heading'">
             </app-icon-heading-component>
         </div>
     </div>
 
-    <h2 class="f-16 bold mb-3 d-flex align-items-center">
+    <h2 class="f-16 bold mb-3 d-flex align-items-center" data-automation-id="sort-bar-setup-description-heading">
         <span>Please enter your Sort Bar(s) configuration below so that the Automated Pick (20 position matrix screen)
             will display the totes correctly.</span>
     </h2>
@@ -14,26 +14,26 @@
     <div class="row w-100 mt-4 mx-0">
         <div class="col-xl-12">
             <div class="mb-4 d-block d-xl-flex flex-wrap justify-content-between">
-                <div class="mb-3 mb-xl-0 tote-grid" *ngFor="let item of items1">
+                <div class="mb-3 mb-xl-0 tote-grid" *ngFor="let item of items1; let i = index">
                     <div class="card p-2 mb-2">
                         <div class="text-center grid-custom-style">
                             Tote {{item}}
                         </div>
                     </div>
                     <mat-form-field class="custom-form-field mb-3 mb-xl-0" appearance="outline">
-                        <input matInput type="text" value="12" />
+                        <input matInput type="text" value="12" data-automation-id="input-tote-1-{{i}}" />
                     </mat-form-field>
                 </div>
             </div> 
             <div class="mb-1 d-block d-xl-flex flex-wrap justify-content-between">
-                <div class="mb-3 mb-xl-0 tote-grid" *ngFor="let item of items2">
+                <div class="mb-3 mb-xl-0 tote-grid" *ngFor="let item of items2; let i = index">
                     <div class="card p-2 mb-2">
                         <div class="text-center grid-custom-style">
                             Tote {{item}}
                         </div>
                     </div>
                     <mat-form-field class="custom-form-field mb-3 mb-xl-0" appearance="outline">
-                        <input matInput type="text" value="12" />
+                        <input matInput type="text" value="12" data-automation-id="input-tote-2-{{i}}" />
                     </mat-form-field>
                 </div>
             </div> 

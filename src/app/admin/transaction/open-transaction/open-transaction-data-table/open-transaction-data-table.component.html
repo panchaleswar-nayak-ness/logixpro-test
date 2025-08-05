@@ -18,73 +18,73 @@
             <table mat-table [dataSource]="dataSource" matSort (matSortChange)="sortChange($event)" class="g-card-table employee-location-table w-100 min-h-150px">
               <ng-container matColumnDef="orderNumber">
                 <th mat-header-cell *matHeaderCellDef mat-sort-header data-automation-id="table-header-order-number">Order Number</th>
-                <td mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'table-row-order-number-' + i + '-' + element.orderNumber">{{element?.orderNumber}} </td>
+                <td mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'table-row-order-number-' + i">{{element?.orderNumber}} </td>
               </ng-container>
 
               <ng-container matColumnDef="itemNumber">
                 <th mat-header-cell mat-sort-header *matHeaderCellDef replacePlaceholder [replacePlaceHolder]="placeholders.itemNumber" [fallbackPlaceHolder]="placeholders.itemNumberFallback" data-automation-id="table-header-item-number">{{FieldItemNumber}}</th>
-                <td mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'table-row-item-number-' + i + '-' + element.itemNumber">{{element?.itemNumber}} </td>
+                <td mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'table-row-item-number-' + i">{{element?.itemNumber}} </td>
               </ng-container>
 
               <!-- End Location Column -->
               <ng-container matColumnDef="wareHouse">
                 <th mat-header-cell *matHeaderCellDef mat-sort-header data-automation-id="table-header-warehouse">Warehouse</th>
-                <td mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'table-row-warehouse-' + i + '-' + element.wareHouse">{{element?.wareHouse}} </td>
+                <td mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'table-row-warehouse-' + i">{{element?.wareHouse}} </td>
               </ng-container>
 
               <ng-container matColumnDef="location">
                 <th mat-header-cell *matHeaderCellDef mat-sort-header data-automation-id="table-header-location">Location</th>
-                <td mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'table-row-location-' + i + '-' + element.location">{{element?.location}} </td>
+                <td mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'table-row-location-' + i">{{element?.location}} </td>
               </ng-container>
               <ng-container matColumnDef="transactionType">
                 <th mat-header-cell *matHeaderCellDef mat-sort-header data-automation-id="table-header-transaction-type">Transaction Type</th>
-                <td mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'table-row-transaction-type-' + i + '-' + element.transactionType">{{element?.transactionType}} </td>
+                <td mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'table-row-transaction-type-' + i">{{element?.transactionType}} </td>
               </ng-container>
 
               <ng-container matColumnDef="transactionQuantity">
                 <th mat-header-cell *matHeaderCellDef mat-sort-header data-automation-id="table-header-transaction-quantity">Transaction Quantity</th>
-                <td mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'table-row-transaction-quantity-' + i + '-' + element.transactionQuantity">{{element?.transactionQuantity}} </td>
+                <td mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'table-row-transaction-quantity-' + i">{{element?.transactionQuantity}} </td>
               </ng-container>
 
               <ng-container matColumnDef="serialNumber">
                 <th mat-header-cell *matHeaderCellDef mat-sort-header data-automation-id="table-header-serial-number">Serial Number</th>
-                <td mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'table-row-serial-number-' + i + '-' + element.serialNumber">{{element?.serialNumber}} </td>
+                <td mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'table-row-serial-number-' + i">{{element?.serialNumber}} </td>
               </ng-container>
 
               <ng-container matColumnDef="lotNumber">
                 <th mat-header-cell *matHeaderCellDef mat-sort-header data-automation-id="table-header-lot-number">Lot Number</th>
-                <td mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'table-row-lot-number-' + i + '-' + element.lotNumber">{{element?.lotNumber}} </td>
+                <td mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'table-row-lot-number-' + i">{{element?.lotNumber}} </td>
               </ng-container>
 
               <ng-container matColumnDef="lineNumber">
                 <th mat-header-cell *matHeaderCellDef mat-sort-header data-automation-id="table-header-line-number">Line Number</th>
-                <td mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'table-row-line-number-' + i + '-' + element.lineNumber"> {{element?.lineNumber}}</td>
+                <td mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'table-row-line-number-' + i"> {{element?.lineNumber}}</td>
               </ng-container>
 
               <ng-container matColumnDef="hostTransactionID">
                 <th mat-header-cell *matHeaderCellDef mat-sort-header data-automation-id="table-header-host-transaction-id">Host Transaction ID</th>
-                <td mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'table-row-host-transaction-id-' + i + '-' + element.hostTransactionID"> {{element?.hostTransactionID}} </td>
+                <td mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'table-row-host-transaction-id-' + i"> {{element?.hostTransactionID}} </td>
               </ng-container>
 
               <ng-container matColumnDef="toteID">
                 <th mat-header-cell *matHeaderCellDef mat-sort-header data-automation-id="table-header-tote-id">Tote ID</th>
-                <td mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'table-row-tote-id-' + i + '-' + element.toteID">{{element?.toteID}} </td>
+                <td mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'table-row-tote-id-' + i">{{element?.toteID}} </td>
               </ng-container>
 
               <ng-container matColumnDef="id">
                 <th mat-header-cell *matHeaderCellDef mat-sort-header data-automation-id="table-header-id">ID</th>
-                <td mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'table-row-id-' + i + '-' + element.id"> {{element?.id}} </td>
+                <td mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'table-row-id-' + i"> {{element?.id}} </td>
               </ng-container>
 
               <ng-container matColumnDef="actions" stickyEnd>
                 <th mat-header-cell *matHeaderCellDef class="custom-header-cell" data-automation-id="table-header-actions"></th>
-                <td mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'table-row-actions-' + i + '-' + element.id">
-                  <button mat-icon-button [matMenuTriggerFor]="appMenu" aria-label="" [ngClass]="{'active-btn':element.selected}" class="circle-icon-o active-btn" appearance="outline" [attr.data-automation-id]="'actions-menu-button-' + i + '-' + element.id">
+                <td mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'table-row-actions-' + i">
+                  <button mat-icon-button [matMenuTriggerFor]="appMenu" aria-label="" [ngClass]="{'active-btn':element.selected}" class="circle-icon-o active-btn" appearance="outline" [attr.data-automation-id]="'actions-menu-button-' + i">
                     <mat-icon>more_horiz</mat-icon>
                   </button>
                   <mat-menu #appMenu="matMenu">
-                    <button mat-menu-item (click)="holdDeallocate(element)" [attr.data-automation-id]="'actions-menu-selected-only-' + i + '-' + element.id">Selected Only</button>
-                    <button mat-menu-item (click)="holdDeallocate(element)" [attr.data-automation-id]="'actions-menu-all-by-order-' + i + '-' + element.id">All by order no.</button>
+                    <button mat-menu-item (click)="holdDeallocate(element)" [attr.data-automation-id]="'actions-menu-selected-only-' + i ">Selected Only</button>
+                    <button mat-menu-item (click)="holdDeallocate(element)" [attr.data-automation-id]="'actions-menu-all-by-order-' + i ">All by order no.</button>
                   </mat-menu>
                 </td>
               </ng-container>
@@ -95,7 +95,7 @@
                 </td>
               </tr>
               <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky:true"></tr>
-              <tr mat-row class="table-row" tabindex="1" *matRowDef="let row; columns: displayedColumns; let i = index" (click)="selectRow(row)" [attr.data-automation-id]="'table-data-row-' + i + '-' + row.id"></tr>
+              <tr mat-row class="table-row" tabindex="1" *matRowDef="let row; columns: displayedColumns; let i = index" (click)="selectRow(row)" [attr.data-automation-id]="'table-data-row-' + i"></tr>
 
             </table>
           </ng-scrollbar>

@@ -48,12 +48,12 @@
                           <span class="width-20" data-automation-id="autocomplete-header-category">Category</span> 
                           <span class="width-20" data-automation-id="autocomplete-header-sub-category">Sub Category</span>
                         </h6>
-                        <mat-option *ngFor="let option of searchList; let i = index" [value]="option.itemNumber" class="matAutoCompTableContent" [attr.data-automation-id]="'autocomplete-option-' + i + '-' + option.itemNumber">
+                        <mat-option *ngFor="let option of searchList; let i = index" [value]="option.itemNumber" class="matAutoCompTableContent" [attr.data-automation-id]="'autocomplete-option-' + i ">
                             <div class="loc_option">
-                                <span class="padding" [attr.data-automation-id]="'autocomplete-option-item-number-' + i + '-' + option.itemNumber">{{option.itemNumber}}</span>
-                                <span class="padding" matTooltip="{{option.description}}" matTooltipPosition="above" [attr.data-automation-id]="'autocomplete-option-description-' + i + '-' + option.itemNumber">{{option.description}}</span>
-                                <span class="padding-width-20" [attr.data-automation-id]="'autocomplete-option-category-' + i + '-' + option.category">{{option.category}}</span>
-                                <span class="padding-width-20" [attr.data-automation-id]="'autocomplete-option-sub-category-' + i + '-' + option.subCategory">{{option.subCategory}}</span>
+                                <span class="padding" [attr.data-automation-id]="'autocomplete-option-item-number-' + i ">{{option.itemNumber}}</span>
+                                <span class="padding" matTooltip="{{option.description}}" matTooltipPosition="above" [attr.data-automation-id]="'autocomplete-option-description-' + i ">{{option.description}}</span>
+                                <span class="padding-width-20" [attr.data-automation-id]="'autocomplete-option-category-' + i ">{{option.category}}</span>
+                                <span class="padding-width-20" [attr.data-automation-id]="'autocomplete-option-sub-category-' + i">{{option.subCategory}}</span>
                             </div>
                         </mat-option>
                       </mat-autocomplete>
