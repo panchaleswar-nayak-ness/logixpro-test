@@ -156,19 +156,21 @@ export class DirectFilterationColumnsService {
       case 'is less than':
         return 'LessThan';
       case 'is like':
-      case 'contains':
         return 'Like';
+        case 'contains':
+          return 'Contains';
       case 'is not like':
-      case 'does not contains':
         return 'NotLike';
+        case 'does not contains':
+          return 'DoesNotContain';
       case 'begins with':
-        return 'BeginsWith';
+        return 'Begins';
       case 'does not begins with':
-        return 'NotBeginsWith';
+        return 'DoesNotBegin';
       case 'ends with':
         return 'EndsWith';
       case 'does not ends with':
-        return 'NotEndsWith';
+        return 'DoesNotEndWith';
       case 'is between':
       case 'between':
         return 'Between';
