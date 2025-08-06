@@ -153,8 +153,6 @@ export class ToteTransactionViewComponent implements OnInit {
             };
 
             this.dataSource.sort = this.sort;
-
-            
           } else {
             this.isData = false;
           }
