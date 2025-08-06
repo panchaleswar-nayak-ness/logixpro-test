@@ -6,6 +6,8 @@ import { UserSession } from '../../types/CommonTypes';
 import { InventoryMap, UpdateSCReq } from '../../Model/storage-container-management';
 import { UserAccessLevels } from '../user-access-levels/user-access-levels';
 import { DevicePreferenceRequest, DevicePreferencesTableRequest } from '../../interface/admin/device-preferences';
+import { UpdateEmergencyRequest } from '../../interface/admin/opentransaction.interfaces';
+
 
 @Injectable({
   providedIn: 'root'
@@ -1318,6 +1320,10 @@ export class AdminApiService implements IAdminApiService {
       ...body
     }
     return this.Api.OpenTransactionTable(payload);
+  }
+
+  public UpdateEmergency(payload: UpdateEmergencyRequest) {
+    return this.Api.updateEmergency(payload);
   }
 
   public HoldTransactionsData(body: any) {
