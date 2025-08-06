@@ -1140,13 +1140,13 @@
     </div>
   </mat-card-content>
 </mat-card>
-<div class="container-fluid">
+<div class="container-fluid p-0">
   <div class="row g-2">
     <div class="col">
       <button
         mat-flat-button
         color="primary"
-        class="btn-lg mx-2 w-100"
+        class="btn-lg w-100"
         (click)="completeOrder()"
         [disabled]="isOrderCompleted"
         data-automation-id="complete-order-button"
@@ -1156,16 +1156,6 @@
     </div>
     <div class="col">
       <button
-        [disabled]="!shippingComplete"
-        mat-flat-button
-        color="primary"
-        class="btn-lg mx-2 w-100"
-        (click)="shippingCompleteDialog()"
-        data-automation-id="shipping-complete-button"
-      >
-        Shipping Complete
-      </button>
-      <button
         *ngIf="priority"
         mat-flat-button
         color="primary"
@@ -1174,6 +1164,18 @@
         data-automation-id="change-priority-button"
       >
         Change Priority
+      </button>
+    </div>
+    <div class="col">
+      <button
+        [disabled]="!shippingComplete"
+        mat-flat-button
+        color="primary"
+        class="btn-lg w-100"
+        (click)="shippingCompleteDialog()"
+        data-automation-id="shipping-complete-button"
+      >
+        Shipping Complete
       </button>
     </div>
   </div>
