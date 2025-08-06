@@ -80,7 +80,6 @@ export class ToteTransactionViewComponent implements OnInit {
   }
   ngAfterViewInit(): void {
     this.fieldFocus?.nativeElement.focus();
-    this.dataSource.sort = this.sort;
   }
 
   displayedColumns: string[] = [
@@ -142,6 +141,23 @@ export class ToteTransactionViewComponent implements OnInit {
             this.isData = true;
 
             this.dataSource = new MatTableDataSource<any>(res.data);
+            this.dataSource.sortingDataAccessor = (item, property) => {
+              console.log('Type of location:', property);
+              console.log('Type of item:', item);
+              switch (property) {
+
+                case 'itemLocation':
+                  console.log('Type of location:', typeof item.location);
+                  return item.itemLocation?.toString().trim().toLowerCase();
+                  
+                default:
+                  return item[property];
+              }
+            };
+
+            this.dataSource.sort = this.sort;
+
+            
           } else {
             this.isData = false;
           }
