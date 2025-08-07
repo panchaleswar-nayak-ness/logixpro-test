@@ -31,7 +31,7 @@ export class DirectFilterationColumnsService {
       return this.filterationColumns;
     }
 
-    if (!selectedItem || !filterColumnName) {
+    if (this.isNullOrEmpty(selectedItem) || !filterColumnName) {
       return this.filterationColumns;
     }
     
@@ -61,6 +61,14 @@ export class DirectFilterationColumnsService {
     this.filterationColumns.push(filterationColumn);
 
     return [...this.filterationColumns];
+  }
+  /**
+   * Checks if a string is null, undefined, empty, or an empty string
+   * @param str The string to check
+   * @returns True if the string is null, undefined, empty, or an empty string
+   */ 
+  isNullOrEmpty(str: string | null | undefined): boolean {
+    return (str === null || str === undefined || str?.length === 0 || str === '');
   }
 
   /**
@@ -186,14 +194,14 @@ export class DirectFilterationColumnsService {
    * @returns The column type
    */
   private determineColumnType(type: string, columnName: string): string {
-    if (type === 'date' || 
-        columnName === 'Expiration Date' || 
-        columnName === 'Put Away Date' || 
-        columnName === 'Import Date' || 
-        columnName === 'Required Date' || 
-        columnName === 'Completed Date' || 
-        columnName === 'Export Date' || 
-        columnName === 'Induction Date') {
+    if (!type  && 
+        columnName === 'expirationDate' || 
+        columnName === 'putAwayDate' || 
+        columnName === 'importDate' || 
+        columnName === 'requiredDate' || 
+        columnName === 'completedDate' || 
+        columnName === 'exportDate' || 
+        columnName === 'inductionDate') {
       return 'datetime';
     } else if (type === 'number') {
       return 'int';
