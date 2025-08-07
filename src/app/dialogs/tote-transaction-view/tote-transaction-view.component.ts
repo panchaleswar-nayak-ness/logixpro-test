@@ -142,6 +142,7 @@ export class ToteTransactionViewComponent implements OnInit {
             this.isData = true;
 
             this.dataSource = new MatTableDataSource<any>(res.data);
+            this.dataSource.sort = this.sort;
           } else {
             this.isData = false;
           }
