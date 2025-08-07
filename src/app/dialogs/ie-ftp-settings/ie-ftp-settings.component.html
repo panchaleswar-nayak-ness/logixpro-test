@@ -1,9 +1,9 @@
 
 <div class="d-flex justify-content-between mb-2 align-items-center">
     <div class="w-48px"></div>
-    <h1 class="m-0" mat-dialog-title>FTP Settings</h1>
+    <h1 class="m-0" mat-dialog-title data-automation-id="ie-ftp-settings-dialog-title">FTP Settings</h1>
   
-    <button mat-icon-button class="close-button dialog-close-button-fix"  [mat-dialog-close]="false">
+    <button mat-icon-button class="close-button dialog-close-button-fix"  [mat-dialog-close]="false" data-automation-id="ie-ftp-settings-close-button">
         <mat-icon class="close-icon">close</mat-icon>
     </button>
   </div>
@@ -13,100 +13,100 @@
             <ng-scrollbar class="mat-table-scrollbar height-545" track="all">
               <table class="w-100 table-borderless" mat-table matSort [dataSource]="tableData" >
                   <ng-container matColumnDef="import_export">
-                      <th mat-header-cell *matHeaderCellDef mat-sort-header> Import/Export </th>
-                      <td mat-cell *matCellDef="let element">
+                      <th mat-header-cell *matHeaderCellDef mat-sort-header data-automation-id="import-export-header"> Import/Export </th>
+                      <td mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'import-export-label-' + i + '-' + element.import_export">
             
-              <div class="label px-3 mt-3" [ngClass]="{'label-gray': element.import_export === 'Import', 'label-green': element.import_export === 'Export'}">{{element.import_export}}</div>
+              <div class="label px-3 mt-3" [ngClass]="{'label-gray': element.import_export === 'Import', 'label-green': element.import_export === 'Export'}" [attr.data-automation-id]="'import-export-label-' + i + '-' + element.import_export" >{{element.import_export}}</div>
 
             </td>
                   </ng-container>
   
             <ng-container matColumnDef="type">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header> Type
+                <th mat-header-cell *matHeaderCellDef mat-sort-header data-automation-id="type-header"> Type
                 </th>
-                <td mat-cell *matCellDef="let element">
+                <td mat-cell *matCellDef="let element; let i = index">
                   <mat-form-field class="custom-form-field w-100 pe-2 mt-3" appearance="outline">
-                    <input matInput type="text" value="00000" />
+                    <input matInput type="text" value="00000" [attr.data-automation-id]="'type-input-' + i" />
                 </mat-form-field>
                 </td>
             </ng-container>
 
             <ng-container matColumnDef="ftp_checkbox">
-              <th mat-header-cell *matHeaderCellDef mat-sort-header> FTP
+              <th mat-header-cell *matHeaderCellDef mat-sort-header data-automation-id="ftp-checkbox-header"> FTP
               </th>
-              <td mat-cell *matCellDef="let element">
-                <mat-checkbox color="primary"></mat-checkbox>
+              <td mat-cell *matCellDef="let element; let i = index">
+                <mat-checkbox color="primary" [attr.data-automation-id]="'ftp-checkbox-' + i" ></mat-checkbox>
               </td>
           </ng-container>
   
             <ng-container matColumnDef="ftp_location">
-              <th mat-header-cell *matHeaderCellDef mat-sort-header> FTP Location
+              <th mat-header-cell *matHeaderCellDef mat-sort-header data-automation-id="ftp-location-header"> FTP Location
               </th>
-              <td mat-cell *matCellDef="let element">
+              <td mat-cell *matCellDef="let element; let i = index">
                 <mat-form-field class="custom-form-field w-100 pe-2 mt-3" appearance="outline">
-                  <input matInput type="text" value="00000" />
+                  <input matInput type="text" value="00000" [attr.data-automation-id]="'ftp-location-input-' + i"  />
               </mat-form-field>
               </td>
           </ng-container>
   
           <ng-container matColumnDef="ftp_username">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header> FTP Username
+            <th mat-header-cell *matHeaderCellDef mat-sort-header data-automation-id="ftp-username-header"> FTP Username
             </th>
-            <td mat-cell *matCellDef="let element">
+            <td mat-cell *matCellDef="let element; let i = index">
               <mat-form-field class="custom-form-field w-100 pe-2 mt-3" appearance="outline">
-                <input matInput type="text" value="00000" disabled/>
+                <input matInput type="text" value="00000" disabled [attr.data-automation-id]="'ftp-username-input-' + i" />
             </mat-form-field>
             </td>
         </ng-container>
   
         <ng-container matColumnDef="ftp_password">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header> FTP Password
+          <th mat-header-cell *matHeaderCellDef mat-sort-header data-automation-id="ftp-password-header"> FTP Password
           </th>
-          <td mat-cell *matCellDef="let element">
+          <td mat-cell *matCellDef="let element; let i = index">
             <mat-form-field class="custom-form-field w-100 pe-2 mt-3" appearance="outline">
-              <input matInput type="text" value="00000"/>
+              <input matInput type="text" value="00000" [attr.data-automation-id]="'ftp-password-input-' + i"/>
           </mat-form-field>
           </td>
       </ng-container>
   
       <ng-container matColumnDef="ftp_file">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header> FTP File
+        <th mat-header-cell *matHeaderCellDef mat-sort-header data-automation-id="ftp-file-header"> FTP File
         </th>
-        <td mat-cell *matCellDef="let element">
+        <td mat-cell *matCellDef="let element; let i = index">
           <mat-form-field class="custom-form-field w-100 pe-2 mt-3" appearance="outline">
-            <input matInput type="text" value="00000"/>
+            <input matInput type="text" value="00000" [attr.data-automation-id]="'ftp-file-input-' + i" />
         </mat-form-field>
         </td>
     </ng-container>
   
     <ng-container matColumnDef="ftp_extension">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header> FTP Extension
+      <th mat-header-cell *matHeaderCellDef mat-sort-header data-automation-id="ftp-extension-header"> FTP Extension
       </th>
-      <td mat-cell *matCellDef="let element">
+      <td mat-cell *matCellDef="let element; let i = index">
         <mat-form-field class="custom-form-field w-100 pe-2 mt-3" appearance="outline">
-          <input matInput type="text" value="00000"/>
+          <input matInput type="text" value="00000" [attr.data-automation-id]="'ftp-extension-input-' + i" />
       </mat-form-field>
       </td>
   </ng-container>
   
   <ng-container matColumnDef="ftp_readyfile">
-                <th class="text-center px-2" mat-header-cell *matHeaderCellDef mat-sort-header>FTP Ready File</th>
-                <td class="text-center px-2 mt-3" mat-cell *matCellDef="let element">
+                <th class="text-center px-2" mat-header-cell *matHeaderCellDef mat-sort-header data-automation-id="ftp-readyfile-header">FTP Ready File</th>
+                <td class="text-center px-2 mt-3" mat-cell *matCellDef="let element; let i = index">
                     <mat-form-field class="custom-form-field w-100 pe-2 mt-3" appearance="outline">
-                        <input matInput type="text" value="00000"/>
+                        <input matInput type="text" value="00000" [attr.data-automation-id]="'ftp-readyfile-input-' + i" />
                     </mat-form-field>
                 </td>
   </ng-container>
   
   
             <ng-container matColumnDef="actions" stickyEnd>
-                <th class="px-2" mat-header-cell *matHeaderCellDef>
+                <th class="px-2" mat-header-cell *matHeaderCellDef data-automation-id="actions-header">
                 </th>
                 
   
-                <td mat-cell *matCellDef="let element" class="ps-2">
+                <td mat-cell *matCellDef="let element; let i = index" class="ps-2">
                   <div class="d-flex gap-12 align-items-center mt-3">
-                      <button mat-flat-button color="primary" class="xsm-icon-button">
+                      <button mat-flat-button color="primary" class="xsm-icon-button" [attr.data-automation-id]="'save-button-' + i">
                           <mat-icon class="material-symbols-outlined">save</mat-icon>
                       </button>
                   </div>

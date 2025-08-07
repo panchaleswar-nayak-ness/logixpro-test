@@ -1,7 +1,7 @@
 <div class="d-flex justify-content-between align-items-center mb-3">
     <div class="w-48px"></div>
-    <h1 class="m-0" mat-dialog-title>{{heading}}</h1>
-    <button mat-icon-button class="close-button dialog-close-button-fix" [mat-dialog-close]="undefined">
+    <h1 class="m-0" mat-dialog-title [attr.data-automation-id]="'om-add-record-dialog-title-' + heading">{{heading}}</h1>
+    <button mat-icon-button class="close-button dialog-close-button-fix" [mat-dialog-close]="undefined" data-automation-id="om-add-record-close-button">
         <mat-icon class="close-icon">close</mat-icon>
     </button>
 </div>
@@ -12,15 +12,15 @@
             <div class="row">
                 <div class="col-xl-4">
                     <mat-form-field class="w-100 custom-form-field mb-3" appearance="outline">
-                        <mat-label>Order Number</mat-label>
-                        <input type="text" #ordFocus aria-label="Search" matInput [disabled]="orderNumberDisabled" [(ngModel)]="this.oTTempUpdatePayload.orderNumber" maxlength="50">
+                        <mat-label data-automation-id="order-number-label">Order Number</mat-label>
+                        <input type="text" #ordFocus aria-label="Search" matInput [disabled]="orderNumberDisabled" [(ngModel)]="this.oTTempUpdatePayload.orderNumber" maxlength="50" [attr.data-automation-id]="'order-number-input-' + this.oTTempUpdatePayload.orderNumber">
                     </mat-form-field>
                 </div>
                 <div class="col-xl-4">
                     <mat-form-field class="custom-form-field w-100 __grab_cursor mb-3" appearance="outline">
-                        <mat-label>Transaction Type</mat-label>
-                        <mat-select [(ngModel)]="this.oTTempUpdatePayload.transType">
-                            <mat-option *ngFor="let type of transactionTypes" [value]="type.value">
+                        <mat-label data-automation-id="transaction-type-label">Transaction Type</mat-label>
+                        <mat-select [(ngModel)]="this.oTTempUpdatePayload.transType" data-automation-id="transaction-type-select">
+                            <mat-option *ngFor="let type of transactionTypes" [value]="type.value" [attr.data-automation-id]="'transaction-type-option-' + type.value">
                                 {{type.title}}
                             </mat-option>
                         </mat-select>
@@ -32,9 +32,9 @@
                 </div>
                 <div class="col-xl-4">
                     <mat-form-field class="custom-form-field w-100 __grab_cursor mb-3" appearance="outline">
-                        <mat-label>Warehouse</mat-label>
-                        <mat-select [(ngModel)]="this.oTTempUpdatePayload.warehouse">
-                            <mat-option *ngFor="let wharehouse of wharehouses" [value]="wharehouse">
+                        <mat-label data-automation-id="warehouse-label">Warehouse</mat-label>
+                        <mat-select [(ngModel)]="this.oTTempUpdatePayload.warehouse" data-automation-id="warehouse-select">
+                            <mat-option *ngFor="let wharehouse of wharehouses" [value]="wharehouse" [attr.data-automation-id]="'warehouse-option-' + wharehouse">
                                 {{wharehouse}}
                             </mat-option>
                         </mat-select>
@@ -49,24 +49,24 @@
             <div class="row">
                 <div class="col-xl-4">
                     <mat-form-field class="w-100 custom-form-field mb-3" appearance="outline">
-                        <mat-label>Processing By</mat-label>
-                        <input type="text" aria-label="Search" matInput [(ngModel)]="this.oTTempUpdatePayload.processBy" maxlength="50">
+                        <mat-label data-automation-id="processing-by-label">Processing By</mat-label>
+                        <input type="text" aria-label="Search" matInput [(ngModel)]="this.oTTempUpdatePayload.processBy" maxlength="50" [attr.data-automation-id]="'processing-by-input-' + this.oTTempUpdatePayload.processBy">
                     </mat-form-field>
                 </div>
                 <div class="col-xl-4">
                     <mat-form-field class="w-100 custom-form-field mb-3" appearance="outline">
-                        <mat-label>Import By</mat-label>
-                        <input type="text" aria-label="Search" matInput [(ngModel)]="this.oTTempUpdatePayload.importBy" maxlength="50">
+                        <mat-label data-automation-id="import-by-label">Import By</mat-label>
+                        <input type="text" aria-label="Search" matInput [(ngModel)]="this.oTTempUpdatePayload.importBy" maxlength="50" [attr.data-automation-id]="'import-by-input-' + this.oTTempUpdatePayload.importBy">
                     </mat-form-field>
                 </div>
                 <div class="col-xl-4">
                     <mat-form-field class="w-100 custom-form-field mb-3" appearance="outline">
-                        <mat-label>Import Date</mat-label>
+                        <mat-label data-automation-id="import-date-label">Import Date</mat-label>
         
                         <input matInput [value]="this.oTTempUpdatePayload.importDate" [(ngModel)]="this.oTTempUpdatePayload.importDate" 
-                        [matDatepicker]="importDate" (dateChange)="onDateChange($event.value.toISOString(),'importDate')">
-                        <mat-datepicker-toggle matSuffix [for]="importDate" ngDefaultControl></mat-datepicker-toggle>
-                        <mat-datepicker #importDate></mat-datepicker>
+                        [matDatepicker]="importDate" (dateChange)="onDateChange($event.value.toISOString(),'importDate')" [attr.data-automation-id]="'import-date-input-' + this.oTTempUpdatePayload.importDate">
+                        <mat-datepicker-toggle matSuffix [for]="importDate" ngDefaultControl data-automation-id="import-date-picker-toggle"></mat-datepicker-toggle>
+                        <mat-datepicker #importDate data-automation-id="import-date-picker"></mat-datepicker>
     
                     </mat-form-field>
                 </div>
@@ -75,24 +75,24 @@
             <div class="row">
                 <div class="col-xl-4">
                     <mat-form-field class="w-100 custom-form-field mb-3" appearance="outline">
-                        <mat-label>Import File</mat-label>
-                        <input type="text" aria-label="Search" matInput [(ngModel)]="this.oTTempUpdatePayload.importFileName" maxlength="50">
+                        <mat-label data-automation-id="import-file-label">Import File</mat-label>
+                        <input type="text" aria-label="Search" matInput [(ngModel)]="this.oTTempUpdatePayload.importFileName" maxlength="50" [attr.data-automation-id]="'import-file-input-' + this.oTTempUpdatePayload.importFileName">
                     </mat-form-field>
                 </div>
                 <div class="col-xl-4">
                     <mat-form-field class="w-100 custom-form-field mb-3" appearance="outline">
-                        <mat-label replacePlaceholder [replacePlaceHolder]="placeholders.itemNumber" [fallbackPlaceHolder]="placeholders.itemNumberFallback"> {{ItemNumber}} </mat-label>
+                        <mat-label replacePlaceholder [replacePlaceHolder]="placeholders.itemNumber" [fallbackPlaceHolder]="placeholders.itemNumberFallback" data-automation-id="item-number-label"> {{ItemNumber}} </mat-label>
                         <input type="text" aria-label="Search" matInput [(ngModel)]="this.oTTempUpdatePayload.itemNumber"
                             (keyup)="searchItem()" [matAutocomplete]="searchauto" maxlength="50" (focusout)="itemNumberFocusOut($event)" maxlength="50"
-                            (focus)="focusinmethod()" (focusout)="focusoutmethod()">
+                            (focus)="focusinmethod()" (focusout)="focusoutmethod()" [attr.data-automation-id]="'item-number-input-' + this.oTTempUpdatePayload.itemNumber">
                         <mat-autocomplete class="card custom-scroll" #searchauto="matAutocomplete"
-                            (optionSelected)="onSearchSelect($event)">
+                            (optionSelected)="onSearchSelect($event)" data-automation-id="item-number-autocomplete">
                             <h6 class="card-header matAutoCompHeader ">
                                 <span class="w-140" replacePlaceholder [replacePlaceHolder]="placeholders.itemNumber" [fallbackPlaceHolder]="placeholders.itemNumberFallback"> Item Number </span> 
                                 <span class="w-140">Description</span>
                                 <span  class="w-140" replacePlaceholder [replacePlaceHolder]="placeholders.unitOfMeasure" [fallbackPlaceHolder]="placeholders.unitOfMeasureFallback"> {{UnitOfMeasure}} </span>
                             </h6>
-                            <mat-option *ngFor="let option of itemNumberSearchList" [value]="option.itemNumber" class="matAutoCompTableContent">
+                            <mat-option *ngFor="let option of itemNumberSearchList" [value]="option.itemNumber" class="matAutoCompTableContent" [attr.data-automation-id]="'item-number-option-' + option.itemNumber">
                                 <div class="loc_option" (click)="selectItemNumber(option,$event)" >
                                     <span class="searchColumn over-flow mt-5 w-140"  #tooltip="matTooltip" [matTooltip]="option.itemNumber" matTooltipPosition="above">{{option.itemNumber}}</span> 
                                     <span class="searchColumn over-flow mt-5 w-140"  #tooltip="matTooltip" [matTooltip]="option.description" matTooltipPosition="above">{{option.description}}</span> 
@@ -104,8 +104,8 @@
                 </div>
                 <div class="col-xl-4">
                     <mat-form-field class="w-100 custom-form-field mb-3" appearance="outline">
-                        <mat-label>Lot Number</mat-label>
-                        <input type="text" aria-label="Search" matInput [(ngModel)]="this.oTTempUpdatePayload.lotNumber" maxlength="50">  
+                        <mat-label data-automation-id="lot-number-label">Lot Number</mat-label>
+                        <input type="text" aria-label="Search" matInput [(ngModel)]="this.oTTempUpdatePayload.lotNumber" maxlength="50" [attr.data-automation-id]="'lot-number-input-' + this.oTTempUpdatePayload.lotNumber">  
                     </mat-form-field>
                 </div>
             </div>
@@ -113,20 +113,20 @@
             <div class="row">
                 <div class="col-xl-4">
                     <mat-form-field class="w-100 custom-form-field mb-3" appearance="outline">
-                        <mat-label>Serial Number</mat-label>
-                        <input type="text" aria-label="Search" matInput [(ngModel)]="this.oTTempUpdatePayload.serialNumber" maxlength="50">
+                        <mat-label data-automation-id="serial-number-label">Serial Number</mat-label>
+                        <input type="text" aria-label="Search" matInput [(ngModel)]="this.oTTempUpdatePayload.serialNumber" maxlength="50" [attr.data-automation-id]="'serial-number-input-' + this.oTTempUpdatePayload.serialNumber">
                     </mat-form-field>
                 </div>
                 <div class="col-xl-4">
                     <mat-form-field class="w-100 custom-form-field mb-3" appearance="outline">
-                        <mat-label>Revision</mat-label>
-                        <input type="text" aria-label="Search" matInput [(ngModel)]="this.oTTempUpdatePayload.revision" maxlength="50">
+                        <mat-label data-automation-id="revision-label">Revision</mat-label>
+                        <input type="text" aria-label="Search" matInput [(ngModel)]="this.oTTempUpdatePayload.revision" maxlength="50" [attr.data-automation-id]="'revision-input-' + this.oTTempUpdatePayload.revision">
                     </mat-form-field>
                 </div>
                 <div class="col-xl-4">
                     <mat-form-field class="w-100 custom-form-field mb-3" appearance="outline">
-                        <mat-label>Tote ID</mat-label>
-                        <input type="text" aria-label="Search" matInput [(ngModel)]="this.oTTempUpdatePayload.toteID" maxlength="50">
+                        <mat-label data-automation-id="tote-id-label">Tote ID</mat-label>
+                        <input type="text" aria-label="Search" matInput [(ngModel)]="this.oTTempUpdatePayload.toteID" maxlength="50" [attr.data-automation-id]="'tote-id-input-' + this.oTTempUpdatePayload.toteID">
                     </mat-form-field>
                 </div>
             </div>
@@ -134,14 +134,14 @@
             <div class="row">
                 <div class="col-xl-4">
                     <mat-form-field class="w-100 custom-form-field mb-3" appearance="outline">
-                        <mat-label>Batch Pick ID</mat-label>
-                        <input type="text" aria-label="Search" matInput [(ngModel)]="this.oTTempUpdatePayload.batchPickID" maxlength="50">
+                        <mat-label data-automation-id="batch-pick-id-label">Batch Pick ID</mat-label>
+                        <input type="text" aria-label="Search" matInput [(ngModel)]="this.oTTempUpdatePayload.batchPickID" maxlength="50" [attr.data-automation-id]="'batch-pick-id-input-' + this.oTTempUpdatePayload.batchPickID">
                     </mat-form-field>
                 </div>
                 <div class="col-xl-8">
                     <mat-form-field class="w-100 custom-form-field mb-3" appearance="outline">
-                        <mat-label>Description</mat-label>
-                        <input type="text" aria-label="Search" matInput [(ngModel)]="this.oTTempUpdatePayload.description" disabled maxlength="255">
+                        <mat-label data-automation-id="description-label">Description</mat-label>
+                        <input type="text" aria-label="Search" matInput [(ngModel)]="this.oTTempUpdatePayload.description" disabled maxlength="255" [attr.data-automation-id]="'description-input-' + this.oTTempUpdatePayload.description">
                     </mat-form-field>
                 </div>
             </div>
@@ -149,27 +149,27 @@
             <div class="row">
                 <div class="col-xl-4">
                     <mat-form-field class="w-100 custom-form-field mb-3" appearance="outline">
-                        <mat-label>Expiration Date</mat-label>
+                        <mat-label data-automation-id="expiration-date-label">Expiration Date</mat-label>
     
     
                         <input matInput [value]="this.oTTempUpdatePayload.expirationDate" [(ngModel)]="this.oTTempUpdatePayload.expirationDate" 
-                        [matDatepicker]="expirationDate" (dateChange)="onDateChange($event.value.toISOString(),'expirationDate')">
-                        <mat-datepicker-toggle matSuffix [for]="expirationDate" ngDefaultControl></mat-datepicker-toggle>
-                        <mat-datepicker #expirationDate></mat-datepicker>
+                        [matDatepicker]="expirationDate" (dateChange)="onDateChange($event.value.toISOString(),'expirationDate')" [attr.data-automation-id]="'expiration-date-input-' + this.oTTempUpdatePayload.expirationDate">
+                        <mat-datepicker-toggle matSuffix [for]="expirationDate" ngDefaultControl data-automation-id="expiration-date-picker-toggle"></mat-datepicker-toggle>
+                        <mat-datepicker #expirationDate data-automation-id="expiration-date-picker"></mat-datepicker>
     
                     </mat-form-field>
                 </div>
                 <div class="col-xl-4">
                     <mat-form-field class="w-100 custom-form-field mb-3" appearance="outline">
-                        <mat-label replacePlaceholder [replacePlaceHolder]="placeholders.unitOfMeasure" [fallbackPlaceHolder]="placeholders.unitOfMeasureFallback"> {{UnitOfMeasure}} </mat-label>
-                        <input type="text" aria-label="Search" matInput [(ngModel)]="this.oTTempUpdatePayload.unitofMeasure" disabled maxlength="50">
+                        <mat-label replacePlaceholder [replacePlaceHolder]="placeholders.unitOfMeasure" [fallbackPlaceHolder]="placeholders.unitOfMeasureFallback" data-automation-id="unit-of-measure-label"> {{UnitOfMeasure}} </mat-label>
+                        <input type="text" aria-label="Search" matInput [(ngModel)]="this.oTTempUpdatePayload.unitofMeasure" disabled maxlength="50" [attr.data-automation-id]="'unit-of-measure-input-' + this.oTTempUpdatePayload.unitofMeasure">
                     </mat-form-field>
                 </div>
                 <div class="col-xl-4">
                     <mat-form-field class="w-100 custom-form-field mb-3" appearance="outline">
-                        <mat-label>Transaction Quantity</mat-label>
+                        <mat-label data-automation-id="transaction-quantity-label">Transaction Quantity</mat-label>
                         <input type="number" aria-label="Search" matInput [(ngModel)]="this.oTTempUpdatePayload.transQty" (focusout)="resetDefaultValues('transQty',1)"
-                        oninput="javascript: if (this.value > 2147483647 || this.value < 0) this.value = this.value.slice(0, this.value.length-1);">
+                        oninput="javascript: if (this.value > 2147483647 || this.value < 0) this.value = this.value.slice(0, this.value.length-1);" [attr.data-automation-id]="'transaction-quantity-input-' + this.oTTempUpdatePayload.transQty">
                     </mat-form-field>
                 </div>
             </div>
@@ -177,28 +177,28 @@
             <div class="row">
                 <div class="col-xl-3">
                     <mat-form-field class="w-100 custom-form-field mb-3" appearance="outline">
-                        <mat-label>Line Number</mat-label>
+                        <mat-label data-automation-id="line-number-label">Line Number</mat-label>
                         <input type="number" aria-label="Search" matInput [(ngModel)]="this.oTTempUpdatePayload.lineNumber" (focusout)="resetDefaultValues('lineNumber',0)"
-                        oninput="javascript: if (this.value > 2147483647 || this.value < 0) this.value = this.value.slice(0, this.value.length-1);">
+                        oninput="javascript: if (this.value > 2147483647 || this.value < 0) this.value = this.value.slice(0, this.value.length-1);" [attr.data-automation-id]="'line-number-input-' + this.oTTempUpdatePayload.lineNumber">
                     </mat-form-field>
                 </div>
                 <div class="col-xl-3">
                     <mat-form-field class="w-100 custom-form-field mb-3" appearance="outline">
-                        <mat-label>Priority</mat-label>
+                        <mat-label data-automation-id="priority-label">Priority</mat-label>
                         <input type="number" aria-label="Search" matInput [(ngModel)]="this.oTTempUpdatePayload.priority" (focusout)="resetDefaultValues('priority',0)"
-                        oninput="javascript: if (this.value > 32767 || this.value < 0) this.value = this.value.slice(0, this.value.length-1);">
+                        oninput="javascript: if (this.value > 32767 || this.value < 0) this.value = this.value.slice(0, this.value.length-1);" [attr.data-automation-id]="'priority-input-' + this.oTTempUpdatePayload.priority">
                     </mat-form-field>
                 </div>
                 <div class="col-xl-3">
                     <mat-form-field class="w-100 custom-form-field mb-3" appearance="outline">
-                        <mat-label>Host Transaction ID</mat-label>
-                        <input type="text" aria-label="Search" matInput [(ngModel)]="this.oTTempUpdatePayload.hostTransID" maxlength="50">
+                        <mat-label data-automation-id="host-transaction-id-label">Host Transaction ID</mat-label>
+                        <input type="text" aria-label="Search" matInput [(ngModel)]="this.oTTempUpdatePayload.hostTransID" maxlength="50" [attr.data-automation-id]="'host-transaction-id-input-' + this.oTTempUpdatePayload.hostTransID">
                     </mat-form-field>
                 </div>
                 <div class="col-xl-3">
                     <mat-form-field class="w-100 custom-form-field mb-3" appearance="outline">
-                        <mat-label>Cell</mat-label>
-                        <input type="text" aria-label="Search" matInput [(ngModel)]="this.oTTempUpdatePayload.cell" maxlength="50">
+                        <mat-label data-automation-id="cell-label">Cell</mat-label>
+                        <input type="text" aria-label="Search" matInput [(ngModel)]="this.oTTempUpdatePayload.cell" maxlength="50" [attr.data-automation-id]="'cell-input-' + this.oTTempUpdatePayload.cell">
                     </mat-form-field>
                 </div>
             </div>
@@ -206,69 +206,48 @@
             <div class="row">
                 <div class="col-xl-4">
                     <mat-form-field class="w-100 custom-form-field mb-3" appearance="outline">
-                        <mat-label>Required Date</mat-label>
+                        <mat-label data-automation-id="required-date-label">Required Date</mat-label>
         
                         <input matInput [value]="this.oTTempUpdatePayload.requiredDate" [(ngModel)]="this.oTTempUpdatePayload.requiredDate" 
-                        [matDatepicker]="requiredDate" (dateChange)="onDateChange($event.value.toISOString(),'requiredDate')">
-                        <mat-datepicker-toggle matSuffix [for]="requiredDate" ngDefaultControl></mat-datepicker-toggle>
-                        <mat-datepicker #requiredDate></mat-datepicker>
+                        [matDatepicker]="requiredDate" (dateChange)="onDateChange($event.value.toISOString(),'requiredDate')" [attr.data-automation-id]="'required-date-input-' + this.oTTempUpdatePayload.requiredDate">
+                        <mat-datepicker-toggle matSuffix [for]="requiredDate" ngDefaultControl data-automation-id="required-date-picker-toggle"></mat-datepicker-toggle>
+                        <mat-datepicker #requiredDate data-automation-id="required-date-picker"></mat-datepicker>
     
                     </mat-form-field>
                 </div>
                 <div class="col-xl-8">
                     <mat-form-field class="w-100 custom-form-field mb-3" appearance="outline">
-                        <mat-label>Notes</mat-label>
-                        <input type="text" aria-label="Search" matInput [(ngModel)]="this.oTTempUpdatePayload.notes" maxlength="255">
+                        <mat-label data-automation-id="notes-label">Notes</mat-label>
+                        <input type="text" aria-label="Search" matInput [(ngModel)]="this.oTTempUpdatePayload.notes" maxlength="255" [attr.data-automation-id]="'notes-input-' + this.oTTempUpdatePayload.notes">
                     </mat-form-field>
                 </div>
             </div>
     
             <div class="row">
                 <div class="d-flex gap-20">
-                    <mat-checkbox color="primary" class="mb-4" [(ngModel)]="this.oTTempUpdatePayload.emergency">Emergency</mat-checkbox>
-                    <mat-checkbox color="primary" class="mb-4" [(ngModel)]="this.oTTempUpdatePayload.label">Print Label</mat-checkbox>
-                    <mat-checkbox color="primary" class="mb-4" [(ngModel)]="this.oTTempUpdatePayload.inProcess">In Process</mat-checkbox>
+                    <mat-checkbox color="primary" class="mb-4" [(ngModel)]="this.oTTempUpdatePayload.emergency" data-automation-id="emergency-checkbox">Emergency</mat-checkbox>
+                    <mat-checkbox color="primary" class="mb-4" [(ngModel)]="this.oTTempUpdatePayload.label" data-automation-id="print-label-checkbox">Print Label</mat-checkbox>
+                    <mat-checkbox color="primary" class="mb-4" [(ngModel)]="this.oTTempUpdatePayload.inProcess" data-automation-id="in-process-checkbox">In Process</mat-checkbox>
                 </div>
             </div>
     
             <div class="row">
                 <div class="col-xl-4">
                     <mat-form-field class="w-100 custom-form-field mb-3" appearance="outline">
-                        <mat-label replacePlaceholder [replacePlaceHolder]="placeholders.userField1" [fallbackPlaceHolder]="placeholders.userField1Fallback"> {{UserField1}} </mat-label>
-                        <input type="text" aria-label="Search" matInput [(ngModel)]="this.oTTempUpdatePayload.userField1" maxlength="255">
+                        <mat-label replacePlaceholder [replacePlaceHolder]="placeholders.userField1" [fallbackPlaceHolder]="placeholders.userField1Fallback" data-automation-id="user-field-1-label"> {{UserField1}} </mat-label>
+                        <input type="text" aria-label="Search" matInput [(ngModel)]="this.oTTempUpdatePayload.userField1" maxlength="255" [attr.data-automation-id]="'user-field-1-input-' + this.oTTempUpdatePayload.userField1">
                     </mat-form-field>
                 </div>
                 <div class="col-xl-4">
                     <mat-form-field class="w-100 custom-form-field mb-3" appearance="outline">
-                        <mat-label replacePlaceholder [replacePlaceHolder]="placeholders.userField2" [fallbackPlaceHolder]="placeholders.userField2Fallback"> {{UserField2}} </mat-label>
-                        <input type="text" aria-label="Search" matInput [(ngModel)]="this.oTTempUpdatePayload.userField2" maxlength="255">
+                        <mat-label replacePlaceholder [replacePlaceHolder]="placeholders.userField2" [fallbackPlaceHolder]="placeholders.userField2Fallback" data-automation-id="user-field-2-label"> {{UserField2}} </mat-label>
+                        <input type="text" aria-label="Search" matInput [(ngModel)]="this.oTTempUpdatePayload.userField2" maxlength="255" [attr.data-automation-id]="'user-field-2-input-' + this.oTTempUpdatePayload.userField2">
                     </mat-form-field>
                 </div>
                 <div class="col-xl-4">
                     <mat-form-field class="w-100 custom-form-field mb-3" appearance="outline">
-                        <mat-label replacePlaceholder [replacePlaceHolder]="placeholders.userField3" [fallbackPlaceHolder]="placeholders.userField3Fallback"> {{UserField3}} </mat-label>
-                        <input type="text" aria-label="Search" matInput [(ngModel)]="this.oTTempUpdatePayload.userField3" maxlength="255">
-                    </mat-form-field>
-                </div>
-            </div>
-    
-            <div class="row">
-                <div class="col-xl-4">
-                    <mat-form-field class="w-100 custom-form-field mb-3" appearance="outline">
-                        <mat-label replacePlaceholder [replacePlaceHolder]="placeholders.userField4" [fallbackPlaceHolder]="placeholders.userField4Fallback"> {{UserField4}} </mat-label>
-                        <input type="text" aria-label="Search" matInput [(ngModel)]="this.oTTempUpdatePayload.userField4" maxlength="255">
-                    </mat-form-field>
-                </div>
-                <div class="col-xl-4">
-                    <mat-form-field class="w-100 custom-form-field mb-3" appearance="outline">
-                        <mat-label replacePlaceholder [replacePlaceHolder]="placeholders.userField5" [fallbackPlaceHolder]="placeholders.userField5Fallback"> {{UserField5}} </mat-label>
-                        <input type="text" aria-label="Search" matInput [(ngModel)]="this.oTTempUpdatePayload.userField5" maxlength="255">
-                    </mat-form-field>
-                </div>
-                <div class="col-xl-4">
-                    <mat-form-field class="w-100 custom-form-field mb-3" appearance="outline">
-                        <mat-label replacePlaceholder [replacePlaceHolder]="placeholders.userField6" [fallbackPlaceHolder]="placeholders.userField6Fallback"> {{UserField6}} </mat-label>
-                        <input type="text" aria-label="Search" matInput [(ngModel)]="this.oTTempUpdatePayload.userField6" maxlength="255">
+                        <mat-label replacePlaceholder [replacePlaceHolder]="placeholders.userField3" [fallbackPlaceHolder]="placeholders.userField3Fallback" data-automation-id="user-field-3-label"> {{UserField3}} </mat-label>
+                        <input type="text" aria-label="Search" matInput [(ngModel)]="this.oTTempUpdatePayload.userField3" maxlength="255" [attr.data-automation-id]="'user-field-3-input-' + this.oTTempUpdatePayload.userField3">
                     </mat-form-field>
                 </div>
             </div>
@@ -276,20 +255,20 @@
             <div class="row">
                 <div class="col-xl-4">
                     <mat-form-field class="w-100 custom-form-field mb-3" appearance="outline">
-                        <mat-label replacePlaceholder [replacePlaceHolder]="placeholders.userField7" [fallbackPlaceHolder]="placeholders.userField7Fallback"> {{UserField7}} </mat-label>
-                        <input type="text" aria-label="Search" matInput [(ngModel)]="this.oTTempUpdatePayload.userField7" maxlength="255">
+                        <mat-label replacePlaceholder [replacePlaceHolder]="placeholders.userField4" [fallbackPlaceHolder]="placeholders.userField4Fallback" data-automation-id="user-field-4-label"> {{UserField4}} </mat-label>
+                        <input type="text" aria-label="Search" matInput [(ngModel)]="this.oTTempUpdatePayload.userField4" maxlength="255" [attr.data-automation-id]="'user-field-4-input-' + this.oTTempUpdatePayload.userField4">
                     </mat-form-field>
                 </div>
                 <div class="col-xl-4">
                     <mat-form-field class="w-100 custom-form-field mb-3" appearance="outline">
-                        <mat-label replacePlaceholder [replacePlaceHolder]="placeholders.userField8" [fallbackPlaceHolder]="placeholders.userField8Fallback"> {{UserField8}} </mat-label>
-                        <input type="text" aria-label="Search" matInput [(ngModel)]="this.oTTempUpdatePayload.userField8" maxlength="255">
+                        <mat-label replacePlaceholder [replacePlaceHolder]="placeholders.userField5" [fallbackPlaceHolder]="placeholders.userField5Fallback" data-automation-id="user-field-5-label"> {{UserField5}} </mat-label>
+                        <input type="text" aria-label="Search" matInput [(ngModel)]="this.oTTempUpdatePayload.userField5" maxlength="255" [attr.data-automation-id]="'user-field-5-input-' + this.oTTempUpdatePayload.userField5">
                     </mat-form-field>
                 </div>
                 <div class="col-xl-4">
                     <mat-form-field class="w-100 custom-form-field mb-3" appearance="outline">
-                        <mat-label replacePlaceholder [replacePlaceHolder]="placeholders.userField9" [fallbackPlaceHolder]="placeholders.userField9Fallback"> {{UserField9}} </mat-label>
-                        <input type="text" aria-label="Search" matInput [(ngModel)]="this.oTTempUpdatePayload.userField9" maxlength="255">
+                        <mat-label replacePlaceholder [replacePlaceHolder]="placeholders.userField6" [fallbackPlaceHolder]="placeholders.userField6Fallback" data-automation-id="user-field-6-label"> {{UserField6}} </mat-label>
+                        <input type="text" aria-label="Search" matInput [(ngModel)]="this.oTTempUpdatePayload.userField6" maxlength="255" [attr.data-automation-id]="'user-field-6-input-' + this.oTTempUpdatePayload.userField6">
                     </mat-form-field>
                 </div>
             </div>
@@ -297,8 +276,29 @@
             <div class="row">
                 <div class="col-xl-4">
                     <mat-form-field class="w-100 custom-form-field mb-3" appearance="outline">
-                        <mat-label replacePlaceholder [replacePlaceHolder]="placeholders.userField10" [fallbackPlaceHolder]="placeholders.userField10Fallback"> {{UserField10}} </mat-label>
-                        <input type="text" aria-label="Search" matInput [(ngModel)]="this.oTTempUpdatePayload.userField10" maxlength="255">
+                        <mat-label replacePlaceholder [replacePlaceHolder]="placeholders.userField7" [fallbackPlaceHolder]="placeholders.userField7Fallback" data-automation-id="user-field-7-label"> {{UserField7}} </mat-label>
+                        <input type="text" aria-label="Search" matInput [(ngModel)]="this.oTTempUpdatePayload.userField7" maxlength="255" [attr.data-automation-id]="'user-field-7-input-' + this.oTTempUpdatePayload.userField7">
+                    </mat-form-field>
+                </div>
+                <div class="col-xl-4">
+                    <mat-form-field class="w-100 custom-form-field mb-3" appearance="outline">
+                        <mat-label replacePlaceholder [replacePlaceHolder]="placeholders.userField8" [fallbackPlaceHolder]="placeholders.userField8Fallback" data-automation-id="user-field-8-label"> {{UserField8}} </mat-label>
+                        <input type="text" aria-label="Search" matInput [(ngModel)]="this.oTTempUpdatePayload.userField8" maxlength="255" [attr.data-automation-id]="'user-field-8-input-' + this.oTTempUpdatePayload.userField8">
+                    </mat-form-field>
+                </div>
+                <div class="col-xl-4">
+                    <mat-form-field class="w-100 custom-form-field mb-3" appearance="outline">
+                        <mat-label replacePlaceholder [replacePlaceHolder]="placeholders.userField9" [fallbackPlaceHolder]="placeholders.userField9Fallback" data-automation-id="user-field-9-label"> {{UserField9}} </mat-label>
+                        <input type="text" aria-label="Search" matInput [(ngModel)]="this.oTTempUpdatePayload.userField9" maxlength="255" [attr.data-automation-id]="'user-field-9-input-' + this.oTTempUpdatePayload.userField9">
+                    </mat-form-field>
+                </div>
+            </div>
+    
+            <div class="row">
+                <div class="col-xl-4">
+                    <mat-form-field class="w-100 custom-form-field mb-3" appearance="outline">
+                        <mat-label replacePlaceholder [replacePlaceHolder]="placeholders.userField10" [fallbackPlaceHolder]="placeholders.userField10Fallback" data-automation-id="user-field-10-label"> {{UserField10}} </mat-label>
+                        <input type="text" aria-label="Search" matInput [(ngModel)]="this.oTTempUpdatePayload.userField10" maxlength="255" [attr.data-automation-id]="'user-field-10-input-' + this.oTTempUpdatePayload.userField10">
                     </mat-form-field>
                 </div>
             </div>
@@ -307,7 +307,7 @@
 
 
 <div mat-dialog-actions>
-    <button mat-flat-button color="primary" class="btn-lg w-100" (click)="save()">
+    <button mat-flat-button color="primary" class="btn-lg w-100" (click)="save()" data-automation-id="om-add-record-save-button">
         Save
     </button>
 </div>

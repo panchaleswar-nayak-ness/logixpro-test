@@ -1,7 +1,7 @@
 <div class="d-flex justify-content-between mb-4 align-items-center">
   <div class="w-48px"></div>
-  <h1 class="m-0" mat-dialog-title>Orders</h1>
-  <button mat-icon-button class="close-button dialog-close-button-fix" [mat-dialog-close]="false">
+  <h1 class="m-0" mat-dialog-title data-automation-id="view-orders-heading">Orders</h1>
+  <button mat-icon-button class="close-button dialog-close-button-fix" [mat-dialog-close]="false" data-automation-id="close-button">
     <mat-icon class="close-icon">close</mat-icon>
   </button>
 </div>
@@ -10,40 +10,40 @@
   <div class="col-xl-4">
     <div class="card p-3">
       <div class="d-xl-flex justify-content-between align-items-center mb-3">
-        <app-icon-heading-component heading="Orders" icon="filter_frames">
+        <app-icon-heading-component heading="Orders" icon="filter_frames" [automationId]="'orders-heading'">
         </app-icon-heading-component>
-        <mat-form-field class="action-dropdown d-block" appearance="outline">
-          <mat-label>Actions</mat-label>
+        <mat-form-field class="action-dropdown d-block" appearance="outline" data-automation-id="actions-dropdown">
+          <mat-label data-automation-id="actions-label">Actions</mat-label>
           <mat-select #matRef class="employees-action" placeholder="Actions"
-            (selectionChange)="onChangeOrderAction($event.value)">
-            <mat-option value="fill_top_orders">Fill With Top Orders</mat-option>
-            <mat-option value="unselect_all_orders">Un-Select All Orders</mat-option>
+            (selectionChange)="onChangeOrderAction($event.value)" data-automation-id="actions-select">
+            <mat-option value="fill_top_orders" data-automation-id="fill-top-orders-option">Fill With Top Orders</mat-option>
+            <mat-option value="unselect_all_orders" data-automation-id="unselect-all-orders-option">Un-Select All Orders</mat-option>
           </mat-select>
-          <span class="material-symbols-outlined icon-expand-more">
+          <span class="material-symbols-outlined icon-expand-more" data-automation-id="actions-expand-icon">
             expand_more
           </span>
         </mat-form-field>
       </div>
-      <div class="card br-14 table-responsive borderless px-0 mb-3">
-        <ng-scrollbar track="all" class="mat-table-scrollbar h-280" >
-          <table mat-table [dataSource]="orderDataSource" class="w-100 table1">
+      <div class="card br-14 table-responsive borderless px-0 mb-3" data-automation-id="orders-table-container">
+        <ng-scrollbar track="all" class="mat-table-scrollbar h-280" data-automation-id="orders-table-scrollbar">
+          <table mat-table [dataSource]="orderDataSource" class="w-100 table1" data-automation-id="orders-table">
             <!-- Position Column -->
             <ng-container matColumnDef="orderno">
-              <th mat-header-cell *matHeaderCellDef> Order Number </th>
-              <td mat-cell *matCellDef="let element" [class.selected]="element.isSelected">
+              <th mat-header-cell *matHeaderCellDef data-automation-id="table-header-order-number"> Order Number </th>
+              <td mat-cell *matCellDef="let element" [class.selected]="element.isSelected" [attr.data-automation-id]="'table-row-' + element.orderNumber + '-order-number-cell'">
                 <div class="pe-2">
                   {{element.orderNumber}}
                 </div>
               </td>
             </ng-container>
-            <tr mat-header-row *matHeaderRowDef="displayedColumns2; sticky:true"></tr>
-            <tr mat-row *matRowDef="let row; columns: displayedColumns2;" (click)="onOrderSelect(row)">
+            <tr mat-header-row *matHeaderRowDef="displayedColumns2; sticky:true" data-automation-id="orders-table-header-row"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns2;" (click)="onOrderSelect(row)" [attr.data-automation-id]="'orders-table-row-' + row.orderNumber">
             </tr>
           </table>
         </ng-scrollbar>
       </div>
       <div class="d-flex justify-content-start">
-        <mat-paginator #paginator [pageSize]="10" showFirstLastButtons [pageSizeOptions]="[5, 10, 20]">
+        <mat-paginator #paginator [pageSize]="10" showFirstLastButtons [pageSizeOptions]="[5, 10, 20]" data-automation-id="orders-paginator">
         </mat-paginator>
       </div>
     </div>
@@ -51,24 +51,24 @@
   <div class="col-xl-8">
     <div class="card p-3">
       <div class="d-flex justify-content-between align-items-center mb-4">
-        <app-icon-heading-component heading="Transactions" icon="dvr">
+        <app-icon-heading-component heading="Transactions" icon="dvr" [automationId]="'transactions-heading'">
         </app-icon-heading-component>
       </div>
-      <div class="card br-14 table-responsive borderless px-0 mb-3">
-        <ng-scrollbar track="all" class="mat-table-scrollbar h-280" >
-          <mat-table #table [dataSource]="orderTransDataSource" matSort>
+      <div class="card br-14 table-responsive borderless px-0 mb-3" data-automation-id="transactions-table-container">
+        <ng-scrollbar track="all" class="mat-table-scrollbar h-280" data-automation-id="transactions-table-scrollbar">
+          <mat-table #table [dataSource]="orderTransDataSource" matSort data-automation-id="transactions-table">
 
             <ng-container *ngFor="let column of filterTransColumns" [cdkColumnDef]="column.columnDef">
-              <mat-header-cell *cdkHeaderCellDef mat-sort-header class="w-200" >{{ column.header }}</mat-header-cell>
-              <mat-cell *cdkCellDef="let row">{{ column.cell(row) }}</mat-cell>
+              <mat-header-cell *cdkHeaderCellDef mat-sort-header class="w-200" [attr.data-automation-id]="'table-header-' + column.columnDef">{{ column.header }}</mat-header-cell>
+              <mat-cell *cdkCellDef="let row" [attr.data-automation-id]="'table-row-' + row.orderNumber + '-' + column.columnDef + '-cell'">{{ column.cell(row) }}</mat-cell>
             </ng-container>
-            <mat-header-row *matHeaderRowDef="displayedTransColumns"></mat-header-row>
-            <mat-row *matRowDef="let row; columns: displayedTransColumns;"></mat-row>
+            <mat-header-row *matHeaderRowDef="displayedTransColumns" data-automation-id="transactions-table-header-row"></mat-header-row>
+            <mat-row *matRowDef="let row; columns: displayedTransColumns;" [attr.data-automation-id]="'transactions-table-row-' + row.orderNumber"></mat-row>
           </mat-table>
         </ng-scrollbar>
       </div>
       <div class="d-flex justify-content-start">
-        <mat-paginator #paginatorTrans [pageSize]="10"showFirstLastButtons [pageSizeOptions]="[5, 10, 20]">
+        <mat-paginator #paginatorTrans [pageSize]="10"showFirstLastButtons [pageSizeOptions]="[5, 10, 20]" data-automation-id="transactions-paginator">
         </mat-paginator>
       </div>
     </div>
@@ -77,5 +77,5 @@
 
 <div class="d-flex gap-12">
   <button type="submit" mat-flat-button class="form-button-submit btn-lg flex-grow-1" color="primary"
-    (click)="onSelectedOrders()" [disabled]="isDisableSubmit">Submit</button>
+    (click)="onSelectedOrders()" [disabled]="isDisableSubmit" data-automation-id="submit-button">Submit</button>
 </div>

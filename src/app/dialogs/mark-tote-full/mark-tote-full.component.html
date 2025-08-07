@@ -1,17 +1,17 @@
 <div class="d-flex flex-column align-items-center justify-content-center text-center py-4">
     <div color="warn" class="circle-icon circle-66 circle-primary mb-4 text-primary-900">
-        <mat-icon class="material-symbols-outlined" color="primary">info</mat-icon>
+        <mat-icon class="material-symbols-outlined" color="primary" data-automation-id="mark-tote-full-icon">info</mat-icon>
     </div>
     <div>
-        <p class="bold text-tritary-900 mb-4"> {{dialogMsg}}</p>
+        <p class="bold text-tritary-900 mb-4" [attr.data-automation-id]="'mark-tote-full-message-' + dialogMsg"> {{dialogMsg}}</p>
 
     </div>
     <div class="w-100">
         <button [mat-dialog-close]="true" mat-stroked-button color="primary"
-            class="w-100 btn-lg mb-3 prompt-action-accent-button">
+            class="w-100 btn-lg mb-3 prompt-action-accent-button" data-automation-id="mark-tote-full-ok-button">
             Ok
         </button>
-        <button mat-stroked-button color="basic" class="custom-btn bg-white w-100 btn-lg" [mat-dialog-close]="false">
+        <button mat-stroked-button color="basic" class="custom-btn bg-white w-100 btn-lg" [mat-dialog-close]="false" data-automation-id="mark-tote-full-cancel-button">
             Cancel
         </button>
     </div>

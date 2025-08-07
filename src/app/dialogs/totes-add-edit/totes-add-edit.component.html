@@ -22,7 +22,8 @@
       <div class="d-xl-flex gap-12 align-items-center">
        
         <mat-form-field class="custom-form-field w-100 mb-3 mb-xl-0" appearance="outline" [floatLabel]="getFloatLabelValue1()"
-        [hideRequiredMarker]="hideRequiredControl.value"  >
+        [hideRequiredMarker]="hideRequiredControl.value" data-automation-id="from-tote-field" >
+        
         <mat-label data-automation-id="from-tote-label">From Tote ID</mat-label>
         <input #fieldFocus type="text" placeholder="Search" aria-label="Number" matInput maxlength="255"
           [(ngModel)]='fromTote' [matAutocomplete]="auto1" data-automation-id="from-tote-input"
@@ -44,7 +45,7 @@
       </mat-form-field>
 
         <mat-form-field class="custom-form-field w-100 mb-3 mb-xl-0" appearance="outline" [floatLabel]="getFloatLabelValue2()"
-        [hideRequiredMarker]="hideRequiredControl.value"  >
+        [hideRequiredMarker]="hideRequiredControl.value"  data-automation-id="to-tote-field">
         <mat-label data-automation-id="to-tote-label">To Tote ID</mat-label>
         <input type="text" placeholder="Search" aria-label="Number" matInput maxlength="255"
           [(ngModel)]='toTote' [matAutocomplete]="auto2" [disabled]="!fromTote" data-automation-id="to-tote-input"
@@ -77,10 +78,10 @@
 
     <div class="card br-14 table-responsive borderless px-0 mb-4" *ngIf="!data.validateTotes && !isIMPath">
       <ng-scrollbar class="mat-table-scrollbar h-160" track="all">
-        <table mat-table [dataSource]="dataSource" class="">
+        <table mat-table [dataSource]="dataSource" class="" data-automation-id="unmanaged-totes-table">
 
           <ng-container matColumnDef="actions">
-            <th mat-header-cell *matHeaderCellDef></th>
+            <th mat-header-cell *matHeaderCellDef data-automation-id="unmanaged-tote-id-header"></th>
             <td mat-cell *matCellDef="let row">
               <div class="pe-2">
                 <mat-radio-button (click)="selectTote()" [disabled]="toteID ? false : true" 
@@ -104,7 +105,7 @@
             <th mat-header-cell *matHeaderCellDef data-automation-id="unmanaged-cells-header">Cells</th>
             <td mat-cell *matCellDef="let element">
               <div class="pe-2">
-                <mat-form-field class="custom-form-field w-100" appearance="outline">
+                <mat-form-field class="custom-form-field w-100" appearance="outline" data-automation-id="unmanaged-cells-field">
                   <input matInput
                     oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');" type="text"
                     #specialFeature maxlength="6" [(ngModel)]="cellID" data-automation-id="unmanaged-cells-input">
@@ -113,8 +114,8 @@
             </td>
           </ng-container>
 
-          <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky:true"></tr>
-          <tr mat-row *matRowDef="let row; columns: displayedColumns;" (click)="selection.toggle(row)"></tr>
+          <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky:true" data-automation-id="unmanaged-totes-header-row"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns;" (click)="selection.toggle(row)" [attr.data-automation-id]="'unmanaged-totes-row-' + row.toteID"></tr>
         </table>
       </ng-scrollbar>
     </div>
@@ -131,12 +132,12 @@
       </button>
     </div>
 
-    <div class="card br-14 table-responsive borderless px-0">
+    <div class="card br-14 table-responsive borderless px-0" data-automation-id="managed-totes-table-container">
       <ng-scrollbar class="mat-table-scrollbar" track="all" [style.height]="!isIMPath?'200px':'400px'">
-        <table mat-table [dataSource]="dataSourceManagedTotes" class="">
+        <table mat-table [dataSource]="dataSourceManagedTotes" class="" data-automation-id="managed-totes-table">
 
           <ng-container matColumnDef="select">
-            <th mat-header-cell *matHeaderCellDef></th>
+            <th mat-header-cell *matHeaderCellDef data-automation-id="managed-tote-id-header"></th>
             <td mat-cell *matCellDef="let row; let i = index;">
               <div class="pe-2">
                 <mat-radio-button [disabled]="!row.toteID || !row.cells || row.isInserted==0 || row.isEdit" color="primary" 
@@ -151,7 +152,7 @@
             <th mat-header-cell *matHeaderCellDef data-automation-id="managed-tote-id-header">Tote IDs</th>
             <td mat-cell *matCellDef="let element; let i = index">
               <div class="pe-2" [attr.data-automation-id]="'managed-tote-id-cell-' + i">
-                <mat-form-field class="custom-form-field w-100" appearance="outline">
+                <mat-form-field class="custom-form-field w-100" appearance="outline" data-automation-id="managed-tote-id-field">
                   <input matInput type="text" #specialFeature maxlength="255" [value]="element.toteID" #category_category [autofocus]="i === 0" 
                     (keydown.shift.enter)="$event.preventDefault()"  
                     (keydown)="onToteChange($event,i,'')" (keyup)="onToteChange($event,i,'')"
@@ -167,7 +168,7 @@
             <th mat-header-cell *matHeaderCellDef data-automation-id="managed-cells-header">Cells</th>
             <td mat-cell *matCellDef="let element; let i = index">
               <div class="pe-2" [attr.data-automation-id]="'managed-cells-cell-' + i">
-                <mat-form-field class="custom-form-field w-100" appearance="outline">
+                <mat-form-field class="custom-form-field w-100" appearance="outline" data-automation-id="managed-cells-field">
                   <input matInput type="text" #specialFeature maxlength="6" [value]="element.cells"
                     oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');"
                     (keydown)="onToteChange($event,i,'1')" (keyup)="onToteChange($event,i,'1')"
@@ -204,8 +205,8 @@
             </td>
           </ng-container>
 
-          <tr mat-header-row *matHeaderRowDef="displayedColumns1; sticky:true"></tr>
-          <tr mat-row *matRowDef="let row; columns: displayedColumns1;" (click)="selection.toggle(row)"></tr>
+          <tr mat-header-row *matHeaderRowDef="displayedColumns1; sticky:true" data-automation-id="managed-totes-header-row"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns1;" (click)="selection.toggle(row)" [attr.data-automation-id]="'managed-totes-row-' + row.toteID"></tr>
         </table>
       </ng-scrollbar>
     </div>

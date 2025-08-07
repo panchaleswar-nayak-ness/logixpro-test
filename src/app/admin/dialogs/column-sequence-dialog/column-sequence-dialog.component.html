@@ -25,16 +25,16 @@
                                     role="list" data-automation-id="colseq-unordered-list">
 
                                     <mat-list-item *ngFor="let item of unorderedCol ; let indexOfelement=index;"
-                                        class="pe-0" role="listitem" cdkDrag [attr.data-automation-id]="'unordered-col-list-item-' + indexOfelement+ '-' + item">
+                                        class="pe-0" role="listitem" cdkDrag [attr.data-automation-id]="'unordered-col-list-item-' + item">
                                         <div class="d-flex w-100 justify-content-between __grab_cursor ">
                                             <span class="list-label zone-list-label d-flex align-items-center">
                                                 <mat-icon class="me-2" matTooltip="Drag"
-                                                    matTooltipPosition="left" cdkDragHandle data-automation-id="drag-icon-unordered-{{indexOfelement}}">drag_indicator</mat-icon>
-                                                <span id="grid-listing" replacePlaceholder data-automation-id="unordered-col-label-{{indexOfelement}}-{{item}}">{{item}}</span>
+                                                    matTooltipPosition="left" cdkDragHandle data-automation-id="drag-icon-unordered-{{item}}">drag_indicator</mat-icon>
+                                                <span id="grid-listing" replacePlaceholder data-automation-id="unordered-col-label-{{item}}">{{item}}</span>
                                             </span>
                                             <button (click)="addArr(indexOfelement)" mat-icon-button
-                                                aria-label="Add Function" matTooltip="Add" matTooltipPosition="right" [attr.data-automation-id]="'add-unordered-col-button-' + indexOfelement">
-                                                <mat-icon class="icon-circle-edit" [attr.data-automation-id]="'add-icon-unordered-' + indexOfelement">add</mat-icon>
+                                                aria-label="Add Function" matTooltip="Add" matTooltipPosition="right" [attr.data-automation-id]="'add-unordered-col-button-' + item">
+                                                <mat-icon class="icon-circle-edit" [attr.data-automation-id]="'add-icon-unordered-' + item">add</mat-icon>
                                             </button>
                                         </div>
                                     </mat-list-item>
@@ -57,16 +57,16 @@
                                     role="list" data-automation-id="colseq-default-list">
 
                                     <mat-list-item *ngFor="let item of defaultCol ; let indexOfelement=index;"
-                                        class="pe-0" role="listitem" cdkDrag [attr.data-automation-id]="'default-col-list-item-' + indexOfelement+ '-' + item">
+                                        class="pe-0" role="listitem" cdkDrag [attr.data-automation-id]="'default-col-list-item-' + item">
                                         <div class="d-flex w-100 justify-content-between __grab_cursor ">
                                             <span class="list-label zone-list-label d-flex align-items-center">
                                                 <mat-icon class="me-2" matTooltip="Drag"
-                                                    matTooltipPosition="left" cdkDragHandle data-automation-id="drag-icon-default-{{indexOfelement}}">drag_indicator</mat-icon>
-                                                <span id="grid-listing" replacePlaceholder data-automation-id="default-col-label-{{indexOfelement}}-{{item}}">{{item}}</span>
+                                                    matTooltipPosition="left" cdkDragHandle data-automation-id="drag-icon-default-{{item}}">drag_indicator</mat-icon>
+                                                <span id="grid-listing" replacePlaceholder data-automation-id="default-col-label-{{item}}">{{item}}</span>
                                             </span>
                                             <button (click)="remove(indexOfelement)" mat-icon-button
-                                                aria-label="Remove Function" matTooltip="Remove" matTooltipPosition="right" [attr.data-automation-id]="'remove-default-col-button-' + indexOfelement">
-                                                <mat-icon class="icon-circle-cancel" [attr.data-automation-id]="'remove-icon-default-' + indexOfelement">close</mat-icon>
+                                                aria-label="Remove Function" matTooltip="Remove" matTooltipPosition="right" [attr.data-automation-id]="'remove-default-col-button-' + item">
+                                                <mat-icon class="icon-circle-cancel" [attr.data-automation-id]="'remove-icon-default-' + item">close</mat-icon>
                                             </button>
                                         </div>
                                     </mat-list-item>

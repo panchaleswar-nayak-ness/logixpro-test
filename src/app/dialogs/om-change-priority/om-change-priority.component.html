@@ -1,8 +1,8 @@
 <div class="d-flex justify-content-between mb-4 align-items-center">
     <div class="w-48px"></div>
-    <h1 class="m-0" mat-dialog-title>Change Priority</h1>
+    <h1 class="m-0" mat-dialog-title data-automation-id="om-change-priority-dialog-title">Change Priority</h1>
 
-    <button mat-icon-button class="close-button dialog-close-button-fix"  [mat-dialog-close]="false">
+    <button mat-icon-button class="close-button dialog-close-button-fix"  [mat-dialog-close]="false" data-automation-id="om-change-priority-close-button">
         <mat-icon class="close-icon">close</mat-icon>
     </button>
 </div>
@@ -12,25 +12,25 @@
     <div class="w-100">
         <div class="col-12 mb-2">
             <mat-form-field class="custom-form-field w-100" appearance="outline">
-                <mat-label>Order Number</mat-label>
-                <input matInput type="text" readonly="true" disabled="true" [(ngModel)]="orderNumber">
+                <mat-label data-automation-id="order-number-label">Order Number</mat-label>
+                <input matInput type="text" readonly="true" disabled="true" [(ngModel)]="orderNumber" [attr.data-automation-id]="'order-number-input-' + orderNumber">
             </mat-form-field>
         </div>
         <div class="col-12 mb-2">
             <mat-form-field class="custom-form-field w-100" appearance="outline">
-                <mat-label>Priority</mat-label>
-                <input matInput type="number" readonly="true" disabled="true" [(ngModel)]="oldpriority">
+                <mat-label data-automation-id="priority-label">Priority</mat-label>
+                <input matInput type="number" readonly="true" disabled="true" [(ngModel)]="oldpriority" [attr.data-automation-id]="'priority-input-' + oldpriority">
             </mat-form-field>
         </div>
         <div class="col-12">
             <mat-form-field class="custom-form-field w-100" appearance="outline">
-                <mat-label>Please Enter New Priority</mat-label>
+                <mat-label data-automation-id="new-priority-label">Please Enter New Priority</mat-label>
                 <input #newPri matInput type="number" [(ngModel)]="newpriority" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength); this.value = 
-                !!this.value && Math.abs(this.value) >= 0 ? Math.abs(this.value) : null" maxlength="10">
+                !!this.value && Math.abs(this.value) >= 0 ? Math.abs(this.value) : null" maxlength="10" [attr.data-automation-id]="'new-priority-input-' + newpriority">
             </mat-form-field>
         </div>
         <div class="d-flex justify-content-end pt-3">
-            <button type="submit" mat-flat-button color="primary" class="btn-lg w-100 flex-grow-1" (click)="updatepriority()">Save</button>
+            <button type="submit" mat-flat-button color="primary" class="btn-lg w-100 flex-grow-1" (click)="updatepriority()" data-automation-id="om-change-priority-save-button">Save</button>
         </div>
         
     </div>

@@ -1,7 +1,7 @@
 <div class="d-flex justify-content-between align-items-center" mat-dialog-title>
     <div class="w-48px"></div>
-    <h1 class="m-0" mat-dialog-title>User Fields - Edit</h1>
-    <button mat-icon-button class="close-button dialog-close-button-fix" [mat-dialog-close]="true">
+    <h1 class="m-0" mat-dialog-title data-automation-id="user-fields-heading">User Fields - Edit</h1>
+    <button mat-icon-button class="close-button dialog-close-button-fix" [mat-dialog-close]="true" data-automation-id="close-button">
         <mat-icon class="close-icon">close</mat-icon>
     </button>
 </div>
@@ -13,75 +13,75 @@
 
             <div class="row">
                 <div class="col-xl-6">
-                    <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline">
-                        <mat-label>{{fieldNames?.userField1}}</mat-label>
-                        <textarea #fieldFocus formControlName="userField1" matInput type="text"></textarea>
+                    <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline" data-automation-id="user-field-1-field">
+                        <mat-label data-automation-id="user-field-1-label">{{fieldNames?.userField1}}</mat-label>
+                        <textarea #fieldFocus formControlName="userField1" matInput type="text" data-automation-id="user-field-1-input"></textarea>
                     </mat-form-field>
                 </div>
                 <div class="col-xl-6">
-                    <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline">
-                        <mat-label>{{fieldNames?.userField6}}</mat-label>
-                        <textarea formControlName="userField6" matInput type="text"></textarea>
-                    </mat-form-field>
-                </div>
-            </div>
-    
-            <div class="row">
-                <div class="col-xl-6">
-                    <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline">
-                        <mat-label>{{fieldNames?.userField2}}</mat-label>
-                        <textarea formControlName="userField2" matInput type="text"></textarea>
-                    </mat-form-field>
-                </div>
-                <div class="col-xl-6">
-                    <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline">
-                        <mat-label>{{fieldNames?.userField7}}</mat-label>
-                        <textarea formControlName="userField7" matInput type="text"></textarea>
+                    <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline" data-automation-id="user-field-6-field">
+                        <mat-label data-automation-id="user-field-6-label">{{fieldNames?.userField6}}</mat-label>
+                        <textarea formControlName="userField6" matInput type="text" data-automation-id="user-field-6-input"></textarea>
                     </mat-form-field>
                 </div>
             </div>
     
             <div class="row">
                 <div class="col-xl-6">
-                    <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline">
-                        <mat-label>{{fieldNames?.userField3}}</mat-label>
-                        <textarea formControlName="userField3" matInput type="text"></textarea>
+                    <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline" data-automation-id="user-field-2-field">
+                        <mat-label data-automation-id="user-field-2-label">{{fieldNames?.userField2}}</mat-label>
+                        <textarea formControlName="userField2" matInput type="text" data-automation-id="user-field-2-input"></textarea>
                     </mat-form-field>
                 </div>
                 <div class="col-xl-6">
-                    <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline">
-                        <mat-label>{{fieldNames?.userField8}}</mat-label>
-                        <textarea formControlName="userField8" matInput type="text"></textarea>
-                    </mat-form-field>
-                </div>
-            </div>
-    
-            <div class="row">
-                <div class="col-xl-6">
-                    <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline">
-                        <mat-label>{{fieldNames?.userField4}}</mat-label>
-                        <textarea formControlName="userField4" matInput type="text"></textarea>
-                    </mat-form-field>
-                </div>
-                <div class="col-xl-6">
-                    <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline">
-                        <mat-label>Cancelled</mat-label>
-                        <textarea formControlName="userField9" matInput type="text"></textarea>
+                    <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline" data-automation-id="user-field-7-field">
+                        <mat-label data-automation-id="user-field-7-label">{{fieldNames?.userField7}}</mat-label>
+                        <textarea formControlName="userField7" matInput type="text" data-automation-id="user-field-7-input"></textarea>
                     </mat-form-field>
                 </div>
             </div>
     
             <div class="row">
                 <div class="col-xl-6">
-                    <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline">
-                        <mat-label>{{fieldNames?.userField5}}</mat-label>
-                        <textarea formControlName="userField5" matInput type="text"></textarea>
+                    <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline" data-automation-id="user-field-3-field">
+                        <mat-label data-automation-id="user-field-3-label">{{fieldNames?.userField3}}</mat-label>
+                        <textarea formControlName="userField3" matInput type="text" data-automation-id="user-field-3-input"></textarea>
                     </mat-form-field>
                 </div>
                 <div class="col-xl-6">
-                    <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline">
-                        <mat-label>{{fieldNames?.userField10}}</mat-label>
-                        <textarea formControlName="userField10" matInput type="text"></textarea>
+                    <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline" data-automation-id="user-field-8-field">
+                        <mat-label data-automation-id="user-field-8-label">{{fieldNames?.userField8}}</mat-label>
+                        <textarea formControlName="userField8" matInput type="text" data-automation-id="user-field-8-input"></textarea>
+                    </mat-form-field>
+                </div>
+            </div>
+    
+            <div class="row">
+                <div class="col-xl-6">
+                    <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline" data-automation-id="user-field-4-field">
+                        <mat-label data-automation-id="user-field-4-label">{{fieldNames?.userField4}}</mat-label>
+                        <textarea formControlName="userField4" matInput type="text" data-automation-id="user-field-4-input"></textarea>
+                    </mat-form-field>
+                </div>
+                <div class="col-xl-6">
+                    <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline" data-automation-id="cancelled-field">
+                        <mat-label data-automation-id="cancelled-label">Cancelled</mat-label>
+                        <textarea formControlName="userField9" matInput type="text" data-automation-id="cancelled-input"></textarea>
+                    </mat-form-field>
+                </div>
+            </div>
+    
+            <div class="row">
+                <div class="col-xl-6">
+                    <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline" data-automation-id="user-field-5-field">
+                        <mat-label data-automation-id="user-field-5-label">{{fieldNames?.userField5}}</mat-label>
+                        <textarea formControlName="userField5" matInput type="text" data-automation-id="user-field-5-input"></textarea>
+                    </mat-form-field>
+                </div>
+                <div class="col-xl-6">
+                    <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline" data-automation-id="user-field-10-field">
+                        <mat-label data-automation-id="user-field-10-label">{{fieldNames?.userField10}}</mat-label>
+                        <textarea formControlName="userField10" matInput type="text" data-automation-id="user-field-10-input"></textarea>
                     </mat-form-field>
                 </div>
             </div>
@@ -92,10 +92,10 @@
 </div>
 
 <div class="d-flex gap-12 mb-1" mat-dialog-actions>
-    <button mat-stroked-button color="primary" class="btn-lg" type="button" [mat-dialog-close]="true">
+    <button mat-stroked-button color="primary" class="btn-lg" type="button" [mat-dialog-close]="true" data-automation-id="close-dialog-button">
         Close
     </button>
-    <button mat-flat-button color="primary" class="btn-lg flex-grow-1" (click)="submit()">
+    <button mat-flat-button color="primary" class="btn-lg flex-grow-1" (click)="submit()" data-automation-id="submit-button">
         Submit
     </button>
 </div>
