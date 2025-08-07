@@ -1,83 +1,83 @@
-<mat-card class="mat-elevation-z g-card mb-3">
+<mat-card class="mat-elevation-z g-card mb-3" data-automation-id="verified-item-card">
     <mat-card-content>
         <div class="d-flex justify-content-between">
            
-         <app-icon-heading-component class="card-header-title mb-3 d-flex align-items-center" heading="Verified Items" icon="verified_user"></app-icon-heading-component>
+         <app-icon-heading-component class="card-header-title mb-3 d-flex align-items-center" heading="Verified Items" icon="verified_user" [automationId]="'verified-item-heading'"></app-icon-heading-component>
         </div>
 
-        <div class="row">
+        <div class="row" data-automation-id="action-row">
             <div class="col-xl-12 d-flex d-xl-block">
                 <div class="float-end flex-1">
                 <button mat-stroked-button color="warn"
-                    class="mat-focus-indicator button-remove-all-w-stroke w-100 mb-3 mat-stroked-button mat-button-base mat-warn" (click)=" unVerifyAll()" [disabled]="unverifyBtn">
+                    class="mat-focus-indicator button-remove-all-w-stroke w-100 mb-3 mat-stroked-button mat-button-base mat-warn" (click)=" unVerifyAll()" [disabled]="unverifyBtn" data-automation-id="unverify-all-button">
                     Unverify All
                 </button>
                 </div>
             </div>
         </div>
 
-        <div class="card br-14 borderless px-0 mt-2 overflow-x-auto">
-            <ng-scrollbar track="all" class="mat-table-scrollbar h-400">
-                <table class="w-100 table-borderless" mat-table #sort="matSort" matSort [dataSource]="verifiedItems" (matSortChange)="announceSortChange2($event)">
+        <div class="card br-14 borderless px-0 mt-2 overflow-x-auto" data-automation-id="verified-table-container">
+            <ng-scrollbar track="all" class="mat-table-scrollbar h-400" data-automation-id="verified-table-scrollbar">
+                <table class="w-100 table-borderless" mat-table #sort="matSort" matSort [dataSource]="verifiedItems" (matSortChange)="announceSortChange2($event)" data-automation-id="verified-table">
                     <ng-container matColumnDef="itemNumber">
-                        <th mat-header-cell *matHeaderCellDef mat-sort-header> {{itemNumber}} </th>
-                        <td mat-cell *matCellDef="let element">{{element.itemNumber}}</td>
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header data-automation-id="table-header-item-number"> {{itemNumber}} </th>
+                        <td mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'table-row-' + i + '-' + element.itemNumber + '-item-number-cell'">{{element.itemNumber}}</td>
                     </ng-container>
                     <ng-container matColumnDef="supplierItemID">
-                        <th mat-header-cell *matHeaderCellDef mat-sort-header> Supplier Item ID </th>
-                        <td mat-cell *matCellDef="let element">{{element.supplierItemID}}</td>
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header data-automation-id="table-header-supplier-item-id"> Supplier Item ID </th>
+                        <td mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'table-row-' + i + '-' + element.itemNumber + '-supplier-item-id-cell'">{{element.supplierItemID}}</td>
                     </ng-container>
                     <ng-container matColumnDef="lineNumber">
-                        <th mat-header-cell *matHeaderCellDef mat-sort-header> Line No. </th>
-                        <td mat-cell *matCellDef="let element">{{element.lineNumber}}</td>
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header data-automation-id="table-header-line-number"> Line No. </th>
+                        <td mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'table-row-' + i + '-' + element.itemNumber + '-line-number-cell'">{{element.lineNumber}}</td>
                     </ng-container>
                     <ng-container matColumnDef="completedQuantity">
-                        <th mat-header-cell *matHeaderCellDef mat-sort-header> Completed Qty </th>
-                        <td mat-cell *matCellDef="let element">{{element.completedQuantity}}</td>
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header data-automation-id="table-header-completed-quantity"> Completed Qty </th>
+                        <td mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'table-row-' + i + '-' + element.itemNumber + '-completed-quantity-cell'">{{element.completedQuantity}}</td>
                     </ng-container>
                     <ng-container matColumnDef="toteID">
-                        <th mat-header-cell *matHeaderCellDef mat-sort-header> Tote ID </th>
-                        <td mat-cell *matCellDef="let element">{{element.toteID}}</td>
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header data-automation-id="table-header-tote-id"> Tote ID </th>
+                        <td mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'table-row-' + i + '-' + element.itemNumber + '-tote-id-cell'">{{element.toteID}}</td>
                     </ng-container>
                     <ng-container matColumnDef="serialNumber">
-                        <th mat-header-cell *matHeaderCellDef mat-sort-header> Serial No. </th>
-                        <td mat-cell *matCellDef="let element">{{element.serialNumber}}</td>
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header data-automation-id="table-header-serial-number"> Serial No. </th>
+                        <td mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'table-row-' + i + '-' + element.itemNumber + '-serial-number-cell'">{{element.serialNumber}}</td>
                     </ng-container>
                     <ng-container matColumnDef="userField1">
-                        <th mat-header-cell *matHeaderCellDef mat-sort-header> {{userField1}} </th>
-                        <td mat-cell *matCellDef="let element">{{element.userField1}}</td>
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header data-automation-id="table-header-user-field-1"> {{userField1}} </th>
+                        <td mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'table-row-' + i + '-' + element.itemNumber + '-user-field-1-cell'">{{element.userField1}}</td>
                     </ng-container>
                     <ng-container matColumnDef="lineStatus" sticky>
-                        <th class="" mat-header-cell *matHeaderCellDef mat-sort-header>Status</th>
-                        <td mat-cell *matCellDef="let element" class="text-right">
-                            <div class="label label-green px-2" *ngIf="element.lineStatus == 'Line Completed'">{{element.lineStatus}}</div>
-                            <div class="label label-blue px-2" *ngIf="element.lineStatus == 'Waiting Reprocess'">{{element.lineStatus}}</div>
-                            <div class="label label px-2" *ngIf="element.lineStatus != 'Line Completed' && element.lineStatus != 'Waiting Reprocess'">{{element.lineStatus}}</div>
+                        <th class="" mat-header-cell *matHeaderCellDef mat-sort-header data-automation-id="table-header-line-status">Status</th>
+                        <td mat-cell *matCellDef="let element; let i = index" class="text-right" [attr.data-automation-id]="'table-row-' + i + '-' + element.itemNumber + '-line-status-cell'">
+                            <div class="label label-green px-2" *ngIf="element.lineStatus == 'Line Completed'" data-automation-id="line-status-completed">{{element.lineStatus}}</div>
+                            <div class="label label-blue px-2" *ngIf="element.lineStatus == 'Waiting Reprocess'" data-automation-id="line-status-waiting">{{element.lineStatus}}</div>
+                            <div class="label label px-2" *ngIf="element.lineStatus != 'Line Completed' && element.lineStatus != 'Waiting Reprocess'" data-automation-id="line-status-other">{{element.lineStatus}}</div>
                         </td>
                     </ng-container>
                     <ng-container matColumnDef="actions" stickyEnd>
-                        <th width="10%" class="text-center px-2" mat-header-cell *matHeaderCellDef>Action</th>
-                        <td class="pe-0" mat-cell  *matCellDef="let element; let i = index" width="10%">
+                        <th width="10%" class="text-center px-2" mat-header-cell *matHeaderCellDef data-automation-id="table-header-actions">Action</th>
+                        <td class="pe-0" mat-cell  *matCellDef="let element; let i = index" width="10%" [attr.data-automation-id]="'table-row-' + i + '-' + element.itemNumber + '-actions-cell'">
                             <button class="mx-auto xsm-icon-button" mat-flat-button aria-label="Delete"
-                                matTooltip="Unverify" matTooltipPosition="above" color="warn" (click)="unverifyLine(element)">
+                                matTooltip="Unverify" matTooltipPosition="above" color="warn" (click)="unverifyLine(element)" [attr.data-automation-id]="'unverify-button-' + i + '-' + element.itemNumber">
                                 <mat-icon>close</mat-icon>
                             </button>
                         </td>
                     </ng-container>
                     
-                    <tr class="mat-row" *matNoDataRow>
+                    <tr class="mat-row" *matNoDataRow data-automation-id="table-no-data-row">
                         <td class="mat-cell " [attr.colspan]="verifiedItemsColumns.length">
                           No data available in table.
                         </td>
                     </tr>
 
-                    <tr mat-header-row *matHeaderRowDef="verifiedItemsColumns" class="table-header-clr"></tr>
-                    <tr mat-row *matRowDef="let row; columns: verifiedItemsColumns;"></tr>
+                    <tr mat-header-row *matHeaderRowDef="verifiedItemsColumns" class="table-header-clr" data-automation-id="verified-table-header-row"></tr>
+                    <tr mat-row *matRowDef="let row; columns: verifiedItemsColumns;" [attr.data-automation-id]="'verified-table-row-' + row.itemNumber"></tr>
                 </table>
             </ng-scrollbar>
         </div>
 
-        <div class="d-flex justify-content-between bg-white">
+        <div class="d-flex justify-content-between bg-white" data-automation-id="verified-paginator">
             <mat-paginator #paginator showFirstLastButtons [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons > </mat-paginator>
         </div>
     </mat-card-content>

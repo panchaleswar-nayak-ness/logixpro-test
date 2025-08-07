@@ -1,15 +1,15 @@
-<div class="container-fluid p-0 h-auto">
+<div class="container-fluid p-0 h-auto" data-automation-id="cm-route-id-management-container">
     <div class="row">
-      <div class="col-xl-12 mb-3">
-        <app-routeid-header  (zoneChanged)="onZoneChanged($event)"
-
+      <div class="col-xl-12 mb-3" data-automation-id="route-id-header-section">
+        <app-routeid-header  (zoneChanged)="onZoneChanged($event)" data-automation-id="route-id-header-component"
+        
         >
       </app-routeid-header>
      </div>
     </div>
-<div class="row">
-    <div class="card bg-light-blue bg-50 br-none br-14 mb-3">
-        <app-routeid-list [selectedZone]="selectedZone">
+<div class="row" data-automation-id="route-id-list-section">
+    <div class="card bg-light-blue bg-50 br-none br-14 mb-3" data-automation-id="route-id-list-card-container">
+        <app-routeid-list [selectedZone]="selectedZone" data-automation-id="route-id-list-component">
         ></app-routeid-list>
     </div>
     </div>

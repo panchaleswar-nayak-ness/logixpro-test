@@ -1,16 +1,16 @@
-<div class="container-fluid p-0  h-auto">
+<div class="container-fluid p-0  h-auto" data-automation-id="cm-markout-container">
     <div class="row g-3">
-        <div class="col-xl-4">
+        <div class="col-xl-4" data-automation-id="markout-search-column">
             <app-markout-search (toteIdEmitter)="handleToteId($event)" (viewChangeEmitter)="viewChange($event)"
-                [toteDataResponse]="toteDataResponse" [toteId]="toteId" [isBlossomComplete]="isBlossomComplete"></app-markout-search>
+                [toteDataResponse]="toteDataResponse" [toteId]="toteId" [isBlossomComplete]="isBlossomComplete" data-automation-id="markout-search-component"></app-markout-search>
         </div>
-        <div class="col-xl-8">
-            <app-markout-status [markoutPreference]="preferencesData"  [toteDataResponse]="toteDataResponse"></app-markout-status>
+        <div class="col-xl-8" data-automation-id="markout-status-column">
+            <app-markout-status [markoutPreference]="preferencesData"  [toteDataResponse]="toteDataResponse" data-automation-id="markout-status-component"></app-markout-status>
         </div>
-        <div class="col-xl-12">
+        <div class="col-xl-12" data-automation-id="markout-list-column">
             <app-markout-list 
             (updateTableEmitter)="getToteData()" (toteIdEmitter)="handleToteId($event)"
-            [toteDataResponse]="toteDataResponse" [selectedView]="selectedView" [isBlossomComplete]="isBlossomComplete"></app-markout-list>
+            [toteDataResponse]="toteDataResponse" [selectedView]="selectedView" [isBlossomComplete]="isBlossomComplete" data-automation-id="markout-list-component"></app-markout-list>
         </div>
     </div>
 </div>
