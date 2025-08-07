@@ -141,17 +141,6 @@ export class ToteTransactionViewComponent implements OnInit {
             this.isData = true;
 
             this.dataSource = new MatTableDataSource<any>(res.data);
-            this.dataSource.sortingDataAccessor = (item, property) => {
-              switch (property) {
-
-                case 'itemLocation':
-                  return item.itemLocation?.toString().trim().toLowerCase();
-                  
-                default:
-                  return item[property];
-              }
-            };
-
             this.dataSource.sort = this.sort;
           } else {
             this.isData = false;
