@@ -451,20 +451,6 @@
 
                         <tr mat-header-row *matHeaderRowDef="displayedTransColumns;sticky:true"></tr>
                         <tr mat-row *matRowDef="let row; columns: displayedTransColumns;"></tr>
-
-                        <ng-container *ngFor="let column of filterBatchTransColumns" [cdkColumnDef]="column.columnDef">
-                          <th mat-header-cell *cdkHeaderCellDef mat-sort-header [attr.data-automation-id]="'transactions-table-header-' + column.columnDef">{{ column.header }}</th>
-                          <td mat-cell *cdkCellDef="let row; let i = index"
-                              [matTooltip]="column.cell(row)"
-                              matTooltipPosition="above"
-                              [matTooltipDisabled]="isTooltipDisabled(column.cell(row))"
-                              [attr.data-automation-id]="'transactions-table-row-' + i + '-cell-' + column.columnDef">
-                            {{ column.cell(row) }}
-                          </td>
-                        </ng-container>
-                        <tr mat-header-row *matHeaderRowDef="displayedTransColumns;sticky:true" data-automation-id="transactions-table-header-row"></tr>
-                        <tr mat-row *matRowDef="let row; columns: displayedTransColumns; index as i" [attr.data-automation-id]="'transactions-table-row-' + i"></tr>
-
                       </table>
                     </ng-scrollbar>
                   </div>

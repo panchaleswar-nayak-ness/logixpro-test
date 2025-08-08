@@ -30,11 +30,15 @@ export class DirectFilterationColumnsService {
       this.filterationColumns = [];
       return this.filterationColumns;
     }
-
-    if (!selectedItem || !filterColumnName) {
+      /**
+   * Checks if a string is null, undefined, empty, or an empty string
+   * @param str The string to check
+   * @returns True if the string is null, undefined, empty, or an empty string
+   */ 
+    if (this.isNullOrEmpty(selectedItem) || !filterColumnName) {
       return this.filterationColumns;
     }
-    
+
     // Determine column type based on the value type
     let columnType = this.determineColumnType(type, filterColumnName);
     
@@ -61,6 +65,9 @@ export class DirectFilterationColumnsService {
     this.filterationColumns.push(filterationColumn);
 
     return [...this.filterationColumns];
+  }
+  isNullOrEmpty(str: string | null | undefined): boolean {
+    return str == null || str.length === 0;
   }
 
   /**
@@ -156,19 +163,21 @@ export class DirectFilterationColumnsService {
       case 'is less than':
         return 'LessThan';
       case 'is like':
-      case 'contains':
         return 'Like';
+       case 'contains':
+          return 'Contains';
       case 'is not like':
-      case 'does not contains':
         return 'NotLike';
+       case 'does not contains':
+          return 'DoesNotContain';
       case 'begins with':
-        return 'BeginsWith';
+        return 'Begins';
       case 'does not begins with':
-        return 'NotBeginsWith';
+        return 'DoesNotBegin';
       case 'ends with':
         return 'EndsWith';
       case 'does not ends with':
-        return 'NotEndsWith';
+        return 'DoesNotEndWith';
       case 'is between':
       case 'between':
         return 'Between';
@@ -183,24 +192,27 @@ export class DirectFilterationColumnsService {
    * @param columnName The column name
    * @returns The column type
    */
-  private determineColumnType(type: string, columnName: string): string {
-    if (type === 'date' || 
-        columnName === 'Expiration Date' || 
-        columnName === 'Put Away Date' || 
-        columnName === 'Import Date' || 
-        columnName === 'Required Date' || 
-        columnName === 'Completed Date' || 
-        columnName === 'Export Date' || 
-        columnName === 'Induction Date') {
+  private determineColumnType(type: string | null | undefined, columnName: string): 'datetime' | 'int' | 'boolean' | 'string' {
+    const dateColumns = new Set([
+      'expirationDate',
+      'putAwayDate',
+      'importDate',
+      'requiredDate',
+      'completedDate',
+      'exportDate',
+      'inductionDate'
+    ]);
+  
+    if ((!type || type.trim() === '') && dateColumns.has(columnName)) {
       return 'datetime';
-    } else if (type === 'number') {
-      return 'int';
-    } else if (type === 'boolean') {
-      return 'boolean';
-    } else {
-      return 'string';
     }
+  
+    if (type === 'number') return 'int';
+    if (type === 'boolean') return 'boolean';
+  
+    return 'string';
   }
+  
 
   /**
    * Formats a value based on its type and the condition
@@ -209,18 +221,21 @@ export class DirectFilterationColumnsService {
    * @param condition The condition text
    * @returns The formatted value
    */
-  private formatValue(value: any, type: string, condition: string): any {
-    if (type === 'boolean') {
-      return value ? 1 : 0;
-    } else if (type === 'number') {
-      return value;
-    } else if (type === 'date') {
-      return value;
-    } else {
-      // For string values, we don't need to add wildcards here as that's handled by the GridOperation
-      return value;
+  private formatValue(value: any, type: string, condition: string): string | number | boolean | Date | null {
+    if (value == null) return null;
+    switch (type) {
+      case 'boolean':
+        return value ? 1 : 0;
+      case 'number':
+      case 'date':
+      case 'string':
+        return value;
+      default:  
+        // Wildcard handling is assumed to be done externally (e.g., in GridOperation)
+        return value;
     }
   }
+  
 
   /**
    * Checks if a string is a valid date
