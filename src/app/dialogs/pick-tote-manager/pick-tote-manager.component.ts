@@ -30,23 +30,8 @@ import { PickToteManagerService } from 'src/app/common/services/pick-tote-manage
 import {  TableConstant ,ToasterTitle,ResponseStrings,Column,ToasterType,zoneType,DialogConstants,ColumnDef,UniqueConstants,Style,StringConditions, Placeholders, ToasterMessages} from 'src/app/common/constants/strings.constants';
 import { FilterOrder, FilterTransaction, SavedFilterChangeEvent, FilterData, OrderData } from 'src/app/common/types/pick-tote-manager.types';
 import { TableContextMenuService } from 'src/app/common/globalComponents/table-context-menu-component/table-context-menu.service';
+import { FilterationColumns, PeriodicElement } from 'src/app/common/Model/pick-Tote-Manager';
 
-// filteration-columns.ts
-export interface FilterationColumns {
-  ColumnType: string;
-  ColumnName: string;
-  Value: any; // Use 'any' to accommodate string, number, or Date
-  Value2: any;
-  GridOperation: string; // Assuming GridOperation is an enum, use string or specific values
-  IsInput: boolean;
-}
-
-export interface PeriodicElement {
-  name: string;
-  position: number;
-  weight: number;
-  symbol: string;
-}
 @Component({
   selector: 'app-pick-tote-manager',
   templateUrl: './pick-tote-manager.component.html',

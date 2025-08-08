@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { FilterationColumns } from '../../dialogs/pick-tote-manager/pick-tote-manager.component';
 import { OperationTypes } from '../enums/CommonEnums';
+import { FilterationColumns } from '../Model/pick-Tote-Manager';
 
 @Injectable({
   providedIn: 'root'
@@ -18,7 +18,7 @@ export class DirectFilterationColumnsService {
    * @param type The type of the value
    * @returns The updated array of FilterationColumns objects
    */
-  createFilterationColumn(selectedItem: any, filterColumnName: any, condition: string, type: string): FilterationColumns[] {
+  createFilterationColumn(selectedItem: string | number | boolean | Date | null | undefined, filterColumnName: string, condition: string, type: string): FilterationColumns[] {
     if (condition === 'clear') {
       // Clear specific column filter
       this.clearColumnFilter(filterColumnName);
@@ -46,7 +46,7 @@ export class DirectFilterationColumnsService {
     const gridOperation = this.mapConditionToGridOperation(condition);
     
     // Format the value based on type and condition
-    const value = this.formatValue(selectedItem, type, condition);
+    const value = this.formatValue(selectedItem, type);
     
     // For between operations, we need a second value (will be filled by user input)
     let value2 = null;
@@ -66,8 +66,8 @@ export class DirectFilterationColumnsService {
 
     return [...this.filterationColumns];
   }
-  isNullOrEmpty(str: string | null | undefined): boolean {
-    return str == null || str.length === 0;
+  isNullOrEmpty(str: string | number | boolean | Date | null | undefined): boolean {
+    return str == null || str == undefined;
   }
 
   /**
@@ -149,43 +149,28 @@ export class DirectFilterationColumnsService {
    * @returns The corresponding GridOperation value
    */
   private mapConditionToGridOperation(condition: string): string {
-    switch (condition.toLowerCase()) {
-      case 'equals to':
-        return 'Equals';
-      case 'is not equals to':
-        return 'NotEquals';
-      case 'is greater than or equal to':
-        return 'GreaterThanOrEqual';
-      case 'is less than or equal to':
-        return 'LessThanOrEqual';
-      case 'is greater than':
-        return 'GreaterThan';
-      case 'is less than':
-        return 'LessThan';
-      case 'is like':
-        return 'Like';
-       case 'contains':
-          return 'Contains';
-      case 'is not like':
-        return 'NotLike';
-       case 'does not contains':
-          return 'DoesNotContain';
-      case 'begins with':
-        return 'Begins';
-      case 'does not begins with':
-        return 'DoesNotBegin';
-      case 'ends with':
-        return 'EndsWith';
-      case 'does not ends with':
-        return 'DoesNotEndWith';
-      case 'is between':
-      case 'between':
-        return 'Between';
-      default:
-        return 'Equals';
-    }
+    const conditionMap: Record<string, string> = {
+      'equals to': 'Equals',
+      'is not equals to': 'NotEquals',
+      'is greater than or equal to': 'GreaterThanOrEqual',
+      'is less than or equal to': 'LessThanOrEqual',
+      'is greater than': 'GreaterThan',
+      'is less than': 'LessThan',
+      'is like': 'Like',
+      'contains': 'Contains',
+      'is not like': 'NotLike',
+      'does not contains': 'DoesNotContain',
+      'begins with': 'Begins',
+      'does not begins with': 'DoesNotBegin',
+      'ends with': 'EndsWith',
+      'does not ends with': 'DoesNotEndWith',
+      'is between': 'Between',
+      'between': 'Between'
+    };
+  
+    return conditionMap[condition.toLowerCase()] ?? 'Equals';
   }
-
+  
   /**
    * Determines the column type based on the value type and column name
    * @param type The type of the value
@@ -203,7 +188,7 @@ export class DirectFilterationColumnsService {
       'inductionDate'
     ]);
   
-    if ((!type || type.trim() === '') && dateColumns.has(columnName)) {
+    if ((!type || type.trim() !== '') && dateColumns.has(columnName)) {
       return 'datetime';
     }
   
@@ -212,31 +197,13 @@ export class DirectFilterationColumnsService {
   
     return 'string';
   }
-  
 
-  /**
-   * Formats a value based on its type and the condition
-   * @param value The value to format
-   * @param type The type of the value
-   * @param condition The condition text
-   * @returns The formatted value
-   */
-  private formatValue(value: any, type: string, condition: string): string | number | boolean | Date | null {
+  private formatValue(value: string | number | boolean | Date | null | undefined, type: string): string | number | boolean | Date | null {
     if (value == null) return null;
-    switch (type) {
-      case 'boolean':
-        return value ? 1 : 0;
-      case 'number':
-      case 'date':
-      case 'string':
-        return value;
-      default:  
-        // Wildcard handling is assumed to be done externally (e.g., in GridOperation)
-        return value;
-    }
+
+    return value;
   }
   
-
   /**
    * Checks if a string is a valid date
    * @param dateStr The string to check
