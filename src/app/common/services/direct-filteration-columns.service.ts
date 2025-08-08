@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { FilterationColumns } from '../../dialogs/pick-tote-manager/pick-tote-manager.component';
-import { OperationTypes } from '../enums/CommonEnums';
 
 @Injectable({
   providedIn: 'root'
@@ -18,7 +17,7 @@ export class DirectFilterationColumnsService {
    * @param type The type of the value
    * @returns The updated array of FilterationColumns objects
    */
-  createFilterationColumn(selectedItem: any, filterColumnName: any, condition: string, type: string): FilterationColumns[] {
+  createFilterationColumn(selectedItem: any, filterColumnName: string, condition: string, type: string): FilterationColumns[] {
     if (condition === 'clear') {
       // Clear specific column filter
       this.clearColumnFilter(filterColumnName);
@@ -68,7 +67,7 @@ export class DirectFilterationColumnsService {
    * @returns True if the string is null, undefined, empty, or an empty string
    */ 
   isNullOrEmpty(str: string | null | undefined): boolean {
-    return (str === null || str === undefined || str?.length === 0 || str === '');
+    return str == null || str.length === 0;
   }
 
   /**
@@ -188,27 +187,37 @@ export class DirectFilterationColumnsService {
   }
 
   /**
-   * Determines the column type based on the value type and column name
-   * @param type The type of the value
-   * @param columnName The column name
-   * @returns The column type
+   * Determines the column type based on the provided type and column name.
+   * If type is not provided, checks for known date column names.
+   * @param type The explicit type of the value (e.g., 'number', 'boolean', etc.)
+   * @param columnName The name of the column
+   * @returns The determined column type as a string
    */
   private determineColumnType(type: string, columnName: string): string {
-    if (!type  && 
-        columnName === 'expirationDate' || 
-        columnName === 'putAwayDate' || 
-        columnName === 'importDate' || 
-        columnName === 'requiredDate' || 
-        columnName === 'completedDate' || 
-        columnName === 'exportDate' || 
-        columnName === 'inductionDate') {
+    // List of column names that should be treated as datetime
+    const dateColumnNames = [
+      'expirationDate',
+      'putAwayDate',
+      'importDate',
+      'requiredDate',
+      'completedDate',
+      'exportDate',
+      'inductionDate',
+    ];
+
+    // If type is not provided and columnName matches a known date column, return 'datetime'
+    if (!type && dateColumnNames.includes(columnName)) {
       return 'datetime';
-    } else if (type === 'number') {
-      return 'int';
-    } else if (type === 'boolean') {
-      return 'boolean';
-    } else {
-      return 'string';
+    }
+
+    // Otherwise, use the explicit type if provided
+    switch (type) {
+      case 'number':
+        return 'int';
+      case 'boolean':
+        return 'boolean';
+      default:
+        return 'string';
     }
   }
 
