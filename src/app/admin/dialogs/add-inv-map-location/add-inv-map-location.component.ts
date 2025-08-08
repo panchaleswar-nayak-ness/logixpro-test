@@ -841,13 +841,8 @@ onSubmit(form: FormGroup<InventoryMapFormData>) {
       
       this.validateZoneLocation();
 
-      if (type === this.locationZoneType.Location) {
-        this.updateItemNumber(TableConstant.zone, zoneValue);
-      } 
-      
-      else if (type === this.locationZoneType.Zone) {
-        this.updateItemNumber(TableConstant.Location, locationValue);
-      }
+      this.updateItemNumber(TableConstant.Location, locationValue);
+      this.updateItemNumber(TableConstant.zone, zoneValue);
     }
   }
 
