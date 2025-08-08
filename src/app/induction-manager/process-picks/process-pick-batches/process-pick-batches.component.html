@@ -3,7 +3,7 @@
         <mat-card class="mat-elevation-z g-card mb-3 h-100">
             <mat-card-content class=" h-100">
                 <div class="d-flex justify-content-between align-items-center mb-3">
-                    <app-icon-heading-component heading="Print Existing Pick Batches" icon="print" data-automation-id="print-existing-pick-batches-heading">
+                    <app-icon-heading-component heading="Print Existing Pick Batches" icon="print" [automationId]="'print-existing-pick-batches-heading'">
                     </app-icon-heading-component>
                     <button type="submit" mat-stroked-button class="btn-regular" color="primary"
                         [matMenuTriggerFor]="appMenu1" data-automation-id="print-menu-button">

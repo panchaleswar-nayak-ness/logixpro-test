@@ -81,7 +81,7 @@
                                                 (change)="validtote($event,i)"    
                                                 [(ngModel)]="list.toteId"
                                                 [value]="list.toteId===undefined?'':list.toteId"
-                                                [disabled]="view == 'batch' || view == 'tote'" [attr.data-automation-id]="'input-tote-id-' + i">
+                                                [disabled]="view == 'batch' || view == 'tote'" [attr.data-automation-id]="'input-tote-id-' + (list.toteId || '')">
                                             </mat-form-field>
 
                                             <button (click)="removeToteID(i)" [disabled]="view == 'batch' || view == 'tote'" mat-flat-button color="warn" class="xsm-icon-button" [attr.data-automation-id]="'remove-tote-id-button-' + i">

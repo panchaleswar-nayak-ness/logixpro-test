@@ -2,7 +2,7 @@
   <div color="warn" class="circle-icon circle-66 circle-primary mb-4 text-primary-900">
     <mat-icon class="material-symbols-outlined" color="primary">info</mat-icon>
   </div>
-  <h1 class="mat-card-title ">
+  <h1 class="mat-card-title " data-automation-id="post-order-with-this-tote-id-heading">
     Post Order With This Tote ID
   </h1>
   <p class="prompt-message py-4 mb-0 ">
@@ -10,10 +10,10 @@
   </p>
   <div class="w-100">
     <button (click)="confirmOK()" mat-stroked-button color="primary"
-      class="w-100 btn-lg mb-3 prompt-action-accent-button">
+      class="w-100 btn-lg mb-3 prompt-action-accent-button" data-automation-id="ok-button">
       Ok
     </button>
-    <button mat-stroked-button color="basic" class="custom-btn bg-white w-100 btn-lg" [mat-dialog-close]="true">
+    <button mat-stroked-button color="basic" class="custom-btn bg-white w-100 btn-lg" [mat-dialog-close]="true" data-automation-id="cancel-button">
       Cancel
     </button>
   </div>

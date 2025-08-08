@@ -13,7 +13,7 @@
           </span>
           </ng-template>
         </div>
-        <h1 class="mat-card-title text-error" data-automation-id="alert-confirmation-heading">
+        <h1 class="mat-card-title text-error" [attr.data-automation-id]="'heading-' + heading">
            {{heading}}
         </h1>
         <p class="prompt-message py-4 mb-0 " data-automation-id="alert-confirmation-message">

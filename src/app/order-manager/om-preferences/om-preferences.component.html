@@ -1,9 +1,9 @@
 <mat-card class="mat-elevation-z g-card mt-2 mb-3 min-height-600px">
     <mat-card-content>
         <div class="d-flex align-items-center">
-            <h2 class="card-header-title mb-3 me-4 d-flex align-items-center">
+            <h2 class="card-header-title mb-3 me-4 d-flex align-items-center" data-automation-id="preferences-heading">
 <div class="mat-icon-wrap me-3">
-    <span class="material-symbols-outlined">
+    <span class="material-symbols-outlined" data-automation-id="tune-icon">
         tune
     </span>
     </div>
@@ -14,8 +14,8 @@
 <div class="row mt-3">
     <div class="col-xl-6">
         <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline">
-            <mat-label>Maximum Orders to Retrieve:</mat-label>
-            <input [NumbersOnly]="true" #myInput (keyup)="restrictTo10Digits($event)" type="number"   formControlName="maxOrder" matInput>
+            <mat-label data-automation-id="max-orders-label">Maximum Orders to Retrieve:</mat-label>
+            <input [NumbersOnly]="true" #myInput (keyup)="restrictTo10Digits($event)" type="number"   formControlName="maxOrder" matInput data-automation-id="max-orders-input">
         </mat-form-field>
     </div>
 </div>
@@ -23,37 +23,37 @@
 <div class="row">
     <div class="col-xl-6">
         <div class="d-flex justify-content-between mb-2">
-            <span>Allow Release for In-Process Orders:</span>
-            <mat-slide-toggle  formControlName="allowInProcOrders"  checked color="primary"></mat-slide-toggle>
+            <span data-automation-id="allow-in-process-orders-label">Allow Release for In-Process Orders:</span>
+            <mat-slide-toggle  formControlName="allowInProcOrders"  checked color="primary" data-automation-id="allow-in-process-orders-toggle"></mat-slide-toggle>
         </div>
         <div class="d-flex justify-content-between mb-2">
-            <span>Allow Release of Individual Order Lines:</span>
-            <mat-slide-toggle formControlName="allowIndivdOrders"  checked color="primary"></mat-slide-toggle>
+            <span data-automation-id="allow-individual-orders-label">Allow Release of Individual Order Lines:</span>
+            <mat-slide-toggle formControlName="allowIndivdOrders"  checked color="primary" data-automation-id="allow-individual-orders-toggle"></mat-slide-toggle>
         </div>
         <div class="d-flex justify-content-between mb-3">
-            <span>Print Directly?</span>
-            <mat-slide-toggle  formControlName="printDirect" checked color="primary"></mat-slide-toggle>
+            <span data-automation-id="print-directly-label">Print Directly?</span>
+            <mat-slide-toggle  formControlName="printDirect" checked color="primary" data-automation-id="print-directly-toggle"></mat-slide-toggle>
         </div>
         <div class="d-flex justify-content-between mb-2">
             <mat-form-field class="custom-form-field w-100 __grab_cursor mb-3" appearance="outline">
-                <mat-label>Default View Type</mat-label>
-                <mat-select formControlName="viewType" >
-                    <mat-option value="Headers">Order Headers</mat-option>
-                    <mat-option value="Lines">Order Lines</mat-option>
+                <mat-label data-automation-id="default-view-type-label">Default View Type</mat-label>
+                <mat-select formControlName="viewType" [attr.data-automation-id]="'default-view-type-select-' + (filtersForm.get('viewType')?.value || '')">
+                    <mat-option value="Headers" data-automation-id="default-view-type-option-headers">Order Headers</mat-option>
+                    <mat-option value="Lines" data-automation-id="default-view-type-option-lines">Order Lines</mat-option>
                 </mat-select>
-                <span class="material-symbols-outlined icon-expand-more text-20">
+                <span class="material-symbols-outlined icon-expand-more text-20" data-automation-id="default-view-type-expand-icon">
                     expand_more
                 </span>
             </mat-form-field>
         </div>
         <div class="d-flex justify-content-between mb-2">
             <mat-form-field class="custom-form-field w-100 __grab_cursor mb-3" appearance="outline">
-                <mat-label>Default Order Type</mat-label>
-                <mat-select formControlName="orderType">
-                    <mat-option value="Open">Open</mat-option>
-                    <mat-option value="Pending">Pending</mat-option>
+                <mat-label data-automation-id="default-order-type-label">Default Order Type</mat-label>
+                <mat-select formControlName="orderType" [attr.data-automation-id]="'default-order-type-select-' + (filtersForm.get('orderType')?.value || '')">
+                    <mat-option value="Open" data-automation-id="default-order-type-option-open">Open</mat-option>
+                    <mat-option value="Pending" data-automation-id="default-order-type-option-pending">Pending</mat-option>
                 </mat-select>
-                <span class="material-symbols-outlined icon-expand-more text-20">
+                <span class="material-symbols-outlined icon-expand-more text-20" data-automation-id="default-order-type-expand-icon">
                     expand_more
                 </span>
 

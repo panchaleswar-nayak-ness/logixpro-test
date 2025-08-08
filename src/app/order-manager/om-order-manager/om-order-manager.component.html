@@ -1,9 +1,9 @@
 <mat-card class="mat-elevation-z g-card mb-3 h-100">
     <mat-card-content>
         <div class="d-flex justify-content-between flex-wrap mb-3">
-            <h2 class="card-header-title mb-3 d-flex align-items-center">
+            <h2 class="card-header-title mb-3 d-flex align-items-center" data-automation-id="filters-heading">
                 <div class="mat-icon-wrap me-1 me-lg-3">
-                    <span class="material-symbols-outlined">
+                    <span class="material-symbols-outlined" data-automation-id="filter-icon">
                         filter_list
                     </span>
                 </div>
@@ -11,44 +11,44 @@
             </h2>
             <div class="d-flex gap-12 flex-wrap">
                 <div class="mb-3">
-                    <button type="submit" mat-stroked-button class="btn-regular" color="primary" (click)="openOrderStatus({}, false)">Order Status</button>
+                    <button type="submit" mat-stroked-button class="btn-regular" color="primary" (click)="openOrderStatus({}, false)" data-automation-id="order-status-button">Order Status</button>
                 </div>
                 <div class="mb-3">
-                    <button type="submit" mat-flat-button class="btn-regular" color="primary" (click)="displayRecords()" #btnRef="matButton">Display Records</button>
+                    <button type="submit" mat-flat-button class="btn-regular" color="primary" (click)="displayRecords()" #btnRef="matButton" data-automation-id="display-records-button">Display Records</button>
                 </div>
                 <div class="mb-3">
-                    <button type="submit" mat-stroked-button class="btn-regular" *ngIf="authService.UserPermissonByFuncName('Admin Create Orders')" color="primary" (click)="openOmCreateOrders()">Add/Edit Order</button>
+                    <button type="submit" mat-stroked-button class="btn-regular" *ngIf="authService.UserPermissonByFuncName('Admin Create Orders')" color="primary" (click)="openOmCreateOrders()" data-automation-id="add-edit-order-button">Add/Edit Order</button>
                 </div>
             </div>
         </div>
         <div class="row">
             <div class="col-xl-3">
                 <mat-form-field class="custom-form-field w-100 __grab_cursor mb-3" appearance="outline">
-                    <mat-label>Find Order(s) By:</mat-label>
-                    <mat-select [(ngModel)]="column" (selectionChange)="showHideValues(1)">
-                        <mat-option value="Category">Category</mat-option>
-                        <mat-option value="Description">Description</mat-option>
-                        <mat-option value="Host Transaction ID">Host Transaction ID</mat-option>
-                        <mat-option value="Import Date">Import Date</mat-option>
-                        <mat-option value="Item Number" replacePlaceholder [replacePlaceHolder]="placeholders.itemNumber" [fallbackPlaceHolder]="placeholders.itemNumberFallback"> Item Number</mat-option>
-                        <mat-option value="Notes">Notes</mat-option>
-                        <mat-option value="Order Number" selected="selected">Order Number</mat-option>
-                        <mat-option value="Priority">Priority</mat-option>
-                        <mat-option value="Required Date">Required Date</mat-option>
-                        <mat-option value="Sub Category">Sub Category</mat-option>
-                        <mat-option value="Supplier Item ID">Supplier Item ID</mat-option>
-                        <mat-option value="UF1" replacePlaceholder [replacePlaceHolder]="placeholders.userField1" [fallbackPlaceHolder]="placeholders.userField1Fallback"> {{UserField1}} </mat-option>
-                        <mat-option value="UF2" replacePlaceholder [replacePlaceHolder]="placeholders.userField2" [fallbackPlaceHolder]="placeholders.userField2Fallback"> {{UserField2}} </mat-option>
-                        <mat-option value="UF3" replacePlaceholder [replacePlaceHolder]="placeholders.userField3" [fallbackPlaceHolder]="placeholders.userField3Fallback"> {{UserField3}} </mat-option>
-                        <mat-option value="UF4" replacePlaceholder [replacePlaceHolder]="placeholders.userField4" [fallbackPlaceHolder]="placeholders.userField4Fallback"> {{UserField4}} </mat-option>
-                        <mat-option value="UF5" replacePlaceholder [replacePlaceHolder]="placeholders.userField5" [fallbackPlaceHolder]="placeholders.userField5Fallback"> {{UserField5}} </mat-option>
-                        <mat-option value="UF6" replacePlaceholder [replacePlaceHolder]="placeholders.userField6" [fallbackPlaceHolder]="placeholders.userField6Fallback"> {{UserField6}} </mat-option>
-                        <mat-option value="UF7" replacePlaceholder [replacePlaceHolder]="placeholders.userField7" [fallbackPlaceHolder]="placeholders.userField7Fallback"> {{UserField7}} </mat-option>
-                        <mat-option value="UF8" replacePlaceholder [replacePlaceHolder]="placeholders.userField8" [fallbackPlaceHolder]="placeholders.userField8Fallback"> {{UserField8}} </mat-option>
-                        <mat-option value="UF9" replacePlaceholder [replacePlaceHolder]="placeholders.userField9" [fallbackPlaceHolder]="placeholders.userField9Fallback"> {{UserField9}} </mat-option>
-                        <mat-option value="Warehouse">Warehouse</mat-option>
+                    <mat-label data-automation-id="find-orders-by-label">Find Order(s) By:</mat-label>
+                    <mat-select [(ngModel)]="column" (selectionChange)="showHideValues(1)" [attr.data-automation-id]="'find-orders-by-select-' + (column || '')">
+                        <mat-option value="Category" data-automation-id="find-orders-option-category">Category</mat-option>
+                        <mat-option value="Description" data-automation-id="find-orders-option-description">Description</mat-option>
+                        <mat-option value="Host Transaction ID" data-automation-id="find-orders-option-host-transaction-id">Host Transaction ID</mat-option>
+                        <mat-option value="Import Date" data-automation-id="find-orders-option-import-date">Import Date</mat-option>
+                        <mat-option value="Item Number" replacePlaceholder [replacePlaceHolder]="placeholders.itemNumber" [fallbackPlaceHolder]="placeholders.itemNumberFallback" data-automation-id="find-orders-option-item-number"> Item Number</mat-option>
+                        <mat-option value="Notes" data-automation-id="find-orders-option-notes">Notes</mat-option>
+                        <mat-option value="Order Number" selected="selected" data-automation-id="find-orders-option-order-number">Order Number</mat-option>
+                        <mat-option value="Priority" data-automation-id="find-orders-option-priority">Priority</mat-option>
+                        <mat-option value="Required Date" data-automation-id="find-orders-option-required-date">Required Date</mat-option>
+                        <mat-option value="Sub Category" data-automation-id="find-orders-option-sub-category">Sub Category</mat-option>
+                        <mat-option value="Supplier Item ID" data-automation-id="find-orders-option-supplier-item-id">Supplier Item ID</mat-option>
+                        <mat-option value="UF1" replacePlaceholder [replacePlaceHolder]="placeholders.userField1" [fallbackPlaceHolder]="placeholders.userField1Fallback" data-automation-id="find-orders-option-uf1"> {{UserField1}} </mat-option>
+                        <mat-option value="UF2" replacePlaceholder [replacePlaceHolder]="placeholders.userField2" [fallbackPlaceHolder]="placeholders.userField2Fallback" data-automation-id="find-orders-option-uf2"> {{UserField2}} </mat-option>
+                        <mat-option value="UF3" replacePlaceholder [replacePlaceHolder]="placeholders.userField3" [fallbackPlaceHolder]="placeholders.userField3Fallback" data-automation-id="find-orders-option-uf3"> {{UserField3}} </mat-option>
+                        <mat-option value="UF4" replacePlaceholder [replacePlaceHolder]="placeholders.userField4" [fallbackPlaceHolder]="placeholders.userField4Fallback" data-automation-id="find-orders-option-uf4"> {{UserField4}} </mat-option>
+                        <mat-option value="UF5" replacePlaceholder [replacePlaceHolder]="placeholders.userField5" [fallbackPlaceHolder]="placeholders.userField5Fallback" data-automation-id="find-orders-option-uf5"> {{UserField5}} </mat-option>
+                        <mat-option value="UF6" replacePlaceholder [replacePlaceHolder]="placeholders.userField6" [fallbackPlaceHolder]="placeholders.userField6Fallback" data-automation-id="find-orders-option-uf6"> {{UserField6}} </mat-option>
+                        <mat-option value="UF7" replacePlaceholder [replacePlaceHolder]="placeholders.userField7" [fallbackPlaceHolder]="placeholders.userField7Fallback" data-automation-id="find-orders-option-uf7"> {{UserField7}} </mat-option>
+                        <mat-option value="UF8" replacePlaceholder [replacePlaceHolder]="placeholders.userField8" [fallbackPlaceHolder]="placeholders.userField8Fallback" data-automation-id="find-orders-option-uf8"> {{UserField8}} </mat-option>
+                        <mat-option value="UF9" replacePlaceholder [replacePlaceHolder]="placeholders.userField9" [fallbackPlaceHolder]="placeholders.userField9Fallback" data-automation-id="find-orders-option-uf9"> {{UserField9}} </mat-option>
+                        <mat-option value="Warehouse" data-automation-id="find-orders-option-warehouse">Warehouse</mat-option>
                     </mat-select>
-                    <span class="material-symbols-outlined icon-expand-more text-20">
+                    <span class="material-symbols-outlined icon-expand-more text-20" data-automation-id="find-orders-expand-icon">
                         expand_more
                     </span>
                 </mat-form-field>
@@ -56,13 +56,13 @@
 
             <div class="col-xl-3">
                 <mat-form-field class="custom-form-field w-100 __grab_cursor mb-3" appearance="outline">
-                    <mat-label>Case</mat-label>
-                    <mat-select [(ngModel)]="case" (selectionChange)="showHideValues(2)" #focusFeild>
-                        <mat-option value="Equals">Equals</mat-option>
-                        <mat-option value="Between">Between</mat-option>
-                        <mat-option value="Like">Like</mat-option>
+                    <mat-label data-automation-id="case-label">Case</mat-label>
+                    <mat-select [(ngModel)]="case" (selectionChange)="showHideValues(2)" #focusFeild [attr.data-automation-id]="'case-select-' + (case || '')">
+                        <mat-option value="Equals" data-automation-id="case-option-equals">Equals</mat-option>
+                        <mat-option value="Between" data-automation-id="case-option-between">Between</mat-option>
+                        <mat-option value="Like" data-automation-id="case-option-like">Like</mat-option>
                     </mat-select>
-                    <span class="material-symbols-outlined icon-expand-more text-20">
+                    <span class="material-symbols-outlined icon-expand-more text-20" data-automation-id="case-expand-icon">
                         expand_more
                     </span>
 
@@ -72,36 +72,36 @@
             
             <div class="col-xl-3" *ngIf="!v1Show">
                 <mat-form-field class="custom-form-field w-100 __grab_cursor mb-3" appearance="outline">
-                    <mat-label >Value 1</mat-label>
-                    <input matInput [(ngModel)]="value1D"  (dateChange)="displayRecords()" [matDatepicker]="v1D">
+                    <mat-label data-automation-id="value1-date-label">Value 1</mat-label>
+                    <input matInput [(ngModel)]="value1D"  (dateChange)="displayRecords()" [matDatepicker]="v1D" [attr.data-automation-id]="'value1-date-input-' + (value1D || '')">
                     
-                    <mat-datepicker-toggle matSuffix [for]="v1D" ngDefaultControl ></mat-datepicker-toggle>
+                    <mat-datepicker-toggle matSuffix [for]="v1D" ngDefaultControl data-automation-id="value1-datepicker-toggle"></mat-datepicker-toggle>
                     <mat-datepicker #v1D [startAt]="value1D"></mat-datepicker>
                 </mat-form-field>
             </div>
 
             <div class="col-xl-3" *ngIf="v1Show">
                 <mat-form-field class="custom-form-field w-100 __grab_cursor mb-3" appearance="outline">
-                    <mat-label >Value 1</mat-label>
-                    <input matInput [(ngModel)]="value1" (keyup)="callDisplayRecords($event)" matTooltip="For dates use mm/dd/yy" matTooltipPosition="above">
-                    <button matSuffix *ngIf="value1" class="clear-btn"  (click)="value1 = ''"><mat-icon class="text-20 text-chrome-600">cancel</mat-icon></button>
+                    <mat-label data-automation-id="value1-label">Value 1</mat-label>
+                    <input matInput [(ngModel)]="value1" (keyup)="callDisplayRecords($event)" matTooltip="For dates use mm/dd/yy" matTooltipPosition="above" data-automation-id="value1-input">
+                    <button matSuffix *ngIf="value1" class="clear-btn"  (click)="value1 = ''" data-automation-id="clear-value1-button"><mat-icon class="text-20 text-chrome-600">cancel</mat-icon></button>
                 </mat-form-field>
             </div>
 
 
             <div class="col-xl-3" *ngIf="!v2Show">
                 <mat-form-field class="custom-form-field w-100 __grab_cursor mb-3" appearance="outline" >
-                    <mat-label>Value 2</mat-label>
-                    <input [disabled]="case != 'Between'" matInput [(ngModel)]="value2D"   (dateChange)="displayRecords()" [matDatepicker]="v2D">
-                    <mat-datepicker-toggle [disabled]="case != 'Between'" matSuffix [for]="v2D" ngDefaultControl ></mat-datepicker-toggle>
+                    <mat-label data-automation-id="value2-date-label">Value 2</mat-label>
+                    <input [disabled]="case != 'Between'" matInput [(ngModel)]="value2D"   (dateChange)="displayRecords()" [matDatepicker]="v2D" data-automation-id="value2-date-input">
+                    <mat-datepicker-toggle [disabled]="case != 'Between'" matSuffix [for]="v2D" ngDefaultControl data-automation-id="value2-datepicker-toggle"></mat-datepicker-toggle>
                     <mat-datepicker [disabled]="case != 'Between'" #v2D [startAt]="value2D"></mat-datepicker>
                 </mat-form-field>
             </div>
 
             <div class="col-xl-3" *ngIf="v2Show">
                 <mat-form-field class="custom-form-field w-100 __grab_cursor mb-3" appearance="outline" >
-                    <mat-label>Value 2</mat-label>
-                    <input [disabled]="case != 'Between'" matInput [(ngModel)]="value2" (keyup)="callDisplayRecords($event)" matTooltip="For dates use mm/dd/yy" matTooltipPosition="above">
+                    <mat-label data-automation-id="value2-label">Value 2</mat-label>
+                    <input [disabled]="case != 'Between'" matInput [(ngModel)]="value2" (keyup)="callDisplayRecords($event)" matTooltip="For dates use mm/dd/yy" matTooltipPosition="above" data-automation-id="value2-input">
                 </mat-form-field>
             </div>
 
@@ -109,21 +109,21 @@
         <div class="row">
             <div class="col-xl-3">
                 <mat-form-field class="custom-form-field w-100 __grab_cursor mb-3" appearance="outline">
-                    <mat-label>Max Orders</mat-label>
-                    <input matInput [(ngModel)]="maxOrders" #maxOrd (input)="maxOrd.value = globalService.setNumericInRange(maxOrd.value, globalService.sqlLimits.numerics.int, '');">
+                    <mat-label data-automation-id="max-orders-label">Max Orders</mat-label>
+                    <input matInput [(ngModel)]="maxOrders" #maxOrd (input)="maxOrd.value = globalService.setNumericInRange(maxOrd.value, globalService.sqlLimits.numerics.int, '');" data-automation-id="max-orders-input">
                
                 </mat-form-field>
             </div>
 
             <div class="col-xl-3">
                 <mat-form-field class="custom-form-field w-100 __grab_cursor mb-3" appearance="outline">
-                    <mat-label>Trans Type</mat-label>
-                    <mat-select [(ngModel)]="transType" (selectionChange)="getOrders()">
-                        <mat-option value="Pick">Pick</mat-option>
-                        <mat-option value="Put Away">Put Away</mat-option>
-                        <mat-option value="Count">Count</mat-option>
+                    <mat-label data-automation-id="trans-type-label">Trans Type</mat-label>
+                    <mat-select [(ngModel)]="transType" (selectionChange)="getOrders()" [attr.data-automation-id]="'trans-type-select-' + (transType || '')">
+                        <mat-option value="Pick" data-automation-id="trans-type-option-pick">Pick</mat-option>
+                        <mat-option value="Put Away" data-automation-id="trans-type-option-put-away">Put Away</mat-option>
+                        <mat-option value="Count" data-automation-id="trans-type-option-count">Count</mat-option>
                     </mat-select>
-                    <span class="material-symbols-outlined icon-expand-more text-20">
+                    <span class="material-symbols-outlined icon-expand-more text-20" data-automation-id="trans-type-expand-icon">
                         expand_more
                     </span>
 
@@ -132,12 +132,12 @@
 
             <div class="col-xl-3">
                 <mat-form-field class="custom-form-field w-100 __grab_cursor mb-3" appearance="outline">
-                    <mat-label>View Type</mat-label>
-                    <mat-select [(ngModel)]="viewType" (selectionChange)="getOrders()">
-                        <mat-option value="Headers">Order Headers</mat-option>
-                        <mat-option value="Lines">Order Lines</mat-option>
+                    <mat-label data-automation-id="view-type-label">View Type</mat-label>
+                    <mat-select [(ngModel)]="viewType" (selectionChange)="getOrders()" [attr.data-automation-id]="'view-type-select-' + (viewType || '')">
+                        <mat-option value="Headers" data-automation-id="view-type-option-headers">Order Headers</mat-option>
+                        <mat-option value="Lines" data-automation-id="view-type-option-lines">Order Lines</mat-option>
                     </mat-select>
-                    <span class="material-symbols-outlined icon-expand-more text-20">
+                    <span class="material-symbols-outlined icon-expand-more text-20" data-automation-id="view-type-expand-icon">
                         expand_more
                     </span>
                 </mat-form-field>
@@ -145,12 +145,12 @@
 
             <div class="col-xl-3">
                 <mat-form-field class="custom-form-field w-100 __grab_cursor mb-3" appearance="outline">
-                    <mat-label>Order Type</mat-label>
-                    <mat-select [(ngModel)]="orderType" (selectionChange)="getOrders()">
-                        <mat-option value="Open">Open</mat-option>
-                        <mat-option value="Pending">Pending</mat-option>
+                    <mat-label data-automation-id="order-type-label">Order Type</mat-label>
+                    <mat-select [(ngModel)]="orderType" (selectionChange)="getOrders()" [attr.data-automation-id]="'order-type-select-' + (orderType || '')">
+                        <mat-option value="Open" data-automation-id="order-type-option-open">Open</mat-option>
+                        <mat-option value="Pending" data-automation-id="order-type-option-pending">Pending</mat-option>
                     </mat-select>
-                    <span class="material-symbols-outlined icon-expand-more text-20">
+                    <span class="material-symbols-outlined icon-expand-more text-20" data-automation-id="order-type-expand-icon">
                         expand_more
                     </span>
 
@@ -177,14 +177,14 @@
             <div class="col-xl-5 offset-xl-2">
                 <div class="d-xl-flex d-block justify-content-end mb-3">
                     <mat-form-field class="action-dropdown d-xl-flex d-block" appearance="outline">
-                        <mat-label>Actions</mat-label>
-                        <mat-select #matRef class="employees-action" placeholder="Actions" (selectionChange)="actionDialog($event)">
-                            <mat-option value="0" (click)="releaseViewed()"> Release Filtered </mat-option>
-                            <mat-option value="1" (click)="deleteViewed()"> Delete Viewed </mat-option>
-                            <mat-option value="2" (click)="printViewed()"> Print Viewed </mat-option>
-                            <mat-option value="3" (click)="selectColumnSequence()"> Set Column Sequence </mat-option>
+                        <mat-label data-automation-id="actions-label">Actions</mat-label>
+                        <mat-select #matRef class="employees-action" placeholder="Actions" (selectionChange)="actionDialog($event)" data-automation-id="actions-select">
+                            <mat-option value="0" (click)="releaseViewed()" data-automation-id="actions-option-release-filtered"> Release Filtered </mat-option>
+                            <mat-option value="1" (click)="deleteViewed()" data-automation-id="actions-option-delete-viewed"> Delete Viewed </mat-option>
+                            <mat-option value="2" (click)="printViewed()" data-automation-id="actions-option-print-viewed"> Print Viewed </mat-option>
+                            <mat-option value="3" (click)="selectColumnSequence()" data-automation-id="actions-option-set-column-sequence"> Set Column Sequence </mat-option>
                         </mat-select>
-                        <span class="material-symbols-outlined icon-expand-more">
+                        <span class="material-symbols-outlined icon-expand-more" data-automation-id="actions-expand-icon">
                             expand_more
                         </span>
                     </mat-form-field>
@@ -197,9 +197,9 @@
                 <table class="w-100 custom-table table-borderless" mat-table matSort [dataSource]="orderTable" (matSortChange)="announceSortChange($event)">                                                        
 
                     <ng-container *ngFor="let col of allColumns; let i = index;" matColumnDef="{{col.colDef}}">
-                        <th mat-header-cell *matHeaderCellDef mat-sort-header> {{col.key}} </th>
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header [attr.data-automation-id]="'table-header-' + col.colDef"> {{col.key}} </th>
 
-                        <td mat-cell *matCellDef="let element" (contextmenu)="onContextMenu($event,  element[col.colHeader], col.colDef)">
+                        <td mat-cell *matCellDef="let element; let j = index" (contextmenu)="onContextMenu($event,  element[col.colHeader], col.colDef)" [attr.data-automation-id]="'table-data-' + col.colDef + '-' + j">
                             <div *ngIf="col.colDef != 'Transaction Type'"
                             #tooltip="matTooltip" matTooltipPosition="above" [matTooltip]="element[col.colHeader]" 
                              [matTooltipDisabled]="element[col.colHeader] && element[col.colHeader].length>=20?false:true"
@@ -211,21 +211,21 @@
                     </ng-container>
                     
                     <ng-container matColumnDef="actions" stickyEnd>
-                        <th mat-header-cell *matHeaderCellDef>Actions</th>        
-                        <td mat-cell *matCellDef="let element" >
+                        <th mat-header-cell *matHeaderCellDef data-automation-id="table-header-actions">Actions</th>        
+                        <td mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'table-data-actions-' + i">
                             <div class="d-flex justify-content-end">
-                                <button mat-icon-button [matMenuTriggerFor]="appMenu" aria-label="" [ngClass]="{'active-btn':element.selected}" class="circle-icon-o active-btn" appearance="outline">
-                                    <mat-icon>more_horiz</mat-icon>
+                                <button mat-icon-button [matMenuTriggerFor]="appMenu" aria-label="" [ngClass]="{'active-btn':element.selected}" class="circle-icon-o active-btn" appearance="outline" [attr.data-automation-id]="'row-action-menu-button-' + i">
+                                    <mat-icon data-automation-id="more-horiz-icon">more_horiz</mat-icon>
                                 </button>                
                                 <mat-menu #appMenu="matMenu">
-                                    <button mat-menu-item (click)="openOrderStatus(element, true)">Order Status</button>
-                                    <button mat-menu-item (click)="updateRecord(element)">Update Records</button>
+                                    <button mat-menu-item (click)="openOrderStatus(element, true)" [attr.data-automation-id]="'row-action-order-status-' + i">Order Status</button>
+                                    <button mat-menu-item (click)="updateRecord(element)" [attr.data-automation-id]="'row-action-update-records-' + i">Update Records</button>
                                 </mat-menu>
                             </div>
                         </td>        
                     </ng-container>
-                    <tr class="mat-row" *matNoDataRow (contextmenu)="onContextMenu($event, undefined, '')"> 
-                        <td class="mat-cell " [attr.colspan]="displayedColumns.length">
+                    <tr class="mat-row" *matNoDataRow (contextmenu)="onContextMenu($event, undefined, '')" data-automation-id="no-data-row"> 
+                        <td class="mat-cell " [attr.colspan]="displayedColumns.length" data-automation-id="no-data-message">
                           No Matching Record Found.
                         </td>
                     </tr>
@@ -237,7 +237,7 @@
             </ng-scrollbar>
         </div>
         <div class="d-flex justify-content-between bg-white"> 
-            <mat-paginator [length]="this.customPagination.total" showFirstLastButtons [pageSize]="20" [pageSizeOptions]="[10, 20, 100]" (page)="handlePageEvent($event)"></mat-paginator>
+            <mat-paginator [length]="this.customPagination.total" showFirstLastButtons [pageSize]="20" [pageSizeOptions]="[10, 20, 100]" (page)="handlePageEvent($event)" data-automation-id="paginator"></mat-paginator>
         </div>
     </mat-card-content>
 </mat-card>

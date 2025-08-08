@@ -7,8 +7,8 @@
 </div>
 <div>
     <div class="d-flex justify-content-end mb-3">
-        <button mat-stroked-button color="primary" class="btn-regular" (click)="getReqDateDataSelect()" data-automation-id="refresh-data-button">
-          <mat-icon data-automation-id="refresh-icon">cached</mat-icon>
+        <button mat-stroked-button color="primary" class="btn-regular" (click)="getReqDateDataSelect()" data-automation-id="button-refresh-data">
+          <mat-icon>cached</mat-icon>
           Refresh Data
         </button>
       </div>
@@ -16,20 +16,20 @@
         <ng-scrollbar class="mat-table-scrollbar h-500" track="all" data-automation-id="required-date-table-scrollbar">
     <table mat-table [dataSource]="dataSource" matSort data-automation-id="required-date-table">
         <ng-container matColumnDef="reqDate">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header class="w-200" data-automation-id="table-header-required-date"> Required Date </th>
-            <td mat-cell *matCellDef="let row; let i = index" [attr.data-automation-id]="'table-row-' + i + '-required-date-cell'">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header class="w-200" data-automation-id="th-required-date"> Required Date </th>
+            <td mat-cell *matCellDef="let row; let i = index" [attr.data-automation-id]="'td-required-date-' + i ">
                 {{row.reqDate}}
             </td>
         </ng-container>
         <ng-container matColumnDef="zone">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header data-automation-id="table-header-zone"> Zone</th>
-            <td mat-cell *matCellDef="let row; let i = index" [attr.data-automation-id]="'table-row-' + i + '-zone-cell'">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header data-automation-id="th-zone"> Zone</th>
+            <td mat-cell *matCellDef="let row; let i = index" [attr.data-automation-id]="'td-zone-' + i ">
                 {{row.zone}}
             </td>
         </ng-container>
         <ng-container matColumnDef="countToInduct">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header data-automation-id="table-header-count-to-induct"> SB Transactions to Induct</th>
-            <td mat-cell *matCellDef="let row; let i = index" [attr.data-automation-id]="'table-row-' + i + '-count-to-induct-cell'">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header data-automation-id="th-sb-transactions-to-induct"> SB Transactions to Induct</th>
+            <td mat-cell *matCellDef="let row; let i = index" [attr.data-automation-id]="'td-sb-transactions-to-induct-' + i ">
                 {{row.countToInduct}}
             </td>
         </ng-container>
@@ -40,7 +40,7 @@
     </ng-scrollbar>
     </div>
     <div class="d-flex justify-content-center p-3">
-        <div *ngIf="dataSource.data?.length === 0" data-automation-id="no-data-message">No data found</div>
+        <div *ngIf="dataSource.data?.length === 0" data-automation-id="no-data-found">No data found</div>
       </div>
       <div class="table-pagination d-flex justify-content-start"
         *ngIf="  displayedColumns && dataSource">
