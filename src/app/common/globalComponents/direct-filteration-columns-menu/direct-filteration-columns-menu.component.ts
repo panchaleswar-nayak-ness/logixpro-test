@@ -30,6 +30,9 @@ export class DirectFilterationColumnsMenuComponent extends TableContextMenuCompo
    * Override the onContextMenuCommand method to create FilterationColumns objects directly
    */
   override onContextMenuCommand(SelectedItem: any, FilterColumnName: any, Condition: any, Type: any) {
+    // First call the parent method to maintain existing functionality
+    super.onContextMenuCommand(SelectedItem, FilterColumnName, Condition, Type);
+    
     // Now create FilterationColumns objects directly
     const filterationColumns = this.directFilterService.createFilterationColumn(
       SelectedItem, FilterColumnName, Condition, Type
@@ -58,14 +61,11 @@ export class DirectFilterationColumnsMenuComponent extends TableContextMenuCompo
 
     dialogRef.afterClosed().subscribe((result : any) => {
       if (result.SelectedColumn) {
+        // Call the parent method to maintain existing functionality
+        super.onContextMenuCommand(result.SelectedItem, result.SelectedColumn, result.Condition, result.Type);
+        
         // For Between operations, we need to handle two values
         if (result.Condition.toLowerCase().includes('between')) {
-          // If SelectedItem2 is not provided, split SelectedItem by ' and '
-          if (!result.SelectedItem2 && typeof result.SelectedItem === 'string' && result.SelectedItem.includes(' and ')) {
-            const parts = result.SelectedItem.split(' and ');
-            result.SelectedItem = parts[0];
-            result.SelectedItem2 = parts[1];
-          }
           const filterationColumns = this.directFilterService.updateFilterationColumnWithInput(
             result.SelectedColumn, result.Condition, result.SelectedItem, result.SelectedItem2
           );

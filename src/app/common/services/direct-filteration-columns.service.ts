@@ -31,7 +31,7 @@ export class DirectFilterationColumnsService {
       return this.filterationColumns;
     }
 
-    if (this.isNullOrEmpty(selectedItem) || !filterColumnName) {
+    if (!selectedItem || !filterColumnName) {
       return this.filterationColumns;
     }
     
@@ -61,14 +61,6 @@ export class DirectFilterationColumnsService {
     this.filterationColumns.push(filterationColumn);
 
     return [...this.filterationColumns];
-  }
-  /**
-   * Checks if a string is null, undefined, empty, or an empty string
-   * @param str The string to check
-   * @returns True if the string is null, undefined, empty, or an empty string
-   */ 
-  isNullOrEmpty(str: string | null | undefined): boolean {
-    return (str === null || str === undefined || str?.length === 0 || str === '');
   }
 
   /**
@@ -164,21 +156,19 @@ export class DirectFilterationColumnsService {
       case 'is less than':
         return 'LessThan';
       case 'is like':
+      case 'contains':
         return 'Like';
-        case 'contains':
-          return 'Contains';
       case 'is not like':
+      case 'does not contains':
         return 'NotLike';
-        case 'does not contains':
-          return 'DoesNotContain';
       case 'begins with':
-        return 'Begins';
+        return 'BeginsWith';
       case 'does not begins with':
-        return 'DoesNotBegin';
+        return 'NotBeginsWith';
       case 'ends with':
         return 'EndsWith';
       case 'does not ends with':
-        return 'DoesNotEndWith';
+        return 'NotEndsWith';
       case 'is between':
       case 'between':
         return 'Between';
@@ -194,14 +184,14 @@ export class DirectFilterationColumnsService {
    * @returns The column type
    */
   private determineColumnType(type: string, columnName: string): string {
-    if (!type  && 
-        columnName === 'expirationDate' || 
-        columnName === 'putAwayDate' || 
-        columnName === 'importDate' || 
-        columnName === 'requiredDate' || 
-        columnName === 'completedDate' || 
-        columnName === 'exportDate' || 
-        columnName === 'inductionDate') {
+    if (type === 'date' || 
+        columnName === 'Expiration Date' || 
+        columnName === 'Put Away Date' || 
+        columnName === 'Import Date' || 
+        columnName === 'Required Date' || 
+        columnName === 'Completed Date' || 
+        columnName === 'Export Date' || 
+        columnName === 'Induction Date') {
       return 'datetime';
     } else if (type === 'number') {
       return 'int';
