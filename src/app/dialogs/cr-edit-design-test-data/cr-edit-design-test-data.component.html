@@ -1,8 +1,8 @@
 <div class="d-flex justify-content-between mb-2 align-items-center">
     <div class="w-48px"></div>
-    <h1 class="m-0 text-center" mat-dialog-title>Edit Design/Test Data</h1>
+    <h1 class="m-0 text-center" mat-dialog-title data-automation-id="cr-edit-design-test-data-dialog-title">Edit Design/Test Data</h1>
 
-    <button mat-icon-button class="close-button dialog-close-button-fix" [mat-dialog-close]="false">
+    <button mat-icon-button class="close-button dialog-close-button-fix" [mat-dialog-close]="false" data-automation-id="cr-edit-design-test-data-close-button">
         <mat-icon class="close-icon">close</mat-icon>
     </button>
 </div>
@@ -14,12 +14,12 @@
             <mat-form-field class="custom-form-field w-100" appearance="outline">
                 <textarea #descfocus matInput [(ngModel)]="text"
                     placeholder="Select [OT Report Data BM].*FROM [OT Report Data BM];"
-                    class="min-height-150"></textarea>
+                    class="min-height-150" data-automation-id="design-test-data-textarea"></textarea>
             </mat-form-field>
         </div>
 
         <div class="d-flex justify-content-end pt-3">
-            <button mat-flat-button color="primary" class="btn-lg w-100 flex-grow-1" (click)="getDesignTestData()">Submit</button>
+            <button mat-flat-button color="primary" class="btn-lg w-100 flex-grow-1" (click)="getDesignTestData()" data-automation-id="cr-edit-design-test-data-submit-button">Submit</button>
         </div>
 
     </div>

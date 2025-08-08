@@ -1,7 +1,7 @@
 <div class="row px-3 py-4 br-14">
 
   <div class="d-flex justify-content-end mb-2">
-    <button mat-stroked-button color="primary" class="btn-regular" (click)="refreshGrid()">
+    <button mat-stroked-button color="primary" class="btn-regular" (click)="refreshGrid()" data-automation-id="refresh-button">
       <mat-icon>cached</mat-icon>
       Refresh
     </button>
@@ -12,102 +12,102 @@
          
     <table mat-table [dataSource]="location.controls['inventoryTable'].value" matSort (matSortChange)="announceSortChange($event)" class="min-height-150">
       <ng-container matColumnDef="location">
-        <th mat-header-cell mat-sort-header  *matHeaderCellDef> Location </th>
-        <td mat-cell *matCellDef="let element" class="padding-left-10" [ngClass]="{'quarantineColor': element.warehouse.includes('Quarantine')}"> {{element.location}} </td>
+        <th mat-header-cell mat-sort-header  *matHeaderCellDef data-automation-id="table-header-location"> Location </th>
+        <td mat-cell *matCellDef="let element; let i = index" class="padding-left-10" [ngClass]="{'quarantineColor': element.warehouse.includes('Quarantine')}" [attr.data-automation-id]="'table-cell-location-' + i"> {{element.location}} </td>
       </ng-container>
     
       <!-- Name Column -->
       <ng-container matColumnDef="warehouse">
-        <th mat-header-cell mat-sort-header  *matHeaderCellDef> Warehouse </th>
-        <td mat-cell *matCellDef="let element" [ngClass]="{'quarantineColor': element.warehouse.includes('Quarantine')}"> {{element.warehouse}} </td>
+        <th mat-header-cell mat-sort-header  *matHeaderCellDef data-automation-id="table-header-warehouse"> Warehouse </th>
+        <td mat-cell *matCellDef="let element; let i = index" [ngClass]="{'quarantineColor': element.warehouse.includes('Quarantine')}" [attr.data-automation-id]="'table-cell-warehouse-' + i"> {{element.warehouse}} </td>
       </ng-container>
     
       <!-- Weight Column -->
       <ng-container matColumnDef="zone">
-        <th mat-header-cell mat-sort-header  *matHeaderCellDef> Zone </th>
-        <td mat-cell *matCellDef="let element" [ngClass]="{'quarantineColor': element.warehouse.includes('Quarantine')}"> {{element.zone}} </td>
+        <th mat-header-cell mat-sort-header  *matHeaderCellDef data-automation-id="table-header-zone"> Zone </th>
+        <td mat-cell *matCellDef="let element; let i = index" [ngClass]="{'quarantineColor': element.warehouse.includes('Quarantine')}" [attr.data-automation-id]="'table-cell-zone-' + i"> {{element.zone}} </td>
       </ng-container>
     
       <!-- Symbol Column -->
       <ng-container matColumnDef="carousal">
-        <th mat-header-cell mat-sort-header  *matHeaderCellDef> {{fieldNames.carousel}} </th>
-        <td mat-cell *matCellDef="let element" [ngClass]="{'quarantineColor': element.warehouse.includes('Quarantine')}"> {{element.carousel}} </td>
+        <th mat-header-cell mat-sort-header  *matHeaderCellDef data-automation-id="table-header-carousel"> {{fieldNames.carousel}} </th>
+        <td mat-cell *matCellDef="let element; let i = index" [ngClass]="{'quarantineColor': element.warehouse.includes('Quarantine')}" [attr.data-automation-id]="'table-cell-carousel-' + i"> {{element.carousel}} </td>
       </ng-container>
 
       <ng-container matColumnDef="row">
-        <th mat-header-cell mat-sort-header  *matHeaderCellDef> {{fieldNames.row}}</th>
-        <td mat-cell *matCellDef="let element" [ngClass]="{'quarantineColor': element.warehouse.includes('Quarantine')}"> {{element.row}} </td>
+        <th mat-header-cell mat-sort-header  *matHeaderCellDef data-automation-id="table-header-row"> {{fieldNames.row}}</th>
+        <td mat-cell *matCellDef="let element; let i = index" [ngClass]="{'quarantineColor': element.warehouse.includes('Quarantine')}" [attr.data-automation-id]="'table-cell-row-' + i"> {{element.row}} </td>
       </ng-container>
 
       <ng-container matColumnDef="shelf">
-        <th mat-header-cell mat-sort-header  *matHeaderCellDef>{{fieldNames.shelf}}</th>
-        <td mat-cell *matCellDef="let element" [ngClass]="{'quarantineColor': element.warehouse.includes('Quarantine')}"> {{element.shelf}} </td>
+        <th mat-header-cell mat-sort-header  *matHeaderCellDef data-automation-id="table-header-shelf">{{fieldNames.shelf}}</th>
+        <td mat-cell *matCellDef="let element; let i = index" [ngClass]="{'quarantineColor': element.warehouse.includes('Quarantine')}" [attr.data-automation-id]="'table-cell-shelf-' + i"> {{element.shelf}} </td>
       </ng-container>
 
       <ng-container matColumnDef="bin">
-        <th mat-header-cell mat-sort-header  *matHeaderCellDef>{{fieldNames.bin}}</th>
-        <td mat-cell *matCellDef="let element" [ngClass]="{'quarantineColor': element.warehouse.includes('Quarantine')}"> {{element.bin}} </td>
+        <th mat-header-cell mat-sort-header  *matHeaderCellDef data-automation-id="table-header-bin">{{fieldNames.bin}}</th>
+        <td mat-cell *matCellDef="let element; let i = index" [ngClass]="{'quarantineColor': element.warehouse.includes('Quarantine')}" [attr.data-automation-id]="'table-cell-bin-' + i"> {{element.bin}} </td>
       </ng-container>
 
       <ng-container matColumnDef="lotNo">
-        <th mat-header-cell mat-sort-header  *matHeaderCellDef>Lot No.</th>
-        <td mat-cell *matCellDef="let element" [ngClass]="{'quarantineColor': element.warehouse.includes('Quarantine')}"> {{element.lotNumber}} </td>
+        <th mat-header-cell mat-sort-header  *matHeaderCellDef data-automation-id="table-header-lot-no">Lot No.</th>
+        <td mat-cell *matCellDef="let element; let i = index" [ngClass]="{'quarantineColor': element.warehouse.includes('Quarantine')}" [attr.data-automation-id]="'table-cell-lot-no-' + i"> {{element.lotNumber}} </td>
       </ng-container>
 
       <ng-container matColumnDef="expiration">
-        <th mat-header-cell mat-sort-header  *matHeaderCellDef>Expiration</th>
-        <td mat-cell *matCellDef="let element" [ngClass]="{'quarantineColor': element.warehouse.includes('Quarantine')}"> {{element.expirationDate}} </td>
+        <th mat-header-cell mat-sort-header  *matHeaderCellDef data-automation-id="table-header-expiration">Expiration</th>
+        <td mat-cell *matCellDef="let element; let i = index" [ngClass]="{'quarantineColor': element.warehouse.includes('Quarantine')}" [attr.data-automation-id]="'table-cell-expiration-' + i"> {{element.expirationDate}} </td>
       </ng-container>
 
       <ng-container matColumnDef="serialNo">
-        <th mat-header-cell mat-sort-header  *matHeaderCellDef>Serial No.</th>
-        <td mat-cell *matCellDef="let element" [ngClass]="{'quarantineColor': element.warehouse.includes('Quarantine')}"> {{element.serialNumber}} </td>
+        <th mat-header-cell mat-sort-header  *matHeaderCellDef data-automation-id="table-header-serial-no">Serial No.</th>
+        <td mat-cell *matCellDef="let element; let i = index" [ngClass]="{'quarantineColor': element.warehouse.includes('Quarantine')}" [attr.data-automation-id]="'table-cell-serial-no-' + i"> {{element.serialNumber}} </td>
       </ng-container>
 
       <ng-container matColumnDef="cellSize">
-        <th mat-header-cell mat-sort-header  *matHeaderCellDef>Cell Size</th>
-        <td mat-cell *matCellDef="let element" [ngClass]="{'quarantineColor': element.warehouse.includes('Quarantine')}"> {{element.cellSize}} </td>
+        <th mat-header-cell mat-sort-header  *matHeaderCellDef data-automation-id="table-header-cell-size">Cell Size</th>
+        <td mat-cell *matCellDef="let element; let i = index" [ngClass]="{'quarantineColor': element.warehouse.includes('Quarantine')}" [attr.data-automation-id]="'table-cell-cell-size-' + i"> {{element.cellSize}} </td>
       </ng-container>
 
       <ng-container matColumnDef="shipVia">
-        <th mat-header-cell mat-sort-header  *matHeaderCellDef>{{this.fieldNameDetails?.currentValue?.userField1}}</th>
-        <td mat-cell *matCellDef="let element" [ngClass]="{'quarantineColor': element.warehouse.includes('Quarantine')}"> {{element.userField1}} </td>
+        <th mat-header-cell mat-sort-header  *matHeaderCellDef data-automation-id="table-header-ship-via">{{this.fieldNameDetails?.currentValue?.userField1}}</th>
+        <td mat-cell *matCellDef="let element; let i = index" [ngClass]="{'quarantineColor': element.warehouse.includes('Quarantine')}" [attr.data-automation-id]="'table-cell-ship-via-' + i"> {{element.userField1}} </td>
       </ng-container>
 
       <ng-container matColumnDef="shipToName">
-        <th mat-header-cell mat-sort-header  *matHeaderCellDef>{{this.fieldNameDetails?.currentValue?.userField2}}</th>
-        <td mat-cell *matCellDef="let element" [ngClass]="{'quarantineColor': element.warehouse.includes('Quarantine')}"> {{element.userField2}} </td>
+        <th mat-header-cell mat-sort-header  *matHeaderCellDef data-automation-id="table-header-ship-to-name">{{this.fieldNameDetails?.currentValue?.userField2}}</th>
+        <td mat-cell *matCellDef="let element; let i = index" [ngClass]="{'quarantineColor': element.warehouse.includes('Quarantine')}" [attr.data-automation-id]="'table-cell-ship-to-name-' + i"> {{element.userField2}} </td>
       </ng-container>
 
       <ng-container matColumnDef="qtyAllPick">
-        <th mat-header-cell mat-sort-header  *matHeaderCellDef>Qty All. Pick</th>
-        <td mat-cell *matCellDef="let element" [ngClass]="{'quarantineColor': element.warehouse.includes('Quarantine')}"> {{element.quantityAllocatedPick}} </td>
+        <th mat-header-cell mat-sort-header  *matHeaderCellDef data-automation-id="table-header-qty-all-pick">Qty All. Pick</th>
+        <td mat-cell *matCellDef="let element; let i = index" [ngClass]="{'quarantineColor': element.warehouse.includes('Quarantine')}" [attr.data-automation-id]="'table-cell-qty-all-pick-' + i"> {{element.quantityAllocatedPick}} </td>
       </ng-container>
 
       <ng-container matColumnDef="qtyAllPut">
-        <th mat-header-cell mat-sort-header  *matHeaderCellDef>Qty All. Put</th>
-        <td mat-cell *matCellDef="let element" [ngClass]="{'quarantineColor': element.warehouse.includes('Quarantine')}"> {{element.quantityAllocatedPutAway}} </td>
+        <th mat-header-cell mat-sort-header  *matHeaderCellDef data-automation-id="table-header-qty-all-put">Qty All. Put</th>
+        <td mat-cell *matCellDef="let element; let i = index" [ngClass]="{'quarantineColor': element.warehouse.includes('Quarantine')}" [attr.data-automation-id]="'table-cell-qty-all-put-' + i"> {{element.quantityAllocatedPutAway}} </td>
       </ng-container>
 
 
       <ng-container matColumnDef="unitOfMeasure">
-        <th mat-header-cell mat-sort-header  *matHeaderCellDef replacePlaceholder [replacePlaceHolder]="placeholders.unitOfMeasure" [fallbackPlaceHolder]="placeholders.unitOfMeasureFallback">{{UnitOfMeasure}}</th>
-        <td mat-cell *matCellDef="let element" [ngClass]="{'quarantineColor': element.warehouse.includes('Quarantine')}"> {{element.unitOfMeasure}} </td>
+        <th mat-header-cell mat-sort-header  *matHeaderCellDef replacePlaceholder [replacePlaceHolder]="placeholders.unitOfMeasure" [fallbackPlaceHolder]="placeholders.unitOfMeasureFallback" data-automation-id="table-header-unit-of-measure">{{UnitOfMeasure}}</th>
+        <td mat-cell *matCellDef="let element; let i = index" [ngClass]="{'quarantineColor': element.warehouse.includes('Quarantine')}" [attr.data-automation-id]="'table-cell-unit-of-measure-' + i"> {{element.unitOfMeasure}} </td>
       </ng-container>
 
       <ng-container matColumnDef="itemQty">
-        <th mat-header-cell mat-sort-header  *matHeaderCellDef>Item Qty</th>
-        <td mat-cell *matCellDef="let element" [ngClass]="{'quarantineColor': element.warehouse.includes('Quarantine')}"> {{element.itemQuantity}} </td>
+        <th mat-header-cell mat-sort-header  *matHeaderCellDef data-automation-id="table-header-item-qty">Item Qty</th>
+        <td mat-cell *matCellDef="let element; let i = index" [ngClass]="{'quarantineColor': element.warehouse.includes('Quarantine')}" [attr.data-automation-id]="'table-cell-item-qty-' + i"> {{element.itemQuantity}} </td>
       </ng-container>
 
       <ng-container matColumnDef="stockDate">
-        <th mat-header-cell mat-sort-header  *matHeaderCellDef>Stock Date</th>
-        <td mat-cell *matCellDef="let element" [ngClass]="{'quarantineColor': element.warehouse.includes('Quarantine')}"> {{element.putAwayDate}} </td>
+        <th mat-header-cell mat-sort-header  *matHeaderCellDef data-automation-id="table-header-stock-date">Stock Date</th>
+        <td mat-cell *matCellDef="let element; let i = index" [ngClass]="{'quarantineColor': element.warehouse.includes('Quarantine')}" [attr.data-automation-id]="'table-cell-stock-date-' + i"> {{element.putAwayDate}} </td>
       </ng-container>
 
       <ng-container matColumnDef="velocity">
-        <th mat-header-cell mat-sort-header  *matHeaderCellDef>Velocity</th>
-        <td mat-cell *matCellDef="let element" [ngClass]="{'quarantineColor': element.warehouse.includes('Quarantine')}"> {{element.goldenZone}} </td>
+        <th mat-header-cell mat-sort-header  *matHeaderCellDef data-automation-id="table-header-velocity">Velocity</th>
+        <td mat-cell *matCellDef="let element; let i = index" [ngClass]="{'quarantineColor': element.warehouse.includes('Quarantine')}" [attr.data-automation-id]="'table-cell-velocity-' + i"> {{element.goldenZone}} </td>
       </ng-container>
       <tr class="mat-row" *matNoDataRow>
         <td class="mat-cell " [attr.colspan]="displayedColumns.length">
@@ -116,14 +116,14 @@
       </tr>
 
       <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
-      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+      <tr mat-row *matRowDef="let row; let i = index; columns: displayedColumns;" [attr.data-automation-id]="'table-row-' + i"></tr>
     </table>
   </ng-scrollbar>
 </div>
 
 
 <div class="d-flex justify-content-between bg-white p-0">
-  <mat-paginator [pageSize]="getPageSize()" showFirstLastButtons [length]="count" [pageSizeOptions]="[5, 10, 20]"  (page)="handlePageEvent($event)"></mat-paginator>          
+  <mat-paginator [pageSize]="getPageSize()" showFirstLastButtons [length]="count" [pageSizeOptions]="[5, 10, 20]"  (page)="handlePageEvent($event)" data-automation-id="location-paginator"></mat-paginator>          
 </div>
 </div>
 

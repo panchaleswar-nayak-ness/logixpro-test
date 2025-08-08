@@ -1,9 +1,10 @@
-import { Component, ElementRef, EventEmitter, Input, NgZone, Output, SimpleChanges, ViewChild } from '@angular/core';
+import { Component, ElementRef, EventEmitter, Input, NgZone, Output, ViewChild } from '@angular/core';
 import { MatOption } from '@angular/material/core';
 import { MatSelect } from '@angular/material/select';
 import { MatTooltip } from '@angular/material/tooltip';
 import { take, timer } from 'rxjs';
 import { BulkTransactionType, BulkTransactionView } from 'src/app/common/constants/bulk-process/bulk-transactions';
+import { PrintReports } from 'src/app/common/constants/strings.constants';
 import { BatchesResponse, OrderBatchToteQtyResponse, OrderResponse, TotesResponse } from 'src/app/common/Model/bulk-transactions';
 import { GlobalService } from 'src/app/common/services/global.service';
 
@@ -27,7 +28,6 @@ export class SearchBarComponent {
   @Output() printDetailList = new EventEmitter<any>();
   @Output() isQuickPickChange = new EventEmitter<any>();
   searchText: string = "";
-  suggestion: string = "";
   @Input() bulkTransactionType: string;
   filteredOrders:(OrderResponse | TotesResponse | BatchesResponse)[];
   @ViewChild('openAction') openAction: MatSelect;
@@ -41,6 +41,7 @@ export class SearchBarComponent {
   changeQuickPick(event) {
     this.isQuickPick = event.checked;
     this.isQuickPickChange.emit(this.isQuickPick);
+    this.ClearSearch();
   }
 
   CreateBatch() {
@@ -63,7 +64,6 @@ export class SearchBarComponent {
 
 
   ClearSearch() {
-    this.suggestion = "";
     this.searchText = ""
     this.filteredOrders = [];
   }
@@ -75,7 +75,6 @@ export class SearchBarComponent {
   search(event: string) {
     if (!event) {
       this.filteredOrders = [];
-      this.suggestion = "";
       return;
     }
 
@@ -96,28 +95,28 @@ export class SearchBarComponent {
       const id = getId(item);
       return !!id && id.toLowerCase().startsWith(event.toLowerCase());
     });
-
-    const firstId = getId(this.filteredOrders[0]);
-    this.suggestion = firstId ?? "";
   }
-
 
   addItem() {
-    if (!this.batchSeleted && this.filteredOrders.length > 0) {
-      this.addItemEmitter.emit(this.filteredOrders[0]);
-      this.filteredOrders = [];
+
+    const matchedOrder = this.filteredOrders.find(
+      (o): o is OrderResponse =>
+        'orderNumber' in o && o.orderNumber === this.searchText
+    );
+
+    if (!this.batchSeleted && matchedOrder) {
+      this.addItemEmitter.emit(matchedOrder);
     }
+    this.filteredOrders = [];
     this.searchText = "";
-    this.suggestion = "";
   }
 
-  dropdownSelect(event: any) {
+  dropdownSelect(event: string) {
     if (!this.batchSeleted) {
-      this.addItemEmitter.emit(event.option.value);
+      this.addItemEmitter.emit(event);
       this.filteredOrders = [];
     }
     this.searchText = "";
-    this.suggestion = "";
   }
 
   PrintDetailList() {
@@ -143,9 +142,13 @@ export class SearchBarComponent {
     }
   }
 
-  printShortageZone() {
+  async printPickShortage() {
     if (Array.isArray(this.selectedOrders) && this.selectedOrders.length !== 0) {
-      this.global.Print(`FileName:PreviewLocAssPickShortFPZ`);
+      const orders: string[] = this.selectedOrders
+        .map(order => order.orderNumber)
+        .filter((orderNumber): orderNumber is string => orderNumber !== undefined);
+
+      await this.global.printReportForSelectedOrders(orders, PrintReports.LOC_ASS_PICK_SHORTAGE,true);
     }
   }
 

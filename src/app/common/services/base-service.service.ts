@@ -160,8 +160,8 @@ export class BaseService {
     return await lastValueFrom(this.request('PUT', endPoint,{body:model}));
   }
 
-  async PostAsync<T>(endPoint: string, model: T, isLoader: boolean = false): Promise<HttpResponse<T>> {
-    return await lastValueFrom(this.request('POST', endPoint,{body:model}));
+  async PostAsync<T>(endPoint: string, model: T, isLoader: boolean = false, spinnerShow: boolean = true): Promise<HttpResponse<T>> {
+    return await lastValueFrom(this.request('POST', endPoint,{body:model}, undefined, 'body', spinnerShow));
   }
 
   public Post<T>(endPoint: string, reqPaylaod: T) {
@@ -205,8 +205,8 @@ export class BaseService {
     }));
   }
 
-  async PutAsync<T>(endPoint: string, reqPaylaod: T) {
-    return await lastValueFrom(this.request<T>('PUT', endPoint, { body: reqPaylaod }));
+  async PutAsync<T>(endPoint: string, reqPaylaod: T, spinnerShow: boolean = true) {
+    return await lastValueFrom(this.request<T>('PUT', endPoint, { body: reqPaylaod }, undefined, 'body', spinnerShow));
   }
 
   async PatchAsync<T>(endPoint: string, reqPayload: T | null) {

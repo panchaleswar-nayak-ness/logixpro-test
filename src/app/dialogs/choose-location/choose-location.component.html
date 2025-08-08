@@ -1,7 +1,7 @@
 <div class="d-flex justify-content-between align-items-center" mat-dialog-title>
     <div class="w-48px"></div>
-    <h1 class="m-0" mat-dialog-title>Location Assignment</h1>
-    <button mat-icon-button class="close-button dialog-close-button-fix" [mat-dialog-close]="true">
+    <h1 class="m-0" mat-dialog-title data-automation-id="choose-location-dialog-title">Location Assignment</h1>
+    <button mat-icon-button class="close-button dialog-close-button-fix" [mat-dialog-close]="true" data-automation-id="choose-location-close-button">
         <mat-icon class="close-icon">close</mat-icon>
     </button>
 </div>
@@ -12,12 +12,12 @@
         <div class="row">
             <div class="col-xl-12">
                 <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline">
-                    <mat-label>Location</mat-label>
-                    <input #locFocus (keydown.shift.enter)="$event.preventDefault()" matInput type="text" [(ngModel)]="location" [matAutocomplete]="item" (ngModelChange)="this.searchByItem.next($event)">
+                    <mat-label data-automation-id="location-label">Location</mat-label>
+                    <input #locFocus (keydown.shift.enter)="$event.preventDefault()" matInput type="text" [(ngModel)]="location" [matAutocomplete]="item" (ngModelChange)="this.searchByItem.next($event)" data-automation-id="location-input">
 
-                    <mat-autocomplete class="card custom-scroll" #item="matAutocomplete">
+                    <mat-autocomplete class="card custom-scroll" #item="matAutocomplete" data-automation-id="location-autocomplete">
             
-                        <h6 class="card-header matAutoCompHeader">
+                        <h6 class="card-header matAutoCompHeader" data-automation-id="location-autocomplete-header">
                             <span class="w-190">Loc. Number</span> 
                             <span class="w-190">Whse</span> 
                             <span class="w-190">Loc.</span> 
@@ -29,17 +29,17 @@
                             <span class="w-140">Qty Alloc</span> 
                         </h6>
                     
-                        <mat-option *ngFor="let option of searchAutocompleteItemNum" [value]="option.locNum" class="matAutoCompTableContent">
-                            <div class="loc_option" (click)="selectLoc(option)">
-                                <span class="searchColumn" class="w-190">{{option.locNum}}</span> 
-                                <span class="searchColumn" class="w-190">{{option.warehouse}}</span>
-                                <span class="searchColumn" class="w-190">{{option.location}}</span>
-                                <span class="searchColumn" class="w-140">{{option.itemNumber}}</span>
-                                <span class="searchColumn" class="w-140">{{option.cellSize}}</span>
-                                <span class="searchColumn" class="w-140">{{option.velocity}}</span>
-                                <span class="searchColumn" class="w-140">{{option.qty}}</span>
-                                <span class="searchColumn" class="w-140">{{option.max}}</span>
-                                <span class="searchColumn" class="w-140">{{option.qtyPut}}</span>
+                        <mat-option *ngFor="let option of searchAutocompleteItemNum; let index = index" [value]="option.locNum" class="matAutoCompTableContent" [attr.data-automation-id]="'location-option-' + index + '-' + option.locNum">
+                            <div class="loc_option" (click)="selectLoc(option)" [attr.data-automation-id]="'location-option-content-' + index + '-' + option.locNum">
+                                <span class="searchColumn" class="w-190" [attr.data-automation-id]="'location-number-' + index + '-' + option.locNum">{{option.locNum}}</span> 
+                                <span class="searchColumn" class="w-190" [attr.data-automation-id]="'location-warehouse-' + index + '-' + option.warehouse">{{option.warehouse}}</span>
+                                <span class="searchColumn" class="w-190" [attr.data-automation-id]="'location-location-' + index + '-' + option.location">{{option.location}}</span>
+                                <span class="searchColumn" class="w-140" [attr.data-automation-id]="'location-item-number-' + index + '-' + option.itemNumber">{{option.itemNumber}}</span>
+                                <span class="searchColumn" class="w-140" [attr.data-automation-id]="'location-cell-size-' + index + '-' + option.cellSize">{{option.cellSize}}</span>
+                                <span class="searchColumn" class="w-140" [attr.data-automation-id]="'location-velocity-' + index + '-' + option.velocity">{{option.velocity}}</span>
+                                <span class="searchColumn" class="w-140" [attr.data-automation-id]="'location-stock-' + index + '-' + option.qty">{{option.qty}}</span>
+                                <span class="searchColumn" class="w-140" [attr.data-automation-id]="'location-max-qty-' + index + '-' + option.max">{{option.max}}</span>
+                                <span class="searchColumn" class="w-140" [attr.data-automation-id]="'location-qty-alloc-' + index + '-' + option.qtyPut">{{option.qtyPut}}</span>
                             </div>
                         </mat-option>
 
@@ -52,10 +52,10 @@
 </div>
 
 <div class="d-flex gap-12 mb-1" mat-dialog-actions>
-    <button mat-stroked-button color="primary" class="btn-lg" [mat-dialog-close]="true">
+    <button mat-stroked-button color="primary" class="btn-lg" [mat-dialog-close]="true" data-automation-id="choose-location-close-action-button">
         Close
     </button>
-    <button [disabled]="selectedLocation ? false : true" mat-flat-button color="primary" class="btn-lg flex-grow-1" (click)="submit()">
+    <button [disabled]="selectedLocation ? false : true" mat-flat-button color="primary" class="btn-lg flex-grow-1" (click)="submit()" data-automation-id="choose-location-submit-button">
         Submit
     </button>
 </div>

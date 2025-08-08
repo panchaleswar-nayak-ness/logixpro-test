@@ -35,6 +35,7 @@ import { ConfirmationDialogComponent } from '../confirmation-dialog/confirmation
 import { MatOptionSelectionChange } from '@angular/material/core';
 import { LocationZoneType } from 'src/app/common/enums/CommonEnums';
 
+
 type InventoryMapFormData = {
   location: FormControl<string | null>;
   zone: FormControl<string | null>;
@@ -294,23 +295,26 @@ isButtonDisabled: boolean = true;
 
     this.searchItemNumbers = this.getDetailInventoryMapData.itemNumber;
 
-    this.addInvMapLocation.get('zone')?.valueChanges.subscribe(zoneValue => {
-      // When the zone field is cleared, reset the filtered options
-      if (!zoneValue) {
-          this.filteredOptions = this.addInvMapLocation.controls[TableConstant.Location].valueChanges.pipe(
-              startWith(''),
-              map(value => this.filterLocalZoneList('')) // Pass empty string to reset the filter
-          );
-      }
+    this.addInvMapLocation.get(TableConstant.zone)?.valueChanges.subscribe(zoneValue => {
+    
+      this.filteredOptions = this.addInvMapLocation.controls[TableConstant.Location].valueChanges.pipe(
+          startWith(''),
+          map(value => this.filterLocalZoneList(zoneValue || '')) // Pass empty string to reset the filter
+      );
+      
+  });
+
+     this.addInvMapLocation.get(TableConstant.Location)?.valueChanges.subscribe(locationValue => {
+      
+        this.filteredOptions = this.addInvMapLocation.controls[TableConstant.Location].valueChanges.pipe(
+          startWith(''),
+          map(value => this.filterLocalZoneList(locationValue || ''))
+        );
   });
 
     this.iAdminApiService.getLocZTypeInvMap({}).subscribe((res) => {
       if (res.isExecuted && res.data) {
         this.locZoneList = res.data;
-        this.filteredOptions = this.addInvMapLocation.controls[TableConstant.Location].valueChanges.pipe(
-          startWith(''),
-          map(value => this.filterLocalZoneList(value || ''))
-        );
       } else {
         this.global.ShowToastr(ToasterType.Error, this.global.globalErrorMsg(), ToasterTitle.Error);
       }
@@ -437,7 +441,7 @@ performClear() {
     }
     let dialogRef:any = this.global.OpenDialog(AdjustQuantityComponent, {
       height: DialogConstants.auto,
-      width: '800px',
+      width: '`8`00px',
       autoFocus: DialogConstants.autoFocus,
       disableClose:true,
       data: {
@@ -814,37 +818,47 @@ onSubmit(form: FormGroup<InventoryMapFormData>) {
 
   private filterLocalZoneList(value: any): string[] {
     const filterValue = value.toLowerCase();
-
-    if (!this.addInvMapLocation.controls['zone'].value) {
-      return this.locZoneList;
+  // Filter based on locationName or zone
+    return this.locZoneList.filter(option => 
+        ( option.locationName.toLowerCase().includes(filterValue) || option.zone.toLowerCase().includes(filterValue))
+    );
   }
 
-  // Filter based on locationName as before
-  return this.locZoneList.filter(option => 
-      option.locationName.toLowerCase().includes(filterValue)
-  );
-  }
-
-  loadLocationZones(type: LocationZoneType, index: number, event: MatOptionSelectionChange): void {
+  loadLocationZones(type: LocationZoneType, data: any, event: MatOptionSelectionChange): void {
     if (event?.isUserInput && event?.source?.selected) {
-      const selectedData = this.locZoneList?.[index];
-  
-      if (!selectedData) return;
-  
-      if(selectedData.zone == "" || selectedData.locationName == ""){
-        this.global.ShowToastr(ToasterType.Error, ToasterMessages.ZoneAndLocationNameNeedToBeSet, ToasterTitle.Warning);
-      }
+
+      let zoneValue = "";
+      let locationValue = "";
+
+       const selectedData = this.locZoneList?.filter((item) => item.zone === data.zone)[0] ?? null;
+       if (!selectedData) return;
+
+      zoneValue = selectedData.zone ?? '';
+      locationValue = selectedData.locationName ?? '';
+
+      this.addInvMapLocation.controls[TableConstant.zone].setValue(zoneValue);
+      this.addInvMapLocation.controls[TableConstant.Location].setValue(locationValue);
       
+      this.validateZoneLocation();
+
       if (type === this.locationZoneType.Location) {
-        const zoneValue = selectedData.zone ?? '';
-        this.addInvMapLocation.controls[TableConstant.zone].setValue(zoneValue);
         this.updateItemNumber(TableConstant.zone, zoneValue);
-      } else if (type === this.locationZoneType.Zone) {
-        const locationValue = selectedData.locationName ?? '';
-        this.addInvMapLocation.controls[TableConstant.Location].setValue(locationValue);
+      } 
+      
+      else if (type === this.locationZoneType.Zone) {
         this.updateItemNumber(TableConstant.Location, locationValue);
       }
     }
+  }
+
+  validateZoneLocation()
+  {
+     let zoneValue=  this.addInvMapLocation.controls[TableConstant.zone].getRawValue();
+     let locationValue =  this.addInvMapLocation.controls[TableConstant.Location].getRawValue();
+
+       if(zoneValue === "" ||  locationValue === ""){
+        this.global.ShowToastr(ToasterType.Error, ToasterMessages.ZoneAndLocationNameNeedToBeSet, ToasterTitle.Warning);
+      }
   }
 
   zoneChecker(zone, location) { //To check if the zone and location are selected from dropdown.

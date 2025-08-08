@@ -84,3 +84,7 @@ export interface OrderData {
   order: string;
   isSaved: boolean;
 }
+export interface PickToteFilterPreference {
+  userName: string;
+  filterNumeric: boolean;
+}

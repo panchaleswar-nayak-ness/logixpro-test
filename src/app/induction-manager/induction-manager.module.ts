@@ -22,6 +22,7 @@ import { ProcessPickTotesComponent } from './process-picks/process-pick-totes/pr
 import { PpaTsBatchSetupComponent } from './process-put-aways/ppa-ts-batch-setup/ppa-ts-batch-setup.component';
 import { PpaTsTotesComponent } from './process-put-aways/ppa-ts-totes/ppa-ts-totes.component';
 import { FilterOrderNumberComponent } from './pick-tote-induction/filter-order-number/filter-order-number.component';
+import { FilterTotalQuantityComponent } from './pick-tote-induction/filter-total-quantity/filter-total-quantity.component';
 import { PickToteInFilterComponent } from './pick-tote-induction/pick-tote-in-filter/pick-tote-in-filter.component';
 import { PickToteInductionComponent } from './pick-tote-induction/pick-tote-induction.component';
 import { NonSuperBatchOrdersComponent } from './pick-tote-induction/non-super-batch-orders/non-super-batch-orders.component';
@@ -47,6 +48,7 @@ import { SuperBatchOrdersComponent } from './pick-tote-induction/super-batch-ord
         PpaTsBatchSetupComponent,
         PpaTsTotesComponent,
         FilterOrderNumberComponent,
+        FilterTotalQuantityComponent,
         PickToteInFilterComponent,
         PickToteInductionComponent,
         NonSuperBatchOrdersComponent,

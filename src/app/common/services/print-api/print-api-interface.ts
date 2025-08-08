@@ -1,5 +1,8 @@
-﻿export interface IPrintApiService {
+﻿import { PrintOrdersPayload } from "../../interface/bulk-transactions/bulk-pick";
 
-  PrintManualTrans(Id: number)
+export interface IPrintApiService {
+
+  PrintManualTrans(Id: number);
+  printSelectedOrdersReport(payload:PrintOrdersPayload,showLoader:boolean);
 
 }

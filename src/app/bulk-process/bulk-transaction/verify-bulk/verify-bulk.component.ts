@@ -26,6 +26,9 @@ import { SpinnerService } from 'src/app/common/init/spinner.service';
 import { SharedService } from 'src/app/common/services/shared.service';
 import { MatTooltip } from '@angular/material/tooltip';
 import { PrintApiService } from 'src/app/common/services/print-api/print-api.service';
+import {CommonApiService } from 'src/app/common/services/common-api/common-api.service';
+import { firstValueFrom } from 'rxjs';
+import { ApiResponse} from 'src/app/common/types/CommonTypes';
 import { DisplayEOBResponse } from 'src/app/common/types/bulk-process/bulk-transactions';
 import { BulkTransactionType } from 'src/app/common/constants/bulk-process/bulk-transactions';
 
@@ -54,9 +57,12 @@ export class VerifyBulkComponent implements OnInit {
   taskCompleted: boolean = false;
   backSubscription;
   backCount: number = 0;
+  batchId:string="";
   workstationPreferences: WorkStationSetupResponse;
+  @Input() isBatchIdGenerationEnabled:boolean; 
   public iBulkProcessApiService: IBulkProcessApiService;
   public iAdminApiService: IAdminApiService;
+ public commonApiService: CommonApiService;
 
   @ViewChild('openAction') openAction: MatSelect;
   @ViewChild('autoFocusField') searchBoxField: ElementRef;
@@ -64,6 +70,7 @@ export class VerifyBulkComponent implements OnInit {
   constructor(
     public bulkProcessApiService: BulkProcessApiService,
     public adminApiService: AdminApiService,
+    private CommonApiService:CommonApiService,
     private readonly global: GlobalService,
     private readonly spinnerService: SpinnerService,
     private readonly sharedService: SharedService,
@@ -71,6 +78,7 @@ export class VerifyBulkComponent implements OnInit {
   ) {
     this.iBulkProcessApiService = bulkProcessApiService;
     this.iAdminApiService = adminApiService;
+    this.commonApiService=CommonApiService;
   }
 
   ngOnInit(): void {
@@ -300,17 +308,23 @@ export class VerifyBulkComponent implements OnInit {
         buttonFields: true,
       },
     });
-    dialogRef1.afterClosed().subscribe(async (resp: any) => {
+    dialogRef1.afterClosed().subscribe(async (resp: string) => {
       if (resp == ResponseStrings.Yes) {
+        const batchId = this.isBatchIdGenerationEnabled ? await this.getNextBatchID() : null;
         let ordersNew: TaskCompleteNewRequest[] = new Array();
-        orderLines.forEach((x: any) => {
-          let record = this.taskCompleteNewRequest.find((r: TaskCompleteNewRequest) => r.id == x.id);
-          if (record != undefined) {
-            record.completedQty = parseInt(x.completedQuantity);
+        orderLines.forEach((orderLine: OrderLineResource) => {
+          let record = this.taskCompleteNewRequest.find((r: TaskCompleteNewRequest) => r.id == orderLine.id);
+          if (record) {
+            record.completedQty =orderLine.completedQuantity;
+            // Only assign BatchID if generateBatchID is true and batchId is valid
+            if (this.isBatchIdGenerationEnabled && batchId) {
+            record.BatchID = batchId;
+          }
             ordersNew.push(record);
           }
         });
 
+        
         let res = await this.iBulkProcessApiService.bulkPickTaskComplete(ordersNew);
         if (res?.status == HttpStatusCode.Ok) {
           if (this.bulkTransactionType == BulkTransactionType.PICK && res?.body.length > 0) {
@@ -323,6 +337,32 @@ export class VerifyBulkComponent implements OnInit {
       }
     });
   }
+
+  
+  getNextBatchID(): Promise<string> {
+  return firstValueFrom(this.commonApiService.NextBatchID())
+    .then((res: ApiResponse<string>) => {
+      if (res?.data && res?.isExecuted) {
+        return res.data;
+      } else {
+        this.global.ShowToastr(
+          ToasterType.Error,
+          ToasterMessages.SomethingWentWrong,
+          ToasterTitle.Error
+        );
+        return ''; // fallback if response is invalid
+      }
+    })
+    .catch((error) => {
+      this.global.ShowToastr(
+        ToasterType.Error,
+        ToasterMessages.SomethingWentWrong,
+        ToasterTitle.Error
+      );
+      return ''; // fallback if observable throws
+    });
+}
+
 
   async validateTaskComplete() {
     let isZeroCompletedQuantity: boolean = false;

@@ -10,12 +10,16 @@ import { AuthService } from 'src/app/common/init/auth.service';
 import { AlertConfirmationComponent } from 'src/app/dialogs/alert-confirmation/alert-confirmation.component';
 
 import { SharedService } from 'src/app/common/services/shared.service';
-import { ApiFuntions } from 'src/app/common/services/ApiFuntions';
 import { catchError, of } from 'rxjs';
 import { IAdminApiService } from 'src/app/common/services/admin-api/admin-api-interface';
 import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.service';
 import { GlobalService } from 'src/app/common/services/global.service';
-import { ToasterTitle, ToasterType ,ResponseStrings,DialogConstants,Style,TableConstant,UniqueConstants, ToasterMessages} from 'src/app/common/constants/strings.constants';
+import { ToasterTitle, ToasterType ,ResponseStrings,DialogConstants,Style,TableConstant,UniqueConstants, ToasterMessages, alertMessage, ConfirmationMessages} from 'src/app/common/constants/strings.constants';
+import { DevicePreferenceRequest, DevicePreferenceResponse } from 'src/app/common/interface/admin/device-preferences';
+import { DevicePreferencesControllerType, DevicePreferencesDeviceModel, DevicePreferencesDeviceType, DevicePreferencesShownType } from 'src/app/common/enums/admin/device-preferences-enums';
+import { MatSelectChange } from '@angular/material/select';
+import { ApiResponse } from 'src/app/common/types/CommonTypes';
+import { DevicePreferencesFormFieldKey } from 'src/app/common/constants/admin/device-preferences-constants';
 
 @Component({
   selector: 'app-add-new-device',
@@ -24,27 +28,16 @@ import { ToasterTitle, ToasterType ,ResponseStrings,DialogConstants,Style,TableC
 })
 export class AddNewDeviceComponent implements OnInit {
   @ViewChild('first_address') first_address: ElementRef;
-  headerLable = 'Devices-Add Edit, Delete';
   newDeviceForm: FormGroup;
-  newDeviceID = 0;
+  newDeviceID:number = 0;
   isEdit: boolean = false;
   public iAdminApiService: IAdminApiService;
   item: any;
-  interFaceType = 'Other';
-  zoneList = [];
-  controllerTypeList = [];
-  deviceModelList = [];
-  IPTI = '';
-  WMI = '';
-  other = '';
-  setup = '';
-  JMIF = '';
-  COMPort = '';
-  baud = '';
-  wordLength = '';
-  stopBit = '';
-  parity = '';
-  WMIControllers = [
+  interfaceType = DevicePreferencesShownType.OTHER;
+  zoneList:string[] = [];
+  controllerTypeList:string[] = [];
+  deviceModelList:string[] = [];
+  wmiControllers:string[] = [
     'SISHorizontalCarousel',
     'WMIC3000',
     'Sapient',
@@ -58,12 +51,13 @@ export class AddNewDeviceComponent implements OnInit {
     'JMIFShuttle',
   ];
   public userData: any;
+  devicePreferencesShownType = DevicePreferencesShownType;
+  lightTreeNumberOptions: number[] = Array.from({ length: 9 }, (_, i) => i);
   constructor(
     public dialogRef: MatDialogRef<AddNewDeviceComponent>,
     private global: GlobalService,
     private fb: FormBuilder,
     private dialog: MatDialog,
-    private Api: ApiFuntions,
     public authService: AuthService,
     private adminApiService: AdminApiService,
 
@@ -77,190 +71,158 @@ export class AddNewDeviceComponent implements OnInit {
 
   ngOnInit(): void {
     this.initializeDataSet();
-
     this.userData = this.authService.userData();
     this.getDeviceInformation();
   }
-  changeType(event) {
-    if (this.WMIControllers.indexOf(event.value) >= 0) {
-      this.interFaceType = 'WMI';
+
+  changeType(event: MatSelectChange): void {
+    const controllerValue = event?.value;
+    if (controllerValue && this.wmiControllers?.includes(controllerValue)) {
+      this.interfaceType = DevicePreferencesShownType.WMI;
     } else {
-      this.interFaceType = 'Other';
+      this.interfaceType = DevicePreferencesShownType.OTHER;
     }
   }
+
   dialogClose() {
     this.dialogRef.close('close');
   }
-  onSubmit(form: FormGroup, type?) {
-    if (form.value.zone === null || form.value.zone === '') {
-      this.openAlertDialog('Zone cannot be left blank.');
-      return;
-    }
-    if (form.value.deviceType === null || form.value.deviceType === '') {
-      this.openAlertDialog('Device Type cannot be left blank.');
-      return;
-    }
-    if (form.value.deviceNumber === null || form.value.deviceNumber === '') {
-      this.openAlertDialog('Device Number cannot be left blank.');
-    } else {
-      let item = form.value;
-      let preferences = [
-        item.zone,
-        item.deviceType,
-        item.deviceNumber,
-        item.deviceModel,
-        item.controllerType,
-        item.controllerTerminalPort,
-        item.arrowDirection,
-        item.lightDirection,
-        JSON.stringify(item.useLaserPointer),
-        item.useLightTreeNumber,
-        item.firstAddress,
-        item.displayPositions,
-        item.displayCharacters,
-        item.pairKey,
-      ];
-      let shown = this.showDPTypeFields();
-      if (this.data?.item && this.data.item.deviceID != 0 || this.newDeviceID != 0) {
-        switch (shown) {
-          case 'WMI JMIF':
-            preferences = preferences.concat(this.JMIF);
-            break;
 
-          case 'WMI':
-          case 'WMI SETUP':
-            preferences = preferences.concat(
-              this.newDeviceForm.controls['hostIP'].value,
-              this.newDeviceForm.controls['hostPort'].value,
-              this.newDeviceForm.controls['workstationName'].value
-            );
-            break;
-          case 'OTHER':
-            // other
-            preferences = preferences.concat(
-              this.newDeviceForm.controls['COMPort'].value,
-              this.newDeviceForm.controls['Baud'].value,
-              this.newDeviceForm.controls['Parity'].value,
-              this.newDeviceForm.controls['WordLength'].value,
-              this.newDeviceForm.controls['StopBit'].value,
-            );
-            break;
-          default:
-            break;
-        }
+  private validateFormInputs(form: FormGroup): boolean {
+    const fieldsToValidate = [
+      { key: DevicePreferencesFormFieldKey.zone, message: alertMessage.ZoneCannotBeLeftBlank },
+      { key: DevicePreferencesFormFieldKey.deviceType, message: alertMessage.DeviceTypeCannotBeLeftBlank },
+      { key: DevicePreferencesFormFieldKey.deviceNumber, message: alertMessage.DeviceNumberCannotBeLeftBlank }
+    ];
+
+    for (const field of fieldsToValidate) {
+      const value = form.get(field.key)?.value;
+      if (typeof value !== 'string' || !value.trim()) {
+        this.global.ShowToastr(ToasterType.Error, field.message, ToasterTitle.Error);
+        return false;
       }
-      let newdeviceID = this.newDeviceID > 0 ? this.newDeviceID : 0
-      let paylaod = {
-        DeviceID:
-          this.data?.item && this.data.item.deviceID
-            ? this.data.item.deviceID
-            : newdeviceID,
-        shown: shown,
-        Preference: preferences,
-      };
-
-      this.iAdminApiService
-        .DevicePreference(paylaod)
-        .subscribe((res: any) => {
-          if (res.isExecuted) {
-            this.global.ShowToastr(ToasterType.Error, res.responseMessage, ToasterTitle.Success);
-
-            if (res.data != 0) {
-              this.newDeviceID = res.data;
-
-              this.getDeviceInformation(res.data);
-            }
-            if (type === 'close') {
-              this.dialogRef.close(ResponseStrings.Yes);
-            }
-            this.sharedService.updateDevicePref({ response: true });
-          } else {
-
-            this.global.ShowToastr(ToasterType.Error, res.responseMessage, ToasterTitle.Error);
-            console.log("DevicePreference", res.responseMessage);
-          }
-        });
     }
+
+    return true;
+  }
+
+  private buildDevicePreferencePayload(form: FormGroup, shown: DevicePreferencesShownType): DevicePreferenceRequest {
+    const item = form.value;
+
+    const payload: DevicePreferenceRequest = {
+      deviceId: this.data?.item?.deviceID ?? (this.newDeviceID > 0 ? this.newDeviceID : 0),
+      zone: item.zone,
+      type: item.deviceType,
+      number: item.deviceNumber,
+      model: item.deviceModel,
+      controllerType: item.controllerType,
+      controllerPort: item.controllerTerminalPort,
+      arrowDirection: item.arrowDirection,
+      lightDirection: item.lightDirection,
+      laserPointer: item.laserPointer,
+      lightTreeNumber: item.lightTreeNumber,
+      beginAddress: item.firstAddress,
+      displayPositions: item.displayPositions,
+      displayCharacters: item.displayCharacters,
+      pairKey: item.pairKey,
+      shownType: shown
+    };
+
+    switch (shown) {
+      case DevicePreferencesShownType.WMI_JMIF:
+        Object.assign(payload, {
+          hostIP: item.hostIP,
+          hostPort: item.hostPort,
+          workstationName: item.workstationName,
+          baud: item.baud
+        });
+        break;
+
+      case DevicePreferencesShownType.WMI:
+      case DevicePreferencesShownType.WMI_SETUP:
+        Object.assign(payload, {
+          hostIP: item.hostIP,
+          hostPort: item.hostPort,
+          workstationName: item.workstationName
+        });
+        break;
+
+      case DevicePreferencesShownType.OTHER:
+        Object.assign(payload, {
+          com: item.comPort,
+          baud: item.baud,
+          parity: item.parity,
+          word: item.wordLength,
+          stop: item.stopBit
+        });
+        break;
+    }
+
+    return payload;
+  }
+
+  onSubmit(form: FormGroup, isClose:boolean = false): void {
+    if (!this.validateFormInputs(form)) return;
+
+    const shown = this.showDPTypeFields();
+    const payload = this.buildDevicePreferencePayload(form, shown);
+
+    this.iAdminApiService.DevicePreference(payload).subscribe((res: ApiResponse<number>) => {
+      if (res.isExecuted) {
+        this.global.ShowToastr(ToasterType.Success, res.responseMessage, ToasterTitle.Success);
+
+        if (res.data != 0) {
+          this.newDeviceID = res.data;
+          this.isEdit = true;
+          this.getDeviceInformation(res.data);
+        }
+
+        if (isClose) {
+          this.dialogRef.close(ResponseStrings.Yes);
+        }
+
+        this.data?.onSave?.();
+      } else {
+        this.global.ShowToastr(ToasterType.Error, res.responseMessage, ToasterTitle.Error);
+      }
+    });
   }
 
   initializeDataSet() {
+
     this.newDeviceForm = this.fb.group({
-      zone: new FormControl({
-        value: (this.item?.zone && this.item.zone) || '',
-        disabled: false,
-      }),
-      deviceType: new FormControl({
-        value: (this.item?.deviceType && this.item.deviceType) || '',
-        disabled: false,
-      }),
-      deviceNumber: new FormControl({
-        value: (this.item?.deviceNumber && this.item.deviceNumber) || '',
-        disabled: false,
-      }),
-      deviceModel: new FormControl({
-        value: (this.item?.deviceModel && this.item.deviceModel) || '',
-        disabled: false,
-      }),
-      controllerType: new FormControl({
-        value: (this.item?.controllerType && this.item.controllerType) || '',
-        disabled: false,
-      }),
-      controllerTerminalPort: new FormControl({
-        value: (this.item?.controllerTermPort && this.item.controllerTermPort) || '',
-        disabled: false,
-      }),
-      arrowDirection: new FormControl({
-        value: (this.item?.arrowDirection && this.item.arrowDirection) || '',
-        disabled: false,
-      }),
-      lightDirection: new FormControl({
-        value: (this.item?.lightDirection && this.item.lightDirection) || '',
-        disabled: false,
-      }),
-      useLightTreeNumber: new FormControl({
-        value: (this.item?.lightTreeNumber && this.item.lightTreeNumber) || '0',
-        disabled: false,
-      }),
-      firstAddress: new FormControl({
-        value: (this.item?.beginAddress && this.item.beginAddress) || '0',
-        disabled: false,
-      }),
-      displayPositions: new FormControl({
-        value: (this.item?.displayPositions && this.item.displayPositions) || '0',
-        disabled: false,
-      }),
-      displayCharacters: new FormControl({
-        value: (this.item?.displayCharacters && this.item.displayCharacters) || '0',
-        disabled: false,
-      }),
-      pairKey: new FormControl({
-        value: (this.item?.pairKey && this.item.pairKey) || '',
-        disabled: false,
-      }),
-      useLaserPointer: new FormControl({
-        value:
-          this.item?.laserPointer && this.item.laserPointer
-            ? JSON.parse(this.item.laserPointer.toLowerCase())
-            : false,
-        disabled: false,
-      }),
-      hostIP: new FormControl({ value: '', disabled: false }),
-      hostPort: new FormControl({ value: '', disabled: false }),
-      workstationName: new FormControl({ value: '', disabled: false }),
-      COMPort: new FormControl({ value: '', disabled: false }),
-      Baud: new FormControl({ value: '', disabled: false }),
-      WordLength: new FormControl({ value: '', disabled: false }),
-      StopBit: new FormControl({ value: '', disabled: false }),
-      Parity: new FormControl({ value: '', disabled: false }),
+      zone: this.fb.control(this.item?.zone || ''),
+      deviceType: this.fb.control(this.item?.deviceType || ''),
+      deviceNumber: this.fb.control(this.item?.deviceNumber || ''),
+      deviceModel: this.fb.control(this.item?.deviceModel || ''),
+      controllerType: this.fb.control(this.item?.controllerType || ''),
+      controllerTerminalPort: this.fb.control(this.item?.controllerTermPort || ''),
+      arrowDirection: this.fb.control(this.item?.arrowDirection || ''),
+      lightDirection: this.fb.control(this.item?.lightDirection || ''),
+      lightTreeNumber: this.fb.control(this.item?.lightTreeNumber ?? 0),
+      firstAddress: this.fb.control(this.item?.beginAddress || '0'),
+      displayPositions: this.fb.control(this.item?.displayPositions || '0'),
+      displayCharacters: this.fb.control(this.item?.displayCharacters || '0'),
+      pairKey: this.fb.control(this.item?.pairKey || ''),
+      laserPointer: this.fb.control(this.item?.laserPointer || false),
+
+      // Communication settings
+      hostIP: this.fb.control(''),
+      hostPort: this.fb.control(''),
+      workstationName: this.fb.control(''),
+      comPort: this.fb.control(''),
+      baud: this.fb.control(''),
+      wordLength: this.fb.control(''),
+      stopBit: this.fb.control(''),
+      parity: this.fb.control(''),
     });
 
-    if (
-      this.WMIControllers.indexOf(this.item?.controllerType && this.item.controllerType) >= 0
-    ) {
-      this.interFaceType = 'WMI';
-    } else {
-      this.interFaceType = 'Other';
-    }
+    const controllerType = this.item?.controllerType || '';
+    this.interfaceType = this.wmiControllers.includes(controllerType)
+      ? DevicePreferencesShownType.WMI
+      : DevicePreferencesShownType.OTHER;
+
+    this.showDPTypeFields();
   }
 
   deleteSelected() {
@@ -269,7 +231,7 @@ export class AddNewDeviceComponent implements OnInit {
       return;
     }
     const dialogRef: any = this.global.OpenDialog(DeleteConfirmationComponent, {
-      height: 'auto',
+      height: Style.auto,
       width: Style.w560px,
       autoFocus: DialogConstants.autoFocus,
       disableClose: true,
@@ -306,122 +268,103 @@ export class AddNewDeviceComponent implements OnInit {
     });
   }
 
-  getDeviceInformation(deviceID?) {
-    let con = this.data?.item ? this.data.item.deviceID : 0;
-    let payload = {
-      deviceID: deviceID || con
-    };
+  getDeviceInformation(deviceID?: number): void {
+    const fallbackID = this.data?.item?.deviceID ?? 0;
+    const payload = { deviceID: deviceID || fallbackID };
 
-    this.iAdminApiService
-      .DeviceInformation(payload).pipe(
-        catchError((error) => {
-          // Handle the error here
-          console.error('An error occurred while making the API call:', error);
+    this.iAdminApiService.DeviceInformation(payload).pipe(
+      catchError(() => {
+        return of({ isExecuted: false });
+      })
+    ).subscribe((res: ApiResponse<DevicePreferenceResponse>) => {
+      if (res.isExecuted && res.data) {
+        const data = res.data;
 
-          // Return a fallback value or trigger further error handling if needed
-          return of({ isExecuted: false });
-        })
-      )
-      .subscribe((res: any) => {
-        if (res.isExecuted) {
+        this.zoneList = data.zoneList || [];
+        this.controllerTypeList = data.controllerTypeList || [];
+        this.deviceModelList = data.deviceModelList || [];
 
+        this.newDeviceForm.patchValue({
+          pairKey: data.pairKey,
+          hostIP: data.hostIPAddress,
+          hostPort: data.hostPort,
+          workstationName: data.workstationName,
+          comPort: data.hostPCComPort,
+          baud: data.baudRate,
+          stopBit: data.stopBit,
+          parity: data.parity,
+          wordLength: data.wordLength
+        });
 
-          this.zoneList = res?.data && res.data ? res.data.zoneList : [];
-          this.controllerTypeList =
-            res?.data && res.data ? res.data.controllerTypeList : [];
-          this.deviceModelList = res?.data && res.data ? res.data.deviceModelList : [];
-          this.newDeviceForm.controls['hostIP'].setValue(res.data.hostIPAddress);
-          this.newDeviceForm.controls['hostPort'].setValue(res.data.hostPort);
-          this.newDeviceForm.controls['workstationName'].setValue(
-            res.data.workstationName
-          );
-          this.newDeviceForm.controls['COMPort'].setValue(res.data.hostPCComPort);
-          this.newDeviceForm.controls['Baud'].setValue(res.data.baudRate);
-          this.newDeviceForm.controls['StopBit'].setValue(res.data.stopBit);
-          this.newDeviceForm.controls['Parity'].setValue(res.data.parity);
-        } else {
-
-          this.global.ShowToastr(ToasterType.Error, ToasterMessages.ErrorWhileRetrievingData, ToasterTitle.Error);
-          console.log("DeviceInformation", res.responseMessage);
-        }
-      });
-  }
-
-  openAlertDialog(message) {
-    const dialogRef: any = this.global.OpenDialog(AlertConfirmationComponent, {
-      height: 'auto',
-      width: Style.w786px,
-      data: {
-        message: message,
-        heading: '',
-        disableCancel: true,
-      },
-      autoFocus: DialogConstants.autoFocus,
-      disableClose: true,
+        this.showDPTypeFields();
+      } else {
+        this.global.ShowToastr(ToasterType.Error, ToasterMessages.ErrorWhileRetrievingData, ToasterTitle.Error);
+      }
     });
-    dialogRef.afterClosed().subscribe((result) => { });
   }
 
   getCompName() {
-    this.newDeviceForm.controls['workstationName'].setValue(this.userData.wsid);
+    this.newDeviceForm.controls[DevicePreferencesFormFieldKey.workstationName].setValue(this.userData.wsid);
   }
 
-  showDPTypeFields() {
-    let ctype = this.newDeviceForm.controls['controllerType'].value;
+  showDPTypeFields(): DevicePreferencesShownType {
+    const { deviceType, deviceModel, controllerType } = this.newDeviceForm.value;
+    const controllerTypeLower = controllerType?.toLowerCase() ?? '';
 
-
-    let shown = '';
+    // Return IPTI interface if device type and model match
     if (
-      this.newDeviceForm.controls['deviceType'].value == 'Light Tree' &&
-      this.newDeviceForm.controls['deviceModel'].value == 'IPTI'
+      deviceType === DevicePreferencesDeviceType.Light_Tree &&
+      deviceModel === DevicePreferencesDeviceModel.IPTI
     ) {
-      shown = 'IPTI';
-    } else if (this.WMIControllers.indexOf(ctype) >= 0) {
-      shown = 'WMI';
-      this.interFaceType = 'WMI';
-      this.isEdit = true;
-      if (ctype == 'JMIFShuttle') {
-        shown += ' JMIF';
-      } else if (ctype.toLowerCase().indexOf('sapientshuttle') >= 0) {
-        shown += ' SETUP';
-      }
-    } else {
-      this.interFaceType = 'Other';
-      this.isEdit = true;
-      shown = 'OTHER';
+      return this.setInterfaceType(DevicePreferencesShownType.IPTI);
     }
-    return shown;
+
+    // Check for WMI-related controller types, including JMIF and SapientShuttle
+    if (controllerType && this.wmiControllers.includes(controllerType)) {
+      if (controllerType === DevicePreferencesControllerType.JMIFShuttle) {
+        return this.setInterfaceType(DevicePreferencesShownType.WMI_JMIF);
+      }
+
+      if (controllerTypeLower.includes('sapientshuttle')) {
+        return this.setInterfaceType(DevicePreferencesShownType.WMI_SETUP);
+      }
+
+      return this.setInterfaceType(DevicePreferencesShownType.WMI);
+    }
+
+    // Fallback to OTHER interface
+    return this.setInterfaceType(DevicePreferencesShownType.OTHER);
   }
 
-  updateAllDevices(type) {
+  private setInterfaceType(type: DevicePreferencesShownType): DevicePreferencesShownType {
+    this.interfaceType = type;
+    return type;
+  }
+
+  updateAllDevices(isAll:boolean = false) {
     let payload = {
-      zone: this.newDeviceForm.controls[TableConstant.zone].value,
-      hostport: this.newDeviceForm.controls['COMPort'].value,
-      baud: this.newDeviceForm.controls['Baud'].value,
-      parity: this.newDeviceForm.controls['Parity'].value,
-      word: this.newDeviceForm.controls['WordLength'].value,
-      stopbit: this.newDeviceForm.controls['StopBit'].value,
+      zone: this.newDeviceForm.controls[DevicePreferencesFormFieldKey.zone].value,
+      hostport: this.newDeviceForm.controls[DevicePreferencesFormFieldKey.comPort].value,
+      baud: this.newDeviceForm.controls[DevicePreferencesFormFieldKey.baud].value,
+      parity: this.newDeviceForm.controls[DevicePreferencesFormFieldKey.parity].value,
+      word: this.newDeviceForm.controls[DevicePreferencesFormFieldKey.wordLength].value,
+      stopbit: this.newDeviceForm.controls[DevicePreferencesFormFieldKey.stopBit].value,
     };
 
-    let message = '';
-    if (type === 'UpdateAllInterface') {
-      message =
-        'Click OK to update all devices with Com Port: ' +
-        this.newDeviceForm.controls['COMPort'].value;
-    } else {
-      message =
-        'Click OK to update all devices with Com Port: ' +
-        this.newDeviceForm.controls['COMPort'].value +
-        ' and Zone: ' +
-        this.newDeviceForm.controls[TableConstant.zone].value;
-    }
+    const comPort = this.newDeviceForm.controls[DevicePreferencesFormFieldKey.comPort].value;
+    const zone = this.newDeviceForm.controls[DevicePreferencesFormFieldKey.zone].value;
+
+    const message = isAll
+      ? this.global.formatMessage(ConfirmationMessages.UpdateAllInterface, { comPort })
+      : this.global.formatMessage(ConfirmationMessages.UpdateAllInterfaceWithZone, { comPort, zone });
+
     const dialogRef: any = this.global.OpenDialog(AlertConfirmationComponent, {
-      height: 'auto',
+      height: Style.auto,
       width: Style.w786px,
       data: {
         message: message,
         heading: '',
-        disableCancel: true,
+        disableCancel: false,
       },
       autoFocus: DialogConstants.autoFocus,
       disableClose: true,

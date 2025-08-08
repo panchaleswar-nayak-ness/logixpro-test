@@ -1,7 +1,7 @@
 <div class="row w-100 mt-4 mx-0">
     <div class="d-block d-lg-flex align-items-center justify-content-between">
         <h2 class="col card-header-title mb-3 d-flex align-items-center">
-            <div class="mat-icon-wrap me-lg-3 me-3">
+            <div class="mat-icon-wrap me-lg-3 me-3" data-automation-id="bulk-handheld-settings-icon">
               <span class="material-symbols-outlined">
                 settings
               </span>
@@ -10,11 +10,11 @@
         </h2>
         <div class="col-xl-5 mb-3">
             <div class="w-100 d-flex d-lg-block">
-            <mat-form-field class="action-dropdown float-end flex-grow-1" appearance="outline">
-                <mat-label>Actions</mat-label>
-                <mat-select class="employees-action">
-                    <mat-option >Check All</mat-option>
-                    <mat-option >Uncheck All</mat-option>
+            <mat-form-field class="action-dropdown float-end flex-grow-1" appearance="outline" data-automation-id="bulk-handheld-settings-action-dropdown">
+                <mat-label data-automation-id="bulk-handheld-settings-action-label">Actions</mat-label>
+                <mat-select class="employees-action" data-automation-id="bulk-handheld-settings-action-select">
+                    <mat-option data-automation-id="bulk-handheld-settings-checkall-opt">Check All</mat-option>
+                    <mat-option data-automation-id="bulk-handheld-settings-uncheckall-opt">Uncheck All</mat-option>
                 </mat-select>
                 <span class="material-symbols-outlined icon-expand-more">
                     expand_more
@@ -30,135 +30,133 @@
     <div class="row">
         <div class="col-xl-6">
             <div class="d-flex justify-content-between mb-3">
-                Pick Scan Verify Location <mat-slide-toggle color="primary"></mat-slide-toggle>
+                Pick Scan Verify Location <mat-slide-toggle color="primary" data-automation-id="pick-scan-verify-location"></mat-slide-toggle>            </div>
+            <div class="d-flex justify-content-between mb-3">
+                Pick Scan Verify Item Number <mat-slide-toggle color="primary" data-automation-id="pick-scan-verify-item-number"></mat-slide-toggle>            </div>
+            <div class="d-flex justify-content-between mb-3">
+                Pick Scan Verify Tote ID <mat-slide-toggle color="primary" data-automation-id="pick-scan-verify-tote-id"></mat-slide-toggle>
             </div>
             <div class="d-flex justify-content-between mb-3">
-                Pick Scan Verify Item Number <mat-slide-toggle color="primary"></mat-slide-toggle>
+                Show Count <mat-slide-toggle color="primary" data-automation-id="show-count"></mat-slide-toggle>
             </div>
             <div class="d-flex justify-content-between mb-3">
-                Pick Scan Verify Tote ID <mat-slide-toggle color="primary"></mat-slide-toggle>
+                Count Scan Verify Location <mat-slide-toggle color="primary" data-automation-id="count-scan-verify-location"></mat-slide-toggle>
             </div>
             <div class="d-flex justify-content-between mb-3">
-                Show Count <mat-slide-toggle color="primary"></mat-slide-toggle>
+                Count Scan Verify Item Number <mat-slide-toggle color="primary" data-automation-id="count-scan-verify-item-number"></mat-slide-toggle>
             </div>
             <div class="d-flex justify-content-between mb-3">
-                Count Scan Verify Location <mat-slide-toggle color="primary"></mat-slide-toggle>
+                Put Scan Verify Location <mat-slide-toggle color="primary" data-automation-id="put-scan-verify-location"></mat-slide-toggle>
             </div>
             <div class="d-flex justify-content-between mb-3">
-                Count Scan Verify Item Number <mat-slide-toggle color="primary"></mat-slide-toggle>
+                Count if Short <mat-slide-toggle color="primary" data-automation-id="count-if-short"></mat-slide-toggle>
             </div>
             <div class="d-flex justify-content-between mb-3">
-                Put Scan Verify Location <mat-slide-toggle color="primary"></mat-slide-toggle>
+                Print Put Labels <mat-slide-toggle color="primary" data-automation-id="print-put-labels"></mat-slide-toggle>
             </div>
             <div class="d-flex justify-content-between mb-3">
-                Count if Short <mat-slide-toggle color="primary"></mat-slide-toggle>
+                HPA Request Supplier <mat-slide-toggle color="primary" data-automation-id="hpa-request-supplier"></mat-slide-toggle>
             </div>
             <div class="d-flex justify-content-between mb-3">
-                Print Put Labels <mat-slide-toggle color="primary"></mat-slide-toggle>
+                Directed HPA <mat-slide-toggle color="primary" data-automation-id="directed-hpa"></mat-slide-toggle>
             </div>
             <div class="d-flex justify-content-between mb-3">
-                HPA Request Supplier <mat-slide-toggle color="primary"></mat-slide-toggle>
+                Pick Sequence Sort <mat-slide-toggle color="primary" data-automation-id="pick-sequence-sort"></mat-slide-toggle>
             </div>
             <div class="d-flex justify-content-between mb-3">
-                Directed HPA <mat-slide-toggle color="primary"></mat-slide-toggle>
+                Container Logic <mat-slide-toggle color="primary" data-automation-id="container-logic"></mat-slide-toggle>
             </div>
             <div class="d-flex justify-content-between mb-3">
-                Pick Sequence Sort <mat-slide-toggle color="primary"></mat-slide-toggle>
+                Put Away Batch <mat-slide-toggle color="primary" data-automation-id="put-away-batch"></mat-slide-toggle>
             </div>
             <div class="d-flex justify-content-between mb-3">
-                Container Logic <mat-slide-toggle color="primary"></mat-slide-toggle>
+                Change Inventory Master Cell Size on HPA <mat-slide-toggle color="primary" data-automation-id="change-inventory-master-cell-size-on-hpa"></mat-slide-toggle>
             </div>
             <div class="d-flex justify-content-between mb-3">
-                Put Away Batch <mat-slide-toggle color="primary"></mat-slide-toggle>
+                Count If Location Emptied <mat-slide-toggle color="primary" data-automation-id="count-if-location-emptied"></mat-slide-toggle>
             </div>
             <div class="d-flex justify-content-between mb-3">
-                Change Inventory Master Cell Size on HPA <mat-slide-toggle color="primary"></mat-slide-toggle>
+                Consolidation Delivery <mat-slide-toggle color="primary" data-automation-id="consolidation-delivery"></mat-slide-toggle>
             </div>
             <div class="d-flex justify-content-between mb-3">
-                Count If Location Emptied <mat-slide-toggle color="primary"></mat-slide-toggle>
+                Zone Choice <mat-slide-toggle color="primary" data-automation-id="zone-choice"></mat-slide-toggle>
             </div>
             <div class="d-flex justify-content-between mb-3">
-                Consolidation Delivery <mat-slide-toggle color="primary"></mat-slide-toggle>
+                Use Inventory Case Quantity <mat-slide-toggle color="primary" data-automation-id="use-inventory-case-quantity"></mat-slide-toggle>
             </div>
             <div class="d-flex justify-content-between mb-3">
-                Zone Choice <mat-slide-toggle color="primary"></mat-slide-toggle>
+                Allow Super Batch <mat-slide-toggle color="primary" data-automation-id="allow-super-batch"></mat-slide-toggle>
             </div>
             <div class="d-flex justify-content-between mb-3">
-                Use Inventory Case Quantity <mat-slide-toggle color="primary"></mat-slide-toggle>
+                HPA Show Velocity Code <mat-slide-toggle color="primary" data-automation-id="hpa-show-velocity-code"></mat-slide-toggle>
             </div>
             <div class="d-flex justify-content-between mb-3">
-                Allow Super Batch <mat-slide-toggle color="primary"></mat-slide-toggle>
-            </div>
-            <div class="d-flex justify-content-between mb-3">
-                HPA Show Velocity Code <mat-slide-toggle color="primary"></mat-slide-toggle>
-            </div>
-            <div class="d-flex justify-content-between mb-3">
-                Hot Move Multiple Items <mat-slide-toggle color="primary"></mat-slide-toggle>
+                Hot Move Multiple Items <mat-slide-toggle color="primary" data-automation-id="hot-move-multiple-items"></mat-slide-toggle>
             </div>
         </div>
         <div class="col-xl-6">
             <div class="d-flex justify-content-between mb-3">
-                Allow Close Box <mat-slide-toggle color="primary"></mat-slide-toggle>
+                Allow Close Box <mat-slide-toggle color="primary" data-automation-id="allow-close-box"></mat-slide-toggle>
             </div>
             <div class="d-flex justify-content-between mb-3">
-                Print Order Manifest <mat-slide-toggle color="primary"></mat-slide-toggle>
+                Print Order Manifest <mat-slide-toggle color="primary" data-automation-id="print-order-manifest"></mat-slide-toggle>
             </div>
             <div class="d-flex justify-content-between mb-3">
-                Print Tote Manifest <mat-slide-toggle color="primary"></mat-slide-toggle>
+                Print Tote Manifest <mat-slide-toggle color="primary" data-automation-id="print-tote-manifest"></mat-slide-toggle>
             </div>
             <div class="d-flex justify-content-between mb-3">
-                Demand Tote ID <mat-slide-toggle color="primary"></mat-slide-toggle>
+                Demand Tote ID <mat-slide-toggle color="primary" data-automation-id="demand-tote-id"></mat-slide-toggle>
             </div>
             <div class="d-flex justify-content-between mb-3">
-                Dynamic Spacing <mat-slide-toggle color="primary"></mat-slide-toggle>
+                Dynamic Spacing <mat-slide-toggle color="primary" data-automation-id="dynamic-spacing"></mat-slide-toggle>
             </div>
             <div class="d-flex justify-content-between mb-3">
-                Complete Short Picks <mat-slide-toggle color="primary"></mat-slide-toggle>
+                Complete Short Picks <mat-slide-toggle color="primary" data-automation-id="complete-short-picks"></mat-slide-toggle>
             </div>
             <div class="d-flex justify-content-between mb-3">
-                Put Scan Verify Item Number <mat-slide-toggle color="primary"></mat-slide-toggle>
+                Put Scan Verify Item Number <mat-slide-toggle color="primary" data-automation-id="put-scan-verify-item-number"></mat-slide-toggle>
             </div>
             <div class="d-flex justify-content-between mb-3">
-                Print Pick Labels <mat-slide-toggle color="primary"></mat-slide-toggle>
+                Print Pick Labels <mat-slide-toggle color="primary" data-automation-id="print-pick-labels"></mat-slide-toggle>
             </div>
             <div class="d-flex justify-content-between mb-3">
-                SAP Adjustment <mat-slide-toggle color="primary"></mat-slide-toggle>
+                SAP Adjustment <mat-slide-toggle color="primary" data-automation-id="sap-adjustment"></mat-slide-toggle>
             </div>
             <div class="d-flex justify-content-between mb-3">
-                Dynamic Warehousing <mat-slide-toggle color="primary"></mat-slide-toggle>
+                Dynamic Warehousing <mat-slide-toggle color="primary" data-automation-id="dynamic-warehousing"></mat-slide-toggle>
             </div>
             <div class="d-flex justify-content-between mb-3">
-                Allow Hot Pick <mat-slide-toggle color="primary"></mat-slide-toggle>
+                Allow Hot Pick <mat-slide-toggle color="primary" data-automation-id="allow-hot-pick"></mat-slide-toggle>
             </div>
             <div class="d-flex justify-content-between mb-3">
-                Print Next Tote Label <mat-slide-toggle color="primary"></mat-slide-toggle>
+                Print Next Tote Label <mat-slide-toggle color="primary" data-automation-id="print-next-tote-label"></mat-slide-toggle>
             </div>
             <div class="d-flex justify-content-between mb-3">
-                Carousel Put Away <mat-slide-toggle color="primary"></mat-slide-toggle>
+                Carousel Put Away <mat-slide-toggle color="primary" data-automation-id="carousel-put-away"></mat-slide-toggle>
             </div>
             <div class="d-flex justify-content-between mb-3">
-                Use F2 Task Complete <mat-slide-toggle color="primary"></mat-slide-toggle>
+                Use F2 Task Complete <mat-slide-toggle color="primary" data-automation-id="use-f2-task-complete"></mat-slide-toggle>
             </div>
             <div class="d-flex justify-content-between mb-3">
-                HPA Show Empty Locations <mat-slide-toggle color="primary"></mat-slide-toggle>
+                HPA Show Empty Locations <mat-slide-toggle color="primary" data-automation-id="hpa-show-empty-locations"></mat-slide-toggle>
             </div>
             <div class="d-flex justify-content-between mb-3">
-                Combine Same IMID Pick <mat-slide-toggle color="primary"></mat-slide-toggle>
+                Combine Same IMID Pick <mat-slide-toggle color="primary" data-automation-id="combine-same-imid-pick"></mat-slide-toggle>
             </div>
             <div class="d-flex justify-content-between mb-3">
-                Short Pick Find New Location <mat-slide-toggle color="primary"></mat-slide-toggle>
+                Short Pick Find New Location <mat-slide-toggle color="primary" data-automation-id="short-pick-find-new-location"></mat-slide-toggle>
             </div>
             <div class="d-flex justify-content-between mb-3">
-                Consolidation Staging <mat-slide-toggle color="primary"></mat-slide-toggle>
+                Consolidation Staging <mat-slide-toggle color="primary" data-automation-id="consolidation-staging"></mat-slide-toggle>
             </div>
             <div class="d-flex justify-content-between mb-3">
-                Combine OT Trans <mat-slide-toggle color="primary"></mat-slide-toggle>
+                Combine OT Trans <mat-slide-toggle color="primary" data-automation-id="combine-ot-trans"></mat-slide-toggle>
             </div>
             <div class="d-flex justify-content-between mb-3">
-                Single Line Super Batch <mat-slide-toggle color="primary"></mat-slide-toggle>
+                Single Line Super Batch <mat-slide-toggle color="primary" data-automation-id="single-line-super-batch"></mat-slide-toggle>
             </div>
             <div class="d-flex justify-content-between mb-3">
-                Pick Scan Verify Quantity <mat-slide-toggle color="primary"></mat-slide-toggle>
+                Pick Scan Verify Quantity <mat-slide-toggle color="primary" data-automation-id="pick-scan-verify-quantity"></mat-slide-toggle>
             </div>
         </div>
     </div>

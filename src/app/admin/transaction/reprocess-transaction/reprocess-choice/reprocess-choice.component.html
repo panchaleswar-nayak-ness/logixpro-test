@@ -1,6 +1,6 @@
 <mat-card class="mat-elevation-z g-card">
     <mat-card-content>
-        <h2 class="card-header-title mb-1 d-flex align-items-center">
+        <h2 class="card-header-title mb-1 d-flex align-items-center" data-automation-id="reprocess-choice-heading">
             <div class="mat-icon-wrap me-1 me-lg-3">
                 <span class="material-symbols-outlined">
                     tab
@@ -15,19 +15,19 @@
                         <div class="col-xl-4 employees text-center mb-2">
                             <app-stats-circle [value]="reprocessCount.reprocess" [title]="'Reprocess'" divClass="div2"></app-stats-circle>
                             <span>
-                                <mat-checkbox color="primary" [(ngModel)]="isReprocessedChecked.flag" [disabled]="isEnabled" (change)="changeOrderStatus('Reprocess')"></mat-checkbox>
+                                <mat-checkbox color="primary" [(ngModel)]="isReprocessedChecked.flag" [disabled]="isEnabled" (change)="changeOrderStatus('Reprocess')" data-automation-id="checkbox-reprocess"></mat-checkbox>
                             </span>
                         </div>
                         <div class="col-xl-4 customer text-center  mb-2">
                             <app-stats-circle [value]="reprocessCount.complete" [title]="'Post as Complete'" divClass="div2"></app-stats-circle>
                             <span>
-                                <mat-checkbox color="primary" [(ngModel)]="isCompleteChecked.flag" [disabled]="isEnabled" (change)="changeOrderStatus('Complete')"></mat-checkbox>
+                                <mat-checkbox color="primary" [(ngModel)]="isCompleteChecked.flag" [disabled]="isEnabled" (change)="changeOrderStatus('Complete')" data-automation-id="checkbox-complete"></mat-checkbox>
                             </span>
                         </div>
                         <div class="col-xl-4 customer text-center  mb-2">
                             <app-stats-circle [value]="reprocessCount.history" [title]="'Send to Reprocess History'" divClass="div2"></app-stats-circle>
                             <span>
-                                <mat-checkbox color="primary" [(ngModel)]="isHistoryChecked.flag" [disabled]="isEnabled" (change)="changeOrderStatus('History')"></mat-checkbox>
+                                <mat-checkbox color="primary" [(ngModel)]="isHistoryChecked.flag" [disabled]="isEnabled" (change)="changeOrderStatus('History')" data-automation-id="checkbox-history"></mat-checkbox>
                             </span>
                         </div>
                     </div>
@@ -36,11 +36,11 @@
         </div>
         <div>
             <mat-form-field class="action-dropdown mb-3 w-100 flex-grow-1" appearance="outline">
-                <mat-label>Mark Table</mat-label>
-                <mat-select class="employees-action" (selectionChange)="markTableSelection($event)">
-                    <mat-option (click)="markTable('reprocess')">Mark For Reprocess</mat-option>
-                    <mat-option (click)="markTable('complete')">Mark For Post as Complete</mat-option>
-                    <mat-option (click)="markTable('history')">Mark to Send to History</mat-option>
+                <mat-label data-automation-id="label-mark-table">Mark Table</mat-label>
+                <mat-select class="employees-action" (selectionChange)="markTableSelection($event)" data-automation-id="select-mark-table">
+                    <mat-option (click)="markTable('reprocess')" data-automation-id="option-mark-table-mark-for-reprocess">Mark For Reprocess</mat-option>
+                    <mat-option (click)="markTable('complete')" data-automation-id="option-mark-table-mark-for-post-as-complete">Mark For Post as Complete</mat-option>
+                    <mat-option (click)="markTable('history')" data-automation-id="option-mark-table-mark-to-send-to-history">Mark to Send to History</mat-option>
                 </mat-select>
                 <span class="material-symbols-outlined icon-expand-more">
                     expand_more
@@ -48,7 +48,7 @@
             </mat-form-field>
         </div>
         <div>
-            <button mat-flat-button color="primary" class="w-100 btn-regular" color="primary" (click)="postTransaction()">
+            <button mat-flat-button color="primary" class="w-100 btn-regular" color="primary" (click)="postTransaction()" data-automation-id="post-transactions-button">
                 Post Transactions
             </button>
         </div>

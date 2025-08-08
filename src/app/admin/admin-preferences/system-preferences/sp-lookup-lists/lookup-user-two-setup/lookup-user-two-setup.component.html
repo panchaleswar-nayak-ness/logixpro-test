@@ -1,12 +1,12 @@
 <div class="d-block d-xl-flex justify-content-between align-items-center w-100 gap-12 mt-3">
     <div class="label-blue3 p-3 d-flex br-8 mb-3">
-        <mat-icon class="material-symbols-outlined">info</mat-icon>
+        <mat-icon class="material-symbols-outlined" data-automation-id="user-field2-info-icon">info</mat-icon>
         <span class="ps-2 w-100">The {{fieldNames?.userField2}} Lookup List can be configured by adding, deleting or modifying the suggestions that will be rendered to the user on related screens. </span>
     </div>
 
     <div class="d-flex justify-content-end">
-        <button mat-flat-button color="primary" class="add-icon-button mb-2 flex-grow-1" (click)="addNewUserField2()" [disabled]="AddBtn">
-            <span class="material-symbols-outlined" matTooltip="Add new" matTooltipPosition="above">
+        <button mat-flat-button color="primary" class="add-icon-button mb-2 flex-grow-1" (click)="addNewUserField2()" [disabled]="AddBtn" data-automation-id="button-add">
+            <span class="material-symbols-outlined" matTooltip="Add new" matTooltipPosition="above" data-automation-id="label-add-user-field2">
                 add
             </span>
         </button>
@@ -16,17 +16,17 @@
 
 <ng-container *ngFor="let element of userF2List.data">
     <div class="col-xl-4 d-flex align-items-center">
-        <mat-form-field class="action-dropdown custom-form-field-bg-white w-100" appearance="outline">
-            <input matInput type="text" [(ngModel)]="element.currentVal" >
+        <mat-form-field class="action-dropdown custom-form-field-bg-white w-100" appearance="outline" data-automation-id="user-field2-form-field">
+            <input matInput type="text" [(ngModel)]="element.currentVal" [attr.data-automation-id]="'input-user-field2-' + element.currentVal">
         </mat-form-field>
     
         <div class="ms-5 d-flex align-items-center gap-12" >
             <button mat-flat-button color="primary" class="xsm-icon-button" [disabled]="element.currentVal == element.oldVal"
-            (click)="saveUserF2(element)">
-                <mat-icon class="material-symbols-outlined">save</mat-icon>
+            (click)="saveUserF2(element)" data-automation-id="button-save">
+                <mat-icon class="material-symbols-outlined" data-automation-id="user-field2-save-icon">save</mat-icon>
             </button>
-            <button mat-flat-button color="warn" class="xsm-icon-button" (click)="deleteUserF2(element)">
-                <mat-icon class="material-symbols-outlined">close</mat-icon>
+            <button mat-flat-button color="warn" class="xsm-icon-button" (click)="deleteUserF2(element)" data-automation-id="button-delete">
+                <mat-icon class="material-symbols-outlined" data-automation-id="user-field2-delete-icon">close</mat-icon>
             </button>
         </div>
     

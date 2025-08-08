@@ -20,6 +20,10 @@ import {
 } from 'src/app/common/constants/strings.constants';
 import { ConfirmationDialogComponent } from 'src/app/admin/dialogs/confirmation-dialog/confirmation-dialog.component';
 
+export interface PickToteInFilterDialogData {
+  ColumnFilter?: PickToteInductionFilter[];
+}
+
 @Component({
   selector: 'app-pick-tote-in-filter',
   templateUrl: './pick-tote-in-filter.component.html',

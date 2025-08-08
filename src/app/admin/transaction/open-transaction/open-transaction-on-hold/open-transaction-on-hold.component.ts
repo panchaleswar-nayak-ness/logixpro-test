@@ -26,6 +26,8 @@ import { AppNames, AppRoutes, RouteNames} from 'src/app/common/constants/menu.co
 import { DatePipe } from '@angular/common';
 import { ContextMenuFiltersService } from 'src/app/common/init/context-menu-filters.service';
 import { PrintApiService } from 'src/app/common/services/print-api/print-api.service';
+import { UpdateEmergencyRequest } from 'src/app/common/interface/admin/opentransaction.interfaces';
+
  
 // Define a strongly typed enum for date types to avoid using magic strings
 enum DateType {
@@ -378,7 +380,7 @@ export class OpenTransactionOnHoldComponent implements OnInit, AfterViewInit {
       searchPayload = {
         query: this.orderNumber,
         tableName: 2,
-        column: 'orderNumber',
+        column: Column.OrderNumber,
       };
     } else {
       searchPayload = {
@@ -401,6 +403,37 @@ export class OpenTransactionOnHoldComponent implements OnInit, AfterViewInit {
       error: (error) => {}
     });
   }
+
+  //Toggles the emergency flag and updates the backend, showing success or error feedback based on the response.
+onCheckboxToggle(
+  element: Record<string, boolean | string | number>,
+  column: string,
+  isChecked: boolean
+): void {
+  const previousValue = element[column];
+  element[column] = isChecked;
+
+  const payload: UpdateEmergencyRequest = {
+    id: element['id'] as number,
+    emergency: isChecked
+  };
+
+  this.iAdminApiService.UpdateEmergency(payload).subscribe({
+    next: (response) => {
+      if (!response || !response.isExecuted) {
+        element[column] = previousValue;
+        this.global.ShowToastr(ToasterType.Error, ToasterMessages.RecordUpdateFailed, ToasterTitle.Error);
+      } else {
+        this.global.ShowToastr(ToasterType.Success, ToasterMessages.RecordUpdatedSuccessful, ToasterTitle.Success);
+      }
+    },
+    error: (err) => {
+      element[column] = previousValue;
+      console.error('UpdateEmergency API error:', err);
+      this.global.ShowToastr(ToasterType.Error, this.global.globalErrorMsg(), ToasterTitle.Error);
+    }
+  });
+}
 
   viewInInventoryMaster(row) {
     clearTimeout(this.clickTimeout); 

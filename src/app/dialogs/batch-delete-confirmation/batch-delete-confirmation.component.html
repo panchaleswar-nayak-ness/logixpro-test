@@ -1,25 +1,25 @@
-<div class="mat-modal-wrap text-center">
-    <mat-dialog-content>
-      <div class="prompt-wrap">
-        <div class="d-flex justify-content-center prompt-icon-wrap">
-            <span #cancel class="material-symbols-outlined prompt-icon-delete mb-4">
+<div class="mat-modal-wrap text-center" data-automation-id="batch-delete-confirmation-dialog">
+    <mat-dialog-content data-automation-id="batch-delete-confirmation-content">
+      <div class="prompt-wrap" data-automation-id="batch-delete-confirmation-prompt-wrap">
+        <div class="d-flex justify-content-center prompt-icon-wrap" data-automation-id="batch-delete-confirmation-icon-wrap">
+            <span #cancel class="material-symbols-outlined prompt-icon-delete mb-4" data-automation-id="batch-delete-confirmation-icon">
                delete
             </span>
 
         </div>
-        <h1 class="mat-card-title text-error">
+        <h1 class="mat-card-title text-error" [attr.data-automation-id]="'batch-delete-confirmation-title-' + heading">
             {{heading}}
         </h1>
-        <p class="prompt-message py-4 mb-0 ">
+        <p class="prompt-message py-4 mb-0 " data-automation-id="batch-delete-confirmation-message">
             <b>{{message}}</b>
         </p>
-        <div class="br-14 px-4 py-3 checkbox-background mb-4">
-          <mat-checkbox (change)="checkOptions($event)" class="example-margin" color="primary">I understand data cannot be recovered</mat-checkbox>
+        <div class="br-14 px-4 py-3 checkbox-background mb-4" data-automation-id="batch-delete-confirmation-checkbox-container">
+          <mat-checkbox (change)="checkOptions($event)" class="example-margin" color="primary" data-automation-id="confirmation-checkbox">I understand data cannot be recovered</mat-checkbox>
         </div>
       </div>
     </mat-dialog-content>
-    <mat-dialog-actions class="d-flex flex-column justify-content-center">
-      <button (click)="onConfirmdelete()" class=" prompt-action-danger-button mb-3 w-100 btn-lg"  [disabled]="isChecked" mat-stroked-button >Ok</button>
-      <button  class=" mb-3 w-100 btn-lg" (click)="CancelPopup()" mat-stroked-button >Cancel</button>
+    <mat-dialog-actions class="d-flex flex-column justify-content-center" data-automation-id="batch-delete-confirmation-actions">
+      <button (click)="onConfirmdelete()" class=" prompt-action-danger-button mb-3 w-100 btn-lg"  [disabled]="isChecked" mat-stroked-button data-automation-id="confirm-delete-button">Ok</button>
+      <button  class=" mb-3 w-100 btn-lg" (click)="CancelPopup()" mat-stroked-button data-automation-id="cancel-delete-button">Cancel</button>
     </mat-dialog-actions>
   </div>

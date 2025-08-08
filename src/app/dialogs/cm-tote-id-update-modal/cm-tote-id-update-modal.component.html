@@ -1,8 +1,8 @@
 <div class="d-flex justify-content-between mb-4 align-items-center">
     <div class="w-48px"></div>
-    <h1 class="m-0" mat-dialog-title>Packing Container ID Entry</h1>
+    <h1 class="m-0" mat-dialog-title data-automation-id="cm-tote-id-update-dialog-title">Packing Container ID Entry</h1>
 
-    <button mat-icon-button class="close-button dialog-close-button-fix"  [mat-dialog-close]="false">
+    <button mat-icon-button class="close-button dialog-close-button-fix"  [mat-dialog-close]="false" data-automation-id="cm-tote-id-update-close-button">
         <mat-icon class="close-icon">close</mat-icon>
     </button>
 </div>
@@ -12,8 +12,8 @@
     <div class="w-100">
         <div class="col-12 mb-2">
             <mat-form-field class="custom-form-field w-100" appearance="outline">
-                <mat-label>Order No.</mat-label>
-                <input matInput type="text" [(ngModel)]="data.orderNumber" [readonly]="true" disabled>
+                <mat-label data-automation-id="order-number-label">Order No.</mat-label>
+                <input matInput type="text" [(ngModel)]="data.orderNumber" [readonly]="true" disabled data-automation-id="order-number-input">
                 <span class="material-symbols-outlined icon-expand-more">
                     expand_more
                   </span>
@@ -21,18 +21,18 @@
         </div>
         <div class="col-12 mb-2">
             <mat-form-field class="custom-form-field w-100" appearance="outline">
-                <mat-label>Tote ID To Update</mat-label>
-                <input matInput type="text" [(ngModel)]="data.toteID" [readonly]="true" disabled>
+                <mat-label data-automation-id="tote-id-label">Tote ID To Update</mat-label>
+                <input matInput type="text" [(ngModel)]="data.toteID" [readonly]="true" disabled data-automation-id="tote-id-input">
             </mat-form-field>
         </div>
         <div class="col-12">
             <mat-form-field class="custom-form-field w-100" appearance="outline">
-                <mat-label>Shipping Container ID</mat-label>
-                <input matInput type="text" [(ngModel)]="containerID" #conID (input)="validateContainerID()">
+                <mat-label data-automation-id="shipping-container-id-label">Shipping Container ID</mat-label>
+                <input matInput type="text" [(ngModel)]="containerID" #conID (input)="validateContainerID()" data-automation-id="shipping-container-id-input">
             </mat-form-field>
         </div>
         <div class="d-flex justify-content-end pt-3">
-            <button [disabled]="!setContainerIDBtn" mat-flat-button color="primary" class="btn-lg w-100 flex-grow-1" (click)="updateToteID()">Update Tote ID</button>
+            <button [disabled]="!setContainerIDBtn" mat-flat-button color="primary" class="btn-lg w-100 flex-grow-1" (click)="updateToteID()" data-automation-id="update-tote-id-button">Update Tote ID</button>
         </div>
         
     </div>

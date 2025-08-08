@@ -1,51 +1,51 @@
 <div class="d-flex justify-content-between align-items-center mb-2">
-  <app-icon-heading-component class="card-header-title d-flex align-items-center" heading=" POD Setup (System wide)" icon="phonelink_setup"></app-icon-heading-component>
+  <app-icon-heading-component class="card-header-title d-flex align-items-center" heading=" POD Setup (System wide)" icon="phonelink_setup" [automationId]="'pod-setup-heading'"></app-icon-heading-component>
 </div>
 <div class="card p-3">
-  <h2 class="text-18 bold my-3">Order Selection Color Filter</h2>
-  <mat-form-field class="action-dropdown custom-form-field-bg-white w-100 mb-3" appearance="outline">
-    <mat-label>Red Filter Field</mat-label>
-    <mat-select class="employees-action">
+  <h2 class="text-18 bold my-3" data-automation-id="Order-Selection-Heading">Order Selection Color Filter</h2>
+  <mat-form-field class="action-dropdown custom-form-field-bg-white w-100 mb-3" appearance="outline" data-automation-id="red-filter-field">
+    <mat-label data-automation-id="red-filter-label">Red Filter Field</mat-label>
+    <mat-select class="employees-action" data-automation-id="red-filter-field-select">
       <ng-container *ngFor="let item of fieldNames | keyvalue">
-        <mat-option [value]="item.key">{{ item.value }}</mat-option>
+        <mat-option [value]="item.key" [attr.data-automation-id]="'red-filter-field-opt-' + item.key">{{ item.value }}</mat-option>
       </ng-container>
     </mat-select>
-    <span class="material-symbols-outlined icon-expand-more">
+    <span class="material-symbols-outlined icon-expand-more" data-automation-id="red-filter-expand-icon">
       expand_more
     </span>
   </mat-form-field>
   <mat-form-field class="custom-form-field custom-form-field-bg-white w-100 mb-3" appearance="outline">
     <mat-label>Red Filter Value</mat-label>
-    <input type="text" matInput maxlength="255"/>
+    <input type="text" matInput maxlength="255" data-automation-id="red-filter-value-input"/>
   </mat-form-field>
-  <mat-form-field class="action-dropdown custom-form-field-bg-white w-100 mb-3" appearance="outline">
-    <mat-label>Green Filter Field</mat-label>
-    <mat-select class="employees-action">
+  <mat-form-field class="action-dropdown custom-form-field-bg-white w-100 mb-3" appearance="outline" data-automation-id="green-filter-field">
+    <mat-label data-automation-id="green-filter-label">Green Filter Field</mat-label>
+    <mat-select class="employees-action" data-automation-id="green-filter-field-select">
       <ng-container *ngFor="let item of fieldNames | keyvalue">
-        <mat-option [value]="item.key">{{ item.value }}</mat-option>
+        <mat-option [value]="item.key" [attr.data-automation-id]="'green-filter-field-opt-' + item.key">{{ item.value }}</mat-option>
       </ng-container>
     </mat-select>
-    <span class="material-symbols-outlined icon-expand-more">
+    <span class="material-symbols-outlined icon-expand-more" data-automation-id="green-filter-expand-icon">
       expand_more
     </span>
   </mat-form-field>
   <mat-form-field class="custom-form-field custom-form-field-bg-white w-100 mb-3" appearance="outline">
     <mat-label>Green Filter Value</mat-label>
-    <input type="text" matInput maxlength="255"/>
+    <input type="text" matInput maxlength="255" data-automation-id="green-filter-value-input"/>
   </mat-form-field>
-  <mat-form-field class="action-dropdown custom-form-field-bg-white w-100 mb-3" appearance="outline">
-    <mat-label>Blue Filter Field</mat-label>
-    <mat-select class="employees-action">
+  <mat-form-field class="action-dropdown custom-form-field-bg-white w-100 mb-3" appearance="outline" data-automation-id="blue-filter-field">
+    <mat-label data-automation-id="blue-filter-label">Blue Filter Field</mat-label>
+    <mat-select class="employees-action" data-automation-id="blue-filter-field-select">
       <ng-container *ngFor="let item of fieldNames | keyvalue">
-        <mat-option [value]="item.key">{{ item.value }}</mat-option>
+        <mat-option [value]="item.key" [attr.data-automation-id]="'blue-filter-field-opt-' + item.key">{{ item.value }}</mat-option>
       </ng-container>
     </mat-select>
-    <span class="material-symbols-outlined icon-expand-more">
+    <span class="material-symbols-outlined icon-expand-more" data-automation-id="blue-filter-expand-icon">
       expand_more
     </span>
   </mat-form-field>
   <mat-form-field class="custom-form-field custom-form-field-bg-white w-100 mb-3" appearance="outline">
     <mat-label>Blue Filter Value</mat-label>
-    <input type="text" matInput maxlength="255"/>
+    <input type="text" matInput maxlength="255" data-automation-id="blue-filter-value-input"/>
   </mat-form-field>
 </div>

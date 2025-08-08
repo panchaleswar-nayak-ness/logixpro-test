@@ -4,7 +4,7 @@
             <div class="col mb-3 mb-xl-0 d-flex align-items-center">
                 <app-icon-heading-component heading="Bulk {{this.bulkTransactionType}}" icon="unarchive">
                 </app-icon-heading-component>
-                <span *ngIf="this.bulkTransactionType == BulkTransactionType.PICK && isQuickPick" class="label bg-secondary-100 text-secondary-900  px-2 mb-xl-0 mb-1 mx-2 text-16">Mode:&nbsp;<b class="badge-ch-limit">Quick Pick</b></span>
+                <span *ngIf="this.bulkTransactionType == BulkTransactionType.PICK && isQuickPick" class="label bg-secondary-100 text-secondary-900  px-2 mb-xl-0 mb-1 mx-2 text-16"><b class="badge-ch-limit">Quick Pick</b></span>
             </div>
             <div class="col mb-3 mb-xl-0">
                 <div class="w-100 d-flex d-xl-block">
@@ -17,8 +17,8 @@
                             [disabled]="selectedOrders.length == 0">Print Detail List</mat-option>
                             <mat-option value="add_new_transaction" *ngIf="['Put Away','Count'].indexOf(bulkTransactionType) > -1 && !isQuickPick" (click)="CreateBatch()"  
                             [disabled]="selectedOrders.length == 0">Create Batch</mat-option>
-                            <mat-option value="add_new_transaction" *ngIf="isQuickPick" (click)="printShortageZone()"
-                                [disabled]="selectedOrders.length == 0">Print Shortage</mat-option>
+                            <mat-option value="add_new_transaction" *ngIf="isQuickPick" (click)="printPickShortage()"
+                                [disabled]="selectedOrders.length == 0">Print Pick Shortage</mat-option>
                         </mat-select>
                         <span class="material-symbols-outlined icon-expand-more">
                             expand_more
@@ -43,10 +43,9 @@
                     <mat-form-field class="w-100 br-14 custom-form-field-bg-white" appearance="outline">
                         <span class="material-symbols-outlined text-20 icon-search pe-2">search</span>
                         <input type="text"  class="suggest" matInput  [matAutocomplete]="auto1" (ngModelChange)="search($event)" [(ngModel)]="searchText" (keyup.enter)="addItem()"  #autoFocusField/>
-                        <input type="text" class="suggest autocomplete" disabled [value]="suggestion" matInput [placeholder]="searchText ? '' : 'Search'"/>
                         <button matSuffix class="clear-btn" (click)="ClearSearch()" *ngIf="searchText.length > 0" ><mat-icon 
                             class="text-22 text-chrome-600  d-flex align-items-center">cancel</mat-icon></button>
-                        <mat-autocomplete #auto1="matAutocomplete" (optionSelected)="dropdownSelect($event)"
+                        <mat-autocomplete #auto1="matAutocomplete" (optionSelected)="dropdownSelect($event.option.value)"
                             #autocompleteMesaage>
                             <mat-option *ngFor="let option of filteredOrders" [value]="option">
                                 {{ getDisplayValue(option) }}

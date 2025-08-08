@@ -1,3 +1,5 @@
+import { DevicePreferenceRequest, DevicePreferencesTableRequest } from "../../interface/admin/device-preferences";
+import { UpdateEmergencyRequest } from "../../interface/admin/opentransaction.interfaces";
 import { InventoryMap, UpdateSCReq } from "../../Model/storage-container-management";
 
 export interface IAdminApiService
@@ -159,6 +161,7 @@ export interface IAdminApiService
     ScanValidateOrder(payload : any); 
     DeleteOrder(payload : any); 
     OrderStatusData(payload : any); 
+    UpdateEmergency(payload : UpdateEmergencyRequest); 
     OpenTransactionTable(payload : any); 
     HoldTransactionsData(payload : any);  
     UpdateTransaction(payload : any); 
@@ -195,12 +198,12 @@ export interface IAdminApiService
     DevicePreferencesDelete(payload : any);
     GetCartonFlow(payload : any)
     UpdateCartonFlow(payload : any);
-    DevicePreferencesTable(payload : any);
+    DevicePreferencesTable(payload : DevicePreferencesTableRequest);
     LocationNamesSave(payload : any);
     DeleteLocationNames(payload : any);
     ZoneDevicePreferencesUpdateAll(payload : any);
     DeviceInformation(payload : any);
-    DevicePreference(payload : any);
+    DevicePreference(payload : DevicePreferenceRequest);
     LocationZoneSave(payload : any);
       LocationZoneDelete(payload : any);
     LocationZoneNewSave(payload : any);

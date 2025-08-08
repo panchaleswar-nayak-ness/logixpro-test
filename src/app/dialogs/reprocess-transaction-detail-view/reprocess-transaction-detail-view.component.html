@@ -1,7 +1,7 @@
 <div class="d-flex justify-content-between align-items-center" mat-dialog-title>
     <div class="w-48px"></div>
-    <h1 class="m-0" mat-dialog-title>Reprocess Transaction Detail</h1>
-    <button mat-icon-button class="close-button dialog-close-button-fix" [mat-dialog-close]="true">
+    <h1 class="m-0" mat-dialog-title data-automation-id="heading-reprocess-transaction-detail">Reprocess Transaction Detail</h1>
+    <button mat-icon-button class="close-button dialog-close-button-fix" [mat-dialog-close]="true" data-automation-id="button-close-dialog">
         <mat-icon class="close-icon">close</mat-icon>
     </button>
 </div>
@@ -11,26 +11,26 @@
         <div class="row">
             <div class="col-xl-3">
                 <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline">
-                    <mat-label>Order Number</mat-label>
-                    <input #fieldFocus matInput   formControlName="orderNumber"  type="text" >
+                    <mat-label data-automation-id="label-order-number">Order Number</mat-label>
+                    <input #fieldFocus matInput   formControlName="orderNumber"  type="text" data-automation-id="input-order-number">
                 </mat-form-field>
             </div>
             <div class="col-xl-3">
                 <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline">
-                    <mat-label>Item Number</mat-label>
-                    <input matInput type="text"  [disabled]="true" formControlName="itemNumber"   >
+                    <mat-label data-automation-id="label-item-number">Item Number</mat-label>
+                    <input matInput type="text"  [disabled]="true" formControlName="itemNumber" data-automation-id="input-item-number">
                 </mat-form-field>
             </div>
             <div class="col-xl-3">
                 <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline">
-                    <mat-label>Transaction Type</mat-label>
-                    <input matInput type="text"  [disabled]="true" formControlName="transactionType" >
+                    <mat-label data-automation-id="label-transaction-type">Transaction Type</mat-label>
+                    <input matInput type="text"  [disabled]="true" formControlName="transactionType" data-automation-id="input-transaction-type">
                 </mat-form-field>
             </div>
             <div class="col-xl-3">
                 <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline">
-                    <mat-label>Line Number</mat-label>
-                    <input matInput type="text"   [disabled]="true" formControlName="lineNumber" >
+                    <mat-label data-automation-id="label-line-number">Line Number</mat-label>
+                    <input matInput type="text"   [disabled]="true" formControlName="lineNumber" data-automation-id="input-line-number">
                 </mat-form-field>
             </div>
         </div>
@@ -38,14 +38,14 @@
         <div class="row">
             <div class="col-xl-6">
                 <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline">
-                    <mat-label>Description</mat-label>
-                    <textarea matInput type="text"  [disabled]="true" formControlName="description" ></textarea>
+                    <mat-label data-automation-id="label-description">Description</mat-label>
+                    <textarea matInput type="text"  [disabled]="true" formControlName="description" data-automation-id="input-description"></textarea>
                 </mat-form-field>
             </div>
             <div class="col-xl-6">
                 <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline">
-                    <mat-label>Notes</mat-label>
-                    <textarea matInput type="text" [disabled]="true" formControlName="notes" ></textarea>
+                    <mat-label data-automation-id="label-notes">Notes</mat-label>
+                    <textarea matInput type="text" [disabled]="true" formControlName="notes" data-automation-id="input-notes"></textarea>
                 </mat-form-field>
             </div>
         </div>
@@ -53,53 +53,26 @@
         <div class="row">
             <div class="col-xl-3">
                 <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline">
-                    <mat-label>Import Date </mat-label>
-                    <input matInput type="text"  [disabled]="true" formControlName="importDate" >
+                    <mat-label data-automation-id="label-import-date">Import Date </mat-label>
+                    <input matInput type="text"  [disabled]="true" formControlName="importDate" data-automation-id="input-import-date">
                 </mat-form-field>
             </div>
             <div class="col-xl-3">
                 <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline">
-                    <mat-label>Import By</mat-label>
-                    <input matInput type="text"   [disabled]="true" formControlName="importBy" >
+                    <mat-label data-automation-id="label-import-by">Import By</mat-label>
+                    <input matInput type="text"   [disabled]="true" formControlName="importBy" data-automation-id="input-import-by">
                 </mat-form-field>
             </div>
             <div class="col-xl-3">
                 <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline">
-                    <mat-label>Import File Name</mat-label>
-                    <input matInput type="text"   [disabled]="true" formControlName="importFileName" >
+                    <mat-label data-automation-id="label-import-file-name">Import File Name</mat-label>
+                    <input matInput type="text"   [disabled]="true" formControlName="importFileName" data-automation-id="input-import-file-name">
                 </mat-form-field>
             </div>
             <div class="col-xl-3">
                 <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline">
-                    <mat-label>Required Date</mat-label>
-                    <input matInput type="text"   [disabled]="true" formControlName="requiredDate" >
-                </mat-form-field>
-            </div>
-        </div>
-
-        <div class="row">
-            <div class="col-xl-3">
-                <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline">
-                    <mat-label replacePlaceholder [replacePlaceHolder]="placeholders.unitOfMeasure" [fallbackPlaceHolder]="placeholders.unitOfMeasureFallback"> UM </mat-label>
-                    <input matInput type="text"   [disabled]="true" formControlName="uom" >
-                </mat-form-field>
-            </div>
-            <div class="col-xl-3">
-                <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline">
-                    <mat-label>Lot Number</mat-label>
-                    <input matInput type="text"   [disabled]="true" formControlName="lotNumber" >
-                </mat-form-field>
-            </div>
-            <div class="col-xl-3">
-                <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline">
-                    <mat-label>Expiration Date</mat-label>
-                    <input matInput type="text"   [disabled]="true" formControlName="expirationDate" >
-                </mat-form-field>
-            </div>
-            <div class="col-xl-3">
-                <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline">
-                    <mat-label>Serial Number</mat-label>
-                    <input matInput type="text"   [disabled]="true" formControlName="serialNumber" >
+                    <mat-label data-automation-id="label-required-date">Required Date</mat-label>
+                    <input matInput type="text"   [disabled]="true" formControlName="requiredDate" data-automation-id="input-required-date">
                 </mat-form-field>
             </div>
         </div>
@@ -107,53 +80,26 @@
         <div class="row">
             <div class="col-xl-3">
                 <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline">
-                    <mat-label>Revision</mat-label>
-                    <input matInput type="text"  [disabled]="true" formControlName="revision" >
+                    <mat-label replacePlaceholder [replacePlaceHolder]="placeholders.unitOfMeasure" [fallbackPlaceHolder]="placeholders.unitOfMeasureFallback" data-automation-id="label-unit-of-measure"> UM </mat-label>
+                    <input matInput type="text"   [disabled]="true" formControlName="uom" data-automation-id="input-unit-of-measure">
                 </mat-form-field>
             </div>
             <div class="col-xl-3">
                 <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline">
-                    <mat-label>Warehouse</mat-label>
-                    <input matInput type="text"   [disabled]="true" formControlName="wareHouse" >
+                    <mat-label data-automation-id="label-lot-number">Lot Number</mat-label>
+                    <input matInput type="text"   [disabled]="true" formControlName="lotNumber" data-automation-id="input-lot-number">
                 </mat-form-field>
             </div>
             <div class="col-xl-3">
                 <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline">
-                    <mat-label>Location</mat-label>
-                    <input matInput type="text"   [disabled]="true" formControlName="location" >
+                    <mat-label data-automation-id="label-expiration-date">Expiration Date</mat-label>
+                    <input matInput type="text"   [disabled]="true" formControlName="expirationDate" data-automation-id="input-expiration-date">
                 </mat-form-field>
             </div>
             <div class="col-xl-3">
                 <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline">
-                    <mat-label>Transaction Quantity</mat-label>
-                    <input matInput type="text"  [disabled]="true" formControlName="transactionQuantity" >
-                </mat-form-field>
-            </div>
-        </div>
-
-        <div class="row">
-            <div class="col-xl-3">
-                <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline">
-                    <mat-label>Priority</mat-label>
-                    <input matInput type="text"  [disabled]="true" formControlName="priority" >
-                </mat-form-field>
-            </div>
-            <div class="col-xl-3">
-                <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline">
-                    <mat-label>Label</mat-label>
-                    <input matInput type="text" [disabled]="true" formControlName="label" >
-                </mat-form-field>
-            </div>
-            <div class="col-xl-3">
-                <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline">
-                    <mat-label>Host Transaction ID</mat-label>
-                    <input matInput type="text"  [disabled]="true" formControlName="hostTransID" >
-                </mat-form-field>
-            </div>
-            <div class="col-xl-3">
-                <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline">
-                    <mat-label>Emergency</mat-label>
-                    <input matInput type="text"  [disabled]="true" formControlName="emergency" >
+                    <mat-label data-automation-id="label-serial-number">Serial Number</mat-label>
+                    <input matInput type="text"   [disabled]="true" formControlName="serialNumber" data-automation-id="input-serial-number">
                 </mat-form-field>
             </div>
         </div>
@@ -161,53 +107,26 @@
         <div class="row">
             <div class="col-xl-3">
                 <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline">
-                    <mat-label>{{fieldNames.userField1}}</mat-label>
-                    <textarea matInput type="text"  [disabled]="true" formControlName="shipVia" ></textarea>
+                    <mat-label data-automation-id="label-revision">Revision</mat-label>
+                    <input matInput type="text"  [disabled]="true" formControlName="revision" data-automation-id="input-revision">
                 </mat-form-field>
             </div>
             <div class="col-xl-3">
                 <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline">
-                    <mat-label>{{fieldNames.userField2}}</mat-label>
-                    <textarea matInput type="text"  [disabled]="true" formControlName="shipToName" ></textarea>
+                    <mat-label data-automation-id="label-warehouse">Warehouse</mat-label>
+                    <input matInput type="text"   [disabled]="true" formControlName="wareHouse" data-automation-id="input-warehouse">
                 </mat-form-field>
             </div>
             <div class="col-xl-3">
                 <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline">
-                    <mat-label>{{fieldNames.userField3}}</mat-label>
-                    <textarea matInput type="text"   [disabled]="true" formControlName="shipToLine1" ></textarea>
+                    <mat-label data-automation-id="label-location">Location</mat-label>
+                    <input matInput type="text"   [disabled]="true" formControlName="location" data-automation-id="input-location">
                 </mat-form-field>
             </div>
             <div class="col-xl-3">
                 <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline">
-                    <mat-label>{{fieldNames.userField4}}</mat-label>
-                    <textarea matInput type="text"  [disabled]="true" formControlName="shipToLine2"></textarea>
-                </mat-form-field>
-            </div>
-        </div>
-
-        <div class="row">
-            <div class="col-xl-3">
-                <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline">
-                    <mat-label>{{fieldNames.userField5}}</mat-label>
-                    <textarea matInput type="text"  [disabled]="true" formControlName="shipToCountry"></textarea>
-                </mat-form-field>
-            </div>
-            <div class="col-xl-3">
-                <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline">
-                    <mat-label>{{fieldNames.userField6}}</mat-label>
-                    <textarea matInput type="text" [disabled]="true" formControlName="shipToState"></textarea>
-                </mat-form-field>
-            </div>
-            <div class="col-xl-3">
-                <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline">
-                    <mat-label>{{fieldNames.userField7}}</mat-label>
-                    <textarea matInput type="text"  [disabled]="true" formControlName="shipToZip"></textarea>
-                </mat-form-field>
-            </div>
-            <div class="col-xl-3">
-                <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline">
-                    <mat-label>{{fieldNames.userField8}}</mat-label>
-                    <textarea matInput type="text" [disabled]="true" formControlName="promisedDate"></textarea>
+                    <mat-label data-automation-id="label-transaction-quantity">Transaction Quantity</mat-label>
+                    <input matInput type="text"  [disabled]="true" formControlName="transactionQuantity" data-automation-id="input-transaction-quantity">
                 </mat-form-field>
             </div>
         </div>
@@ -215,26 +134,107 @@
         <div class="row">
             <div class="col-xl-3">
                 <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline">
-                    <mat-label>{{fieldNames.userField9}}</mat-label>
-                    <textarea matInput type="text"  [disabled]="true" formControlName="userField9"></textarea>
+                    <mat-label data-automation-id="label-priority">Priority</mat-label>
+                    <input matInput type="text"  [disabled]="true" formControlName="priority" data-automation-id="input-priority">
                 </mat-form-field>
             </div>
             <div class="col-xl-3">
                 <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline">
-                    <mat-label>{{fieldNames.userField10}}</mat-label>
-                    <textarea matInput type="text"  [disabled]="true" formControlName="userField10"></textarea>
+                    <mat-label data-automation-id="label-label">Label</mat-label>
+                    <input matInput type="text" [disabled]="true" formControlName="label" data-automation-id="input-label">
                 </mat-form-field>
             </div>
             <div class="col-xl-3">
                 <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline">
-                    <mat-label>Reason</mat-label>
-                    <textarea matInput type="text" [disabled]="true" formControlName="reason"></textarea>
+                    <mat-label data-automation-id="label-host-transaction-id">Host Transaction ID</mat-label>
+                    <input matInput type="text"  [disabled]="true" formControlName="hostTransID" data-automation-id="input-host-transaction-id">
                 </mat-form-field>
             </div>
             <div class="col-xl-3">
                 <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline">
-                    <mat-label>Reason Message</mat-label>
-                    <textarea matInput type="text"  [disabled]="true" formControlName="reasonMessage"></textarea>
+                    <mat-label data-automation-id="label-emergency">Emergency</mat-label>
+                    <input matInput type="text"  [disabled]="true" formControlName="emergency" data-automation-id="input-emergency">
+                </mat-form-field>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-xl-3">
+                <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline">
+                    <mat-label data-automation-id="label-user-field-1">{{fieldNames.userField1}}</mat-label>
+                    <textarea matInput type="text"  [disabled]="true" formControlName="shipVia" data-automation-id="input-user-field-1"></textarea>
+                </mat-form-field>
+            </div>
+            <div class="col-xl-3">
+                <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline">
+                    <mat-label data-automation-id="label-user-field-2">{{fieldNames.userField2}}</mat-label>
+                    <textarea matInput type="text"  [disabled]="true" formControlName="shipToName" data-automation-id="input-user-field-2"></textarea>
+                </mat-form-field>
+            </div>
+            <div class="col-xl-3">
+                <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline">
+                    <mat-label data-automation-id="label-user-field-3">{{fieldNames.userField3}}</mat-label>
+                    <textarea matInput type="text"   [disabled]="true" formControlName="shipToLine1" data-automation-id="input-user-field-3"></textarea>
+                </mat-form-field>
+            </div>
+            <div class="col-xl-3">
+                <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline">
+                    <mat-label data-automation-id="label-user-field-4">{{fieldNames.userField4}}</mat-label>
+                    <textarea matInput type="text"  [disabled]="true" formControlName="shipToLine2" data-automation-id="input-user-field-4"></textarea>
+                </mat-form-field>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-xl-3">
+                <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline">
+                    <mat-label data-automation-id="label-user-field-5">{{fieldNames.userField5}}</mat-label>
+                    <textarea matInput type="text"  [disabled]="true" formControlName="shipToCountry" data-automation-id="input-user-field-5"></textarea>
+                </mat-form-field>
+            </div>
+            <div class="col-xl-3">
+                <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline">
+                    <mat-label data-automation-id="label-user-field-6">{{fieldNames.userField6}}</mat-label>
+                    <textarea matInput type="text" [disabled]="true" formControlName="shipToState" data-automation-id="input-user-field-6"></textarea>
+                </mat-form-field>
+            </div>
+            <div class="col-xl-3">
+                <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline">
+                    <mat-label data-automation-id="label-user-field-7">{{fieldNames.userField7}}</mat-label>
+                    <textarea matInput type="text"  [disabled]="true" formControlName="shipToZip" data-automation-id="input-user-field-7"></textarea>
+                </mat-form-field>
+            </div>
+            <div class="col-xl-3">
+                <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline">
+                    <mat-label data-automation-id="label-user-field-8">{{fieldNames.userField8}}</mat-label>
+                    <textarea matInput type="text" [disabled]="true" formControlName="promisedDate" data-automation-id="input-user-field-8"></textarea>
+                </mat-form-field>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-xl-3">
+                <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline">
+                    <mat-label data-automation-id="label-user-field-9">{{fieldNames.userField9}}</mat-label>
+                    <textarea matInput type="text"  [disabled]="true" formControlName="userField9" data-automation-id="input-user-field-9"></textarea>
+                </mat-form-field>
+            </div>
+            <div class="col-xl-3">
+                <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline">
+                    <mat-label data-automation-id="label-user-field-10">{{fieldNames.userField10}}</mat-label>
+                    <textarea matInput type="text"  [disabled]="true" formControlName="userField10" data-automation-id="input-user-field-10"></textarea>
+                </mat-form-field>
+            </div>
+            <div class="col-xl-3">
+                <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline">
+                    <mat-label data-automation-id="label-reason">Reason</mat-label>
+                    <textarea matInput type="text" [disabled]="true" formControlName="reason" data-automation-id="input-reason"></textarea>
+                </mat-form-field>
+            </div>
+            <div class="col-xl-3">
+                <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline">
+                    <mat-label data-automation-id="label-reason-message">Reason Message</mat-label>
+                    <textarea matInput type="text"  [disabled]="true" formControlName="reasonMessage" data-automation-id="input-reason-message"></textarea>
                 </mat-form-field>
             </div>
         </div>

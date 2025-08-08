@@ -1,29 +1,27 @@
+
 <div class="d-flex justify-content-center align-items-center" mat-dialog-title style="position: relative;">
     <!-- <button mat-button  *ngIf="(wizardIndex != 0)" style="position: absolute; left: 0;" (click)="wizardIndex=wizardIndex-1">Back</button> -->
-    <h1 class="m-0" mat-dialog-title>New Workstation Setup</h1>
+    <h1 class="m-0" mat-dialog-title data-automation-id="workstation-setup-title">New Workstation Setup</h1>
 </div>
 
-
-
-
-<div mat-dialog-content *ngIf="(wizardIndex == 0)">
-    <div class="p-2 d-flex br-8 mb-3 label-blue3" *ngIf="!(errorMessage && (wsName && wsName == invalidWorkstationName))">
-        <mat-icon class="material-symbols-outlined">info</mat-icon>
-        <div class="ps-2 w-100">
+<div mat-dialog-content *ngIf="(wizardIndex == 0)" data-automation-id="wizard-step-0">
+    <div class="p-2 d-flex br-8 mb-3 label-blue3" *ngIf="!(errorMessage && (wsName && wsName == invalidWorkstationName))" data-automation-id="info-message-container">
+        <mat-icon class="material-symbols-outlined" data-automation-id="info-icon">info</mat-icon>
+        <div class="ps-2 w-100" data-automation-id="info-message">
             <span>This workstation does not appear to be in our system and will need to be configured before using this site.</span><br>
         </div>
         
     </div>
 
-    <div class="p-2 d-flex br-8 mb-3 label-red">
-        <mat-icon class="material-symbols-outlined">warning</mat-icon>
-        <div class="ps-2 w-100">
+    <div class="p-2 d-flex br-8 mb-3 label-red" data-automation-id="warning-message-container">
+        <mat-icon class="material-symbols-outlined" data-automation-id="warning-icon">warning</mat-icon>
+        <div class="ps-2 w-100" data-automation-id="warning-message">
             <span >Cookies must be allowed for this site to work correctly. If you are sure that this workstation has already been configured, you might need to double check that cookies are not being cleared after closing the browser.</span>
         </div>
         
     </div>
     <div class="d-flex gap-12 mb-1" mat-dialog-actions>
-        <button mat-flat-button color="primary" class="btn-lg flex-grow-1"  (click)="wizardIndex=wizardIndex+1">
+        <button mat-flat-button color="primary" class="btn-lg flex-grow-1"  (click)="wizardIndex=wizardIndex+1" data-automation-id="proceed-button">
             Proceed
         </button>
 
@@ -33,27 +31,27 @@
     </div>
 </div>
 
-<div mat-dialog-content *ngIf="(wizardIndex == 1)">
-    <div class="label-red p-2 d-flex br-8 mb-3" *ngIf="(errorMessage && (wsName && wsName == invalidWorkstationName))">
-        <mat-icon class="material-symbols-outlined">notification_important</mat-icon>
-        <span class="ps-2 w-100">{{errorMessage}}</span>
+<div mat-dialog-content *ngIf="(wizardIndex == 1)" data-automation-id="wizard-step-1">
+    <div class="label-red p-2 d-flex br-8 mb-3" *ngIf="(errorMessage && (wsName && wsName == invalidWorkstationName))" data-automation-id="error-message-container">
+        <mat-icon class="material-symbols-outlined" data-automation-id="error-icon">notification_important</mat-icon>
+        <span class="ps-2 w-100" data-automation-id="error-message">{{errorMessage}}</span>
     </div>
     <div class="row">
         <div class="col-xl-12">
-            <mat-form-field class="custom-form-field action-dropdown w-100 mb-3" appearance="outline">
-                <mat-label>PC Name</mat-label>
-                <input #locFocus [(ngModel)]="wsName" matInput type="text" (ngModelChange)="inputChange()">
+            <mat-form-field class="custom-form-field action-dropdown w-100 mb-3" appearance="outline" data-automation-id="pc-name-field">
+                <mat-label data-automation-id="pc-name-label">PC Name</mat-label>
+                <input #locFocus [(ngModel)]="wsName" matInput type="text" (ngModelChange)="inputChange()" data-automation-id="pc-name-input">
             </mat-form-field>
         </div>
     </div>
 
 
     <div class="d-flex flex-column gap-12 mb-1">
-        <button mat-flat-button color="primary" class="btn-lg w-100" [disabled]="!wsName" (click)="submit()">
+        <button mat-flat-button color="primary" class="btn-lg w-100" [disabled]="!wsName" (click)="submit()" data-automation-id="submit-button">
             Submit
         </button>
-        <button mat-stroked-button color="primary" class="btn-lg w-100"  (click)="wizardIndex=wizardIndex-1">Go Back</button>
-        <button mat-stroked-button color="primary" class="btn-lg w-100" (click)="wizardIndex=2">
+        <button mat-stroked-button color="primary" class="btn-lg w-100"  (click)="wizardIndex=wizardIndex-1" data-automation-id="go-back-button">Go Back</button>
+        <button mat-stroked-button color="primary" class="btn-lg w-100" (click)="wizardIndex=2" data-automation-id="advanced-options-button">
             Advanced Options
         </button>
     </div>
@@ -63,11 +61,11 @@
     
 </div>  
 
-<div mat-dialog-content *ngIf="(wizardIndex == 2)">
+<div mat-dialog-content *ngIf="(wizardIndex == 2)" data-automation-id="wizard-step-2">
     <!-- big fat warning -->
-    <div class="p-2 d-flex br-8 mb-3 label-red">
-        <mat-icon class="material-symbols-outlined">warning</mat-icon>
-        <div class="ps-2 w-100">
+    <div class="p-2 d-flex br-8 mb-3 label-red" data-automation-id="advanced-warning-container">
+        <mat-icon class="material-symbols-outlined" data-automation-id="advanced-warning-icon">warning</mat-icon>
+        <div class="ps-2 w-100" data-automation-id="advanced-warning-message">
             <span >WARNING: Selecting an existing workstation profile may result in unpredictable behavior and possible data corruption.</span>
         </div>
     </div>  
@@ -75,14 +73,14 @@
     <!-- drop down to select existing workstation -->
     <div class="row">
         <div class="col-xl-12">
-            <mat-form-field class=" custom-form-field w-100" appearance="outline">
-                <mat-label>Select Existing Workstation</mat-label>
-                <mat-select [(ngModel)]="selectedWorkstation" >
-                    <mat-option *ngFor="let ws of existingWorkstations" [value]="ws">
+            <mat-form-field class=" custom-form-field w-100" appearance="outline" data-automation-id="select-existing-workstation-field">
+                <mat-label data-automation-id="select-existing-workstation-label">Select Existing Workstation</mat-label>
+                <mat-select [(ngModel)]="selectedWorkstation" data-automation-id="select-existing-workstation-select" >
+                    <mat-option *ngFor="let ws of existingWorkstations" [value]="ws" [attr.data-automation-id]="'existing-workstation-option-' + ws.resource.pcName">
                         {{ws.resource.pcName}}
                     </mat-option>
                 </mat-select>
-                <span class="material-symbols-outlined icon-expand-more">
+                <span class="material-symbols-outlined icon-expand-more" data-automation-id="select-expand-icon">
                     expand_more
                 </span>
             </mat-form-field>
@@ -91,17 +89,17 @@
     </div>  
 
     <!-- we should also add a little checkbox/label to acknowledge the risks -->
-    <div class="d-flex align-items-center mb-3 w-100" style="margin-top: 20px;">
-        <mat-checkbox [(ngModel)]="acknowledgeRisks" color="primary"><span class="text-wrap">I acknowledge the risks and wish to proceed with an existing workstation profile.</span></mat-checkbox>
+    <div class="d-flex align-items-center mb-3 w-100" style="margin-top: 20px;" data-automation-id="acknowledge-risks-container">
+        <mat-checkbox [(ngModel)]="acknowledgeRisks" color="primary" data-automation-id="acknowledge-risks-checkbox"><span class="text-wrap" data-automation-id="acknowledge-risks-text">I acknowledge the risks and wish to proceed with an existing workstation profile.</span></mat-checkbox>
     </div>
     
 
     <!--submit existing button-->
     <div class="d-flex flex-column gap-12 mb-1">
-        <button mat-flat-button color="primary" class="btn-lg w-100" [disabled]="(!selectedWorkstation || !acknowledgeRisks)" (click)="submitExisting()">
+        <button mat-flat-button color="primary" class="btn-lg w-100" [disabled]="(!selectedWorkstation || !acknowledgeRisks)" (click)="submitExisting()" data-automation-id="submit-existing-button">
             Submit
         </button>
-        <button mat-stroked-button color="primary" class="btn-lg w-100"  (click)="wizardIndex=wizardIndex-1">Go Back</button>
+        <button mat-stroked-button color="primary" class="btn-lg w-100"  (click)="wizardIndex=wizardIndex-1" data-automation-id="go-back-existing-button">Go Back</button>
     </div>
 </div>
 

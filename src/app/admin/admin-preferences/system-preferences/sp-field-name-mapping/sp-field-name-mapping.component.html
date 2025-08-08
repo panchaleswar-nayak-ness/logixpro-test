@@ -1,26 +1,24 @@
-<div class="row w-100 mt-4 mx-0">
+<div class="row w-100 mt-4 mx-0" data-automation-id="field-name-mapping-wrapper">
     <div class="col-xl-12">
         <div class="d-flex justify-content-between align-items-center mb-3">
-            <app-icon-heading-component heading="Field Name Mappings" icon="nfc"></app-icon-heading-component>
-        </div>
+            <app-icon-heading-component heading="Field Name Mappings" icon="nfc" [automationId]="'field-name-mapping-heading'"></app-icon-heading-component>        </div>
     </div>
     </div>
     <div class="row align-items-center mx-0">
     <div class="col-xl-8">
-        <p class="">Enter the text to display in place of system field names. These aliases will appear in place of system field names on forms and in reports.</p>
+        <p class="" data-automation-id="field-name-mapping-description">Enter the text to display in place of system field names. These aliases will appear in place of system field names on forms and in reports.</p>
     </div>
     <div class="col-xl-4">
         <div class="d-flex justify-content-end">
-            <button mat-flat-button color="primary" class="mat-primary btn-md mb-3" (click)="emptyCol()">Reset to default</button>
-        </div>
+            <button mat-flat-button color="primary" class="mat-primary btn-md mb-3" (click)="emptyCol()" data-automation-id="reset-to-default-button">Reset to default</button>        </div>
     </div>
 </div>
 <div class="card p-3 mx-2">
     <div class="row">
-        <div class="col-xl-3" *ngFor="let key of Object.keys(columns)">
+        <div class="col-xl-3" *ngFor="let key of Object.keys(columns)" [attr.data-automation-id]="'field-alias-col-' + key">
             <mat-form-field class="custom-form-field custom-form-field-bg-white w-100 mb-3" appearance="outline">
-                <mat-label>{{labelSet(key)}}</mat-label>
-                <input type="text" [attr.name]="key" [(ngModel)]="columns[key]" (change)="FieldNameSave()"   matInput maxlength="255">
+                <mat-label [attr.data-automation-id]="'field-alias-label-' + key">{{labelSet(key)}}</mat-label>
+                <input type="text" [attr.name]="key" [(ngModel)]="columns[key]" (change)="FieldNameSave()"   matInput maxlength="255" [attr.data-automation-id]="'field-alias-input-' + key">
               </mat-form-field>
         </div> 
     </div>

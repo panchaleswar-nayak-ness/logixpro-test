@@ -1,12 +1,12 @@
 <div class="d-flex justify-content-between align-items-center mb-3">
     <div class="w-48px"></div>
-    <h1 class="m-0" mat-dialog-title>Carriers - Add, Delete, Edit</h1>
-    <button mat-icon-button class="close-button dialog-close-button-fix" [mat-dialog-close]="true">
+    <h1 class="m-0" mat-dialog-title data-automation-id="cm-carriers-dialog-title">Carriers - Add, Delete, Edit</h1>
+    <button mat-icon-button class="close-button dialog-close-button-fix" [mat-dialog-close]="true" data-automation-id="cm-carriers-close-button">
         <mat-icon class="close-icon">close</mat-icon>
     </button>
 </div>
 <div class="d-flex justify-content-end">
-    <button mat-flat-button color="primary" class="add-icon-button mb-3">
+    <button mat-flat-button color="primary" class="add-icon-button mb-3" data-automation-id="cm-carriers-add-button">
         <span class="material-symbols-outlined">
             add
         </span>
@@ -16,25 +16,25 @@
     <ng-scrollbar class="mat-table-scrollbar h-345px" track="all">
         <table class="w-100 table-borderless" mat-table [dataSource]="periodicElementTable" matSort>
             <ng-container matColumnDef="select" sticky>
-                <th mat-header-cell *matHeaderCellDef> Carriers </th>
-                <td mat-cell *matCellDef="let element">
+                <th mat-header-cell *matHeaderCellDef data-automation-id="carriers-header"> Carriers </th>
+                <td mat-cell *matCellDef="let element; let i = index">
                     <mat-form-field class="custom-form-field w-100" appearance="outline">
-                        <input matInput type="text" maxlength="50" readonly="true" value="000000">
+                        <input matInput type="text" maxlength="50" readonly="true" value="000000" [attr.data-automation-id]="'carrier-input-' + i">
                     </mat-form-field>
                 </td>
             </ng-container>
             <ng-container matColumnDef="action" stickyEnd>
-                <th class="text-center px-2" mat-header-cell *matHeaderCellDef>
+                <th class="text-center px-2" mat-header-cell *matHeaderCellDef data-automation-id="carriers-actions-header">
                 </th>
-                <td mat-cell *matCellDef="let element" width="8%">
+                <td mat-cell *matCellDef="let element; let i = index" width="8%">
                     <div class="d-flex mx-auto">
 
                         <button class="xsm-icon-button me-2" mat-flat-button aria-label="Delete" matTooltip="Save"
-                            matTooltipPosition="left" color="primary">
+                            matTooltipPosition="left" color="primary" data-automation-id="carrier-save-button">
                             <mat-icon class="material-symbols-outlined">save</mat-icon>
                         </button>
                         <button class="xsm-icon-button" mat-flat-button aria-label="Delete" matTooltip="Delete"
-                            matTooltipPosition="right" color="warn">
+                            matTooltipPosition="right" color="warn" data-automation-id="carrier-delete-button">
                             <mat-icon>close</mat-icon>
                         </button>
                     </div>

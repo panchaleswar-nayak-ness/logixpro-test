@@ -13,6 +13,7 @@
           [showClearBtn]="true"
           (clearBtnEvent)="clearData($event)"
           (valueChangeEvent)="valueChanges($event)"
+          data-automation-id="column-filter-component"
         >
         </app-column-filter-component>
       </div>
@@ -23,12 +24,10 @@
             class="action-dropdown flex-grow-1"
             appearance="outline"
           >
-            <mat-label>Action</mat-label>
-            <mat-select class="employees-action">
-              <mat-option (click)="previewReport()"
-                >Preview 50 Pages Only</mat-option
-              >
-              <mat-option (click)="printReport()">Print Report</mat-option>
+            <mat-label data-automation-id="action-label">Action</mat-label>
+            <mat-select class="employees-action" data-automation-id="action-select">
+              <mat-option (click)="previewReport()" data-automation-id="option-preview-50-pages">Preview 50 Pages Only</mat-option>
+              <mat-option (click)="printReport()" data-automation-id="option-print-report">Print Report</mat-option>
             </mat-select>
             <span class="material-symbols-outlined icon-expand-more"
               >expand_more</span
@@ -50,10 +49,10 @@
               (matSortChange)="announceSortChange($event)"
             >
               <ng-container matColumnDef="status" sticky>
-                <th mat-header-cell mat-sort-header *matHeaderCellDef>
+                <th mat-header-cell mat-sort-header *matHeaderCellDef data-automation-id="table-header-status">
                   Status
                 </th>
-                <td mat-cell *matCellDef="let element">
+                <td mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'table-data-status-' + i">
                   <div class="d-flex align-items-center">
                     <span
                       class="br-14 label px-3 f-16"
@@ -65,10 +64,10 @@
               </ng-container>
 
               <ng-container matColumnDef="transactionType" sticky>
-                <th mat-header-cell mat-sort-header *matHeaderCellDef>
+                <th mat-header-cell mat-sort-header *matHeaderCellDef data-automation-id="table-header-transaction-type">
                   Transaction Type
                 </th>
-                <td mat-cell *matCellDef="let element">
+                <td mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'table-data-transaction-type-' + i">
                   <div class="d-flex align-items-center">
                     <span
                       class="br-14 label px-2 f-16"
@@ -81,12 +80,12 @@
 
               <!-- Name Column -->
               <ng-container matColumnDef="completedDate">
-                <th mat-header-cell mat-sort-header *matHeaderCellDef>
+                <th mat-header-cell mat-sort-header *matHeaderCellDef data-automation-id="table-header-completed-date">
                   Completed Date
                 </th>
                 <td
                   mat-cell
-                  *matCellDef="let element"
+                  *matCellDef="let element; let i = index"
                   (contextmenu)="
                     onContextMenu(
                       $event,
@@ -103,6 +102,7 @@
                       ? false
                       : true
                   "
+                  [attr.data-automation-id]="'table-data-completed-date-' + i"
                 >
                   {{ element.orignalCompletedDate }}
                 </td>
@@ -110,12 +110,12 @@
 
               <!-- Weight Column -->
               <ng-container matColumnDef="location">
-                <th mat-header-cell mat-sort-header *matHeaderCellDef>
+                <th mat-header-cell mat-sort-header *matHeaderCellDef data-automation-id="table-header-location">
                   Location
                 </th>
                 <td
                   mat-cell
-                  *matCellDef="let element"
+                  *matCellDef="let element; let i = index"
                   (contextmenu)="
                     onContextMenu(
                       $event,
@@ -131,6 +131,7 @@
                       ? false
                       : true
                   "
+                  [attr.data-automation-id]="'table-data-location-' + i"
                 >
                   {{ element.location }}
                 </td>
@@ -138,12 +139,12 @@
 
               <!-- Symbol Column -->
               <ng-container matColumnDef="transactionQuantity">
-                <th mat-header-cell mat-sort-header *matHeaderCellDef>
+                <th mat-header-cell mat-sort-header *matHeaderCellDef data-automation-id="table-header-transaction-quantity">
                   Transaction Quantity
                 </th>
                 <td
                   mat-cell
-                  *matCellDef="let element"
+                  *matCellDef="let element; let i = index"
                   (contextmenu)="
                     onContextMenu(
                       $event,
@@ -160,16 +161,19 @@
                       ? false
                       : true
                   "
+                  [attr.data-automation-id]="'table-data-transaction-quantity-' + i"
                 >
                   {{ element.transactionQuantity }}
                 </td>
               </ng-container>
 
               <ng-container matColumnDef="itemNumber">
-                <th mat-header-cell mat-sort-header *matHeaderCellDef > {{itemNumber}}</th>
+                <th mat-header-cell mat-sort-header *matHeaderCellDef data-automation-id="table-header-item-number">
+                  {{itemNumber}}
+                </th>
                 <td
                   mat-cell
-                  *matCellDef="let element"
+                  *matCellDef="let element; let i = index"
                   (dblclick)="viewInInventoryMaster(element)"
                   (contextmenu)="
                     onContextMenu(
@@ -186,18 +190,19 @@
                       ? false
                       : true
                   "
+                  [attr.data-automation-id]="'table-data-item-number-' + i"
                 >
                   {{ element.itemNumber }}
                 </td>
               </ng-container>
 
               <ng-container matColumnDef="lineNumber">
-                <th mat-header-cell mat-sort-header *matHeaderCellDef>
+                <th mat-header-cell mat-sort-header *matHeaderCellDef data-automation-id="table-header-line-number">
                   Line Number
                 </th>
                 <td
                   mat-cell
-                  *matCellDef="let element"
+                  *matCellDef="let element; let i = index"
                   (contextmenu)="
                     onContextMenu(
                       $event,
@@ -213,18 +218,19 @@
                       ? false
                       : true
                   "
+                  [attr.data-automation-id]="'table-data-line-number-' + i"
                 >
                   {{ element.lineNumber }}
                 </td>
               </ng-container>
 
               <ng-container matColumnDef="requiredDate">
-                <th mat-header-cell mat-sort-header *matHeaderCellDef>
+                <th mat-header-cell mat-sort-header *matHeaderCellDef data-automation-id="table-header-required-date">
                   Required Date
                 </th>
                 <td
                   mat-cell
-                  *matCellDef="let element"
+                  *matCellDef="let element; let i = index"
                   (contextmenu)="
                     onContextMenu(
                       $event,
@@ -240,18 +246,19 @@
                       ? false
                       : true
                   "
+                  [attr.data-automation-id]="'table-data-required-date-' + i"
                 >
                   {{ element.requiredDate }}
                 </td>
               </ng-container>
 
               <ng-container matColumnDef="description">
-                <th mat-header-cell mat-sort-header *matHeaderCellDef>
+                <th mat-header-cell mat-sort-header *matHeaderCellDef data-automation-id="table-header-description">
                   Description
                 </th>
                 <td
                   mat-cell
-                  *matCellDef="let element"
+                  *matCellDef="let element; let i = index"
                   (contextmenu)="
                     onContextMenu(
                       $event,
@@ -267,18 +274,19 @@
                       ? false
                       : true
                   "
+                  [attr.data-automation-id]="'table-data-description-' + i"
                 >
                   {{ element.description }}
                 </td>
               </ng-container>
 
               <ng-container matColumnDef="completedQuantity">
-                <th mat-header-cell mat-sort-header *matHeaderCellDef>
+                <th mat-header-cell mat-sort-header *matHeaderCellDef data-automation-id="table-header-completed-quantity">
                   Completed Quantity
                 </th>
                 <td
                   mat-cell
-                  *matCellDef="let element"
+                  *matCellDef="let element; let i = index"
                   (contextmenu)="
                     onContextMenu(
                       $event,
@@ -295,18 +303,19 @@
                       ? false
                       : true
                   "
+                  [attr.data-automation-id]="'table-data-completed-quantity-' + i"
                 >
                   {{ element.completedQuantity }}
                 </td>
               </ng-container>
 
               <ng-container matColumnDef="toteID">
-                <th mat-header-cell mat-sort-header *matHeaderCellDef>
+                <th mat-header-cell mat-sort-header *matHeaderCellDef data-automation-id="table-header-tote-id">
                   Tote ID
                 </th>
                 <td
                   mat-cell
-                  *matCellDef="let element"
+                  *matCellDef="let element; let i = index"
                   (contextmenu)="
                     onContextMenu($event, element.toteID, getColDef('toteID'))
                   "
@@ -316,18 +325,19 @@
                   [matTooltipDisabled]="
                     element.toteID && element.toteID.length >= 15 ? false : true
                   "
+                  [attr.data-automation-id]="'table-data-tote-id-' + i"
                 >
                   {{ element.toteID }}
                 </td>
               </ng-container>
 
               <ng-container matColumnDef="priority">
-                <th mat-header-cell mat-sort-header *matHeaderCellDef>
+                <th mat-header-cell mat-sort-header *matHeaderCellDef data-automation-id="table-header-priority">
                   Priority
                 </th>
                 <td
                   mat-cell
-                  *matCellDef="let element"
+                  *matCellDef="let element; let i = index"
                   (contextmenu)="
                     onContextMenu(
                       $event,
@@ -343,18 +353,19 @@
                       ? false
                       : true
                   "
+                  [attr.data-automation-id]="'table-data-priority-' + i"
                 >
                   {{ element.priority }}
                 </td>
               </ng-container>
 
               <ng-container matColumnDef="completedBy">
-                <th mat-header-cell mat-sort-header *matHeaderCellDef>
+                <th mat-header-cell mat-sort-header *matHeaderCellDef data-automation-id="table-header-completed-by">
                   Completed By
                 </th>
                 <td
                   mat-cell
-                  *matCellDef="let element"
+                  *matCellDef="let element; let i = index"
                   (contextmenu)="
                     onContextMenu(
                       $event,
@@ -370,18 +381,19 @@
                       ? false
                       : true
                   "
+                  [attr.data-automation-id]="'table-data-completed-by-' + i"
                 >
                   {{ element.completedBy }}
                 </td>
               </ng-container>
 
               <ng-container matColumnDef="unitOfMeasure">
-                <th mat-header-cell mat-sort-header *matHeaderCellDef replacePlaceholder [replacePlaceHolder]="placeholders.unitOfMeasure" [fallbackPlaceHolder]="placeholders.unitOfMeasureFallback">
+                <th mat-header-cell mat-sort-header *matHeaderCellDef replacePlaceholder [replacePlaceHolder]="placeholders.unitOfMeasure" [fallbackPlaceHolder]="placeholders.unitOfMeasureFallback" data-automation-id="table-header-unit-of-measure">
                   {{UnitOfMeasure}}
                 </th>
                 <td
                   mat-cell
-                  *matCellDef="let element"
+                  *matCellDef="let element; let i = index"
                   (contextmenu)="
                     onContextMenu(
                       $event,
@@ -397,18 +409,19 @@
                       ? false
                       : true
                   "
+                  [attr.data-automation-id]="'table-data-unit-of-measure-' + i"
                 >
                   {{ element.unitOfMeasure }}
                 </td>
               </ng-container>
 
               <ng-container matColumnDef="lotNumber">
-                <th mat-header-cell mat-sort-header *matHeaderCellDef>
+                <th mat-header-cell mat-sort-header *matHeaderCellDef data-automation-id="table-header-lot-number">
                   Lot Number
                 </th>
                 <td
                   mat-cell
-                  *matCellDef="let element"
+                  *matCellDef="let element; let i = index"
                   (contextmenu)="
                     onContextMenu(
                       $event,
@@ -424,18 +437,19 @@
                       ? false
                       : true
                   "
+                  [attr.data-automation-id]="'table-data-lot-number-' + i"
                 >
                   {{ element.lotNumber }}
                 </td>
               </ng-container>
 
               <ng-container matColumnDef="expirationDate">
-                <th mat-header-cell mat-sort-header *matHeaderCellDef>
+                <th mat-header-cell mat-sort-header *matHeaderCellDef data-automation-id="table-header-expiration-date">
                   Expiration Date
                 </th>
                 <td
                   mat-cell
-                  *matCellDef="let element"
+                  *matCellDef="let element; let i = index"
                   (contextmenu)="
                     onContextMenu(
                       $event,
@@ -452,18 +466,19 @@
                       ? false
                       : true
                   "
+                  [attr.data-automation-id]="'table-data-expiration-date-' + i"
                 >
                   {{ element.expirationDate }}
                 </td>
               </ng-container>
 
               <ng-container matColumnDef="serialNumber">
-                <th mat-header-cell mat-sort-header *matHeaderCellDef>
+                <th mat-header-cell mat-sort-header *matHeaderCellDef data-automation-id="table-header-serial-number">
                   Serial Number
                 </th>
                 <td
                   mat-cell
-                  *matCellDef="let element"
+                  *matCellDef="let element; let i = index"
                   (contextmenu)="
                     onContextMenu(
                       $event,
@@ -479,18 +494,19 @@
                       ? false
                       : true
                   "
+                  [attr.data-automation-id]="'table-data-serial-number-' + i"
                 >
                   {{ element.serialNumber }}
                 </td>
               </ng-container>
 
               <ng-container matColumnDef="revision">
-                <th mat-header-cell mat-sort-header *matHeaderCellDef>
+                <th mat-header-cell mat-sort-header *matHeaderCellDef data-automation-id="table-header-revision">
                   Revision
                 </th>
                 <td
                   mat-cell
-                  *matCellDef="let element"
+                  *matCellDef="let element; let i = index"
                   (contextmenu)="
                     onContextMenu(
                       $event,
@@ -506,18 +522,19 @@
                       ? false
                       : true
                   "
+                  [attr.data-automation-id]="'table-data-revision-' + i"
                 >
                   {{ element.revision }}
                 </td>
               </ng-container>
 
               <ng-container matColumnDef="wareHouse">
-                <th mat-header-cell mat-sort-header *matHeaderCellDef>
+                <th mat-header-cell mat-sort-header *matHeaderCellDef data-automation-id="table-header-warehouse">
                   Warehouse
                 </th>
                 <td
                   mat-cell
-                  *matCellDef="let element"
+                  *matCellDef="let element; let i = index"
                   (contextmenu)="
                     onContextMenu(
                       $event,
@@ -533,18 +550,19 @@
                       ? false
                       : true
                   "
+                  [attr.data-automation-id]="'table-data-warehouse-' + i"
                 >
                   {{ element.wareHouse }}
                 </td>
               </ng-container>
 
               <ng-container matColumnDef="importDate">
-                <th mat-header-cell mat-sort-header *matHeaderCellDef>
+                <th mat-header-cell mat-sort-header *matHeaderCellDef data-automation-id="table-header-import-date">
                   Import Date
                 </th>
                 <td
                   mat-cell
-                  *matCellDef="let element"
+                  *matCellDef="let element; let i = index"
                   (contextmenu)="
                     onContextMenu(
                       $event,
@@ -560,18 +578,19 @@
                       ? false
                       : true
                   "
+                  [attr.data-automation-id]="'table-data-import-date-' + i"
                 >
                   {{ element.importDate }}
                 </td>
               </ng-container>
 
               <ng-container matColumnDef="batchPickID">
-                <th mat-header-cell mat-sort-header *matHeaderCellDef>
+                <th mat-header-cell mat-sort-header *matHeaderCellDef data-automation-id="table-header-batch-pick-id">
                   Batch Pick ID
                 </th>
                 <td
                   mat-cell
-                  *matCellDef="let element"
+                  *matCellDef="let element; let i = index"
                   (contextmenu)="
                     onContextMenu(
                       $event,
@@ -587,18 +606,19 @@
                       ? false
                       : true
                   "
+                  [attr.data-automation-id]="'table-data-batch-pick-id-' + i"
                 >
                   {{ element.batchPickID }}
                 </td>
               </ng-container>
 
               <ng-container matColumnDef="statusCode">
-                <th mat-header-cell mat-sort-header *matHeaderCellDef>
+                <th mat-header-cell mat-sort-header *matHeaderCellDef data-automation-id="table-header-status-code">
                   Status Code
                 </th>
                 <td
                   mat-cell
-                  *matCellDef="let element"
+                  *matCellDef="let element; let i = index"
                   (contextmenu)="
                     onContextMenu(
                       $event,
@@ -614,18 +634,19 @@
                       ? false
                       : true
                   "
+                  [attr.data-automation-id]="'table-data-status-code-' + i"
                 >
                   {{ element.statusCode }}
                 </td>
               </ng-container>
 
               <ng-container matColumnDef="userField1">
-                <th mat-header-cell mat-sort-header *matHeaderCellDef replacePlaceholder [replacePlaceHolder]="placeholders.userField1" [fallbackPlaceHolder]="placeholders.userField1Fallback">
+                <th mat-header-cell mat-sort-header *matHeaderCellDef replacePlaceholder [replacePlaceHolder]="placeholders.userField1" [fallbackPlaceHolder]="placeholders.userField1Fallback" data-automation-id="table-header-user-field-1">
                   UF1
                 </th>
                 <td
                   mat-cell
-                  *matCellDef="let element"
+                  *matCellDef="let element; let i = index"
                   (contextmenu)="
                     onContextMenu(
                       $event,
@@ -641,18 +662,19 @@
                       ? false
                       : true
                   "
+                  [attr.data-automation-id]="'table-data-user-field-1-' + i"
                 >
                   {{ element.userField1 }}
                 </td>
               </ng-container>
 
               <ng-container matColumnDef="userField2">
-                <th mat-header-cell mat-sort-header *matHeaderCellDef replacePlaceholder [replacePlaceHolder]="placeholders.userField2" [fallbackPlaceHolder]="placeholders.userField2Fallback">
+                <th mat-header-cell mat-sort-header *matHeaderCellDef replacePlaceholder [replacePlaceHolder]="placeholders.userField2" [fallbackPlaceHolder]="placeholders.userField2Fallback" data-automation-id="table-header-user-field-2">
                   UF2
                 </th>
                 <td
                   mat-cell
-                  *matCellDef="let element"
+                  *matCellDef="let element; let i = index"
                   (contextmenu)="
                     onContextMenu(
                       $event,
@@ -668,18 +690,19 @@
                       ? false
                       : true
                   "
+                  [attr.data-automation-id]="'table-data-user-field-2-' + i"
                 >
                   {{ element.userField2 }}
                 </td>
               </ng-container>
 
               <ng-container matColumnDef="userField3">
-                <th mat-header-cell mat-sort-header *matHeaderCellDef replacePlaceholder [replacePlaceHolder]="placeholders.userField3" [fallbackPlaceHolder]="placeholders.userField3Fallback">
+                <th mat-header-cell mat-sort-header *matHeaderCellDef replacePlaceholder [replacePlaceHolder]="placeholders.userField3" [fallbackPlaceHolder]="placeholders.userField3Fallback" data-automation-id="table-header-user-field-3">
                   UF3
                 </th>
                 <td
                   mat-cell
-                  *matCellDef="let element"
+                  *matCellDef="let element; let i = index"
                   (contextmenu)="
                     onContextMenu(
                       $event,
@@ -695,18 +718,19 @@
                       ? false
                       : true
                   "
+                  [attr.data-automation-id]="'table-data-user-field-3-' + i"
                 >
                   {{ element.userField3 }}
                 </td>
               </ng-container>
 
               <ng-container matColumnDef="userField4">
-                <th mat-header-cell mat-sort-header *matHeaderCellDef replacePlaceholder [replacePlaceHolder]="placeholders.userField4" [fallbackPlaceHolder]="placeholders.userField4Fallback">
+                <th mat-header-cell mat-sort-header *matHeaderCellDef replacePlaceholder [replacePlaceHolder]="placeholders.userField4" [fallbackPlaceHolder]="placeholders.userField4Fallback" data-automation-id="table-header-user-field-4">
                   UF4
                 </th>
                 <td
                   mat-cell
-                  *matCellDef="let element"
+                  *matCellDef="let element; let i = index"
                   (contextmenu)="
                     onContextMenu(
                       $event,
@@ -722,18 +746,19 @@
                       ? false
                       : true
                   "
+                  [attr.data-automation-id]="'table-data-user-field-4-' + i"
                 >
                   {{ element.userField4 }}
                 </td>
               </ng-container>
 
               <ng-container matColumnDef="userField5">
-                <th mat-header-cell mat-sort-header *matHeaderCellDef replacePlaceholder [replacePlaceHolder]="placeholders.userField5" [fallbackPlaceHolder]="placeholders.userField5Fallback">
+                <th mat-header-cell mat-sort-header *matHeaderCellDef replacePlaceholder [replacePlaceHolder]="placeholders.userField5" [fallbackPlaceHolder]="placeholders.userField5Fallback" data-automation-id="table-header-user-field-5">
                   UF5
                 </th>
                 <td
                   mat-cell
-                  *matCellDef="let element"
+                  *matCellDef="let element; let i = index"
                   (contextmenu)="
                     onContextMenu(
                       $event,
@@ -749,18 +774,19 @@
                       ? false
                       : true
                   "
+                  [attr.data-automation-id]="'table-data-user-field-5-' + i"
                 >
                   {{ element.userField5 }}
                 </td>
               </ng-container>
 
               <ng-container matColumnDef="userField6">
-                <th mat-header-cell mat-sort-header *matHeaderCellDef replacePlaceholder [replacePlaceHolder]="placeholders.userField6" [fallbackPlaceHolder]="placeholders.userField6Fallback">
+                <th mat-header-cell mat-sort-header *matHeaderCellDef replacePlaceholder [replacePlaceHolder]="placeholders.userField6" [fallbackPlaceHolder]="placeholders.userField6Fallback" data-automation-id="table-header-user-field-6">
                   UF6
                 </th>
                 <td
                   mat-cell
-                  *matCellDef="let element"
+                  *matCellDef="let element; let i = index"
                   (contextmenu)="
                     onContextMenu(
                       $event,
@@ -776,18 +802,19 @@
                       ? false
                       : true
                   "
+                  [attr.data-automation-id]="'table-data-user-field-6-' + i"
                 >
                   {{ element.userField6 }}
                 </td>
               </ng-container>
 
               <ng-container matColumnDef="userField7">
-                <th mat-header-cell mat-sort-header *matHeaderCellDef replacePlaceholder [replacePlaceHolder]="placeholders.userField7" [fallbackPlaceHolder]="placeholders.userField7Fallback">
+                <th mat-header-cell mat-sort-header *matHeaderCellDef replacePlaceholder [replacePlaceHolder]="placeholders.userField7" [fallbackPlaceHolder]="placeholders.userField7Fallback" data-automation-id="table-header-user-field-7">
                   UF7
                 </th>
                 <td
                   mat-cell
-                  *matCellDef="let element"
+                  *matCellDef="let element; let i = index"
                   (contextmenu)="
                     onContextMenu(
                       $event,
@@ -803,18 +830,19 @@
                       ? false
                       : true
                   "
+                  [attr.data-automation-id]="'table-data-user-field-7-' + i"
                 >
                   {{ element.userField7 }}
                 </td>
               </ng-container>
 
               <ng-container matColumnDef="userField8">
-                <th mat-header-cell mat-sort-header *matHeaderCellDef replacePlaceholder [replacePlaceHolder]="placeholders.userField8" [fallbackPlaceHolder]="placeholders.userField8Fallback">
+                <th mat-header-cell mat-sort-header *matHeaderCellDef replacePlaceholder [replacePlaceHolder]="placeholders.userField8" [fallbackPlaceHolder]="placeholders.userField8Fallback" data-automation-id="table-header-user-field-8">
                   UF8
                 </th>
                 <td
                   mat-cell
-                  *matCellDef="let element"
+                  *matCellDef="let element; let i = index"
                   (contextmenu)="
                     onContextMenu(
                       $event,
@@ -830,18 +858,19 @@
                       ? false
                       : true
                   "
+                  [attr.data-automation-id]="'table-data-user-field-8-' + i"
                 >
                   {{ element.userField8 }}
                 </td>
               </ng-container>
 
               <ng-container matColumnDef="userField9">
-                <th mat-header-cell mat-sort-header *matHeaderCellDef replacePlaceholder [replacePlaceHolder]="placeholders.userField9" [fallbackPlaceHolder]="placeholders.userField9Fallback">
+                <th mat-header-cell mat-sort-header *matHeaderCellDef replacePlaceholder [replacePlaceHolder]="placeholders.userField9" [fallbackPlaceHolder]="placeholders.userField9Fallback" data-automation-id="table-header-user-field-9">
                   UF9
                 </th>
                 <td
                   mat-cell
-                  *matCellDef="let element"
+                  *matCellDef="let element; let i = index"
                   (contextmenu)="
                     onContextMenu(
                       $event,
@@ -857,18 +886,19 @@
                       ? false
                       : true
                   "
+                  [attr.data-automation-id]="'table-data-user-field-9-' + i"
                 >
                   {{ element.userField9 }}
                 </td>
               </ng-container>
 
               <ng-container matColumnDef="userField10">
-                <th mat-header-cell mat-sort-header *matHeaderCellDef replacePlaceholder [replacePlaceHolder]="placeholders.userField10" [fallbackPlaceHolder]="placeholders.userField10Fallback">
+                <th mat-header-cell mat-sort-header *matHeaderCellDef replacePlaceholder [replacePlaceHolder]="placeholders.userField10" [fallbackPlaceHolder]="placeholders.userField10Fallback" data-automation-id="table-header-user-field-10">
                   UF10
                 </th>
                 <td
                   mat-cell
-                  *matCellDef="let element"
+                  *matCellDef="let element; let i = index"
                   (contextmenu)="
                     onContextMenu(
                       $event,
@@ -884,18 +914,19 @@
                       ? false
                       : true
                   "
+                  [attr.data-automation-id]="'table-data-user-field-10-' + i"
                 >
                   {{ element.userField10 }}
                 </td>
               </ng-container>
 
               <ng-container matColumnDef="toteNumber">
-                <th mat-header-cell mat-sort-header *matHeaderCellDef>
+                <th mat-header-cell mat-sort-header *matHeaderCellDef data-automation-id="table-header-tote-number">
                   Tote Number
                 </th>
                 <td
                   mat-cell
-                  *matCellDef="let element"
+                  *matCellDef="let element; let i = index"
                   (contextmenu)="
                     onContextMenu(
                       $event,
@@ -911,16 +942,17 @@
                       ? false
                       : true
                   "
+                  [attr.data-automation-id]="'table-data-tote-number-' + i"
                 >
                   {{ element.toteNumber }}
                 </td>
               </ng-container>
 
               <ng-container matColumnDef="cell">
-                <th mat-header-cell mat-sort-header *matHeaderCellDef>Cell</th>
+                <th mat-header-cell mat-sort-header *matHeaderCellDef data-automation-id="table-header-cell">Cell</th>
                 <td
                   mat-cell
-                  *matCellDef="let element"
+                  *matCellDef="let element; let i = index"
                   (contextmenu)="
                     onContextMenu($event, element.cell, getColDef('cell'))
                   "
@@ -930,16 +962,17 @@
                   [matTooltipDisabled]="
                     element.cell && element.cell.length >= 15 ? false : true
                   "
+                  [attr.data-automation-id]="'table-data-cell-' + i"
                 >
                   {{ element.cell }}
                 </td>
               </ng-container>
 
               <ng-container matColumnDef="zone">
-                <th mat-header-cell mat-sort-header *matHeaderCellDef>Zone</th>
+                <th mat-header-cell mat-sort-header *matHeaderCellDef data-automation-id="table-header-zone">Zone</th>
                 <td
                   mat-cell
-                  *matCellDef="let element"
+                  *matCellDef="let element; let i = index"
                   (contextmenu)="
                     onContextMenu($event, element.zone, getColDef('zone'))
                   "
@@ -949,18 +982,19 @@
                   [matTooltipDisabled]="
                     element.zone && element.zone.length >= 15 ? false : true
                   "
+                  [attr.data-automation-id]="'table-data-zone-' + i"
                 >
                   {{ element.zone }}
                 </td>
               </ng-container>
 
               <ng-container matColumnDef="hostTransactionID">
-                <th mat-header-cell mat-sort-header *matHeaderCellDef>
+                <th mat-header-cell mat-sort-header *matHeaderCellDef data-automation-id="table-header-host-transaction-id">
                   Host Transaction ID
                 </th>
                 <td
                   mat-cell
-                  *matCellDef="let element"
+                  *matCellDef="let element; let i = index"
                   (contextmenu)="
                     onContextMenu(
                       $event,
@@ -977,18 +1011,19 @@
                       ? false
                       : true
                   "
+                  [attr.data-automation-id]="'table-data-host-transaction-id-' + i"
                 >
                   {{ element.hostTransactionID }}
                 </td>
               </ng-container>
 
               <ng-container matColumnDef="emergency">
-                <th mat-header-cell mat-sort-header *matHeaderCellDef>
+                <th mat-header-cell mat-sort-header *matHeaderCellDef data-automation-id="table-header-emergency">
                   Emergency
                 </th>
                 <td
                   mat-cell
-                  *matCellDef="let element"
+                  *matCellDef="let element; let i = index"
                   (contextmenu)="
                     onContextMenu(
                       $event,
@@ -1004,16 +1039,17 @@
                       ? false
                       : true
                   "
+                  [attr.data-automation-id]="'table-data-emergency-' + i"
                 >
                   {{ element.emergency }}
                 </td>
               </ng-container>
 
               <ng-container matColumnDef="id">
-                <th mat-header-cell mat-sort-header *matHeaderCellDef>ID</th>
+                <th mat-header-cell mat-sort-header *matHeaderCellDef data-automation-id="table-header-id">ID</th>
                 <td
                   mat-cell
-                  *matCellDef="let element"
+                  *matCellDef="let element; let i = index"
                   (contextmenu)="
                     onContextMenu($event, element.id, getColDef('id'))
                   "
@@ -1023,6 +1059,7 @@
                   [matTooltipDisabled]="
                     element.id && element.id.length >= 15 ? false : true
                   "
+                  [attr.data-automation-id]="'table-data-id-' + i"
                 >
                   {{ element.id }}
                 </td>
@@ -1036,7 +1073,7 @@
                 ></th>
                 <td
                   mat-cell
-                  *matCellDef="let seletedRecord"
+                  *matCellDef="let seletedRecord; let i = index"
                   class="custom-cell"
                 >
                   <button
@@ -1044,6 +1081,7 @@
                     [matMenuTriggerFor]="appMenu"
                     class="circle-icon-o"
                     appearance="outline"
+                    [attr.data-automation-id]="'action-menu-trigger-' + i"
                   >
                     <mat-icon>more_horiz</mat-icon>
                   </button>
@@ -1051,6 +1089,7 @@
                     <button
                       mat-menu-item
                       (click)="viewInInventoryMaster(seletedRecord)"
+                      [attr.data-automation-id]="'action-menu-view-inventory-' + i"
                     >
                       View Item in Inventory Master
                     </button>
@@ -1101,17 +1140,30 @@
     </div>
   </mat-card-content>
 </mat-card>
-<div class="container-fluid">
+<div class="container-fluid p-0">
   <div class="row g-2">
     <div class="col">
       <button
         mat-flat-button
         color="primary"
-        class="btn-lg mx-2 w-100"
+        class="btn-lg w-100"
         (click)="completeOrder()"
         [disabled]="isOrderCompleted"
+        data-automation-id="complete-order-button"
       >
         Put Away - Complete Order
+      </button>
+    </div>
+    <div class="col">
+      <button
+        *ngIf="priority"
+        mat-flat-button
+        color="primary"
+        class="btn-lg w-100"
+        (click)="openGcBeginTest()"
+        data-automation-id="change-priority-button"
+      >
+        Change Priority
       </button>
     </div>
     <div class="col">
@@ -1119,19 +1171,11 @@
         [disabled]="!shippingComplete"
         mat-flat-button
         color="primary"
-        class="btn-lg mx-2 w-100"
+        class="btn-lg w-100"
         (click)="shippingCompleteDialog()"
+        data-automation-id="shipping-complete-button"
       >
         Shipping Complete
-      </button>
-      <button
-        *ngIf="priority"
-        mat-flat-button
-        color="primary"
-        class="btn-lg w-100"
-        (click)="openGcBeginTest()"
-      >
-        Change Priority
       </button>
     </div>
   </div>

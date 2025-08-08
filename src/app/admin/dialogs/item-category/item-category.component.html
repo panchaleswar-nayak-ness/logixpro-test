@@ -1,8 +1,8 @@
 <div class="d-flex justify-content-between mb-4 align-items-center">
 <div class="w-48px"></div>
-<h1 class="m-0" mat-dialog-title>Categories - Add, Delete, Edit and Set</h1>
+<h1 class="m-0" mat-dialog-title data-automation-id="item-category-heading">Categories - Add, Delete, Edit and Set</h1>
 
-<button mat-icon-button class="close-button dialog-close-button-fix" [mat-dialog-close]="true">
+<button mat-icon-button class="close-button dialog-close-button-fix" [mat-dialog-close]="true" data-automation-id="close-dialog-button">
     <mat-icon class="close-icon">close</mat-icon>
 </button>
 </div>
@@ -12,12 +12,12 @@
     <div class="">
         <div class="">
             <div class="d-flex gap-12 my-4 justify-content-end w-100" >
-                <button mat-flat-button color="primary" class="add-icon-button" (click)="addCatRow()">
+                <button mat-flat-button color="primary" class="add-icon-button" (click)="addCatRow()" data-automation-id="add-category-button">
                     <span class="material-symbols-outlined">
                       add
                     </span>
                   </button>
-            <button mat-flat-button color="default" class="icon-button secondary-button" (click)="openPrintRangeDialog()" >
+            <button mat-flat-button color="default" class="icon-button secondary-button" (click)="openPrintRangeDialog()" data-automation-id="print-category-button" >
                 <mat-icon class="material-symbols-outlined">print</mat-icon>
               </button>
               
@@ -30,8 +30,8 @@
         
         <div class="card-header">
             <div class="row">
-                <div class="col-6 pl-64px">Category</div>
-                <div class="col-6 px-4">Sub Category</div>
+                <div class="col-6 pl-64px" data-automation-id="table-header-category">Category</div>
+                <div class="col-6 px-4" data-automation-id="table-header-sub-category">Sub Category</div>
             </div>
         </div>
 
@@ -48,7 +48,8 @@
 
                         <mat-radio-button value="{{item.category}}" 
                         [checked]="item.category == category  &&  item.subCategory == subCategory"
-                        class="custom-radio-btn" (change)="selectCategory({'category': catName.value, 'subCategory': subCatName.value})">
+                        class="custom-radio-btn" (change)="selectCategory({'category': catName.value, 'subCategory': subCatName.value})"
+                        [attr.data-automation-id]="'category-radio-' + i ">
                         </mat-radio-button>
 
                         <div class="container w-100">
@@ -57,7 +58,8 @@
 
                                 <div class="col-6">
                                     <mat-form-field class="custom-form-field w-100" appearance="outline">
-                                        <input  #category_category [autofocus]="i === 0"  (keydown)="enableDisableButton(i)" (keydown.shift.enter)="$event.preventDefault()" matInput type="text" #catName name="{{item.category}}"  value="{{item.category}}" maxlength="50">
+                                        <input  #category_category [autofocus]="i === 0"  (keydown)="enableDisableButton(i)" (keydown.shift.enter)="$event.preventDefault()" matInput type="text" #catName name="{{item.category}}"  value="{{item.category}}" maxlength="50"
+                                        [attr.data-automation-id]="'category-input-' + i">
                                     </mat-form-field>
                                 </div>
 
@@ -65,14 +67,17 @@
                                     <div class="d-flex gap-12 align-items-center">
 
                                         <mat-form-field class="custom-form-field w-100" appearance="outline">
-                                            <input (keydown)="enableDisableButton(i)" (keydown.shift.enter)="$event.preventDefault()" matInput type="text" name="{{item.subCategory}}"  value="{{item.subCategory}}" #subCatName maxlength="50">
+                                            <input (keydown)="enableDisableButton(i)" (keydown.shift.enter)="$event.preventDefault()" matInput type="text" name="{{item.subCategory}}"  value="{{item.subCategory}}" #subCatName maxlength="50"
+                                            [attr.data-automation-id]="'sub-category-input-' + i">
                                         </mat-form-field>
 
-                                        <button [disabled]="(enableButton[i]&&enableButton[i].value!=null)?enableButton[i].value:false" mat-flat-button color="primary" class="xsm-icon-button ms-2" (click)="saveCategory(catName.value, item.category, subCatName.value, item.subCategory)">
+                                        <button [disabled]="(enableButton[i]&&enableButton[i].value!=null)?enableButton[i].value:false" mat-flat-button color="primary" class="xsm-icon-button ms-2" (click)="saveCategory(catName.value, item.category, subCatName.value, item.subCategory)"
+                                        [attr.data-automation-id]="'save-category-button-' + i ">
                                             <mat-icon class="material-symbols-outlined">save</mat-icon>
                                         </button>
 
-                                        <button mat-flat-button color="warn"  class="xsm-icon-button" (click)="dltCategory(item.category, item.subCategory);">
+                                        <button mat-flat-button color="warn"  class="xsm-icon-button" (click)="dltCategory(item.category, item.subCategory);"
+                                        [attr.data-automation-id]="'delete-category-button-' + i">
                                             <mat-icon class="material-symbols-outlined">close</mat-icon>
                                         </button>
 
@@ -91,5 +96,5 @@
     </ng-scrollbar>
     </div>
     <button type="submit"  (click)="ClearSelection()"
-    mat-stroked-button class="w-100 restore-to-default-btn form-button-submit btn-lg m-1 m-xl-0" color="primary">Clear Selection</button>
+    mat-stroked-button class="w-100 restore-to-default-btn form-button-submit btn-lg m-1 m-xl-0" color="primary" data-automation-id="clear-selection-button">Clear Selection</button>
 </div>

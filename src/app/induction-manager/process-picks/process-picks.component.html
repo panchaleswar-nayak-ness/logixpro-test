@@ -1,18 +1,18 @@
 <mat-card class="mat-elevation-z g-card mt-3 mb-3">
     <mat-card-content>
         <div class="d-flex justify-content-between align-items-center mb-3">
-            <app-icon-heading-component heading="Batch Setup" icon="ballot">
+            <app-icon-heading-component heading="Batch Setup" icon="ballot" data-automation-id="batch-setup-heading">
             </app-icon-heading-component>
-            <button type="submit" mat-stroked-button class="btn-regular" color="primary" [matMenuTriggerFor]="appMenu">
+            <button type="submit" mat-stroked-button class="btn-regular" color="primary" [matMenuTriggerFor]="appMenu" data-automation-id="print-menu-button">
                 <mat-icon class="material-symbols-outlined">print</mat-icon>
                 <span class="material-symbols-outlined icon-expand-more">
                     expand_more
                 </span>
             </button>
             <mat-menu #appMenu="matMenu" >
-                <button (click)="printPick('PrintTote')" mat-menu-item><b>Print Tote/Location Labels</b></button>
-                <button (click)="printPick('PrintPickLabel')"mat-menu-item>Print Pick Labels</button>
-                <button (click)="printPick('PrintPickList')" mat-menu-item>Print Pick List</button>
+                <button (click)="printPick('PrintTote')" mat-menu-item data-automation-id="print-tote-location-labels-button"><b>Print Tote/Location Labels</b></button>
+                <button (click)="printPick('PrintPickLabel')"mat-menu-item data-automation-id="print-pick-labels-button">Print Pick Labels</button>
+                <button (click)="printPick('PrintPickList')" mat-menu-item data-automation-id="print-pick-list-button">Print Pick List</button>
             </mat-menu>
         </div>
         <div class="row">
@@ -21,25 +21,25 @@
                     <div class="row">
                         <div [ngClass]="useInZonePickScreen === true ? 'col-xl-6' : 'col-xl-12'">
                             <mat-form-field class="custom-form-field w-100 mb-2" appearance="outline">
-                                <mat-label>Batch ID</mat-label>
+                                <mat-label data-automation-id="batch-id-label">Batch ID</mat-label>
                                 <input (keydown.shift.enter)="$event.preventDefault()" matInput type="text"
-                                    [(ngModel)]="batchID" #batch_id required="required">
-                                    <button matSuffix *ngIf="batchID" class="clear-btn"  (click)="batchID= '';createToteSetupTable(pickBatchQuantity)"><mat-icon class="text-20 text-chrome-600">cancel</mat-icon></button>
+                                    [(ngModel)]="batchID" #batch_id required="required" [attr.data-automation-id]="'batch-id-input-' + (batchID || '')">
+                                    <button matSuffix *ngIf="batchID" class="clear-btn"  (click)="batchID= '';createToteSetupTable(pickBatchQuantity)" data-automation-id="batch-id-clear-button"><mat-icon class="text-20 text-chrome-600">cancel</mat-icon></button>
                             </mat-form-field>
                         </div>
                     </div>
 
                     <div class="d-block d-xl-flex gap-12">
                         <button mat-flat-button color="primary" class="primary-button btn-regular w-100 mb-3 mb-xl-0 matFlatButton-style"
-                             (click)="onAddBatch('batchWithID')">
+                             (click)="onAddBatch('batchWithID')" data-automation-id="new-batch-with-id-button">
                             New Batch with ID
                         </button>
                         <button mat-flat-button color="primary" class="primary-button btn-regular w-100 mb-3 mb-xl-0 matFlatButton-style"
-                             (click)="onAddBatch('newBatch')">
+                             (click)="onAddBatch('newBatch')" data-automation-id="new-batch-button">
                             New Batch
                         </button>
                         <button *ngIf="useInZonePickScreen" mat-stroked-button color="primary" class="w-100 mb-3 mb-xl-0 matFlatButton-style"
-                             (click)="openBlossomToteDialogue()">
+                             (click)="openBlossomToteDialogue()" data-automation-id="blossom-button">
                             Blossom
                         </button>
                     </div>
@@ -49,40 +49,36 @@
                 <div class="card p-3">
                     <mat-radio-group color="primary" class="d-block d-xl-flex" name="radioOpt1" [(ngModel)]="pickType">
                         <div class="d-flex w-100 pe-2 align-items-center mb-3 mb-xl-0">
-                            <mat-radio-button class=" custom-horizontal-radio" value="MixedZones">
-                            </mat-radio-button>
+                            <mat-radio-button class=" custom-horizontal-radio" value="MixedZones" data-automation-id="radio-mixedzones"></mat-radio-button>
                             <mat-form-field class="custom-form-field w-100" appearance="outline">
-                                <mat-label>Mixed Zones</mat-label>
+                                <mat-label data-automation-id="mixed-zones-label">Mixed Zones</mat-label>
                                 <input (keydown.shift.enter)="$event.preventDefault()" matInput type="text"
-                                    value="{{countInfo?.mixed}}" disabled="true">
+                                value="{{countInfo?.mixed}}" disabled="true" [attr.data-automation-id]="'mixed-zones-input-' + (countInfo?.mixed || '')">
                             </mat-form-field>
                         </div>
                         <div class="d-flex w-100 pe-2 align-items-center mb-3 mb-xl-0">
-                            <mat-radio-button class=" custom-horizontal-radio" value="OffCarousel">
-                            </mat-radio-button>
+                            <mat-radio-button class=" custom-horizontal-radio" value="OffCarousel" data-automation-id="radio-offcarousel"></mat-radio-button>
                             <mat-form-field class="custom-form-field w-100" appearance="outline">
-                                <mat-label>Off - Carousel</mat-label>
+                                <mat-label data-automation-id="off-carousel-label">Off - Carousel</mat-label>
                                 <input (keydown.shift.enter)="$event.preventDefault()" matInput type="text"
-                                    value="{{countInfo?.offCarousel}}" disabled="true">
+                                value="{{countInfo?.offCarousel}}" disabled="true" [attr.data-automation-id]="'off-carousel-input-' + (countInfo?.offCarousel || '')">
                             </mat-form-field>
                         </div>
                         <div class="d-flex w-100 pe-2 align-items-center mb-3 mb-xl-0">
-                            <mat-radio-button class=" custom-horizontal-radio" value="Carousel">
-                            </mat-radio-button>
+                            <mat-radio-button class=" custom-horizontal-radio" value="Carousel" data-automation-id="radio-carousel"></mat-radio-button>
                             <mat-form-field class="custom-form-field w-100" appearance="outline">
-                                <mat-label>Carousel</mat-label>
+                                <mat-label data-automation-id="carousel-label">Carousel</mat-label>
                                 <input (keydown.shift.enter)="$event.preventDefault()" matInput type="text"
-                                    value="{{countInfo?.carousel}}" disabled="true">
+                                value="{{countInfo?.carousel}}" disabled="true" [attr.data-automation-id]="'carousel-input-' + (countInfo?.carousel || '')">
                             </mat-form-field>
                         </div>
                     </mat-radio-group>
                     <div class="d-block d-xl-flex gap-12 mt-2">
-                        <button mat-flat-button color="primary" class="primary-button btn-regular w-100 mb-3 mb-xl-0 matFlatButton-style" 
-                           >
+                        <button mat-flat-button color="primary" class="primary-button btn-regular w-100 mb-3 mb-xl-0 matFlatButton-style" data-automation-id="refresh-order-count-button">
                             Refresh Order Count
                         </button>
                         <button mat-flat-button color="primary" class="primary-button btn-regular w-100 matFlatButton-style"
-                             (click)="openPickToteDialogue()">
+                             (click)="openPickToteDialogue()" data-automation-id="pick-batch-manager-button">
                             Pick Batch Manager
                         </button>
                     </div>
@@ -122,7 +118,7 @@
 </app-process-pick-totes>
 <div class="d-flex">
     <button mat-flat-button color="primary" class="primary-button btn-lg w-100 matFlatButton-style"
-        (click)="confirmProcessSetup()">
+        (click)="confirmProcessSetup()" data-automation-id="process-batch-button">
         Process Batch
     </button>
 </div>
@@ -134,7 +130,9 @@
             <mat-icon color="primary">ballot</mat-icon>
         </div>
         <div>
-            <h4 class="bold text-primary-900 mb-4"><ng-container *ngIf="!batchWithID">New Batch</ng-container>
+            <h4 class="bold text-primary-900 mb-4"
+                [attr.data-automation-id]="batchWithID ? 'new-batch-with-id-heading' : 'new-batch-heading'">
+                <ng-container *ngIf="!batchWithID">New Batch</ng-container>
                 <ng-container *ngIf="batchWithID">New Batch With ID</ng-container>
             </h4>
             <p class="bold mb-4">
@@ -150,12 +148,12 @@
                 </ng-container>
             </p>
             <div class="mb-3">
-                <button mat-flat-button color="primary" class="btn-lg w-100" (click)="confirmAddBatchDialog()">
+                <button mat-flat-button color="primary" class="btn-lg w-100" (click)="confirmAddBatchDialog()" [attr.data-automation-id]="'ok-new-batch-dialog-button-' + (batchWithID ? 'with-id' : 'no-id')">
                     Ok
                 </button>
             </div>
             <div>
-                <button mat-stroked-button color="basic" class="btn-lg bg-white w-100" (click)="closeBatchDialog()">
+                <button mat-stroked-button color="basic" class="btn-lg bg-white w-100" (click)="closeBatchDialog()" [attr.data-automation-id]="'cancel-new-batch-dialog-button-' + (batchWithID ? 'with-id' : 'no-id')">
                     Cancel
                 </button>
             </div>
@@ -169,15 +167,15 @@
             <mat-icon color="primary">ballot</mat-icon>
         </div>
         <div class="w-100">
-            <h4 class="bold text-primary-900 mb-4">Process Batch</h4>
+            <h4 class="bold text-primary-900 mb-4" data-automation-id="process-batch-heading">Process Batch</h4>
             <p class="bold mb-4">Process the current setup?</p>
             <div class="mb-3">
-                <button mat-flat-button color="primary" class="btn-lg w-100" (click)="onPrcessBatch()">
+                <button mat-flat-button color="primary" class="btn-lg w-100" (click)="onPrcessBatch()" data-automation-id="ok-process-batch-dialog-button">
                     Ok
                 </button>
             </div>
             <div>
-                <button mat-stroked-button color="basic" class="btn-lg bg-white w-100" (click)="closeBatchDialog()">
+                <button mat-stroked-button color="basic" class="btn-lg bg-white w-100" (click)="closeBatchDialog()" data-automation-id="cancel-process-batch-dialog-button">
                     Cancel
                 </button>
             </div>
@@ -209,7 +207,7 @@
         </mat-dialog-content>
         <mat-dialog-actions class="d-flex flex-column justify-content-center m-0 p-0">
           <button  class="mat-button-base prompt-action-danger-button  mb-3 btn-lg w-100"  [mat-dialog-close]="false" mat-stroked-button mat-button
-         >OK</button>
+         data-automation-id="popup-blocked-ok-button">OK</button>
      
         </mat-dialog-actions>
       </div>

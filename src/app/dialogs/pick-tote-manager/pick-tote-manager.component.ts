@@ -26,6 +26,7 @@ import { MatSort } from '@angular/material/sort';
 import { IInductionManagerApiService } from 'src/app/common/services/induction-manager-api/induction-manager-api-interface';
 import { InductionManagerApiService } from 'src/app/common/services/induction-manager-api/induction-manager-api.service';
 import { GlobalService } from 'src/app/common/services/global.service';
+import { PickToteManagerService } from 'src/app/common/services/pick-tote-manager.service'
 import {  TableConstant ,ToasterTitle,ResponseStrings,Column,ToasterType,zoneType,DialogConstants,ColumnDef,UniqueConstants,Style,StringConditions, Placeholders, ToasterMessages} from 'src/app/common/constants/strings.constants';
 import { FilterOrder, FilterTransaction, SavedFilterChangeEvent, FilterData, OrderData } from 'src/app/common/types/pick-tote-manager.types';
 import { TableContextMenuService } from 'src/app/common/globalComponents/table-context-menu-component/table-context-menu.service';
@@ -79,6 +80,7 @@ UserField10:string = this.fieldMappings.userField10;
   @ViewChild('field_focus') field_focus: ElementRef;
 
   isFilter: string = StringConditions.filter;
+  filterByNumeric : boolean = false;
   savedFilterList: any[] = [];
   filteredOptions: Observable<any[]>;
   savedFilter = new FormControl('');
@@ -454,7 +456,9 @@ filterationColumns : FilterationColumns[] = [];
   }
   public iInductionManagerApi: IInductionManagerApiService;
   constructor(
+
     private contextMenuService : TableContextMenuService,
+    private pickToteManagerService: PickToteManagerService,
     private global: GlobalService,
     public inductionManagerApi: InductionManagerApiService,
     private authService: AuthService,
@@ -479,6 +483,7 @@ filterationColumns : FilterationColumns[] = [];
     }
     
     this.allSelectOrders = this.data.allOrders;
+    this.filterByNumeric = this.pickToteManagerService.GetPickToteFilterNumeric();
   }
 
   pickBatchZonesSelect() {
@@ -838,6 +843,13 @@ userFields = Array.from({ length: 9 }, (_, i) => ({
       paginator.pageSize = 10;
     }
   }
+// Set Numeric or Alphanumeric as selected
+onFilterByChanged(isNumeric: boolean): void {
+  this.filterByNumeric = this.pickToteManagerService.SetPickToteFilterNumeric(isNumeric);
+  if (!this.global.isNullOrEmpty(this.savedFilter?.value)) {
+    this.ordersFilterZoneSelect();
+  }
+}
 
   ordersFilterZoneSelect(zone = '', rp = false, type = '') {
     let payload;
@@ -852,6 +864,7 @@ userFields = Array.from({ length: 9 }, (_, i) => ({
         UseDefFilter: 0,
         UseDefZone: 0,
         RP: false,
+        FilterByNumeric : this.filterByNumeric
       };
       this.iInductionManagerApi
         .OrdersFilterZoneSelect(payload)
@@ -1666,6 +1679,7 @@ refreshOrderDataGrid() {
   
     return dateFields.has(field) ? 'date' : 'text';
   }  
+
   onContextMenu(event: MouseEvent, SelectedItem: any, FilterColumnName?: any, FilterConditon?: any, FilterItemType?: any) {
     event.preventDefault()
     this.isActiveTrigger = true;
@@ -1715,5 +1729,10 @@ refreshOrderDataGrid() {
     });
 
    }
+  
+  isTooltipDisabled(value: string): boolean {
+    return value.length < 25;
+    
   }
+}
 

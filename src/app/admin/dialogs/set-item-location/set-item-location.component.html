@@ -1,8 +1,8 @@
 <div class="d-flex justify-content-between mb-4 align-items-center">
     <div class="divWithClass"></div>
-    <h1 class="m-0" mat-dialog-title>Set {{LabelItemNumber}} and Location</h1>
+    <h1 class="m-0" mat-dialog-title data-automation-id="heading-set-item-and-location">Set {{LabelItemNumber}} and Location</h1>
 
-    <button mat-icon-button class="close-button dialog-close-button-fix" [mat-dialog-close]="false">
+    <button mat-icon-button class="close-button dialog-close-button-fix" [mat-dialog-close]="false" data-automation-id="close-button">
         <mat-icon class="close-icon">close</mat-icon>
     </button>
 </div>
@@ -19,12 +19,12 @@
             </ng-container>
             <mat-form-field class="custom-form-field w-100" appearance="outline" [floatLabel]="getFloatLabelValue()"
                 [hideRequiredMarker]="hideRequiredControlItem.value">
-                <mat-label replacePlaceholder [replacePlaceHolder]="placeholders.itemNumber" [fallbackPlaceHolder]="placeholders.itemNumberFallback">{{LabelItemNumber}}</mat-label>
+                <mat-label replacePlaceholder [replacePlaceHolder]="placeholders.itemNumber" [fallbackPlaceHolder]="placeholders.itemNumberFallback" data-automation-id="label-item-number">{{LabelItemNumber}}</mat-label>
                 <input #itm_nmb type="text" placeholder="Search" aria-label="Number" matInput [(ngModel)]="itemNumber" (focusout)="onFocusOutEvent($event)"
-                    [matAutocomplete]="item" (ngModelChange)="this.searchByItemNumber.next($event)">
-                    <button matSuffix *ngIf="itemNumber" class="clear-btn"  (click)="itemNumber=''"><mat-icon class="text-20 text-chrome-600">cancel</mat-icon></button>
-                <mat-autocomplete #item="matAutocomplete" (optionSelected)="searchData()">
-                    <mat-option *ngFor="let option of searchAutocompleteListItem" [value]="option.itemNumber">
+                    [matAutocomplete]="item" (ngModelChange)="this.searchByItemNumber.next($event)" data-automation-id="input-item-number">
+                    <button matSuffix *ngIf="itemNumber" class="clear-btn"  (click)="itemNumber=''" data-automation-id="clear-button"><mat-icon class="text-20 text-chrome-600">cancel</mat-icon></button>
+                <mat-autocomplete #item="matAutocomplete" (optionSelected)="searchData()" data-automation-id="autocomplete-item-number">
+                    <mat-option *ngFor="let option of searchAutocompleteListItem; let i = index" [value]="option.itemNumber" [attr.data-automation-id]="'option-item-number-' + i">
                         {{option.itemNumber}}
                     </mat-option>
                 </mat-autocomplete>
@@ -37,20 +37,21 @@
             
             <mat-form-field class="custom-form-field w-100" appearance="outline" [floatLabel]="getFloatLabelValueLocation()"
                 [hideRequiredMarker]="hideRequiredControl.value">
-                <mat-label>Set Location by Item Quantity</mat-label>
+                <mat-label data-automation-id="label-set-location-by-item-quantity">Set Location by Item Quantity</mat-label>
                 <input type="text" placeholder="Search" aria-label="Number" matInput [(ngModel)]="location"
-                    [matAutocomplete]="autoLocation" >
-                    <button matSuffix *ngIf="location" class="clear-btn"  (click)="location=''"><mat-icon class="text-20 text-chrome-600">cancel</mat-icon></button>
+                    [matAutocomplete]="autoLocation" data-automation-id="input-location">
+                    <button matSuffix *ngIf="location" class="clear-btn"  (click)="location=''" data-automation-id="clear-button"><mat-icon class="text-20 text-chrome-600">cancel</mat-icon></button>
 
 
                     
-                    <mat-autocomplete #autoLocation="matAutocomplete" class="card custom-scroll" #item="matAutocomplete" (optionSelected)="searchData()">
+                    <mat-autocomplete #autoLocation="matAutocomplete" class="card custom-scroll" #item="matAutocomplete" (optionSelected)="searchData()" data-automation-id="autocomplete-location">
                             
-                        <h6 class ="card-header matAutoCompHeader "><span class="WSize140px">Inv Map ID</span> <span class="WSize140px">Qty</span> <span  class="WSize140px">Location</span> </h6>
+                        <h6 class ="card-header matAutoCompHeader "><span class="WSize140px" data-automation-id="option-header-inv-map-id">Inv Map ID</span> <span class="WSize140px" data-automation-id="option-header-qty">Qty</span> <span  class="WSize140px" data-automation-id="option-header-location">Location</span> </h6>
                       
-                        <mat-option *ngFor="let option of searchAutocompleteList" [value]="option.locationNumber" class="matAutoCompTableContent">
+                        <mat-option *ngFor="let option of searchAutocompleteList; let i = index" [value]="option.locationNumber" class="matAutoCompTableContent" [attr.data-automation-id]="'option-set-location-by-item-quantity-' + i">
                           <div class="loc_option"  (click)="getRow(option)" >
-                            <span  class="searchColumn WSize140px">{{option.invMapID}}</span> <span  class="searchColumn WSize140px">{{option.itemQty}}</span>  <span  class="searchColumn WSize140px">{{option.locationNumber}}</span> 
+                            <span  class="searchColumn WSize140px" [attr.data-automation-id]="'option-inv-map-id-value-' + i">{{option.invMapID}}</span> <span  class="searchColumn WSize140px" [attr.data-automation-id]="'option-qty-value-' + i">{{option.itemQty}}</span>  
+                            <span  class="searchColumn WSize140px" [attr.data-automation-id]="'option-location-value-' + i">{{option.locationNumber}}</span> 
                         </div>
                         </mat-option>
                       </mat-autocomplete>
@@ -62,7 +63,7 @@
         </div>
 
         <div class="d-flex justify-content-end pt-3">
-            <button (click)="setLocation()" mat-flat-button color="primary" class="button-primary btn-lg flex-grow-1" cdkFocusInitial>Set Item and Location</button>
+            <button (click)="setLocation()" mat-flat-button color="primary" class="button-primary btn-lg flex-grow-1" cdkFocusInitial data-automation-id="set-item-and-location-button">Set Item and Location</button>
         </div>
 
     </div>

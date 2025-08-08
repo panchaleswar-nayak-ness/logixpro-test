@@ -1,5 +1,5 @@
-<mat-tab-group dynamicHeight [(selectedIndex)]="selectedIndex">
-  <mat-tab label="Employees">
+<mat-tab-group dynamicHeight [(selectedIndex)]="selectedIndex" data-automation-id="employees-tab-group">
+  <mat-tab label="Employees" data-automation-id="tab-employees">
     <div class="employees-tab g-tab">
       <div class="container-fluid p-0">
         <div class="row">
@@ -32,7 +32,7 @@
                   [funcationsColumns]="funcationsColumns" [grpAllFilter]="grpAllFilter"
                   [groupAllowedList]="groupAllowedList" [groupsColumns]="groupsColumns"
                   (applyFunctionAllowedFilterEmit)="applyFunctionAllowedFilter($event)"
-                  (getFuncationAllowedListEmit)="getFuncationAllowedList()">
+                  (getFuncationAllowedListEmit)="getFuncationAllowedList()" data-automation-id="employees-settings-component">
                 </app-employees-settings>
               </mat-card-content>
             </mat-card>
@@ -44,7 +44,7 @@
   </mat-tab>
 
   <!-- Groups Tab -->
-  <mat-tab label="Groups">
+  <mat-tab label="Groups" data-automation-id="tab-groups">
     <div class="groups-tab g-tab">
       <div class="container-fluid p-0">
         <div class="row">
@@ -57,7 +57,7 @@
                   (backGroupActionEmit)="backGroupAction()"
                   (actionGroupDialogEmit)="actionGroupDialog($event.value, $event.grpData, $event.event)"
                   (openGroupDialogEmit)="openGroupDialog()" (printSelectedEmit)="printSelected()"
-                  (printAllEmit)="printAll()" (updateGrpLookUpEmit)="updateGrpLookUp($event)">
+                  (printAllEmit)="printAll()" (updateGrpLookUpEmit)="updateGrpLookUp($event)" data-automation-id="groups-employees-group-management-component">
                 </app-groups-employees-group-management>
               </mat-card-content>
             </mat-card>
@@ -70,7 +70,7 @@
                 <app-groups-assigned-functions-comp [isGroupLookUp]="isGroupLookUp"
                   [unassignedFunctions]="unassignedFunctions" [assignedFunctions]="assignedFunctions"
                   (saveAssignedFuncEmit)="saveAssignedFunc()" (addPermissionEmit)="addPermission($event)"
-                  (removePermissionEmit)="removePermission($event)">
+                  (removePermissionEmit)="removePermission($event)" data-automation-id="groups-assigned-functions-comp-component">
                 </app-groups-assigned-functions-comp>
               </mat-card-content>
             </mat-card>
@@ -81,7 +81,7 @@
   </mat-tab>
 
 
-  <mat-tab label="Button Access" *ngIf="env === 'SD'">
+  <mat-tab label="Button Access" *ngIf="env === 'SD'" data-automation-id="tab-button-access">
     <div class="groups-tab g-tab">
       <div class="container-fluid p-0">
         <div>
@@ -91,11 +91,11 @@
               <div class="d-flex align-items-center">
                 <h2 class="card-header-title mb-3 me-4 d-flex align-items-center">
                   <div class="mat-icon-wrap me-1 me-lg-3">
-                    <span class="material-symbols-outlined">
+                    <span class="material-symbols-outlined" data-automation-id="label-button-access-icon">
                       switch
                     </span>
                   </div>
-                  <span>Button Access</span>
+                  <span data-automation-id="label-button-access">Button Access</span>
                 </h2>
               </div>
 
@@ -105,19 +105,19 @@
                   <ng-scrollbar class="mat-table-scrollbar scrollbar-height" track="all">
 
                     <table class="w-100 g-card-table table-borderless table-minimal-action-buttons" mat-table matSort
-                      [dataSource]="ButtonAccessList">
+                      [dataSource]="ButtonAccessList" data-automation-id="button-access-table">
                       <ng-container matColumnDef="controlName">
-                        <th mat-header-cell *matHeaderCellDef mat-sort-header> Control Name </th>
-                        <td mat-cell *matCellDef="let element">{{element.controlName}}</td>
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header data-automation-id="label-control-name"> Control Name </th>
+                        <td mat-cell *matCellDef="let element" [attr.data-automation-id]="'button-access-cell-controlname-' + element.controlName">{{element.controlName}}</td>
                       </ng-container>
                       <ng-container matColumnDef="function">
-                        <th mat-header-cell *matHeaderCellDef mat-sort-header> Function </th>
-                        <td mat-cell *matCellDef="let element">{{element.function}}</td>
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header data-automation-id="label-function"> Function </th>
+                        <td mat-cell *matCellDef="let element" [attr.data-automation-id]="'button-access-cell-function-' + element.function">{{element.function}}</td>
                       </ng-container>
                       <ng-container matColumnDef="adminLevel">
-                        <th width="10%" class="text-center" mat-header-cell *matHeaderCellDef mat-sort-header> Admin
+                        <th width="10%" class="text-center" mat-header-cell *matHeaderCellDef mat-sort-header data-automation-id="label-admin-level"> Admin
                           Level </th>
-                        <td width="10%" class="text-center" mat-cell *matCellDef="let element">
+                        <td width="10%" class="text-center" mat-cell *matCellDef="let element" [attr.data-automation-id]="'button-access-cell-adminlevel-' + element.controlName">
                           <mat-checkbox color="primary" [checked]="element.adminLevel" [(ngModel)]="element.adminLevel"
                             (ngModelChange)="ChangeAdminLevel(element)">
                           </mat-checkbox>
@@ -126,7 +126,7 @@
 
                       <tr mat-header-row *matHeaderRowDef="displayedColumns_1" class="header-background">
                       </tr>
-                      <tr mat-row *matRowDef="let row; columns: displayedColumns_1;"></tr>
+                      <tr mat-row *matRowDef="let row; columns: displayedColumns_1;" [attr.data-automation-id]="'button-access-row-' + row.controlName"></tr>
                     </table>
                   </ng-scrollbar>
                 </div>

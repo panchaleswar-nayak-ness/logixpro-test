@@ -1,0 +1,40 @@
+export const DevicePreferencesColumnMap: Record<string, string> = {
+  zone: 'Zone',
+  deviceType: 'DeviceType',
+  device: 'DeviceNumber',
+  deviceModel: 'DeviceModel',
+  controllerType: 'ControllerType',
+  controllerTermPort: 'ControllerTermPort',
+  arrowDirection: 'ArrowDirection',
+  lightDirection: 'LightDirection',
+  userLaserPointer: 'LaserPointer',
+  useLightTree: 'LightTreeNumber',
+  firstAddress: 'BeginAddress',
+  positions: 'DisplayPositions',
+  displayCharacters: 'DisplayCharacters'
+};
+
+export const enum DevicePreferencesFormFieldKey {
+  zone = 'zone',
+  deviceType = 'deviceType',
+  deviceNumber = 'deviceNumber',
+  deviceModel = 'deviceModel',
+  controllerType = 'controllerType',
+  controllerTermPort = 'controllerTermPort',
+  arrowDirection = 'arrowDirection',
+  lightDirection = 'lightDirection',
+  lightTreeNumber = 'lightTreeNumber',
+  beginAddress = 'beginAddress',
+  displayPositions = 'displayPositions',
+  displayCharacters = 'displayCharacters',
+  pairKey = 'pairKey',
+  laserPointer = 'laserPointer',
+  hostIP = 'hostIP',
+  hostPort = 'hostPort',
+  workstationName = 'workstationName',
+  baud = 'baud',
+  comPort = 'comPort',
+  parity = 'parity',
+  wordLength = 'wordLength',
+  stopBit = 'stopBit'
+}

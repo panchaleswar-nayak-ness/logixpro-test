@@ -1,18 +1,18 @@
-<mat-tab-group dynamicHeight [(selectedIndex)]="tabIndex" (selectedTabChange)="onTabChanged($event);">
-  <mat-tab label="New Orders" >
+<mat-tab-group dynamicHeight [(selectedIndex)]="tabIndex" (selectedTabChange)="onTabChanged($event);" data-automation-id="system-replenishment-tab-group">
+  <mat-tab label="New Orders" data-automation-id="tab-new-orders">
     <app-sr-new-order 
       [tabIndex]="tabIndex" 
       [refreshNewOrders]="refreshNewOrders" 
       (replenishmentsProcessed)="replenishmentsProcessed = true" 
-      *ngIf="activeTabIndex != 1">
+      *ngIf="activeTabIndex != 1" data-automation-id="sr-new-order-component">
     </app-sr-new-order>
   </mat-tab>
-  <mat-tab label="Current Orders">
+  <mat-tab label="Current Orders" data-automation-id="tab-current-orders">
     <app-sr-current-order 
       [TabIndex]="tabIndex" 
       [refreshCurrentOrders]="refreshCurrentOrders" 
       (replenishmentsDeleted)="replenishmentsDeleted = true" 
-      *ngIf="activeTabIndex != 0">
+      *ngIf="activeTabIndex != 0" data-automation-id="sr-current-order-component">
     </app-sr-current-order>
   </mat-tab>
 </mat-tab-group>

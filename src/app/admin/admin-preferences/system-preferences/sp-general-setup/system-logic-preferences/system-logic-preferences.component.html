@@ -1,24 +1,24 @@
 <div class="d-flex justify-content-between align-items-center mb-3">
-  <app-icon-heading-component class="card-header-title mt-4 d-flex align-items-center" heading="System Logic Preferences" icon="settings_suggest"></app-icon-heading-component>
+  <app-icon-heading-component class="card-header-title mt-4 d-flex align-items-center" heading="System Logic Preferences" icon="settings_suggest" [automationId]="'system-logic-preferences-heading'"></app-icon-heading-component>
 </div>
 
 <div class="card p-3">
   <div class="row">
     <div class="col-xl-6">
       <mat-form-field class="custom-form-field custom-form-field-bg-white w-100 mb-3" appearance="outline">
-        <mat-label>Next Tote ID</mat-label>
-        <input type="number" [(ngModel)]="systemLogicPref.nextToteID" (change)="update()" matInput maxlength="255"/>
+        <mat-label data-automation-id="label-next-tote-id">Next Tote ID</mat-label>
+        <input type="number" [(ngModel)]="systemLogicPref.nextToteID" (change)="update()" matInput maxlength="255" data-automation-id="input-next-tote-id"/>
       </mat-form-field>
       <mat-form-field
         class="custom-form-field custom-form-field-bg-white w-100 mb-3" appearance="outline">
-        <mat-label>Next Serial Number</mat-label>
-        <input type="number" [(ngModel)]="systemLogicPref.nextSerialNumber" (change)="update()" matInput maxlength="255"/>
+        <mat-label data-automation-id="label-next-serial-number">Next Serial Number</mat-label>
+        <input type="number" [(ngModel)]="systemLogicPref.nextSerialNumber" (change)="update()" matInput maxlength="255" data-automation-id="input-next-serial-number"/>
       </mat-form-field>
     </div>
     <div class="col-xl-6">
       <mat-form-field class="action-dropdown custom-form-field-bg-white w-100 mb-3" appearance="outline">
-        <mat-label>Pick Type</mat-label>
-        <mat-select [(ngModel)]="systemLogicPref.pickType" (ngModelChange)="update()" class="employees-action" value="pick">
+        <mat-label data-automation-id="label-pick-type">Pick Type</mat-label>
+        <mat-select [(ngModel)]="systemLogicPref.pickType" (ngModelChange)="update()" class="employees-action" value="pick" data-automation-id="select-pick-type">
           <mat-option value="Pick and Pass">Pick and Pass</mat-option>
           <mat-option value="Parallel Pick">Parallel Pick</mat-option>
         </mat-select>
@@ -28,61 +28,61 @@
     <div class="col-xl-6">
       <div class="d-flex justify-content-between mb-3">
         FIFO Pick Across Warehouse
-        <mat-slide-toggle [(ngModel)]="systemLogicPref.fifoPickAcrossWarehouse" (change)="update()" color="primary"></mat-slide-toggle>
+        <mat-slide-toggle [(ngModel)]="systemLogicPref.fifoPickAcrossWarehouse" (change)="update()" color="primary" data-automation-id="toggle-fifo-pick-across-warehouse"></mat-slide-toggle>
       </div>
       <div class="d-flex justify-content-between mb-3">
         Replenish Dedicated Only
-        <mat-slide-toggle [(ngModel)]="systemLogicPref.replenishDedicatedOnly" (change)="update()" color="primary"></mat-slide-toggle>
+        <mat-slide-toggle [(ngModel)]="systemLogicPref.replenishDedicatedOnly" (change)="update()" color="primary" data-automation-id="toggle-replenish-dedicated-only"></mat-slide-toggle>
       </div>
       <div class="d-flex justify-content-between mb-3">
         OT Temp to OT Pending
-        <mat-slide-toggle [(ngModel)]="systemLogicPref.otTemptoOTPending" (change)="update()" color="primary"></mat-slide-toggle>
+        <mat-slide-toggle [(ngModel)]="systemLogicPref.otTemptoOTPending" (change)="update()" color="primary" data-automation-id="toggle-ot-temp-to-ot-pending"></mat-slide-toggle>
       </div>
       <div class="d-flex justify-content-between mb-3">
         Zero Location Qty Check
-        <mat-slide-toggle [(ngModel)]="systemLogicPref.zeroLocationQuantityCheck" (change)="update()" color="primary"></mat-slide-toggle>
+        <mat-slide-toggle [(ngModel)]="systemLogicPref.zeroLocationQuantityCheck" (change)="update()" color="primary" data-automation-id="toggle-zero-location-qty-check"></mat-slide-toggle>
       </div>
       <div class="d-flex justify-content-between mb-3">
         Require Reason when performing Hot Trans
-        <mat-slide-toggle [(ngModel)]="systemLogicPref.requireHotReasons" (change)="update()" color="primary"></mat-slide-toggle>
+        <mat-slide-toggle [(ngModel)]="systemLogicPref.requireHotReasons" (change)="update()" color="primary" data-automation-id="toggle-require-hot-reasons"></mat-slide-toggle>
       </div>
       <div class="d-flex justify-content-between mb-3">
         Distinct Kit Orders
-        <mat-slide-toggle [(ngModel)]="systemLogicPref.distinctKitOrders" (change)="update()" color="primary"></mat-slide-toggle>
+        <mat-slide-toggle [(ngModel)]="systemLogicPref.distinctKitOrders" (change)="update()" color="primary" data-automation-id="toggle-distinct-kit-orders"></mat-slide-toggle>
       </div>
       <div class="d-flex justify-content-between mb-3">
         Maintain Bulk Batch ID 
-      <mat-slide-toggle [(ngModel)]="systemLogicPref.bulkBatchID" [disabled]="isBulkBatchDisabled" (change)="update()" color="primary"> </mat-slide-toggle>
+      <mat-slide-toggle [(ngModel)]="systemLogicPref.bulkBatchID" [disabled]="isBulkBatchDisabled" (change)="update()" color="primary" data-automation-id="toggle-bulk-batch-id"> </mat-slide-toggle>
       </div>
       <div class="d-flex justify-content-between mb-3">
         Maintain Carousel Batch ID 
-      <mat-slide-toggle [(ngModel)]="systemLogicPref.carouselBatchID" [disabled]="isCarouselBatchDisabled" (change)="update()" color="primary"> </mat-slide-toggle>
+      <mat-slide-toggle [(ngModel)]="systemLogicPref.carouselBatchID" [disabled]="isCarouselBatchDisabled" (change)="update()" color="primary" data-automation-id="toggle-carousel-batch-id"> </mat-slide-toggle>
       </div>
     </div>
     <div class="col-xl-6">
       <div class="d-flex justify-content-between mb-3">
         Print Replen Put Labels
-        <mat-slide-toggle [(ngModel)]="systemLogicPref.printReplenPutLabels" (change)="update()" color="primary"></mat-slide-toggle>
+        <mat-slide-toggle [(ngModel)]="systemLogicPref.printReplenPutLabels" (change)="update()" color="primary" data-automation-id="toggle-print-replen-put-labels"></mat-slide-toggle>
       </div>
       <div class="d-flex justify-content-between mb-3">
         Create Transactions When (Un)Quarantining
-        <mat-slide-toggle [(ngModel)]="systemLogicPref.generateQuarantineTransactions" (change)="update()" color="primary"></mat-slide-toggle>
+        <mat-slide-toggle [(ngModel)]="systemLogicPref.generateQuarantineTransactions" (change)="update()" color="primary" data-automation-id="toggle-generate-quarantine-transactions"></mat-slide-toggle>
       </div>
       <div class="d-flex justify-content-between mb-3">
         Short Pick Find New Location
-        <mat-slide-toggle [(ngModel)]="systemLogicPref.shortPickFindNewLocation" (change)="update()" color="primary"></mat-slide-toggle>
+        <mat-slide-toggle [(ngModel)]="systemLogicPref.shortPickFindNewLocation" (change)="update()" color="primary" data-automation-id="toggle-short-pick-find-new-location"></mat-slide-toggle>
       </div>
       <div class="d-flex justify-content-between mb-3">
         Allow QuickPicks
-        <mat-slide-toggle [(ngModel)]="systemLogicPref.quickPicks" (change)="update()" color="primary"></mat-slide-toggle>
+        <mat-slide-toggle [(ngModel)]="systemLogicPref.quickPicks" (change)="update()" color="primary" matTooltip="Turn on to allow Carousel and Bulk Quick Picks" data-automation-id="toggle-quick-picks" matTooltipPosition="above"></mat-slide-toggle>
       </div>
       <div class="d-flex justify-content-between mb-3">
         Default QuickPicks 
-        <mat-slide-toggle [(ngModel)]="systemLogicPref.defaultQuickPicks" (change)="update()" color="primary"></mat-slide-toggle>
+        <mat-slide-toggle [(ngModel)]="systemLogicPref.defaultQuickPicks" (change)="update()" color="primary" matTooltip="Turn on to see the Quick Pick view by default on PickFace Induction and on LogixPro Bulk Pick" matTooltipPosition="above" data-automation-id="toggle-default-quick-picks"></mat-slide-toggle>
       </div>
       <div class="d-flex justify-content-between mb-0">
         Print Reprocess Report After Allocation 
-        <mat-slide-toggle [(ngModel)]="systemLogicPref.printReprocessReportAfterAllocation" (change)="update()" color="primary"></mat-slide-toggle>
+        <mat-slide-toggle [(ngModel)]="systemLogicPref.printReprocessReportAfterAllocation" (change)="update()" color="primary" matTooltip="Turn on to automatically print the Reprocess report after Location Assignment." matTooltipPosition="above" data-automation-id="toggle-print-reprocess-report-after-allocation"></mat-slide-toggle>
       </div>
     </div>
   </div>

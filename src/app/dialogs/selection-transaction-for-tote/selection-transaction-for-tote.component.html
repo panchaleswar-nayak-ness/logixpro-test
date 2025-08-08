@@ -1,7 +1,7 @@
 <div class="d-flex justify-content-between align-items-center" mat-dialog-title>
     <div class="w-48px"></div>
-    <h1 class="m-0" mat-dialog-title>Select Transaction For Tote</h1>
-    <button mat-icon-button class="close-button dialog-close-button-fix" [mat-dialog-close]="true">
+    <h1 class="m-0" mat-dialog-title data-automation-id="selection-transaction-heading">Select Transaction For Tote</h1>
+    <button mat-icon-button class="close-button dialog-close-button-fix" [mat-dialog-close]="true" data-automation-id="close-button">
         <mat-icon class="close-icon">close</mat-icon>
     </button>
 </div>
@@ -9,47 +9,47 @@
 <div class="d-flex align-items-center justify-content-center flex-wrap px-5 gap-12">
     <div class="text-center"> <span class="label label-gray px-2 f-14 mb-1">{{this.fieldNames.itemNumber}}:&nbsp;<b>{{itemNumber}}</b></span></div>
     <div class="text-center"> <span class="label label-gray px-2 f-14 mb-1">Batch ID:&nbsp;<b>{{batchID}}</b></span></div>
-    <div class="text-center"> <span class="label label-gray px-2 f-14 mb-1">Zones:&nbsp;<b>{{zone.replace("Zones:","")}}</b></span></div>
+    <div class="text-center"> <span class="label label-gray px-2 f-14 mb-1">Zones:&nbsp;<b class="text-start text-wrap">{{zone.replace("Zones:","")}}</b></span></div>
     <div class="text-center"> <span class="label label-gray px-2 f-14 mb-1">Description:&nbsp;<b>{{description}}</b></span></div>
 </div>
 <div class="d-flex justify-content-end mb-3"  *ngIf="this.apiResponse && this.apiResponse.numberOfRecords>5">
     <div class="d-flex align-items-center gap-12">
-        <button mat-flat-button color="primary"  (click)="leftClick()" class="sm-icon-button" *ngIf="lowerBound!=1">
-          <span class="material-symbols-outlined">
+        <button mat-flat-button color="primary"  (click)="leftClick()" class="sm-icon-button" *ngIf="lowerBound!=1" data-automation-id="left-arrow-button">
+          <span class="material-symbols-outlined" data-automation-id="left-arrow-icon">
             keyboard_arrow_left
           </span>
         </button>
-        <div class="text-chrome-600"><b>{{upperBound}}</b> of {{apiResponse.numberOfRecords}}</div>
-        <button mat-flat-button color="primary" (click)="rightClick()" class="sm-icon-button" *ngIf="upperBound!=apiResponse.numberOfRecords">
-          <span class="material-symbols-outlined">
+        <div class="text-chrome-600" data-automation-id="pagination-info"><b>{{upperBound}}</b> of {{apiResponse.numberOfRecords}}</div>
+        <button mat-flat-button color="primary" (click)="rightClick()" class="sm-icon-button" *ngIf="upperBound!=apiResponse.numberOfRecords" data-automation-id="right-arrow-button">
+          <span class="material-symbols-outlined" data-automation-id="right-arrow-icon">
             keyboard_arrow_right
           </span>
         </button>
       </div>
 </div>
-<div class="card p-4 mb-3 list-row-seperator">
-    <div class="mb-3 list-item" *ngFor="let col of transactionTable; let indexOfelement=index;">
-      <mat-radio-button color="primary" (click)="openFrom === 'pallet receiving' ? selectedData(col.id, itemNumber, col.lotNumber, col.transactionQuantity, col.expirationDate ) : selectOrder(col.id,itemNumber, col)">
-          <div class="card-header-title">Order {{col.orderNumber}}</div>
+<div class="card p-4 mb-3 list-row-seperator" data-automation-id="transaction-list-container">
+    <div class="mb-3 list-item" *ngFor="let col of transactionTable; let indexOfelement=index;" [attr.data-automation-id]="'transaction-item-' + indexOfelement">
+      <mat-radio-button color="primary" (click)="openFrom === 'pallet receiving' ? selectedData(col.id, itemNumber, col.lotNumber, col.transactionQuantity, col.expirationDate ) : selectOrder(col.id,itemNumber, col)" [attr.data-automation-id]="'transaction-radio-' + indexOfelement">
+          <div class="card-header-title" data-automation-id="order-number-display">Order {{col.orderNumber}}</div>
       </mat-radio-button>
       <div class="d-flex align-items-center flex-wrap gap-12 my-3 ps-4">
-        <div class="text-center"> <span class="label label-gray px-2 f-14 mb-1">Host Transaction ID:&nbsp;<b>{{col.hostTransactionID}}</b></span></div>
-        <div class="text-center"> <span class="label label-gray px-2 f-14 mb-1">Warehouse:&nbsp;<b>{{col.warehouse}}</b></span></div>
-        <div class="text-center"> <span class="label label-gray px-2 f-14 mb-1">Location:&nbsp;<b>{{col.location}}</b></span></div>
-        <div class="text-center"> <span class="label label-gray px-2 f-14 mb-1">Serial Number:&nbsp;<b>{{col.serialNumber}}</b></span></div>
-        <div class="text-center"> <span class="label label-gray px-2 f-14 mb-1">Lot Number.:&nbsp;<b>{{col.lotNumber}}</b></span></div>
-        <div class="text-center"> <span class="label label-gray px-2 f-14 mb-1">Transaction Quantity:&nbsp;<b>{{col.transactionQuantity}}</b></span></div>
-        <div class="text-center"> <span class="label label-gray px-2 f-14 mb-1">{{fieldNames.userField1}}:&nbsp;<b>{{col.userField1}}</b></span></div>
-        <div class="text-center"> <span class="label label-gray px-2 f-14 mb-1">{{fieldNames.userField2}}:&nbsp;<b>{{col.userField2}}</b></span></div>
+        <div class="text-center"> <span class="label label-gray px-2 f-14 mb-1" data-automation-id="host-transaction-id-label">Host Transaction ID:&nbsp;<b>{{col.hostTransactionID}}</b></span></div>
+        <div class="text-center"> <span class="label label-gray px-2 f-14 mb-1" data-automation-id="warehouse-label">Warehouse:&nbsp;<b>{{col.warehouse}}</b></span></div>
+        <div class="text-center"> <span class="label label-gray px-2 f-14 mb-1" data-automation-id="location-label">Location:&nbsp;<b>{{col.location}}</b></span></div>
+        <div class="text-center"> <span class="label label-gray px-2 f-14 mb-1" data-automation-id="serial-number-label">Serial Number:&nbsp;<b>{{col.serialNumber}}</b></span></div>
+        <div class="text-center"> <span class="label label-gray px-2 f-14 mb-1" data-automation-id="lot-number-label">Lot Number.:&nbsp;<b>{{col.lotNumber}}</b></span></div>
+        <div class="text-center"> <span class="label label-gray px-2 f-14 mb-1" data-automation-id="transaction-quantity-label">Transaction Quantity:&nbsp;<b>{{col.transactionQuantity}}</b></span></div>
+        <div class="text-center"> <span class="label label-gray px-2 f-14 mb-1" data-automation-id="user-field-1-label">{{fieldNames.userField1}}:&nbsp;<b>{{col.userField1}}</b></span></div>
+        <div class="text-center"> <span class="label label-gray px-2 f-14 mb-1" data-automation-id="user-field-2-label">{{fieldNames.userField2}}:&nbsp;<b>{{col.userField2}}</b></span></div>
       </div>
     </div>
 </div>
 </div>
 <div class="d-flex gap-12 mb-1" mat-dialog-actions>
-    <button mat-stroked-button color="primary" class="btn-lg" [style]="showBtnNewPutAwayForSameSKU ? '' : 'flex:1'" (click)="refresh()">
+    <button mat-stroked-button color="primary" class="btn-lg" [style]="showBtnNewPutAwayForSameSKU ? '' : 'flex:1'" (click)="refresh()" data-automation-id="refresh-button">
         Refresh
     </button>
-    <button *ngIf="showBtnNewPutAwayForSameSKU"  mat-flat-button color="primary" class="btn-lg flex-grow-1" (click)="openFrom === 'pallet receiving' ? closeAllDialogue() : openSelectionExtendDialogue()">
+    <button *ngIf="showBtnNewPutAwayForSameSKU"  mat-flat-button color="primary" class="btn-lg flex-grow-1" (click)="openFrom === 'pallet receiving' ? closeAllDialogue() : openSelectionExtendDialogue()" data-automation-id="new-put-away-button">
         New Put Away For Same SKU
     </button>
 </div>

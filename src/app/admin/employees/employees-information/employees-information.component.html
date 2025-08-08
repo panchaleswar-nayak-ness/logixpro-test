@@ -1,30 +1,30 @@
-<div class="d-xl-flex justify-content-between align-items-center">
-    <h2 class="card-header-title mb-0 mb-sm-3 mb-md-3 mb-lg-0 d-flex align-items-center">
+<div class="d-xl-flex justify-content-between align-items-center" data-automation-id="employees-info-header-row">
+    <h2 class="card-header-title mb-0 mb-sm-3 mb-md-3 mb-lg-0 d-flex align-items-center" data-automation-id="employees-info-title">
       <div
         class="dialog-close-button-fix close-button d-flex justify-content-center align-items-center me-lg-3"
-        *ngIf="isLookUp">
-        <span class="material-symbols-outlined cursor-pointer"(click)="backEmpAction()"
-          matTooltip="Back to employee list" matTooltipPosition="above">
+        *ngIf="isLookUp" data-automation-id="employees-info-back-btn-wrap">
+        <span class="material-symbols-outlined cursor-pointer" (click)="backEmpAction()"
+          matTooltip="Back to employee list" matTooltipPosition="above" data-automation-id="button-back">
           arrow_back
         </span>
       </div>
       <div class="mat-icon-wrap mx-1 me-lg-3">
-        <span class="material-symbols-outlined">
+        <span class="material-symbols-outlined" data-automation-id="label-employee-icon">
           assignment_ind
         </span>
       </div>
-      <span>Employees Information</span>
+      <span data-automation-id="label-employees-information">Employees Information</span>
     </h2>
-    <mat-form-field class="action-dropdown d-block" appearance="outline">
-      <mat-label>Actions</mat-label>
+    <mat-form-field class="action-dropdown d-block" appearance="outline" data-automation-id="employees-info-actions-formfield">
+      <mat-label data-automation-id="label-actions">Actions</mat-label>
       <mat-select #matRef class="employees-action"
-        (selectionChange)="actionDialog($event.value, empData, $event)">
-        <mat-option (click)="openDialog()" *ngIf="(env !== 'AD' && env !== 'AZUREAD') && !isLookUp">Add Employee</mat-option>
-        <mat-option value="edit" *ngIf="isLookUp">Edit</mat-option>
-        <mat-option value="delete" *ngIf="isLookUp" >Delete</mat-option>
-        <mat-option value="print" (click)="printEmpList()">Print Employee List</mat-option>
+        (selectionChange)="actionDialog($event.value, empData, $event)" data-automation-id="employees-info-actions-select">
+        <mat-option (click)="openDialog()" *ngIf="(env !== 'AD' && env !== 'AZUREAD') && !isLookUp" data-automation-id="add-employee-option">Add Employee</mat-option>
+        <mat-option value="edit" *ngIf="isLookUp" data-automation-id="edit-employee-option">Edit</mat-option>
+        <mat-option value="delete" *ngIf="isLookUp" data-automation-id="button-delete">Delete</mat-option>
+        <mat-option value="print" (click)="printEmpList()" data-automation-id="print-employee-list-option">Print Employee List</mat-option>
       </mat-select>
-      <span class="material-symbols-outlined icon-expand-more">
+      <span class="material-symbols-outlined icon-expand-more" data-automation-id="employees-info-actions-expand">
         expand_more
       </span>
     </mat-form-field>
@@ -32,42 +32,42 @@
   <div class="emp-details-table mt-3 {{!isLookUp ? 'box-border' : ''}}" *ngIf="!isLookUp">
 
     <!-- employee lookup here -->
-    <app-employees-lookup [childLookUp]="isLookUp" (updateIsLookUp)="updateIsLookUp($event)">
+    <app-employees-lookup [childLookUp]="isLookUp" (updateIsLookUp)="updateIsLookUp($event)" data-automation-id="employees-info-lookup-component">
     </app-employees-lookup>
 
   </div>
   <div class="employee-details details-wrap g-details-wrap" *ngIf="isLookUp">
     <div class="g-detail">
-      <label class="g-field-label">Employee Lookup</label>
+      <label class="g-field-label" data-automation-id="label-employee-lookup">Employee Lookup</label>
       <div class="g-field-content">{{empData.firstName }} {{empData.lastName }}</div>
     </div>
     <div class="g-detail">
-      <label class="g-field-label">MI</label>
+      <label class="g-field-label" data-automation-id="label-mi">MI</label>
       <div class="g-field-content">{{empData.mi }}</div>
     </div>
     <div class="g-detail">
-      <label class="g-field-label">First Name</label>
+      <label class="g-field-label" data-automation-id="label-first-name">First Name</label>
       <div class="g-field-content">{{empData.firstName }}</div>
     </div>
     <div class="g-detail">
-      <label class="g-field-label">Last Name</label>
+      <label class="g-field-label" data-automation-id="label-last-name">Last Name</label>
       <div class="g-field-content">{{empData.lastName }}</div>
     </div>
     <div class="g-detail">
-      <label class="g-field-label">Username</label>
+      <label class="g-field-label" data-automation-id="label-username">Username</label>
       <div class="g-field-content">{{empData.userName }}</div>
     </div>
     <div class="g-detail">
-      <label class="g-field-label">Email Address</label>
+      <label class="g-field-label" data-automation-id="label-email-address">Email Address</label>
       <div class="g-field-content">{{empData.emailAddress }}</div>
     </div>
     <div class="g-detail">
-      <label class="g-field-label">Access Level</label>
+      <label class="g-field-label" data-automation-id="label-access-level">Access Level</label>
       <div class="g-field-content">
         {{empData.accessLevel=== accessLevel.Administrator ? 'Administrator' : empData.accessLevel === accessLevel.StaffMember ? 'Staff  Member' : '' }}</div>
     </div>
     <div class="g-detail" *ngIf="(env  != 'AD' && env  != 'AZUREAD' && env != 'ADLDS') ">
-      <label class="g-field-label">Group</label>
+      <label class="g-field-label" data-automation-id="label-group">Group</label>
       <div class="g-field-content">
         {{empData.groupName}}</div>
     </div>

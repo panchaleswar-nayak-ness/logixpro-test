@@ -1,13 +1,13 @@
 <div class="d-flex justify-content-between mb-4 align-items-center">
     <div class="cell-size" ></div>
-<h1 class="m-0" mat-dialog-title>Cell Sizes - Add, Delete, Edit and Set</h1>
-<button mat-icon-button class="close-button dialog-close-button-fix" (click)="clearCellSize()">
+<h1 class="m-0" mat-dialog-title data-automation-id="cell-size-heading">Cell Sizes - Add, Delete, Edit and Set</h1>
+<button mat-icon-button class="close-button dialog-close-button-fix" (click)="clearCellSize()" data-automation-id="close-button">
     <mat-icon class="close-icon">close</mat-icon>
 </button>
 </div>
 
 <div class="d-flex gap-12 my-4 justify-content-end">
-    <button mat-flat-button color="primary" class="add-icon-button" (click)="addczRow($event)">
+    <button mat-flat-button color="primary" class="add-icon-button" (click)="addczRow($event)" data-automation-id="add-button">
       <span class="material-symbols-outlined">
         add
       </span>
@@ -18,7 +18,7 @@
     <div class="card w-100 mb-3">
         <div class="card-header">
             <div class="row">
-                <div class="col-6" class="cell-size-padding">
+                <div class="col-6" class="cell-size-padding" data-automation-id="table-header-cell-size">
                     Cell Size
                 </div>
             </div>
@@ -27,32 +27,33 @@
 
         <ng-scrollbar class="cell-size-height h-250px" >
         <div class="card-body" >
-            <ng-container *ngFor="let cell of cellsize_list;let i = index">
-                <div class="d-flex align-items-center mb-3">
-                    <mat-radio-group color="primary">
-                        <mat-radio-button value="{{cell.cells}}" [checked]="cell.cells==currentCellValue" (change)="selectCellSize(cell_size.value)">
+            <ng-container *ngFor="let cell of cellsize_list; let i = index">
+                <div class="d-flex align-items-center mb-3" [attr.data-automation-id]="'cell-size-row-' + cell.cells">
+                    <mat-radio-group color="primary" [attr.data-automation-id]="'cell-size-radio-group-' + cell.cells">
+                        <mat-radio-button value="{{cell.cells}}" [checked]="cell.cells==currentCellValue" (change)="selectCellSize(cell_size.value)" [attr.data-automation-id]="'cell-size-radio-' + cell.cells">
                         </mat-radio-button>
                     </mat-radio-group>
                         <div class="container w-100">
                         <div class="row">
                     <div class="col-4">
                         <mat-form-field class="d-block" appearance="outline">
-                            <input  #cell_size (keydown.shift.enter)="$event.preventDefault()" matInput type="text" value="{{cell.cells}}" maxlength="50" (keydown)="enableDisableButton(i)" [autofocus]="i === 0">
+                            <input  #cell_size (keydown.shift.enter)="$event.preventDefault()" matInput type="text" value="{{cell.cells}}" maxlength="50" (keydown)="enableDisableButton(i)" [autofocus]="i === 0" [attr.data-automation-id]="'cell-size-input-cells-' +cell.cells">
                         </mat-form-field>
                     </div>
                     <div class="col-8">
                         <div class="d-flex align-items-center gap-12">
                         <mat-form-field class="w-100" appearance="outline">
-                            <input (keydown.shift.enter)="$event.preventDefault()" matInput type="text" value="{{cell.cellTypes}}" #cellType maxlength="50" (keydown)="enableDisableButton(i)">
+                            <input (keydown.shift.enter)="$event.preventDefault()" matInput type="text" value="{{cell.cellTypes}}" #cellType maxlength="50" (keydown)="enableDisableButton(i)" [attr.data-automation-id]="'cell-size-input-type-' + cell.cells">
                         </mat-form-field>
                         <div class="d-flex gap-12">
                             <button mat-flat-button color="primary" class="xsm-icon-button" (click)="saveCellSize(cell_size.value, cellType.value, i,cell.isInserted)"
                             [disabled]="(enableButton[i] && enableButton[i].value!=null) ? enableButton[i].value:false"
+                            [attr.data-automation-id]="'save-cell-size-button-' + cell.cells"
                             >
                                 <mat-icon class="material-symbols-outlined">save</mat-icon>
                             </button>
                             <button mat-flat-button  color="warn" class="xsm-icon-button"
-                                    (click)="dltCellSize(cell,i);">
+                                    (click)="dltCellSize(cell,i);" [attr.data-automation-id]="'delete-cell-size-button-' + cell.cells">
                                     <mat-icon class="material-symbols-outlined">close</mat-icon>
                                 </button>
                        
@@ -65,12 +66,12 @@
             </div>
           
                         
-                  
+              
                 </div>
             </ng-container> 
         </div>
     </ng-scrollbar>
     </div>
     <button type="submit"  (click)="ClearSelection()"
-    mat-stroked-button class="w-100 restore-to-default-btn form-button-submit btn-lg m-1 m-xl-0" color="primary">Clear Selection</button>
+    mat-stroked-button class="w-100 restore-to-default-btn form-button-submit btn-lg m-1 m-xl-0" color="primary" data-automation-id="clear-selection-button">Clear Selection</button>
 </div>

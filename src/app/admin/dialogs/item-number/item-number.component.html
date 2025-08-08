@@ -1,9 +1,9 @@
 
 <div class="d-flex justify-content-between mb-4 align-items-center">
     <div class="w-48px"></div>
-    <h1 class="m-0" mat-dialog-title>{{LabelitemNumber}}</h1>
+    <h1 class="m-0" mat-dialog-title [attr.data-automation-id]="'item-number-heading-' + (LabelitemNumber)">{{LabelitemNumber}}</h1>
 
-    <button mat-icon-button class="close-button dialog-close-button-fix"  [mat-dialog-close]="false">
+    <button mat-icon-button class="close-button dialog-close-button-fix"  [mat-dialog-close]="false" data-automation-id="close-dialog-button">
         <mat-icon class="close-icon">close</mat-icon>
     </button>
 </div>
@@ -13,18 +13,18 @@
     <div class="w-100" *ngIf="!addItem">
         <div class="col-12 mb-2">
             <mat-form-field class="custom-form-field w-100" appearance="outline">
-                <mat-label>Old <span replacePlaceholder [replacePlaceHolder]="placeholders.itemNumber" [fallbackPlaceHolder]="placeholders.itemNumberFallback">{{LabelitemNumber}}</span></mat-label>
-                <input #itm_nmb matInput type="text" disabled [(ngModel)]="data.itemNumber" [readonly]="true">
+                <mat-label data-automation-id="old-item-number-label">Old <span replacePlaceholder [replacePlaceHolder]="placeholders.itemNumber" [fallbackPlaceHolder]="placeholders.itemNumberFallback">{{LabelitemNumber}}</span></mat-label>
+                <input #itm_nmb matInput type="text" disabled [(ngModel)]="data.itemNumber" [readonly]="true" data-automation-id="old-item-number-input">
             </mat-form-field>
         </div>
         <div class="col-12">
             <mat-form-field class="custom-form-field w-100" appearance="outline">
-                <mat-label>New <span replacePlaceholder [replacePlaceHolder]="placeholders.itemNumber" [fallbackPlaceHolder]="placeholders.itemNumberFallback">{{LabelitemNumber}}</span></mat-label>
-                <input matInput type="text" [(ngModel)]="data.newItemNumber" maxlength="50" required>
+                <mat-label data-automation-id="new-item-number-label">New <span replacePlaceholder [replacePlaceHolder]="placeholders.itemNumber" [fallbackPlaceHolder]="placeholders.itemNumberFallback">{{LabelitemNumber}}</span></mat-label>
+                <input matInput type="text" [(ngModel)]="data.newItemNumber" maxlength="50" required data-automation-id="new-item-number-input">
             </mat-form-field>
         </div>
         <div class="d-flex justify-content-end pt-3">
-            <button mat-flat-button color="primary" class="button-primary btn-lg flex-grow-1" (click)="onNoClick(true, 'update')" cdkFocusInitial>Save</button>
+            <button mat-flat-button color="primary" class="button-primary btn-lg flex-grow-1" (click)="onNoClick(true, 'update')" cdkFocusInitial data-automation-id="save-item-number-button">Save</button>
         </div>
         
     </div>
@@ -33,20 +33,20 @@
     <div class="w-100" *ngIf="addItem">
         <div class="col-12 mb-2">
             <mat-form-field class="custom-form-field w-100" appearance="outline">
-                <mat-label replacePlaceholder [replacePlaceHolder]="placeholders.itemNumber" [fallbackPlaceHolder]="placeholders.itemNumberFallback">{{LabelitemNumber}}</mat-label>
-                <input #itm_nmb  matInput type="text" [(ngModel)]="data.itemNumber" required maxlength="50" value="">
+                <mat-label replacePlaceholder [replacePlaceHolder]="placeholders.itemNumber" [fallbackPlaceHolder]="placeholders.itemNumberFallback" data-automation-id="add-new-item-number-label">{{LabelitemNumber}}</mat-label>
+                <input #itm_nmb  matInput type="text" [(ngModel)]="data.itemNumber" required maxlength="50" value="" data-automation-id="add-new-item-number-input">
             </mat-form-field>
             <div class="error" *ngIf="submit && !data.itemNumber">This field is required.</div>
         </div>
         <div class="col-12">
             <mat-form-field class="custom-form-field w-100" appearance="outline">
-                <mat-label>Description</mat-label>
-                <textarea matInput [(ngModel)]="data.description"  required maxlength="255"></textarea>
+                <mat-label data-automation-id="description-label">Description</mat-label>
+                <textarea matInput [(ngModel)]="data.description"  required maxlength="255" data-automation-id="description-textarea"></textarea>
             </mat-form-field>
             <div class="error" *ngIf="submit && !data.description">This field is required.</div>
         </div>
         <div class="d-flex justify-content-end pt-3">
-        <button mat-flat-button color="primary" class="button-primary btn-lg flex-grow-1" (click)="onNoClick(true, 'createNew')"  cdkFocusInitial>Add Item</button>
+        <button mat-flat-button color="primary" class="button-primary btn-lg flex-grow-1" (click)="onNoClick(true, 'createNew')"  cdkFocusInitial data-automation-id="add-item-button">Add Item</button>
     </div>
     </div>
 

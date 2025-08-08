@@ -315,6 +315,7 @@ export class TaskCompleteNewRequest {
   id: number;
   completedQty: number;
   newLocationQty?: number;
+  BatchID?:string
 }
 
 export class ValidateToteRequest {

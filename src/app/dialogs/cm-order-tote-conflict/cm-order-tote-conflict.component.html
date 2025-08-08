@@ -1,8 +1,8 @@
 
     <div class="d-flex justify-content-between align-items-center mb-3">
         <div class="w-48px"></div>
-        <h1 class="m-0" mat-dialog-title>Consolidation Order/Tote Conflict</h1>
-        <button mat-icon-button class="close-button dialog-close-button-fix" [mat-dialog-close]="true">
+        <h1 class="m-0" mat-dialog-title data-automation-id="cm-order-tote-conflict-dialog-title">Consolidation Order/Tote Conflict</h1>
+        <button mat-icon-button class="close-button dialog-close-button-fix" [mat-dialog-close]="true" data-automation-id="cm-order-tote-conflict-close-button">
             <mat-icon class="close-icon">close</mat-icon>
         </button>
     </div>
@@ -10,15 +10,15 @@
         <div>
             
                 <div class="flex-column mb-3">
-                    <p class="bold">A order and tote were both found that match the entered value, select which value you entered</p> 
+                    <p class="bold" data-automation-id="cm-order-tote-conflict-message">A order and tote were both found that match the entered value, select which value you entered</p> 
                     <mat-radio-group aria-labelledby=""  [(ngModel)]="order"
-                        class=" d-flex flex-column"> 
-                        <mat-radio-button class=" mb-2"  value="Order Number" color="primary">Order Number</mat-radio-button>
-                        <mat-radio-button class=" mb-2"  value="Tote ID"  color="primary">Tote ID</mat-radio-button> 
+                        class=" d-flex flex-column" data-automation-id="cm-order-tote-conflict-radio-group"> 
+                        <mat-radio-button class=" mb-2"  value="Order Number" color="primary"  data-automation-id="cm-order-tote-conflict-radio-order">Order Number</mat-radio-button>
+                        <mat-radio-button class=" mb-2"  value="Tote ID"  color="primary" data-automation-id="cm-order-tote-conflict-radio-tote">Tote ID</mat-radio-button> 
                          </mat-radio-group> 
                         </div>
             
         </div>
     </div> 
     
-    <button mat-flat-button color="primary" [disabled]="!order" (click)="SubmitOrder()" class="btn-lg w-100 flex-grow-1">Submit</button>
+    <button mat-flat-button color="primary" [disabled]="!order" (click)="SubmitOrder()" class="btn-lg w-100 flex-grow-1" data-automation-id="cm-order-tote-conflict-submit-button">Submit</button>
