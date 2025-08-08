@@ -442,7 +442,7 @@
                         </ng-container>
 
                         <tr class="mat-row" *matNoDataRow (contextmenu)="onContextMenu($event, undefined, '')">
-                          <td class="mat-cell border " [attr.colspan]="filterOrderTransactionSource.length" >No data available in table.</td>
+                          <td class="mat-cell border " [attr.colspan]="displayedTransColumns.length">No data available in table.</td>
                         </tr>
 
                         <tr mat-header-row *matHeaderRowDef="displayedTransColumns;sticky:true"></tr>

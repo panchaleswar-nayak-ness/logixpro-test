@@ -29,7 +29,7 @@ export class DirectFilterationColumnsMenuComponent extends TableContextMenuCompo
   /**
    * Override the onContextMenuCommand method to create FilterationColumns objects directly
    */
-  override onContextMenuCommand(SelectedItem: any, FilterColumnName: string, Condition: string, Type: string) {
+  override onContextMenuCommand(SelectedItem: any, FilterColumnName: any, Condition: any, Type: any) {
     // Now create FilterationColumns objects directly
     const filterationColumns = this.directFilterService.createFilterationColumn(
       SelectedItem, FilterColumnName, Condition, Type
