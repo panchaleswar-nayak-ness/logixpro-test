@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { OperationTypes } from '../enums/CommonEnums';
 import { FilterationColumns } from '../Model/pick-Tote-Manager';
+import { filtrationGridOperationKeys } from '../constants/strings.constants';
 
 @Injectable({
   providedIn: 'root'
@@ -19,13 +20,13 @@ export class DirectFilterationColumnsService {
    * @returns The updated array of FilterationColumns objects
    */
   createFilterationColumn(selectedItem: string | number | boolean | Date | null | undefined, filterColumnName: string, condition: string, type: string): FilterationColumns[] {
-    if (condition === 'clear') {
+    if (condition === filtrationGridOperationKeys.Clear) {
       // Clear specific column filter
       this.clearColumnFilter(filterColumnName);
       return this.filterationColumns;
     }
     
-    if (condition === 'clears') {
+    if (condition === filtrationGridOperationKeys.clears) {
       // Clear all filters
       this.filterationColumns = [];
       return this.filterationColumns;
@@ -50,7 +51,7 @@ export class DirectFilterationColumnsService {
     
     // For between operations, we need a second value (will be filled by user input)
     let value2 = null;
-    let isInput = condition.toLowerCase().includes('between');
+    let isInput = condition.toLowerCase().includes( filtrationGridOperationKeys.Between);
 
     // Create the FilterationColumns object
     const filterationColumn: FilterationColumns = {
@@ -98,7 +99,7 @@ export class DirectFilterationColumnsService {
       Value: value,
       Value2: value2 || '',
       GridOperation: gridOperation,
-      IsInput: condition.toLowerCase().includes('between')
+      IsInput: condition.toLowerCase().includes(filtrationGridOperationKeys.Between)
     };
 
     // Check if we already have a filter for this column

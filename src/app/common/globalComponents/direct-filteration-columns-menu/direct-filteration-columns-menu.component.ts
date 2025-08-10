@@ -1,12 +1,12 @@
 import { Component, ViewChild, Output, EventEmitter, Input, OnInit } from '@angular/core';
 import { TableContextMenuComponentComponent } from '../table-context-menu-component/table-context-menu-component.component';
 import { DirectFilterationColumnsService } from '../../services/direct-filteration-columns.service';
-import { FilterationColumns } from '../../../dialogs/pick-tote-manager/pick-tote-manager.component';
 import { InputFilterComponent } from 'src/app/dialogs/input-filter/input-filter.component';
-import { DialogConstants } from '../../constants/strings.constants';
+import { DialogConstants, filtrationGridOperationKeys } from '../../constants/strings.constants';
 import { GlobalService } from 'src/app/common/services/global.service';
 import { ContextMenuFiltersService } from 'src/app/common/init/context-menu-filters.service';
 import { TableContextMenuService } from '../table-context-menu-component/table-context-menu.service';
+import { FilterationColumns } from '../../Model/pick-Tote-Manager';
 
 @Component({
   selector: 'app-direct-filteration-columns-menu',
@@ -29,7 +29,7 @@ export class DirectFilterationColumnsMenuComponent extends TableContextMenuCompo
   /**
    * Override the onContextMenuCommand method to create FilterationColumns objects directly
    */
-  override onContextMenuCommand(SelectedItem: any, FilterColumnName: any, Condition: any, Type: any) {
+  override onContextMenuCommand(SelectedItem: string | number | boolean | Date | null | undefined, FilterColumnName: string, Condition: string, Type: string) {
 
     // Now create FilterationColumns objects directly
     const filterationColumns = this.directFilterService.createFilterationColumn(
@@ -43,7 +43,7 @@ export class DirectFilterationColumnsMenuComponent extends TableContextMenuCompo
   /**
    * Override the InputFilterSearch method to handle input filters
    */
-  override InputFilterSearch(FilterColumnName: any, Condition: any, TypeOfElement: any) {
+  override InputFilterSearch(FilterColumnName: string, Condition: string, TypeOfElement: any) {
     const dialogRef : any = this.global.OpenDialog(InputFilterComponent, {
       height: DialogConstants.auto,
       width: '480px',
@@ -60,7 +60,7 @@ export class DirectFilterationColumnsMenuComponent extends TableContextMenuCompo
     dialogRef.afterClosed().subscribe((result : any) => {
       if (result.SelectedColumn) {
         // For Between operations, we need to handle two values
-        if (result.Condition.toLowerCase().includes('between')) {
+        if (result.Condition.toLowerCase().includes( filtrationGridOperationKeys.Between)) {
           // If SelectedItem2 is not provided, split SelectedItem by ' and '
           if (!result.SelectedItem2 && typeof result.SelectedItem === 'string' && result.SelectedItem.includes(' and ')) {
             const parts = result.SelectedItem.split(' and ');

@@ -1699,7 +1699,7 @@ refreshOrderDataGrid() {
     };
     this.iInductionManagerApi.PickToteTransDT(paylaod).subscribe((res) => {
       if (res) {
-        this.filterOrderTransactionSource = new MatTableDataSource<any>(
+        this.filterOrderTransactionSource = new MatTableDataSource<FilterTransaction>(
           res.data.pickToteManTrans
         );
         this.filterOrderTransactionSource.paginator = this.filterBatchTrans;

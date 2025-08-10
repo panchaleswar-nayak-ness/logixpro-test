@@ -759,3 +759,8 @@ export class ConsoleErrorMessages {
 export const PickToteFilterpreferences = {
     preferences: "PickToteFilterPrefs",
 }
+export const filtrationGridOperationKeys = {
+    Between: "between",
+    Clear: "clear",
+    Clears: "clears",   
+}
