@@ -759,3 +759,35 @@ export class ConsoleErrorMessages {
 export const PickToteFilterpreferences = {
     preferences: "PickToteFilterPrefs",
 }
+export const disabledFields = [
+    'priority',
+    'Required Date',
+    'Emergency',
+    'Import Date'
+  ];
+
+  export const DISABLED_FIELDS = new Set<string>([
+    'priority',
+    'requiredDate',
+    'Emergency',
+    'importDate'
+  ]);
+  
+  export const FIELDS_DEFAULT_AN = new Set<string>([
+    'userField1',
+    'userField2',
+    'userField3',
+    'userField4',
+    'userField5',
+    'userField6',
+    'userField7',
+    'userField8',
+    'userField9',
+    'userField10',
+    'Emergency',
+    'Zone',
+    'expirationDate',
+    'Warehouse',
+    'requiredDate'
+  ]);
+  

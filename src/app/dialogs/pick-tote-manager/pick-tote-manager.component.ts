@@ -27,7 +27,7 @@ import { IInductionManagerApiService } from 'src/app/common/services/induction-m
 import { InductionManagerApiService } from 'src/app/common/services/induction-manager-api/induction-manager-api.service';
 import { GlobalService } from 'src/app/common/services/global.service';
 import { PickToteManagerService } from 'src/app/common/services/pick-tote-manager.service'
-import {  TableConstant ,ToasterTitle,ResponseStrings,Column,ToasterType,zoneType,DialogConstants,ColumnDef,UniqueConstants,Style,StringConditions, Placeholders, ToasterMessages} from 'src/app/common/constants/strings.constants';
+import {  TableConstant ,ToasterTitle,ResponseStrings,Column,ToasterType,zoneType,DialogConstants,ColumnDef,UniqueConstants,Style,StringConditions, Placeholders, ToasterMessages, disabledFields, FIELDS_DEFAULT_AN} from 'src/app/common/constants/strings.constants';
 import { FilterOrder, FilterTransaction, SavedFilterChangeEvent, FilterData, OrderData } from 'src/app/common/types/pick-tote-manager.types';
 
 export interface PeriodicElement {
@@ -66,7 +66,6 @@ UserField10:string = this.fieldMappings.userField10;
   @ViewChild('field_focus') field_focus: ElementRef;
 
   isFilter: string = StringConditions.filter;
-  filterByNumeric : boolean = false;
   savedFilterList: any[] = [];
   filteredOptions: Observable<any[]>;
   savedFilter = new FormControl('');
@@ -79,6 +78,7 @@ UserField10:string = this.fieldMappings.userField10;
   useDefaultZone;
   batchByZoneData: any[] = []; 
   tabIndex: number = 0;
+  FORMAT_NUMBER = '123';
  
   isAllSelected() {
     const numSelected = this.selection.selected.length;
@@ -128,6 +128,7 @@ UserField10:string = this.fieldMappings.userField10;
   disFilterColumns: string[] = [
     'sequence',
     'field',
+    'format',
     'criteria',
     'value',
     'andOr',
@@ -466,7 +467,6 @@ UserField10:string = this.fieldMappings.userField10;
     }
     
     this.allSelectOrders = this.data.allOrders;
-    this.filterByNumeric = this.pickToteManagerService.GetPickToteFilterNumeric();
   }
 
   pickBatchZonesSelect() {
@@ -538,6 +538,11 @@ UserField10:string = this.fieldMappings.userField10;
     );
   }
 
+
+  getDefaultFormat(field: string): string {
+    return disabledFields.includes(field) ? '123' : (FIELDS_DEFAULT_AN.has(field) ? 'A+N' : '');
+  }
+
   onAddFilter(filterData?: FilterData[]): void {
     if (filterData?.length) {
       const formattedFilters = filterData.map((filter) => {
@@ -551,6 +556,7 @@ UserField10:string = this.fieldMappings.userField10;
           andOr: filter.andOr,
           isSaved: true,
           is_db: true,
+          format: this.getDefaultFormat(filter.field), // Use the getDefaultFormat method
         };
       });
   
@@ -564,6 +570,7 @@ UserField10:string = this.fieldMappings.userField10;
         value: '',
         andOr: 'And',
         isSaved: false,
+        format: this.getDefaultFormat(ColumnDef.Emergency), // Use the getDefaultFormat method
       });
   
       this.isFilterAdd = false;
@@ -616,8 +623,47 @@ UserField10:string = this.fieldMappings.userField10;
     }
     this.orderBydataSource = new MatTableDataSource<OrderData>(this.orderByData);
   }
-  onChangeFunctionsFields(element: FilterData): void {
+  onChangeFunctionsFields(element: any): void {
     element.isSaved = false;
+    // Check if the field is in disabledFields and set format to '123'
+    if (disabledFields.includes(element.field)) {
+      element.format = '123';
+      return;
+    }
+
+    // Find all rows with the same field (excluding the current row)
+    const sameFieldRows = this.filterData.filter(
+      (row, idx) => row.field === element.field && row !== element
+    );
+
+    if (sameFieldRows.length > 0) {
+      const existingFormat = sameFieldRows[0].format;
+      if (existingFormat && element.format && existingFormat !== element.format) {
+        // Show alert (replace with your dialog/toastr if needed)
+        let dialogRef: any = this.global.OpenDialog(ConfirmationDialogComponent, {
+          height: 'auto',
+          width: Style.w560px,
+          autoFocus: DialogConstants.autoFocus,
+          disableClose: true,
+          data: {
+            message: 'Inconsistent format detected! The field "' + element.field + '" already has a different format. Would you like to update all related fields to the new format?',
+          },
+        });
+        dialogRef.afterClosed().subscribe((result) => {
+          if (result == StringConditions.Yes) {
+            // Update all related fields to the new format
+            sameFieldRows.forEach(row => row.format = element.format);
+          } else {
+            // Revert the change
+            element.format = existingFormat;
+          }
+        });
+        return;
+      } else if (existingFormat && !element.format) {
+        // If the current row has no format, but others do, set it to the existing one
+        element.format = existingFormat;
+      }
+    }
   }
   clearMatSelectList() {
     this.matRef.options.forEach((data: MatOption) => data.deselect());
@@ -826,13 +872,6 @@ userFields = Array.from({ length: 9 }, (_, i) => ({
       paginator.pageSize = 10;
     }
   }
-// Set Numeric or Alphanumeric as selected
-onFilterByChanged(isNumeric: boolean): void {
-  this.filterByNumeric = this.pickToteManagerService.SetPickToteFilterNumeric(isNumeric);
-  if (!this.global.isNullOrEmpty(this.savedFilter?.value)) {
-    this.ordersFilterZoneSelect();
-  }
-}
 
   ordersFilterZoneSelect(zone = '', rp = false, type = '') {
     let payload;
@@ -847,7 +886,6 @@ onFilterByChanged(isNumeric: boolean): void {
         UseDefFilter: 0,
         UseDefZone: 0,
         RP: false,
-        FilterByNumeric : this.filterByNumeric
       };
       this.iInductionManagerApi
         .OrdersFilterZoneSelect(payload)
@@ -1105,7 +1143,7 @@ onFilterByChanged(isNumeric: boolean): void {
             } else {
                 this.global.ShowToastr(
                     ToasterType.Error,
-                    res.responseMessage ?? this.global.globalErrorMsg(),
+                    res.responseMessage?? this.global.globalErrorMsg(),
                     ToasterTitle.Error
                 );
             }
@@ -1353,7 +1391,7 @@ clearOrderSelection() {
   }
 
   onSaveSingleFilter(element: any) {
-    if (element.value === '') {
+    if (element.value === '' || element.format === '') {
         this.global.ShowToastr(
             ToasterType.Error,
             'Some of the inputs are missing values. Cannot add row to filter.',
@@ -1363,6 +1401,7 @@ clearOrderSelection() {
         let payload = {
             Sequence: element.sequence,
             Field: element.field,
+            Format : element.format,
             Criteria: element.criteria,
             Value: element.value,
             AndOr: element.andOr,
@@ -1652,17 +1691,83 @@ refreshOrderDataGrid() {
     });
   }
 
-  getInputType(field: string): string {
-    const dateFields = new Set<string>([
-      Column.RequiredDate,
-      Column.ImportDate
-    ]);
+   DATE_FIELDS = new Set<string>([
+    Column.RequiredDate,
+    Column.ImportDate
+  ]);
   
-    return dateFields.has(field) ? 'date' : 'text';
-  }  
-
+  //Determines the appropriate HTML input type (date, number, or text) 
+  // based on the field name and its format in filterData.  
+  getInputType(field: string): 'date' | 'number' | 'text' {
+    // Date fields take priority
+    if (this.DATE_FIELDS.has(field)) {
+      return 'date';
+    }
+    const elementFormat = this.filterData.find(el => el.field === field)?.format;
+    return elementFormat === this.FORMAT_NUMBER
+      ? 'number'
+      : 'text';
+  }
+  
   isTooltipDisabled(value: string): boolean {
     return value.length < 25;
     
   }
+  isFormatDisabled(field: string): boolean {
+    // Case-insensitive check for robustness
+    return disabledFields.some(f => f.toLowerCase() === (field || '').toLowerCase());
+  }
+
+  //Ensures consistent formatting for all filters with the same field,
+  //  prompting the user to update or revert changes if a mismatch is detected.
+  onFormatChange(element: FilterData, index: number): void {
+    // Get all rows with the same field (excluding current)
+    const relatedRows = this.filterData.filter(
+      (row, idx) => row.field === element.field && idx !== index
+    );
+  
+    // If no related rows, just apply change
+    if (!relatedRows.length) {
+      this.onChangeFunctionsFields(element);
+      return;
+    }
+  
+    const existingFormat = relatedRows[0]?.format;
+    const newFormat = element.format;
+  
+    // Check format mismatch
+    if (existingFormat && newFormat && existingFormat !== newFormat) {
+      this.showFormatMismatchDialog(element, relatedRows, existingFormat);
+      return;
+    }
+  
+    // No mismatch — proceed
+    this.onChangeFunctionsFields(element);
+  }
+  
+  private showFormatMismatchDialog(
+    element: FilterData,
+    relatedRows: FilterData[],
+    existingFormat: string
+  ): void {
+    const dialogRef = this.global.OpenDialog(ConfirmationDialogComponent, {
+      height: 'auto',
+      width: Style.w560px,
+      autoFocus: DialogConstants.autoFocus,
+      disableClose: true,
+      data: {
+        message: `Inconsistent format detected! The field "${element.field}" already has a different format. Would you like to update all related fields to the new format?`,
+      },
+    });
+  
+    dialogRef.afterClosed().subscribe((result: string) => {
+      if (result === StringConditions.Yes) {
+        relatedRows.forEach(row => (row.format = element.format));
+      } else {
+        element.format = existingFormat;
+      }
+      this.onChangeFunctionsFields(element); // Still trigger change handling
+    });
+  }
+  
 }
