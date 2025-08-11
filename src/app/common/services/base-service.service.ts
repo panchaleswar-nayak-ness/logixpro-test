@@ -10,6 +10,7 @@ import { catchError, shareReplay, take, switchMap, map ,finalize} from 'rxjs/ope
 import { throwError } from 'rxjs';
 import { SpinnerService } from "../../common/init/spinner.service";
 import { ZoneListPayload } from 'src/app/bulk-process/preferences/preference.models';
+import { HeaderInterceptor } from '../init/header-interceptor.interceptor';
 
 type Method = 'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH';
 
@@ -80,7 +81,11 @@ export class BaseService {
             }
           }),
           catchError(error => {
-            this.injector.get(GlobalService).ShowToastr(ToasterType.Error, ToasterMessages.APIErrorMessage, ToasterTitle.Error);
+            // Don't show API request failed toast if we're handling session timeout
+            // But still throw the error so HeaderInterceptor can handle 401 errors
+            if (!HeaderInterceptor.getSessionTimeout()) {
+              this.injector.get(GlobalService).ShowToastr(ToasterType.Error, ToasterMessages.APIErrorMessage, ToasterTitle.Error);
+            }
             return throwError(() => error);
           })
         );
