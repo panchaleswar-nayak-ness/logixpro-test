@@ -2,7 +2,7 @@ import { Component, ViewChild, Output, EventEmitter, Input, OnInit } from '@angu
 import { TableContextMenuComponentComponent } from '../table-context-menu-component/table-context-menu-component.component';
 import { DirectFilterationColumnsService } from '../../services/direct-filteration-columns.service';
 import { InputFilterComponent } from 'src/app/dialogs/input-filter/input-filter.component';
-import { DialogConstants, filtrationGridOperationKeys } from '../../constants/strings.constants';
+import { DialogConstants, filtrationDatatypes, filtrationGridOperationKeys } from '../../constants/strings.constants';
 import { GlobalService } from 'src/app/common/services/global.service';
 import { ContextMenuFiltersService } from 'src/app/common/init/context-menu-filters.service';
 import { TableContextMenuService } from '../table-context-menu-component/table-context-menu.service';
@@ -62,7 +62,7 @@ export class DirectFilterationColumnsMenuComponent extends TableContextMenuCompo
         // For Between operations, we need to handle two values
         if (result.Condition.toLowerCase().includes( filtrationGridOperationKeys.Between)) {
           // If SelectedItem2 is not provided, split SelectedItem by ' and '
-          if (!result.SelectedItem2 && typeof result.SelectedItem === 'string' && result.SelectedItem.includes(' and ')) {
+          if (!result.SelectedItem2 && typeof result.SelectedItem === filtrationDatatypes.String && result.SelectedItem.includes(' and ')) {
             const parts = result.SelectedItem.split(' and ');
             result.SelectedItem = parts[0];
             result.SelectedItem2 = parts[1];

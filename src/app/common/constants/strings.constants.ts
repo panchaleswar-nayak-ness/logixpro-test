@@ -764,3 +764,11 @@ export const filtrationGridOperationKeys = {
     Clear: "clear",
     Clears: "clears",   
 }
+export const filtrationDatatypes = {
+    String: "string",
+    Number: "number",
+    Date: "date",   
+    Datetime: 'datetime',   
+    Integer : 'int',
+    Boolean : 'boolean'
+}

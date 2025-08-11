@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { OperationTypes } from '../enums/CommonEnums';
 import { FilterationColumns } from '../Model/pick-Tote-Manager';
-import { filtrationGridOperationKeys } from '../constants/strings.constants';
+import { filtrationDatatypes, filtrationGridOperationKeys } from '../constants/strings.constants';
 
 @Injectable({
   providedIn: 'root'
@@ -26,7 +26,7 @@ export class DirectFilterationColumnsService {
       return this.filterationColumns;
     }
     
-    if (condition === filtrationGridOperationKeys.clears) {
+    if (condition === filtrationGridOperationKeys.Clears) {
       // Clear all filters
       this.filterationColumns = [];
       return this.filterationColumns;
@@ -82,11 +82,11 @@ export class DirectFilterationColumnsService {
   updateFilterationColumnWithInput(columnName: string, condition: string, value: any, value2?: any): FilterationColumns[] {
     
     // Determine column type based on value
-    let columnType = 'string';
-    if (typeof value === 'number' || !isNaN(Number(value))) {
-      columnType = 'int';
+    let columnType = filtrationDatatypes.String;
+    if (typeof value === filtrationDatatypes.Number || !isNaN(Number(value))) {
+      columnType = filtrationDatatypes.Integer;
     } else if (this.isDateString(value)) {
-      columnType = 'datetime';
+      columnType = filtrationDatatypes.Datetime;
     }
     
     // Determine grid operation based on condition
@@ -190,11 +190,11 @@ export class DirectFilterationColumnsService {
     ]);
   
     if ((!type || type.trim() !== '') && dateColumns.has(columnName)) {
-      return 'datetime';
+      return  'datetime';
     }
   
-    if (type === 'number') return 'int';
-    if (type === 'boolean') return 'boolean';
+    if (type === filtrationDatatypes.Number) return 'int';
+    if (type ===  filtrationDatatypes.Boolean) return 'boolean';
   
     return 'string';
   }
@@ -211,7 +211,7 @@ export class DirectFilterationColumnsService {
    * @returns True if the string is a valid date
    */
   private isDateString(dateStr: string): boolean {
-    if (typeof dateStr !== 'string') return false;
+    if (typeof dateStr !== filtrationDatatypes.String) return false;
     
     const date = new Date(dateStr);
     return !isNaN(date.getTime());

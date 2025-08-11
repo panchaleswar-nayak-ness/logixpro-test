@@ -1665,7 +1665,7 @@ refreshOrderDataGrid() {
     return dateFields.has(field) ? 'date' : 'text';
   }  
 
-  onContextMenu(event: MouseEvent, SelectedItem: any, FilterColumnName?: any, FilterConditon?: any, FilterItemType?: any) {
+  onContextMenu(event: MouseEvent, SelectedItem: string | number | boolean | Date | null | undefined, FilterColumnName?: string, FilterConditon?: string | undefined, FilterItemType?: string | number | boolean | Date | null | undefined) {
     event.preventDefault()
     this.isActiveTrigger = true;
     setTimeout(() => {
@@ -1697,10 +1697,11 @@ refreshOrderDataGrid() {
       Filter: this.filterString,
       filtrationColumns :  this.filterationColumns
     };
-    this.iInductionManagerApi.PickToteTransDT(paylaod).subscribe((res) => {
-      if (res) {
+    this.iInductionManagerApi.PickToteTransDT(paylaod).subscribe((result: { data: { pickToteManTrans?: FilterTransaction[] }; }) => {
+      const pickToteManTrans = result.data.pickToteManTrans ?? [];
+      if (pickToteManTrans.length >= 0) {
         this.filterOrderTransactionSource = new MatTableDataSource<FilterTransaction>(
-          res.data.pickToteManTrans
+          pickToteManTrans
         );
         this.filterOrderTransactionSource.paginator = this.filterBatchTrans;
         this.filterOrderTransactionSource.sort = this.viewFilterTransSort;
