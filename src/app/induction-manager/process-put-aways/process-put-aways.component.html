@@ -98,8 +98,22 @@
                     <input (keydown.shift.enter)="$event.preventDefault()" 
                     #inputVal matInput type="text" [(ngModel)]="inputValue"
                     [disabled]="!dataSource2?.filteredData || !dataSource2?.filteredData.length"
-                    (keypress)="openST($event)" data-automation-id="process-put-aways-input-value-input">
-                    <button matSuffix *ngIf="inputValue" class="clear-btn" (click)=" inputValue='' " data-automation-id="process-put-aways-clear-input-value-button"><mat-icon class="text-20 text-chrome-600">cancel</mat-icon></button>  
+                    (keypress)="openST($event)" (keyup)="getNextItemNumber($event)" (ngModelChange)="searchByItemNumber.next($event)" [matAutocomplete]="itemNumberAuto"
+                    data-automation-id="process-put-aways-input-value-input">
+                    <button matSuffix *ngIf="inputValue" class="clear-btn" (click)="inputValue=''; searchAutocompleteItemNumbers=[]" data-automation-id="process-put-aways-clear-input-value-button"><mat-icon class="text-20 text-chrome-600">cancel</mat-icon></button>  
+
+                    <mat-autocomplete class="card custom-scroll" #itemNumberAuto="matAutocomplete" (optionSelected)="onAutocompleteOptionSelected($event)">
+                      <h6 class="card-header matAutoCompHeader">
+                        <span class="span-width">{{ itemNumber }}</span>
+                        <span class="span-width">Description</span>
+                      </h6>
+                      <mat-option *ngFor="let option of searchAutocompleteItemNumbers; let i = index" [value]="option.itemNumber" class="matAutoCompTableContent" [attr.data-automation-id]="'process-put-aways-item-number-option-' + i">
+                        <div class="loc_option">
+                          <span class="searchColumn span-width">{{ option.itemNumber }}</span>
+                          <span class="searchColumn span-searchColumn">{{ option.description }}</span>
+                        </div>
+                      </mat-option>
+                    </mat-autocomplete>
 
                   </mat-form-field>
                   <button [disabled]="inputValue != '' ? false : true" mat-flat-button color="primary" class="btn-regular w-100" (click)="openSelectionTransactionDialogue()" data-automation-id="process-put-aways-assign-transaction-button">
