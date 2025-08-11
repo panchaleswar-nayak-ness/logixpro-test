@@ -1,22 +1,21 @@
 import { Component, Input, OnInit } from '@angular/core';
-
 @Component({
   selector: 'app-transaction-history',
   templateUrl: './transaction-history.component.html',
   styleUrls: [],
 })
 export class TransactionHistoryComponent  {
-  startDateEvent: Event;
+  startDateEvent: Date;
   endDateEvent: Event;
   orderNoEvent:Event;
   resetDateEvent:Event;
   clearEvent: Event;
-
+  cleanFilter:Event;
 
   @Input() tabIndex:any;
-  
-  startDateChange(event: Event) {
-    this.startDateEvent = event;
+
+  startDateChange(inputStartDate: Date) {
+    this.startDateEvent = inputStartDate;
   }
 
   endDateChange(event: Event) {
@@ -35,5 +34,8 @@ export class TransactionHistoryComponent  {
     this.clearEvent = event; 
   }
   
+  clearFilter(event: Event) {
+    this.cleanFilter = event;
+  }
 
 }
