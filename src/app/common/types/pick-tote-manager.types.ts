@@ -13,6 +13,7 @@ export type FilterData = {
   andOr: string;
   isSaved: boolean;
   is_db?: boolean;
+  isNumericFormat?: boolean;
 };
 
 export type OrderData = {

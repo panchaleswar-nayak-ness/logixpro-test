@@ -158,7 +158,8 @@ export const ConfirmationMessages = {
     ResolvedToteConfirmation:"Are you sure you want to mark this Tote ID as resolved? This will remove this Tote ID from the Markout.",
     IrreversibleActionWarning :'This action cannot be undone.',
     UpdateAllInterface: 'Click OK to update all devices with Com Port: {{comPort}}',
-    UpdateAllInterfaceWithZone: 'Click OK to update all devices with Com Port: {{comPort}} and Zone: {{zone}}'
+    UpdateAllInterfaceWithZone: 'Click OK to update all devices with Com Port: {{comPort}} and Zone: {{zone}}',
+    InconsistentFormat: (fieldName: string) => `Inconsistent format detected! The field "${fieldName}" already has a different format. Would you like to update all related fields to the new format?`,
 }
 
 export const ToasterMessages = {

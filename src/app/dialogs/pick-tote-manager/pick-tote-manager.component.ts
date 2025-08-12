@@ -27,7 +27,7 @@ import { IInductionManagerApiService } from 'src/app/common/services/induction-m
 import { InductionManagerApiService } from 'src/app/common/services/induction-manager-api/induction-manager-api.service';
 import { GlobalService } from 'src/app/common/services/global.service';
 import { PickToteManagerService } from 'src/app/common/services/pick-tote-manager.service'
-import {  TableConstant ,ToasterTitle,ResponseStrings,Column,ToasterType,zoneType,DialogConstants,ColumnDef,UniqueConstants,Style,StringConditions, Placeholders, ToasterMessages, disabledFields, FIELDS_DEFAULT_AN} from 'src/app/common/constants/strings.constants';
+import {  TableConstant ,ToasterTitle,ResponseStrings,Column,ToasterType,zoneType,DialogConstants,ColumnDef,UniqueConstants,Style,StringConditions, Placeholders, ToasterMessages, disabledFields, FIELDS_DEFAULT_AN, ConfirmationMessages} from 'src/app/common/constants/strings.constants';
 import { FilterOrder, FilterTransaction, SavedFilterChangeEvent, FilterData, OrderData } from 'src/app/common/types/pick-tote-manager.types';
 
 export interface PeriodicElement {
@@ -556,7 +556,7 @@ UserField10:string = this.fieldMappings.userField10;
           andOr: filter.andOr,
           isSaved: true,
           is_db: true,
-          format: this.getDefaultFormat(filter.field), // Use the getDefaultFormat method
+          format: filter.isNumericFormat ? this.FORMAT_NUMBER : 'A+N', // Set format based on isNumericFormat
         };
       });
   
@@ -570,7 +570,7 @@ UserField10:string = this.fieldMappings.userField10;
         value: '',
         andOr: 'And',
         isSaved: false,
-        format: this.getDefaultFormat(ColumnDef.Emergency), // Use the getDefaultFormat method
+        format: this.getDefaultFormat(ColumnDef.Emergency),
       });
   
       this.isFilterAdd = false;
@@ -652,7 +652,12 @@ UserField10:string = this.fieldMappings.userField10;
         dialogRef.afterClosed().subscribe((result) => {
           if (result == StringConditions.Yes) {
             // Update all related fields to the new format
-            sameFieldRows.forEach(row => row.format = element.format);
+            // sameFieldRows.forEach(row => row.format = element.format);
+            sameFieldRows.forEach(row => {
+              row.format = element.format;
+              // Save or update each related row in the database
+              this.onSaveSingleFilter(row);
+            });
           } else {
             // Revert the change
             element.format = existingFormat;
@@ -1401,7 +1406,7 @@ clearOrderSelection() {
         let payload = {
             Sequence: element.sequence,
             Field: element.field,
-            Format : element.format,
+            IsNumericFormat : element.format == this.FORMAT_NUMBER ? true : false,
             Criteria: element.criteria,
             Value: element.value,
             AndOr: element.andOr,
@@ -1420,6 +1425,8 @@ clearOrderSelection() {
                             );
                             this.filterSeq = element.sequence;
                             this.refreshFilterDataGrid();
+                            // Update format based on API response
+                            element.format = res.data.isNumericFormat ? this.FORMAT_NUMBER : 'A+N';
                         } else {
                             this.global.ShowToastr(
                                 ToasterType.Error,
@@ -1441,6 +1448,8 @@ clearOrderSelection() {
                             );
                             this.filterSeq = element.sequence;
                             this.refreshFilterDataGrid();
+                            // Update format based on API response
+                            element.format = res.data.isNumericFormat ? this.FORMAT_NUMBER : 'A+N';
                         } else {
                             this.global.ShowToastr(
                                 ToasterType.Error,
@@ -1756,13 +1765,18 @@ refreshOrderDataGrid() {
       autoFocus: DialogConstants.autoFocus,
       disableClose: true,
       data: {
-        message: `Inconsistent format detected! The field "${element.field}" already has a different format. Would you like to update all related fields to the new format?`,
+        message: ConfirmationMessages.InconsistentFormat(element.field)
       },
     });
   
     dialogRef.afterClosed().subscribe((result: string) => {
-      if (result === StringConditions.Yes) {
-        relatedRows.forEach(row => (row.format = element.format));
+      if (result === StringConditions.Yes) {      
+               this.onSaveSingleFilter(element);
+               relatedRows.forEach(row => {
+                row.format = element.format;
+                // Save or update each related row in the database
+                this.onSaveSingleFilter(row);
+              });
       } else {
         element.format = existingFormat;
       }
@@ -1771,3 +1785,4 @@ refreshOrderDataGrid() {
   }
   
 }
+
