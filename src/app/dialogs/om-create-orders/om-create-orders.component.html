@@ -80,7 +80,7 @@
                     <div class="d-xl-flex d-block justify-content-end">
                         <mat-form-field class="action-dropdown d-block custom-form-field-bg-white" appearance="outline">
                             <mat-label data-automation-id="actions-label">Actions</mat-label>
-                            <mat-select #matRef class="employees-action" placeholder="Actions" (selectionChange)="actionDialog($event)" data-automation-id="actions-select">
+                            <mat-select #matRef class="employees-action" placeholder="Actions" (selectionChange)="actionDialog($event)" [attr.data-automation-id]="'actions-select-' + (matRef.value || '')">
                                 <mat-option value="add_new_transaction" [disabled]="!tableData.filteredData || tableData.filteredData.length == 0" (click)="openOmAddTransaction()" data-automation-id="actions-option-add-transaction">Add Transaction</mat-option>
                                 <mat-option value="post_order" (click)="releaseOrders()" data-automation-id="actions-option-release-orders">Release Orders</mat-option>
                                 <mat-option value="delete_order" (click)="deleteViewed()" data-automation-id="actions-option-delete-viewed">Delete Viewed</mat-option>

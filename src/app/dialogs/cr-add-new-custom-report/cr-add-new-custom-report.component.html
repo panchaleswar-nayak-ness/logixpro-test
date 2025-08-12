@@ -40,7 +40,7 @@
     <div class="col-xl-6 mb-2">
     <mat-form-field class="custom-form-field w-100" appearance="outline"  required #serialTemp>
         <mat-label data-automation-id="test-design-data-type-label">Test/Design Data Type</mat-label>
-        <mat-select [(ngModel)]="newDesignDataType" data-automation-id="test-design-data-type-select">
+        <mat-select [(ngModel)]="newDesignDataType" [attr.data-automation-id]="'test-design-data-type-select-' + newDesignDataType">
             <mat-option value="SQL" data-automation-id="test-design-data-type-option-sql">Raw SQL</mat-option>
             <mat-option value="SP" data-automation-id="test-design-data-type-option-sp">Stored Procedure</mat-option>
             </mat-select>
@@ -52,7 +52,7 @@
     <div class="col-xl-6 mb-2">
     <mat-form-field class="custom-form-field w-100" appearance="outline">
         <mat-label data-automation-id="output-type-label">Output Type</mat-label>
-        <mat-select [(ngModel)]="newOutputType" required #serialTemp (ngModelChange)="setExtension()" data-automation-id="output-type-select">
+        <mat-select [(ngModel)]="newOutputType" required #serialTemp (ngModelChange)="setExtension()" [attr.data-automation-id]="'output-type-select-' + serialTemp.value">
             <mat-option value="Report" data-automation-id="output-type-option-report">Report</mat-option>
             <mat-option value="Label" data-automation-id="output-type-option-label">Label</mat-option>
             </mat-select>

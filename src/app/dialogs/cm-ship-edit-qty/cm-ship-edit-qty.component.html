@@ -16,7 +16,7 @@
 
             <mat-form-field class="action-dropdown w-100" appearance="outline">
                 <mat-label data-automation-id="adjust-reason-label">Reason For Adjustment</mat-label>
-                <mat-select #matRef matInput [(ngModel)]="adjustReason" (selectionChange)="selectionChanged()" data-automation-id="adjust-reason-select">
+                <mat-select #matRef matInput [(ngModel)]="adjustReason" (selectionChange)="selectionChanged()"  [attr.data-automation-id]="'adjust-reason-select-' + matRef.value">
                     <mat-option *ngFor="let r of data.reasons" value={{r}} [attr.data-automation-id]="'adjust-reason-option-' + r">{{r}}</mat-option>                    
                 </mat-select>
                 <span class="material-symbols-outlined icon-expand-more">

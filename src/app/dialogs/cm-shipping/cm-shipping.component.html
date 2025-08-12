@@ -1,7 +1,7 @@
 <div class="d-flex justify-content-between mb-4 align-items-center">
     <div class="w-48px"></div>
-    <h1 class="m-0" mat-dialog-title>Shipping</h1>
-    <button mat-icon-button class="close-button dialog-close-button-fix" [mat-dialog-close]="true">
+    <h1 class="m-0" mat-dialog-title data-automation-id="heading-shipping">Shipping</h1>
+    <button mat-icon-button class="close-button dialog-close-button-fix" [mat-dialog-close]="true" data-automation-id="close-dialog-button">
         <mat-icon class="close-icon">close</mat-icon>
     </button>
 </div>
@@ -12,24 +12,24 @@
             <div class="row">
                 <div class="col-xl-4" *ngIf="orderShipHidden">
                     <mat-form-field class="custom-form-field custom-form-field-bg-white w-100" appearance="outline">
-                        <mat-label>Order Number</mat-label>
-                        <input type="text" aria-label="Search" matInput [(ngModel)]="orderNumber" disabled>
+                        <mat-label data-automation-id="label-order-number">Order Number</mat-label>
+                        <input type="text" aria-label="Search" matInput [(ngModel)]="orderNumber" disabled data-automation-id="input-order-number">
                     </mat-form-field>
                 </div>
                 <div  class="col-xl-5" *ngIf="!orderShipHidden">
                     <div class="chip-container">
                         <mat-form-field class="custom-form-field custom-form-field-bg-white w-100" appearance="outline">
-                            <mat-label>Order Number</mat-label>
+                            <mat-label data-automation-id="label-order-number">Order Number</mat-label>
                             <mat-chip-list #chipList aria-label="Order Selection" class="custom-form-field-bg-white w-100">
                               <mat-chip
-                                *ngFor="let order of selectedOrders"
+                                *ngFor="let order of selectedOrders; let i = index"
                                 [selectable]="true"
                                 [removable]="true"
                                 (removed)="removeOrder(order)"
-                                class="bg-light-blue"
+                                class="bg-light-blue" [attr.data-automation-id]="'order-chip-' + order"
                               >
                                 {{ order }}
-                                <button matChipRemove>
+                                <button matChipRemove [attr.data-automation-id]="'remove-order-chip-' + i">
                                   <mat-icon class="bold text-16 lh-20">close_small</mat-icon>
                                 </button>
                               </mat-chip>
@@ -40,11 +40,11 @@
                                 [matChipInputFor]="chipList"
                                 [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
                                 [matChipInputAddOnBlur]="false"
-                                (matChipInputTokenEnd)="addOrderFromInput($event, chipInput)"
+                                (matChipInputTokenEnd)="addOrderFromInput($event, chipInput)" data-automation-id="input-order-chip"
                               />
                             </mat-chip-list>
                             <mat-autocomplete #auto="matAutocomplete" (optionSelected)="addOrderFromAutocomplete($event, chipInput)">
-                                <mat-option *ngFor="let order of filteredOrders | async" [value]="order">
+                                <mat-option *ngFor="let order of filteredOrders | async; let i = index" [value]="order" [attr.data-automation-id]="'order-option-' + i + '-' + order">
                                     {{ order }}
                                   </mat-option>
                             </mat-autocomplete>
@@ -58,7 +58,7 @@
     </div>
     <div class="mb-2 card p-3">
         <div class="d-flex justify-content-between">
-            <h2 class="card-header-title mb-3 d-flex align-items-center">
+            <h2 class="card-header-title mb-3 d-flex align-items-center" data-automation-id="heading-shipment">
                 <div class="mat-icon-wrap me-lg-3">
                     <span class="material-symbols-outlined">
                         repartition
@@ -72,7 +72,7 @@
             [disabled]="shippingComp"
         mat-flat-button
         color="primary"
-        class="add-icon-button mb-3"
+        class="add-icon-button mb-3" data-automation-id="add-new-container-button"
         
       >
         <span
@@ -89,7 +89,7 @@
       <button
         mat-button
         color="primary"
-        class="icon-button secondary-button"
+        class="icon-button secondary-button" data-automation-id="print-all-button"
         
       >
         <span
@@ -112,7 +112,7 @@
               <div class="mb-2">
                 <mat-expansion-panel>
                   <mat-expansion-panel-header>
-                    <mat-panel-title> 
+                    <mat-panel-title [attr.data-automation-id]="'container-panel-title-' + index"> 
                       Container ID:&nbsp;<b> {{ i.ContainerID }}</b> 
                     </mat-panel-title>
                     <mat-panel-description> </mat-panel-description>
@@ -124,10 +124,10 @@
                           <div class="row">
                             <div class="col-sm-2">
                                 <mat-form-field class="action-dropdown  w-100" appearance="outline">
-                                    <mat-label>Carrier</mat-label>
+                                    <mat-label [attr.data-automation-id]="'label-carrier-' + index">Carrier</mat-label>
                                     <mat-select #matRef class="employees-action Carrier-select" [disabled]="shippingComp"
-                                    [(ngModel)]="i['Carrier']" placeholder="Carrier">
-                                        <mat-option *ngFor="let item of carriers" [value]="item">{{item}} </mat-option>
+                                    [(ngModel)]="i['Carrier']" placeholder="Carrier" [attr.data-automation-id]="'select-carrier-' + index">
+                                        <mat-option *ngFor="let item of carriers; let j = index" [value]="item" [attr.data-automation-id]="'option-carrier-' + index + '-' + j + '-' + item">{{item}} </mat-option>
                                     </mat-select>
                                     <span class="material-symbols-outlined icon-expand-more">
                                         expand_more
@@ -139,12 +139,12 @@
                                 class="custom-form-field custom-form-field-bg-white w-100 mb-3"
                                 appearance="outline"
                               >
-                                <mat-label>Tracking No.</mat-label>
+                                <mat-label [attr.data-automation-id]="'label-tracking-no-' + index">Tracking No.</mat-label>
                                 <input [disabled]="shippingComp"
                                   type="text"
                                   [(ngModel)]="i['TrackingNumber']"
                                   matInput
-                                  maxlength="50"
+                                  maxlength="50" [attr.data-automation-id]="'input-tracking-no-' + index"
                                 />
                               </mat-form-field>
                             </div>
@@ -153,13 +153,13 @@
                                   class="custom-form-field custom-form-field-bg-white w-100 mb-3"
                                   appearance="outline"
                                 >
-                                  <mat-label>Freight</mat-label>
+                                  <mat-label [attr.data-automation-id]="'label-freight-' + index">Freight</mat-label>
                                   <input [disabled]="shippingComp"
                                     type="number"
                                     oninput="this.value = !!this.value && Math.abs(this.value) > 0 ? Math.abs(this.value) : 0"
                                     [(ngModel)]="i['Freight']"
                                     matInput
-                                    maxlength="200"
+                                    maxlength="200" [attr.data-automation-id]="'input-freight-' + index"
                                   />
                                 </mat-form-field>
                               </div>
@@ -168,13 +168,13 @@
                                   class="custom-form-field custom-form-field-bg-white w-100 mb-3"
                                   appearance="outline"
                                 >
-                                  <mat-label>Freight1</mat-label>
+                                  <mat-label [attr.data-automation-id]="'label-freight1-' + index">Freight1</mat-label>
                                   <input [disabled]="shippingComp"
                                     type="number"
                                     oninput="this.value = !!this.value && Math.abs(this.value) > 0 ? Math.abs(this.value) : 0"
                                     [(ngModel)]="i['Freight1']"
                                     matInput
-                                    maxlength="200"
+                                    maxlength="200"  [attr.data-automation-id]="'input-freight1-' + index"
                                   />
                                 </mat-form-field>
                               </div>
@@ -183,13 +183,13 @@
                                   class="custom-form-field custom-form-field-bg-white w-100 mb-3"
                                   appearance="outline"
                                 >
-                                  <mat-label>Freight2</mat-label>
+                                  <mat-label [attr.data-automation-id]="'label-freight2-' + index">Freight2</mat-label>
                                   <input [disabled]="shippingComp"
                                     type="number"
                                     oninput="this.value = !!this.value && Math.abs(this.value) > 0 ? Math.abs(this.value) : 0"
                                     [(ngModel)]="i['Freight2']"
                                     matInput
-                                    maxlength="200"
+                                    maxlength="200"  [attr.data-automation-id]="'input-freight2-' + index"
                                   />
                                 </mat-form-field>
                               </div>
@@ -198,13 +198,13 @@
                                   class="custom-form-field custom-form-field-bg-white w-100 mb-3"
                                   appearance="outline"
                                 >
-                                  <mat-label>Weight</mat-label>
+                                  <mat-label [attr.data-automation-id]="'label-weight-' + index">Weight</mat-label>
                                   <input [disabled]="shippingComp"
                                     type="number"
                                     oninput="this.value = !!this.value && Math.abs(this.value) > 0 ? Math.abs(this.value) : 0"
                                     [(ngModel)]="i['Weight']"
                                     matInput
-                                    maxlength="200"
+                                    maxlength="200"  [attr.data-automation-id]="'input-weight-' + index"
                                   />
                                 </mat-form-field>
                               </div>
@@ -215,14 +215,14 @@
                                 class="custom-form-field custom-form-field-bg-white w-100 mb-3"
                                 appearance="outline"
                               >
-                                <mat-label>Length</mat-label>
+                                <mat-label [attr.data-automation-id]="'label-length-' + index">Length</mat-label>
                                 <input [disabled]="shippingComp"
                                   type="number"
                                   oninput="this.value = !!this.value && Math.abs(this.value) > 0 ? Math.abs(this.value) : 0"
                                   [(ngModel)]="i['Length']"
                                   matInput (keyup)="calculateCube(i)"
                                   class="counter-none"
-                                  maxlength="200"
+                                  maxlength="200"  [attr.data-automation-id]="'input-length-' + index"
                                   
                                 />
                               </mat-form-field>
@@ -232,14 +232,14 @@
                                 class="custom-form-field custom-form-field-bg-white w-100 mb-3"
                                 appearance="outline"
                               >
-                                <mat-label>Width</mat-label>
+                                <mat-label [attr.data-automation-id]="'label-width-' + index">Width</mat-label>
                                 <input [disabled]="shippingComp"
                                   type="number"
                                   oninput="this.value = !!this.value && Math.abs(this.value) > 0 ? Math.abs(this.value) : 0"
                                   [(ngModel)]="i['Width']"
                                   matInput (keyup)="calculateCube(i)"
                                   maxlength="200"
-                                  class="counter-none"
+                                  class="counter-none" [attr.data-automation-id]="'input-width-' + index"
                                 />
                               </mat-form-field>
                             </div>
@@ -248,14 +248,14 @@
                                   class="custom-form-field custom-form-field-bg-white w-100 mb-3"
                                   appearance="outline"
                                 >
-                                  <mat-label>Height</mat-label>
+                                  <mat-label [attr.data-automation-id]="'label-height-' + index">Height</mat-label>
                                   <input [disabled]="shippingComp"
                                   oninput="this.value = !!this.value && Math.abs(this.value) > 0 ? Math.abs(this.value) : 0"
                                   type="number"
                                     [(ngModel)]="i['Height']"
                                     matInput (keyup)="calculateCube(i)"
                                     maxlength="200"
-                                    class="counter-none"
+                                    class="counter-none"  [attr.data-automation-id]="'input-height-' + index"
                                   />
                                 </mat-form-field>
                               </div>
@@ -264,13 +264,13 @@
                                   class="custom-form-field custom-form-field-bg-white w-100 mb-3"
                                   appearance="outline"
                                 >
-                                  <mat-label>Cube</mat-label>
+                                  <mat-label [attr.data-automation-id]="'label-cube-' + index">Cube</mat-label>
                                   <input disabled
                                     type="number"
                                     oninput="this.value = !!this.value && Math.abs(this.value) > 0 ? Math.abs(this.value) : 0"
                                     [(ngModel)]="i['Cube']"
                                     matInput
-                                    maxlength="200"
+                                    maxlength="200" [attr.data-automation-id]="'input-cube-' + index"
                                   />
                                 </mat-form-field>
                               </div>
@@ -279,13 +279,13 @@
                                   class="custom-form-field custom-form-field-bg-white w-100 mb-3"
                                   appearance="outline"
                                 >
-                                  <mat-label>{{ shippingPreferences.userField1Alias ? shippingPreferences.userField1Alias : 'User Field 1' }}</mat-label>
+                                  <mat-label [attr.data-automation-id]="'label-user-field1-' + index">{{ shippingPreferences.userField1Alias ? shippingPreferences.userField1Alias : 'User Field 1' }}</mat-label>
 
                                   <input [disabled]="shippingComp"
                                     type="text"
                                     [(ngModel)]="i['UserField1']"
                                     matInput
-                                    maxlength="200"
+                                    maxlength="200"  [attr.data-automation-id]="'input-user-field1-' + index"
                                   />
                                 </mat-form-field>
                               </div>
@@ -294,13 +294,13 @@
                                   class="custom-form-field custom-form-field-bg-white w-100 mb-3"
                                   appearance="outline"
                                 >
-                                  <mat-label>{{ shippingPreferences.userField2Alias ? shippingPreferences.userField2Alias : 'User Field 2' }}</mat-label>
+                                  <mat-label [attr.data-automation-id]="'label-user-field2-' + index">{{ shippingPreferences.userField2Alias ? shippingPreferences.userField2Alias : 'User Field 2' }}</mat-label>
 
                                   <input [disabled]="shippingComp"
                                     type="text"
                                     [(ngModel)]="i['UserField2']"
                                     matInput
-                                    maxlength="200"
+                                    maxlength="200"  [attr.data-automation-id]="'input-user-field2-' + index"
                                   />
                                 </mat-form-field>
                               </div>
@@ -311,13 +311,13 @@
                                 class="custom-form-field custom-form-field-bg-white w-100 mb-3"
                                 appearance="outline"
                               >
-                               <mat-label>{{ shippingPreferences.userField3Alias ? shippingPreferences.userField3Alias : 'User Field 3' }}</mat-label>
+                               <mat-label [attr.data-automation-id]="'label-user-field3-' + index">{{ shippingPreferences.userField3Alias ? shippingPreferences.userField3Alias : 'User Field 3' }}</mat-label>
 
                                 <input [disabled]="shippingComp"
                                   type="text"
                                   [(ngModel)]="i['UserField3']"
                                   matInput
-                                  maxlength="200"
+                                  maxlength="200"  [attr.data-automation-id]="'input-user-field3-' + index"
                                   
                                 />
                               </mat-form-field>
@@ -327,13 +327,13 @@
                                 class="custom-form-field custom-form-field-bg-white w-100 mb-3"
                                 appearance="outline"
                               >
-                                <mat-label>{{ shippingPreferences.userField4Alias ? shippingPreferences.userField4Alias : 'User Field 4' }}</mat-label>
+                                <mat-label [attr.data-automation-id]="'label-user-field4-' + index">{{ shippingPreferences.userField4Alias ? shippingPreferences.userField4Alias : 'User Field 4' }}</mat-label>
 
                                 <input [disabled]="shippingComp"
                                   type="text"
                                   [(ngModel)]="i['UserField4']"
                                   matInput
-                                  maxlength="200"
+                                  maxlength="200"   [attr.data-automation-id]="'input-user-field4-' + index"
                                 />
                               </mat-form-field>
                             </div>
@@ -342,13 +342,13 @@
                                   class="custom-form-field custom-form-field-bg-white w-100 mb-3"
                                   appearance="outline"
                                 >
-                                  <mat-label>{{ shippingPreferences.userField5Alias ? shippingPreferences.userField5Alias : 'User Field 5' }}</mat-label>
+                                  <mat-label [attr.data-automation-id]="'label-user-field5-' + index">{{ shippingPreferences.userField5Alias ? shippingPreferences.userField5Alias : 'User Field 5' }}</mat-label>
 
                                   <input [disabled]="shippingComp"
                                     type="text"
                                     [(ngModel)]="i['UserField5']"
                                     matInput
-                                    maxlength="200"
+                                    maxlength="200"   [attr.data-automation-id]="'input-user-field5-' + index"
                                   />
                                 </mat-form-field>
                               </div>
@@ -357,13 +357,13 @@
                                   class="custom-form-field custom-form-field-bg-white w-100 mb-3"
                                   appearance="outline"
                                 >
-                                  <mat-label>{{ shippingPreferences.userField6Alias ? shippingPreferences.userField6Alias : 'User Field 6' }}</mat-label>
+                                  <mat-label [attr.data-automation-id]="'label-user-field6-' + index">{{ shippingPreferences.userField6Alias ? shippingPreferences.userField6Alias : 'User Field 6' }}</mat-label>
 
                                   <input [disabled]="shippingComp"
                                     type="text"
                                     [(ngModel)]="i['UserField6']"
                                     matInput
-                                    maxlength="200"
+                                    maxlength="200"   [attr.data-automation-id]="'input-user-field6-' + index"
                                   />
                                 </mat-form-field>
                               </div>
@@ -372,13 +372,13 @@
                                   class="custom-form-field custom-form-field-bg-white w-100 mb-3"
                                   appearance="outline"
                                 >
-                                  <mat-label>{{ shippingPreferences.userField7Alias ? shippingPreferences.userField7Alias : 'User Field 7' }}</mat-label>
+                                  <mat-label [attr.data-automation-id]="'label-user-field7-' + index">{{ shippingPreferences.userField7Alias ? shippingPreferences.userField7Alias : 'User Field 7' }}</mat-label>
 
                                   <input [disabled]="shippingComp"
                                     type="text"
                                     [(ngModel)]="i['UserField7']"
                                     matInput
-                                    maxlength="200"
+                                    maxlength="200"  [attr.data-automation-id]="'input-user-field7-' + index"
                                   />
                                 </mat-form-field>
                               </div>
@@ -388,11 +388,11 @@
                             <div class="d-block d-xl-flex justify-content-end">
                                 <div class="d-xl-flex gap-12">
                                     <button  mat-stroked-button class="mb-3 mb-xl-0 form-button-submit m-1 m-xl-0"
-                                            color="primary" (click)="PrintItem('',i)">Print</button>
+                                            color="primary" (click)="PrintItem('',i)" [attr.data-automation-id]="'print-button-' + index">Print</button>
                                     <button  mat-stroked-button [disabled]="shippingComp"  class="mb-3 mb-xl-0 button-remove-all-w-stroke m-1 m-xl-0"
-                                            color="warn" (click)="DeleteItem('',i)">Delete</button>
+                                            color="warn" (click)="DeleteItem('',i)" [attr.data-automation-id]="'delete-button-' + index">Delete</button>
                                     <button  mat-flat-button [disabled]="shippingComp" class="mb-3 mb-xl-0 form-button-submit m-1 m-xl-0"
-                                            color="primary" (click)="updateShipmentItem(i)">Save</button>
+                                            color="primary" (click)="updateShipmentItem(i)" [attr.data-automation-id]="'save-button-' + index">Save</button>
                                   </div>
                                 
                             </div>
@@ -412,5 +412,5 @@
   
 <div matDialogActions>
     <button type="button" mat-flat-button color="primary" class="mb-2 btn-lg w-100" [disabled]="shippingComp"
-        (click)="ShippingCompShip()">Complete Shipment</button>
+        (click)="ShippingCompShip()" data-automation-id="complete-shipment-button">Complete Shipment</button>
 </div>

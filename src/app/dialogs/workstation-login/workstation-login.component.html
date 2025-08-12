@@ -75,7 +75,7 @@
         <div class="col-xl-12">
             <mat-form-field class=" custom-form-field w-100" appearance="outline" data-automation-id="select-existing-workstation-field">
                 <mat-label data-automation-id="select-existing-workstation-label">Select Existing Workstation</mat-label>
-                <mat-select [(ngModel)]="selectedWorkstation" data-automation-id="select-existing-workstation-select" >
+                <mat-select [(ngModel)]="selectedWorkstation" [attr.data-automation-id]="'select-existing-workstation-select-' + (selectedWorkstation || '')">
                     <mat-option *ngFor="let ws of existingWorkstations" [value]="ws" [attr.data-automation-id]="'existing-workstation-option-' + ws.resource.pcName">
                         {{ws.resource.pcName}}
                     </mat-option>

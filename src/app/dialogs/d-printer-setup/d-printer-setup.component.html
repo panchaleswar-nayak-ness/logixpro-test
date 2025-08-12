@@ -13,7 +13,7 @@
         <div class="col-12 mb-2">
             <mat-form-field class="action-dropdown custom-form-field-bg-white w-100" appearance="outline">
                 <mat-label data-automation-id="report-printer-label">Report Printer</mat-label>
-                <mat-select class="employees-action" [(ngModel)]="reportPrinter" data-automation-id="report-printer-select">
+                <mat-select class="employees-action" [(ngModel)]="reportPrinter"  [attr.data-automation-id]="'report-printer-select-' + (reportPrinter || '')">
                   <ng-container> 
                   <mat-option  *ngFor="let item of listReportPrinter" [value]="item.printer" [attr.data-automation-id]="'report-printer-option-' + item.printer">{{item.printer}}</mat-option>  
                 </ng-container>
@@ -26,7 +26,7 @@
         <div class="col-12 mb-2">
             <mat-form-field class="action-dropdown custom-form-field-bg-white w-100" appearance="outline">
                 <mat-label data-automation-id="label-printer-label">Label Printer</mat-label>
-                <mat-select class="employees-action" [(ngModel)]="labelPrinter" data-automation-id="label-printer-select">
+                <mat-select class="employees-action" [(ngModel)]="labelPrinter"  [attr.data-automation-id]="'label-printer-select-' + (labelPrinter || '')">
                   <ng-container> 
                     <mat-option  *ngFor="let item of listLabelPrinter" [value]="item.printer" [attr.data-automation-id]="'label-printer-option-' + item.printer">{{item.printer}}</mat-option>  
                 </ng-container>

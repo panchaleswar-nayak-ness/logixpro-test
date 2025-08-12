@@ -15,7 +15,7 @@
         <mat-form-field class="action-dropdown d-block" appearance="outline" data-automation-id="actions-dropdown">
           <mat-label data-automation-id="actions-label">Actions</mat-label>
           <mat-select #matRef class="employees-action" placeholder="Actions"
-            (selectionChange)="onChangeOrderAction($event.value)" data-automation-id="actions-select">
+            (selectionChange)="onChangeOrderAction($event.value)" [attr.data-automation-id]="'actions-select-' + (matRef.value || '')">
             <mat-option value="fill_top_orders" data-automation-id="fill-top-orders-option">Fill With Top Orders</mat-option>
             <mat-option value="unselect_all_orders" data-automation-id="unselect-all-orders-option">Un-Select All Orders</mat-option>
           </mat-select>
