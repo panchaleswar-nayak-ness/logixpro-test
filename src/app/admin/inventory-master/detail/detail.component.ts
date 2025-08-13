@@ -148,10 +148,7 @@ export class DetailComponent implements OnInit {
     // Listen for selectionCleared event from the dialog component instance
     if (dialogRef.componentInstance && dialogRef.componentInstance.selectionCleared) {
       dialogRef.componentInstance.selectionCleared.subscribe(() => {
-        this.details.patchValue({
-          'category': '',
-          'subCategory': ''
-        });
+        this.clearCategoryFields();
         this.sharedService.updateInvMasterState({ category: '', subCategory: '' }, true);
       });
     }
@@ -164,10 +161,7 @@ export class DetailComponent implements OnInit {
         });
       } else if (result === DialogConstants.close) {
         // If dialog was closed without selection, clear the category fields
-        this.details.patchValue({
-          'category': '',
-          'subCategory': ''
-        });
+        this.clearCategoryFields();
       }
       this.sharedService.updateInvMasterState(result, true)
     })
@@ -184,6 +178,14 @@ export class DetailComponent implements OnInit {
       this.contextMenuService.updateContextMenuState(event, event.target.value, FilterColumnName, FilterConditon, FilterItemType);
     }, 100);
   }
+
+  private clearCategoryFields() {
+    this.details.patchValue({
+      category: '',
+      subCategory: ''
+    });
+  }
+
   public openUmDialog() {
     let dialogRef:any = this.global.OpenDialog(UnitMeasureComponent, {
       height: DialogConstants.auto,
