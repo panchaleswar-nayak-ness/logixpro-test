@@ -4,7 +4,7 @@
       <mat-card class="mat-elevation-z g-card">
         <mat-card-content>
           <div class="row">
-            <app-icon-heading-component heading="Inventory Map" icon="directions_alt">
+            <app-icon-heading-component heading="Inventory Map" [automationId]="'inventory-map-heading'" icon="directions_alt">
             </app-icon-heading-component>
           </div>
 
@@ -25,30 +25,30 @@
                 </app-column-filter-component>
               
               <div class="d-xl-flex d-lg-block align-items-center gap-12">
-                <mat-form-field class="action-dropdown d-block mt-3 mt-xl-0 mt-sm-3" appearance="outline">
+                <mat-form-field class="action-dropdown d-block mt-3 mt-xl-0 mt-sm-3" appearance="outline" data-automation-id="inventory-map-action-dropdown">
                   <mat-label>Actions</mat-label>
-                  <mat-select #matRef class="employees-action" (selectionChange)="inventoryMapAction($event)" placeholder="Actions">
+                  <mat-select #matRef class="employees-action" (selectionChange)="inventoryMapAction($event)" placeholder="Actions" data-automation-id="inventory-map-action-select">
                     <mat-option 
                       (click)="this.employeeAccessLevel.accessAddInvMapLocation && addLocDialog()" 
                       *ngIf="companyObj.locationControl  
                               && this.userData.accessLevel.toLowerCase() == accessLevel.Administrator"
-                      [disabled]="!this.employeeAccessLevel.accessAddInvMapLocation">
+                      [disabled]="!this.employeeAccessLevel.accessAddInvMapLocation" data-automation-id="invmap-action-addloc-opt">
                       Add Location
                     </mat-option>
-                    <mat-option (click)="printRange()">Print Range</mat-option>
-                    <mat-option value="set_column_sq">Set Column Sequence</mat-option>
-                    <mat-option routerLink="/admin/inventoryMap/utilizationDashboard">Utlilization Report</mat-option>
+                    <mat-option (click)="printRange()" data-automation-id="invmap-action-printrange-opt">Print Range</mat-option>
+                    <mat-option value="set_column_sq" data-automation-id="invmap-action-setcolseq-opt">Set Column Sequence</mat-option>
+                    <mat-option routerLink="/admin/inventoryMap/utilizationDashboard" data-automation-id="invmap-action-utilrep-opt">Utlilization Report</mat-option>
                     <mat-option 
                       *ngIf="companyObj.storageContainer && this.userData.accessLevel.toLowerCase() == accessLevel.Administrator" 
                       [disabled]="!this.employeeAccessLevel.accessStorageContainer" 
-                      (click)="this.employeeAccessLevel.accessStorageContainer  && storageContainerManagement()">
+                      (click)="this.employeeAccessLevel.accessStorageContainer  && storageContainerManagement()" data-automation-id="invmap-action-storage-opt">
                       Storage Container Management
                     </mat-option>
                   </mat-select>
                   <span class="material-symbols-outlined icon-expand-more">expand_more</span>
                 </mat-form-field>
                 <div class="p-xl-3 mt-3 mt-xl-0 mt-sm-3">
-                  <button type="button" mat-flat-button (click)="viewAllLocDialog()" color="primary" class="d-block col-sm-12 w-100 button-primary-i button-sm">View Locations</button>
+                  <button type="button" mat-flat-button (click)="viewAllLocDialog()" color="primary" class="d-block col-sm-12 w-100 button-primary-i button-sm" data-automation-id="view-locations-button">View Locations</button>
                 </div>
               </div>
             </div>
@@ -56,54 +56,54 @@
 
           <div class="card br-14 table-responsive my-3" *ngIf="columnValues?.length>0 && displayedColumns">
             <ng-scrollbar class="mat-table-scrollbar scroll-bar"  track="all">
-              <table mat-table class="custom-table table-fix" #table [dataSource]="dataSource" matSort (matSortChange)="announceSortChange($event)" >
+              <table mat-table class="custom-table table-fix" #table [dataSource]="dataSource" matSort (matSortChange)="announceSortChange($event)" data-automation-id="invmap-table">
 
                 <ng-container matColumnDef="{{col.colDef}}" *ngFor="let col of displayedColumns; let indexOfelement=index;">
-                  <th class="header container-table-header" mat-header-cell  *matHeaderCellDef mat-sort-header >{{ col.colTitle }}</th>
-                  <td class="container-table-data" mat-cell *matCellDef="let element" 
+                  <th class="header container-table-header" mat-header-cell  *matHeaderCellDef mat-sort-header [attr.data-automation-id]="'invmap-col-header-' + col.colDef">{{ col.colTitle }}</th>
+                  <td class="container-table-data" mat-cell *matCellDef="let element; let i = index" 
                   (dblclick)="col.colDef == 'Item Number' && viewInInventoryMaster(element)"
                   (contextmenu)=" onContextMenu($event,  element[col.colHeader], col.colDef)"  
-                  [ngClass]="{'quarantineColor': element.warehouse.includes('Quarantine')}" >{{ element[col.colHeader] }}</td>
+                  [ngClass]="{'quarantineColor': element.warehouse.includes('Quarantine')}" [attr.data-automation-id]="'invmap-col-' + col.colDef + '-' + i">{{ element[col.colHeader] }}</td>
                 </ng-container>
 
                 <ng-container matColumnDef="actions" stickyEnd>
 
                   <th  class="actionContainer-Header" *matHeaderCellDef ></th>
 
-                  <td mat-cell *matCellDef="let seletedRecord" class="actionContainerdata" >
-                    <button mat-icon-button [matMenuTriggerFor]="appMenu" aria-label="" [ngClass]="{'active-btn':seletedRecord.selected}" class="circle-icon-o" appearance="outline">
+                  <td mat-cell *matCellDef="let seletedRecord; let i = index" class="actionContainerdata" [attr.data-automation-id]="'invmap-row-' + i">
+                    <button mat-icon-button [matMenuTriggerFor]="appMenu" aria-label="" [ngClass]="{'active-btn':seletedRecord.selected}" class="circle-icon-o" appearance="outline" data-automation-id="inventory-map-context-menu-trigger">
                       <mat-icon>more_horiz</mat-icon>
                     </button>
 
                     <mat-menu #appMenu="matMenu">
-                      <button mat-menu-item (click)="printSelected(seletedRecord)">Print</button>
-                      <button mat-menu-item *ngIf="this.userData.accessLevel.toLowerCase() == accessLevel.Administrator" (click)="edit(seletedRecord)">Edit</button>
-                      <button mat-menu-item (click)="delete(seletedRecord)"   *ngIf="this.userData.accessLevel.toLowerCase() == accessLevel.Administrator && !isAuthorized('Inv Map Delete') &&  inventoryRoute">Delete</button>
-                      <button *ngIf="!seletedRecord.warehouse.includes('Quarantine')" mat-menu-item (click)="quarantine(seletedRecord)" >Quarantine</button>
-                      <button *ngIf="seletedRecord.warehouse.includes('Quarantine')" mat-menu-item (click)="unQuarantine(seletedRecord)">Unquarantine</button>
-                      <button mat-menu-item (click)="adjustQuantity(seletedRecord)" [disabled]="seletedRecord.itemNumber == ''">Adjust Quantity</button>
-                      <button mat-menu-item *ngIf="transHistory" (click)="tranHistory(seletedRecord)" >Transaction History</button>
-                      <button mat-menu-item (click)="duplicate(seletedRecord)" *ngIf="inventoryRoute && this.userData.accessLevel.toLowerCase() == accessLevel.Administrator">Duplicate</button>
-                      <button mat-menu-item (click)="viewInInventoryMaster(seletedRecord)">View item in Inventory Master</button>
-                      <button mat-menu-item (click)="viewLocationHistory(seletedRecord)">View Location History</button>
-                      <button mat-menu-item disabled>Send to Outbound Port</button>
+                      <button mat-menu-item (click)="printSelected(seletedRecord)" data-automation-id="print-button">Print</button>
+                      <button mat-menu-item *ngIf="this.userData.accessLevel.toLowerCase() == accessLevel.Administrator" (click)="edit(seletedRecord)" data-automation-id="edit-button">Edit</button>
+                      <button mat-menu-item (click)="delete(seletedRecord)"   *ngIf="this.userData.accessLevel.toLowerCase() == accessLevel.Administrator && !isAuthorized('Inv Map Delete') &&  inventoryRoute" data-automation-id="button-close">Delete</button>
+                      <button *ngIf="!seletedRecord.warehouse.includes('Quarantine')" mat-menu-item (click)="quarantine(seletedRecord)" data-automation-id="quarantine-button">Quarantine</button>
+                      <button *ngIf="seletedRecord.warehouse.includes('Quarantine')" mat-menu-item (click)="unQuarantine(seletedRecord)" data-automation-id="unquarantine-button">Unquarantine</button>
+                      <button mat-menu-item (click)="adjustQuantity(seletedRecord)" [disabled]="seletedRecord.itemNumber == ''" data-automation-id="adjust-quantity-button">Adjust Quantity</button>
+                      <button mat-menu-item *ngIf="transHistory" (click)="tranHistory(seletedRecord)" data-automation-id="transaction-history-button">Transaction History</button>
+                      <button mat-menu-item (click)="duplicate(seletedRecord)" *ngIf="inventoryRoute && this.userData.accessLevel.toLowerCase() == accessLevel.Administrator" data-automation-id="duplicate-button">Duplicate</button>
+                      <button mat-menu-item (click)="viewInInventoryMaster(seletedRecord)" data-automation-id="view-in-inventory-master-button">View item in Inventory Master</button>
+                      <button mat-menu-item (click)="viewLocationHistory(seletedRecord)" data-automation-id="view-location-history-button">View Location History</button>
+                      <button mat-menu-item disabled data-automation-id="send-to-outbound-port-button">Send to Outbound Port</button>
                     </mat-menu>
                   </td>
 
                 </ng-container>
 
-                <tr class="mat-row" *matNoDataRow (contextmenu)="onContextMenu($event, undefined, '')">
+                <tr class="mat-row" *matNoDataRow (contextmenu)="onContextMenu($event, undefined, '')" data-automation-id="inventory-map-no-data-row">
                   <td class="mat-cell border " [attr.colspan]="columnValues.length" >No data available in table.</td>
                 </tr>
 
                 <mat-header-row *matHeaderRowDef="columnValues;sticky: true"  class="border"></mat-header-row>
-                <mat-row *matRowDef="let row; columns: columnValues;" (click)="selectRow(row)"></mat-row>
+                <mat-row *matRowDef="let row; columns: columnValues; let rowIndex = index" (click)="selectRow(row)" [attr.data-automation-id]="'invmap-row-' + rowIndex"></mat-row>
               </table>
             </ng-scrollbar>
           </div>
 
           <div class="table-pagination d-flex justify-content-start align-items-center" *ngIf="columnValues.length> 0 && displayedColumns && dataSource">
-            <mat-paginator [length]="this.customPagination.total" [pageSize]="20" showFirstLastButtons [pageSizeOptions]="[10, 20, 100]" (page)="handlePageEvent($event)"></mat-paginator>
+            <mat-paginator [length]="this.customPagination.total" [pageSize]="20" showFirstLastButtons [pageSizeOptions]="[10, 20, 100]" (page)="handlePageEvent($event)" data-automation-id="inventory-map-paginator"></mat-paginator>
           </div>
 
         </mat-card-content>
@@ -117,21 +117,21 @@
 <ng-template #viewAllLocation>
   <div class="d-flex justify-content-between mb-4 align-items-center">
     <div class="view-all-loacation-heading"></div>
-    <h1 class="m-0" mat-dialog-title>View All Locations</h1>
-    <button mat-icon-button class="close-button dialog-close-button-fix" [mat-dialog-close]="true">
+    <h1 class="m-0" mat-dialog-title data-automation-id="invmap-viewall-heading">View All Locations</h1>
+    <button mat-icon-button class="close-button dialog-close-button-fix" [mat-dialog-close]="true" data-automation-id="button-close">
         <mat-icon class="close-icon">close</mat-icon>
     </button>
   </div>
 
   <div class="outside mb-3">
       <mat-radio-group color="primary" aria-labelledby="example-radio-group-label" class="example-radio-group d-flex flex-column" [(ngModel)]="filterLoc">
-        <mat-radio-button class="mb-2" value="Nothing">All Location</mat-radio-button>
-        <mat-radio-button class="mb-2" value="Open">Open Location</mat-radio-button>
-        <mat-radio-button class="mb-2" value="Quarantine">Quarantined location</mat-radio-button>
+        <mat-radio-button class="mb-2" value="Nothing" data-automation-id="invmap-viewall-radio-all">All Location</mat-radio-button>
+        <mat-radio-button class="mb-2" value="Open" data-automation-id="invmap-viewall-radio-open">Open Location</mat-radio-button>
+        <mat-radio-button class="mb-2" value="Quarantine" data-automation-id="invmap-viewall-radio-quarantine">Quarantined location</mat-radio-button>
       </mat-radio-group>
   </div>
 
   <mat-dialog-actions>
-    <button  type="submit" mat-flat-button class="button-primary btn-lg dialogButton" color="primary" (click)="viewLocFilter()">Submit</button>
+    <button  type="submit" mat-flat-button class="button-primary btn-lg dialogButton" color="primary" (click)="viewLocFilter()" data-automation-id="btn-submit">Submit</button>
   </mat-dialog-actions>
 </ng-template>

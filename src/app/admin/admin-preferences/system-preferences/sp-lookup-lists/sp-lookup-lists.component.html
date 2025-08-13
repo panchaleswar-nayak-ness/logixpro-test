@@ -7,28 +7,28 @@
 
 <div class="card bg-white bg-50 px-4 py-4 br-20 mb-3 min-h-450px">
     <mat-tab-group>
-        <mat-tab [label]="fieldNames?.userField1">
+        <mat-tab [label]="fieldNames?.userField1" data-automation-id="tab-user-field1">
             <app-lookup-user-one-setup [label]="fieldNames?.userField1"></app-lookup-user-one-setup>
         </mat-tab>
-        <mat-tab [label]="fieldNames?.userField2">
+        <mat-tab [label]="fieldNames?.userField2" data-automation-id="tab-user-field2">
             <app-lookup-user-two-setup [label]="fieldNames?.userField2"></app-lookup-user-two-setup>
         </mat-tab>
-        <mat-tab label="Adjustment Lookup Setup">
+        <mat-tab label="Adjustment Lookup Setup" data-automation-id="tab-adjustment-lookup-setup">
             <app-lookup-adjustment-lookup-setup></app-lookup-adjustment-lookup-setup>
         </mat-tab>
-        <mat-tab label="Tote Setup">
+        <mat-tab label="Tote Setup" data-automation-id="tab-tote-setup">
             <app-lookup-tote-setup></app-lookup-tote-setup>
         </mat-tab>
-        <mat-tab label="Hot Pick">
+        <mat-tab label="Hot Pick" data-automation-id="tab-hot-pick">
             <app-lookup-hot-pick></app-lookup-hot-pick>
         </mat-tab>
-        <mat-tab label="Hot Put Away">
+        <mat-tab label="Hot Put Away" data-automation-id="tab-hot-put-away">
             <app-lookup-hot-put-away></app-lookup-hot-put-away>
         </mat-tab>
-        <mat-tab label="Hot Move">
+        <mat-tab label="Hot Move" data-automation-id="tab-hot-move">
             <app-lookup-hot-move></app-lookup-hot-move>
         </mat-tab>
-        <mat-tab label="Blind Induction">
+        <mat-tab label="Blind Induction" data-automation-id="tab-blind-induction">
             <app-lookup-blind-induction></app-lookup-blind-induction>
         </mat-tab>
     </mat-tab-group>

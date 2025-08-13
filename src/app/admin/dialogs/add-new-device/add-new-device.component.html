@@ -1,6 +1,6 @@
 <div class="d-flex justify-content-between mb-4 align-items-center">
     <div class="divWithClass" ></div>
-    <h1 class="m-0" mat-dialog-title>Devices-Add Edit, Delete</h1>
+    <h1 class="m-0" mat-dialog-title data-automation-id="add-device-dialog-heading">Devices-Add Edit, Delete</h1>
     <button mat-icon-button class="close-button dialog-close-button-fix" [mat-dialog-close]="true"
         (click)="dialogClose()">
         <mat-icon class="close-icon">close</mat-icon>
@@ -16,7 +16,7 @@
             <div class="container p-3 card">
                     <div class="row">
                         <div class="d-flex align-items-center gap-12 mb-3">
-                            <app-icon-heading-component heading="Device Details" icon="aod_tablet"></app-icon-heading-component>
+                            <app-icon-heading-component heading="Device Details" icon="aod_tablet" data-automation-id="device-details-heading"></app-icon-heading-component>
                             <span class="label label-gray px-2 mb-xl-0 mb-1 mx-2 text-16">Device ID:&nbsp;<b class="badge-ch-limit">{{this.newDeviceID>0?this.newDeviceID:this.item && this.item.deviceID?this.item.deviceID:'(new)'}}</b></span>
                         </div>
                     </div>
@@ -24,13 +24,13 @@
                         <div class="col-xl-4  mb-2">
 
                             <mat-form-field class=" custom-form-field w-100 __grab_cursor" appearance="outline">
-                                <mat-label>Zone</mat-label>
-                                <mat-select formControlName="zone">
+                                <mat-label data-automation-id="zone-label">Zone</mat-label>
+                                <mat-select formControlName="zone" data-automation-id="zone-select">
                                     <mat-option *ngFor="let item of zoneList;let index = index"
-                                        [value]="item">{{item}}</mat-option>
+                                        [value]="item" data-automation-id="zone-option-{{item}}">{{item}}</mat-option>
 
                                 </mat-select>
-                                <span class="material-symbols-outlined icon-expand-more">
+                                <span class="material-symbols-outlined icon-expand-more" data-automation-id="zone-expand-icon">
                                     expand_more
                                 </span>
                             </mat-form-field>
@@ -41,17 +41,17 @@
 
 
                             <mat-form-field class=" custom-form-field w-100 __grab_cursor" appearance="outline">
-                                <mat-label>Device Type</mat-label>
-                                <mat-select formControlName="deviceType" (selectionChange)="showDPTypeFields()">
-                                    <mat-option value="Carousel">Carousel</mat-option>
-                                    <mat-option value="Carton Flow">Carton Flow</mat-option>
-                                    <mat-option value="Light Tree">Light Tree</mat-option>
-                                    <mat-option value="Scale">Scale</mat-option>
-                                    <mat-option value="Scanner">Scanner</mat-option>
-                                    <mat-option value="Sort Bar">Sort Bar</mat-option>
+                                <mat-label data-automation-id="device-type-label">Device Type</mat-label>
+                                <mat-select formControlName="deviceType" (selectionChange)="showDPTypeFields()" data-automation-id="device-type-select">
+                                    <mat-option value="Carousel" data-automation-id="device-type-option-carousel">Carousel</mat-option>
+                                    <mat-option value="Carton Flow" data-automation-id="device-type-option-carton-flow">Carton Flow</mat-option>
+                                    <mat-option value="Light Tree" data-automation-id="device-type-option-light-tree">Light Tree</mat-option>
+                                    <mat-option value="Scale" data-automation-id="device-type-option-scale">Scale</mat-option>
+                                    <mat-option value="Scanner" data-automation-id="device-type-option-scanner">Scanner</mat-option>
+                                    <mat-option value="Sort Bar" data-automation-id="device-type-option-sort-bar">Sort Bar</mat-option>
 
                                 </mat-select>
-                                <span class="material-symbols-outlined icon-expand-more">
+                                <span class="material-symbols-outlined icon-expand-more" data-automation-id="device-type-expand-icon">
                                     expand_more
                                 </span>
                             </mat-form-field>
@@ -60,19 +60,19 @@
 
 
                             <mat-form-field class=" custom-form-field w-100 __grab_cursor" appearance="outline">
-                                <mat-label>Device Number</mat-label>
-                                <mat-select formControlName="deviceNumber">
+                                <mat-label data-automation-id="device-number-label">Device Number</mat-label>
+                                <mat-select formControlName="deviceNumber" data-automation-id="device-number-select">
 
-                                    <mat-option value="1">1</mat-option>
-                                    <mat-option value="2">2</mat-option>
-                                    <mat-option value="3">3</mat-option>
-                                    <mat-option value="4">4</mat-option>
-                                    <mat-option value="5">5</mat-option>
-                                    <mat-option value="6">6</mat-option>
-                                    <mat-option value="7">7</mat-option>
-                                    <mat-option value="8">8</mat-option>
+                                    <mat-option value="1" data-automation-id="device-number-option-1">1</mat-option>
+                                    <mat-option value="2" data-automation-id="device-number-option-2">2</mat-option>
+                                    <mat-option value="3" data-automation-id="device-number-option-3">3</mat-option>
+                                    <mat-option value="4" data-automation-id="device-number-option-4">4</mat-option>
+                                    <mat-option value="5" data-automation-id="device-number-option-5">5</mat-option>
+                                    <mat-option value="6" data-automation-id="device-number-option-6">6</mat-option>
+                                    <mat-option value="7" data-automation-id="device-number-option-7">7</mat-option>
+                                    <mat-option value="8" data-automation-id="device-number-option-8">8</mat-option>
                                 </mat-select>
-                                <span class="material-symbols-outlined icon-expand-more">
+                                <span class="material-symbols-outlined icon-expand-more" data-automation-id="device-number-expand-icon">
                                     expand_more
                                 </span>
                             </mat-form-field>
@@ -84,14 +84,14 @@
 
 
                             <mat-form-field class=" custom-form-field w-100 __grab_cursor" appearance="outline">
-                                <mat-label> Device Model</mat-label>
-                                <mat-select formControlName="deviceModel" (selectionChange)="showDPTypeFields()">
+                                <mat-label data-automation-id="device-model-label"> Device Model</mat-label>
+                                <mat-select formControlName="deviceModel" (selectionChange)="showDPTypeFields()" data-automation-id="device-model-select">
 
                                     <mat-option *ngFor="let item of deviceModelList;let index = index"
-                                        [value]="item">{{item}}</mat-option>
+                                        [value]="item" data-automation-id="device-model-option-{{item}}">{{item}}</mat-option>
 
                                 </mat-select>
-                                <span class="material-symbols-outlined icon-expand-more">
+                                <span class="material-symbols-outlined icon-expand-more" data-automation-id="device-model-expand-icon">
                                     expand_more
                                 </span>
                             </mat-form-field>
@@ -101,14 +101,14 @@
 
 
                             <mat-form-field class=" custom-form-field w-100 __grab_cursor" appearance="outline" >
-                                <mat-label>Controller Type</mat-label>
-                                <mat-select formControlName="controllerType"  (selectionChange)="changeType($event);showDPTypeFields()" >
+                                <mat-label data-automation-id="controller-type-label">Controller Type</mat-label>
+                                <mat-select formControlName="controllerType"  (selectionChange)="changeType($event);showDPTypeFields()" data-automation-id="controller-type-select">
 
                                     <mat-option *ngFor="let item of controllerTypeList;let index = index"
-                                        [value]="item">{{item}}</mat-option>
+                                        [value]="item" data-automation-id="controller-type-option-{{item}}">{{item}}</mat-option>
 
                                 </mat-select>
-                                <span class="material-symbols-outlined icon-expand-more">
+                                <span class="material-symbols-outlined icon-expand-more" data-automation-id="controller-type-expand-icon">
                                     expand_more
                                 </span>
                             </mat-form-field>
@@ -117,43 +117,43 @@
 
 
                             <mat-form-field class=" custom-form-field w-100 __grab_cursor" appearance="outline">
-                                <mat-label> Controller Terminal Port</mat-label>
-                                <mat-select formControlName="controllerTerminalPort">
+                                <mat-label data-automation-id="controller-terminal-port-label">Controller Terminal Port</mat-label>
+                                <mat-select formControlName="controllerTerminalPort" data-automation-id="controller-terminal-port-select">
 
 
 
-                                    <mat-option value="11">11</mat-option>
-                                    <mat-option value="12">12</mat-option>
-                                    <mat-option value="13">13</mat-option>
-                                    <mat-option value="21">21</mat-option>
-                                    <mat-option value="22">22</mat-option>
-                                    <mat-option value="23">23</mat-option>
-                                    <mat-option value="31">31</mat-option>
-                                    <mat-option value="32">32</mat-option>
-                                    <mat-option value="33">33</mat-option>
-                                    <mat-option value="41">41</mat-option>
-                                    <mat-option value="42">42</mat-option>
-                                    <mat-option value="43">43</mat-option>
-                                    <mat-option value="1">1</mat-option>
-                                    <mat-option value="2">2</mat-option>
-                                    <mat-option value="3">3</mat-option>
-                                    <mat-option value="4">4</mat-option>
-                                    <mat-option value="VC">VC</mat-option>
-                                    <mat-option value="DL">DL</mat-option>
-                                    <mat-option value="IP">IP</mat-option>
-                                    <mat-option value="DR">DR</mat-option>
-                                    <mat-option value="I1">I1</mat-option>
-                                    <mat-option value="I2">I2</mat-option>
-                                    <mat-option value="I3">I3</mat-option>
-                                    <mat-option value="I4">I4</mat-option>
-                                    <mat-option value="I5">I5</mat-option>
-                                    <mat-option value="I6">I6</mat-option>
-                                    <mat-option value="I7">I7</mat-option>
-                                    <mat-option value="I8">I8</mat-option>
-                                    <mat-option value="I9">I9</mat-option>
-                                    <mat-option value="WMI">WMI</mat-option>
+                                    <mat-option value="11" data-automation-id="controller-terminal-port-option-11">11</mat-option>
+                                    <mat-option value="12" data-automation-id="controller-terminal-port-option-12">12</mat-option>
+                                    <mat-option value="13" data-automation-id="controller-terminal-port-option-13">13</mat-option>
+                                    <mat-option value="21" data-automation-id="controller-terminal-port-option-21">21</mat-option>
+                                    <mat-option value="22" data-automation-id="controller-terminal-port-option-22">22</mat-option>
+                                    <mat-option value="23" data-automation-id="controller-terminal-port-option-23">23</mat-option>
+                                    <mat-option value="31" data-automation-id="controller-terminal-port-option-31">31</mat-option>
+                                    <mat-option value="32" data-automation-id="controller-terminal-port-option-32">32</mat-option>
+                                    <mat-option value="33" data-automation-id="controller-terminal-port-option-33">33</mat-option>
+                                    <mat-option value="41" data-automation-id="controller-terminal-port-option-41">41</mat-option>
+                                    <mat-option value="42" data-automation-id="controller-terminal-port-option-42">42</mat-option>
+                                    <mat-option value="43" data-automation-id="controller-terminal-port-option-43">43</mat-option>
+                                    <mat-option value="1" data-automation-id="controller-terminal-port-option-1">1</mat-option>
+                                    <mat-option value="2" data-automation-id="controller-terminal-port-option-2">2</mat-option>
+                                    <mat-option value="3" data-automation-id="controller-terminal-port-option-3">3</mat-option>
+                                    <mat-option value="4" data-automation-id="controller-terminal-port-option-4">4</mat-option>
+                                    <mat-option value="VC" data-automation-id="controller-terminal-port-option-VC">VC</mat-option>
+                                    <mat-option value="DL" data-automation-id="controller-terminal-port-option-DL">DL</mat-option>
+                                    <mat-option value="IP" data-automation-id="controller-terminal-port-option-IP">IP</mat-option>
+                                    <mat-option value="DR" data-automation-id="controller-terminal-port-option-DR">DR</mat-option>
+                                    <mat-option value="I1" data-automation-id="controller-terminal-port-option-I1">I1</mat-option>
+                                    <mat-option value="I2" data-automation-id="controller-terminal-port-option-I2">I2</mat-option>
+                                    <mat-option value="I3" data-automation-id="controller-terminal-port-option-I3">I3</mat-option>
+                                    <mat-option value="I4" data-automation-id="controller-terminal-port-option-I4">I4</mat-option>
+                                    <mat-option value="I5" data-automation-id="controller-terminal-port-option-I5">I5</mat-option>
+                                    <mat-option value="I6" data-automation-id="controller-terminal-port-option-I6">I6</mat-option>
+                                    <mat-option value="I7" data-automation-id="controller-terminal-port-option-I7">I7</mat-option>
+                                    <mat-option value="I8" data-automation-id="controller-terminal-port-option-I8">I8</mat-option>
+                                    <mat-option value="I9" data-automation-id="controller-terminal-port-option-I9">I9</mat-option>
+                                    <mat-option value="WMI" data-automation-id="controller-terminal-port-option-WMI">WMI</mat-option>
                                 </mat-select>
-                                <span class="material-symbols-outlined icon-expand-more">
+                                <span class="material-symbols-outlined icon-expand-more" data-automation-id="controller-terminal-port-expand-icon">
                                     expand_more
                                 </span>
                             </mat-form-field>
@@ -166,18 +166,18 @@
 
 
                             <mat-form-field class=" custom-form-field w-100 __grab_cursor" appearance="outline">
-                                <mat-label>Arrow Direction</mat-label>
-                                <mat-select formControlName="arrowDirection">
-                                    <mat-option value="L">Left</mat-option>
-                                    <mat-option value="R">Right</mat-option>
-                                    <mat-option value="U">Up</mat-option>
-                                    <mat-option value="D">Down</mat-option>
-                                    <mat-option value="B">Left and Right</mat-option>
-                                    <mat-option value="P">Up and Down</mat-option>
-                                    <mat-option value="N">None</mat-option>
+                                <mat-label data-automation-id="arrow-direction-label">Arrow Direction</mat-label>
+                                <mat-select formControlName="arrowDirection" data-automation-id="arrow-direction-select">
+                                    <mat-option value="L" data-automation-id="arrow-direction-option-L">Left</mat-option>
+                                    <mat-option value="R" data-automation-id="arrow-direction-option-R">Right</mat-option>
+                                    <mat-option value="U" data-automation-id="arrow-direction-option-U">Up</mat-option>
+                                    <mat-option value="D" data-automation-id="arrow-direction-option-D">Down</mat-option>
+                                    <mat-option value="B" data-automation-id="arrow-direction-option-B">Left and Right</mat-option>
+                                    <mat-option value="P" data-automation-id="arrow-direction-option-P">Up and Down</mat-option>
+                                    <mat-option value="N" data-automation-id="arrow-direction-option-N">None</mat-option>
 
                                 </mat-select>
-                                <span class="material-symbols-outlined icon-expand-more">
+                                <span class="material-symbols-outlined icon-expand-more" data-automation-id="arrow-direction-expand-icon">
                                     expand_more
                                 </span>
                             </mat-form-field>
@@ -186,17 +186,17 @@
 
 
                             <mat-form-field class=" custom-form-field w-100 __grab_cursor" appearance="outline">
-                                <mat-label>Light Direction</mat-label>
-                                <mat-select formControlName="lightDirection">
+                                <mat-label data-automation-id="light-direction-label">Light Direction</mat-label>
+                                <mat-select formControlName="lightDirection" data-automation-id="light-direction-select">
 
-                                    <mat-option value="L">Left to Right</mat-option>
-                                    <mat-option value="R">Right to Left</mat-option>
-                                    <mat-option value="U">Bottom Up</mat-option>
-                                    <mat-option value="D">Top Down</mat-option>
-                                    <mat-option value="Twin Bin R to L">Twin Bin R to L</mat-option>
-                                    <mat-option value="Twin Bin L to R">Twin Bin L to R</mat-option>
+                                    <mat-option value="L" data-automation-id="light-direction-option-L">Left to Right</mat-option>
+                                    <mat-option value="R" data-automation-id="light-direction-option-R">Right to Left</mat-option>
+                                    <mat-option value="U" data-automation-id="light-direction-option-U">Bottom Up</mat-option>
+                                    <mat-option value="D" data-automation-id="light-direction-option-D">Top Down</mat-option>
+                                    <mat-option value="Twin Bin R to L" data-automation-id="light-direction-option-TwinBinRtoL">Twin Bin R to L</mat-option>
+                                    <mat-option value="Twin Bin L to R" data-automation-id="light-direction-option-TwinBinLtoR">Twin Bin L to R</mat-option>
                                 </mat-select>
-                                <span class="material-symbols-outlined icon-expand-more">
+                                <span class="material-symbols-outlined icon-expand-more" data-automation-id="light-direction-expand-icon">
                                     expand_more
                                 </span>
                             </mat-form-field>
@@ -206,13 +206,13 @@
 
 
                             <mat-form-field class=" custom-form-field w-100 __grab_cursor" appearance="outline">
-                                <mat-label>Use Light Tree Number</mat-label>
-                                <mat-select formControlName="lightTreeNumber">
-                                    <mat-option *ngFor="let num of lightTreeNumberOptions" [value]="num">
+                                <mat-label data-automation-id="light-tree-number-label">Use Light Tree Number</mat-label>
+                                <mat-select formControlName="lightTreeNumber" data-automation-id="light-tree-number-select">
+                                    <mat-option *ngFor="let num of lightTreeNumberOptions" [value]="num" data-automation-id="light-tree-number-option-{{num}}">
                                     {{ num }}
                                     </mat-option>
                                 </mat-select>
-                                <span class="material-symbols-outlined icon-expand-more">
+                                <span class="material-symbols-outlined icon-expand-more" data-automation-id="light-tree-number-expand-icon">
                                     expand_more
                                 </span>
                             </mat-form-field>
@@ -224,19 +224,19 @@
                         <div class="col-xl-4  mb-2">
                             <mat-form-field class="d-block w-100 " appearance="outline">
                                 <mat-label>First Address</mat-label>
-                                <input #first_address [NumbersOnly]="true" maxlength="5" matInput formControlName="firstAddress">
+                                <input #first_address [NumbersOnly]="true" maxlength="5" matInput formControlName="firstAddress" data-automation-id="first-address-input">
                             </mat-form-field>
                         </div>
                         <div class="col-xl-4  mb-2">
                             <mat-form-field class="d-block w-100 " appearance="outline">
                                 <mat-label>Display Positions</mat-label>
-                                <input [NumbersOnly]="true" maxlength="9" matInput formControlName="displayPositions">
+                                <input [NumbersOnly]="true" maxlength="9" matInput formControlName="displayPositions" data-automation-id="display-positions-input">
                             </mat-form-field>
                         </div>
                         <div class="col-xl-4  mb-2">
                             <mat-form-field class="d-block w-100 " appearance="outline">
                                 <mat-label>Display Characters</mat-label>
-                                <input [NumbersOnly]="true" maxlength="9" matInput formControlName="displayCharacters">
+                                <input [NumbersOnly]="true" maxlength="9" matInput formControlName="displayCharacters" data-automation-id="display-characters-input">
                             </mat-form-field>
                         </div>
 
@@ -247,7 +247,7 @@
                         <div class="col-xl-4  mb-2">
                             <mat-form-field class="d-block w-100 " appearance="outline">
                                 <mat-label>Pair Key</mat-label>
-                                <input maxlength="50" matInput formControlName="pairKey">
+                                <input maxlength="50" matInput formControlName="pairKey" data-automation-id="pair-key-input">
                             </mat-form-field>
                         </div>
                         <div class="col-xl-4  mb-2">
@@ -267,18 +267,18 @@
             </div>
             <div *ngIf="isEdit && this.interfaceType===devicePreferencesShownType.WMI">
                     <div class="container p-3 card mt-3">
-                        <app-icon-heading-component class="mb-3" heading="Communication Settings" icon="communication"></app-icon-heading-component>
+                        <app-icon-heading-component class="mb-3" heading="Communication Settings" icon="communication" data-automation-id="communication-settings-heading"></app-icon-heading-component>
                     <div class="row">
                         <div class="col-xl-6  mb-2">
                             <mat-form-field class="d-block w-100 " appearance="outline">
                                 <mat-label>Host IP Address</mat-label>
-                                <input maxlength="50" matInput formControlName="hostIP">
+                                <input maxlength="50" matInput formControlName="hostIP" data-automation-id="host-ip-input">
                             </mat-form-field>
                         </div>
                         <div class="col-xl-6  mb-2">
                             <mat-form-field class="d-block w-100 " appearance="outline">
                                 <mat-label>Host Port</mat-label>
-                                <input matInput formControlName="hostPort">
+                                <input matInput formControlName="hostPort" data-automation-id="host-port-input">
                             </mat-form-field>
                         </div>
                     </div>
@@ -286,7 +286,7 @@
                         <div class="col-xl-6  mb-2">
                             <mat-form-field class="d-block w-100 " appearance="outline">
                                 <mat-label>Workstation Name</mat-label>
-                                <input maxlength="50" matInput formControlName="workstationName">
+                                <input maxlength="50" matInput formControlName="workstationName" data-automation-id="workstation-name-input">
                             </mat-form-field>
                         </div>
                         <div class="col-xl-6">
@@ -305,23 +305,23 @@
                         <div class="col-xl-4  mb-2">
 
                             <mat-form-field class=" custom-form-field w-100 __grab_cursor" appearance="outline">
-                                <mat-label>COM Port</mat-label>
-                                <mat-select formControlName="comPort">
-                                    <mat-option value="1">1</mat-option>
-                                    <mat-option value="2">2</mat-option>
-                                    <mat-option value="3">3</mat-option>
-                                    <mat-option value="4">4</mat-option>
-                                    <mat-option value="5">5</mat-option>
-                                    <mat-option value="6">6</mat-option>
-                                    <mat-option value="7">7</mat-option>
-                                    <mat-option value="8">8</mat-option>
-                                    <mat-option value="9">9</mat-option>
-                                    <mat-option value="10">10</mat-option>
-                                    <mat-option value="11">11</mat-option>
-                                    <mat-option value="12">12</mat-option>
+                                <mat-label data-automation-id="com-port-label">COM Port</mat-label>
+                                <mat-select formControlName="comPort" data-automation-id="com-port-select">
+                                    <mat-option value="1" data-automation-id="com-port-option-1">1</mat-option>
+                                    <mat-option value="2" data-automation-id="com-port-option-2">2</mat-option>
+                                    <mat-option value="3" data-automation-id="com-port-option-3">3</mat-option>
+                                    <mat-option value="4" data-automation-id="com-port-option-4">4</mat-option>
+                                    <mat-option value="5" data-automation-id="com-port-option-5">5</mat-option>
+                                    <mat-option value="6" data-automation-id="com-port-option-6">6</mat-option>
+                                    <mat-option value="7" data-automation-id="com-port-option-7">7</mat-option>
+                                    <mat-option value="8" data-automation-id="com-port-option-8">8</mat-option>
+                                    <mat-option value="9" data-automation-id="com-port-option-9">9</mat-option>
+                                    <mat-option value="10" data-automation-id="com-port-option-10">10</mat-option>
+                                    <mat-option value="11" data-automation-id="com-port-option-11">11</mat-option>
+                                    <mat-option value="12" data-automation-id="com-port-option-12">12</mat-option>
 
                                 </mat-select>
-                                <span class="material-symbols-outlined icon-expand-more">
+                                <span class="material-symbols-outlined icon-expand-more" data-automation-id="com-port-expand-icon">
                                     expand_more
                                 </span>
                             </mat-form-field>
@@ -332,34 +332,30 @@
 
 
                             <mat-form-field class=" custom-form-field w-100 __grab_cursor" appearance="outline">
-                                <mat-label>Baud Rate</mat-label>
+                                <mat-label data-automation-id="baud-label">Baud Rate</mat-label>
 
-                                <mat-select formControlName="baud">
-                                    <mat-option value="4800">4800</mat-option>
-                                    <mat-option value="9600">9600</mat-option>
-                                    <mat-option value="19200">19200</mat-option>
+                                <mat-select formControlName="baud" data-automation-id="baud-select">
+                                    <mat-option value="4800" data-automation-id="baud-option-4800">4800</mat-option>
+                                    <mat-option value="9600" data-automation-id="baud-option-9600">9600</mat-option>
+                                    <mat-option value="19200" data-automation-id="baud-option-19200">19200</mat-option>
                               
 
                                 </mat-select>
-                                <span class="material-symbols-outlined icon-expand-more">
-                                    expand_more
-                                </span>
+                                <span class="material-symbols-outlined icon-expand-more" data-automation-id="baud-expand-icon">expand_more</span>
                             </mat-form-field>
                         </div>
                         <div class="col-xl-4  mb-2">
 
                             <mat-form-field class=" custom-form-field w-100 __grab_cursor" appearance="outline">
-                                <mat-label>Parity</mat-label>
-                                <mat-select formControlName="parity">
+                                <mat-label data-automation-id="parity-label">Parity</mat-label>
+                                <mat-select formControlName="parity" data-automation-id="parity-select">
 
-                                    <mat-option value="Odd">Odd</mat-option>
-                                    <mat-option value="Even">Even</mat-option>
-                                    <mat-option value="None">None</mat-option>
+                                    <mat-option value="Odd" data-automation-id="parity-option-Odd">Odd</mat-option>
+                                    <mat-option value="Even" data-automation-id="parity-option-Even">Even</mat-option>
+                                    <mat-option value="None" data-automation-id="parity-option-None">None</mat-option>
 
                                 </mat-select>
-                                <span class="material-symbols-outlined icon-expand-more">
-                                    expand_more
-                                </span>
+                                <span class="material-symbols-outlined icon-expand-more" data-automation-id="parity-expand-icon">expand_more</span>
                             </mat-form-field>
                        
                         </div>
@@ -368,11 +364,11 @@
                     <div class="row">
                         <div class="col-xl-4  mb-2">
                             <mat-form-field class=" custom-form-field w-100 __grab_cursor" appearance="outline">
-                                <mat-label>Word Length</mat-label>
-                                <mat-select formControlName="wordLength">
+                                <mat-label data-automation-id="word-length-label">Word Length</mat-label>
+                                <mat-select formControlName="wordLength" data-automation-id="word-length-select">
 
-                                    <mat-option value="7">7</mat-option>
-                                    <mat-option value="8">8</mat-option>
+                                    <mat-option value="7" data-automation-id="word-length-option-7">7</mat-option>
+                                    <mat-option value="8" data-automation-id="word-length-option-8">8</mat-option>
                                 </mat-select>
                                 <span class="material-symbols-outlined icon-expand-more">
                                     expand_more
@@ -384,12 +380,12 @@
                         <div class="col-xl-4  mb-2">
 
                             <mat-form-field class=" custom-form-field w-100 __grab_cursor" appearance="outline">
-                                <mat-label>Stop Bit</mat-label>
-                                <mat-select formControlName="stopBit">
+                                <mat-label data-automation-id="stop-bit-label">Stop Bit</mat-label>
+                                <mat-select formControlName="stopBit" data-automation-id="stop-bit-select">
 
-                                    <mat-option value="0">0</mat-option>
-                                    <mat-option value="1">1</mat-option>
-                                    <mat-option value="2">2</mat-option>
+                                    <mat-option value="0" data-automation-id="stop-bit-option-0">0</mat-option>
+                                    <mat-option value="1" data-automation-id="stop-bit-option-1">1</mat-option>
+                                    <mat-option value="2" data-automation-id="stop-bit-option-2">2</mat-option>
 
                                 </mat-select>
                                 <span class="material-symbols-outlined icon-expand-more">
@@ -420,9 +416,9 @@
 
     <div mat-dialog-actions class="d-flex gap-12">
         <button type="button" mat-stroked-button color="secondary" class="btn-lg text-danger flex-shrink-0"
-            (click)="deleteSelected()">Delete</button>
-        <button (click)="onSubmit(newDeviceForm,true)" type="submit" mat-stroked-button class="btn-lg flex-shrink-0" color="primary">Save & Close</button>
-        <button (click)="onSubmit(newDeviceForm)" type="submit" mat-flat-button class="btn-lg flex-grow-1" color="primary">Save</button>
+            (click)="deleteSelected()" data-automation-id="delete-device-btn">Delete</button>
+        <button (click)="onSubmit(newDeviceForm,true)" data-automation-id="save-close-device-btn" type="submit" mat-stroked-button class="btn-lg flex-shrink-0" color="primary">Save & Close</button>
+        <button (click)="onSubmit(newDeviceForm)"  data-automation-id="save-device-btn" type="submit" mat-flat-button class="btn-lg flex-grow-1" color="primary">Save</button>
     </div>
 
 </form>

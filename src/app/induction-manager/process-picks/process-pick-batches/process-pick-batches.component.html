@@ -3,7 +3,7 @@
         <mat-card class="mat-elevation-z g-card mb-3 h-100">
             <mat-card-content class=" h-100">
                 <div class="d-flex justify-content-between align-items-center mb-3">
-                    <app-icon-heading-component heading="Print Existing Pick Batches" icon="print" data-automation-id="print-existing-pick-batches-heading">
+                    <app-icon-heading-component heading="Print Existing Pick Batches" icon="print" [automationId]="'print-existing-pick-batches-heading'">
                     </app-icon-heading-component>
                     <button type="submit" mat-stroked-button class="btn-regular" color="primary"
                         [matMenuTriggerFor]="appMenu1" data-automation-id="print-menu-button">
@@ -30,7 +30,7 @@
                                     <button matSuffix *ngIf="pickBatchesCrossbtn" class="clear-btn" (click)="pickBatchesCrossbtn= ''" data-automation-id="batch-id-clear-button"><mat-icon class="text-20 text-chrome-600">cancel</mat-icon></button>                              
                                 <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete">
                                     <h6 class="ctl_name ac-dropdown-label"><span>Batch ID</span></h6>
-                                    <mat-option *ngFor="let option of filteredOptions | async" [value]="option" [attr.data-automation-id]="'batch-id-option-' + option">
+                                    <mat-option *ngFor="let option of filteredOptions | async; let i=index" [value]="option" [attr.data-automation-id]="'batch-id-option-' + i">
                                         <div class="ctl_option ac-dropdown-option">
                                             <span>{{option}}</span>
                                         </div>
@@ -63,7 +63,7 @@
                                 <button matSuffix *ngIf="orderInput" class="clear-btn" (click)="orderInput = ''" data-automation-id="order-no-clear-button"><mat-icon class="text-20 text-chrome-600">cancel</mat-icon></button>  
                             <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete" (optionSelected)="ifOrderExits(orderInput)">
                                 <h6 class="ctl_name ac-dropdown-label"><span>Batch ID</span></h6>
-                                <mat-option *ngFor="let option of filteredOrderNum | async" [value]="option" [attr.data-automation-id]="'order-no-option-' + option">
+                                <mat-option *ngFor="let option of filteredOrderNum | async; let i = index" [value]="option" [attr.data-automation-id]="'order-no-option-' + i">
                                     <div class="ctl_option ac-dropdown-option">
                                         <span>{{option}}</span>
                                     </div>

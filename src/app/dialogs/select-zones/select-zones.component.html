@@ -7,7 +7,7 @@
     (click)="close()"
     data-automation-id="close-dialog-button"
   >
-    <mat-icon class="close-icon">close</mat-icon>
+    <mat-icon class="close-icon" data-automation-id="close-icon">close</mat-icon>
   </button>
 </div>
 <!-- <div class="text-center"> <span class="label label-gray px-2 f-14 mb-4">Batch ID:&nbsp;<b>{{batchID}}</b></span></div> -->
@@ -31,7 +31,7 @@
           >
           </mat-checkbox>
         </th>
-        <td mat-cell *matCellDef="let row">
+        <td mat-cell *matCellDef="let row; let i = index" [attr.data-automation-id]="'zone-checkbox-cell-' + i">
           <ng-container *ngIf="isProcessPutAways || isAdminPreferences">
             <mat-checkbox
               (click)="$event.stopPropagation()"
@@ -77,25 +77,25 @@
       <!-- Position Column -->
       <ng-container matColumnDef="zone">
         <th mat-header-cell *matHeaderCellDef data-automation-id="zone-header">Zone</th>
-        <td mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'zone-cell-' + i + '-' + element.zone">{{ element.zone }}</td>
+        <td mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'zone-cell-' + i">{{ element.zone }}</td>
       </ng-container>
 
       <!-- Name Column -->
       <ng-container matColumnDef="locationdesc">
         <th mat-header-cell *matHeaderCellDef data-automation-id="locationdesc-header">Location Description</th>
-        <td mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'locationdesc-cell-' + i + '-' + element.locationName">{{ element.locationName }}</td>
+        <td mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'locationdesc-cell-' + i">{{ element.locationName }}</td>
       </ng-container>
 
       <!-- Weight Column -->
       <ng-container matColumnDef="locationtype">
         <th mat-header-cell *matHeaderCellDef data-automation-id="locationtype-header">Location Type</th>
-        <td mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'locationtype-cell-' + i + '-' + element.locationType">{{ element.locationType }}</td>
+        <td mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'locationtype-cell-' + i">{{ element.locationType }}</td>
       </ng-container>
 
       <!-- Symbol Column -->
       <ng-container matColumnDef="stagingzone">
         <th mat-header-cell *matHeaderCellDef data-automation-id="stagingzone-header">Staging Zone</th>
-        <td mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'stagingzone-cell-' + i + '-' + element.stagingZone">
+        <td mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'stagingzone-cell-' + i">
           <ng-container *ngIf="element.stagingZone != 'False'"
             >Yes</ng-container
           >
@@ -104,9 +104,9 @@
       </ng-container>
 
       <ng-container matColumnDef="flag">
-        <th mat-header-cell *matHeaderCellDef></th>
-        <td mat-cell *matCellDef="let element">
-          <mat-icon *ngIf="element.locked">flag</mat-icon>
+        <th mat-header-cell *matHeaderCellDef data-automation-id="flag-header"></th>
+        <td mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'flag-cell-' + i">
+          <mat-icon *ngIf="element.locked" data-automation-id="locked-flag-icon">flag</mat-icon>
         </td>
       </ng-container>
 

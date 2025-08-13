@@ -1,89 +1,89 @@
-<mat-card class="mat-elevation-z g-card mt-2 mb-3">
+<mat-card class="mat-elevation-z g-card mt-2 mb-3" data-automation-id="preferences-consolidation-card">
     <div class="mb-0">
-        <app-icon-heading-component heading="Preferences" icon="tune">
+        <app-icon-heading-component heading="Preferences" icon="tune" [automationId]="'preferences-consolidation-heading'">
         </app-icon-heading-component>
-        <p class="text-tertiary-800 bold py-3 mb-0"> Select a default Packing List format for printing from the
+        <p class="text-tertiary-800 bold py-3 mb-0" data-automation-id="preferences-consolidation-description"> Select a default Packing List format for printing from the
             Consolidation window. Press the Reports button to design the desired packing list reports</p>
     </div>
-    <form [formGroup]="filtersForm">
-        <div class="row">
-            <div class="col-xl-6 pb-2">
-                <mat-form-field class="action-dropdown col-xl-12 col-12" appearance="outline">
-                    <mat-label>Packing List Default</mat-label>
-                    <mat-select  formControlName="defPackList"  class="employees-action" (selectionChange)="changePreferences()">
-                        <mat-option value="Packing List" >Packing List</mat-option>
-                        <mat-option value="Packing List 2">Packing List 2</mat-option>
+    <form [formGroup]="filtersForm" data-automation-id="preferences-consolidation-form">
+        <div class="row" data-automation-id="preferences-consolidation-row">
+            <div class="col-xl-6 pb-2" data-automation-id="packing-list-default-container">
+                <mat-form-field class="action-dropdown col-xl-12 col-12" appearance="outline" data-automation-id="packing-list-default-field">
+                    <mat-label data-automation-id="packing-list-default-label">Packing List Default</mat-label>
+                    <mat-select  formControlName="defPackList"  class="employees-action" (selectionChange)="changePreferences()" data-automation-id="packing-list-default-select">
+                        <mat-option value="Packing List" data-automation-id="packing-list-option">Packing List</mat-option>
+                        <mat-option value="Packing List 2" data-automation-id="packing-list-2-option">Packing List 2</mat-option>
                     </mat-select>
-                    <span class="material-symbols-outlined icon-expand-more">
+                    <span class="material-symbols-outlined icon-expand-more" data-automation-id="packing-list-default-expand-icon">
                         expand_more
                     </span>
                 </mat-form-field>
             </div>
-            <div class="col-xl-6 pb-2">
-                <mat-form-field class="action-dropdown col-xl-12 col-12" appearance="outline">
-                    <mat-label>Packing List Sort</mat-label>
-                    <mat-select formControlName="packingList" class="employees-action" (selectionChange)="changePreferences()">
-                        <mat-option value="[Item Number], [Line Number]">[{{ItemNumber}}],[Line
+            <div class="col-xl-6 pb-2" data-automation-id="packing-list-sort-container">
+                <mat-form-field class="action-dropdown col-xl-12 col-12" appearance="outline" data-automation-id="packing-list-sort-field">
+                    <mat-label data-automation-id="packing-list-sort-label">Packing List Sort</mat-label>
+                    <mat-select formControlName="packingList" class="employees-action" (selectionChange)="changePreferences()" data-automation-id="packing-list-sort-select">
+                        <mat-option value="[Item Number], [Line Number]" data-automation-id="sort-item-line-option">[{{ItemNumber}}],[Line
                             Number]</mat-option>
-                        <mat-option value="[Line Number], [Item Number]">[Line Number],[{{ItemNumber}}]
+                        <mat-option value="[Line Number], [Item Number]" data-automation-id="sort-line-item-option">[Line Number],[{{ItemNumber}}]
                             </mat-option>
-                        <mat-option value="[Tote ID], [Item Number], [Line Number]">[Tote ID],[{{ItemNumber}}]
+                        <mat-option value="[Tote ID], [Item Number], [Line Number]" data-automation-id="sort-tote-item-line-option">[Tote ID],[{{ItemNumber}}]
                             ,[Line Number]</mat-option>
-                        <mat-option value="[Tote ID], [Line Number], [Item Number]">[Tote ID],[Line
+                        <mat-option value="[Tote ID], [Line Number], [Item Number]" data-automation-id="sort-tote-line-item-option">[Tote ID],[Line
                             Number],[{{ItemNumber}}]</mat-option>
                     </mat-select>
-                    <span class="material-symbols-outlined icon-expand-more">
+                    <span class="material-symbols-outlined icon-expand-more" data-automation-id="packing-list-sort-expand-icon">
                         expand_more
                     </span>
                 </mat-form-field>
             </div>
-            <div class="col-xl-6 pb-2">
-                <mat-form-field class="action-dropdown col-xl-12 col-12" appearance="outline">
-                    <mat-label>Verify Each Item</mat-label>
-                    <mat-select formControlName="verifyEach" class="employees-action" (selectionChange)="changePreferences()">
-                        <mat-option value="Yes">
+            <div class="col-xl-6 pb-2" data-automation-id="verify-each-item-container">
+                <mat-form-field class="action-dropdown col-xl-12 col-12" appearance="outline" data-automation-id="verify-each-item-field">
+                    <mat-label data-automation-id="verify-each-item-label">Verify Each Item</mat-label>
+                    <mat-select formControlName="verifyEach" class="employees-action" (selectionChange)="changePreferences()" data-automation-id="verify-each-item-select">
+                        <mat-option value="Yes" data-automation-id="verify-each-yes-option">
                             Yes
                         </mat-option>
-                        <mat-option value="No">
+                        <mat-option value="No" data-automation-id="verify-each-no-option">
                             No
                         </mat-option>
                     </mat-select>
-                    <span class="material-symbols-outlined icon-expand-more">
+                    <span class="material-symbols-outlined icon-expand-more" data-automation-id="verify-each-item-expand-icon">
                         expand_more
                     </span>
                 </mat-form-field>
             </div>
-            <div class="col-xl-6 pb-2">
-                <mat-form-field class="action-dropdown col-xl-12 col-12" appearance="outline">
-                    <mat-label>Default Lookup Type</mat-label>
-                    <mat-select formControlName="defLookType" class="employees-action" (selectionChange)="changePreferences()">
-                        <mat-option value="Supplier Item ID">Supplier Item ID</mat-option>
-                        <mat-option value="Lot Number" selected="">Lot Number</mat-option>
-                        <mat-option value="User Field 1" replacePlaceholder [replacePlaceHolder]="placeholders.userField1" [fallbackPlaceHolder]="placeholders.userField1Fallback"> {{UserField1}} </mat-option>
-                        <mat-option value="Item Number" replacePlaceholder [replacePlaceHolder]="placeholders.itemNumber" [fallbackPlaceHolder]="placeholders.itemNumberFallback">{{ItemNumber}}</mat-option>
-                        <mat-option value="Serial Number">Serial Number</mat-option>
-                        <mat-option value="Any Code">Any Code</mat-option>
-                        <mat-option value="Tote ID">Tote ID</mat-option>
+            <div class="col-xl-6 pb-2" data-automation-id="default-lookup-type-container">
+                <mat-form-field class="action-dropdown col-xl-12 col-12" appearance="outline" data-automation-id="default-lookup-type-field">
+                    <mat-label data-automation-id="default-lookup-type-label">Default Lookup Type</mat-label>
+                    <mat-select formControlName="defLookType" class="employees-action" (selectionChange)="changePreferences()" data-automation-id="default-lookup-type-select">
+                        <mat-option value="Supplier Item ID" data-automation-id="lookup-supplier-item-id-option">Supplier Item ID</mat-option>
+                        <mat-option value="Lot Number" selected="" data-automation-id="lookup-lot-number-option">Lot Number</mat-option>
+                        <mat-option value="User Field 1" replacePlaceholder [replacePlaceHolder]="placeholders.userField1" [fallbackPlaceHolder]="placeholders.userField1Fallback" data-automation-id="lookup-user-field-1-option"> {{UserField1}} </mat-option>
+                        <mat-option value="Item Number" replacePlaceholder [replacePlaceHolder]="placeholders.itemNumber" [fallbackPlaceHolder]="placeholders.itemNumberFallback" data-automation-id="lookup-item-number-option">{{ItemNumber}}</mat-option>
+                        <mat-option value="Serial Number" data-automation-id="lookup-serial-number-option">Serial Number</mat-option>
+                        <mat-option value="Any Code" data-automation-id="lookup-any-code-option">Any Code</mat-option>
+                        <mat-option value="Tote ID" data-automation-id="lookup-tote-id-option">Tote ID</mat-option>
 
                     </mat-select>
-                    <span class="material-symbols-outlined icon-expand-more">
+                    <span class="material-symbols-outlined icon-expand-more" data-automation-id="default-lookup-type-expand-icon">
                         expand_more
                     </span>
                 </mat-form-field>
             </div>
         </div>
-        <div class="row pb-5 mb-5">
-            <div class="col-xl-6">
+        <div class="row pb-5 mb-5" data-automation-id="toggle-options-row">
+            <div class="col-xl-6" data-automation-id="toggle-options-container">
                 <div class="d-xl-flex gap-12 mb-2 pb-5">
-                    <div class="col-xl-12 text-left admin-prefrences py-2 ps-1">
-                        <div class="d-flex justify-content-between mb-2 text-tertiary-900">
+                    <div class="col-xl-12 text-left admin-prefrences py-2 ps-1" data-automation-id="toggle-options-section">
+                        <div class="d-flex justify-content-between mb-2 text-tertiary-900" data-automation-id="backorders-toggle-container">
                             Auto Complete Backorders at "Ship Complete": <mat-slide-toggle (change)="changePreferences()" 
                                 formControlName="backOrders" checked color="primary"
-                                matTooltip=""></mat-slide-toggle>
+                                matTooltip="" data-automation-id="backorders-toggle"></mat-slide-toggle>
                         </div>
-                        <div class="d-flex justify-content-between mb-2 text-tertiary-900">
+                        <div class="d-flex justify-content-between mb-2 text-tertiary-900" data-automation-id="non-pickpro-toggle-container">
                             Stage Non Pickpro Orders: <mat-slide-toggle checked color="primary" (change)="changePreferences()" 
-                                formControlName="nonPickpro" matTooltip=""></mat-slide-toggle>
+                                formControlName="nonPickpro" matTooltip="" data-automation-id="non-pickpro-toggle"></mat-slide-toggle>
                         </div>
 
                     </div>

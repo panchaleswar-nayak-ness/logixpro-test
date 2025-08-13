@@ -4,19 +4,19 @@
       <app-icon-heading-component
         class="card-header-title mb-2 d-flex align-items-center"
         heading="Non Super Batch Orders"
-        icon="filter_frames"
+        icon="filter_frames" [automationId]="'heading-non-super-batch-orders'"
       ></app-icon-heading-component>
       <div>
         <mat-form-field class="action-dropdown mb-2 w-100" appearance="outline">
-          <mat-label>Actions</mat-label>
-          <mat-select class="employees-action">
-            <mat-option (click)="filterOrderNum()"
+          <mat-label data-automation-id="label-actions">Actions</mat-label>
+          <mat-select class="employees-action" data-automation-id="select-actions">
+            <mat-option (click)="filterOrderNum()" data-automation-id="option-filter-order-number"
               >Filter Order Number</mat-option
             >
-            <mat-option (click)="openColumnFilter()">Column Filter</mat-option>
-            <mat-option (click)="filterTotalQuantity()">Filter by Total Quantity</mat-option>
+            <mat-option (click)="openColumnFilter()" data-automation-id="option-column-filter">Column Filter</mat-option>
+            <mat-option (click)="filterTotalQuantity()" data-automation-id="option-filter-total-quantity" data-automation-id="option-filter-total-quantity">Filter by Total Quantity</mat-option>
           </mat-select>
-          <span class="material-symbols-outlined icon-expand-more">
+          <span class="material-symbols-outlined icon-expand-more" data-automation-id="icon-expand-more-actions">
             expand_more
           </span>
         </mat-form-field>
@@ -24,16 +24,16 @@
     </div>
 
     <div class="d-flex align-items-center flex-wrap pb-2 gap-12">
-      <mat-label class="mb-1"><b>Applied Filters:</b></mat-label>
+      <mat-label class="mb-1" data-automation-id="label-applied-filters"><b>Applied Filters:</b></mat-label>
       <ng-container>
         <div class="text-center" *ngFor="let tag of tags">
           <div class="text-center" *ngIf="tag.value">
-            <span class="label label-gray px-2 f-14 mb-1"
+            <span class="label label-gray px-2 f-14 mb-1" [attr.data-automation-id]="'tag-applied-filter-' + tag.alias"
               >{{ tag.alias }}:&nbsp;<b>{{ tag.value }}</b></span
             >
           </div>
           <div class="text-center" *ngIf="!tag.value">
-            <span class="label label-gray px-2 f-14 mb-1">{{ tag.alias }}</span>
+            <span class="label label-gray px-2 f-14 mb-1" [attr.data-automation-id]="'tag-applied-filter-'  + tag.alias">{{ tag.alias }}</span>
           </div>
         </div>
       </ng-container>
@@ -42,7 +42,7 @@
           mat-flat-button
           color="warn"
           class="bg-white text-danger w-100 f-14 mb-1"
-          (click)="clearFilters()"
+          (click)="clearFilters()"   data-automation-id="button-clear-all-filters"
         >
           Clear all
         </button>
@@ -60,7 +60,7 @@
           [dataSource]="dataSource"
           matSort
           class="w-100 table-fix"
-          (matSortChange)="announceSortChange($event)"
+          (matSortChange)="announceSortChange($event)"  data-automation-id="table-non-super-batch-orders"
         >
           <!-- Order Number Column -->
           <ng-container matColumnDef="status" sticky>
@@ -68,11 +68,11 @@
               mat-header-cell
               *matHeaderCellDef
               mat-sort-header
-              sortActionDescription="Sort by status"
+              sortActionDescription="Sort by status"   data-automation-id="th-status"
             >
               Status
             </th>
-            <td mat-cell *matCellDef="let element">
+            <td mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'td-status-' + i ">
               <div class="d-flex align-items-center">
                 <span
                   class="br-14 label px-3 f-16"
@@ -89,11 +89,11 @@
               mat-header-cell
               *matHeaderCellDef
               mat-sort-header
-              sortActionDescription="Sort by orderNumber"
+              sortActionDescription="Sort by orderNumber"   data-automation-id="th-order-number"
             >
               Order No.
             </th>
-            <td mat-cell *matCellDef="let element">
+            <td mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'td-order-number-' + i ">
               {{ element.orderNumber }}
             </td>
           </ng-container>
@@ -104,11 +104,11 @@
               mat-header-cell
               *matHeaderCellDef
               mat-sort-header
-              sortActionDescription="Sort by zone"
+              sortActionDescription="Sort by zone"  data-automation-id="th-start-zone"
             >
               Start Zone
             </th>
-            <td mat-cell *matCellDef="let element">{{ element.zone }}</td>
+            <td mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'td-start-zone-' + i ">{{ element.zone }}</td>
           </ng-container>
 
           <!-- Priority Column -->
@@ -117,11 +117,11 @@
               mat-header-cell
               *matHeaderCellDef
               mat-sort-header
-              sortActionDescription="Sort by priority"
+              sortActionDescription="Sort by priority" data-automation-id="th-priority"
             >
               Priority
             </th>
-            <td mat-cell *matCellDef="let element">{{ element.priority }}</td>
+            <td mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'td-priority-' + i ">{{ element.priority }}</td>
           </ng-container>
 
           <!-- Required Date Column -->
@@ -130,11 +130,11 @@
               mat-header-cell
               *matHeaderCellDef
               mat-sort-header
-              sortActionDescription="Sort by requiredDate"
+              sortActionDescription="Sort by requiredDate" data-automation-id="th-required-date"
             >
               Required Date
             </th>
-            <td mat-cell *matCellDef="let element">
+            <td mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'td-required-date-' + i ">
               {{ element.requiredDate | date : "MM/dd/yyyy hh:mm:ss a" }}
             </td>
           </ng-container>
@@ -145,25 +145,25 @@
               mat-header-cell
               *matHeaderCellDef
               mat-sort-header
-              sortActionDescription="Sort by total"
+              sortActionDescription="Sort by total" data-automation-id="th-total-order-quantity"
             >
               Total Order Quantity
             </th>
-            <td mat-cell *matCellDef="let element">
+            <td mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'td-total-order-quantity-' + i ">
               {{ element.transactionQuantity }}
             </td>
           </ng-container>
 
           <!-- Tote Scanned Column -->
           <ng-container matColumnDef="toteScanned">
-            <th mat-header-cell *matHeaderCellDef>Tote Scanned</th>
-            <td mat-cell *matCellDef="let element; let i = index">
-              <mat-form-field appearance="outline">
+            <th mat-header-cell *matHeaderCellDef data-automation-id="th-tote-scanned">Tote Scanned</th>
+            <td mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'td-tote-scanned-' + i ">
+              <mat-form-field appearance="outline" data-automation-id="form-field-tote-scanned">
                 <input
                   matInput
                   [(ngModel)]="element.toteScanned"
                   (keyup.enter)="onEnter(element, i)"
-                  [disabled]="disableNonSBInputs"
+                  [disabled]="disableNonSBInputs" [attr.data-automation-id]="'input-tote-scanned-' + element.toteScanned"
                 />
               </mat-form-field>
             </td>
@@ -172,27 +172,27 @@
           <tr class="mat-row" *matNoDataRow>
             <td
               class="mat-cell text-center"
-              [attr.colspan]="displayedColumns.length"
+              [attr.colspan]="displayedColumns.length" data-automation-id="td-no-data"
             >
               No data matching the filter.
             </td>
           </tr>
           <tr
             mat-header-row
-            *matHeaderRowDef="displayedColumns; sticky: true"
+            *matHeaderRowDef="displayedColumns; sticky: true" data-automation-id="tr-header-row"
           ></tr>
           <tr
             mat-row
             class="table-row"
             tabindex=1
-            *matRowDef="let row; columns: displayedColumns"
+            *matRowDef="let row; columns: displayedColumns" data-automation-id="tr-data-row"
           ></tr>
         </table>
       </ng-scrollbar>
     </div>
 
     <div
-      class="table-pagination d-flex justify-content-start align-items-center"
+      class="table-pagination d-flex justify-content-start align-items-center" data-automation-id="table-pagination"
     >
       <mat-paginator
         #paginator
@@ -200,7 +200,7 @@
         [pageSize]="20"
         [pageSizeOptions]="[5, 10, 20, 100]"
         showFirstLastButtons
-        (page)="handlePageEvent($event)"
+        (page)="handlePageEvent($event)" data-automation-id="paginator-non-super-batch-orders"
       ></mat-paginator>
     </div>
   </mat-card-content>

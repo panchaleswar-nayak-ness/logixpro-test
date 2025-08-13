@@ -38,7 +38,7 @@
             <div class="col-xl-4">
                 <mat-form-field class="custom-form-field w-100 __grab_cursor" appearance="outline">
                     <mat-label data-automation-id="label-filter-type">Enter Filter Type</mat-label>
-                    <mat-select [(ngModel)]="selectedOption" (selectionChange)="selectedItem($event.value)" data-automation-id="select-filter-type">
+                    <mat-select [(ngModel)]="selectedOption" (selectionChange)="selectedItem($event.value)"  [attr.data-automation-id]="'select-filter-type-' + (selectedOption || '')">
                         <mat-option value="Order Number" data-automation-id="option-filter-type-order-number">
                             Order Number
                         </mat-option>
@@ -54,12 +54,12 @@
             <div class="col-xl-4">
                 <mat-form-field class="custom-form-field w-100 __grab_cursor" appearance="outline" [floatLabel]="getFloatLabelValue()" [hideRequiredMarker]="hideRequiredControl.value">
                     <mat-label data-automation-id="label-search">{{selectedOption === 'Item Number' ? fieldNames?.itemNumber : selectedOption}}</mat-label>
-                    <input [matAutocomplete]="auto" [(ngModel)]="searchValue" (ngModelChange)="this.searchDeb.next($event)" matInput type="text" data-automation-id="input-search" />
+                    <input [matAutocomplete]="auto" [(ngModel)]="searchValue" (ngModelChange)="this.searchDeb.next($event)" matInput type="text" [attr.data-automation-id]="'input-search-' + searchValue" />
                     <button matSuffix *ngIf="searchValue" class="clear-btn" (click)="searchValue = ''" data-automation-id="clear-search-button">
                         <mat-icon class="text-20 text-chrome-600">cancel</mat-icon>
                     </button>
                     <mat-autocomplete #auto="matAutocomplete" data-automation-id="autocomplete-search">
-                        <mat-option *ngFor="let option of autoCompleteSearchResult" [value]="option" [attr.data-automation-id]="'autocomplete-option-search-' + option"> {{option}} </mat-option>
+                        <mat-option *ngFor="let option of autoCompleteSearchResult; let i = index" [value]="option" [attr.data-automation-id]="'autocomplete-option-search-' + i"> {{option}} </mat-option>
                     </mat-autocomplete>
                 </mat-form-field>
             </div>

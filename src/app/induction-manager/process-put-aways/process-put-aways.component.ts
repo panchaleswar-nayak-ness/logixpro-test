@@ -1,6 +1,7 @@
 import { SelectionModel } from '@angular/cdk/collections';
 import { Component, ElementRef, HostListener, OnInit, ViewChild } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
+import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import { BatchDeleteComponent } from 'src/app/dialogs/batch-delete/batch-delete.component';
 import { SelectZonesComponent } from 'src/app/dialogs/select-zones/select-zones.component';
 import { SelectionTransactionForToteComponent } from 'src/app/dialogs/selection-transaction-for-tote/selection-transaction-for-tote.component';
@@ -28,7 +29,7 @@ import { IInductionManagerApiService } from 'src/app/common/services/induction-m
 import { InductionManagerApiService } from 'src/app/common/services/induction-manager-api/induction-manager-api.service';
 import { SharedService } from 'src/app/common/services/shared.service';
 import { Router } from '@angular/router';
-import { ToasterTitle, ToasterType ,LiveAnnouncerMessage,ResponseStrings,KeyboardKeys, ToasterMessages,DialogConstants,Style,UniqueConstants,StringConditions,ColumnDef, Placeholders } from 'src/app/common/constants/strings.constants';
+import { ToasterTitle, ToasterType ,LiveAnnouncerMessage,ResponseStrings,KeyboardKeys, ToasterMessages,DialogConstants,Style,UniqueConstants,StringConditions,ColumnDef, Placeholders, Column } from 'src/app/common/constants/strings.constants';
 import { ApiResponse, ColumnAlias } from 'src/app/common/types/CommonTypes';
 import { PrintApiService} from "../../common/services/print-api/print-api.service";
 import {CommonApiService } from 'src/app/common/services/common-api/common-api.service';
@@ -43,6 +44,12 @@ interface BatchTotesResponse {
   zoneLabel: string;
   totePosition: string;
   wsid: string;
+}
+
+interface SearchItemResponse {
+  isExecuted: boolean;
+  data: Array<{ itemNumber: string; description: string }>;
+  responseMessage?: string;
 }
 
 @Component({
@@ -125,6 +132,9 @@ export class ProcessPutAwaysComponent implements OnInit {
   autoAssignAllZones: any;
   zoneArray: any;
 
+  searchAutocompleteItemNumbers: Array<{ itemNumber: string; description: string }> = [];
+  searchByItemNumber: Subject<string> = new Subject<string>();
+
   /** Whether the number of selected elements matches the total number of rows. */
   isAllSelected() {
     const numSelected = this.selection.selected.length;
@@ -160,6 +170,7 @@ export class ProcessPutAwaysComponent implements OnInit {
   ) {
     this.iAdminApiService = adminApiService;
     this.commonApiService=CommonApiService;
+    this.iInductionManagerApi=inductionManagerApi;
   }
 
   ngAfterViewInit() {
@@ -189,6 +200,11 @@ export class ProcessPutAwaysComponent implements OnInit {
     this.searchByItem2
       .pipe(debounceTime(400), distinctUntilChanged())
       .subscribe((value) => this.autocompleteSearchColumnItem2());
+    this.searchByItemNumber
+      .pipe(debounceTime(400), distinctUntilChanged())
+      .subscribe((value: string) => {
+        this.autocompleteSearchColumnItemNumber();
+      });
     setTimeout(()=> this.getProcessPutAwayIndex(), 300)
   }
 
@@ -865,6 +881,34 @@ async clearBatchData(){
     );
   }
 
+  async autocompleteSearchColumnItemNumber(): Promise<void> {
+    if (this.inputType !== Column.ItemNumber) {
+      this.searchAutocompleteItemNumbers = [];
+      return;
+    }
+    const searchPayload = {
+      itemNumber: this.inputValue,
+      beginItem: '---',
+      isEqual: false
+    };
+    this.CommonApiService
+      .SearchItem(searchPayload)
+      .subscribe((res: SearchItemResponse) => {
+        if (res.isExecuted && res.data) {
+          this.searchAutocompleteItemNumbers = res.data;
+        } else {
+          this.searchAutocompleteItemNumbers = [];
+        }
+      });
+  }
+
+  getNextItemNumber(event: KeyboardEvent): void {
+    if (this.inputType === Column.ItemNumber) {
+      const target = event.target as HTMLInputElement;
+      this.searchByItemNumber.next(target.value);
+    }
+  }
+
   updateToteID($event) {
     for (let i = 0; i < this.pickBatchQuantity; i++) {
       if( this.ELEMENT_DATA[i]){
@@ -1479,6 +1523,11 @@ async clearBatchData(){
     this.assignedZones = '';
     this.dataSource = new MatTableDataSource<any>([]);
     this.autocompleteSearchColumnItem();
+  }
+
+  onAutocompleteOptionSelected(event: MatAutocompleteSelectedEvent) {
+    this.inputValue = event.option.value;
+    this.searchAutocompleteItemNumbers = [];
   }
 
 

@@ -1,7 +1,7 @@
 <div class="d-flex justify-content-between mb-4 align-items-center">
     <div class="divWithClass"></div>
-<h1 class="m-0" mat-dialog-title>{{headerLable}}</h1>
-<button mat-icon-button class="close-button dialog-close-button-fix" [mat-dialog-close]="true" (click)="dialogClose()">
+<h1 class="m-0" mat-dialog-title data-automation-id="addinvmap-title">{{headerLable}}</h1>
+<button mat-icon-button class="close-button dialog-close-button-fix" [mat-dialog-close]="true" (click)="dialogClose()" data-automation-id="addinvmap-close-btn">
     <mat-icon class="close-icon">close</mat-icon>
 </button>
 </div>
@@ -10,135 +10,135 @@
         <div class="row mb-3 mx-1">
             <div class="col-xl-6 col-md-12 col-sm-12 col-xs-12 mb-3 mb-xl-0 ">
                     <div class="container location_detail px-md-3">
-                        <h1 mat-dialog-title>Location Details</h1>
+                        <h1 mat-dialog-title data-automation-id="addinvmap-location-title">Location Details</h1>
                         <div class="row">
                             <div class="col-xl-6 col-md-12 mb-2">
-                                <mat-form-field class="d-block w-100 " appearance="outline">
-                                    <mat-label>Location Number</mat-label>
-                                    <input matInput disabled name="locationNumber" value="{{autoFillLocNumber}}">
+                                <mat-form-field class="d-block w-100 " appearance="outline" data-automation-id="addinvmap-locnum-ff">
+                                    <mat-label data-automation-id="addinvmap-locnum-lbl">Location Number</mat-label>
+                                    <input matInput disabled name="locationNumber" value="{{autoFillLocNumber}}" data-automation-id="addinvmap-locnum-inp">
                                 </mat-form-field>
                             </div>
                             <div class="col-xl-6 col-md-12 mb-2">
-                                <mat-form-field class="d-block w-100" appearance="outline">
-                                    <mat-label>Location Name</mat-label>
+                                <mat-form-field class="d-block w-100" appearance="outline" data-automation-id="addinvmap-locname-ff">
+                                    <mat-label data-automation-id="addinvmap-locname-lbl">Location Name</mat-label>
                                     <!--   #location_name  -->
                                     <input placeholder="Location Name" aria-label="Location Name" matInput maxlength="50"
-                                        formControlName="location" [matAutocomplete]="auto" (focus)="focusinmethod()" (focusout)="focusoutmethod()">
-                                    <mat-autocomplete class="br-14 otocompletestyle" autoActiveFirstOption #auto="matAutocomplete">
+                                        formControlName="location" [matAutocomplete]="auto" (focus)="focusinmethod()" (focusout)="focusoutmethod()" data-automation-id="addinvmap-locname-inp">
+                                    <mat-autocomplete class="br-14 otocompletestyle" autoActiveFirstOption #auto="matAutocomplete" data-automation-id="addinvmap-locname-auto">
                                         <h6 class="card-header matAutoCompHeader stickyHeader"> <span class="locationStickyHeaderStyle"> Location</span> <span class="zoneStickyHeaderStyle">Zone</span></h6>
                                         <mat-option class="" *ngFor="let option of filteredOptions | async; let i = index"
-                                            [value]="option.locationName" (onSelectionChange)="loadLocationZones(locationZoneType.Location,i,$event)">
+                                            [value]="option.locationName" (onSelectionChange)="loadLocationZones(locationZoneType.Location,option,$event)" [attr.data-automation-id]="'addinvmap-locname-opt-' + i">
                                             <div class="loc_option">
-                                                <span class="optionLocationNameStyle">{{option.locationName}}</span> <span class="optionZoneStyle">{{option.zone}}</span>
+                                                <span class="optionLocationNameStyle" [attr.data-automation-id]="'addinvmap-locname-span-' + i">{{option.locationName}}</span> <span class="optionZoneStyle" [attr.data-automation-id]="'addinvmap-locname-zone-span-' + i">{{option.zone}}</span>
                                             </div>
                                         </mat-option>
                                     </mat-autocomplete>
                                 </mat-form-field>
-                                <div class="error" *ngIf="hasError('location', 'required')">This field is required.</div>
+                                <div class="error" *ngIf="hasError('location', 'required')" data-automation-id="addinvmap-location-required-error">This field is required.</div>
 
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-xl-6 col-md-12 mb-2">
-                                <mat-form-field class="d-block w-100 " appearance="outline">
-                                    <mat-label>Laser X</mat-label>
-                                    <input [NumbersOnly]="true" maxlength="9" matInput formControlName="laserX"   name="laserX"  >
+                                <mat-form-field class="d-block w-100 " appearance="outline" data-automation-id="addinvmap-laserx-ff">
+                                    <mat-label data-automation-id="addinvmap-laserx-lbl">Laser X</mat-label>
+                                    <input [NumbersOnly]="true" maxlength="9" matInput formControlName="laserX"   name="laserX" data-automation-id="addinvmap-laserx-inp" >
                                 </mat-form-field>
-                                <div class="error" *ngIf="hasError('laserX', 'required')">This field is required.</div>
-                                <div class="error" *ngIf="hasError('laserX', 'pattern')">Please enter numbers only.</div>
-                                <div class="error" *ngIf="hasError('laserX', 'maxlength')">Max number allowed is 9.</div>
+                                <div class="error" *ngIf="hasError('laserX', 'required')" data-automation-id="addinvmap-laserx-required-error">This field is required.</div>
+                                <div class="error" *ngIf="hasError('laserX', 'pattern')" data-automation-id="addinvmap-laserx-pattern-error">Please enter numbers only.</div>
+                                <div class="error" *ngIf="hasError('laserX', 'maxlength')" data-automation-id="addinvmap-laserx-maxlength-error">Max number allowed is 9.</div>
                             </div>
                             <div class="col-xl-6 col-md-12 mb-2">
-                                <mat-form-field class="d-block w-100" appearance="outline">
-                                    <mat-label>Laser Y</mat-label>
-                                    <input [NumbersOnly]="true" maxlength="9" matInput formControlName="laserY"   name="laserY" >
+                                <mat-form-field class="d-block w-100" appearance="outline" data-automation-id="addinvmap-lasery-ff">
+                                    <mat-label data-automation-id="addinvmap-lasery-lbl">Laser Y</mat-label>
+                                    <input [NumbersOnly]="true" maxlength="9" matInput formControlName="laserY"   name="laserY" data-automation-id="addinvmap-lasery-inp" >
                                 </mat-form-field>
-                                <div class="error" *ngIf="hasError('laserY', 'required')">This field is required.</div>
-                                <div class="error" *ngIf="hasError('laserY', 'pattern')">Please enter numbers only.</div>
-                                <div class="error" *ngIf="hasError('laserY', 'maxlength')">Max number allowed is 9.</div>
+                                <div class="error" *ngIf="hasError('laserY', 'required')" data-automation-id="addinvmap-lasery-required-error">This field is required.</div>
+                                <div class="error" *ngIf="hasError('laserY', 'pattern')" data-automation-id="addinvmap-lasery-pattern-error">Please enter numbers only.</div>
+                                <div class="error" *ngIf="hasError('laserY', 'maxlength')" data-automation-id="addinvmap-lasery-maxlength-error">Max number allowed is 9.</div>
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-xl-6 col-md-12 mb-2">
-                                <mat-form-field class="d-block w-100 " appearance="outline" (click)="loadWarehouse()">
-                                    <mat-label>Warehouse</mat-label>
-                                    <input matInput formControlName="warehouse" name="warehouse" readonly="true">
+                                <mat-form-field class="d-block w-100 " appearance="outline" (click)="loadWarehouse()" data-automation-id="addinvmap-warehouse-ff">
+                                    <mat-label data-automation-id="addinvmap-warehouse-lbl">Warehouse</mat-label>
+                                    <input matInput formControlName="warehouse" name="warehouse" readonly="true" data-automation-id="addinvmap-warehouse-inp">
                                     <span matSuffix>
                                         <mat-icon class="unfoldMoreStyleC text-tertiary-900 rotate-45" >unfold_more</mat-icon>
                                     </span>
                                 </mat-form-field>
-                                <div class="error" *ngIf="hasError('warehouse', 'required')">This field is required.</div>
+                                <div class="error" *ngIf="hasError('warehouse', 'required')" data-automation-id="addinvmap-warehouse-required-error">This field is required.</div>
                             </div>
                             <div class="col-xl-6 col-md-12 mb-2">
 
-                                <mat-form-field class="d-block w-100" appearance="outline">
-                                    <mat-label>Zone</mat-label>
+                                <mat-form-field class="d-block w-100" appearance="outline" data-automation-id="addinvmap-zone-ff">
+                                    <mat-label data-automation-id="addinvmap-zone-lbl">Zone</mat-label>
                                     <input  maxlength="2" placeholder="Zone" aria-label="Zone" matInput
-                                        formControlName="zone" [matAutocomplete]="autoZone">
-                                    <mat-autocomplete autoActiveFirstOption #autoZone="matAutocomplete" class="br-14 otocompletestyle">
+                                        formControlName="zone" [matAutocomplete]="autoZone" data-automation-id="addinvmap-zone-inp">
+                                    <mat-autocomplete autoActiveFirstOption #autoZone="matAutocomplete" class="br-14 otocompletestyle" data-automation-id="addinvmap-zone-auto">
                                         <h6 class="card-header matAutoCompHeader stickyHeader"><span class="zoneStickyHeaderStyle zone-padding">Zone</span> <span class="locationStickyHeaderStyle location-padding">Location</span></h6>
                                         <mat-option *ngFor="let option of filteredOptions | async; let i = index"
-                                            [value]="option.zone"  (onSelectionChange)="loadLocationZones(locationZoneType.Zone,i,$event)">
+                                            [value]="option.zone"  (onSelectionChange)="loadLocationZones(locationZoneType.Zone,option,$event)"  [attr.data-automation-id]="'addinvmap-zone-opt-' + i">
                                             <div class="loc_option">
-                                                <span class="optionZoneStyle">{{option.zone}}  </span> <span class="optionLocationNameStyle">{{option.locationName}}</span>
+                                                <span class="optionZoneStyle" [attr.data-automation-id]="'addinvmap-zone-span-' + i">{{option.zone}}  </span> <span class="optionLocationNameStyle" [attr.data-automation-id]="'addinvmap-zone-locname-span-' + i">{{option.locationName}}</span>
                                             </div>
                                         </mat-option>
                                     </mat-autocomplete>
                                 </mat-form-field>
 
 
-                                <div class="error" *ngIf="hasError('zone', 'required')">This field is required.</div>
-                                <div class="error" *ngIf="hasError('zone', 'maxlength')">Max number allowed is 2.</div>
+                                <div class="error" *ngIf="hasError('zone', 'required')" data-automation-id="addinvmap-zone-required-error">This field is required.</div>
+                                <div class="error" *ngIf="hasError('zone', 'maxlength')" data-automation-id="addinvmap-zone-maxlength-error">Max number allowed is 2.</div>
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-xl-6 col-md-12 mb-2">
                                 <mat-form-field class="d-block w-100 " appearance="outline">
-                                    <mat-label>{{carouselAlias}}</mat-label>                                    
-                                    <input [NumbersOnly]="true" matInput formControlName="carousel" #carousel   name="carousel"  [maxlength]="1" (change)="updateItemNumber('carousel', carousel.value)">
+                                    <mat-label [attr.data-automation-id]="'addinvmap-carousel-lbl'">{{carouselAlias}}</mat-label>                                    
+                                    <input [NumbersOnly]="true" matInput formControlName="carousel" #carousel   name="carousel"  [maxlength]="1" (change)="updateItemNumber('carousel', carousel.value)" data-automation-id="addinvmap-carousel-inp">
                                 </mat-form-field>
-                                <div class="error" *ngIf="hasError('carousel', 'required')">This field is required.</div>
-                                <div class="error" *ngIf="hasError('carousel', 'maxlength')">Max number allowed is 1.</div>
-                                <div class="error" *ngIf="hasError('carousel', 'pattern')">Please enter numbers only.</div>
+                                <div class="error" *ngIf="hasError('carousel', 'required')" data-automation-id="addinvmap-carousel-required-error">This field is required.</div>
+                                <div class="error" *ngIf="hasError('carousel', 'maxlength')" data-automation-id="addinvmap-carousel-maxlength-error">Max number allowed is 1.</div>
+                                <div class="error" *ngIf="hasError('carousel', 'pattern')" data-automation-id="addinvmap-carousel-pattern-error">Please enter numbers only.</div>
                             </div>
                             <div class="col-xl-6 col-md-12 mb-2">
                                 <mat-form-field class="d-block w-100" appearance="outline">
-                                    <mat-label>{{rowAlias}}</mat-label>
-                                    <input maxlength="5" matInput formControlName="row" #row   name="row" (change)="updateItemNumber('row', row.value)">
+                                    <mat-label [attr.data-automation-id]="'addinvmap-row-lbl'">{{rowAlias}}</mat-label>
+                                    <input maxlength="5" matInput formControlName="row" #row   name="row" (change)="updateItemNumber('row', row.value)" data-automation-id="addinvmap-row-inp">
                                 </mat-form-field>
-                                <div class="error" *ngIf="hasError('row', 'required')">This field is required.</div>
-                                <div class="error" *ngIf="hasError('row', 'maxlength')">Max number allowed is 5.</div>
+                                <div class="error" *ngIf="hasError('row', 'required')" data-automation-id="addinvmap-row-required-error">This field is required.</div>
+                                <div class="error" *ngIf="hasError('row', 'maxlength')" data-automation-id="addinvmap-row-maxlength-error">Max number allowed is 5.</div>
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-xl-6 col-md-12 mb-2">
                                 <mat-form-field class="d-block w-100 " appearance="outline">
-                                    <mat-label>{{shelfAlias}}</mat-label>
-                                    <input  maxlength="2"  matInput formControlName="shelf" #shelf   name="shelf" (change)="updateItemNumber('shelf', shelf.value)">
+                                    <mat-label [attr.data-automation-id]="'addinvmap-shelf-lbl'">{{shelfAlias}}</mat-label>
+                                    <input  maxlength="2"  matInput formControlName="shelf" #shelf   name="shelf" (change)="updateItemNumber('shelf', shelf.value)" data-automation-id="addinvmap-shelf-inp">
                                 </mat-form-field>
-                                <div class="error" *ngIf="hasError('shelf', 'required')">This field is required.</div>
-                                <div class="error" *ngIf="hasError('shelf', 'maxlength')">Max number allowed is 2.</div>
+                                <div class="error" *ngIf="hasError('shelf', 'required')" data-automation-id="addinvmap-shelf-required-error">This field is required.</div>
+                                <div class="error" *ngIf="hasError('shelf', 'maxlength')" data-automation-id="addinvmap-shelf-maxlength-error">Max number allowed is 2.</div>
                             </div>
                             <div class="col-xl-6 col-md-12 mb-2">
                                 <mat-form-field class="d-block w-100" appearance="outline">
-                                    <mat-label>{{binAlias}}</mat-label>
-                                    <input  maxlength="3"  matInput formControlName="bin" #bin   name="bin" (change)="updateItemNumber('bin', bin.value)">
+                                    <mat-label [attr.data-automation-id]="'addinvmap-bin-lbl'">{{binAlias}}</mat-label>
+                                    <input  maxlength="3"  matInput formControlName="bin" #bin   name="bin" (change)="updateItemNumber('bin', bin.value)" data-automation-id="addinvmap-bin-inp">
                                 </mat-form-field>
-                                <div class="error" *ngIf="hasError('bin', 'required')">This field is required.</div>
-                                <div class="error" *ngIf="hasError('bin', 'maxlength')">Max number allowed is 3.</div>
+                                <div class="error" *ngIf="hasError('bin', 'required')" data-automation-id="addinvmap-bin-required-error">This field is required.</div>
+                                <div class="error" *ngIf="hasError('bin', 'maxlength')" data-automation-id="addinvmap-bin-maxlength-error">Max number allowed is 3.</div>
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-xl-6 col-md-12 mb-2">
                                 <mat-form-field class="d-block w-100 "   appearance="outline">
-                                    <mat-label>{{unitOfMeasure}} </mat-label>
-                                    <input matInput formControlName="unitOfMeasure"  [ngModel]="unitOFMeasure" name="unitOfMeasure" >
+                                    <mat-label [attr.data-automation-id]="'addinvmap-uom-lbl'">{{unitOfMeasure}} </mat-label>
+                                    <input matInput formControlName="unitOfMeasure"  [ngModel]="unitOFMeasure" name="unitOfMeasure" data-automation-id="addinvmap-uom-inp">
                                 </mat-form-field>
                             </div>
                             <div class="col-xl-6 col-md-12 mb-2">
                                 <mat-form-field class="d-block w-100" appearance="outline" (click)="loadCellSize()">
-                                    <mat-label>Cell Size</mat-label>
-                                    <input matInput formControlName="cell" name="cell" readonly #cellSizeVal>
+                                    <mat-label data-automation-id="addinvmap-cellsize-lbl">Cell Size</mat-label>
+                                    <input matInput formControlName="cell" name="cell" readonly #cellSizeVal data-automation-id="addinvmap-cellsize-inp">
                                     <span matSuffix>
                                         <mat-icon  class="unfoldMoreStyleC text-tertiary-900 rotate-45">unfold_more</mat-icon>
                                     </span>
@@ -148,8 +148,8 @@
                         <div class="row">
                             <div class="col-xl-6 col-md-12 mb-2">
                                 <mat-form-field class="d-block w-100 " appearance="outline" (click)="loadVelocityCode()" >
-                                    <mat-label>Velocity Code</mat-label>
-                                    <input matInput formControlName="velocity" name="velocity" readonly #velCodeVal>
+                                    <mat-label data-automation-id="addinvmap-velcode-lbl">Velocity Code</mat-label>
+                                    <input matInput formControlName="velocity" name="velocity" readonly #velCodeVal data-automation-id="addinvmap-velcode-inp">
                                     <span matSuffix>
                                         <mat-icon class="unfoldMoreStyleC text-tertiary-900 rotate-45">unfold_more</mat-icon>
                                     </span>
@@ -157,39 +157,39 @@
                             </div>
                             <div class="col-xl-6 col-md-12 mb-2">
                                 <mat-form-field class="d-block w-100" appearance="outline">
-                                    <mat-label>Alternate Light</mat-label>
-                                    <input [NumbersOnly]="true"  maxlength="9"  matInput formControlName="altLight"   name="altLight"  >
+                                    <mat-label data-automation-id="addinvmap-altlight-lbl">Alternate Light</mat-label>
+                                    <input [NumbersOnly]="true"  maxlength="9"  matInput formControlName="altLight"   name="altLight" data-automation-id="addinvmap-altlight-lbl"  >
                                 </mat-form-field>
-                                <div class="error" *ngIf="hasError('altLight', 'pattern')">Please enter numbers only.</div>
-                                <div class="error" *ngIf="hasError('altLight', 'maxlength')">Max number allowed is 9.</div>
+                                <div class="error" *ngIf="hasError('altLight', 'pattern')" data-automation-id="addinvmap-altlight-pattern-error">Please enter numbers only.</div>
+                                <div class="error" *ngIf="hasError('altLight', 'maxlength')" data-automation-id="addinvmap-altlight-maxlength-error">Max number allowed is 9.</div>
                             </div>
                         </div>
 
                         <mat-form-field class="custom-form-field  w-100 mb-2" appearance="outline"
-                            [floatLabel]="getFloatLabelValue()" [hideRequiredMarker]="hideRequiredControl.value">
-                            <mat-label > {{userField1}}</mat-label>
+                            [floatLabel]="getFloatLabelValue()" [hideRequiredMarker]="hideRequiredControl.value" data-automation-id="addinvmap-userfield1-ff">
+                            <mat-label data-automation-id="addinvmap-userfield1-lbl"> {{userField1}}</mat-label>
                             <input #ship_via type="text" placeholder="Search" aria-label="Number" matInput [(ngModel)]='shipVia'
-                            maxlength="255" [matAutocomplete]="uf1" (ngModelChange)="this.searchByShipVia.next($event)" formControlName="userField1"   name="userField1">
-                            <button matSuffix *ngIf="shipVia" class="clear-btn" (click)="shipVia=''"><mat-icon
+                            maxlength="255" [matAutocomplete]="uf1" (ngModelChange)="this.searchByShipVia.next($event)" formControlName="userField1"   name="userField1" data-automation-id="addinvmap-userfield1-inp">
+                            <button matSuffix *ngIf="shipVia" class="clear-btn" (click)="shipVia=''" data-automation-id="addinvmap-userfield1-clear-btn"><mat-icon
                             class="text-20 text-chrome-600">cancel</mat-icon></button>
-                            <mat-autocomplete #uf1="matAutocomplete">
-                                <mat-option *ngFor="let option of searchAutocompleteShipVia" [value]="option">
-                                    <div>{{option}}</div>
+                            <mat-autocomplete #uf1="matAutocomplete" data-automation-id="addinvmap-userfield1-auto">
+                                <mat-option *ngFor="let option of searchAutocompleteShipVia; let i = index" [value]="option" [attr.data-automation-id]="'addinvmap-userfield1-opt-' + option">
+                                    <div [attr.data-automation-id]="'addinvmap-userfield1-opt-div-' + option">{{option}}</div>
                                 </mat-option>
                             </mat-autocomplete>
                         </mat-form-field>
 
                         <mat-form-field class="custom-form-field  w-100 mb-2" appearance="outline"
-                            [floatLabel]="getFloatLabelValueItem()" [hideRequiredMarker]="hideRequiredControlShipName.value">
-                            <mat-label > {{userField2}}</mat-label>
+                            [floatLabel]="getFloatLabelValueItem()" [hideRequiredMarker]="hideRequiredControlShipName.value" data-automation-id="addinvmap-userfield2-ff">
+                            <mat-label data-automation-id="addinvmap-userfield2-lbl"> {{userField2}}</mat-label>
                             <input type="text" placeholder="Search" aria-label="Number" matInput [(ngModel)]='shipToName'
-                            maxlength="255" [matAutocomplete]="uf2" (ngModelChange)="this.searchByShipName.next($event)" formControlName="userField2"   name="userField2">
-                            <button matSuffix *ngIf="shipToName" class="clear-btn" (click)="shipToName=''">
+                            maxlength="255" [matAutocomplete]="uf2" (ngModelChange)="this.searchByShipName.next($event)" formControlName="userField2"   name="userField2" data-automation-id="addinvmap-userfield2-inp">
+                            <button matSuffix *ngIf="shipToName" class="clear-btn" (click)="shipToName=''" data-automation-id="addinvmap-userfield2-clear-btn">
                                 <mat-icon class="text-20 text-chrome-600">cancel</mat-icon>
                             </button>
-                            <mat-autocomplete #uf2="matAutocomplete">
-                                <mat-option *ngFor="let option of searchAutocompleteShipName" [value]="option">
-                                    <div>{{option}}</div>
+                            <mat-autocomplete #uf2="matAutocomplete" data-automation-id="addinvmap-userfield2-auto">
+                                <mat-option *ngFor="let option of searchAutocompleteShipName; let i = index" [value]="option" [attr.data-automation-id]="'addinvmap-userfield2-opt-' + option">
+                                    <div [attr.data-automation-id]="'addinvmap-userfield2-opt-div-' + option">{{option}}</div>
                                 </mat-option>
                             </mat-autocomplete>
                         </mat-form-field>
@@ -197,38 +197,38 @@
                         <div class="row mt-2" *ngIf="data.mode == 'editInvMapLocation'">
                             <div class="col-xl-6 col-md-12 mb-2">
                                 <mat-form-field class="d-block w-100 " appearance="outline">
-                                    <mat-label>Quantity Allocated Pick</mat-label>
-                                    <input  type="text" matInput formControlName="quantityAllocatedPick" name="quantityAllocatedPick">
+                                    <mat-label data-automation-id="addinvmap-qtypick-lbl">Quantity Allocated Pick</mat-label>
+                                    <input type="text" matInput formControlName="quantityAllocatedPick" name="quantityAllocatedPick" data-automation-id="addinvmap-qtypick-inp">
                                 </mat-form-field>
                             </div>
                             <div class="col-xl-6 col-md-12 mb-2">
                                 <mat-form-field class="d-block w-100 " appearance="outline">
-                                    <mat-label>Quantity Allocated Put Away</mat-label>
-                                    <input type="text" matInput formControlName="quantityAllocatedPutAway" name="quantityAllocatedPutAway">
+                                    <mat-label data-automation-id="addinvmap-qtyputaway-lbl">Quantity Allocated Put Away</mat-label>
+                                    <input type="text" matInput formControlName="quantityAllocatedPutAway" name="quantityAllocatedPutAway" data-automation-id="addinvmap-qtyputaway-inp">
                                 </mat-form-field>
                             </div>
                         </div>
                         <div class="row" *ngIf="data.mode == 'editInvMapLocation'">
                             <div class="col-xl-6 col-md-12 mb-2">
                                 <mat-form-field class="d-block w-100 " appearance="outline">
-                                    <mat-label>Inv Map ID</mat-label>
-                                    <input type="text" matInput formControlName="inventoryMapID" name="inventoryMapID" >
+                                    <mat-label data-automation-id="addinvmap-invmapid-lbl">Inv Map ID</mat-label>
+                                    <input type="text" matInput formControlName="inventoryMapID" name="inventoryMapID" data-automation-id="addinvmap-invmapid-inp">
                                 </mat-form-field>
                             </div>
                             <div class="col-xl-6 col-md-12 mb-2">
                                 <mat-form-field class="d-block w-100 " appearance="outline">
-                                    <mat-label>Master Inv Map ID</mat-label>
-                                    <input type="text" matInput formControlName="masterInventoryMapID" name="masterInventoryMapID" >
+                                    <mat-label data-automation-id="addinvmap-masterinvmapid-lbl">Master Inv Map ID</mat-label>
+                                    <input type="text" matInput formControlName="masterInventoryMapID" name="masterInventoryMapID" data-automation-id="addinvmap-masterinvmapid-inp">
                                 </mat-form-field>
                             </div>
                         </div>
 
                         <section class="ld_checks d-block d-xl-flex">
-                            <mat-checkbox *ngIf="data.mode == 'editInvMapLocation'" formControlName="masterLocation" class="ld_checkbox" color="primary">Master Location
+                            <mat-checkbox *ngIf="data.mode == 'editInvMapLocation'" formControlName="masterLocation" class="ld_checkbox" color="primary" data-automation-id="addinvmap-masterloc-chk">Master Location
                             </mat-checkbox>
-                            <mat-checkbox formControlName="dedicated" class="ld_checkbox col-12 col-xl-4 " color="primary">Dedicated
+                            <mat-checkbox formControlName="dedicated" class="ld_checkbox col-12 col-xl-4 " color="primary" data-automation-id="addinvmap-dedicated-chk">Dedicated
                             </mat-checkbox>
-                            <mat-checkbox formControlName="dateSensitive" class="ld_checkbox col-12 col-xl-4 " color="primary">Date Sensitive
+                            <mat-checkbox formControlName="dateSensitive" class="ld_checkbox col-12 col-xl-4 " color="primary" data-automation-id="addinvmap-datesensitive-chk">Date Sensitive
                             </mat-checkbox>
                         </section>
                     </div>
@@ -236,22 +236,22 @@
             </div>
             <div class="col-xl-6 col-md-12 col-sm-12 col-xs-12">
                 <div class="container item_detail px-md-3">
-                    <h1 mat-dialog-title>Assigned Item Details</h1>
+                    <h1 mat-dialog-title data-automation-id="addinvmap-item-title">Assigned Item Details</h1>
                     <div class="row">
                         <div class="col-xl-12 col-md-12 mb-2">
-                            <mat-form-field class="d-block w-100" appearance="outline" >
-                                <mat-label> {{itemNumber}}</mat-label>
+                            <mat-form-field class="d-block w-100" appearance="outline" data-automation-id="addinvmap-itemnum-ff">
+                                <mat-label data-automation-id="addinvmap-itemnum-lbl"> {{itemNumber}}</mat-label>
                                 <input  maxlength="50"  aria-label="Item Number" matInput (focus)="focusinmethod()" (focusout)="focusoutmethod()" (focusout)="itemNumberFocusOut()"
-                                    formControlName="item" [matAutocomplete]="itemNumAuto" [(ngModel)]="searchItemNumbers" #searchItam (keyup)="searchItemNumber($event,searchItam)">
-                                    <button matSuffix *ngIf="searchItemNumbers && !isInputDisabled" name="clear" class="clear-btn" type="button" (click)="[searchItemNumbers='',clearFields()]"><mat-icon class="text-20 text-chrome-600">cancel</mat-icon></button>
-                                    <mat-autocomplete class="br-14 itemNumAutostyleC" #itemNumAuto="matAutocomplete" (optionSelected)="loadItemDetails($event.option.value)">
+                                    formControlName="item" [matAutocomplete]="itemNumAuto" [(ngModel)]="searchItemNumbers" #searchItam (keyup)="searchItemNumber($event,searchItam)" data-automation-id="addinvmap-itemnum-inp">
+                                    <button matSuffix *ngIf="searchItemNumbers && !isInputDisabled" name="clear" class="clear-btn" type="button" (click)="[searchItemNumbers='',clearFields()]" data-automation-id="addinvmap-itemnum-clear-btn"><mat-icon class="text-20 text-chrome-600">cancel</mat-icon></button>
+                                    <mat-autocomplete class="br-14 itemNumAutostyleC" #itemNumAuto="matAutocomplete" (optionSelected)="loadItemDetails($event.option.value)" data-automation-id="addinvmap-itemnum-auto">
                                         <h6 class="card-header matAutoCompHeader stickyHeader"> 
                                             <span class="itemNumberStyleCC" [fallbackPlaceHolder]="placeholders.itemNumberFallback">{{itemNumber}}</span>
                                             <span class="DescriptionsyleCC">Description</span></h6>
                                     <mat-option *ngFor="let option of itemNumberList"
-                                        [value]="option.itemNumber">
+                                        [value]="option.itemNumber" [attr.data-automation-id]="'addinvmap-itemnum-opt-' + option.itemNumber">
                                         <div class="loc_option" >
-                                            <span class="itemNumberOptionStyleCC">{{option.itemNumber}}</span> <span class="DescriptionOptionsyleCC">{{option.description}}</span>
+                                            <span class="itemNumberOptionStyleCC" [attr.data-automation-id]="'addinvmap-itemnum-span-' + option.itemNumber">{{option.itemNumber}}</span> <span class="DescriptionOptionsyleCC" [attr.data-automation-id]="'addinvmap-itemnum-desc-span-' + option.itemNumber">{{option.description}}</span>
                                             </div>
                                     </mat-option>
                                 </mat-autocomplete>
@@ -260,13 +260,13 @@
                     </div>
 
                     <mat-form-field class="d-block w-100 mb-3" appearance="outline">
-                        <mat-label>Description</mat-label>
+                        <mat-label data-automation-id="addinvmap-desc-lbl">Description</mat-label>
                         <input matInput  name="description"     [value]="addInvMapLocation.controls['description'].value"   disabled >
                     </mat-form-field>
                     <div class="row">
                         <div class="col-4  mb-2" *ngIf="data.mode != 'addInvMapLocation'">
                             <mat-form-field class="d-block w-100 " appearance="outline" (click)="adjustQuantity()">
-                                <mat-label>Item Quantity</mat-label>
+                                <mat-label data-automation-id="addinvmap-itemqty-lbl">Item Quantity</mat-label>
                                 <input matInput formControlName="itemQuantity"   name="itemQuantity" readonly>
                                 <span matSuffix>
                                     <mat-icon class="unfoldMoreStyleC text-tertiary-900 rotate-45" >unfold_more</mat-icon>
@@ -275,7 +275,7 @@
                         </div>
                         <div class="mb-2" [ngClass]="{'col-xl-4 col-md-12': data.mode != 'addInvMapLocation', 'col-6' : data.mode == 'addInvMapLocation' }">
                             <mat-form-field class="d-block w-100" appearance="outline">
-                                <mat-label>Maximum (Location) Quantity</mat-label>
+                                <mat-label data-automation-id="addinvmap-maxqty-lbl">Maximum (Location) Quantity</mat-label>
                                 <input
                                 [NumbersOnly]="true"
                                 maxlength="9"
@@ -283,13 +283,13 @@
                                 formControlName="maxQuantity"
                                 name="maxQuantity"
                                 (keyup)="onMaxChange()"
-                                type="text">
+                                type="text"  data-automation-id="addinvmap-maxqty-lbl">
                             </mat-form-field>
-                            <div class="error" *ngIf="hasError('maxQuantity', 'maxlength')">Max number allowed is 9.</div>
+                            <div class="error" *ngIf="hasError('maxQuantity', 'maxlength')" data-automation-id="addinvmap-maxqty-maxlength-error">Max number allowed is 9.</div>
                         </div>
                         <div class="mb-2" [ngClass]="{'col-xl-4 col-md-12': data.mode != 'addInvMapLocation', 'col-6' : data.mode == 'addInvMapLocation' }">
                             <mat-form-field class="d-block w-100" appearance="outline">
-                                <mat-label>Min (Location) Quantity</mat-label>
+                                <mat-label data-automation-id="addinvmap-minqty-lbl">Min (Location) Quantity</mat-label>
                                 <input
                                 [NumbersOnly]="true"
                                 maxlength="9"
@@ -297,42 +297,42 @@
                                 formControlName="minQuantity"
                                 name="minQuantity"
                                 (keyup)="onMinChange($event)"
-                                type="text">
+                                type="text" data-automation-id="addinvmap-minqty-lbl">
                             </mat-form-field>
-                                <div class="error" *ngIf="hasError('minQuantity', 'maxlength')">Max number allowed is 9.</div>
+                                <div class="error" *ngIf="hasError('minQuantity', 'maxlength')" data-automation-id="addinvmap-minqty-maxlength-error">Max number allowed is 9.</div>
                         </div>
                     </div>
                     <div class="row">
                          <div class="col-xl-6 col-md-12 mb-2">
                             <mat-form-field class="d-block w-100" appearance="outline">
-                                <mat-label>Put Away Date</mat-label>
-                                <input matInput type="text" formControlName="putAwayDate" name="putAwayDate">
+                                <mat-label data-automation-id="addinvmap-putawaydate-lbl">Put Away Date</mat-label>
+                                <input matInput type="text" formControlName="putAwayDate" name="putAwayDate" data-automation-id="addinvmap-putawaydate-inp">
                             </mat-form-field>
                         </div>
                         <div class="col-xl-6 col-md-12 mb-2">
                             <mat-form-field class="d-block w-100" appearance="outline">
-                                <mat-label>Serial Number</mat-label>
-                                <input type="text" matInput  formControlName="serialNumber" name="serialNumber">
+                                <mat-label data-automation-id="addinvmap-serialnum-lbl">Serial Number</mat-label>
+                                <input type="text" matInput  formControlName="serialNumber" name="serialNumber" data-automation-id="addinvmap-serialnum-inp">
                             </mat-form-field>
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-xl-6 col-md-12 mb-2">
                             <mat-form-field class="d-block w-100" appearance="outline">
-                                <mat-label>Lot Number</mat-label>
-                                <input matInput formControlName="lotNumber" name="lotNumber">
+                                <mat-label data-automation-id="addinvmap-lotnum-lbl">Lot Number</mat-label>
+                                <input matInput formControlName="lotNumber" name="lotNumber" data-automation-id="addinvmap-lotnum-inp">
                             </mat-form-field>
                         </div>
                         <div class="col-xl-6 col-md-12 mb-2">
                             <mat-form-field class="d-block w-100 " appearance="outline">
-                                <mat-label>Revision</mat-label>
-                                <input matInput formControlName="revision" name="revision">
+                                <mat-label data-automation-id="addinvmap-revision-lbl">Revision</mat-label>
+                                <input matInput formControlName="revision" name="revision" data-automation-id="addinvmap-revision-inp">
                             </mat-form-field>
                         </div>
                     </div>
                     <mat-form-field class="d-block w-100 " appearance="outline">
-                        <mat-label>Expiration Date</mat-label>
-                        <input matInput formControlName="expirationDate" name="expirationDate">
+                        <mat-label data-automation-id="addinvmap-expdate-lbl">Expiration Date</mat-label>
+                        <input matInput formControlName="expirationDate" name="expirationDate" data-automation-id="addinvmap-expdate-inp">
                     </mat-form-field>
                 </div>
             </div>
@@ -349,7 +349,7 @@
           class="form-button-submit btn-lg"
           (click)="clearFields()"
            *ngIf="myroute1"
-          [disabled]="isValidClearLocation()"
+          [disabled]="isValidClearLocation()" data-automation-id="addinvmap-clear-btn"
         >
           Clear
         </button>
@@ -364,7 +364,7 @@
   class="restore-to-default-btn form-button-submit btn-lg m-1 m-xl-0"
   color="primary"
   matTooltip="This will clear all items and quantities from all locations that share the same Zone, Carousel, Row, Shelf, and Bin"
-  matTooltipPosition="above">
+  matTooltipPosition="above" data-automation-id="addinvmap-clear-whole-location-btn">
   Clear Whole Location
 </button>
 
@@ -375,7 +375,7 @@
           color="primary"
           *ngIf="myroute2"
           (click)="onSubmit(addInvMapLocation)"
-          [disabled]="!isValid()"
+          [disabled]="!isValid()" data-automation-id="addinvmap-save-btn"
         >
           Save Changes
         </button>

@@ -7,16 +7,16 @@
                     <div class="d-xl-flex justify-content-between">
                         <div class="d-flex align-items-center justify-content-between mb-3">
                             
-                            <app-icon-heading-component class="card-header-title d-flex align-items-center mb-0" heading="Report Details" icon="assignment"></app-icon-heading-component>
+                            <app-icon-heading-component class="card-header-title d-flex align-items-center mb-0" heading="Report Details" icon="assignment" [automationId]="'basic-reports-header-title'"></app-icon-heading-component>
                         </div>
 
                         <div class="d-flex d-lg-block">
-                            <mat-form-field class="action-dropdown mb-3 action-dropdown" appearance="outline" >
-                                <mat-label>Actions</mat-label>
-                                <mat-select #matRef  class="employees-action" [disabled]="!this.basicReportModel.ChooseReport" value="pick" (selectionChange)="openAction($event)">
-                                    <mat-option   (click)="this.global.Print(this.global.capitalizeAndRemoveSpaces(this.basicReportModel.ChooseReport)+'-lst')">Print</mat-option>
-                                    <mat-option    (click)="this.global.OpenExportModal(this.basicReportModel.ChooseReport,this.basicReportModel.ChooseReport+'-lst')">Export</mat-option>
-                                    <mat-option    (click)="openListAndLabel()">Preview Top 50 Pages Only</mat-option>
+                            <mat-form-field class="action-dropdown mb-3 action-dropdown" appearance="outline" data-automation-id="basic-reports-actions-form-field">
+                                <mat-label data-automation-id="basic-reports-actions-label">Actions</mat-label>
+                                <mat-select #matRef  class="employees-action" [disabled]="!this.basicReportModel.ChooseReport" value="pick" (selectionChange)="openAction($event)" [attr.data-automation-id]="'basic-reports-actions-select-' + basicReportModel.ChooseReport">
+                                    <mat-option   (click)="this.global.Print(this.global.capitalizeAndRemoveSpaces(this.basicReportModel.ChooseReport)+'-lst')" data-automation-id="basic-reports-action-print">Print</mat-option>
+                                    <mat-option    (click)="this.global.OpenExportModal(this.basicReportModel.ChooseReport,this.basicReportModel.ChooseReport+'-lst')" data-automation-id="basic-reports-action-export">Export</mat-option>
+                                    <mat-option    (click)="openListAndLabel()" data-automation-id="basic-reports-action-preview">Preview Top 50 Pages Only</mat-option>
                                 </mat-select>
                                 <span class="material-symbols-outlined icon-expand-more">
                                     expand_more
@@ -24,17 +24,17 @@
                             </mat-form-field>
                         </div>
                     </div>
-                    <mat-form-field class="action-dropdown custom-form-field-bg-white w-100 mb-2" appearance="outline">
-                        <mat-label>Choose Report</mat-label>
-                        <mat-select class="employees-action" [(ngModel)]="basicReportModel.ChooseReport" (ngModelChange)="basicReportDetails(basicReportModel.ChooseReport)">
-                          <mat-option *ngFor="let item of reports" [value]="item">{{ item }}</mat-option>
+                    <mat-form-field class="action-dropdown custom-form-field-bg-white w-100 mb-2" data-automation-id="basic-reports-choose-report-form-field" appearance="outline">
+                        <mat-label data-automation-id="basic-reports-choose-report-label">Choose Report</mat-label>
+                        <mat-select class="employees-action" [attr.data-automation-id]="'basic-reports-choose-report-select-' + basicReportModel.ChooseReport" [(ngModel)]="basicReportModel.ChooseReport" (ngModelChange)="basicReportDetails(basicReportModel.ChooseReport)">
+                          <mat-option *ngFor="let item of reports; let i = index" [value]="item"  [attr.data-automation-id]="'basic-reports-choose-report-option-' + i" >{{ item }}</mat-option>
                         </mat-select>
                         <span class="material-symbols-outlined icon-expand-more">expand_more</span>
                       </mat-form-field>
                     <ng-container *ngFor="let title of reportTitles; let i = index">
-                        <mat-form-field class="custom-form-field custom-form-field-bg-white w-100 mb-2" appearance="outline">
-                          <mat-label>Report Title #{{ i + 1 }}</mat-label>
-                          <input matInput type="text" [(ngModel)]="reportData[i]" (change)="reportPayloadTitles()" maxlength="50">
+                        <mat-form-field class="custom-form-field custom-form-field-bg-white w-100 mb-2" appearance="outline" [attr.data-automation-id]="'basic-reports-title-form-field-' + i">
+                          <mat-label [attr.data-automation-id]="'basic-reports-title-label-' + i">Report Title #{{ i + 1 }}</mat-label>
+                          <input matInput type="text" [(ngModel)]="reportData[i]" (change)="reportPayloadTitles()" maxlength="50" [attr.data-automation-id]="'basic-reports-title-input-' + i">
                         </mat-form-field>
                     </ng-container>                      
                 </mat-card-content>
@@ -46,7 +46,7 @@
 
                     <div class="d-xl-flex justify-content-between mb-3">
                         <div class="d-flex align-items-center justify-content-between mb-3">
-                            <app-icon-heading-component class="card-header-title d-flex align-items-center mb-0" heading="Report Filters" icon="vertical_split"></app-icon-heading-component>
+                            <app-icon-heading-component class="card-header-title d-flex align-items-center mb-0" heading="Report Filters" icon="vertical_split" [automationId]="'basic-reports-filters-header-title'"></app-icon-heading-component>
                             
                         </div>
 
@@ -55,18 +55,18 @@
                     <div class="card br-14  borderless px-0 borderCardDiv-style">
                         <ng-scrollbar class="mat-table-scrollbar  scrollbar-hover-padding scrolbarHover-style"
                             track="all">
-                            <table mat-table [dataSource]="this.ELEMENT_DATA" class="w-100">
+                            <table mat-table [dataSource]="this.ELEMENT_DATA" class="w-100" data-automation-id="basic-reports-table">
 
                                 <ng-container matColumnDef="fields">
-                                    <th mat-header-cell *matHeaderCellDef> Fields
+                                    <th mat-header-cell *matHeaderCellDef data-automation-id="basic-reports-table-header-fields"> Fields
                                     </th>
                                     <td mat-cell *matCellDef="let element;let i =index">
                                         <mat-form-field
                                             class="action-dropdown custom-form-field custom-form-field-bg-white w-100 pe-2"
                                             appearance="outline">
-                                            <mat-label>Field(s) to filter on</mat-label>
-                                            <mat-select class="employees-action" [(ngModel)]="reportData[4+i]" (ngModelChange)="reportFieldsExps('fields',i);changeFilter(reportData[4+i],i)" placeholder="Actions" [disabled]="basicReportModel.ChooseReport == ''">
-                                                <mat-option *ngFor="let item of fields" [value]="item">{{item}}</mat-option> 
+                                            <mat-label data-automation-id="basic-reports-table-fields-label">Field(s) to filter on</mat-label>
+                                            <mat-select class="employees-action" [(ngModel)]="reportData[4+i]" (ngModelChange)="reportFieldsExps('fields',i);changeFilter(reportData[4+i],i)" placeholder="Actions" [disabled]="basicReportModel.ChooseReport == ''" [attr.data-automation-id]="'basic-reports-table-fields-select-' + i">
+                                                <mat-option *ngFor="let item of fields" [value]="item" [attr.data-automation-id]="'basic-reports-table-fields-option-' + i">{{item}}</mat-option> 
                                             </mat-select>
                                             <span class="material-symbols-outlined icon-expand-more">
                                                 expand_more
@@ -76,15 +76,15 @@
                                 </ng-container>
 
                                 <ng-container matColumnDef="expression_type">
-                                    <th mat-header-cell *matHeaderCellDef> Expression Type
+                                    <th mat-header-cell *matHeaderCellDef  data-automation-id="basic-reports-table-header-expression-type"> Expression Type
                                     </th>
                                     <td mat-cell *matCellDef="let element;let i =index">
                                         <mat-form-field
                                             class="action-dropdown custom-form-field custom-form-field-bg-white w-100 pe-2"
                                             appearance="outline">
-                                            <mat-label>Expression Type</mat-label>
-                                            <mat-select class="employees-action"  [(ngModel)]="reportData[10+i]" (ngModelChange)="reportFieldsExps();reportFieldValuesChange(i,reportData[16+i]);" placeholder="Actions" [disabled]="basicReportModel.ChooseReport == ''">
-                                                <mat-option *ngFor="let operator of comparisonOperators" [value]="operator.value">{{ operator.label }}</mat-option>
+                                            <mat-label data-automation-id="basic-reports-table-expression-type-label">Expression Type</mat-label>
+                                            <mat-select class="employees-action"  [(ngModel)]="reportData[10+i]" (ngModelChange)="reportFieldsExps();reportFieldValuesChange(i,reportData[16+i]);" placeholder="Actions" [disabled]="basicReportModel.ChooseReport == ''" [attr.data-automation-id]="'basic-reports-table-expression-type-select-' + i">
+                                                <mat-option *ngFor="let operator of comparisonOperators" [value]="operator.value" [attr.data-automation-id]="'basic-reports-table-expression-type-option-' + i">{{ operator.label }}</mat-option>
                                             </mat-select>
                                             <span class="material-symbols-outlined icon-expand-more">
                                                 expand_more
@@ -93,15 +93,15 @@
                                     </td>
                                 </ng-container>
                                 <ng-container matColumnDef="value_to_test">
-                                    <th mat-header-cell *matHeaderCellDef>Value To Test</th>
+                                    <th mat-header-cell *matHeaderCellDef  data-automation-id="basic-reports-table-header-value-to-test">Value To Test</th>
                                     <td mat-cell *matCellDef="let element;let i =index">
                                         <mat-form-field class="custom-form-field w-100 pe-2" appearance="outline">
                                             <input matInput type="text"  [matAutocomplete]="auto"
                                             
                                              (ngModelChange)="[filterByItem($event,i),reportFieldValuesChange(i,reportData[16+i])]"  (focus)="onFocusEmptyInput(i)"   
-                                             [(ngModel)]="reportData[16+i]" [disabled]="(reportData[4+i] == '' || reportData[4+i] == null) || basicReportModel.ChooseReport == ''"  />
+                                             [(ngModel)]="reportData[16+i]" [disabled]="(reportData[4+i] == '' || reportData[4+i] == null) || basicReportModel.ChooseReport == ''"  [attr.data-automation-id]="'basic-reports-table-value-to-test-input-' + i" />
                                             <mat-autocomplete #auto="matAutocomplete"  (optionSelected)="valueSelect($event,i)">
-                                                <mat-option *ngFor="let option of listFilterValue[i]" [value]="option"
+                                                <mat-option *ngFor="let option of listFilterValue[i]; let i=index" [value]="option"  [attr.data-automation-id]="'basic-reports-table-value-to-test-option-' + i"
                                                 >
                                                   {{option}}
                                                 </mat-option>
@@ -117,7 +117,7 @@
                                             <input matInput type="text"  
                                             [(ngModel)]="reportData[22+i]"
                                             (change)="reportFieldValues(i,reportData[22+i])" 
-                                            [disabled]="(reportData[10 + i] !== 'BETWEEN' && reportData[10 + i] !== 'NOT BETWEEN')" 
+                                            [disabled]="(reportData[10 + i] !== 'BETWEEN' && reportData[10 + i] !== 'NOT BETWEEN')" [attr.data-automation-id]="'basic-reports-table-between-input-' + i"
                                                 />
                                         </mat-form-field>
                                     </td>
@@ -125,12 +125,12 @@
 
 
                                 <ng-container matColumnDef="actions" stickyEnd>
-                                    <th width="10%" class="text-center px-2" mat-header-cell *matHeaderCellDef>Action
+                                    <th width="10%" class="text-center px-2" mat-header-cell *matHeaderCellDef  data-automation-id="basic-reports-table-header-action">Action
                                     </th>
                                     <td class="pe-0" mat-cell *matCellDef="let element; let i = index" width="10%">
                                         <button class="mx-auto xsm-icon-button" mat-flat-button aria-label="Remove" [disabled]="basicReportModel.ChooseReport == ''"
                                         (click)="Remove(i)"
-                                            matTooltip="Remove" matTooltipPosition="above" color="warn">
+                                            matTooltip="Remove" matTooltipPosition="above" color="warn" [attr.data-automation-id]="'basic-reports-table-remove-button-' + i">
                                             <mat-icon>close</mat-icon>
                                         </button>
                                     </td>

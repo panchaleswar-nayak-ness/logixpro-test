@@ -1,19 +1,19 @@
 <mat-tab-group dynamicHeight [(selectedIndex)]="selectedIndex" (selectedTabChange)="onTabChange($event)">
-    <mat-tab label="Tote Setup">   
+    <mat-tab label="Tote Setup" data-automation-id="process-put-aways-tab-tote-setup">   
       <app-ppa-ts-batch-setup (funCall)="callFunBatchSetup($event)" [batchId]="batchId" [assignedZones]="assignedZones" [cellSize]="cellSize" [searchAutocompleteItemNum]="searchAutocompleteItemNum" [status]='status' ></app-ppa-ts-batch-setup>
       <app-ppa-ts-totes (funCall)="callFunTotes($event)" [actionDropDown]="actionDropDown" [toteID]="toteID" [dataSource]="dataSource" [displayedColumns]="displayedColumns" [selection]="selection"></app-ppa-ts-totes>
       <div class="d-flex">
-        <button mat-flat-button color="primary" class="primary-button btn-lg w-100 ProcessBatchBtnStyle" (click)="processIfZoneSelected()">
+        <button mat-flat-button color="primary" class="primary-button btn-lg w-100 ProcessBatchBtnStyle" (click)="processIfZoneSelected()" data-automation-id="process-put-aways-process-batch-button">
           Process Batch 
         </button>
       </div>
     </mat-tab>
-    <mat-tab label="Process Put Aways" #secondTab>
+    <mat-tab label="Process Put Aways" #secondTab data-automation-id="process-put-aways-tab-process-put-aways">
       <mat-card class="mat-elevation-z g-card mt-3 mb-4">
         <mat-card-content>
           
             <div class="d-flex justify-content-between align-items-center mb-3">
-                <app-icon-heading-component heading="Choose Batch" icon="ballot">
+                <app-icon-heading-component heading="Choose Batch" icon="ballot" [automationId]="'process-put-aways-choose-batch-heading'">
                 </app-icon-heading-component>
             </div>
 
@@ -23,7 +23,7 @@
                   <mat-form-field class="custom-form-field w-100 mb-2" appearance="outline"
                   [floatLabel]="getFloatLabelValueItem2()"
                   [hideRequiredMarker]="hideRequiredControlItem2.value">
-                    <mat-label>Batch ID </mat-label>
+                    <mat-label data-automation-id="process-put-aways-batch-id-label">Batch ID </mat-label>
                     
                     <input 
                         (keydown.shift.enter)="$event.preventDefault()" 
@@ -33,18 +33,18 @@
                         type="text" 
                         #batchVal
                         (ngModelChange)="this.searchByItem2.next($event)" 
-                        (focusout)="onFocusOutBatchID(batchVal.value)">
-                        <button matSuffix *ngIf="batchId2" class="clear-btn" (click)="clearBatchData()" ><mat-icon class="text-20 text-chrome-600">cancel</mat-icon></button>  
+                        (focusout)="onFocusOutBatchID(batchVal.value)" [attr.data-automation-id]="'process-put-aways-batch-id-input-' + (batchId2 || '')">
+                        <button matSuffix *ngIf="batchId2" class="clear-btn" (click)="clearBatchData()" data-automation-id="process-put-aways-clear-batch-id-button"><mat-icon class="text-20 text-chrome-600">cancel</mat-icon></button>  
 
                     <mat-autocomplete class="card custom-scroll" #item2="matAutocomplete">
-            
+              
                       <h6 class="card-header matAutoCompHeader">
-                        <span class="batchID-style">Batch ID</span>
-                        <span class="zoneLabel-style">Zone Label</span>
+                        <span class="batchID-style" data-automation-id="process-put-aways-autocomplete-batch-id-label">Batch ID</span>
+                        <span class="zoneLabel-style" data-automation-id="process-put-aways-autocomplete-zone-label">Zone Label</span>
                       </h6>
                     
                       <ng-scrollbar class="ngScrollbar-font">
-                        <mat-option *ngFor="let option of searchAutocompleteItemNum2" [value]="option.batchID" class="matAutoCompTableContent matAutoTableContent-styling">
+                        <mat-option *ngFor="let option of searchAutocompleteItemNum2; let i = index" [value]="option.batchID" class="matAutoCompTableContent matAutoTableContent-styling" [attr.data-automation-id]="'process-put-aways-autocomplete-option-' + option.batchID">
                           <div class="loc_option" (click)="fillToteTable(option.batchID)">
                             <span class="searchColumn batchIDFont-style">{{option.batchID}}</span> 
                             <span class="searchColumn zoneLabelfont-style">{{option.zoneLabel}}</span> 
@@ -57,7 +57,7 @@
                   </mat-form-field>
                 </div>
                 <div class="col-xl-3 offset-xl-5">
-                  <button [disabled]="!rowSelected"  mat-flat-button color="warn" class="btn-regular w-100" (click)="openDeleteBatchDialogue()">
+                  <button [disabled]="!rowSelected"  mat-flat-button color="warn" class="btn-regular w-100" (click)="openDeleteBatchDialogue()" data-automation-id="process-put-aways-delete-batch-button">
                     Delete Batch
                   </button>
                 </div>
@@ -70,7 +70,7 @@
       <mat-card class="mat-elevation-z g-card mt-3 mb-4">
         <mat-card-content>
             <div class="d-flex justify-content-between align-items-center mb-3">
-                <app-icon-heading-component heading="Assign Transaction to Batch/Tote" icon="control_point_duplicate">
+                <app-icon-heading-component heading="Assign Transaction to Batch/Tote" icon="control_point_duplicate" [automationId]="'process-put-aways-assign-transaction-heading'">
                 </app-icon-heading-component>
             </div>
 
@@ -78,15 +78,15 @@
               <div class="col-xl-4">
                 <div class="card p-3 mb-3 mb-xl-0">
                   <mat-form-field class="custom-form-field w-100 mb-2" appearance="outline">
-                    <mat-label>Input Type</mat-label>
-                    <mat-select #matRef class="employees-action" [(ngModel)]="inputType" (selectionChange)="selectionChanged($event.value)">
-                      <mat-option value="Any">Any</mat-option>
-                      <mat-option value="Item Number">{{itemNumber}}</mat-option>
-                      <mat-option value="Serial Number">Serial Number</mat-option>
-                      <mat-option value="Lot Number">Lot Number</mat-option>
-                      <mat-option value="Host Transaction ID">Host Transaction ID</mat-option>
-                      <mat-option value="Scan Code">Scan Code</mat-option>
-                      <mat-option value="Supplier Item ID">Supplier Item ID</mat-option>
+                    <mat-label data-automation-id="process-put-aways-input-type-label">Input Type</mat-label>
+                    <mat-select #matRef class="employees-action" [(ngModel)]="inputType" (selectionChange)="selectionChanged($event.value)" [attr.data-automation-id]="'process-put-aways-input-type-select-' + (inputType || '')">
+                      <mat-option value="Any" data-automation-id="process-put-aways-input-type-option-any">Any</mat-option>
+                      <mat-option value="Item Number" data-automation-id="process-put-aways-input-type-option-item-number">{{itemNumber}}</mat-option>
+                      <mat-option value="Serial Number" data-automation-id="process-put-aways-input-type-option-serial-number">Serial Number</mat-option>
+                      <mat-option value="Lot Number" data-automation-id="process-put-aways-input-type-option-lot-number">Lot Number</mat-option>
+                      <mat-option value="Host Transaction ID" data-automation-id="process-put-aways-input-type-option-host-transaction-id">Host Transaction ID</mat-option>
+                      <mat-option value="Scan Code" data-automation-id="process-put-aways-input-type-option-scan-code">Scan Code</mat-option>
+                      <mat-option value="Supplier Item ID" data-automation-id="process-put-aways-input-type-option-supplier-item-id">Supplier Item ID</mat-option>
                     </mat-select>
                     <span class="material-symbols-outlined icon-expand-more">
                       expand_more
@@ -94,15 +94,29 @@
                   </mat-form-field>
                   <mat-form-field class="custom-form-field w-100 mb-2" appearance="outline">
                     
-                    <mat-label>Input Value</mat-label>
+                    <mat-label data-automation-id="process-put-aways-input-value-label">Input Value</mat-label>
                     <input (keydown.shift.enter)="$event.preventDefault()" 
                     #inputVal matInput type="text" [(ngModel)]="inputValue"
                     [disabled]="!dataSource2?.filteredData || !dataSource2?.filteredData.length"
-                    (keypress)="openST($event)" >
-                    <button matSuffix *ngIf="inputValue" class="clear-btn" (click)=" inputValue='' " ><mat-icon class="text-20 text-chrome-600">cancel</mat-icon></button>  
+                    (keypress)="openST($event)" (keyup)="getNextItemNumber($event)" (ngModelChange)="searchByItemNumber.next($event)" [matAutocomplete]="itemNumberAuto"
+                    data-automation-id="process-put-aways-input-value-input">
+                    <button matSuffix *ngIf="inputValue" class="clear-btn" (click)="inputValue=''; searchAutocompleteItemNumbers=[]" data-automation-id="process-put-aways-clear-input-value-button"><mat-icon class="text-20 text-chrome-600">cancel</mat-icon></button>  
+
+                    <mat-autocomplete class="card custom-scroll" #itemNumberAuto="matAutocomplete" (optionSelected)="onAutocompleteOptionSelected($event)">
+                      <h6 class="card-header matAutoCompHeader">
+                        <span class="span-width">{{ itemNumber }}</span>
+                        <span class="span-width">Description</span>
+                      </h6>
+                      <mat-option *ngFor="let option of searchAutocompleteItemNumbers; let i = index" [value]="option.itemNumber" class="matAutoCompTableContent" [attr.data-automation-id]="'process-put-aways-item-number-option-' + i">
+                        <div class="loc_option">
+                          <span class="searchColumn span-width">{{ option.itemNumber }}</span>
+                          <span class="searchColumn span-searchColumn">{{ option.description }}</span>
+                        </div>
+                      </mat-option>
+                    </mat-autocomplete>
 
                   </mat-form-field>
-                  <button [disabled]="inputValue != '' ? false : true" mat-flat-button color="primary" class="btn-regular w-100" (click)="openSelectionTransactionDialogue()">
+                  <button [disabled]="inputValue != '' ? false : true" mat-flat-button color="primary" class="btn-regular w-100" (click)="openSelectionTransactionDialogue()" data-automation-id="process-put-aways-assign-transaction-button">
                     Assign Transaction To Selected Tote
                   </button>
                 </div>
@@ -110,25 +124,25 @@
               <div class="col-xl-4">
                 <div class="card p-3 mb-3 mb-xl-0">
                   <mat-form-field class="custom-form-field w-100 mb-2" appearance="outline">
-                    <mat-label>Next Put To Location</mat-label>
-                    <input (keydown.shift.enter)="$event.preventDefault()" matInput type="text" [(ngModel)]="nextPutLoc" disabled />
+                    <mat-label data-automation-id="process-put-aways-next-put-to-location-label">Next Put To Location</mat-label>
+                    <input (keydown.shift.enter)="$event.preventDefault()" matInput type="text" [(ngModel)]="nextPutLoc" disabled data-automation-id="process-put-aways-next-put-to-location-input" />
                   </mat-form-field>
                   <div class="row">
                     <div class="col-xl-6">
                     <mat-form-field class="custom-form-field w-100 mb-2" appearance="outline">
-                      <mat-label>Position</mat-label>
-                      <input (keydown.shift.enter)="$event.preventDefault()" matInput type="text" [(ngModel)]="nextPos" disabled />
+                      <mat-label data-automation-id="process-put-aways-position-label">Position</mat-label>
+                      <input (keydown.shift.enter)="$event.preventDefault()" matInput type="text" [(ngModel)]="nextPos" disabled data-automation-id="process-put-aways-position-input" />
                     </mat-form-field>
                     </div>
                     <div class="col-xl-6">
                     <mat-form-field class="custom-form-field w-100 mb-2" appearance="outline">
-                      <mat-label>Next Cell</mat-label>
-                      <input (keydown.shift.enter)="$event.preventDefault()" matInput type="text" [(ngModel)]="nextCell" disabled />
+                      <mat-label data-automation-id="process-put-aways-next-cell-label">Next Cell</mat-label>
+                      <input (keydown.shift.enter)="$event.preventDefault()" matInput type="text" [(ngModel)]="nextCell" disabled data-automation-id="process-put-aways-next-cell-input" />
                     </mat-form-field>
                     </div>
                   </div>
                   
-                  <button mat-flat-button color="primary" class="btn-regular w-100" (click)="goToNext()">
+                  <button mat-flat-button color="primary" class="btn-regular w-100" (click)="goToNext()" data-automation-id="process-put-aways-go-to-next-button">
                     Go To Next
                   </button>
                 </div>
@@ -136,14 +150,14 @@
               <div class="col-xl-4">
                 <div class="card p-3 mb-0 mb-xl-0">
                   <mat-form-field class="custom-form-field w-100 mb-2" appearance="outline">
-                    <mat-label>Select Position</mat-label>
-                    <input (keydown.shift.enter)="$event.preventDefault()" matInput type="number" [(ngModel)]="postion" #pos (keyup)="selectPosOrTote(0, pos.value)" min="{{minPos}}" max="{{maxPos}}" (change)="selectPosOrTote(0, pos.value)">
+                    <mat-label data-automation-id="process-put-aways-select-position-label">Select Position</mat-label>
+                    <input (keydown.shift.enter)="$event.preventDefault()" matInput type="number" [(ngModel)]="postion" #pos (keyup)="selectPosOrTote(0, pos.value)" min="{{minPos}}" max="{{maxPos}}" (change)="selectPosOrTote(0, pos.value)" data-automation-id="process-put-aways-select-position-input">
                   </mat-form-field>
                   <mat-form-field class="custom-form-field w-100 mb-2" appearance="outline">
-                    <mat-label>Select Tote</mat-label>
-                    <input (keydown.shift.enter)="$event.preventDefault()" matInput type="text" [(ngModel)]="tote" #tote1 (keyup)="selectPosOrTote(1, tote1.value)">
+                    <mat-label data-automation-id="process-put-aways-select-tote-label">Select Tote</mat-label>
+                    <input (keydown.shift.enter)="$event.preventDefault()" matInput type="text" [(ngModel)]="tote" #tote1 (keyup)="selectPosOrTote(1, tote1.value)" data-automation-id="process-put-aways-select-tote-input">
                   </mat-form-field>
-                  <button mat-flat-button color="primary" class="btn-regular w-100" (click)="selectPosOrTote(2)">
+                  <button mat-flat-button color="primary" class="btn-regular w-100" (click)="selectPosOrTote(2)" data-automation-id="process-put-aways-select-button">
                     Select
                   </button>
                 </div>
@@ -157,14 +171,14 @@
         <mat-card-content>
           <div class="d-block d-lg-flex justify-content-between align-items-center">
             
-            <app-icon-heading-component class="card-header-title mb-3 d-flex align-items-center" heading="Totes" icon="inbox"></app-icon-heading-component>
+            <app-icon-heading-component class="card-header-title mb-3 d-flex align-items-center" heading="Totes" icon="inbox" [automationId]="'process-put-aways-totes-heading'"></app-icon-heading-component>
             <div>
             <mat-form-field class="action-dropdown mb-3 w-100"  appearance="outline">
-              <mat-label>Actions</mat-label>
-              <mat-select class="employees-action" [disabled]="!dataSource2?.filteredData || !dataSource2?.filteredData.length"  [(ngModel)]="selectedOption"   #actionRef (openedChange)="actionDialog($event)">
-                <mat-option  value="ViewTote" [disabled]="(toteQuantity > 0) ? false : true" >View Tote Contents</mat-option>
-                <mat-option value="markTote" [disabled]="!rowSelected">Mark Tote as Full</mat-option>
-                <mat-option (click)="printTotePut()" value="print">Print</mat-option>
+              <mat-label data-automation-id="process-put-aways-totes-actions-label">Actions</mat-label>
+              <mat-select class="employees-action" [disabled]="!dataSource2?.filteredData || !dataSource2?.filteredData.length"  [(ngModel)]="selectedOption"   #actionRef (openedChange)="actionDialog($event)" [attr.data-automation-id]="'process-put-aways-totes-actions-select-' + (selectedOption || '')">
+                <mat-option  value="ViewTote" [disabled]="(toteQuantity > 0) ? false : true" data-automation-id="process-put-aways-totes-option-view-tote-contents">View Tote Contents</mat-option>
+                <mat-option value="markTote" [disabled]="!rowSelected" data-automation-id="process-put-aways-totes-option-mark-tote-as-full">Mark Tote as Full</mat-option>
+                <mat-option (click)="printTotePut()" value="print" data-automation-id="process-put-aways-totes-option-print">Print</mat-option>
               </mat-select>
               <span class="material-symbols-outlined icon-expand-more">
                 expand_more
@@ -179,8 +193,8 @@
               <table mat-table [dataSource]="dataSource2" class="w-100 table1 employee-location-table action-clickable-table" matSort (matSortChange)="announceSortChange($event)">
 
                 <ng-container matColumnDef="status">
-                  <th class="th-matHeaderCell-style" mat-header-cell *matHeaderCellDef mat-sort-header> Status </th>
-                  <td mat-cell *matCellDef="let element" [class.selected]="element.isSelected">
+                  <th class="th-matHeaderCell-style" mat-header-cell *matHeaderCellDef mat-sort-header data-automation-id="process-put-aways-th-status" > Status </th>
+                  <td mat-cell *matCellDef="let element; let i = index" [class.selected]="element.isSelected" [attr.data-automation-id]="'process-put-aways-td-status-' + i">
                     <div class="label label-yellow px-2 me-2" *ngIf="!element.status">
                       Open
                     </div>
@@ -192,8 +206,8 @@
           
                 <!-- Position Column -->
                 <ng-container matColumnDef="totesPosition">
-                  <th mat-header-cell *matHeaderCellDef mat-sort-header> Position </th>
-                  <td mat-cell *matCellDef="let element" [class.selected]="element.isSelected">
+                  <th mat-header-cell *matHeaderCellDef mat-sort-header data-automation-id="process-put-aways-th-totes-position"> Position </th>
+                  <td mat-cell *matCellDef="let element; let i = index" [class.selected]="element.isSelected" [attr.data-automation-id]="'process-put-aways-td-totes-position-' + i">
                     <div class="pe-2">
                       {{element.totesPosition}}
                     </div>
@@ -202,8 +216,8 @@
           
                 <!-- Name Column -->
                 <ng-container matColumnDef="toteID">
-                  <th mat-header-cell *matHeaderCellDef mat-sort-header> Tote ID </th>
-                  <td mat-cell *matCellDef="let element" [class.selected]="element.isSelected">
+                  <th mat-header-cell *matHeaderCellDef mat-sort-header data-automation-id="process-put-aways-th-tote-id"> Tote ID </th>
+                  <td mat-cell *matCellDef="let element; let i = index" [class.selected]="element.isSelected" [attr.data-automation-id]="'process-put-aways-td-tote-id-' + i">
                     <div class="pe-2">
                       {{element.toteID}}
                     </div>
@@ -212,8 +226,8 @@
           
                 <!-- Name Column -->
                 <ng-container matColumnDef="cells">
-                  <th mat-header-cell *matHeaderCellDef mat-sort-header> Tote Capacity </th>
-                  <td mat-cell *matCellDef="let element" [class.selected]="element.isSelected">
+                  <th mat-header-cell *matHeaderCellDef mat-sort-header data-automation-id="process-put-aways-th-cells"> Tote Capacity </th>
+                  <td mat-cell *matCellDef="let element; let i = index" [class.selected]="element.isSelected" [attr.data-automation-id]="'process-put-aways-td-cells-' + i">
                     <div class="pe-2">
                       {{element.cells}}
                     </div>
@@ -221,8 +235,8 @@
                 </ng-container>
                 <!-- Name Column -->
                 <ng-container matColumnDef="toteQuantity">
-                  <th mat-header-cell *matHeaderCellDef mat-sort-header> Current Qty </th>
-                  <td mat-cell *matCellDef="let element" [class.selected]="element.isSelected">
+                  <th mat-header-cell *matHeaderCellDef mat-sort-header data-automation-id="process-put-aways-th-tote-quantity"> Current Qty </th>
+                  <td mat-cell *matCellDef="let element; let i = index" [class.selected]="element.isSelected" [attr.data-automation-id]="'process-put-aways-td-tote-quantity-' + i">
                     <div class="pe-2">
                       {{element.toteQuantity}}
                     </div>
@@ -231,8 +245,8 @@
           
                 <!-- Name Column -->
                 <ng-container matColumnDef="zoneLabel">
-                  <th mat-header-cell *matHeaderCellDef mat-sort-header> Zone To Put Away </th>
-                  <td mat-cell *matCellDef="let element" [class.selected]="element.isSelected">
+                  <th mat-header-cell *matHeaderCellDef mat-sort-header data-automation-id="process-put-aways-th-zone-label"> Zone To Put Away </th>
+                  <td mat-cell *matCellDef="let element; let i = index" [class.selected]="element.isSelected" [attr.data-automation-id]="'process-put-aways-td-zone-label-' + i">
                     <div class="pe-2">
                       {{element.zoneLabel}}
                     </div>
@@ -257,7 +271,7 @@
       </mat-card>
 
       <div class="d-flex">
-        <button mat-flat-button color="primary" class="primary-button btn-lg w-100 completeBatchBTN-style" (click)="completeBatch()">
+        <button mat-flat-button color="primary" class="primary-button btn-lg w-100 completeBatchBTN-style" (click)="completeBatch()" data-automation-id="process-put-aways-complete-batch-button">
           Complete Batch
         </button>
 

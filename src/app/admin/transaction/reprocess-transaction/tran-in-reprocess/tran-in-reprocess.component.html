@@ -65,7 +65,7 @@
                         <mat-label data-automation-id="label-order-number">Order Number</mat-label>
                         <input type="text" maxlength="50" aria-label="Number" matInput
                             [matAutocomplete]="autoOrder" [(ngModel)]="orderNumber" (input)="onOrderInputChange()"
-  (paste)="onOrderPaste($event)" (keyup)="orderSelected()" data-automation-id="input-order-number">
+  (paste)="onOrderPaste($event)" (keyup)="orderSelected()" [attr.data-automation-id]="'input-order-number-' + orderNumber">
                             <button matSuffix (click)="orderClear(true)" *ngIf="orderNumber" class="clear-btn"><mat-icon class="text-20 text-chrome-600">cancel</mat-icon></button>
 
                         <mat-autocomplete class="card custom-scroll" panelWidth="auto" 
@@ -74,8 +74,8 @@
                                 <span class="w-140px table-cell-style pe-2">Order Number</span> <span class="w-200px">Date</span>
                                 <span class="w-160px">Transaction Type</span> <span class="w-140px table-cell-style pe-2" replacePlaceholder [replacePlaceHolder]="placeholders.itemNumber" [fallbackPlaceHolder]="placeholders.itemNumberFallback">{{LabelitemNumber}}</span> <span class="w-180px">Transaction Quantity</span>
                             </h6>
-                            <mat-option class="matAutoCompTableContent" *ngFor="let option of orderList"
-                                [value]="option.orderNumber" [attr.data-automation-id]="'autocomplete-option-order-number-' + option.orderNumber">
+                            <mat-option class="matAutoCompTableContent" *ngFor="let option of orderList; let i = index"
+                                [value]="option.orderNumber" [attr.data-automation-id]="'autocomplete-option-order-number-' + i">
                                 <div class="loc_option">
                                     <span class="searchColumn w-140px table-cell-style pe-2" matTooltip={{option.orderNumber}}
           matTooltipPosition="above">{{option.orderNumber}}</span> <span class="searchColumn w-200px">{{option.dateField}}</span>
@@ -93,7 +93,7 @@
                     <mat-form-field class="w-100 bg-white" appearance="outline">
                         <mat-label replacePlaceholder [replacePlaceHolder]="placeholders.itemNumber" [fallbackPlaceHolder]="placeholders.itemNumberFallback" data-automation-id="label-item-number">{{LabelitemNumber}}</mat-label>
                         <input type="text" maxlength="50" matInput [matAutocomplete]="auto" [(ngModel)]="itemNumber" (input)="onItemInputChange()"
-  (paste)="onItemPaste($event)" class="ps-0" data-automation-id="input-item-number">
+  (paste)="onItemPaste($event)" class="ps-0" [attr.data-automation-id]="'input-item-number-' + itemNumber">
                         <button matSuffix *ngIf="itemNumber" class="clear-btn"  (click)="itemClear(true)"><mat-icon class="text-20 text-chrome-600">cancel</mat-icon></button>
                         <mat-autocomplete class="card custom-scroll" panelWidth="auto" 
                             #auto="matAutocomplete" (optionSelected)="listSelected()">
@@ -102,8 +102,8 @@
                                 <span class="w-140px">Transaction Type</span> <span class="w-140px table-cell-style pe-2">Order Number</span> <span class="w-180px">Transaction
                                     Quantity</span>
                             </h6>
-                            <mat-option class="matAutoCompTableContent" *ngFor="let option of itemNumberList"
-                                [value]="option.itemNumber" [attr.data-automation-id]="'autocomplete-option-item-number-' + option.itemNumber">
+                            <mat-option class="matAutoCompTableContent" *ngFor="let option of itemNumberList; let i = index"
+                                [value]="option.itemNumber" [attr.data-automation-id]="'autocomplete-option-item-number-' + i">
                                 <div class="loc_option">
                                     <span class="searchColumn w-140px table-cell-style pe-2" matTooltip={{option.itemNumber}}
           matTooltipPosition="above">{{option.itemNumber}}</span> <span class="searchColumn w-200px">{{option.dateField}}</span>

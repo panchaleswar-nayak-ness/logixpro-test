@@ -6,13 +6,13 @@
           <div class="row mb-2">
             <div class="col">
               <div class="d-flex">
-                <button mat-icon-button class="add-icon-button circle-icon-o round me-2" (click)="backButton()">
+                <button mat-icon-button class="add-icon-button circle-icon-o round me-2" (click)="backButton()" data-automation-id="verify-bulk-back-button">
                   <span class="material-symbols-outlined cursor-pointer" matTooltip="Back to Bulk {{this.bulkTransactionType}}"
                     matTooltipPosition="above">
                     arrow_back
                   </span>
                 </button>
-                <app-icon-heading-component heading="Verify Bulk {{this.bulkTransactionType}}" icon="unarchive">
+                <app-icon-heading-component heading="Verify Bulk {{this.bulkTransactionType}}" icon="unarchive"  [automationId]="'verify-bulk-heading'">
                 </app-icon-heading-component>
               </div>
             </div>
@@ -20,19 +20,19 @@
               <div class="w-100 d-flex d-xl-block">
                 <mat-form-field class="action-dropdown custom-form-field-bg-white float-end flex-grow-1 flexOne"
                   appearance="outline">
-                  <mat-label>Actions</mat-label>
+                  <mat-label data-automation-id="verify-bulk-actions-label">Actions</mat-label>
                   <mat-select class="employees-action" placeholder="Actions" #openAction
-                    (selectionChange)="generateTranscAction($event)">
+                    (selectionChange)="generateTranscAction($event)" data-automation-id="verify-bulk-actions-select">
                     <mat-option value="add_new_transaction" matTooltip="Press to view line items sorted by Location."
-                      (click)="ViewByLocation()">View By Location</mat-option>
+                      (click)="ViewByLocation()" data-automation-id="verify-bulk-option-view-by-location">View By Location</mat-option>
                     <mat-option value="add_new_transaction"
                       matTooltip="Press to view line items sorted by Order than Item Number/Location."
-                      (click)="ViewByOrderItem()">View By Order / Item</mat-option>
+                      (click)="ViewByOrderItem()" data-automation-id="verify-bulk-option-view-by-order-item">View By Order / Item</mat-option>
                     <mat-option value="add_new_transaction" (click)="printBulkTraveler()"
-                      matTooltip="Press to Print a traveler - off Carousel list for this Batch.">Print List</mat-option>
+                      matTooltip="Press to Print a traveler - off Carousel list for this Batch." data-automation-id="verify-bulk-option-print-list">Print List</mat-option>
                     <mat-option value="add_new_transaction"
                       matTooltip="Press to Print a Off-Carousel {{bulkTransactionType}} Item Label for all of this Batch."
-                      (click)="printAllToteLabels()">Print All Labels</mat-option>
+                      (click)="printAllToteLabels()" data-automation-id="verify-bulk-option-print-all-labels">Print All Labels</mat-option>
                   </mat-select>
                   <span class="material-symbols-outlined icon-expand-more">expand_more</span>
                 </mat-form-field>
@@ -46,18 +46,18 @@
                   <span class="material-symbols-outlined text-20 icon-search pe-2">search</span>
                   <input type="text" name="suggest" class="suggest" matInput [matAutocomplete]="auto1"
                     (ngModelChange)="Search($event)" [(ngModel)]="SearchString" (keyup.enter)="addItem()"
-                    #autoFocusField />
+                    #autoFocusField [attr.data-automation-id]="'verify-bulk-search-input-' + (SearchString || '')" />
                   <input type="text" class="suggest autocomplete" name="suggest1" [value]="suggestion" matInput
-                    [placeholder]="SearchString ? '' : itemNumber" />
-                  <button matSuffix class="clear-btn" (click)="ClearSearch()" *ngIf="SearchString.length > 0"><mat-icon
+                    [placeholder]="SearchString ? '' : itemNumber" data-automation-id="verify-bulk-suggest-input" />
+                  <button matSuffix class="clear-btn" (click)="ClearSearch()" *ngIf="SearchString.length > 0" data-automation-id="verify-bulk-clear-search-button"><mat-icon
                       class="text-22 text-chrome-600  d-flex align-items-center">cancel</mat-icon></button>
                   <mat-autocomplete #auto1="matAutocomplete" (optionSelected)="addItem($event)" #autocompleteMesaage>
                     <ng-container *ngIf="SearchString.length > 0">
-                      <mat-option *ngFor="let option of filteredData" [value]="option.itemNumber">
+                      <mat-option *ngFor="let option of filteredData; let i = index" [value]="option.itemNumber" [attr.data-automation-id]="'verify-bulk-autocomplete-option-' + i">
                         {{option.itemNumber}}
                       </mat-option>
                     </ng-container>
-                    <mat-option *ngIf="filteredData?.length ==0 || SearchString.length == 0" disabled>
+                    <mat-option *ngIf="filteredData?.length ==0 || SearchString.length == 0" disabled data-automation-id="verify-bulk-autocomplete-option-no-data">
                       No data found
                     </mat-option>
                   </mat-autocomplete>
@@ -66,14 +66,14 @@
               <div class="mb-xl-0 mb-3">
                 <button mat-stroked-button color="primary"
                   matTooltip="Touch to change the Completed Quantity to zero for all transactions."
-                  class="button-secondary btn-sm w-100" (click)="ResetAllCompletedQty()">
+                  class="button-secondary btn-sm w-100" (click)="ResetAllCompletedQty()" data-automation-id="verify-bulk-reset-all-completed-qty-button">
                   Reset All Completed Qty’s to Zero
                 </button>
               </div>
               <div class="mb-xl-0 mb-3">
                 <button mat-stroked-button color="primary" class="button-secondary btn-sm w-100"
                   matTooltip="Press to copy the Order Quantity to the Completed Quantity for all transactions."
-                  (click)="CopyAllOrder()">
+                  (click)="CopyAllOrder()" data-automation-id="verify-bulk-copy-all-order-qty-button">
                   Copy All Order Qty’s to Completed Qty’s
                 </button>
               </div>
@@ -84,90 +84,90 @@
               <table mat-table [dataSource]="orderLines" class="custom-table table-fix">
 
                 <ng-container matColumnDef="OrderNo">
-                  <th mat-header-cell *matHeaderCellDef> Order No.</th>
-                  <td mat-cell *matCellDef="let element">{{element.orderNumber}} </td>
+                  <th mat-header-cell *matHeaderCellDef data-automation-id="verify-bulk-th-order-no"> Order No.</th>
+                  <td mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'verify-bulk-td-order-no-' + i">{{element.orderNumber}} </td>
                 </ng-container>
                 <ng-container matColumnDef="ItemNo">
-                  <th mat-header-cell *matHeaderCellDef> {{itemNumber}} </th>
-                  <td mat-cell *matCellDef="let element">{{element.itemNumber}} </td>
+                  <th mat-header-cell *matHeaderCellDef data-automation-id="verify-bulk-th-item-no"> {{itemNumber}} </th>
+                  <td mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'verify-bulk-td-item-no-' + i">{{element.itemNumber}} </td>
                 </ng-container>
 
                 <ng-container matColumnDef="Description">
-                  <th mat-header-cell *matHeaderCellDef>Description</th>
-                  <td mat-cell *matCellDef="let element">{{element.description}} </td>
+                  <th mat-header-cell *matHeaderCellDef data-automation-id="verify-bulk-th-description">Description</th>
+                  <td mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'verify-bulk-td-description-' + i">{{element.description}} </td>
                 </ng-container>
 
                 <ng-container matColumnDef="LineNo">
-                  <th mat-header-cell *matHeaderCellDef>Line No.</th>
-                  <td mat-cell *matCellDef="let element">{{element.lineNumber}} </td>
+                  <th mat-header-cell *matHeaderCellDef data-automation-id="verify-bulk-th-line-no">Line No.</th>
+                  <td mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'verify-bulk-td-line-no-' + i">{{element.lineNumber}} </td>
                 </ng-container>
 
                 <ng-container matColumnDef="Whse">
-                  <th mat-header-cell *matHeaderCellDef> Whse </th>
-                  <td mat-cell *matCellDef="let element"> {{element.exportBatchId}} </td>
+                  <th mat-header-cell *matHeaderCellDef data-automation-id="verify-bulk-th-whse"> Whse </th>
+                  <td mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'verify-bulk-td-whse-' + i"> {{element.exportBatchId}} </td>
                 </ng-container>
 
                 <ng-container matColumnDef="Location">
-                  <th mat-header-cell *matHeaderCellDef> Location</th>
-                  <td mat-cell *matCellDef="let element">{{element.location}} </td>
+                  <th mat-header-cell *matHeaderCellDef data-automation-id="verify-bulk-th-location"> Location</th>
+                  <td mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'verify-bulk-td-location-' + i">{{element.location}} </td>
                 </ng-container>
 
                 <ng-container matColumnDef="LotNo">
-                  <th mat-header-cell *matHeaderCellDef> Lot No. </th>
-                  <td mat-cell *matCellDef="let element"> {{element.lotNumber}} </td>
+                  <th mat-header-cell *matHeaderCellDef data-automation-id="verify-bulk-th-lot-no"> Lot No. </th>
+                  <td mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'verify-bulk-td-lot-no-' + i"> {{element.lotNumber}} </td>
                 </ng-container>
 
                 <ng-container matColumnDef="SerialNo">
-                  <th mat-header-cell *matHeaderCellDef> Serial No. </th>
-                  <td mat-cell *matCellDef="let element"> {{element.serialNumber}} </td>
+                  <th mat-header-cell *matHeaderCellDef data-automation-id="verify-bulk-th-serial-no"> Serial No. </th>
+                  <td mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'verify-bulk-td-serial-no-' + i"> {{element.serialNumber}} </td>
                 </ng-container>
 
                 <ng-container matColumnDef="OrderQty" stickyEnd>
-                  <th mat-header-cell *matHeaderCellDef> Order Qty</th>
-                  <td mat-cell *matCellDef="let element" class="show-arrow">
+                  <th mat-header-cell *matHeaderCellDef data-automation-id="verify-bulk-th-order-qty"> Order Qty</th>
+                  <td mat-cell *matCellDef="let element; let i = index" class="show-arrow" [attr.data-automation-id]="'verify-bulk-td-order-qty-' + i">
                     <div class="d-flex align-items-center justify-content-between">{{element.transactionQuantity}}
                       <span matTooltip="Copy to Completed Qty." matTooltipPosition="above"
-                        (click)="element.completedQuantity = element.transactionQuantity"><mat-icon
+                        (click)="element.completedQuantity = element.transactionQuantity" [attr.data-automation-id]="'verify-bulk-copy-to-completed-qty-' + i"><mat-icon
                           class="material-symbols-outlined text-20 d-flex align-items-center justify-content-center">arrow_forward</mat-icon></span>
                     </div>
                   </td>
                 </ng-container>
                 <ng-container matColumnDef="CompletedQty" stickyEnd>
-                  <th mat-header-cell *matHeaderCellDef> Completed Qty</th>
-                  <td mat-cell *matCellDef="let element"
+                  <th mat-header-cell *matHeaderCellDef data-automation-id="verify-bulk-th-completed-qty"> Completed Qty</th>
+                  <td mat-cell *matCellDef="let element; let i = index"
                     matTooltip='Press "Copy Quantities" to update the Completed Quantity to the Order Quantity. Or double-click in the Completed Quantity field.'
-                    (click)="numberSelection(element)">
+                    (click)="numberSelection(element)" [attr.data-automation-id]="'verify-bulk-td-completed-qty-' + i">
                     <mat-form-field class="custom-form-field" appearance="outline" style="width:100px">
-                      <input matInput type="text" readonly [(ngModel)]="element.completedQuantity" maxlength="50">
+                      <input matInput type="text" readonly [(ngModel)]="element.completedQuantity" maxlength="50" [attr.data-automation-id]="'verify-bulk-input-completed-qty-'+i" >
                     </mat-form-field>
                   </td>
                 </ng-container>
                 <ng-container matColumnDef="ToteID" stickyEnd>
-                  <th mat-header-cell *matHeaderCellDef> Tote ID</th>
-                  <td mat-cell *matCellDef="let element" matTooltip="Display  the Tote ID.">
+                  <th mat-header-cell *matHeaderCellDef data-automation-id="verify-bulk-th-tote-id"> Tote ID</th>
+                  <td mat-cell *matCellDef="let element; let i = index" matTooltip="Display  the Tote ID.">
                     <mat-form-field class="custom-form-field" appearance="outline" style="width:100px">
-                      <input matInput type="text" [(ngModel)]="element.toteId" maxlength="50" readonly>
+                      <input matInput type="text" [(ngModel)]="element.toteId" maxlength="50" readonly [attr.data-automation-id]="'verify-bulk-input-tote-id-'+i">
                     </mat-form-field>
                   </td>
                 </ng-container>
 
                 <ng-container matColumnDef="Action" stickyEnd>
-                  <th width="10%" class="actionContainer-Header" mat-header-cell *matHeaderCellDef>Action</th>
+                  <th width="10%" class="actionContainer-Header" mat-header-cell *matHeaderCellDef data-automation-id="verify-bulk-th-action">Action</th>
 
-                  <td mat-cell *matCellDef="let element;let i = index;" class="actionContainerdata">
+                  <td mat-cell *matCellDef="let element;let i = index;" class="actionContainerdata" [attr.data-automation-id]="'verify-bulk-td-action-' + i">
                     <button mat-icon-button [matMenuTriggerFor]="appMenu" aria-label=""
-                      [ngClass]="{'active-btn':element.selected}" class="circle-icon-o" appearance="outline">
-                      <mat-icon>more_horiz</mat-icon>
+                      [ngClass]="{'active-btn':element.selected}" class="circle-icon-o" appearance="outline" [attr.data-automation-id]="'verify-bulk-action-menu-button-'+i">
+                      <mat-icon data-automation-id="verify-bulk-action-menu-icon">more_horiz</mat-icon>
                     </button>
 
                     <mat-menu #appMenu="matMenu">
                       <button mat-menu-item
                         matTooltip="Press to Print a Off-Carousel {{bulkTransactionType}} Item Label for the currently selected record."
-                        (click)="printTote(i)">
+                        (click)="printTote(i)" data-automation-id="verify-bulk-action-menu-print-single-label-button">
                         Print Single Label</button>
                       <button mat-menu-item matTooltip="Press to split this transaction into more than one tote."
                         *ngIf="['Put Away','Count'].indexOf(bulkTransactionType) < 0" (click)="fullTote(element,i)"
-                        [disabled]="bulkTransactionType == 'Pick' && !Prefernces.workstationPreferences.pickToTotes">Blossom Tote</button>
+                        [disabled]="bulkTransactionType == 'Pick' && !Prefernces.workstationPreferences.pickToTotes" data-automation-id="verify-bulk-action-menu-blossom-tote-button">Blossom Tote</button>
                     </mat-menu>
                   </td>
                 </ng-container>
@@ -187,7 +187,7 @@
   </div>
   <div>
     <button mat-flat-button color="primary" class="btn-lg w-100" matTooltip="Alt + T" matTooltipPosition="above"
-      #tooltip="matTooltip" (click)="validateTaskComplete()">
+      #tooltip="matTooltip" (click)="validateTaskComplete()" data-automation-id="verify-bulk-task-complete-button">
       Task Complete
     </button>
   </div>

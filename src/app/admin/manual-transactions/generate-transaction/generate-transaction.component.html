@@ -2,7 +2,7 @@
     <mat-card class="mat-elevation-z g-card mb-4">
         <mat-card-content>
             <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap">
-                <app-icon-heading-component heading="Temporary Manual Order No." icon="ads_click">
+                <app-icon-heading-component heading="Temporary Manual Order No." icon="ads_click" data-automation-id="heading-temporary-manual-order-no">
                 </app-icon-heading-component>
             </div>
             <ng-container *ngIf="transactionQtyInvalid">
@@ -17,32 +17,30 @@
                         <mat-form-field class="custom-form-field custom-form-field-bg-white w-100 mb-3 mb-xl-0"
                             appearance="outline" [floatLabel]="getFloatLabelValue()"
                             [hideRequiredMarker]="hideRequiredControl.value">
-                            <mat-label>Order Number</mat-label>
+                            <mat-label data-automation-id="label-order-number">Order Number</mat-label>
                             <input type="text" placeholder="Search" aria-label="Number" matInput autoFocus
                                 #publicSearchBox [(ngModel)]='orderNumber' maxlength="255" [matAutocomplete]="auto"
-                                (ngModelChange)="this.searchByInput.next($event)">
+                                (ngModelChange)="this.searchByInput.next($event)" [attr.data-automation-id]="'input-order-number-' + orderNumber">
 
                             <button matSuffix *ngIf="orderNumber" class="clear-btn"
-                                (click)=" orderNumber = '';autocompleteSearchColumn();clearFields();"><mat-icon
+                                (click)=" orderNumber = '';autocompleteSearchColumn();clearFields();" data-automation-id="clear-button"><mat-icon
                                     class="text-20 text-chrome-600">cancel</mat-icon></button>
 
                             <mat-autocomplete class="card custom-scroll" #auto="matAutocomplete">
 
                                 <h6 class="card-header matAutoCompHeader ">
-                                    <span class="w-140px">Order Number</span> 
-                                    <span class="w-140px">Trans. Type</span> 
-                                    <span class="w-140px" replacePlaceholder [replacePlaceHolder]="placeholders.itemNumber" [fallbackPlaceHolder]="placeholders.itemNumberFallback">{{LabelItemNumber}}</span> 
-                                    <span class="w-140px">Trans. Quantity</span></h6>
+                                    <span class="w-140px" data-automation-id="option-header-order-number">Order Number</span> 
+                                    <span class="w-140px" data-automation-id="option-header-transaction-type">Trans. Type</span> 
+                                    <span class="w-140px" data-automation-id="option-header-item-number" replacePlaceholder [replacePlaceHolder]="placeholders.itemNumber" [fallbackPlaceHolder]="placeholders.itemNumberFallback">{{LabelItemNumber}}</span> 
+                                    <span class="w-140px" data-automation-id="option-header-transaction-quantity">Trans. Quantity</span></h6>
 
                                 <mat-option *ngFor="let option of searchAutocompleteList" [value]="option.orderNumber"
-                                    class="matAutoCompTableContent">
+                                    class="matAutoCompTableContent" [attr.data-automation-id]="'option-order-number-'  + option.orderNumber">
                                     <div class="loc_option" (click)="getRow(option)">
-                                        <span class="searchColumn w-140px">{{option.orderNumber}}</span>
-                                        <span class="searchColumn" w-140px
-                                            >{{option.transactionType}}</span> <span
-                                            class="searchColumn w-140px">{{option.itemNumber}}</span>
-                                        <span class="searchColumn w-140px"
-                                            >{{option.transactionQuantity}}</span>
+                                        <span class="searchColumn w-140px" [attr.data-automation-id]="'option-order-number-value-'  + option.orderNumber">{{option.orderNumber}}</span>
+                                        <span class="searchColumn" w-140px [attr.data-automation-id]="'option-transaction-type-value-' + option.transactionType">{{option.transactionType}}</span> <span
+                                            class="searchColumn w-140px" [attr.data-automation-id]="'option-item-number-value-'  + option.itemNumber">{{option.itemNumber}}</span>
+                                        <span class="searchColumn w-140px" [attr.data-automation-id]="'option-transaction-quantity-value-' + option.transactionQuantity">{{option.transactionQuantity}}</span>
                                     </div>
                                 </mat-option>
                             </mat-autocomplete>
@@ -52,24 +50,19 @@
                         <div class="d-xl-block d-flex justify-content-end">
 
                             <mat-form-field class="action-dropdown custom-form-field-bg-white float-end flex-grow-1"
-                                appearance="outline">
+                                appearance="outline" data-automation-id="form-field-actions">
                                 <mat-select #openAction [(ngModel)]="selectedAction" class="employees-action"
-                                    placeholder="Actions" (selectionChange)="generateTranscAction($event)">
+                                    placeholder="Actions" (selectionChange)="generateTranscAction($event)" [attr.data-automation-id]="'select-actions-' + selectedAction">
 
-                                    <mat-option value="0" (click)="openTemporaryManualOrderDialogue()">Add New
+                                    <mat-option value="0" (click)="openTemporaryManualOrderDialogue()" data-automation-id="option-action-add-new-transaction">Add New
                                         Transaction</mat-option>
-                                    <mat-option (click)="clearFields()" value="clear">Clear</mat-option>
-                                    <mat-option [disabled]="!item || this.orderNumber==''" (click)="updateTransaction()"
-                                        value="2">Save Transaction</mat-option>
-                                    <mat-option [disabled]="!item || this.orderNumber==''" (click)="deleteTransaction()"
-                                        value="3">Delete Transaction</mat-option>
-                                    <mat-option [disabled]="!item || this.orderNumber==''" (click)="printLabelMT()"
-                                        value="4">Print Label</mat-option>
-                                    <mat-option [disabled]="!item || this.orderNumber=='' || this.item===''"
-                                        (click)="postTransaction('save')" value="5">Save and Post
+                                    <mat-option (click)="clearFields()" value="clear" data-automation-id="option-action-clear">Clear</mat-option>
+                                    <mat-option [disabled]="!item || this.orderNumber==''" (click)="updateTransaction()" value="2" data-automation-id="option-action-save-transaction">Save Transaction</mat-option>
+                                    <mat-option [disabled]="!item || this.orderNumber==''" (click)="deleteTransaction()" value="3" data-automation-id="option-action-delete-transaction">Delete Transaction</mat-option>
+                                    <mat-option [disabled]="!item || this.orderNumber==''" (click)="printLabelMT()" value="4" data-automation-id="option-action-print-label">Print Label</mat-option>
+                                    <mat-option [disabled]="!item || this.orderNumber=='' || this.item===''" (click)="postTransaction('save')" value="5" data-automation-id="option-action-save-and-post-transaction">Save and Post
                                         Transaction</mat-option>
-                                    <mat-option [disabled]="!item || this.orderNumber=='' || this.item===''"
-                                        (click)="postTransaction('delete')" value="6">Post and Delete
+                                    <mat-option [disabled]="!item || this.orderNumber=='' || this.item===''" (click)="postTransaction('delete')" value="6" data-automation-id="option-action-post-and-delete-transaction">Post and Delete
                                         Transaction</mat-option>
                                 </mat-select>
                                 <span class="material-symbols-outlined icon-expand-more">

@@ -749,7 +749,7 @@ export class ReprocessTransactionComponent implements OnInit {
       length: this.customPagination.recordsPerPage,
       sortColumnNumber: this.sortCol,
       sortOrder: this.sortOrder,
-      orderNumber: "",
+      orderNumber: this.orderNumber,
       itemNumber: this.itemNumber,
     };
     this.iAdminApiService.ReprocessedTransactionHistoryTable(payload).subscribe({

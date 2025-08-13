@@ -1,41 +1,38 @@
-<div class="mat-modal-wrap text-center">
+<div class="mat-modal-wrap text-center" data-automation-id="delete-confirmation-dialog">
     <mat-dialog-content>
         <div class="prompt-wrap">
             <div class="d-flex justify-content-center prompt-icon-wrap">
-                <span #cancel class="material-symbols-outlined prompt-icon-delete">
+                <span #cancel class="material-symbols-outlined prompt-icon-delete" data-automation-id="delete-icon">
                     delete
                 </span>
-
             </div>
-            <p class="prompt-message py-4 mb-0">
+            <p class="prompt-message py-4 mb-0" data-automation-id="delete-confirmation-message">
                 Are you sure you want to delete selected Transaction ?
             </p>
-            <p class="bold text-danger mb-4">This action can not be redone.</p>
+            <p class="bold text-danger mb-4" data-automation-id="delete-warning-message">This action can not be redone.</p>
             <div class="br-14 px-4 py-3 checkbox-background mb-4">
-                <mat-checkbox (change)="checkOptions($event)" class="example-margin" color="primary" #confirmationCheckBox>I understand data
+                <mat-checkbox (change)="checkOptions($event)" class="example-margin" color="primary" #confirmationCheckBox data-automation-id="delete-confirmation-checkbox">I understand data
                     cannot be recovered</mat-checkbox>
             </div>
         </div>
     </mat-dialog-content>
     <mat-form-field class="custom-form-field w-100 __grab_cursor" appearance="outline">
-        <mat-label>Selected Order Number</mat-label>
-        <input disabled [(ngModel)]="data.orderNo" matInput class="" value="data.orderNo" type="text">
+        <mat-label data-automation-id="selected-order-label">Selected Order Number</mat-label>
+        <input disabled [(ngModel)]="data.orderNo" matInput class="" value="data.orderNo" type="text" data-automation-id="selected-order-input">
     </mat-form-field>
 
     <mat-form-field class="custom-form-field w-100 __grab_cursor" appearance="outline">
-        <mat-label>Selected Trans. Type</mat-label>
-        <input disabled [(ngModel)]="data.transType" matInput class="" value="data.transType" type="text">
+        <mat-label data-automation-id="selected-trans-type-label">Selected Trans. Type</mat-label>
+        <input disabled [(ngModel)]="data.transType" matInput class="" value="data.transType" type="text" data-automation-id="selected-trans-type-input">
     </mat-form-field>
 
-
-
     <mat-form-field class="action-dropdown custom-form-field w-100 h-100 " appearance="outline">
-        <mat-label>Selection Type</mat-label>
-        <mat-select class="employees-action" [(ngModel)]="selectionType" #selectionTypeDropdown>
-            <mat-option [value]="selectedType">Selected Only</mat-option>
-            <mat-option [value]="allType">All By Transaction Type</mat-option>
+        <mat-label data-automation-id="selection-type-label">Selection Type</mat-label>
+        <mat-select class="employees-action" [(ngModel)]="selectionType" #selectionTypeDropdown data-automation-id="selection-type-select">
+            <mat-option [value]="selectedType" data-automation-id="selection-type-option-selected">Selected Only</mat-option>
+            <mat-option [value]="allType" data-automation-id="selection-type-option-all">All By Transaction Type</mat-option>
         </mat-select>
-        <span class="material-symbols-outlined icon-expand-more">
+        <span class="material-symbols-outlined icon-expand-more" data-automation-id="selection-type-expand-icon">
             expand_more
         </span>
     </mat-form-field>
@@ -44,9 +41,9 @@
         <button class="mat-button-base prompt-action-danger-button  mb-3 btn-lg w-100" mat-stroked-button mat-button
             (click)="onConfirmdelete()" tabindex="1" [disabled]="!isChecked || selectionType == ''"
             [ngStyle]="{'opacity': isChecked ? '0.8' : '1' }"
-            #deleteButton >Delete</button>
+            #deleteButton data-automation-id="delete-confirm-btn">Delete</button>
         <button class="mat-button-base prompt-action-basic-button btn-lg w-100" mat-button mat-dialog-close
-            tabindex="-1">
+            tabindex="-1" data-automation-id="close-btn">
             Close
         </button>
     </mat-dialog-actions>

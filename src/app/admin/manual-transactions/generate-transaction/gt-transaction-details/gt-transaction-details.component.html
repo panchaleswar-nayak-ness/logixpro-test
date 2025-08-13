@@ -2,20 +2,19 @@
     <mat-card-content>
         <div class="d-flex align-items-center mb-3 flex-wrap">
 
-            <app-icon-heading-component class="card-header-title mb-3 d-flex align-items-center me-4"
-                heading="Transaction Details" icon="dvr"></app-icon-heading-component>
+            <app-icon-heading-component class="card-header-title mb-3 d-flex align-items-center me-4" heading="Transaction Details" icon="dvr" [automationId]="'heading-transaction-details'"></app-icon-heading-component>
             <mat-checkbox [disabled]="!item" [(ngModel)]="emergency" color="primary" (ngModelChange)="onFieldChange(emergency)"
-                class="example-margin custom-checkbox mb-3">Emergency</mat-checkbox>
+                class="example-margin custom-checkbox mb-3" data-automation-id="checkbox-emergency">Emergency</mat-checkbox>
         </div>
         <div class="row">
             <div class="col-xl-3">
-                <mat-form-field class="action-dropdown custom-form-field w-100 mb-3" appearance="outline">
-                    <mat-label>Transaction Type</mat-label>
+                <mat-form-field class="action-dropdown custom-form-field w-100 mb-3" appearance="outline" data-automation-id="form-field-transaction-type">
+                    <mat-label data-automation-id="label-transaction-type">Transaction Type</mat-label>
                     <mat-select [disabled]="!item" [(ngModel)]="transType" #matRef class="employees-action"
-                        placeholder="Actions" (ngModelChange)="onFieldChange(transType)">
-                        <mat-option value="Pick">Pick</mat-option>
-                        <mat-option value="Put Away">Put Away</mat-option>
-                        <mat-option value="Count">Count</mat-option>
+                        placeholder="Actions" (ngModelChange)="onFieldChange(transType)" [attr.data-automation-id]="'select-transaction-type-' + transType">
+                        <mat-option value="Pick" data-automation-id="option-transaction-type-pick">Pick</mat-option>
+                        <mat-option value="Put Away" data-automation-id="option-transaction-type-put-away">Put Away</mat-option>
+                        <mat-option value="Count" data-automation-id="option-transaction-type-count">Count</mat-option>
                     </mat-select>
                     <span class="material-symbols-outlined icon-expand-more">
                         expand_more
@@ -25,76 +24,76 @@
             <div class="col-xl-3">
 
                 <mat-form-field class="custom-form-field w-100 __grab_cursor mb-3" appearance="outline"
-                    [class.mat-form-field-invalid]="isInvalid">
-                    <mat-label>Required Date</mat-label>
+                    [class.mat-form-field-invalid]="isInvalid" data-automation-id="form-field-required-date">
+                    <mat-label data-automation-id="label-required-date">Required Date</mat-label>
                     <input  [disabled]="!item" maxlength="11" matInput [matDatepicker]="requiredDate"
-                        [(ngModel)]="reqDate" (focusout)="this.onFormFieldFocusOut.emit()" (ngModelChange)="onFieldChange(reqDate)">
+                        [(ngModel)]="reqDate" (focusout)="this.onFormFieldFocusOut.emit()" (ngModelChange)="onFieldChange(reqDate)" [attr.data-automation-id]="'input-required-date-' + reqDate">
                     <mat-datepicker-toggle matSuffix [for]="requiredDate" ngDefaultControl></mat-datepicker-toggle>
                     <mat-datepicker #requiredDate></mat-datepicker>
                 </mat-form-field>
             </div>
             <div class="col-xl-3">
-                <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline">
-                    <mat-label>Line number</mat-label>
+                <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline" data-automation-id="form-field-line-number">
+                    <mat-label data-automation-id="label-line-number">Line number</mat-label>
                     <input [disabled]="!item" [(ngModel)]="lineNumber" matInput type="text" maxlength="9"
-                        value="Value"(ngModelChange)="onFieldChange(lineNumber)">
+                        value="Value" (ngModelChange)="onFieldChange(lineNumber)" data-automation-id="input-line-number">
                 </mat-form-field>
             </div>
             <div class="col-xl-3">
-                <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline">
-                    <mat-label>Transaction Quantity</mat-label>
+                <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline" data-automation-id="form-field-transaction-quantity">
+                    <mat-label data-automation-id="label-transaction-quantity">Transaction Quantity</mat-label>
                     <input [disabled]="!item" (keydown)="limitNumber($event)" [(ngModel)]="transQuantity" matInput
                         type="number" min="0" maxlength="9" value="Value" oninput="this.value = 
-                    !!this.value && Math.abs(this.value) >= 0 ? Math.abs(this.value) : null" (ngModelChange)="onFieldChange(transQuantity)">
+                    !!this.value && Math.abs(this.value) >= 0 ? Math.abs(this.value) : null" (ngModelChange)="onFieldChange(transQuantity)" data-automation-id="input-transaction-quantity">
                 </mat-form-field>
             </div>
         </div>
         <div class="row">
             <div class="col-xl-3">
-                <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline">
-                    <mat-label>Priority</mat-label>
+                <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline" data-automation-id="form-field-priority">
+                    <mat-label data-automation-id="label-priority">Priority</mat-label>
                     <input [disabled]="!item" [(ngModel)]="priority" matInput type="text" maxlength="9"
-                        value="Value" (ngModelChange)="onFieldChange(priority)">
+                        value="Value" (ngModelChange)="onFieldChange(priority)" data-automation-id="input-priority">
                 </mat-form-field>
             </div>
             <div class="col-xl-3">
-                <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline">
-                    <mat-label>Line Sequence</mat-label>
+                <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline" data-automation-id="form-field-line-sequence">
+                    <mat-label data-automation-id="label-line-sequence">Line Sequence</mat-label>
                     <input [disabled]="!item" [(ngModel)]="lineSeq" matInput type="text" maxlength="9"
-                        value="Value" (ngModelChange)="onFieldChange(lineSeq)">
+                        value="Value" (ngModelChange)="onFieldChange(lineSeq)" data-automation-id="input-line-sequence">
                 </mat-form-field>
             </div>
             <div class="col-xl-3">
-                <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline">
-                    <mat-label>Host Transaction ID</mat-label>
+                <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline" data-automation-id="form-field-host-transaction-id">
+                    <mat-label data-automation-id="label-host-transaction-id">Host Transaction ID</mat-label>
                     <input [disabled]="!item" [(ngModel)]="hostTransID" matInput type="text" maxlength="50"
-                        value="Value" (ngModelChange)="onFieldChange(hostTransID)">
+                        value="Value" (ngModelChange)="onFieldChange(hostTransID)" data-automation-id="input-host-transaction-id">
                 </mat-form-field>
             </div>
             <div class="col-xl-3">
-                <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline">
-                    <mat-label>Batch Pick ID</mat-label>
+                <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline" data-automation-id="form-field-batch-pick-id">
+                    <mat-label data-automation-id="label-batch-pick-id">Batch Pick ID</mat-label>
                     <input [disabled]="!item" [(ngModel)]="batchPickID" matInput type="text" maxlength="50"
-                        value="Value" (ngModelChange)="onFieldChange(batchPickID)">
+                        value="Value" (ngModelChange)="onFieldChange(batchPickID)" data-automation-id="input-batch-pick-id">
                 </mat-form-field>
             </div>
         </div>
         <div class="row">
             <div class="col-xl-3">
-                <mat-form-field (click)="openWareHouse()" class="custom-form-field w-100 mb-3" appearance="outline">
-                    <mat-label>Warehouse</mat-label>
+                <mat-form-field (click)="openWareHouse()" class="custom-form-field w-100 mb-3" appearance="outline" data-automation-id="form-field-warehouse">
+                    <mat-label data-automation-id="label-warehouse">Warehouse</mat-label>
                     <input readonly [disabled]="!item" [(ngModel)]="wareHouse" matInput type="text" maxlength="255"
-                        value="Value">
+                        value="Value" data-automation-id="input-warehouse">
                     <span matSuffix>
                         <mat-icon class="custom-icon">unfold_more</mat-icon>
                     </span>
                 </mat-form-field>
             </div>
             <div class="col-xl-3">
-                <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline">
-                    <mat-label>Tote ID</mat-label>
+                <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline" data-automation-id="form-field-tote-id">
+                    <mat-label data-automation-id="label-tote-id">Tote ID</mat-label>
                     <input [disabled]="!item" [(ngModel)]="toteID" matInput type="text" maxlength="50"
-                        value="Value" (ngModelChange)="onFieldChange(toteID)" (focusout)="newToteIdFocusOut()">
+                        value="Value" (ngModelChange)="onFieldChange(toteID)" (focusout)="newToteIdFocusOut()" data-automation-id="input-tote-id">
                 </mat-form-field>
             </div>
         </div>

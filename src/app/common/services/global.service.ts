@@ -643,5 +643,23 @@ formatSearchDateTimeValue(dateStr: string): string | null {
   formatMessage(template: string, values: { [key: string]: string }): string {
     return template.replace(/{{(\w+)}}/g, (_, key) => values[key] || '');
   }
+/**
+ * Checks if a value is null, undefined, an empty string (including whitespace), or an empty array.
+ * @param value - The value to check.
+ * @returns true if the value is null, undefined, empty string, or empty array; otherwise, false.
+ */
+ isNullOrEmpty(value: unknown): boolean {
+  if (value === null || value === undefined) return true;
+
+  if (typeof value === 'string') {
+    return value.trim().length === 0;
+  }
+
+  if (Array.isArray(value)) {
+    return value.length === 0;
+  }
+
+  return false;
+}
 
 }

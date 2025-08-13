@@ -1,18 +1,18 @@
-<div class="unassigned-functions functions-list-wrap mt-3 p-3 br-14 div-border">
+<div class="unassigned-functions functions-list-wrap mt-3 p-3 br-14 div-border" data-automation-id="unassigned-functions-wrapper">
   <div class="search-box zone-search-box">
     <div class="d-flex g-mini-search-box pb-4">
       <mat-form-field class="w-100" appearance="fill">
-        <span class="material-symbols-outlined icon-search">
+        <span class="material-symbols-outlined icon-search" data-automation-id="label-search-icon">
           search
         </span>
         <input type="text" placeholder="Search Unassigned Function" aria-label="Search Unassigned Function" matInput
-          [(ngModel)]="filterName" maxlength="50">
-        <button matSuffix *ngIf="filterName" class="clear-btn" (click)="clearFields()"><mat-icon
+          [(ngModel)]="filterName" maxlength="50" data-automation-id="unassigned-functions-search-input">
+        <button matSuffix *ngIf="filterName" class="clear-btn" (click)="clearFields()" data-automation-id="button-cancel"><mat-icon
             class="text-20 text-chrome-600">cancel</mat-icon></button>
       </mat-form-field>
     </div>
     <button mat-stroked-button color="primary" class="button-add-all w-100 mb-3 justify-content-end"
-      (click)="assignFunction(unassignedFunctions)" [disabled]="!isGroupLookUp">
+      (click)="assignFunction(unassignedFunctions)" [disabled]="!isGroupLookUp" data-automation-id="button-add-all">
       Add All
     </button>
     <div class="card w-100">
@@ -23,13 +23,13 @@
         <mat-list class="zones-list g-card-list list-style-1 pt-0" role="list">
           <ng-scrollbar class="ng-scrollbar-height" *ngIf="!filterValue" pointerEventsMethod="scrollbar">
             <mat-list-item class="pt-2" role="listitem"
-              *ngFor="let groupname of unassignedFunctions | filterUnassignedFunc:filterName">
-              <span class="list-label zone-list-label">
+              *ngFor="let groupname of unassignedFunctions | filterUnassignedFunc:filterName" [attr.data-automation-id]="'unassigned-functions-item-' + groupname">
+              <span class="list-label zone-list-label" data-automation-id="label-unassigned-function">
                 {{groupname}}
               </span>
               <button mat-icon-button aria-label="Delete Function" (click)="assignFunction(groupname)" matTooltip="Add"
-                matTooltipPosition="above">
-                <mat-icon class="icon-circle-edit">add</mat-icon>
+                matTooltipPosition="above" data-automation-id="button-add">
+                <mat-icon class="icon-circle-edit" data-automation-id="label-add-unassigned-function">add</mat-icon>
               </button>
             </mat-list-item>
           </ng-scrollbar>
