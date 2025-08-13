@@ -130,7 +130,8 @@ export const ConfirmationHeadings = {
     CreateBatchNow: "Create Batch Now?",
     PrintBatchOrOrder:"Print Batch Or Order",
     NoOffCarouselPicksFound:"No Off-Carousel Picks Found",
-    ResolveToteId: "Resolve Tote ID"
+    ResolveToteId: "Resolve Tote ID",
+    ChangeFormatType: "Change Format Type"
 }
 export const ConfirmationButtonText = {
     ResetPassword: 'Reset Password Now',
@@ -159,7 +160,7 @@ export const ConfirmationMessages = {
     IrreversibleActionWarning :'This action cannot be undone.',
     UpdateAllInterface: 'Click OK to update all devices with Com Port: {{comPort}}',
     UpdateAllInterfaceWithZone: 'Click OK to update all devices with Com Port: {{comPort}} and Zone: {{zone}}',
-    InconsistentFormat: (fieldName: string) => `Inconsistent format detected! The field "${fieldName}" already has a different format. Would you like to update all related fields to the new format?`,
+    InconsistentFormat: (fieldName: string) => `An "${fieldName}" was added with Alphanumeric format Changing to Numeric will update that entry as well. Do you want to continue?`,
 }
 
 export const ToasterMessages = {
@@ -257,7 +258,8 @@ export const ToasterMessages = {
     EnterValidPositiveQuantity: 'Please enter a valid positive number for the quantity.',
     PrintSuccessfullyCompleted:'Print successfully completed',
     UnableToPrint: 'Unable to print',
-    UnableToAssignLocation: "Unable to assign location"
+    UnableToAssignLocation: "Unable to assign location",
+    InvalidInputForFilter: "Some of the inputs are missing values. Cannot add row to filter."
 }
 
 
@@ -760,19 +762,12 @@ export class ConsoleErrorMessages {
 export const PickToteFilterpreferences = {
     preferences: "PickToteFilterPrefs",
 }
-export const disabledFields = [
+export const DISABLED_FIELDS = [
     'priority',
     'Required Date',
     'Emergency',
     'Import Date'
   ];
-
-  export const DISABLED_FIELDS = new Set<string>([
-    'priority',
-    'requiredDate',
-    'Emergency',
-    'importDate'
-  ]);
   
   export const FIELDS_DEFAULT_AN = new Set<string>([
     'userField1',
@@ -791,4 +786,7 @@ export const disabledFields = [
     'Warehouse',
     'requiredDate'
   ]);
-  
+  export const FormatValues = {
+    NUMERIC : '123',
+    ALPHA_NUMERIC : 'A+N',
+  }
