@@ -3,11 +3,11 @@
       <div class="col-12">
         <mat-tab-group dynamicHeight [(selectedIndex)]="selectedIndex"  (selectedTabChange)="tabChanged($event)">
             <mat-tab  label="Create Count">
-                <app-ccb-create-counts (eventChange)="onChange($event)" [updateTable] = "updateCreateCount" (countsUpdated)="nextStep($event)"></app-ccb-create-counts>
+                <app-ccb-create-counts (eventChange)="onChange($event)" [updateTable] = "updateCreateCount" (countsUpdated)="nextStep($event)"  data-automation-id="ccb-create-counts-component"></app-ccb-create-counts>
             </mat-tab>
 
             <mat-tab [label]="'Count Queue'+' '+'('+countQueValue+')'"> 
-              <app-ccb-count-queue  [event]="event"  [updateData] = "updateQueue"  (countEvent)="getCount($event)" (insertEvent)="insertQueEvnt($event)"> </app-ccb-count-queue>
+              <app-ccb-count-queue  [event]="event"  [updateData] = "updateQueue"  (countEvent)="getCount($event)" (insertEvent)="insertQueEvnt($event)" data-automation-id="ccb-count-queue-component"> </app-ccb-count-queue>
           </mat-tab>
         </mat-tab-group>
       </div>

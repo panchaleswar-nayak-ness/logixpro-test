@@ -1,7 +1,7 @@
 <mat-card class="mat-elevation-z g-card mb-2">
     <mat-card-content>
       <div class="d-flex justify-content-between align-items-center mb-3">
-        <app-icon-heading-component heading="Put Away Select Orders" icon="task_alt">
+        <app-icon-heading-component heading="Put Away Select Orders" icon="task_alt" [automationId]="'put-away-orders-heading'">
         </app-icon-heading-component>
       </div>
       <div class="row">
@@ -12,15 +12,15 @@
                 <span class="material-symbols-outlined icon-search">
                   search
                 </span>
-                <input #alertInput type="text" placeholder="Search" aria-label="Search" matInput maxlength="50" (keyup)="applyFilter2($event)" [(ngModel)]="filterValue2">
-                <button *ngIf="filterValue2 != ''" matSuffix class="clear-btn" (click)="filterValue2 = ''; this.tableData2.filter = filterValue2;"><mat-icon class="text-20 text-chrome-600">cancel</mat-icon></button>
+                <input #alertInput type="text" placeholder="Search" aria-label="Search" matInput maxlength="50" (keyup)="applyFilter2($event)" [(ngModel)]="filterValue2" data-automation-id="put-away-search-input">
+                <button *ngIf="filterValue2 != ''" matSuffix class="clear-btn" (click)="filterValue2 = ''; this.tableData2.filter = filterValue2;" data-automation-id="clear-search-button"><mat-icon class="text-20 text-chrome-600">cancel</mat-icon></button>
               </mat-form-field>
             </div>
           </div>
         </div>
         <div class="col-xl-6">
           <div class="d-xxl-block d-flex justify-content-end">
-            <button mat-stroked-button color="warn" class="button-add-all mb-3 float-end " (click)="removeAll()" >
+            <button mat-stroked-button color="warn" class="button-add-all mb-3 float-end " (click)="removeAll()" data-automation-id="remove-all-button">
               Remove All
             </button>
           </div>
@@ -33,50 +33,50 @@
             (matSortChange)="announceSortChange2($event)">
 
             <ng-container matColumnDef="orderNumber">
-              <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by number"> Order No.
+              <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by number" data-automation-id="order-number-header"> Order No.
               </th>
-              <td mat-cell *matCellDef="let element" #tooltip="matTooltip" matTooltipPosition="above"
+              <td mat-cell *matCellDef="let element; let i = index" #tooltip="matTooltip" matTooltipPosition="above"
                 [matTooltip]="element.orderNumber"
                 class="put-away-card"
-                [matTooltipDisabled]="element.orderNumber && element.orderNumber.length>=20?false:true">
+                [matTooltipDisabled]="element.orderNumber && element.orderNumber.length>=20?false:true" [attr.data-automation-id]="'order-number-cell-' + i ">
                 {{element.orderNumber}} </td>
             </ng-container>
 
             <ng-container matColumnDef="itemCount">
-              <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by number"> Quantity
+              <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by number" data-automation-id="quantity-header"> Quantity
               </th>
-              <td mat-cell *matCellDef="let element" #tooltip="matTooltip" matTooltipPosition="above"
+              <td mat-cell *matCellDef="let element; let i = index" #tooltip="matTooltip" matTooltipPosition="above"
                 [matTooltip]="element.itemCount"
                 class="put-away-card"
-                [matTooltipDisabled]="element.itemCount && element.itemCount.length>=20?false:true">
+                [matTooltipDisabled]="element.itemCount && element.itemCount.length>=20?false:true" [attr.data-automation-id]="'quantity-cell-' + i ">
                 {{element.itemCount}} </td>
             </ng-container>
 
             <ng-container matColumnDef="priority">
-              <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by number"> Priority
+              <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by number" data-automation-id="priority-header"> Priority
               </th>
-              <td mat-cell *matCellDef="let element" #tooltip="matTooltip" matTooltipPosition="above"
+              <td mat-cell *matCellDef="let element; let i = index" #tooltip="matTooltip" matTooltipPosition="above"
                 [matTooltip]="element.priority"
                 class="put-away-card"
-                [matTooltipDisabled]="element.priority && element.priority.length>=20?false:true">
+                [matTooltipDisabled]="element.priority && element.priority.length>=20?false:true" [attr.data-automation-id]="'priority-cell-' + i ">
                 {{element.priority}} </td>
             </ng-container>
 
             <ng-container matColumnDef="requiredDate">
-              <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by number"> Required
+              <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by number" data-automation-id="required-date-header"> Required
                 Date
               </th>
-              <td mat-cell *matCellDef="let element" #tooltip="matTooltip" matTooltipPosition="above"
+              <td mat-cell *matCellDef="let element; let i = index" #tooltip="matTooltip" matTooltipPosition="above"
                 [matTooltip]="element.requiredDate"
                 class="put-away-card"
-                [matTooltipDisabled]="element.requiredDate && element.requiredDate.length>=20?false:true">
+                [matTooltipDisabled]="element.requiredDate && element.requiredDate.length>=20?false:true" [attr.data-automation-id]="'required-date-cell-' + i ">
                 {{element.requiredDate}} </td>
             </ng-container>
 
             <ng-container matColumnDef="action" stickyEnd>
-              <th mat-header-cell *matHeaderCellDef> </th>
-              <td mat-cell *matCellDef="let element" class="text-end">
-                <button class="mx-auto xsm-icon-button" mat-flat-button aria-label="Delete" color="warn" matTooltip="Remove" matTooltipPosition="above" (click)="remove(element)">
+              <th mat-header-cell *matHeaderCellDef data-automation-id="actions-header"> </th>
+              <td mat-cell *matCellDef="let element; let i = index" class="text-end">
+                <button class="mx-auto xsm-icon-button" mat-flat-button aria-label="Delete" color="warn" matTooltip="Remove" matTooltipPosition="above" (click)="remove(element)" [attr.data-automation-id]="'remove-button-' + i ">
                   <mat-icon>close</mat-icon>
                 </button>
               </td>
@@ -94,7 +94,7 @@
         </ng-scrollbar>
       </div>
       <mat-paginator class="d-flex justify-content-start" showFirstLastButtons [pageSizeOptions]="[10, 20]" [pageSize]="10" #paginator2
-        aria-label="Select page of periodic elements">
+        aria-label="Select page of periodic elements" data-automation-id="put-away-paginator">
       </mat-paginator>
     </mat-card-content>
   </mat-card>

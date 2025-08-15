@@ -4,23 +4,23 @@
     <mat-dialog-content>
       <div class="prompt-wrap">
         <div class="d-flex justify-content-center prompt-icon-wrap">
-          <span #cancel class="material-symbols-outlined prompt-icon-delete">
+          <span #cancel class="material-symbols-outlined prompt-icon-delete" data-automation-id="clearapp-icon">
             delete
           </span>
   
         </div>
-        <p class="prompt-message py-4 mb-0">
+        <p class="prompt-message py-4 mb-0" data-automation-id="clearapp-message">
           Are you sure you want to clear default app? {{data && data.message}}
         </p>
         <div class="br-14 px-4 py-3 checkbox-background mb-4">
-          <mat-checkbox (change)="checkOptions($event)" class="example-margin" color="primary">I understand </mat-checkbox>
+          <mat-checkbox (change)="checkOptions($event)" class="example-margin" color="primary" data-automation-id="clearapp-understand-chk">I understand </mat-checkbox>
         </div>
       </div>
     </mat-dialog-content>
     <mat-dialog-actions class="d-flex flex-column justify-content-center m-0 p-0">
       <button  class="mat-button-base prompt-action-danger-button  mb-3 btn-lg w-100" mat-stroked-button mat-button
-       tabindex="1" [disabled]="isChecked" [ngStyle]="{'opacity': isChecked ? '0.8' : '1' }">Clear</button>
-      <button class="mat-button-base prompt-action-basic-button btn-lg w-100" mat-button mat-dialog-close
+       tabindex="1" [disabled]="isChecked" [ngStyle]="{'opacity': isChecked ? '0.8' : '1' }" data-automation-id="clearapp-clear-btn">Clear</button>
+      <button class="mat-button-base prompt-action-basic-button btn-lg w-100" mat-button mat-dialog-close data-automation-id="clearapp-close-btn"
         tabindex="-1">
         Close
       </button>

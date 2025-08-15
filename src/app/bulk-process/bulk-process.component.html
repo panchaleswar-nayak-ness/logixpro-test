@@ -4,51 +4,51 @@
         <!-- Main Section Option (Import Export) -->
     
         <div class="col-xl-3 col-lg-6"
-        [ngClass]="isAuthorized('Bulk Pick') ? 'isDivDisabled' : ''">
+        [ngClass]="isAuthorized('Bulk Pick') ? 'isDivDisabled' : ''" data-automation-id="col-bulk-pick">
           <div matRipple [matRippleColor]="tabHoverColor" class="main-section-option" 
           routerLink="/BulkTransactions/BulkPick"
-          (click)="updateMenu('BulkPick', '/BulkTransactions/BulkPick')">
+          (click)="updateMenu('BulkPick', '/BulkTransactions/BulkPick')" data-automation-id="link-bulk-pick">
             <a class="main-section-option-link" href="#"></a>
-            <div class="main-section-icon">
-              <span class="material-symbols-outlined">unarchive</span>
+            <div class="main-section-icon" data-automation-id="icon-bulk-pick">
+              <span class="material-symbols-outlined" data-automation-id="icon-symbol-bulk-pick">unarchive</span>
             </div>
-            <h4 class="main-section-title text-22">Bulk Pick</h4>
+            <h4 class="main-section-title text-22" data-automation-id="heading-bulk-pick">Bulk Pick</h4>
           </div>
         </div>
         <div class="col-xl-3 col-lg-6"
-        [ngClass]="isAuthorized('Bulk Put Away') ? 'isDivDisabled' : ''">
+        [ngClass]="isAuthorized('Bulk Put Away') ? 'isDivDisabled' : ''" data-automation-id="col-bulk-put-away">
             <div matRipple [matRippleColor]="tabHoverColor" class="main-section-option" 
             routerLink="/BulkTransactions/BulkPutAway"
-            (click)="updateMenu('BulkPick', '/BulkTransactions/BulkPutAway')">
+            (click)="updateMenu('BulkPick', '/BulkTransactions/BulkPutAway')" data-automation-id="link-bulk-put-away">
               <a class="main-section-option-link" href="#"></a>
-              <div class="main-section-icon">
-                <span class="material-symbols-outlined">archive</span>
+              <div class="main-section-icon" data-automation-id="icon-bulk-put-away">
+                <span class="material-symbols-outlined" data-automation-id="icon-symbol-bulk-put-away">archive</span>
               </div>
-              <h4 class="main-section-title text-22">Bulk Put Aways</h4>
+              <h4 class="main-section-title text-22" data-automation-id="heading-bulk-put-away">Bulk Put Aways</h4>
             </div>
           </div>
           <div class="col-xl-3 col-lg-6"
-          [ngClass]="isAuthorized('Bulk Cycle Count') ? 'isDivDisabled' : ''">
+          [ngClass]="isAuthorized('Bulk Cycle Count') ? 'isDivDisabled' : ''" data-automation-id="col-bulk-cycle-count">
             <div matRipple [matRippleColor]="tabHoverColor" class="main-section-option" 
             routerLink="/BulkTransactions/BulkCount"
-            (click)="updateMenu('BulkCount', '/BulkTransactions/BulkCount')">
+            (click)="updateMenu('BulkCount', '/BulkTransactions/BulkCount')" data-automation-id="link-bulk-count">
               <a class="main-section-option-link" href="#"></a>
-              <div class="main-section-icon">
-                <span class="material-symbols-outlined">low_priority</span>
+              <div class="main-section-icon" data-automation-id="icon-bulk-count">
+                <span class="material-symbols-outlined" data-automation-id="icon-symbol-bulk-count">low_priority</span>
               </div>
-              <h4 class="main-section-title text-22">Bulk Count</h4>
+              <h4 class="main-section-title text-22" data-automation-id="heading-bulk-count">Bulk Count</h4>
             </div>
           </div>
           <div class="col-xl-3 col-lg-6"
-          [ngClass]="isAuthorized('Bulk Preferences') ? 'isDivDisabled' : ''">
+          [ngClass]="isAuthorized('Bulk Preferences') ? 'isDivDisabled' : ''" data-automation-id="col-bulk-preferences">
             <div matRipple [matRippleColor]="tabHoverColor" class="main-section-option" 
             routerLink="/BulkTransactions/Preferences"
-            (click)="updateMenu('BulkPick', '/BulkTransactions/Preferences')">
+            (click)="updateMenu('BulkPick', '/BulkTransactions/Preferences')" data-automation-id="link-bulk-preferences">
               <a class="main-section-option-link" href="#"></a>
-              <div class="main-section-icon">
-                <span class="material-symbols-outlined">tune</span>
+              <div class="main-section-icon" data-automation-id="icon-bulk-preferences">
+                <span class="material-symbols-outlined" data-automation-id="icon-symbol-bulk-preferences">tune</span>
               </div>
-              <h4 class="main-section-title text-22">Preferences</h4>
+              <h4 class="main-section-title text-22" data-automation-id="heading-bulk-preferences">Preferences</h4>
             </div>
           </div>
     </div>

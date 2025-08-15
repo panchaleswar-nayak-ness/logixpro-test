@@ -1,12 +1,12 @@
 <form [formGroup]="preferencesForm">
-  <mat-tab-group dynamicHeight>
-    <mat-tab label="System Settings">
+  <mat-tab-group dynamicHeight data-automation-id="settings-tab-group">
+    <mat-tab label="System Settings" data-automation-id="system-settings-tab">
       <mat-card class="mat-elevation-z g-card mt-3">
         <mat-card-content>
           <div class="d-flex justify-content-between align-items-center mb-3">
             <app-icon-heading-component
               heading="System Settings"
-              icon="settings_applications"
+              icon="settings_applications" [automationId]="'system-settings-heading'"
             >
             </app-icon-heading-component>
           </div>
@@ -17,13 +17,13 @@
                   formControlName="useDefault"
                   (change)="updatePreferences(1)"
                   class="d-flex flex-wrap align-items-center gap-12"
-                  aria-label="Select an option"
+                  aria-label="Select an option" data-automation-id="default-selection-radio-group"
                 >
                   <mat-radio-button
                     class="p-2"
                     value="filter"
                     color="primary"
-                    matTooltip="Sets if custom filter or zone is to be used in pick batch manager"
+                    matTooltip="Sets if custom filter or zone is to be used in pick batch manager" data-automation-id="use-default-filter-radio"
                   >
                     Use Default Filter
                   </mat-radio-button>
@@ -32,7 +32,7 @@
                     class="p-2"
                     color="primary"
                     value="zone"
-                    matTooltip="Sets if custom filter or zone is to be used in pick batch manager"
+                    matTooltip="Sets if custom filter or zone is to be used in pick batch manager" data-automation-id="use-default-zone-radio"
                   >
                     Use Default Zone
                   </mat-radio-button>
@@ -48,7 +48,7 @@
                   class="custom-form-field w-100"
                   appearance="outline"
                 >
-                  <mat-label>Default Batch Qty</mat-label>
+                  <mat-label data-automation-id="default-batch-qty-label">Default Batch Qty</mat-label>
                   <input
                     (focusout)="updatePreferences(1); checkDBQ()"
                     formControlName="pickBatchQuantity"
@@ -56,7 +56,7 @@
                     matInput
                     type="number"
                     matTooltip="Number of totes per batch"
-                    onKeypress="if(event.keyCode == 101 || event.keyCode == 43 || event.keyCode == 45 || event.keyCode == 69) return false;"
+                    onKeypress="if(event.keyCode == 101 || event.keyCode == 43 || event.keyCode == 45 || event.keyCode == 69) return false;"  data-automation-id="default-batch-qty-input"
                   />
                 </mat-form-field>
               </div>
@@ -68,7 +68,7 @@
                   class="custom-form-field w-100"
                   appearance="outline"
                 >
-                  <mat-label>Default Cells</mat-label>
+                  <mat-label data-automation-id="default-cells-label">Default Cells</mat-label>
                   <input
                     (focusout)="updatePreferences(1)"
                     formControlName="defaultCells"
@@ -76,7 +76,7 @@
                     matInput
                     type="number"
                     matTooltip="Number of put away transactions allowed per tote"
-                    onKeypress="if(event.keyCode == 101 || event.keyCode == 43 || event.keyCode == 45 || event.keyCode == 69) return false;"
+                    onKeypress="if(event.keyCode == 101 || event.keyCode == 43 || event.keyCode == 45 || event.keyCode == 69) return false;"  data-automation-id="default-cells-input"
                   />
                 </mat-form-field>
               </div>
@@ -91,7 +91,7 @@
                     formControlName="selectIfOne"
                     class="primary"
                     color="primary"
-                    matTooltip="Controls if transaction select screen is opened if only one transaction exists. If Checked, will auto select an existing transaction if it is the last one"
+                    matTooltip="Controls if transaction select screen is opened if only one transaction exists. If Checked, will auto select an existing transaction if it is the last one" data-automation-id="select-if-one-toggle"
                   ></mat-slide-toggle>
                 </div>
                 <div class="col-12 d-flex justify-content-between mb-2">
@@ -100,7 +100,7 @@
                     (change)="updatePreferences(1)"
                     formControlName="validateTotes"
                     color="primary"
-                    matTooltip="Controls if Tote IDs need to be validated"
+                    matTooltip="Controls if Tote IDs need to be validated"  data-automation-id="validate-totes-toggle"
                   ></mat-slide-toggle>
                 </div>
                 <div class="col-12 d-flex justify-content-between mb-2">
@@ -109,7 +109,7 @@
                     (change)="updatePreferences(1)"
                     formControlName="autoForwardReplenish"
                     color="primary"
-                    matTooltip="Toggles if Auto Forward Replenishments will be displayed"
+                    matTooltip="Toggles if Auto Forward Replenishments will be displayed"  data-automation-id="auto-forward-replenish-toggle"
                   ></mat-slide-toggle>
                 </div>
                 <div class="col-12 d-flex justify-content-between mb-2">
@@ -118,7 +118,7 @@
                     (change)="updatePreferences(1)"
                     formControlName="createItemMaster"
                     color="primary"
-                    matTooltip="Toggles if new items can be created if they do not exist from put away batch manager"
+                    matTooltip="Toggles if new items can be created if they do not exist from put away batch manager"  data-automation-id="create-item-master-toggle"
                   ></mat-slide-toggle>
                 </div>
                 <div class="col-12 d-flex justify-content-between mb-2">
@@ -127,7 +127,7 @@
                     (change)="updatePreferences(1)"
                     formControlName="stripScan"
                     color="primary"
-                    matTooltip="Controls if characters are to be removed from scans"
+                    matTooltip="Controls if characters are to be removed from scans"  data-automation-id="strip-scan-toggle"
                   ></mat-slide-toggle>
                 </div>
               </div>
@@ -140,15 +140,15 @@
                   class="custom-form-field w-100 shorting"
                   appearance="outline"
                 >
-                  <mat-label>Strip Side</mat-label>
+                  <mat-label data-automation-id="strip-side-label">Strip Side</mat-label>
                   <mat-select
                     formControlName="stripSide"
                     (selectionChange)="updatePreferences(1)"
-                    matTooltip="Remove characters from left or right side of scan"
+                    matTooltip="Remove characters from left or right side of scan"  [attr.data-automation-id]="'strip-side-select-' + preferencesForm.value.stripSide"
                   >
                     <mat-option
-                      *ngFor="let ss of stripSideList"
-                      value="{{ ss.id }}"
+                      *ngFor="let ss of stripSideList"  
+                      value="{{ ss.id }}" [attr.data-automation-id]="'strip-side-option-'  + ss.id"
                     >
                       {{ ss.name }}
                     </mat-option>
@@ -166,7 +166,7 @@
                   class="custom-form-field w-100"
                   appearance="outline"
                 >
-                  <mat-label>Strip Number</mat-label>
+                  <mat-label data-automation-id="strip-number-label">Strip Number</mat-label>
                   <input
                     (focusout)="updatePreferences(1)"
                     formControlName="stripNumber"
@@ -174,7 +174,7 @@
                     matInput
                     type="number"
                     onKeyPress="if(this.value.length==10 || event.keyCode == 101 || event.keyCode == 43 || event.keyCode == 45 || event.keyCode == 69) return false;"
-                    matTooltip="Number of characters to remove"
+                    matTooltip="Number of characters to remove" data-automation-id="strip-number-input"
                   />
                 </mat-form-field>
               </div>
@@ -184,13 +184,13 @@
       </mat-card>
     </mat-tab>
 
-    <mat-tab label="Pick Settings">
+    <mat-tab label="Pick Settings" data-automation-id="pick-settings-tab">
       <mat-card class="mat-elevation-z g-card mt-3 mb-4 p-4">
         <mat-card-content>
           <div class="d-flex justify-content-between align-items-center mb-3">
             <app-icon-heading-component
               heading="Pick Settings"
-              icon="open_in_browser"
+              icon="open_in_browser" [automationId]="'pick-settings-heading'"
             >
             </app-icon-heading-component>
           </div>
@@ -199,94 +199,94 @@
             <div class="col-xl-4">
               <div class="gap-12 mb-2">
                 <div class="col-md-12 text-left admin-prefrences">
-                  <div class="d-flex justify-content-between mb-2">
+                  <div class="d-flex justify-content-between mb-2" data-automation-id="auto-pick-order-selection-label">
                     Auto Select Pick Orders:
                     <mat-slide-toggle
                       (change)="updatePreferences(1)"
                       formControlName="autoPickOrderSelection"
                       color="primary"
-                      matTooltip="Toggles if orders are automatically selected when creating a pick batch"
+                      matTooltip="Toggles if orders are automatically selected when creating a pick batch" data-automation-id="auto-pick-order-selection-toggle"
                     ></mat-slide-toggle>
                   </div>
-                  <div class="d-flex justify-content-between mb-2">
+                  <div class="d-flex justify-content-between mb-2" data-automation-id="auto-pick-tote-id-label">
                     Auto Pick Tote ID's:
                     <mat-slide-toggle
                       (change)="updatePreferences(1)"
                       formControlName="autoPickToteID"
                       color="primary"
-                      matTooltip="Toggles if tote id's are automatically generated for pick batches"
+                      matTooltip="Toggles if tote id's are automatically generated for pick batches" data-automation-id="auto-pick-tote-id-toggle"
                     ></mat-slide-toggle>
                   </div>
-                  <div class="d-flex justify-content-between mb-2">
+                  <div class="d-flex justify-content-between mb-2" data-automation-id="carousel-pick-tote-id-label">
                     Carousel Pick Tote ID's:
                     <mat-slide-toggle
                       (change)="updatePreferences(1)"
                       formControlName="carouselToteIDPicks"
                       color="primary"
-                      matTooltip="Toggles if tote ids are required for pick transactions"
+                      matTooltip="Toggles if tote ids are required for pick transactions" data-automation-id="carousel-tote-id-picks-toggle"
                     ></mat-slide-toggle>
                   </div>
-                  <div class="d-flex justify-content-between mb-2">
+                  <div class="d-flex justify-content-between mb-2" data-automation-id="off-carousel-pick-tote-id-label">
                     Off Carousel Pick Tote ID's:
                     <mat-slide-toggle
                       (change)="updatePreferences(1)"
                       formControlName="offCarouselToteIDPicks"
                       color="primary"
-                      matTooltip="Toggles if tote ids are required for pick transactions"
+                      matTooltip="Toggles if tote ids are required for pick transactions" data-automation-id="off-carousel-tote-id-picks-toggle"
                     ></mat-slide-toggle>
                   </div>
-                  <div class="d-flex justify-content-between mb-2">
+                  <div class="d-flex justify-content-between mb-2" data-automation-id="use-pick-batch-manager-label">
                     Use Pick Batch Manager:
                     <mat-slide-toggle
                       (change)="updatePreferences(1)"
                       formControlName="usePickBatchManager"
                       color="primary"
-                      matTooltip="Toggles if pick batch manager is used to select pick orders"
+                      matTooltip="Toggles if pick batch manager is used to select pick orders"  data-automation-id="use-pick-batch-manager-toggle"
                     ></mat-slide-toggle>
                   </div>
-                  <div class="d-flex justify-content-between mb-2">
+                  <div class="d-flex justify-content-between mb-2" data-automation-id="use-pick-batch-manager-label">
                     Carousel Batch ID's- Picks:
                     <mat-slide-toggle
                       (change)="updatePreferences(1)"
                       formControlName="carouselBatchIDPicks"
                       color="primary"
-                      matTooltip="Toggles if Pick Batch ID is automatically generated"
+                      matTooltip="Toggles if Pick Batch ID is automatically generated" data-automation-id="carousel-batch-id-picks-toggle"
                     ></mat-slide-toggle>
                   </div>
-                  <div class="d-flex justify-content-between mb-2">
+                  <div class="d-flex justify-content-between mb-2" data-automation-id="off-carousel-pick-batch-id-label">
                     Off Carousel Batch ID's- Picks:
                     <mat-slide-toggle
                       (change)="updatePreferences(1)"
                       formControlName="offCarouselBatchIDPicks"
                       color="primary"
-                      matTooltip="Toggles if Pick Batch ID is automatically generated"
+                      matTooltip="Toggles if Pick Batch ID is automatically generated"  data-automation-id="off-carousel-batch-id-picks-toggle"
                     ></mat-slide-toggle>
                   </div>
-                  <div class="d-flex justify-content-between mb-2">
+                  <div class="d-flex justify-content-between mb-2" data-automation-id="use-in-zone-pick-screen-label">
                     Use In Zone Pick Screen:
                     <mat-slide-toggle
                       (change)="updatePreferences(1)"
                       formControlName="useInZonePickScreen"
                       color="primary"
-                      matTooltip="Toggles if the In Zone Pick screen is used when processing picks"
+                      matTooltip="Toggles if the In Zone Pick screen is used when processing picks"  data-automation-id="use-in-zone-pick-screen-toggle"
                     ></mat-slide-toggle>
                   </div>
-                  <div class="d-flex justify-content-between mb-2">
+                  <div class="d-flex justify-content-between mb-2" data-automation-id="use-pick-batch-manager-label">
                     Auto Print Case Label:
                     <mat-slide-toggle
                       (change)="updatePreferences(1)"
                       formControlName="autoPrintCaseLabel"
                       color="primary"
-                      matTooltip="Toggles if the Case Label will be automatically printed"
+                      matTooltip="Toggles if the Case Label will be automatically printed" data-automation-id="auto-print-case-label-toggle"
                     ></mat-slide-toggle>
                   </div>
-                  <div class="d-flex justify-content-between mb-2">
+                  <div class="d-flex justify-content-between mb-2" data-automation-id="use-pick-batch-manager-label">
                     Exclude Orders in Reprocess:
                     <mat-slide-toggle
                       (change)="updatePreferences(1)"
                       formControlName="excludeOrderInReprocess"
                       color="primary"
-                      matTooltip="Toggles if orders in reprocess are excluded from pick batch selection"
+                      matTooltip="Toggles if orders in reprocess are excluded from pick batch selection" data-automation-id="exclude-order-in-reprocess-toggle"
                     ></mat-slide-toggle>
                   </div>
                 </div>
@@ -301,15 +301,15 @@
                   class="custom-form-field w-100"
                   appearance="outline"
                 >
-                  <mat-label>Pick Order Sort</mat-label>
+                  <mat-label data-automation-id="pick-order-sort-label">Pick Order Sort</mat-label>
                   <mat-select
                     formControlName="orderSort"
                     (selectionChange)="updatePreferences(1)"
-                    matTooltip="Default sort used for selecting pick batch orders"
+                    matTooltip="Default sort used for selecting pick batch orders" [attr.data-automation-id]="'pick-order-sort-select-' + preferencesForm.value.orderSort"
                   >
                     <mat-option
                       *ngFor="let os of pickOrderSortList"
-                      value="{{ os.id }}"
+                      value="{{ os.id }}"  [attr.data-automation-id]="'pick-order-sort-option-'  + os.id"
                     >
                       {{ os.name }}
                     </mat-option>
@@ -325,7 +325,7 @@
       </mat-card>
     </mat-tab>
 
-    <mat-tab label="Put Away Settings">
+    <mat-tab label="Put Away Settings" data-automation-id="put-away-settings-tab">
       <mat-card class="mat-elevation-z g-card mt-3 mb-4 p-4">
         <mat-card-content>
           <div
@@ -333,7 +333,7 @@
           >
             <app-icon-heading-component
               heading="Put Away Settings"
-              icon="browser_updated"
+              icon="browser_updated" [automationId]="'put-away-settings-heading'"
             >
             </app-icon-heading-component>
           </div>
@@ -342,60 +342,60 @@
             <div class="col-xl-4">
               <div class="gap-12 mb-2">
                 <div class="col-md-12 text-left admin-prefrences">
-                  <div class="d-flex justify-content-between mb-2">
+                  <div class="d-flex justify-content-between mb-2" data-automation-id="auto-put-away-tote-id-label">
                     Auto Put Away Tote ID's:
                     <mat-slide-toggle
                       (change)="updatePreferences(1)"
                       formControlName="autoPutAwayToteID"
-                      color="primary"
+                      color="primary" data-automation-id="auto-put-away-tote-id-toggle"
                     ></mat-slide-toggle>
                   </div>
-                  <div class="d-flex justify-content-between mb-2">
+                  <div class="d-flex justify-content-between mb-2" data-automation-id="split-short-put-away-label">
                     Split Short Put Away:
                     <mat-slide-toggle
                       (change)="updatePreferences(1)"
                       formControlName="splitShortPutAway"
-                      color="primary"
+                      color="primary" data-automation-id="split-short-put-away-toggle"
                     ></mat-slide-toggle>
                   </div>
-                  <div class="d-flex justify-content-between mb-2">
+                  <div class="d-flex justify-content-between mb-2" data-automation-id="carousel-batch-id-put-label">
                     Carousel Batch ID's- Put Aways:
                     <mat-slide-toggle
                       (change)="updatePreferences(1)"
                       formControlName="carouselBatchIDPutAways"
-                      color="primary"
+                      color="primary" data-automation-id="carousel-batch-id-put-aways-toggle"
                     ></mat-slide-toggle>
                   </div>
-                  <div class="d-flex justify-content-between mb-2">
+                  <div class="d-flex justify-content-between mb-2" data-automation-id="off-carousel-put-away-tote-id-label">
                     Off Carousel Batch ID's- Put Aways:
                     <mat-slide-toggle
                       (change)="updatePreferences(1)"
                       formControlName="offCarouselBatchIDAways"
-                      color="primary"
+                      color="primary" data-automation-id="off-carousel-batch-id-put-aways-toggle"
                     ></mat-slide-toggle>
                   </div>
-                  <div class="d-flex justify-content-between mb-2">
+                  <div class="d-flex justify-content-between mb-2" data-automation-id="dont-allow-over-receipt-label">
                     Don't Allow Over Receipt:
                     <mat-slide-toggle
                       (change)="updatePreferences(1)"
                       formControlName="dontAllowOverReceipt"
-                      color="primary"
+                      color="primary" data-automation-id="dont-allow-over-receipt-toggle"
                     ></mat-slide-toggle>
                   </div>
-                  <div class="d-flex justify-content-between mb-2">
+                  <div class="d-flex justify-content-between mb-2" data-automation-id="auto-assign-all-zones-label">
                     Auto Assign All Zones:
                     <mat-slide-toggle
                       (change)="updatePreferences(1)"
                       formControlName="autoAssignAllZones"
-                      color="primary"
+                      color="primary"data-automation-id="auto-assign-all-zones-toggle"
                     ></mat-slide-toggle>
                   </div>
-                  <div class="d-flex justify-content-between mb-2">
+                  <div class="d-flex justify-content-between mb-2" data-automation-id="purchase-order-required-label">
                     Purchase Order Required:
                     <mat-slide-toggle
                       (change)="updatePreferences(1)"
                       formControlName="purchaseOrderRequired"
-                      color="primary"
+                      color="primary" data-automation-id="purchase-order-required-toggle"
                     ></mat-slide-toggle>
                   </div>
                 </div>
@@ -410,14 +410,14 @@
                   class="custom-form-field w-100 shorting"
                   appearance="outline"
                 >
-                  <mat-label>Default Put Away Scan Type</mat-label>
+                  <mat-label data-automation-id="default-put-away-scan-type-label">Default Put Away Scan Type</mat-label>
                   <mat-select
                     formControlName="defaultPutAwayScanType"
-                    (selectionChange)="updatePreferences(1)"
+                    (selectionChange)="updatePreferences(1)"  [attr.data-automation-id]="'default-put-away-scan-type-select-' + preferencesForm.value.defaultPutAwayScanType"
                   >
                     <mat-option
                       *ngFor="let st of defaultPutAwayScanTypeList"
-                      value="{{ st.id }}"
+                      value="{{ st.id }}" [attr.data-automation-id]="'put-away-scan-type-option-' + st.id"
                     >
                       {{ st.name }}
                     </mat-option>
@@ -435,7 +435,7 @@
                   class="custom-form-field w-100"
                   appearance="outline"
                 >
-                  <mat-label>Default Put Away Priority</mat-label>
+                  <mat-label data-automation-id="default-put-away-priority-label">Default Put Away Priority</mat-label>
                   <input
                     #myInput
                     (focusout)="updatePreferences(1)"
@@ -444,7 +444,7 @@
                     (keydown.shift.enter)="$event.preventDefault()"
                     matInput
                     type="number"
-                    onKeyPress="if(this.value.length==10 || event.keyCode == 101 || event.keyCode == 43 || event.keyCode == 45 || event.keyCode == 69) return false;"
+                    onKeyPress="if(this.value.length==10 || event.keyCode == 101 || event.keyCode == 43 || event.keyCode == 45 || event.keyCode == 69) return false;"  data-automation-id="default-put-away-priority-input"
                   />
                 </mat-form-field>
               </div>
@@ -456,7 +456,7 @@
                   class="custom-form-field w-100"
                   appearance="outline"
                 >
-                  <mat-label>Default Put Away Quantity</mat-label>
+                  <mat-label data-automation-id="default-put-away-quantity-label">Default Put Away Quantity</mat-label>
                   <input
                     (input)="restrictTo10Digits()"
                     (focusout)="updatePreferences(1)"
@@ -464,7 +464,7 @@
                     (keydown.shift.enter)="$event.preventDefault()"
                     matInput
                     type="number"
-                    onKeyPress="if(this.value.length==10 || event.keyCode == 101 || event.keyCode == 43 || event.keyCode == 45 || event.keyCode == 69) return false;"
+                    onKeyPress="if(this.value.length==10 || event.keyCode == 101 || event.keyCode == 43 || event.keyCode == 45 || event.keyCode == 69) return false;" data-automation-id="default-put-away-quantity-input"
                   />
                 </mat-form-field>
               </div>
@@ -476,17 +476,17 @@
                   class="custom-form-field w-100 shorting"
                   appearance="outline"
                 >
-                <mat-label>Default Put Away Short Quantity</mat-label>
+                <mat-label data-automation-id="default-put-away-short-quantity-label">Default Put Away Short Quantity</mat-label>
                 <mat-select
                   formControlName="defaultPutAwayShortQuantity"
                   (selectionChange)="updatePreferences(1)"
                   [(ngModel)]="selectedOption"
-                  [disabled]="!isSplitShortPutAwayEnabled" 
+                  [disabled]="!isSplitShortPutAwayEnabled"  [attr.data-automation-id]="'default-put-away-short-quantity-select-' + selectedOption"
                 >
                   <ng-container *ngIf="isSplitShortPutAwayEnabled">
                     <mat-option
                       *ngFor="let st of defaultPutAwayShortQuantity"
-                      value="{{ st.id }}"
+                      value="{{ st.id }}"  [attr.data-automation-id]="'put-away-short-quantity-option-' + st.id"
                     >
                       {{ st.name }}
                     </mat-option>
@@ -503,11 +503,11 @@
       </mat-card>
     </mat-tab>
 
-    <mat-tab label="Print Settings">
+    <mat-tab label="Print Settings" data-automation-id="print-settings-tab">
       <mat-card class="mat-elevation-z g-card mt-3 mb-4 p-4">
         <mat-card-content>
           <div class="d-flex justify-content-between align-items-center mb-3">
-            <app-icon-heading-component heading="Print Settings" icon="print">
+            <app-icon-heading-component heading="Print Settings" icon="print" [automationId]="'print-settings-heading'">
             </app-icon-heading-component>
           </div>
 
@@ -515,92 +515,92 @@
             <div class="col-xl-4">
               <div class="gap-12 mb-2">
                 <div class="col-md-12 text-left admin-prefrences">
-                  <div class="d-flex justify-content-between mb-2">
+                  <div class="d-flex justify-content-between mb-2" data-automation-id="auto-print-cross-dock-label">
                     Auto Print Cross Dock Label:
                     <mat-slide-toggle
                       (change)="updatePreferences(0)"
                       formControlName="autoPrintCrossDockLabel"
-                      color="primary"
+                      color="primary" data-automation-id="auto-print-cross-dock-label-toggle"
                     ></mat-slide-toggle>
                   </div>
-                  <div class="d-flex justify-content-between mb-2">
+                  <div class="d-flex justify-content-between mb-2" data-automation-id="auto-print-pick-label">
                     Auto Print Pick Labels:
                     <mat-slide-toggle
                       (change)="updatePreferences(0)"
                       formControlName="autoPrintPickLabels"
-                      color="primary"
+                      color="primary" data-automation-id="auto-print-pick-labels-toggle"
                     ></mat-slide-toggle>
                   </div>
-                  <div class="d-flex justify-content-between mb-2">
+                  <div class="d-flex justify-content-between mb-2" data-automation-id="pick-labels-one-per-qty-label">
                     Pick Labels One Per Qty:
                     <mat-slide-toggle
                       (change)="updatePreferences(0)"
                       formControlName="pickLabelsOnePerQty"
-                      color="primary"
+                      color="primary"  data-automation-id="pick-labels-one-per-qty-toggle"
                     ></mat-slide-toggle>
                   </div>
-                  <div class="d-flex justify-content-between mb-2">
+                  <div class="d-flex justify-content-between mb-2" data-automation-id="auto-print-pick-tote-label">
                     Auto Print Pick Tote Labels:
                     <mat-slide-toggle
                       (change)="updatePreferences(0)"
                       formControlName="autoPrintPickToteLabels"
-                      color="primary"
+                      color="primary"  data-automation-id="auto-print-pick-tote-labels-toggle"
                     ></mat-slide-toggle>
                   </div>
-                  <div class="d-flex justify-content-between mb-2">
+                  <div class="d-flex justify-content-between mb-2" data-automation-id="auto-print-put-away-tote-label">
                     Auto Print Put Away Tote Labels:
                     <mat-slide-toggle
                       (change)="updatePreferences(0)"
                       formControlName="autoPrintPutAwayToteLabels"
-                      color="primary"
+                      color="primary" data-automation-id="auto-print-put-away-tote-labels-toggle"
                     ></mat-slide-toggle>
                   </div>
-                  <div class="d-flex justify-content-between mb-2">
+                  <div class="d-flex justify-content-between mb-2" data-automation-id="auto-print-off-carousel-pick-list-label">
                     Auto Print Off Carousel Pick List:
                     <mat-slide-toggle
                       (change)="updatePreferences(0)"
                       formControlName="autoPrintOffCarouselPickList"
-                      color="primary"
+                      color="primary" data-automation-id="auto-print-off-carousel-pick-list-toggle"
                     ></mat-slide-toggle>
                   </div>
-                  <div class="d-flex justify-content-between mb-2">
+                  <div class="d-flex justify-content-between mb-2" data-automation-id="auto-print-off-carousel-put-away-list-label">
                     Auto Print Off Carousel Put Away List:
                     <mat-slide-toggle
                       (change)="updatePreferences(0)"
                       formControlName="autoPrintOffCarouselPutAwayList"
-                      color="primary"
+                      color="primary" data-automation-id="auto-print-off-carousel-put-away-list-toggle"
                     ></mat-slide-toggle>
                   </div>
-                  <div class="d-flex justify-content-between mb-2">
+                  <div class="d-flex justify-content-between mb-2" data-automation-id="auto-print-put-away-labels-label">
                     Auto Print Put Away Label:
                     <mat-slide-toggle
                       (change)="updatePreferences(0)"
                       formControlName="autoPrintPutAwayLabels"
-                      color="primary"
+                      color="primary" data-automation-id="auto-print-put-away-labels-toggle"
                     ></mat-slide-toggle>
                   </div>
-                  <div class="d-flex justify-content-between mb-2">
+                  <div class="d-flex justify-content-between mb-2" data-automation-id="request-number-of-put-away-labels-label">
                     Request Number Of Put Away Labels:
                     <mat-slide-toggle
                       (change)="updatePreferences(0)"
                       formControlName="requestNumberOfPutAwayLabels"
-                      color="primary"
+                      color="primary" data-automation-id="request-number-of-put-away-labels-toggle"
                     ></mat-slide-toggle>
                   </div>
-                  <div class="d-flex justify-content-between mb-2">
+                  <div class="d-flex justify-content-between mb-2" data-automation-id="auto-print-pick-batch-list-label">
                     Auto Print Pick Batch List:
                     <mat-slide-toggle
                       (change)="updatePreferences(0)"
                       formControlName="autoPrintPickBatchList"
-                      color="primary"
+                      color="primary" data-automation-id="auto-print-pick-batch-list-toggle"
                     ></mat-slide-toggle>
                   </div>
-                  <div class="d-flex justify-content-between mb-2">
+                  <div class="d-flex justify-content-between mb-2" data-automation-id="print-directly-to-printer-label">
                     Print Directly to Printer:
                     <mat-slide-toggle
                       (change)="updatePreferences(0)"
                       formControlName="printDirectly"
-                      color="primary"
+                      color="primary" data-automation-id="print-directly-to-printer-toggle"
                     ></mat-slide-toggle>
                   </div>
                 </div>
@@ -615,7 +615,7 @@
                   class="custom-form-field w-100"
                   appearance="outline"
                 >
-                  <mat-label>Max Number of Put Away Labels</mat-label>
+                  <mat-label data-automation-id="max-number-put-away-labels-label">Max Number of Put Away Labels</mat-label>
                   <input
                     (focusout)="updatePreferences(0)"
                     #maxNumber
@@ -625,7 +625,7 @@
                     matInput
                     type="number"
                     [NumbersOnly]="true"
-                    onKeypress="if(this.value.length == 309 ||  event.keyCode == 101 || event.keyCode == 43 || event.keyCode == 45 || event.keyCode == 69) return false;"
+                    onKeypress="if(this.value.length == 309 ||  event.keyCode == 101 || event.keyCode == 43 || event.keyCode == 45 || event.keyCode == 69) return false;" data-automation-id="max-number-put-away-labels-input"
                   />
                 </mat-form-field>
               </div>
@@ -635,13 +635,13 @@
       </mat-card>
     </mat-tab>
 
-    <mat-tab label="Misc Setup">
+    <mat-tab label="Misc Setup" data-automation-id="misc-setup-tab">
       <mat-card class="mat-elevation-z g-card mt-3 mb-4 p-4">
         <mat-card-content>
           <div class="d-flex justify-content-between align-items-center mb-3">
             <app-icon-heading-component
               heading="Misc Setup"
-              icon="perm_data_setting"
+              icon="perm_data_setting" [automationId]="'misc-setup-heading'"
             >
             </app-icon-heading-component>
           </div>
@@ -649,12 +649,12 @@
           <div class="row align-items-center">
             <div class="col-xl-4">
               <div class="d-flex justify-content-between mb-3">
-                <span>Track Induction Location:</span>
+                <span data-automation-id="track-induction-location-label">Track Induction Location:</span>
                 <mat-slide-toggle
                   (change)="updatePreferences(3, $event)"
                   formControlName="trackInductionLocation"
                   checked
-                  color="primary"
+                  color="primary" data-automation-id="track-induction-location-toggle"
                 ></mat-slide-toggle>
               </div>
             </div>
@@ -665,12 +665,12 @@
                   class="custom-form-field w-100 mb-3"
                   appearance="outline"
                 >
-                  <mat-label class="pe-2">Induction Location:</mat-label>
+                  <mat-label class="pe-2" data-automation-id="induction-location-label">Induction Location:</mat-label>
                   <input
                     (change)="updatePreferences(3)"
                     formControlName="inductionLocation"
                     type="text"
-                    matInput
+                    matInput data-automation-id="induction-location-input"
                   />
                 </mat-form-field>
               </div>
@@ -685,7 +685,7 @@
                   class="btn-regular w-100"
                   (click)="getCompName()"
                   [disabled]="trackIndIsDisable"
-                  color="primary"
+                  color="primary" data-automation-id="use-computer-name-button"
                 >
                   Use Computer Name
                 </button>
@@ -696,12 +696,12 @@
           <div class="row align-items-center">
             <div class="col-xl-4">
               <div class="d-flex justify-content-between mb-3">
-                <span>Stage Using BulkPro:</span>
+                <span data-automation-id="stage-using-bulkpro-label">Stage Using BulkPro:</span>
                 <mat-slide-toggle
                   (change)="updatePreferences(3)"
                   formControlName="stageUsingBulk"
                   checked
-                  color="primary"
+                  color="primary" data-automation-id="stage-using-bulkpro-toggle"
                 ></mat-slide-toggle>
               </div>
             </div>
@@ -710,14 +710,14 @@
               <div class="d-flex align-items-center justify-content-between">
                 <mat-form-field
                   class="custom-form-field w-100 mb-3"
-                  appearance="outline"
+                  appearance="outline" data-automation-id="stage-velocity-code-field"
                 >
-                  <mat-label class="pe-2">Stage Velocity Code:</mat-label>
+                  <mat-label class="pe-2" data-automation-id="stage-velocity-code-label">Stage Velocity Code:</mat-label>
                   <input
                     (change)="updatePreferences(3)"
                     formControlName="stageVelocityCode"
                     type="text"
-                    matInput
+                    matInput data-automation-id="stage-velocity-code-input"
                   />
                 </mat-form-field>
               </div>
@@ -727,12 +727,12 @@
           <div class="row align-items-center">
             <div class="col-xl-4">
               <div class="d-flex justify-content-between mb-3">
-                <span>Confirm Super Batch:</span>
+                <span data-automation-id="confirm-super-batch-label">Confirm Super Batch:</span>
                 <mat-slide-toggle
                   (change)="updatePreferences(3)"
                   formControlName="confirmSuperBatch"
                   checked
-                  color="primary"
+                  color="primary" data-automation-id="confirm-super-batch-toggle"
                 ></mat-slide-toggle>
               </div>
             </div>
@@ -743,13 +743,13 @@
                   class="custom-form-field w-100 mb-3"
                   appearance="outline"
                 >
-                  <mat-label class="pe-2">Default Super Batch Size:</mat-label>
+                  <mat-label class="pe-2" data-automation-id="default-super-batch-size-label">Default Super Batch Size:</mat-label>
                   <input
                     (change)="updatePreferences(3)"
                     formControlName="defaultSuperBatchSize"
                     type="number"
                     [NumbersOnly]="true"
-                    matInput
+                    matInput data-automation-id="default-super-batch-size-input"
                   />
                 </mat-form-field>
               </div>
@@ -759,19 +759,19 @@
           <div class="row align-items-center">
             <div class="col-xl-4">
               <div class="align-items-center justify-content-between">
-                <h4 class="text-16 mb-3"><b>Super Batch Filter:</b></h4>
+                <h4 class="text-16 mb-3" data-automation-id="super-batch-filter-heading"><b>Super Batch Filter:</b></h4>
                 <mat-form-field
                   class="custom-form-field w-100 mb-3"
                   appearance="outline"
                 >
-                  <mat-label>Default Filter:</mat-label>
+                  <mat-label data-automation-id="default-super-batch-filter-label">Default Filter:</mat-label>
                   <mat-select
                     formControlName="superBatchFilter"
-                    (selectionChange)="updatePreferences(3)"
+                    (selectionChange)="updatePreferences(3)" [attr.data-automation-id]="'super-batch-filter-select-' + preferencesForm.value.superBatchFilter"
                   >
                     <mat-option
                       *ngFor="let is of superBatchFilterList"
-                      value="{{ is.id }}"
+                      value="{{ is.id }}" [attr.data-automation-id]="'super-batch-filter-option-' + is.id"
                     >
                       {{ is.name }}
                     </mat-option>
@@ -789,18 +789,18 @@
       </mat-card>
     </mat-tab>
 
-    <mat-tab label="Reel Tracking">
+    <mat-tab label="Reel Tracking" data-automation-id="reel-tracking-tab">
       <mat-card class="mat-elevation-z g-card mt-3 mb-4 p-4">
         <mat-card-content>
           <div class="d-flex justify-content-between align-items-center mb-3">
-            <h2 class="card-header-title mb-3 d-flex align-items-center">
+            <h2 class="card-header-title mb-3 d-flex align-items-center" data-automation-id="reel-tracking-heading">
               <div class="mat-icon-wrap me-lg-3 m-2">
-                <span class="material-symbols-outlined"> timeline </span>
+                <span class="material-symbols-outlined" data-automation-id="timeline-icon"> timeline </span>
               </div>
-              <span>Reel Tracking</span>
+              <span data-automation-id="reel-tracking-title">Reel Tracking</span>
             </h2>
           </div>
-          <p class="bold px-2 mb-3">
+          <p class="bold px-2 mb-3" data-automation-id="reel-tracking-description">
             Enter text into any field below to have it inserted into the "Pick"
             transaction that is automatically created when a Return To Stock
             (RTS) of a "Reel Tracking" item is below the "Minimum RTS Reel
@@ -813,12 +813,12 @@
                 class="custom-form-field w-100 mb-3"
                 appearance="outline"
               >
-              <mat-label replacePlaceholder [replacePlaceHolder]="placeholders.userField1" [fallbackPlaceHolder]="placeholders.userField1Fallback"> {{UserField1}} </mat-label>
+              <mat-label replacePlaceholder [replacePlaceHolder]="placeholders.userField1" [fallbackPlaceHolder]="placeholders.userField1Fallback" [attr.data-automation-id]="'user-field-1-label-'+UserField1"> {{UserField1}} </mat-label>
                 <input
                   (change)="updatePreferences(2)"
                   formControlName="userField1"
                   matInput
-                  type="text"
+                  type="text" data-automation-id="user-field-1-input"
                 />
               </mat-form-field>
             </div>
@@ -827,12 +827,12 @@
                 class="custom-form-field w-100 mb-3"
                 appearance="outline"
               >
-                <mat-label replacePlaceholder [replacePlaceHolder]="placeholders.userField2" [fallbackPlaceHolder]="placeholders.userField2Fallback"> {{UserField2}} </mat-label>
+                <mat-label replacePlaceholder [replacePlaceHolder]="placeholders.userField2" [fallbackPlaceHolder]="placeholders.userField2Fallback" [attr.data-automation-id]="'user-field-2-label-'+UserField2"> {{UserField2}} </mat-label>
                 <input
                   (change)="updatePreferences(2)"
                   formControlName="userField2"
                   matInput
-                  type="text"
+                  type="text" data-automation-id="user-field-2-input"
                 />
               </mat-form-field>
             </div>
@@ -841,12 +841,12 @@
                 class="custom-form-field w-100 mb-3"
                 appearance="outline"
               >
-                <mat-label replacePlaceholder [replacePlaceHolder]="placeholders.userField3" [fallbackPlaceHolder]="placeholders.userField3Fallback"> {{UserField3}} </mat-label>
+                <mat-label replacePlaceholder [replacePlaceHolder]="placeholders.userField3" [fallbackPlaceHolder]="placeholders.userField3Fallback" [attr.data-automation-id]="'user-field-3-label-'+UserField3  "> {{UserField3}} </mat-label>
                 <input
                   (change)="updatePreferences(2)"
                   formControlName="userField3"
                   matInput
-                  type="text"
+                  type="text" data-automation-id="user-field-3-input"
                 />
               </mat-form-field>
             </div>
@@ -855,12 +855,12 @@
                 class="custom-form-field w-100 mb-3"
                 appearance="outline"
               >
-                <mat-label replacePlaceholder [replacePlaceHolder]="placeholders.userField4" [fallbackPlaceHolder]="placeholders.userField4Fallback"> {{UserField4}} </mat-label>
+                <mat-label replacePlaceholder [replacePlaceHolder]="placeholders.userField4" [fallbackPlaceHolder]="placeholders.userField4Fallback" [attr.data-automation-id]="'user-field-4-label-'+UserField4  "> {{UserField4}} </mat-label>
                 <input
                   (change)="updatePreferences(2)"
                   formControlName="userField4"
                   matInput
-                  type="text"
+                  type="text" data-automation-id="user-field-4-input"
                 />
               </mat-form-field>
             </div>
@@ -869,12 +869,12 @@
                 class="custom-form-field w-100 mb-3"
                 appearance="outline"
               >
-                <mat-label replacePlaceholder [replacePlaceHolder]="placeholders.userField5" [fallbackPlaceHolder]="placeholders.userField5Fallback"> {{UserField5}} </mat-label>
+                <mat-label replacePlaceholder [replacePlaceHolder]="placeholders.userField5" [fallbackPlaceHolder]="placeholders.userField5Fallback" [attr.data-automation-id]="'user-field-5-label-'+UserField5    "> {{UserField5}} </mat-label>
                 <input
                   (change)="updatePreferences(2)"
                   formControlName="userField5"
                   matInput
-                  type="text"
+                  type="text" data-automation-id="user-field-5-input"
                 />
               </mat-form-field>
             </div>
@@ -883,12 +883,12 @@
                 class="custom-form-field w-100 mb-3"
                 appearance="outline"
               >
-                <mat-label replacePlaceholder [replacePlaceHolder]="placeholders.userField6" [fallbackPlaceHolder]="placeholders.userField6Fallback"> {{UserField6}} </mat-label>
+                <mat-label replacePlaceholder [replacePlaceHolder]="placeholders.userField6" [fallbackPlaceHolder]="placeholders.userField6Fallback" [attr.data-automation-id]="'user-field-6-label-'+UserField6  "> {{UserField6}} </mat-label>
                 <input
                   (change)="updatePreferences(2)"
                   formControlName="userField6"
                   matInput
-                  type="text"
+                  type="text" data-automation-id="user-field-6-input"
                 />
               </mat-form-field>
             </div>
@@ -897,12 +897,12 @@
                 class="custom-form-field w-100 mb-3"
                 appearance="outline"
               >
-                <mat-label replacePlaceholder [replacePlaceHolder]="placeholders.userField7" [fallbackPlaceHolder]="placeholders.userField7Fallback"> {{UserField7}} </mat-label>
+                <mat-label replacePlaceholder [replacePlaceHolder]="placeholders.userField7" [fallbackPlaceHolder]="placeholders.userField7Fallback" [attr.data-automation-id]="'user-field-7-label-'+UserField7    "> {{UserField7}} </mat-label>
                 <input
                   (change)="updatePreferences(2)"
                   formControlName="userField7"
                   matInput
-                  type="text"
+                  type="text" data-automation-id="user-field-7-input"
                 />
               </mat-form-field>
             </div>
@@ -911,12 +911,12 @@
                 class="custom-form-field w-100 mb-3"
                 appearance="outline"
               >
-                <mat-label replacePlaceholder [replacePlaceHolder]="placeholders.userField8" [fallbackPlaceHolder]="placeholders.userField8Fallback"> {{UserField8}} </mat-label>
+                <mat-label replacePlaceholder [replacePlaceHolder]="placeholders.userField8" [fallbackPlaceHolder]="placeholders.userField8Fallback" [attr.data-automation-id]="'user-field-8-label-'+UserField8    "> {{UserField8}} </mat-label>
                 <input
                   (change)="updatePreferences(2)"
                   formControlName="userField8"
                   matInput
-                  type="text"
+                  type="text"  data-automation-id="user-field-8-input"
                 />
               </mat-form-field>
             </div>
@@ -925,12 +925,12 @@
                 class="custom-form-field w-100 mb-3"
                 appearance="outline"
               >
-                <mat-label replacePlaceholder [replacePlaceHolder]="placeholders.userField9" [fallbackPlaceHolder]="placeholders.userField9Fallback"> {{UserField9}} </mat-label>
+                <mat-label replacePlaceholder [replacePlaceHolder]="placeholders.userField9" [fallbackPlaceHolder]="placeholders.userField9Fallback" [attr.data-automation-id]="'user-field-9-label-'+UserField9"> {{UserField9}} </mat-label>
                 <input
                   (change)="updatePreferences(2)"
                   formControlName="userField9"
                   matInput
-                  type="text"
+                  type="text" data-automation-id="user-field-9-input"
                 />
               </mat-form-field>
             </div>
@@ -939,12 +939,12 @@
                 class="custom-form-field w-100 mb-3"
                 appearance="outline"
               >
-                <mat-label replacePlaceholder [replacePlaceHolder]="placeholders.userField10" [fallbackPlaceHolder]="placeholders.userField10Fallback"> {{UserField10}} </mat-label>
+                <mat-label replacePlaceholder [replacePlaceHolder]="placeholders.userField10" [fallbackPlaceHolder]="placeholders.userField10Fallback" [attr.data-automation-id]="'user-field-10-label-'+UserField10"> {{UserField10}} </mat-label>
                 <input
                   (change)="updatePreferences(2)"
                   formControlName="userField10"
                   matInput
-                  type="text"
+                  type="text" data-automation-id="user-field-10-input"
                 />
               </mat-form-field>
             </div>
@@ -953,12 +953,12 @@
                 class="custom-form-field w-100 mb-3"
                 appearance="outline"
               >
-                <mat-label>Order Number Prefix</mat-label>
+                <mat-label data-automation-id="order-no-prefix-label">Order Number Prefix</mat-label>
                 <input
                   (change)="updatePreferences(2)"
                   formControlName="orderNoPrefix"
                   matInput
-                  type="text"
+                  type="text" data-automation-id="order-no-prefix-input"
                 />
               </mat-form-field>
             </div>
@@ -967,15 +967,15 @@
       </mat-card>
     </mat-tab>
 
-    <mat-tab label="Pick Tote Induction Settings">
+    <mat-tab label="Pick Tote Induction Settings" data-automation-id="pick-tote-induction-tab">
       <mat-card class="mat-elevation-z g-card mt-3 mb-4 p-4">
         <mat-card-content>
           <div class="mb-3">
-            <h2 class="card-header-title mb-3 d-flex align-items-center">
+            <h2 class="card-header-title mb-3 d-flex align-items-center" data-automation-id="pick-tote-induction-heading">
               <div class="mat-icon-wrap me-lg-3 m-2">
                 <span class="material-symbols-outlined">conveyor_belt</span>
               </div>
-              <span>Pick Tote Induction</span>
+              <span data-automation-id="pick-tote-induction-heading">Pick Tote Induction</span>
             </h2>
           </div>
 
@@ -985,12 +985,12 @@
                 class="custom-form-field w-100 mb-3"
                 appearance="outline"
               >
-                <mat-label class="pe-2">Max Quantity per Tote (Non-Super Batch):</mat-label>
+                <mat-label class="pe-2" data-automation-id="max-qty-per-tote-label">Max Quantity per Tote (Non-Super Batch):</mat-label>
                 <input
                   type="text"
                   (change)="updatePreferences(1)"
                   matInput
-                  formControlName="maximumQtyPerTote"
+                  formControlName="maximumQtyPerTote" data-automation-id="max-qty-per-tote-input"
                 />
               </mat-form-field>
             </div>
@@ -1002,12 +1002,12 @@
                 class="custom-form-field w-100 mb-3"
                 appearance="outline"
               >
-                <mat-label class="pe-2">Max Quantity per Tote (Super Batch):</mat-label>
+                <mat-label class="pe-2" data-automation-id="sb-max-qty-per-tote-label">Max Quantity per Tote (Super Batch):</mat-label>
                 <input
                   type="text"
                   (change)="updatePreferences(1)"
                   matInput
-                  formControlName="sbMaximumQtyPerTote"
+                  formControlName="sbMaximumQtyPerTote" data-automation-id="sb-max-qty-per-tote-input"
                 />
               </mat-form-field>
             </div>
@@ -1019,14 +1019,15 @@
                 class="custom-form-field w-100"
                 appearance="outline"
               >
-                <mat-label>Default Zone Group</mat-label>
+                <mat-label data-automation-id="default-zone-group-label">Default Zone Group</mat-label>
                 <mat-select
                   formControlName="defaultZoneGroup"
                   (selectionChange)="updatePreferences(1)"
+                  [attr.data-automation-id]="'default-zone-group-select-' + preferencesForm.value.defaultZoneGroup"
                 >
                   <mat-option
                     *ngFor="let ss of zoneGroupingsList"
-                    value="{{ ss.id }}"
+                    value="{{ ss.id }}" [attr.data-automation-id]="'zone-group-option-' + ss.id"
                   >
                     {{ ss.name }}
                   </mat-option>
@@ -1038,12 +1039,12 @@
             </div>
           </div>
           <div class="row mb-3">
-            <div class="col-4 d-flex justify-content-between mb-2">
+            <div class="col-4 d-flex justify-content-between mb-2" data-automation-id="display-toast-messages-label">
               Display Toast Messages 
               <mat-slide-toggle
                 (change)="updatePreferences(1)"
                 formControlName="pickToteSuppressInfoMessages"
-                color="primary"
+                color="primary" data-automation-id="display-toast-messages-toggle"
               ></mat-slide-toggle>
             </div>
           </div>
@@ -1053,7 +1054,7 @@
                 mat-stroked-button
                 class="btn-regular w-100 mb-2"
                 color="primary"
-                (click)="openPickToteInductionFilter()"
+                (click)="openPickToteInductionFilter()" data-automation-id="pick-tote-induction-filter-button"
               >
                 <mat-label>Pick Tote Induction Filter</mat-label>
               </button>
@@ -1065,9 +1066,9 @@
                 mat-stroked-button
                 class="btn-regular w-100 mb-2"
                 color="primary"
-                (click)="openZoneGroups()"
+                (click)="openZoneGroups()" data-automation-id="zone-groups-button"
               >
-                <mat-label>Pick Tote Induction Zone Groups</mat-label>
+                <mat-label data-automation-id="pick-tote-induction-zone-groups-label">Pick Tote Induction Zone Groups</mat-label>
               </button>
             </div>
           </div>

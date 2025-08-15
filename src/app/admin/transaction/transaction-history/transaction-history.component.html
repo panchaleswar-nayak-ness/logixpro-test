@@ -1,13 +1,13 @@
-<div class="container-fluid p-0 mt-2 h-auto">
+<div class="container-fluid p-0 mt-2 h-auto" data-automation-id="container-transaction-history">
     <div class="container-fluid p-0">
     <div class="row">
       <div class="col-12">
-        <app-transaction-history-filters  (resetDates)="resetDate($event)" (startDate)="startDateChange($event)"  (endDate)="endDateChange($event)"  (orderNo)="orderNoChange($event)" (clearData)="onClearFromStatus($event)" (cleanFilter)="clearFilter($event)"></app-transaction-history-filters>
+        <app-transaction-history-filters  (resetDates)="resetDate($event)" (startDate)="startDateChange($event)"  (endDate)="endDateChange($event)"  (orderNo)="orderNoChange($event)" (clearData)="onClearFromStatus($event)" (cleanFilter)="clearFilter($event)" data-automation-id="transaction-history-filters"></app-transaction-history-filters>
       </div>
       </div>
       <div class="row">
         <div class="col-12">
-        <app-transaction-history-list [tabIndex]="tabIndex" [resetEvent]="resetDateEvent"  [startDateEvent]="startDateEvent" [endDateEvent]="endDateEvent" [orderNoEvent]="orderNoEvent"  [clearEvent]="clearEvent" [cleanFilter]="cleanFilter"></app-transaction-history-list>
+        <app-transaction-history-list [tabIndex]="tabIndex" [resetEvent]="resetDateEvent"  [startDateEvent]="startDateEvent" [endDateEvent]="endDateEvent" [orderNoEvent]="orderNoEvent"  [clearEvent]="clearEvent" [cleanFilter]="cleanFilter" data-automation-id="transaction-history-list"></app-transaction-history-list>
       </div>
       </div>
   </div>

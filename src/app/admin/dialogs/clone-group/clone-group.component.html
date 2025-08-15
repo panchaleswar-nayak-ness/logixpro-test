@@ -1,22 +1,22 @@
 <div class="d-flex justify-content-between mb-4 align-items-center">
     <div  class="clone-width" ></div>
-<h1 class="m-0" mat-dialog-title>Clone Group</h1>
-<button mat-icon-button class="close-button dialog-close-button-fix" [mat-dialog-close]="true">
-    <mat-icon class="close-icon">close</mat-icon>
+<h1 class="m-0" mat-dialog-title data-automation-id="clonegrp-title">Clone Group</h1>
+<button mat-icon-button class="close-button dialog-close-button-fix" [mat-dialog-close]="true" data-automation-id="clonegrp-close-btn">
+    <mat-icon class="close-icon" data-automation-id="clonegrp-close-icon">close</mat-icon>
 </button>
 </div>
 <div>
 
-        <form [formGroup]="cloneForm" (ngSubmit)="onSend(cloneForm)">
+        <form [formGroup]="cloneForm" (ngSubmit)="onSend(cloneForm)" data-automation-id="clonegrp-form">
 
-            <mat-form-field class="mb-3 w-100" appearance="outline">
-                <mat-label>New Group Name</mat-label>
-                <input #grp_name matInput type="text" maxlength="50" formControlName="group_name" >
+            <mat-form-field class="mb-3 w-100" appearance="outline" data-automation-id="clonegrp-name-ff">
+                <mat-label data-automation-id="clonegrp-name-lbl">New Group Name</mat-label>
+                <input #grp_name matInput type="text" maxlength="50" formControlName="group_name" data-automation-id="clonegrp-name-inp">
               </mat-form-field>
-            <div class="error" *ngIf="hasError('group_name', 'required')">This field is required.</div>
+            <div class="error" *ngIf="hasError('group_name', 'required')" data-automation-id="clonegrp-name-required-err">This field is required.</div>
             <mat-dialog-actions align="end" class="m-0">
                 <button type="submit" mat-flat-button class="form-button-submit btn-lg w-100" color="primary"
-                    [disabled]="!cloneForm.valid">Submit</button>
+                    [disabled]="!cloneForm.valid" data-automation-id="clonegrp-submit-btn">Submit</button>
             </mat-dialog-actions>
 
         </form>
