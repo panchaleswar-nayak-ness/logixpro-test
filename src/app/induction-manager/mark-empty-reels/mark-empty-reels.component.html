@@ -4,7 +4,7 @@
             <mat-card-content>
 
                 <div class="d-flex justify-content-between align-items-center mb-3">
-                    <app-icon-heading-component heading="Mark Reels As Empty" icon="edit_attributes">
+                    <app-icon-heading-component heading="Mark Reels As Empty" icon="edit_attributes" [automationId]="'heading-mark-reels-empty'">
                     </app-icon-heading-component>
                 </div>
                 <ng-container *ngIf="itemInvalid || itemEmpty">
@@ -17,16 +17,16 @@
         
                     <div class="col-xl-4">
                         <mat-form-field class="custom-form-field w-100 __grab_cursor mb-3" appearance="outline">
-                            <mat-label>Scan Serial Number</mat-label>
-                            <input matInput (keydown.enter)="scanSerialEvent()" [(ngModel)]="scanSerial"  #autoFocusField>
-                            <button matSuffix *ngIf="scanSerial" class="clear-btn" (click)=" scanSerial='' " ><mat-icon class="text-20 text-chrome-600">cancel</mat-icon></button>  
+                            <mat-label data-automation-id="label-scan-serial-number">Scan Serial Number</mat-label>
+                            <input matInput (keydown.enter)="scanSerialEvent()" [(ngModel)]="scanSerial"  #autoFocusField data-automation-id="input-scan-serial-number">
+                            <button matSuffix *ngIf="scanSerial" class="clear-btn" (click)=" scanSerial='' " data-automation-id="button-clear"><mat-icon class="text-20 text-chrome-600">cancel</mat-icon></button>  
 
                         </mat-form-field>
                     </div>
                     <div class="col-xl-4">
-                        <mat-form-field class="custom-form-field w-100 __grab_cursor mb-3" appearance="outline">
-                            <mat-label>Last Scanned Serial Number</mat-label>
-                            <input matInput [(ngModel)]="lastScanned" disabled>
+                        <mat-form-field class="custom-form-field w-100 __grab_cursor mb-3" appearance="outline" data-automation-id="form-field-last-scanned-serial-number">
+                            <mat-label data-automation-id="label-last-scanned-serial-number">Last Scanned Serial Number</mat-label>
+                            <input matInput [(ngModel)]="lastScanned" disabled data-automation-id="input-last-scanned-serial-number">
                         </mat-form-field>
                     </div>
 
@@ -35,20 +35,20 @@
                 <div class="card br-14 table-responsive borderless">
                     <ng-scrollbar class="mat-table-scrollbar ngScrolbar-style" track="all">
   
-                      <table class="w-100 table-borderless" mat-table matSort [dataSource]="scannedSerialList" matSort >
+                      <table class="w-100 table-borderless" mat-table matSort [dataSource]="scannedSerialList" matSort data-automation-id="table-mark-empty-reels">
                         <ng-container matColumnDef="scannedserialnumbers">
-                          <th mat-header-cell *matHeaderCellDef mat-sort-header> Scanned Serial Numbers </th>
-                          <td mat-cell *matCellDef="let element">{{element.scannedserialnumbers}}</td>
+                          <th mat-header-cell *matHeaderCellDef mat-sort-header data-automation-id="th-scanned-serial-numbers"> Scanned Serial Numbers </th>
+                          <td mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'td-scanned-serial-numbers-' + i ">{{element.scannedserialnumbers}}</td>
                           
                         </ng-container>
 
                         <ng-container matColumnDef="actions" StickyEnd>
-                            <th  width="10%" class="text-right" mat-header-cell *matHeaderCellDef>
+                            <th  width="10%" class="text-right" mat-header-cell *matHeaderCellDef data-automation-id="th-actions">
                                 Action
                             </th>
-                            <td mat-cell *matCellDef="let element; let i = index" width="10%" class="text-right">
+                            <td mat-cell *matCellDef="let element; let i = index" width="10%" class="text-right" [attr.data-automation-id]="'td-action-' + i">
                                 <button class="me-1" mat-icon-button aria-label="Delete" matTooltip="Remove" (click)="removeRow(i,element)"
-                                    matTooltipPosition="above">
+                                    matTooltipPosition="above" [attr.data-automation-id]="'button-remove-row-' + i">
                                     <mat-icon class="icon-circle-cancel">close</mat-icon>
                                 </button>
                             </td>
@@ -65,6 +65,6 @@
     </div>
 
     <div>
-        <button type="submit" [disabled]="scannedSerialList.data.length<=0" mat-flat-button class="btn-lg w-100" (click)="markReelAsEmpty()" color="warn">Mark Reel As Empty</button>
+        <button type="submit" [disabled]="scannedSerialList.data.length<=0" mat-flat-button class="btn-lg w-100" (click)="markReelAsEmpty()" color="warn" data-automation-id="button-mark-reel-as-empty">Mark Reel As Empty</button>
     </div>
     </div>

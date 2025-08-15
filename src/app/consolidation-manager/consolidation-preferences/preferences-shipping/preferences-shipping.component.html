@@ -1,10 +1,10 @@
-<mat-card class="mat-elevation-z g-card mt-2 mb-3">
-    <div class="mb-2">
-        <div class="col-xl-12 d-xl-flex justify-content-between">
-            <app-icon-heading-component heading="Preferences" icon="stacked_bar_chart">
+<mat-card class="mat-elevation-z g-card mt-2 mb-3" data-automation-id="preferences-shipping-card">
+    <div class="mb-2" data-automation-id="preferences-shipping-header">
+        <div class="col-xl-12 d-xl-flex justify-content-between" data-automation-id="preferences-shipping-header-row">
+            <app-icon-heading-component heading="Preferences" icon="stacked_bar_chart" [automationId]="'preferences-shipping-heading'">
             </app-icon-heading-component>
-            <div class="d-flex d-xl-block gap-12 justify-content-end">
-                <button mat-flat-button color="primary" class="float-end btn-md flex-grow-1" (click)="openCarrier()">
+            <div class="d-flex d-xl-block gap-12 justify-content-end" data-automation-id="preferences-shipping-actions">
+                <button mat-flat-button color="primary" class="float-end btn-md flex-grow-1" (click)="openCarrier()" data-automation-id="carriers-button">
                     Carriers
                 </button>
 
@@ -12,81 +12,81 @@
         </div>
     </div>
 
-    <form [formGroup]="shippingForm">
-        <div class="row pb-2">
-            <div class="col-xl-6">
-                <div class="card">
-                <p class="text-tertiary-800 bold p-3 mb-0"> Choose the desired Consolidation options for your business.
+    <form [formGroup]="shippingForm" data-automation-id="preferences-shipping-form">
+        <div class="row pb-2" data-automation-id="preferences-shipping-content-row">
+            <div class="col-xl-6" data-automation-id="consolidation-options-container">
+                <div class="card" data-automation-id="consolidation-options-card">
+                <p class="text-tertiary-800 bold p-3 mb-0" data-automation-id="consolidation-options-description"> Choose the desired Consolidation options for your business.
                 </p>
-                <ng-scrollbar class="h-350" style="height: 60vh;">
-                    <div class="ps-3 pe-4">
-                <div class="d-xl-flex gap-12 mb-2 pb-5">
-                    <div class="col-xl-12 text-left admin-prefrences py-2 ps-1">
-                        <div class="border-b-1 border-color-tertiary-10 py-2">
-                        <div class="d-flex justify-content-between text-tertiary-900">
+                <ng-scrollbar class="h-350" style="height: 60vh;" data-automation-id="consolidation-options-scrollbar">
+                    <div class="ps-3 pe-4" data-automation-id="consolidation-options-content">
+                <div class="d-xl-flex gap-12 mb-2 pb-5" data-automation-id="consolidation-options-section">
+                    <div class="col-xl-12 text-left admin-prefrences py-2 ps-1" data-automation-id="consolidation-options-form">
+                        <div class="border-b-1 border-color-tertiary-10 py-2" data-automation-id="allow-shipping-container">
+                        <div class="d-flex justify-content-between text-tertiary-900" data-automation-id="allow-shipping-row">
                             Allow Shipping: <mat-slide-toggle formControlName="allowShip" checked class="primary"
-                                color="primary" (change)="toggleAllowShip()" matTooltip=""></mat-slide-toggle>
+                                color="primary" (change)="toggleAllowShip()" matTooltip="" data-automation-id="allow-shipping-toggle"></mat-slide-toggle>
                         </div>
                         </div>
-                        <div class=" text-left admin-prefrences">
-                            <div class="border-b-1 border-color-tertiary-10 py-2">
-                            <div class="d-flex justify-content-between text-tertiary-900">
+                        <div class=" text-left admin-prefrences" data-automation-id="packing-options-section">
+                            <div class="border-b-1 border-color-tertiary-10 py-2" data-automation-id="allow-packing-container">
+                            <div class="d-flex justify-content-between text-tertiary-900" data-automation-id="allow-packing-row">
                                 Allow Packing: <mat-slide-toggle checked class="primary" color="primary"
                                     (change)="toggleAllowPackage()" formControlName="allowPack"
-                                    matTooltip=""></mat-slide-toggle>
+                                    matTooltip="" data-automation-id="allow-packing-toggle"></mat-slide-toggle>
                             </div>
                             </div>
-                            <ng-container *ngIf="selectionPacking">
-                                <div class="border-b-1 border-color-tertiary-10 py-2">
-                                <div class="d-flex justify-content-between text-tertiary-900">
+                            <ng-container *ngIf="selectionPacking" data-automation-id="confirm-packing-section">
+                                <div class="border-b-1 border-color-tertiary-10 py-2" data-automation-id="confirm-packing-container">
+                                <div class="d-flex justify-content-between text-tertiary-900" data-automation-id="confirm-packing-row">
                                     Confirm and Packing: <mat-slide-toggle (change)="toggleConfirmPackage()"
                                         formControlName="confirmPack" checked color="primary"
-                                        matTooltip=""></mat-slide-toggle>
+                                        matTooltip="" data-automation-id="confirm-packing-toggle"></mat-slide-toggle>
                                 </div>
                                 </div>
                             </ng-container>
-                            <ng-container *ngIf="selectionConfirmPacking">
-                                <div class="border-b-1 border-color-tertiary-10 py-2">
-                                <div class="d-flex justify-content-between text-tertiary-900">
+                            <ng-container *ngIf="selectionConfirmPacking" data-automation-id="auto-print-section">
+                                <div class="border-b-1 border-color-tertiary-10 py-2" data-automation-id="auto-print-container-pl-container">
+                                <div class="d-flex justify-content-between text-tertiary-900" data-automation-id="auto-print-container-pl-row">
                                     Auto Print Container PL: <mat-slide-toggle (change)="saveShippingPreferences()"
                                         formControlName="printCont" checked color="primary"
-                                        matTooltip=""></mat-slide-toggle>
+                                        matTooltip="" data-automation-id="auto-print-container-pl-toggle"></mat-slide-toggle>
                                 </div>
                                 </div>
-                                <div class="border-b-1 border-color-tertiary-10 py-2">
-                                <div class="d-flex justify-content-between text-tertiary-900">
+                                <div class="border-b-1 border-color-tertiary-10 py-2" data-automation-id="auto-print-order-pl-container">
+                                <div class="d-flex justify-content-between text-tertiary-900" data-automation-id="auto-print-order-pl-row">
                                     Auto Print Order PL: <mat-slide-toggle (change)="saveShippingPreferences()"
-                                        formControlName="printOrd" checked color="primary" matTooltip=""></mat-slide-toggle>
+                                        formControlName="printOrd" checked color="primary" matTooltip="" data-automation-id="auto-print-order-pl-toggle"></mat-slide-toggle>
                                 </div>
                                 </div>
-                                <div class="border-b-1 border-color-tertiary-10 py-2">
-                                <div class="d-flex justify-content-between text-tertiary-900">
+                                <div class="border-b-1 border-color-tertiary-10 py-2" data-automation-id="auto-print-container-label-container">
+                                <div class="d-flex justify-content-between text-tertiary-900" data-automation-id="auto-print-container-label-row">
                                     Auto Print Container Label: <mat-slide-toggle (change)="saveShippingPreferences()"
                                         formControlName="printContLabel" checked color="primary"
-                                        matTooltip=""></mat-slide-toggle>
+                                        matTooltip="" data-automation-id="auto-print-container-label-toggle"></mat-slide-toggle>
                                 </div>
                                 </div>
-                                <div class="border-b-1 border-color-tertiary-10 py-2">
-                                <div class="d-flex justify-content-between text-tertiary-900">
+                                <div class="border-b-1 border-color-tertiary-10 py-2" data-automation-id="enter-container-id-container">
+                                <div class="d-flex justify-content-between text-tertiary-900" data-automation-id="enter-container-id-row">
                                     Enter Container ID: <mat-slide-toggle (change)="saveShippingPreferences()"
-                                        formControlName="contID" checked color="primary" matTooltip=""></mat-slide-toggle>
+                                        formControlName="contID" checked color="primary" matTooltip="" data-automation-id="enter-container-id-toggle"></mat-slide-toggle>
                                 </div>
                                 </div>
-                                <div class="border-b-1 border-color-tertiary-10 py-2">
-                                <div class="d-flex justify-content-between text-tertiary-900">
+                                <div class="border-b-1 border-color-tertiary-10 py-2" data-automation-id="confirm-quantity-container">
+                                <div class="d-flex justify-content-between text-tertiary-900" data-automation-id="confirm-quantity-row">
                                     Confirm Quantity: <mat-slide-toggle (change)="saveShippingPreferences()"
                                         formControlName="confirmQTY" checked color="primary"
-                                        matTooltip=""></mat-slide-toggle>
+                                        matTooltip="" data-automation-id="confirm-quantity-toggle"></mat-slide-toggle>
                                 </div>
                                 </div>
     
-                                <div class="d-flex py-2">
-                                    <mat-form-field class="action-dropdown col-xl-12" appearance="outline">
-                                        <mat-label>Default Text for Container ID</mat-label>
+                                <div class="d-flex py-2" data-automation-id="container-id-text-container">
+                                    <mat-form-field class="action-dropdown col-xl-12" appearance="outline" data-automation-id="container-id-text-field">
+                                        <mat-label data-automation-id="container-id-text-label">Default Text for Container ID</mat-label>
     
     
                                         <input (ngModelChange)="this.searchByInput.next($event)"
-                                            formControlName="contIDText" matInput type="text" #vlname maxlength="50">
+                                            formControlName="contIDText" matInput type="text" #vlname maxlength="50" data-automation-id="container-id-text-input">
                                     </mat-form-field>
                                 </div>
                             </ng-container>
@@ -99,163 +99,163 @@
                 </div>
             </div>
 
-            <div class="col-xl-6">
+            <div class="col-xl-6" data-automation-id="shipping-fields-container">
                 
-                <div class="card ">
-                    <p class="text-tertiary-800 bold mb-0 p-3"> Select from the field list those that you will be collecting data for in Shipping.
+                <div class="card " data-automation-id="shipping-fields-card">
+                    <p class="text-tertiary-800 bold mb-0 p-3" data-automation-id="shipping-fields-description"> Select from the field list those that you will be collecting data for in Shipping.
 
                     </p>
-                    <ng-scrollbar class="h-350" style="height: 60vh;">
-                        <div class="ps-3 pe-4">
+                    <ng-scrollbar class="h-350" style="height: 60vh;" data-automation-id="shipping-fields-scrollbar">
+                        <div class="ps-3 pe-4" data-automation-id="shipping-fields-content">
                 
-                <div class="d-xl-flex gap-12">
-                    <div class="col-xl-12 text-left admin-prefrences py-2 ps-1">
-                    <ng-container *ngIf="selectionShipping">
-                        <div class="border-b-1 border-color-tertiary-10 py-2">
-                            <div class="d-flex justify-content-between text-tertiary-900">
+                <div class="d-xl-flex gap-12" data-automation-id="shipping-fields-section">
+                    <div class="col-xl-12 text-left admin-prefrences py-2 ps-1" data-automation-id="shipping-fields-form">
+                    <ng-container *ngIf="selectionShipping" data-automation-id="shipping-fields-options">
+                        <div class="border-b-1 border-color-tertiary-10 py-2" data-automation-id="freight-container">
+                            <div class="d-flex justify-content-between text-tertiary-900" data-automation-id="freight-row">
                                 Freight: <mat-slide-toggle (change)="saveShippingPreferences()"
-                                    formControlName="freight" checked color="primary" matTooltip=""></mat-slide-toggle>
+                                    formControlName="freight" checked color="primary" matTooltip="" data-automation-id="freight-toggle"></mat-slide-toggle>
                             </div>
                         </div>
                         
-                        <div class="border-b-1 border-color-tertiary-10 py-2">
-                            <div class="d-flex justify-content-between text-tertiary-900">
+                        <div class="border-b-1 border-color-tertiary-10 py-2" data-automation-id="freight1-container">
+                            <div class="d-flex justify-content-between text-tertiary-900" data-automation-id="freight1-row">
                                 Freight1: <mat-slide-toggle (change)="saveShippingPreferences()"
-                                    formControlName="freight1" checked color="primary" matTooltip=""></mat-slide-toggle>
+                                    formControlName="freight1" checked color="primary" matTooltip="" data-automation-id="freight1-toggle"></mat-slide-toggle>
                             </div>
                         </div>
-                        <div class="border-b-1 border-color-tertiary-10 py-2">
-                            <div class="d-flex justify-content-between text-tertiary-900">
+                        <div class="border-b-1 border-color-tertiary-10 py-2" data-automation-id="freight2-container">
+                            <div class="d-flex justify-content-between text-tertiary-900" data-automation-id="freight2-row">
                                 Freight2: <mat-slide-toggle (change)="saveShippingPreferences()"
-                                    formControlName="freight2" checked color="primary" matTooltip=""></mat-slide-toggle>
+                                    formControlName="freight2" checked color="primary" matTooltip="" data-automation-id="freight2-toggle"></mat-slide-toggle>
                             </div>
                         </div>
-                        <div class="border-b-1 border-color-tertiary-10 py-2">
-                            <div class="d-flex justify-content-between text-tertiary-900">
+                        <div class="border-b-1 border-color-tertiary-10 py-2" data-automation-id="weight-container">
+                            <div class="d-flex justify-content-between text-tertiary-900" data-automation-id="weight-row">
                                 Weight: <mat-slide-toggle (change)="saveShippingPreferences()" formControlName="weight"
-                                    checked color="primary" matTooltip=""></mat-slide-toggle>
+                                    checked color="primary" matTooltip="" data-automation-id="weight-toggle"></mat-slide-toggle>
                             </div>
                         </div>
-                        <div class="border-b-1 border-color-tertiary-10 py-2">
-                            <div class="d-flex justify-content-between text-tertiary-900">
+                        <div class="border-b-1 border-color-tertiary-10 py-2" data-automation-id="length-container">
+                            <div class="d-flex justify-content-between text-tertiary-900" data-automation-id="length-row">
                                 Length: <mat-slide-toggle (change)="saveShippingPreferences()" formControlName="length"
-                                    checked color="primary" matTooltip=""></mat-slide-toggle>
+                                    checked color="primary" matTooltip="" data-automation-id="length-toggle"></mat-slide-toggle>
                             </div>
                         </div>
-                        <div class="border-b-1 border-color-tertiary-10 py-2">
-                            <div class="d-flex justify-content-between text-tertiary-900">
+                        <div class="border-b-1 border-color-tertiary-10 py-2" data-automation-id="width-container">
+                            <div class="d-flex justify-content-between text-tertiary-900" data-automation-id="width-row">
                                 Width: <mat-slide-toggle (change)="saveShippingPreferences()" formControlName="width"
-                                    checked color="primary" matTooltip=""></mat-slide-toggle>
+                                    checked color="primary" matTooltip="" data-automation-id="width-toggle"></mat-slide-toggle>
                             </div>
                         </div>
-                        <div class="border-b-1 border-color-tertiary-10 py-2">
-                            <div class="d-flex justify-content-between text-tertiary-900">
+                        <div class="border-b-1 border-color-tertiary-10 py-2" data-automation-id="height-container">
+                            <div class="d-flex justify-content-between text-tertiary-900" data-automation-id="height-row">
                                 Height: <mat-slide-toggle (change)="saveShippingPreferences()" formControlName="height"
-                                    checked color="primary" matTooltip=""></mat-slide-toggle>
+                                    checked color="primary" matTooltip="" data-automation-id="height-toggle"></mat-slide-toggle>
                             </div>
                         </div>
-                        <div class="border-b-1 border-color-tertiary-10 py-2">
-                            <div class="d-flex justify-content-between text-tertiary-900">
+                        <div class="border-b-1 border-color-tertiary-10 py-2" data-automation-id="cube-container">
+                            <div class="d-flex justify-content-between text-tertiary-900" data-automation-id="cube-row">
                                 Cube: <mat-slide-toggle checked (change)="saveShippingPreferences()"
-                                    formControlName="cube" color="primary" matTooltip=""></mat-slide-toggle>
+                                    formControlName="cube" color="primary" matTooltip="" data-automation-id="cube-toggle"></mat-slide-toggle>
                             </div>
                         </div>
                         
-                        <div class="border-b-1 border-color-tertiary-10 py-2">
-                            <div class="d-flex justify-content-between text-tertiary-900">
-                                <span replacePlaceholder [replacePlaceHolder]="placeholders.userField1" [fallbackPlaceHolder]="placeholders.userField1Fallback"> User Field 1: </span>: <mat-slide-toggle checked (change)="saveShippingPreferences()"
-                                    formControlName="userField1" color="primary" matTooltip=""></mat-slide-toggle>
+                        <div class="border-b-1 border-color-tertiary-10 py-2" data-automation-id="user-field-1-container">
+                            <div class="d-flex justify-content-between text-tertiary-900" data-automation-id="user-field-1-row">
+                                <span replacePlaceholder [replacePlaceHolder]="placeholders.userField1" [fallbackPlaceHolder]="placeholders.userField1Fallback" data-automation-id="user-field-1-label"> User Field 1: </span>: <mat-slide-toggle checked (change)="saveShippingPreferences()"
+                                    formControlName="userField1" color="primary" matTooltip="" data-automation-id="user-field-1-toggle"></mat-slide-toggle>
                             </div>
-                            <div>
-                                <mat-form-field class="action-dropdown w-100" appearance="outline">
+                            <div data-automation-id="user-field-1-alias-container">
+                                <mat-form-field class="action-dropdown w-100" appearance="outline" data-automation-id="user-field-1-alias-field">
                                     <!-- <mat-label>Default Text for Container ID</mat-label> -->
     
     
-                                    <input formControlName="userField_1_Alias" (change)="saveShippingPreferences()" matInput type="text" maxlength="50">
+                                    <input formControlName="userField_1_Alias" (change)="saveShippingPreferences()" matInput type="text" maxlength="50" data-automation-id="user-field-1-alias-input">
                                 </mat-form-field>
                             </div>
                         </div>
-                        <div class="border-b-1 border-color-tertiary-10 py-2">
-                            <div class="d-flex justify-content-between text-tertiary-900">
+                        <div class="border-b-1 border-color-tertiary-10 py-2" data-automation-id="user-field-2-container">
+                            <div class="d-flex justify-content-between text-tertiary-900" data-automation-id="user-field-2-row">
                                 User Field 2: <mat-slide-toggle checked (change)="saveShippingPreferences()"
-                                    formControlName="userField2" color="primary" matTooltip=""></mat-slide-toggle>
+                                    formControlName="userField2" color="primary" matTooltip="" data-automation-id="user-field-2-toggle"></mat-slide-toggle>
                             </div>
-                            <div>
-                                <mat-form-field class="action-dropdown w-100" appearance="outline">
+                            <div data-automation-id="user-field-2-alias-container">
+                                <mat-form-field class="action-dropdown w-100" appearance="outline" data-automation-id="user-field-2-alias-field">
                                     <!-- <mat-label>Default Text for Container ID</mat-label> -->
     
     
-                                    <input formControlName="userField_2_Alias" (change)="saveShippingPreferences()" matInput type="text" maxlength="50">
+                                    <input formControlName="userField_2_Alias" (change)="saveShippingPreferences()" matInput type="text" maxlength="50" data-automation-id="user-field-2-alias-input">
                                 </mat-form-field>
                             </div>
                         </div>
-                        <div class="border-b-1 border-color-tertiary-10 py-2">
-                            <div class="d-flex justify-content-between text-tertiary-900">
+                        <div class="border-b-1 border-color-tertiary-10 py-2" data-automation-id="user-field-3-container">
+                            <div class="d-flex justify-content-between text-tertiary-900" data-automation-id="user-field-3-row">
                                 User Field 3: <mat-slide-toggle checked (change)="saveShippingPreferences()"
-                                    formControlName="userField3" color="primary" matTooltip=""></mat-slide-toggle>
+                                    formControlName="userField3" color="primary" matTooltip="" data-automation-id="user-field-3-toggle"></mat-slide-toggle>
                             </div>
-                            <div>
-                                <mat-form-field class="action-dropdown w-100" appearance="outline">
+                            <div data-automation-id="user-field-3-alias-container">
+                                <mat-form-field class="action-dropdown w-100" appearance="outline" data-automation-id="user-field-3-alias-field">
                                     <!-- <mat-label>Default Text for Container ID</mat-label> -->
     
     
-                                    <input matInput formControlName="userField_3_Alias" (change)="saveShippingPreferences()" type="text" maxlength="50">
+                                    <input matInput formControlName="userField_3_Alias" (change)="saveShippingPreferences()" type="text" maxlength="50" data-automation-id="user-field-3-alias-input">
                                 </mat-form-field>
                             </div>
                         </div>
-                        <div class="border-b-1 border-color-tertiary-10 py-2">
-                            <div class="d-flex justify-content-between text-tertiary-900">
+                        <div class="border-b-1 border-color-tertiary-10 py-2" data-automation-id="user-field-4-container">
+                            <div class="d-flex justify-content-between text-tertiary-900" data-automation-id="user-field-4-row">
                                 User Field 4: <mat-slide-toggle checked (change)="saveShippingPreferences()"
-                                    formControlName="userField4" color="primary" matTooltip=""></mat-slide-toggle>
+                                    formControlName="userField4" color="primary" matTooltip="" data-automation-id="user-field-4-toggle"></mat-slide-toggle>
                             </div>
-                            <div>
-                                <mat-form-field class="action-dropdown w-100" appearance="outline">
+                            <div data-automation-id="user-field-4-alias-container">
+                                <mat-form-field class="action-dropdown w-100" appearance="outline" data-automation-id="user-field-4-alias-field">
                                     <!-- <mat-label>Default Text for Container ID</mat-label> -->
     
     
-                                    <input formControlName="userField_4_Alias" (change)="saveShippingPreferences()" matInput type="text" maxlength="50">
+                                    <input formControlName="userField_4_Alias" (change)="saveShippingPreferences()" matInput type="text" maxlength="50" data-automation-id="user-field-4-alias-input">
                                 </mat-form-field>
                             </div>
                         </div>
-                        <div class="border-b-1 border-color-tertiary-10 py-2">
-                            <div class="d-flex justify-content-between mb-2 text-tertiary-900">
+                        <div class="border-b-1 border-color-tertiary-10 py-2" data-automation-id="user-field-5-container">
+                            <div class="d-flex justify-content-between mb-2 text-tertiary-900" data-automation-id="user-field-5-row">
                                 User Field 5: <mat-slide-toggle checked (change)="saveShippingPreferences()"
-                                    formControlName="userField5" color="primary" matTooltip=""></mat-slide-toggle>
+                                    formControlName="userField5" color="primary" matTooltip="" data-automation-id="user-field-5-toggle"></mat-slide-toggle>
                             </div>
-                            <div>
-                                <mat-form-field class="action-dropdown w-100" appearance="outline">
+                            <div data-automation-id="user-field-5-alias-container">
+                                <mat-form-field class="action-dropdown w-100" appearance="outline" data-automation-id="user-field-5-alias-field">
                                     <!-- <mat-label>Default Text for Container ID</mat-label> -->
     
     
-                                    <input matInput formControlName="userField_5_Alias" (change)="saveShippingPreferences()" type="text" maxlength="50">
+                                    <input matInput formControlName="userField_5_Alias" (change)="saveShippingPreferences()" type="text" maxlength="50" data-automation-id="user-field-5-alias-input">
                                 </mat-form-field>
                             </div>
                         </div>
-                        <div class="border-b-1 border-color-tertiary-10 py-2">
-                            <div class="d-flex justify-content-between text-tertiary-900">
+                        <div class="border-b-1 border-color-tertiary-10 py-2" data-automation-id="user-field-6-container">
+                            <div class="d-flex justify-content-between text-tertiary-900" data-automation-id="user-field-6-row">
                                 User Field 6: <mat-slide-toggle checked (change)="saveShippingPreferences()"
-                                    formControlName="userField6" color="primary" matTooltip=""></mat-slide-toggle>
+                                    formControlName="userField6" color="primary" matTooltip="" data-automation-id="user-field-6-toggle"></mat-slide-toggle>
                             </div>
-                            <div>
-                                <mat-form-field class="action-dropdown w-100" appearance="outline">
+                            <div data-automation-id="user-field-6-alias-container">
+                                <mat-form-field class="action-dropdown w-100" appearance="outline" data-automation-id="user-field-6-alias-field">
                                     <!-- <mat-label>Default Text for Container ID</mat-label> -->
     
     
-                                    <input formControlName="userField_6_Alias" (change)="saveShippingPreferences()" matInput type="text" maxlength="50">
+                                    <input formControlName="userField_6_Alias" (change)="saveShippingPreferences()" matInput type="text" maxlength="50" data-automation-id="user-field-6-alias-input">
                                 </mat-form-field>
                             </div>
                         </div>
-                        <div class="py-2">
-                            <div class="d-flex justify-content-between text-tertiary-900">
+                        <div class="py-2" data-automation-id="user-field-7-container">
+                            <div class="d-flex justify-content-between text-tertiary-900" data-automation-id="user-field-7-row">
                                 User Field 7: <mat-slide-toggle checked (change)="saveShippingPreferences()"
-                                    formControlName="userField7" color="primary" matTooltip=""></mat-slide-toggle>
+                                    formControlName="userField7" color="primary" matTooltip="" data-automation-id="user-field-7-toggle"></mat-slide-toggle>
                             </div>
-                            <div>
-                                <mat-form-field class="action-dropdown w-100" appearance="outline">
+                            <div data-automation-id="user-field-7-alias-container">
+                                <mat-form-field class="action-dropdown w-100" appearance="outline" data-automation-id="user-field-7-alias-field">
                                     <!-- <mat-label>Default Text for Container ID</mat-label> -->
     
     
-                                    <input formControlName="userField_7_Alias" (change)="saveShippingPreferences()" matInput type="text" maxlength="50">
+                                    <input formControlName="userField_7_Alias" (change)="saveShippingPreferences()" matInput type="text" maxlength="50" data-automation-id="user-field-7-alias-input">
                                 </mat-form-field>
                             </div>
                         </div>

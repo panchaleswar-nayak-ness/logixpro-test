@@ -11,10 +11,10 @@
         <div class="col-xl-5 mb-3">
             <div class="w-100 d-flex d-lg-block">
             <mat-form-field class="action-dropdown float-end flex-grow-1" appearance="outline" data-automation-id="bulk-handheld-settings-action-dropdown">
-                <mat-label>Actions</mat-label>
-                <mat-select class="employees-action">
-                    <mat-option >Check All</mat-option>
-                    <mat-option >Uncheck All</mat-option>
+                <mat-label data-automation-id="bulk-handheld-settings-action-label">Actions</mat-label>
+                <mat-select class="employees-action" data-automation-id="bulk-handheld-settings-action-select">
+                    <mat-option data-automation-id="bulk-handheld-settings-checkall-opt">Check All</mat-option>
+                    <mat-option data-automation-id="bulk-handheld-settings-uncheckall-opt">Uncheck All</mat-option>
                 </mat-select>
                 <span class="material-symbols-outlined icon-expand-more">
                     expand_more
@@ -30,11 +30,9 @@
     <div class="row">
         <div class="col-xl-6">
             <div class="d-flex justify-content-between mb-3">
-                Pick Scan Verify Location <mat-slide-toggle color="primary" data-automation-id="pick-scan-verify-location"></mat-slide-toggle>
-            </div>
+                Pick Scan Verify Location <mat-slide-toggle color="primary" data-automation-id="pick-scan-verify-location"></mat-slide-toggle>            </div>
             <div class="d-flex justify-content-between mb-3">
-                Pick Scan Verify Item Number <mat-slide-toggle color="primary" data-automation-id="pick-scan-verify-item-number"></mat-slide-toggle>
-            </div>
+                Pick Scan Verify Item Number <mat-slide-toggle color="primary" data-automation-id="pick-scan-verify-item-number"></mat-slide-toggle>            </div>
             <div class="d-flex justify-content-between mb-3">
                 Pick Scan Verify Tote ID <mat-slide-toggle color="primary" data-automation-id="pick-scan-verify-tote-id"></mat-slide-toggle>
             </div>

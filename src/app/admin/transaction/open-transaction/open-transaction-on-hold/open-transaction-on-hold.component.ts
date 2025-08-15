@@ -26,7 +26,9 @@ import { AppNames, AppRoutes, RouteNames} from 'src/app/common/constants/menu.co
 import { DatePipe } from '@angular/common';
 import { ContextMenuFiltersService } from 'src/app/common/init/context-menu-filters.service';
 import { PrintApiService } from 'src/app/common/services/print-api/print-api.service';
- 
+import { UpdateEmergencyRequest } from 'src/app/common/interface/admin/opentransaction.interfaces';
+
+import {TransactionConstants} from 'src/app/common/constants/admin/transaction-constants';
 // Define a strongly typed enum for date types to avoid using magic strings
 enum DateType {
   Start = 'sDate',
@@ -179,8 +181,8 @@ export class OpenTransactionOnHoldComponent implements OnInit, AfterViewInit {
   statusType: string = StringConditions.AllTransactions;
   orderNumber: string = '';
   toteId: string = '';
-  sDate: Date = new Date();
-  eDate: Date = new Date();
+  sDate: Date | null = null;
+  eDate: Date | null = null;
 
   public transType: any = [
     {
@@ -378,7 +380,7 @@ export class OpenTransactionOnHoldComponent implements OnInit, AfterViewInit {
       searchPayload = {
         query: this.orderNumber,
         tableName: 2,
-        column: Column.OrderNumber,
+        column: 'orderNumber',
       };
     } else {
       searchPayload = {
@@ -401,6 +403,37 @@ export class OpenTransactionOnHoldComponent implements OnInit, AfterViewInit {
       error: (error) => {}
     });
   }
+
+  //Toggles the emergency flag and updates the backend, showing success or error feedback based on the response.
+onCheckboxToggle(
+  element: Record<string, boolean | string | number>,
+  column: string,
+  isChecked: boolean
+): void {
+  const previousValue = element[column];
+  element[column] = isChecked;
+
+  const payload: UpdateEmergencyRequest = {
+    id: element['id'] as number,
+    emergency: isChecked
+  };
+
+  this.iAdminApiService.UpdateEmergency(payload).subscribe({
+    next: (response) => {
+      if (!response || !response.isExecuted) {
+        element[column] = previousValue;
+        this.global.ShowToastr(ToasterType.Error, ToasterMessages.RecordUpdateFailed, ToasterTitle.Error);
+      } else {
+        this.global.ShowToastr(ToasterType.Success, ToasterMessages.RecordUpdatedSuccessful, ToasterTitle.Success);
+      }
+    },
+    error: (err) => {
+      element[column] = previousValue;
+      console.error('UpdateEmergency API error:', err);
+      this.global.ShowToastr(ToasterType.Error, this.global.globalErrorMsg(), ToasterTitle.Error);
+    }
+  });
+}
 
   viewInInventoryMaster(row) {
     clearTimeout(this.clickTimeout); 
@@ -490,10 +523,11 @@ export class OpenTransactionOnHoldComponent implements OnInit, AfterViewInit {
   }
 
   getContentData(isInit: boolean = false) {
+    
     this.payload = {
       draw: 0,
-      sDate: this.datepipe.transform(this.sDate, 'MM/dd/yyyy'),
-      eDate: this.datepipe.transform(this.eDate, 'MM/dd/yyyy'),
+      sDate: this.datepipe.transform(this.sDate ?? new Date(TransactionConstants.defaultStartYear, new Date().getMonth(), new Date().getDate()), 'MM/dd/yyyy'),
+      eDate: this.datepipe.transform(this.eDate ?? new Date(), 'MM/dd/yyyy'),
       transType: this.transTypeSelect == 'All Transactions' ? '' : this.transTypeSelect,
       transStatus: this.transStatusSelect,
       searchString: this.columnSearch.searchValue,
@@ -521,6 +555,17 @@ export class OpenTransactionOnHoldComponent implements OnInit, AfterViewInit {
       error: (error) => {}
     });
   }
+
+  ClearMainFilters() {
+  this.sDate = null;
+  this.eDate = null;
+  this.orderNumber = "";
+  this.toteId = "";
+  this.transTypeSelect = StringConditions.AllTransactions;
+  this.statusType = StringConditions.AllTransactions;
+  this.selectStatus(this.statusType); // Reset logic
+  this.getContentData();
+}
 
   applySavedItem() {
     if (this.currentTabDataService.savedItem[this.currentTabDataService.TRANSACTIONS]) {
@@ -618,9 +663,6 @@ onImportDateChange(event: Date | null): void {
   // Notify any listeners about the start date change
   this.startDateChange.emit();
 
-  // Update the start date value with the selected or default date
-  this.setDateOnBlank(event, DateType.Start);
-
   // Refresh content data based on the new date
   this.getContentData();
 
@@ -633,9 +675,6 @@ onEndDateChange(event: Date | null): void {
 
   // Notify any listeners about the end date change
   this.endDateChange.emit();
-
-  // Update the end date value with the selected or default date
-  this.setDateOnBlank(event, DateType.End);
 
   // Refresh content data based on the new date
   this.getContentData();

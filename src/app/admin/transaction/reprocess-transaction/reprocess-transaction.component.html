@@ -134,7 +134,7 @@
                                         matTooltipPosition="above"
 
                                         [matTooltipDisabled]="element[col.colHeader] && element[col.colHeader].length>=25?false:true"
-                                        [attr.data-automation-id]="'table-row-' + i + '-' + col.colDef + '-' + element[col.colHeader]"
+                                        [attr.data-automation-id]="'table-row-' + i "
                                     >{{ element[col.colHeader] }}</td>
                                 </ng-container>
 
@@ -159,7 +159,7 @@
                                 <tr mat-header-row *matHeaderRowDef="columnValues; sticky: true"></tr>
                                 <tr mat-row [class.selected]="rowClicked == row.id"
                                     *matRowDef="let row; columns: columnValues; let i = index"
-                                    (click)="rowClick(row)" [attr.data-automation-id]="'table-data-row-' + i + '-' + row.id"></tr>
+                                    (click)="rowClick(row)" [attr.data-automation-id]="'table-data-row-' + i"></tr>
 
                             </table>
                         </ng-scrollbar>
@@ -203,7 +203,7 @@
                                         <mat-list class="zones-list g-card-list list-style-1 px-2" role="list">
                                             <ng-scrollbar class="h-380px" pointerEventsMethod="scrollbar">
                                                 <mat-list-item (click)="selectOrder(order)" role="listitem"
-                                                    *ngFor="let order of orders.reprocessOrders; let i = index" [attr.data-automation-id]="'reprocess-order-list-item-' + i + '-' + order.orderNumber">
+                                                    *ngFor="let order of orders.reprocessOrders; let i = index" [attr.data-automation-id]="'reprocess-order-list-item-' + i ">
                                                     <span class="list-label zone-list-label">
                                                         {{order.orderNumber}}
                                                     </span>
@@ -239,7 +239,7 @@
                                         <mat-list class="zones-list g-card-list list-style-1 px-2" role="list">
                                             <ng-scrollbar class="h-380px">
                                                 <mat-list-item (click)="selectOrder(order)" role="listitem"
-                                                    *ngFor="let order of orders.completeOrders; let i = index" [attr.data-automation-id]="'complete-order-list-item-' + i + '-' + order.orderNumber">
+                                                    *ngFor="let order of orders.completeOrders; let i = index" [attr.data-automation-id]="'complete-order-list-item-' + i ">
                                                     <span class="list-label zone-list-label">
                                                         {{order.orderNumber}}
                                                     </span>
@@ -274,7 +274,7 @@
                                         <mat-list class="zones-list g-card-list list-style-1 px-2" role="list">
                                             <ng-scrollbar class="h-380px">
                                                 <mat-list-item (click)="selectOrder(order)" role="listitem"
-                                                    *ngFor="let order of orders.historyOrders; let i = index" [attr.data-automation-id]="'history-order-list-item-' + i + '-' + order.orderNumber">
+                                                    *ngFor="let order of orders.historyOrders; let i = index" [attr.data-automation-id]="'history-order-list-item-' + i ">
                                                     <span class="list-label zone-list-label">
                                                         {{order.orderNumber}}
                                                     </span>

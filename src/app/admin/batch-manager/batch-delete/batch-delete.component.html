@@ -2,7 +2,7 @@
   <mat-card-content>
     <div class="d-flex justify-content-between align-items-center mb-2">
       <div>
-        <app-icon-heading-component icon="list_alt" heading="Batch Manager Controls" data-automation-id="heading-batch-manager-controls"></app-icon-heading-component>
+        <app-icon-heading-component icon="list_alt" heading="Batch Manager Controls" [automationId]="'heading-batch-manager-controls'"></app-icon-heading-component>
       </div>
     </div>
     <div class="card bg-light-blue bg-50 px-4 py-4 br-14 mb-3">
@@ -12,7 +12,7 @@
             <mat-form-field class="custom-form-field w-100 __grab_cursor mb-3 mb-xl-0" appearance="outline" data-automation-id="form-field-transaction-type">
               <mat-label data-automation-id="label-transaction-type">Transaction Type</mat-label>
               <mat-select [(ngModel)]="transType" (selectionChange)="changeTranType($event.value)"
-                disableOptionCentering data-automation-id="select-transaction-type">
+                disableOptionCentering [attr.data-automation-id]="'select-transaction-type-' + transType">
                 <mat-option *ngFor="let type of transList; let i = index" value="{{ type.id }}" [attr.data-automation-id]="'option-transaction-type-' + type.id">{{ type.name }}</mat-option>
               </mat-select>
               <span class="material-symbols-outlined icon-expand-more">
@@ -29,7 +29,7 @@
           <div class="col-12 col-xl-3">
             <mat-form-field class="custom-form-field w-100 __grab_cursor mb-3 mb-xl-0" appearance="outline" data-automation-id="form-field-delete-batch">
               <mat-label data-automation-id="label-delete-batch">Delete Batch</mat-label>
-              <mat-select [(ngModel)]="batchID" data-automation-id="select-delete-batch">
+              <mat-select [(ngModel)]="batchID" [attr.data-automation-id]="'select-delete-batch-' + batchID">
                 <mat-option *ngFor="let batch of batchList; let i = index" [disabled]="
                     !authService.UserPermissonByFuncName(
                       'Batch Manager Delete All'

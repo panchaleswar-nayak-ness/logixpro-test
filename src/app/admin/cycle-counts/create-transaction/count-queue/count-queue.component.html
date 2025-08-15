@@ -3,7 +3,7 @@
       <div class="row heading-row">
         <div class="d-flex justify-content-between">
             <div div class="col-3">
-              <app-icon-heading-component heading="Count Queue" icon="table">
+              <app-icon-heading-component heading="Count Queue" icon="table" [automationId]="'heading-count-queue'">
               </app-icon-heading-component>
             </div>
         </div>
@@ -12,42 +12,42 @@
           
             <table mat-table [dataSource]="tableData" matSort>
               <ng-container matColumnDef="position">
-                <th mat-header-cell *matHeaderCellDef replacePlaceholder [replacePlaceHolder]="placeholders.itemNumber" [fallbackPlaceHolder]="placeholders.itemNumberFallback"> Item Number </th>
-                <td mat-cell *matCellDef="let element"> {{element.position}} </td>
+                <th mat-header-cell *matHeaderCellDef replacePlaceholder [replacePlaceHolder]="placeholders.itemNumber" [fallbackPlaceHolder]="placeholders.itemNumberFallback" data-automation-id="table-header-item-number"> Item Number </th>
+                <td mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'table-data-position-' + i"> {{element.position}} </td>
               </ng-container>
             
               <!-- Name Column -->
               <ng-container matColumnDef="name">
-                <th mat-header-cell *matHeaderCellDef> Description </th>
-                <td mat-cell *matCellDef="let element"> {{element.name}} </td>
+                <th mat-header-cell *matHeaderCellDef data-automation-id="table-header-description"> Description </th>
+                <td mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'table-data-name-' + i"> {{element.name}} </td>
               </ng-container>
             
               <!-- Weight Column -->
               <ng-container matColumnDef="weight">
-                <th mat-header-cell *matHeaderCellDef> Location Qty </th>
-                <td mat-cell *matCellDef="let element"> {{element.weight}} </td>
+                <th mat-header-cell *matHeaderCellDef data-automation-id="table-header-location-qty"> Location Qty </th>
+                <td mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'table-data-weight-' + i"> {{element.weight}} </td>
               </ng-container>
             
               <!-- Symbol Column -->
               <ng-container matColumnDef="symbol">
-                <th mat-header-cell *matHeaderCellDef replacePlaceholder [replacePlaceHolder]="placeholders.unitOfMeasure" [fallbackPlaceHolder]="placeholders.unitOfMeasureFallback"> UM </th>
-                <td mat-cell *matCellDef="let element"> {{element.symbol}} </td>
+                <th mat-header-cell *matHeaderCellDef replacePlaceholder [replacePlaceHolder]="placeholders.unitOfMeasure" [fallbackPlaceHolder]="placeholders.unitOfMeasureFallback" data-automation-id="table-header-um"> UM </th>
+                <td mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'table-data-symbol-' + i"> {{element.symbol}} </td>
               </ng-container>
 
               <ng-container matColumnDef="ex">
-                <th mat-header-cell *matHeaderCellDef> Warehouse</th>
-                <td mat-cell *matCellDef="let element"> {{element.symbol}} </td>
+                <th mat-header-cell *matHeaderCellDef data-automation-id="table-header-warehouse"> Warehouse</th>
+                <td mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'table-data-ex-' + i"> {{element.symbol}} </td>
               </ng-container>
 
               <ng-container matColumnDef="srno">
-                <th mat-header-cell *matHeaderCellDef> Serial No. </th>
-                <td mat-cell *matCellDef="let element"> {{element.symbol}} </td>
+                <th mat-header-cell *matHeaderCellDef data-automation-id="table-header-serial-no"> Serial No. </th>
+                <td mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'table-data-srno-' + i"> {{element.symbol}} </td>
               </ng-container>
               <!-- Action Column -->
               <ng-container matColumnDef="action">
-                <th mat-header-cell *matHeaderCellDef> Actions </th>
-                <td mat-cell *matCellDef="let element">
-                  <button mat-icon-button aria-label="Delete Function">
+                <th mat-header-cell *matHeaderCellDef data-automation-id="table-header-actions"> Actions </th>
+                <td mat-cell *matCellDef="let element; let i = index">
+                  <button mat-icon-button aria-label="Delete Function" [attr.data-automation-id]="'delete-action-button-' + i">
                     <mat-icon class="icon-circle-cancel">close</mat-icon>
                   </button>
                 </td>
@@ -59,9 +59,9 @@
         </ng-scrollbar>
 
         <div class="d-flex justify-content-between bg-white">
-          <mat-paginator [pageSize]="5" showFirstLastButtons [pageSizeOptions]="[5, 10, 20]"></mat-paginator>
+          <mat-paginator [pageSize]="5" showFirstLastButtons [pageSizeOptions]="[5, 10, 20]" data-automation-id="paginator"></mat-paginator>
           <div class="m-3">
-            <button mat-flat-button color="primary" class="br-14" >
+            <button mat-flat-button color="primary" class="br-14" data-automation-id="create-cycle-count-button">
               Create Cycle Count
             </button>
           </div>                  

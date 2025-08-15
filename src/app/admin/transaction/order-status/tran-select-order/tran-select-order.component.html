@@ -45,7 +45,7 @@
               class="employees-action"
               [(ngModel)]="columnSelect"
               (selectionChange)="onSelectionChange($event.value)"
-              data-automation-id="select-dropdown"
+               [attr.data-automation-id]="'select-' + columnSelect"
             >
               <mat-option selected value="Order Number" data-automation-id="option-order-number"> Order No. </mat-option>
               <mat-option value="Tote ID" data-automation-id="option-tote-id"> Tote ID </mat-option>
@@ -78,7 +78,7 @@
                 [disabled]="!columnSelect"
                 [(ngModel)]="searchField"
                 [matAutocomplete]="auto"
-                data-automation-id="search-input"
+                [attr.data-automation-id]="'search-input-' + searchField"
               />
               <button
                 matSuffix
@@ -170,7 +170,7 @@
         <app-info-card-component
           title="{{ info.title }}"
           value="{{ info.value }}"
-          colorClass="{{ info.colorClass }}"
+          colorClass="{{ info.colorClass }}" [attr.data-automation-id]="'info-card-' + info.title + '-' + info.value"
         ></app-info-card-component>
       </div>
     </div>

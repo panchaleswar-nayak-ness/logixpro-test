@@ -249,6 +249,7 @@ export const ToasterMessages = {
     ZoneDeletedSuccessfully: "Zone deleted successfully",
     NoDefaultFilter:"No filter is marked as default.",
     Resolved:"Resolved Successfully.",
+    RecordUpdateFailed:'Failed to update record',
     LowerBoundAndUpperBoundRequired: 'Both Lower Bound and Upper Bound must be filled before applying the filter.',
     LowerBoundCannotBeGreater: 'Lower Bound cannot be greater than Upper Bound. Please adjust the range.',
     EnterQuantityValueBeforeApplying: 'Please enter a quantity value before applying the filter.',

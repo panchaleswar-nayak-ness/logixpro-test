@@ -5,7 +5,7 @@
         <div class="p-2">
           <div class="search-box zone-search-box">
             <div class="d-flex g-mini-search-box mb-3">
-              <mat-form-field class="w-100" appearance="fill">
+              <mat-form-field class="w-100" appearance="fill" data-automation-id="employee-pickup-level-search-formfield">
                 <span class="material-symbols-outlined icon-search" data-automation-id="label-search-icon">
                   search
                 </span>
@@ -25,42 +25,42 @@
               <ng-scrollbar class="mat-table-scrollbar ng-scrollbar-height">
                 <table mat-table [dataSource]="pickupLevelDataSource" matSort
                   (matSortChange)="announceSortChange($event)"
-                  class="w-100 g-card-table employee-pick-level-table table-minimal-action-buttons">
+                  class="w-100 g-card-table employee-pick-level-table table-minimal-action-buttons" data-automation-id="employee-pickup-level-table">
 
-                  <tr class="mat-row" *matNoDataRow>
+                  <tr class="mat-row" *matNoDataRow data-automation-id="employee-pickup-level-no-data-row">
                     <td class="mat-cell text-center" [attr.colspan]="displayedColumns.length">
                       No data matching the filter.
                     </td>
                   </tr>
                   <ng-container matColumnDef="pickLevel">
-                    <th width="15%" mat-header-cell *matHeaderCellDef mat-sort-header>Pick Level</th>
-                    <td width="15%" mat-cell *matCellDef="let element"> {{element.pickLevel}} </td>
+                    <th width="15%" mat-header-cell *matHeaderCellDef mat-sort-header data-automation-id="employee-pickup-level-th-picklevel">Pick Level</th>
+                    <td width="15%" mat-cell *matCellDef="let element" [attr.data-automation-id]="'employee-pickup-level-td-picklevel-' + element.pickLevel"> {{element.pickLevel}} </td>
                   </ng-container>
 
                   <!-- End Location Column -->
                   <ng-container matColumnDef="startShelf">
-                    <th width="15%" mat-header-cell *matHeaderCellDef mat-sort-header>Start Shelf</th>
-                    <td width="15%" mat-cell *matCellDef="let element"> {{element.startShelf}} </td>
+                    <th width="15%" mat-header-cell *matHeaderCellDef mat-sort-header data-automation-id="employee-pickup-level-th-startshelf">Start Shelf</th>
+                    <td width="15%" mat-cell *matCellDef="let element" [attr.data-automation-id]="'employee-pickup-level-td-startshelf-' + element.startShelf"> {{element.startShelf}} </td>
                   </ng-container>
 
                   <ng-container matColumnDef="endShelf">
-                    <th width="15%" mat-header-cell *matHeaderCellDef mat-sort-header>End Shelf</th>
-                    <td width="15%" mat-cell *matCellDef="let element"> {{element.endShelf}} </td>
+                    <th width="15%" mat-header-cell *matHeaderCellDef mat-sort-header data-automation-id="employee-pickup-level-th-endshelf">End Shelf</th>
+                    <td width="15%" mat-cell *matCellDef="let element" [attr.data-automation-id]="'employee-pickup-level-td-endshelf-' + element.endShelf"> {{element.endShelf}} </td>
                   </ng-container>
 
                   <ng-container matColumnDef="startCarousel">
-                    <th width="15%" mat-header-cell *matHeaderCellDef mat-sort-header>Start Carousel</th>
-                    <td width="15%" mat-cell *matCellDef="let element"> {{element.startCarousel}} </td>
+                    <th width="15%" mat-header-cell *matHeaderCellDef mat-sort-header data-automation-id="employee-pickup-level-th-startcarousel">Start Carousel</th>
+                    <td width="15%" mat-cell *matCellDef="let element" [attr.data-automation-id]="'employee-pickup-level-td-startcarousel-' + element.startCarousel"> {{element.startCarousel}} </td>
                   </ng-container>
                   
                   <ng-container matColumnDef="endCarousel">
-                      <th width="15%" mat-header-cell *matHeaderCellDef mat-sort-header>End Carousel</th>
-                      <td width="15%" mat-cell *matCellDef="let element"> {{element.endCarousel}} </td>
+                      <th width="15%" mat-header-cell *matHeaderCellDef mat-sort-header data-automation-id="employee-pickup-level-th-endcarousel">End Carousel</th>
+                      <td width="15%" mat-cell *matCellDef="let element" [attr.data-automation-id]="'employee-pickup-level-td-endcarousel-' + element.endCarousel"> {{element.endCarousel}} </td>
                   </ng-container>
                 
                   <ng-container matColumnDef="edit">
-                    <th width="10%" class="text-center" mat-header-cell *matHeaderCellDef>Action</th>
-                    <td width="10%" class="text-center" mat-cell *matCellDef="let element">
+                    <th width="10%" class="text-center" mat-header-cell *matHeaderCellDef data-automation-id="employee-pickup-level-th-action">Action</th>
+                    <td width="10%" class="text-center" mat-cell *matCellDef="let element" [attr.data-automation-id]="'employee-pickup-level-td-action-' + element.pickLevel">
                       <button mat-icon-button aria-label="Edit" (click)="editPickLevel(element)"
                         matTooltip="Edit pick levels" matTooltipPosition="above" data-automation-id="edit-pick-level-button">
                         <mat-icon class="icon-circle-edit" data-automation-id="label-edit-pick-level">border_color</mat-icon>
@@ -71,8 +71,8 @@
                       </button>
                     </td>
                   </ng-container>
-                  <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky:true"></tr>
-                  <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                  <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky:true" data-automation-id="employee-pickup-level-header-row"></tr>
+                  <tr mat-row *matRowDef="let row; columns: displayedColumns;" [attr.data-automation-id]="'employee-pickup-level-row-' + row.pickLevel"></tr>
                 </table>
               </ng-scrollbar>
             </div>

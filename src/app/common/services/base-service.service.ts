@@ -11,6 +11,8 @@ import { throwError } from 'rxjs';
 import { SpinnerService } from "../../common/init/spinner.service";
 import { ZoneListPayload } from 'src/app/bulk-process/preferences/preference.models';
 import { ErrorCode} from '../enums/CommonEnums';
+import { HeaderInterceptor } from '../init/header-interceptor.interceptor';
+
 type Method = 'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH';
 
 export interface LinkedResource<T> {
@@ -79,14 +81,31 @@ export class BaseService {
               this.spinnerService.hide();
             }
           }),
-          catchError(err => {
-            const error = err as HttpErrorResponse;
-            if(error?.error?.messageCode == ErrorCode.UnableToPrint){ //Unable to print
-              this.injector.get(GlobalService).ShowToastr(ToasterType.Error, error?.error.error, ToasterTitle.Error);
-            }else
-            this.injector.get(GlobalService).ShowToastr(ToasterType.Error, ToasterMessages.APIErrorMessage, ToasterTitle.Error);
-            return throwError(() => error);
-          })
+  catchError(err => {
+  const error = err as HttpErrorResponse;
+
+  // Only show toasts if it's not a session timeout
+  if (!HeaderInterceptor.getSessionTimeout()) {
+    if (error?.error?.messageCode === ErrorCode.UnableToPrint) {
+      // Specific error handling for UnableToPrint
+      this.injector.get(GlobalService).ShowToastr(
+        ToasterType.Error,
+        error?.error.error,
+        ToasterTitle.Error
+      );
+    } else {
+      // Generic API error toast
+      this.injector.get(GlobalService).ShowToastr(
+        ToasterType.Error,
+        ToasterMessages.APIErrorMessage,
+        ToasterTitle.Error
+      );
+    }
+  }
+
+  return throwError(() => error);
+})
+
         );
       })
     );

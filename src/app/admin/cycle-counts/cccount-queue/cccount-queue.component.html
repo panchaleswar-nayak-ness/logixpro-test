@@ -15,7 +15,7 @@
               </div>
               <mat-form-field class="action-dropdown d-block" appearance="outline">
                 <mat-label data-automation-id="label-actions">Actions</mat-label>
-                <mat-select #matRef class="employees-action" (selectionChange)="onActionChange($event)" data-automation-id="select-actions">
+                <mat-select #matRef class="employees-action" (selectionChange)="onActionChange($event)" [attr.data-automation-id]="'select-actions-' + (matRef.value || '')">
                   <mat-option value="0" data-automation-id="option-set-import-field-mappings">Set import field mappings</mat-option>
                   <mat-option value="1" data-automation-id="option-import-discrepancies">Import Discrepancies</mat-option>
                   <mat-option value="2" data-automation-id="option-import-count-batches">Import Count Batches</mat-option>

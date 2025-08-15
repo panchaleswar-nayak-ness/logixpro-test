@@ -1,6 +1,6 @@
 <mat-tab-group dynamicHeight class="mini-tab-labels" [(selectedIndex)]="demo1TabIndex"
-  (selectedTabChange)="tabChanged($event)">
-  <mat-tab label="BulkPro Settings">
+  (selectedTabChange)="tabChanged($event)" data-automation-id="employees-tab-group">
+  <mat-tab label="BulkPro Settings" data-automation-id="tab-bulkpro-settings">
     <div class="bulkpro-settings-tab g-tab bg-white">
 
       <!-- Zones Card -->
@@ -37,19 +37,19 @@
                       (matSortChange)="announceSortChange($event)" class="g-card-table table-minimal-action-buttons">
 
                       <tr class="mat-row" *matNoDataRow>
-                        <td class="mat-cell text-center" [attr.colspan]="displayedColumns.length">
+                        <td class="mat-cell text-center" [attr.colspan]="displayedColumns.length" data-automation-id="zone-nodata-row">
                           No data matching the filter.
                         </td>
                       </tr>
                       <!-- Start Location Column -->
                       <ng-container matColumnDef="zones">
                         <th width="80%" mat-header-cell *matHeaderCellDef mat-sort-header data-automation-id="label-zone">Zone</th>
-                        <td width="80%" mat-cell *matCellDef="let element ; let i = index"> {{element.zones}} </td>
+                        <td width="80%" mat-cell *matCellDef="let element" [attr.data-automation-id]="'zone-cell-' + element.zones"> {{element.zones}} </td>
                       </ng-container>
                       <ng-container matColumnDef="actions">
                         <th width="20%" class="text-center" mat-header-cell *matHeaderCellDef>Action
                         </th>
-                        <td width="20%" class="text-center" mat-cell *matCellDef="let element">
+                        <td width="20%" class="text-center" mat-cell *matCellDef="let element" [attr.data-automation-id]="'zone-actions-' + element.zones">
 
                           <button mat-icon-button aria-label="Edit" (click)="editZoneDialog(element)"
                             matTooltip="Edit zone" matTooltipPosition="above" data-automation-id="edit-zone-button">
@@ -65,7 +65,7 @@
                       </ng-container>
 
                       <tr mat-header-row *matHeaderRowDef="zoneColumns; sticky:true"></tr>
-                      <tr mat-row *matRowDef="let row; columns: zoneColumns;"></tr>
+                      <tr mat-row *matRowDef="let row; columns: zoneColumns;" [attr.data-automation-id]="'zone-row-' + row.zones"></tr>
                     </table>
                   </ng-scrollbar>
                 </div>
@@ -111,7 +111,7 @@
                       (matSortChange)="announceSortChange($event)"
                       class="g-card-table employee-location-table table-minimal-action-buttons">
                       <tr class="mat-row" *matNoDataRow>
-                        <td class="mat-cell text-center" [attr.colspan]="displayedColumns.length" >
+                        <td class="mat-cell text-center" [attr.colspan]="displayedColumns.length" data-automation-id="location-nodata-row">
                           No data matching the filter.
                         </td>
                       </tr>
@@ -120,7 +120,7 @@
                       <ng-container matColumnDef="startLocation">
                         <th width="40%" mat-header-cell *matHeaderCellDef mat-sort-header data-automation-id="label-start-location">Start Location
                         </th>
-                        <td width="40%" mat-cell *matCellDef="let element"> {{element.startLocation}}
+                        <td width="40%" mat-cell *matCellDef="let element" [attr.data-automation-id]="'location-start-' + element.startLocation"> {{element.startLocation}}
                         </td>
                       </ng-container>
 
@@ -128,7 +128,7 @@
                       <ng-container matColumnDef="endLocation">
                         <th width="40%" mat-header-cell *matHeaderCellDef mat-sort-header data-automation-id="label-end-location">End Location
                         </th>
-                        <td width="40%" mat-cell *matCellDef="let element"> {{element.endLocation}}
+                        <td width="40%" mat-cell *matCellDef="let element" [attr.data-automation-id]="'location-end-' + element.endLocation"> {{element.endLocation}}
                         </td>
                       </ng-container>
 
@@ -136,7 +136,7 @@
                       <ng-container matColumnDef="delete_location">
                         <th width="20%" class="text-center" mat-header-cell *matHeaderCellDef>Action
                         </th>
-                        <td width="20%" mat-cell class="text-center" *matCellDef="let element">
+                        <td width="20%" mat-cell class="text-center" *matCellDef="let element" [attr.data-automation-id]="'location-actions-' + element.startLocation + '-' + element.endLocation">
 
                           <button mat-icon-button aria-label="Edit" (click)="editLocationDialog(element)"
                             matTooltip="Edit location" matTooltipPosition="above" data-automation-id="edit-location-button">
@@ -151,7 +151,7 @@
                       </ng-container>
 
                       <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky:true"></tr>
-                      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                      <tr mat-row *matRowDef="let row; columns: displayedColumns;" [attr.data-automation-id]="'location-row-' + row.startLocation + '-' + row.endLocation"></tr>
                     </table>
                   </ng-scrollbar>
                 </div>
@@ -177,7 +177,7 @@
                 <div class="d-flex align-items-center gap-12">
                   <mat-form-field class="w-100" appearance="outline">
                     <mat-label data-automation-id="label-maximum-handheld-orders">Maximum Handheld Orders</mat-label>
-                    <input matInput type="text" [NumbersOnly]="true" [(ngModel)]="maxOrders">
+                    <input matInput type="text" [NumbersOnly]="true" [(ngModel)]="maxOrders" data-automation-id="max-orders-input">
                   </mat-form-field>
                   <button mat-flat-button color="primary" class="xsm-icon-button" matTooltip="Save Max Handheld Orders"
                     matTooltipPosition="above" (click)="saveMaximumOrders()" data-automation-id="button-save">
@@ -192,11 +192,11 @@
       </div>
     </div>
   </mat-tab>
-  <mat-tab label="Employee Pick Levels">
+  <mat-tab label="Employee Pick Levels" data-automation-id="tab-employee-pick-levels">
     <app-employee-pickup-level [isAdd]="lookUpEvnt" [resetField]="isTabChanged" [pickUplevels]="pickUplevels"
-      (relaodPickUpLvl)="relaodPickUpLvl()" [grp_data]="grpData"></app-employee-pickup-level>
+      (relaodPickUpLvl)="relaodPickUpLvl()" [grp_data]="grpData" data-automation-id="employee-pickup-level-component"></app-employee-pickup-level>
   </mat-tab>
-  <mat-tab label="Function Allowed" *ngIf="env === 'SD'">
+  <mat-tab label="Function Allowed" *ngIf="env === 'SD'" data-automation-id="tab-function-allowed">
     <div class="groups-allowed-tab g-tab bg-white">
       <div class="g-action-card g-action-card-disabled mb-3">
         <div class="card w-100 text-center">
@@ -238,20 +238,20 @@
                         (matSortChange)="announceSortChange($event)" class="g-card-table table-minimal-action-buttons">
 
                         <tr class="mat-row" *matNoDataRow>
-                          <td class="mat-cell text-center" [attr.colspan]="funcationsColumns.length">
+                          <td class="mat-cell text-center" [attr.colspan]="funcationsColumns.length" data-automation-id="function-nodata-row">
                             No data matching the filter.
                           </td>
                         </tr>
                         <!-- Start Location Column -->
                         <ng-container matColumnDef="Function">
                           <th width="80%" mat-header-cell *matHeaderCellDef data-automation-id="label-function">Function</th>
-                          <td width="80%" mat-cell *matCellDef="let element"> {{element}}
+                          <td width="80%" mat-cell *matCellDef="let element" [attr.data-automation-id]="'function-cell-' + element"> {{element}}
                           </td>
                         </ng-container>
                         <ng-container matColumnDef="actions">
                           <th width="20%" class="text-center" mat-header-cell *matHeaderCellDef>Action
                           </th>
-                          <td width="20%" class="text-center" mat-cell *matCellDef="let element">
+                          <td width="20%" class="text-center" mat-cell *matCellDef="let element" [attr.data-automation-id]="'function-actions-' + element">
                             <button mat-icon-button aria-label="Delete" (click)="deleteFuncationAllowed(element)"
                               matTooltip="delete function allowed" matTooltipPosition="above" data-automation-id="button-close">
                               <mat-icon class="icon-circle-cancel" data-automation-id="label-delete-function">close</mat-icon>
@@ -261,7 +261,7 @@
                         </ng-container>
 
                         <tr mat-header-row *matHeaderRowDef="funcationsColumns; sticky:true"></tr>
-                        <tr mat-row *matRowDef="let row; columns: funcationsColumns;"></tr>
+                        <tr mat-row *matRowDef="let row; columns: funcationsColumns;" [attr.data-automation-id]="'function-row-' + row"></tr>
                       </table>
                     </ng-scrollbar>
                   </div>
@@ -275,7 +275,7 @@
       </div>
     </div>
   </mat-tab>
-  <mat-tab label="Groups Allowed" *ngIf="env !== 'SD'">
+  <mat-tab label="Groups Allowed" *ngIf="env !== 'SD'" data-automation-id="tab-groups-allowed">
 
     <div class="groups-allowed-tab g-tab bg-white">
 
@@ -307,20 +307,20 @@
                         (matSortChange)="announceSortChange($event)" class="g-card-table table-minimal-action-buttons">
 
                         <tr class="mat-row" *matNoDataRow>
-                          <td class="mat-cell text-center" [attr.colspan]="groupsColumns.length" >
+                          <td class="mat-cell text-center" [attr.colspan]="groupsColumns.length" data-automation-id="group-nodata-row">
                             No data matching the filter.
                           </td>
                         </tr>
                         <!-- Start Location Column -->
                         <ng-container matColumnDef="groups">
                           <th width="80%" mat-header-cell *matHeaderCellDef data-automation-id="label-group">Group</th>
-                          <td width="80%" mat-cell *matCellDef="let element"> {{element.groupName}}
+                          <td width="80%" mat-cell *matCellDef="let element" [attr.data-automation-id]="'group-cell-' + element.groupName"> {{element.groupName}}
                           </td>
                         </ng-container>
                         <ng-container matColumnDef="actions">
                           <th width="20%" class="text-center" mat-header-cell *matHeaderCellDef>Action
                           </th>
-                          <td width="20%" class="text-center" mat-cell *matCellDef="let element">
+                          <td width="20%" class="text-center" mat-cell *matCellDef="let element" [attr.data-automation-id]="'group-actions-' + element.groupName">
                             <button mat-icon-button aria-label="Delete" (click)="deleteGrpAllowed(element)"
                               matTooltip="Remove group allowed" matTooltipPosition="above" data-automation-id="button-close">
                               <mat-icon class="icon-circle-cancel" data-automation-id="label-delete-group">close</mat-icon>
@@ -330,7 +330,7 @@
                         </ng-container>
 
                         <tr mat-header-row *matHeaderRowDef="groupsColumns; sticky:true"></tr>
-                        <tr mat-row *matRowDef="let row; columns: groupsColumns;"></tr>
+                        <tr mat-row *matRowDef="let row; columns: groupsColumns;" [attr.data-automation-id]="'group-row-' + row.groupName"></tr>
                       </table>
                     </ng-scrollbar>
                   </div>

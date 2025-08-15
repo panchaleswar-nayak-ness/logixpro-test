@@ -13,7 +13,7 @@
                         <div class="d-flex d-lg-block">
                             <mat-form-field class="action-dropdown mb-3 action-dropdown" appearance="outline" data-automation-id="basic-reports-actions-form-field">
                                 <mat-label data-automation-id="basic-reports-actions-label">Actions</mat-label>
-                                <mat-select #matRef  class="employees-action" [disabled]="!this.basicReportModel.ChooseReport" value="pick" (selectionChange)="openAction($event)" data-automation-id="basic-reports-actions-select">
+                                <mat-select #matRef  class="employees-action" [disabled]="!this.basicReportModel.ChooseReport" value="pick" (selectionChange)="openAction($event)" [attr.data-automation-id]="'basic-reports-actions-select-' + basicReportModel.ChooseReport">
                                     <mat-option   (click)="this.global.Print(this.global.capitalizeAndRemoveSpaces(this.basicReportModel.ChooseReport)+'-lst')" data-automation-id="basic-reports-action-print">Print</mat-option>
                                     <mat-option    (click)="this.global.OpenExportModal(this.basicReportModel.ChooseReport,this.basicReportModel.ChooseReport+'-lst')" data-automation-id="basic-reports-action-export">Export</mat-option>
                                     <mat-option    (click)="openListAndLabel()" data-automation-id="basic-reports-action-preview">Preview Top 50 Pages Only</mat-option>
@@ -26,7 +26,7 @@
                     </div>
                     <mat-form-field class="action-dropdown custom-form-field-bg-white w-100 mb-2" data-automation-id="basic-reports-choose-report-form-field" appearance="outline">
                         <mat-label data-automation-id="basic-reports-choose-report-label">Choose Report</mat-label>
-                        <mat-select class="employees-action" data-automation-id="basic-reports-choose-report-select" [(ngModel)]="basicReportModel.ChooseReport" (ngModelChange)="basicReportDetails(basicReportModel.ChooseReport)">
+                        <mat-select class="employees-action" [attr.data-automation-id]="'basic-reports-choose-report-select-' + basicReportModel.ChooseReport" [(ngModel)]="basicReportModel.ChooseReport" (ngModelChange)="basicReportDetails(basicReportModel.ChooseReport)">
                           <mat-option *ngFor="let item of reports; let i = index" [value]="item"  [attr.data-automation-id]="'basic-reports-choose-report-option-' + i" >{{ item }}</mat-option>
                         </mat-select>
                         <span class="material-symbols-outlined icon-expand-more">expand_more</span>

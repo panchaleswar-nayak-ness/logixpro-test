@@ -23,12 +23,14 @@ export class TransactionHistoryFiltersComponent implements OnInit {
   @Output() orderNo = new EventEmitter<any>();
   @Output() resetDates = new EventEmitter<any>();
   @Output() clearData = new EventEmitter<Event>();
+  @Output() cleanFilter = new EventEmitter<Event>();
 
   searchByOrderNumber = new Subject<string>();
   orderNumber: any;
   searchAutocompleteList: any;
-  sDate: any = new Date(1973,10,7);
-  eDate: any = new Date();
+  sDate: Date | null = null;
+  eDate: Date | null = null;
+
   floatLabelControl = new FormControl('auto' as FloatLabelType);
 
   public userData: any;
@@ -52,8 +54,8 @@ export class TransactionHistoryFiltersComponent implements OnInit {
       this.orderNumber = param.orderNumber
     }
     else{
-      this.sDate =  new Date(1973,10,7);
-      this.eDate = new Date();
+      this.sDate =  null
+      this.eDate = null
       this.orderNumber = ''
     }
     this.userData = this.authService.userData();
@@ -109,14 +111,12 @@ export class TransactionHistoryFiltersComponent implements OnInit {
   }
 
   onDateChange(event: any): void {
-    this.sDate = new Date(event);
-    this.startDate.emit(this.sDate);
+    this.startDate.emit(event);
     this.emitFilterValue()
   }
 
   onEndDateChange(event: any): void {
-    this.eDate = new Date(event);
-    this.endDate.emit(this.eDate);
+    this.endDate.emit(event);
     this.emitFilterValue()
   }
 
@@ -144,4 +144,14 @@ export class TransactionHistoryFiltersComponent implements OnInit {
       };
     
     }
+
+    clearFilters(event:MouseEvent) {
+      this.sDate=null;
+      this.eDate=null;
+      this.orderNumber='';
+      this.cleanFilter.emit(event);
+    }
+    
+
+
 }

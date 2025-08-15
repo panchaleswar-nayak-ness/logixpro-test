@@ -7,7 +7,7 @@
     (click)="close()"
     data-automation-id="close-dialog-button"
   >
-    <mat-icon class="close-icon">close</mat-icon>
+    <mat-icon class="close-icon" data-automation-id="close-icon">close</mat-icon>
   </button>
 </div>
 <!-- <div class="text-center"> <span class="label label-gray px-2 f-14 mb-4">Batch ID:&nbsp;<b>{{batchID}}</b></span></div> -->
@@ -31,7 +31,7 @@
           >
           </mat-checkbox>
         </th>
-        <td mat-cell *matCellDef="let row">
+        <td mat-cell *matCellDef="let row; let i = index" [attr.data-automation-id]="'zone-checkbox-cell-' + i">
           <ng-container *ngIf="isProcessPutAways || isAdminPreferences">
             <mat-checkbox
               (click)="$event.stopPropagation()"
@@ -104,9 +104,9 @@
       </ng-container>
 
       <ng-container matColumnDef="flag">
-        <th mat-header-cell *matHeaderCellDef></th>
-        <td mat-cell *matCellDef="let element">
-          <mat-icon *ngIf="element.locked">flag</mat-icon>
+        <th mat-header-cell *matHeaderCellDef data-automation-id="flag-header"></th>
+        <td mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'flag-cell-' + i">
+          <mat-icon *ngIf="element.locked" data-automation-id="locked-flag-icon">flag</mat-icon>
         </td>
       </ng-container>
 

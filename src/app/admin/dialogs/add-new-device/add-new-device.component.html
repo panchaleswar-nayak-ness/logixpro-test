@@ -224,19 +224,19 @@
                         <div class="col-xl-4  mb-2">
                             <mat-form-field class="d-block w-100 " appearance="outline">
                                 <mat-label>First Address</mat-label>
-                                <input #first_address [NumbersOnly]="true" maxlength="5" matInput formControlName="firstAddress">
+                                <input #first_address [NumbersOnly]="true" maxlength="5" matInput formControlName="firstAddress" data-automation-id="first-address-input">
                             </mat-form-field>
                         </div>
                         <div class="col-xl-4  mb-2">
                             <mat-form-field class="d-block w-100 " appearance="outline">
                                 <mat-label>Display Positions</mat-label>
-                                <input [NumbersOnly]="true" maxlength="9" matInput formControlName="displayPositions">
+                                <input [NumbersOnly]="true" maxlength="9" matInput formControlName="displayPositions" data-automation-id="display-positions-input">
                             </mat-form-field>
                         </div>
                         <div class="col-xl-4  mb-2">
                             <mat-form-field class="d-block w-100 " appearance="outline">
                                 <mat-label>Display Characters</mat-label>
-                                <input [NumbersOnly]="true" maxlength="9" matInput formControlName="displayCharacters">
+                                <input [NumbersOnly]="true" maxlength="9" matInput formControlName="displayCharacters" data-automation-id="display-characters-input">
                             </mat-form-field>
                         </div>
 
@@ -247,7 +247,7 @@
                         <div class="col-xl-4  mb-2">
                             <mat-form-field class="d-block w-100 " appearance="outline">
                                 <mat-label>Pair Key</mat-label>
-                                <input maxlength="50" matInput formControlName="pairKey">
+                                <input maxlength="50" matInput formControlName="pairKey" data-automation-id="pair-key-input">
                             </mat-form-field>
                         </div>
                         <div class="col-xl-4  mb-2">
@@ -272,13 +272,13 @@
                         <div class="col-xl-6  mb-2">
                             <mat-form-field class="d-block w-100 " appearance="outline">
                                 <mat-label>Host IP Address</mat-label>
-                                <input maxlength="50" matInput formControlName="hostIP">
+                                <input maxlength="50" matInput formControlName="hostIP" data-automation-id="host-ip-input">
                             </mat-form-field>
                         </div>
                         <div class="col-xl-6  mb-2">
                             <mat-form-field class="d-block w-100 " appearance="outline">
                                 <mat-label>Host Port</mat-label>
-                                <input matInput formControlName="hostPort">
+                                <input matInput formControlName="hostPort" data-automation-id="host-port-input">
                             </mat-form-field>
                         </div>
                     </div>
@@ -286,7 +286,7 @@
                         <div class="col-xl-6  mb-2">
                             <mat-form-field class="d-block w-100 " appearance="outline">
                                 <mat-label>Workstation Name</mat-label>
-                                <input maxlength="50" matInput formControlName="workstationName">
+                                <input maxlength="50" matInput formControlName="workstationName" data-automation-id="workstation-name-input">
                             </mat-form-field>
                         </div>
                         <div class="col-xl-6">

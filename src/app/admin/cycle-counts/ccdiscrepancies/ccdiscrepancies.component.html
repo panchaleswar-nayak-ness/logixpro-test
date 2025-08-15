@@ -16,7 +16,7 @@
           <div class="col-xl-4">
             <mat-form-field class="filter mb-2 d-xl-flex d-block" floatLabel="never" appearance="outline" >
               <mat-label data-automation-id="label-total-locations">Total Locations </mat-label>
-              <input #searchInput matInput disabled value="15" data-automation-id="input-total-locations">
+              <input #searchInput matInput disabled value="15" [attr.data-automation-id]="'input-total-locations-' + searchInput.id">
             </mat-form-field>
           </div>
           <div class="col-xl-8">

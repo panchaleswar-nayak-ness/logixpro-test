@@ -1,4 +1,4 @@
-<div class="unassigned-functions functions-list-wrap mt-3 p-3 br-14 div-border">
+<div class="unassigned-functions functions-list-wrap mt-3 p-3 br-14 div-border" data-automation-id="unassigned-functions-wrapper">
   <div class="search-box zone-search-box">
     <div class="d-flex g-mini-search-box pb-4">
       <mat-form-field class="w-100" appearance="fill">
@@ -23,7 +23,7 @@
         <mat-list class="zones-list g-card-list list-style-1 pt-0" role="list">
           <ng-scrollbar class="ng-scrollbar-height" *ngIf="!filterValue" pointerEventsMethod="scrollbar">
             <mat-list-item class="pt-2" role="listitem"
-              *ngFor="let groupname of unassignedFunctions | filterUnassignedFunc:filterName">
+              *ngFor="let groupname of unassignedFunctions | filterUnassignedFunc:filterName" [attr.data-automation-id]="'unassigned-functions-item-' + groupname">
               <span class="list-label zone-list-label" data-automation-id="label-unassigned-function">
                 {{groupname}}
               </span>

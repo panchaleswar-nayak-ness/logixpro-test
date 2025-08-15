@@ -1,9 +1,9 @@
 
 <div class="d-flex justify-content-between mb-2 align-items-center">
     <div class="w-48px"></div>
-    <h1 class="m-0" mat-dialog-title>Inventory Map Export Scheduler</h1>
+    <h1 class="m-0" mat-dialog-title data-automation-id="ie-invent-map-export-dialog-title">Inventory Map Export Scheduler</h1>
   
-    <button mat-icon-button class="close-button dialog-close-button-fix"  [mat-dialog-close]="false">
+    <button mat-icon-button class="close-button dialog-close-button-fix"  [mat-dialog-close]="false" data-automation-id="ie-invent-map-export-close-button">
         <mat-icon class="close-icon">close</mat-icon>
     </button>
   </div>
@@ -15,13 +15,13 @@
     class="custom-form-field w-100 mb-3"
     appearance="outline"
   >
-    <mat-label>Last Export Date/Time</mat-label>
-    <input matInput type="text" value="Reprocessed" disabled/>
+    <mat-label data-automation-id="last-export-datetime-label">Last Export Date/Time</mat-label>
+    <input matInput type="text" value="Reprocessed" disabled data-automation-id="last-export-datetime-input"/>
   </mat-form-field>
   </div>
   
   <div class="d-flex justify-content-end"> 
-      <button mat-flat-button color="primary" class="add-icon-button mb-2 flex-grow-1">
+      <button mat-flat-button color="primary" class="add-icon-button mb-2 flex-grow-1" data-automation-id="ie-invent-map-export-add-button">
               <span class="material-symbols-outlined" matTooltip="Add new"
                 matTooltipPosition="above">
                 add
@@ -34,95 +34,95 @@
             <ng-scrollbar class="mat-table-scrollbar height-345"   track="all" >
               <table class="w-100 table-borderless" mat-table matSort [dataSource]="tableData">
                   <ng-container matColumnDef="mon">
-                      <th mat-header-cell *matHeaderCellDef mat-sort-header> Mon </th>
-                      <td mat-cell *matCellDef="let element" class="mt-3"
+                      <th mat-header-cell *matHeaderCellDef mat-sort-header data-automation-id="mon-header"> Mon </th>
+                      <td mat-cell *matCellDef="let element; let i = index" class="mt-3"
                       #tooltip="matTooltip" matTooltipPosition="above" [matTooltip]="element.dateStamp"
               >
 
-              <mat-checkbox color="primary">
+              <mat-checkbox color="primary" [attr.data-automation-id]="'mon-checkbox-' + i">
             </mat-checkbox></td>
 
                   </ng-container>
   
             <ng-container matColumnDef="tue">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header> Tue
+                <th mat-header-cell *matHeaderCellDef mat-sort-header data-automation-id="tue-header"> Tue
                 </th>
-                <td mat-cell *matCellDef="let element" class="mt-3"
+                <td mat-cell *matCellDef="let element; let i = index" class="mt-3"
                       #tooltip="matTooltip" matTooltipPosition="above" [matTooltip]="element.dateStamp"
               >
 
-              <mat-checkbox color="primary">
+              <mat-checkbox color="primary" [attr.data-automation-id]="'tue-checkbox-' + i">
             </mat-checkbox></td>
             </ng-container>
   
             <ng-container matColumnDef="wed">
-              <th mat-header-cell *matHeaderCellDef mat-sort-header> Wed
+              <th mat-header-cell *matHeaderCellDef mat-sort-header data-automation-id="wed-header"> Wed
               </th>
-              <td mat-cell *matCellDef="let element" class="mt-3"
+              <td mat-cell *matCellDef="let element; let i = index" class="mt-3"
               #tooltip="matTooltip" matTooltipPosition="above" [matTooltip]="element.dateStamp"
       >
 
-      <mat-checkbox color="primary">
+      <mat-checkbox color="primary" [attr.data-automation-id]="'wed-checkbox-' + i">
     </mat-checkbox></td>
           </ng-container>
           <ng-container matColumnDef="thu">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header> Thu
+            <th mat-header-cell *matHeaderCellDef mat-sort-header data-automation-id="thu-header"> Thu
             </th>
-            <td mat-cell *matCellDef="let element" class="mt-3"
+            <td mat-cell *matCellDef="let element; let i = index" class="mt-3"
             #tooltip="matTooltip" matTooltipPosition="above" [matTooltip]="element.dateStamp"
     >
 
-    <mat-checkbox color="primary">
+    <mat-checkbox color="primary" [attr.data-automation-id]="'thu-checkbox-' + i">
   </mat-checkbox></td>
         </ng-container>
         <ng-container matColumnDef="fri">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header> Fri
+            <th mat-header-cell *matHeaderCellDef mat-sort-header data-automation-id="fri-header"> Fri
             </th>
-            <td mat-cell *matCellDef="let element" class="mt-3"
+            <td mat-cell *matCellDef="let element; let i = index" class="mt-3"
                       #tooltip="matTooltip" matTooltipPosition="above" [matTooltip]="element.dateStamp"
               >
 
-              <mat-checkbox color="primary">
+              <mat-checkbox color="primary" [attr.data-automation-id]="'fri-checkbox-' + i" >
             </mat-checkbox></td>
         </ng-container>
   
           <ng-container matColumnDef="sat">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header> Sat
+            <th mat-header-cell *matHeaderCellDef mat-sort-header data-automation-id="sat-header"> Sat
             </th>
-            <td mat-cell *matCellDef="let element" class="mt-3"
+            <td mat-cell *matCellDef="let element; let i = index" class="mt-3"
             #tooltip="matTooltip" matTooltipPosition="above" [matTooltip]="element.dateStamp"
     >
 
-    <mat-checkbox color="primary">
+    <mat-checkbox color="primary" [attr.data-automation-id]="'sat-checkbox-' + i" data-automation-id="sat-checkbox">
   </mat-checkbox></td>
         </ng-container>
 
         <ng-container matColumnDef="sun">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header> Sun
+            <th mat-header-cell *matHeaderCellDef mat-sort-header data-automation-id="sun-header"> Sun
             </th>
-            <td mat-cell *matCellDef="let element" class="mt-3"
+            <td mat-cell *matCellDef="let element; let i = index" class="mt-3"
                       #tooltip="matTooltip" matTooltipPosition="above" [matTooltip]="element.dateStamp"
               >
-              <mat-checkbox color="primary">
+              <mat-checkbox color="primary" [attr.data-automation-id]="'sun-checkbox-' + i">
             </mat-checkbox></td>
         </ng-container>
   
         <ng-container matColumnDef="export_hour">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header> Export Hour
+          <th mat-header-cell *matHeaderCellDef mat-sort-header data-automation-id="export-hour-header"> Export Hour
           </th>
-          <td mat-cell *matCellDef="let element">
+          <td mat-cell *matCellDef="let element; let i = index">
             <mat-form-field class="custom-form-field w-100 pe-2 mt-3" appearance="outline">
-              <input matInput type="text" value="00000" disabled/>
+              <input matInput type="text" value="00000" disabled [attr.data-automation-id]="'export-hour-input-' + i" />
           </mat-form-field>
           </td>
       </ng-container>
 
       <ng-container matColumnDef="export_minute">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header> Export Minute
+        <th mat-header-cell *matHeaderCellDef mat-sort-header data-automation-id="export-minute-header"> Export Minute
         </th>
-        <td mat-cell *matCellDef="let element">
+        <td mat-cell *matCellDef="let element; let i = index">
           <mat-form-field class="custom-form-field w-100 pe-2 mt-3" appearance="outline">
-            <input matInput type="text" value="00000" disabled/>
+            <input matInput type="text" value="00000" disabled [attr.data-automation-id]="'export-minute-input-' + i"/>
         </mat-form-field>
         </td>
     </ng-container>
@@ -130,18 +130,18 @@
    
   
     <ng-container matColumnDef="am_pm">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header> AM/PM
+      <th mat-header-cell *matHeaderCellDef mat-sort-header data-automation-id="am-pm-header"> AM/PM
       </th>
-      <td mat-cell *matCellDef="let element">
+      <td mat-cell *matCellDef="let element; let i = index">
         <mat-form-field
                       class="action-dropdown custom-form-field-bg-white w-100 mb-2 mt-4"
                       appearance="outline" disabled
                     >
                     
-                      <mat-select class="employees-action">
-                        <mat-option value="123456">0000</mat-option>
-                        <mat-option value="987654">0000</mat-option>
-                        <mat-option value="147852">0000</mat-option>
+                      <mat-select class="employees-action" [attr.data-automation-id]="'am-pm-select-' + i">
+                        <mat-option value="123456" data-automation-id="am-pm-option-1">0000</mat-option>
+                        <mat-option value="987654" data-automation-id="am-pm-option-2">0000</mat-option>
+                        <mat-option value="147852" data-automation-id="am-pm-option-3">0000</mat-option>
                       </mat-select>
                       <span class="material-symbols-outlined icon-expand-more">
                         expand_more
@@ -151,16 +151,16 @@
   </ng-container>
   
             <ng-container matColumnDef="actions" stickyEnd>
-                <th width="10%" class="px-2" mat-header-cell *matHeaderCellDef>
+                <th width="10%" class="px-2" mat-header-cell *matHeaderCellDef data-automation-id="actions-header">
                 </th>
                 
   
-                <td  mat-cell *matCellDef="let element" class="ps-3">
+                <td  mat-cell *matCellDef="let element; let i = index" class="ps-3">
                   <div class="d-flex gap-12 align-items-center mt-2">
-                      <button mat-flat-button color="primary" class="xsm-icon-button">
+                      <button mat-flat-button color="primary" class="xsm-icon-button" data-automation-id="save-button">
                           <mat-icon class="material-symbols-outlined">save</mat-icon>
                       </button>
-                      <button mat-flat-button color="warn" class="xsm-icon-button">
+                      <button mat-flat-button color="warn" class="xsm-icon-button" data-automation-id="delete-button">
                           <mat-icon class="material-symbols-outlined">close</mat-icon>
                       </button>
                   </div>
@@ -188,7 +188,7 @@
                       mat-flat-button
                       class="btn-lg w-100 mb-3"
                       color="primary"
-                    >
+                      data-automation-id="update-all-other-maps-button">
                       <mat-label> Update All Other Maps</mat-label>
                     </button>
 

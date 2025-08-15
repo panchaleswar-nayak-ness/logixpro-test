@@ -1,11 +1,11 @@
 <mat-card class="mat-elevation-z g-card mt-3 mb-3">
     <mat-card-content>
         <div class="d-flex justify-content-between align-items-center mb-3">
-            <app-icon-heading-component heading="Batch Setup" icon="ballot" data-automation-id="batch-setup-heading">
+            <app-icon-heading-component heading="Batch Setup" icon="ballot" [automationId]="'batch-setup-heading'">
             </app-icon-heading-component>
             <button type="submit" mat-stroked-button class="btn-regular" color="primary" [matMenuTriggerFor]="appMenu" data-automation-id="print-menu-button">
                 <mat-icon class="material-symbols-outlined">print</mat-icon>
-                <span class="material-symbols-outlined icon-expand-more">
+                <span class="material-symbols-outlined icon-expand-more" data-automation-id="expand-icon">
                     expand_more
                 </span>
             </button>
@@ -23,7 +23,7 @@
                             <mat-form-field class="custom-form-field w-100 mb-2" appearance="outline">
                                 <mat-label data-automation-id="batch-id-label">Batch ID</mat-label>
                                 <input (keydown.shift.enter)="$event.preventDefault()" matInput type="text"
-                                    [(ngModel)]="batchID" #batch_id required="required" [attr.data-automation-id]="'batch-id-input-' + (batchID || '')">
+                                    [(ngModel)]="batchID" #batch_id required="required" data-automation-id="batch-id-input">
                                     <button matSuffix *ngIf="batchID" class="clear-btn"  (click)="batchID= '';createToteSetupTable(pickBatchQuantity)" data-automation-id="batch-id-clear-button"><mat-icon class="text-20 text-chrome-600">cancel</mat-icon></button>
                             </mat-form-field>
                         </div>
@@ -148,12 +148,12 @@
                 </ng-container>
             </p>
             <div class="mb-3">
-                <button mat-flat-button color="primary" class="btn-lg w-100" (click)="confirmAddBatchDialog()" [attr.data-automation-id]="'ok-new-batch-dialog-button-' + (batchWithID ? 'with-id' : 'no-id')">
+                <button mat-flat-button color="primary" class="btn-lg w-100" (click)="confirmAddBatchDialog()" data-automation-id="ok-new-batch-dialog-button">
                     Ok
                 </button>
             </div>
             <div>
-                <button mat-stroked-button color="basic" class="btn-lg bg-white w-100" (click)="closeBatchDialog()" [attr.data-automation-id]="'cancel-new-batch-dialog-button-' + (batchWithID ? 'with-id' : 'no-id')">
+                <button mat-stroked-button color="basic" class="btn-lg bg-white w-100" (click)="closeBatchDialog()" data-automation-id="cancel-new-batch-dialog-button">
                     Cancel
                 </button>
             </div>

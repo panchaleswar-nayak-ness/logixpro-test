@@ -1,13 +1,13 @@
 <div class="d-flex justify-content-between align-items-center">
     <div class="bm-toeid-width"></div>
-    <h1 class="m-0" mat-dialog-title>Order Details</h1>
-    <button mat-icon-button class="close-button dialog-close-button-fix" (click)="closePopup()">
+    <h1 class="m-0" mat-dialog-title data-automation-id="order-details-heading">Order Details</h1>
+    <button mat-icon-button class="close-button dialog-close-button-fix" (click)="closePopup()" data-automation-id="close-button">
         <mat-icon class="close-icon">close</mat-icon>
     </button>
 </div>
 <div class="d-flex align-items-center justify-content-center flex-wrap px-5 gap-12 mb-3">
-    <span class="label label-gray px-2 f-14 mb-3">Order No.:&nbsp;<b>{{ordNum}}</b></span>
-    <span class="label label-gray px-2 f-14 mb-3">Transaction Type:&nbsp;<b>{{transType}}</b></span>
+    <span class="label label-gray px-2 f-14 mb-3" data-automation-id="order-number-label">Order No.:&nbsp;<b>{{ordNum}}</b></span>
+    <span class="label label-gray px-2 f-14 mb-3" data-automation-id="transaction-type-label">Transaction Type:&nbsp;<b>{{transType}}</b></span>
 </div>
 <div class="">
     <div class="card br-14 table-responsive borderless">
@@ -116,6 +116,6 @@
     </div>
     <div class="table-pagination d-flex justify-content-start">
         <mat-paginator [pageSize]="10" #paginator [length]="orderLines.filteredData.length"
-          [pageSizeOptions]="[10, 20, 100]" showFirstLastButtons [pageSizeOptions]="[10, 20, 100]"></mat-paginator>
+          [pageSizeOptions]="[10, 20, 100]" showFirstLastButtons [pageSizeOptions]="[10, 20, 100]" data-automation-id="order-details-paginator"></mat-paginator>
     </div>
 </div>

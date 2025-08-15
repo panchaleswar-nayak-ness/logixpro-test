@@ -27,7 +27,7 @@
         class="custom-form-field custom-form-field-bg-white w-100 mb-1"
         appearance="outline"
       >
-        <mat-label>New Zone Name</mat-label>
+        <mat-label data-automation-id="new-zone-name-label">New Zone Name</mat-label>
         <input
           type="text"
           [(ngModel)]="newLocationVal"
@@ -96,7 +96,7 @@
                     class="custom-form-field custom-form-field-bg-white w-100 mb-3"
                     appearance="outline"
                   >
-                    <mat-label>Zone</mat-label>
+                    <mat-label data-automation-id="zone-label">Zone</mat-label>
                     <input
                       type="text"
                       [(ngModel)]="i.zone"
@@ -112,7 +112,7 @@
                     appearance="outline"
                     (click)="locationName(i)"
                   >
-                    <mat-label>Location Name</mat-label>
+                    <mat-label data-automation-id="location-name-label">Location Name</mat-label>
                     <input
                       type="text"
                       [(ngModel)]="i.locationName"
@@ -130,7 +130,7 @@
                     class="action-dropdown custom-form-field-bg-white w-100 mb-3"
                     appearance="outline"
                   >
-                    <mat-label>Parent Zone</mat-label>
+                    <mat-label data-automation-id="parent-zone-label">Parent Zone</mat-label>
                     <mat-select
                       [disabled]="!i.includeCFCarouselPick"
                       [(ngModel)]="i.parentZone"
@@ -143,7 +143,7 @@
                         >{{ s }}</mat-option
                       >
                     </mat-select>
-                    <span class="material-symbols-outlined icon-expand-more">
+                    <span class="material-symbols-outlined icon-expand-more" data-automation-id="parent-zone-expand-icon">
                       expand_more
                     </span>
                   </mat-form-field>
@@ -153,7 +153,7 @@
                     class="custom-form-field custom-form-field-bg-white w-100 mb-3"
                     appearance="outline"
                   >
-                    <mat-label>Sequence</mat-label>
+                    <mat-label data-automation-id="sequence-label">Sequence</mat-label>
                     <input
                       type="number"
                       [(ngModel)]="i.sequence"
@@ -168,7 +168,7 @@
                     class="custom-form-field custom-form-field-bg-white w-100 mb-3"
                     appearance="outline"
                   >
-                    <mat-label>Carousel</mat-label>
+                    <mat-label data-automation-id="carousel-label">Carousel</mat-label>
                     <input
                       type="text"
                       [(ngModel)]="i.label1"
@@ -183,7 +183,7 @@
                     class="custom-form-field custom-form-field-bg-white w-100 mb-3"
                     appearance="outline"
                   >
-                    <mat-label>Row</mat-label>
+                    <mat-label data-automation-id="row-label">Row</mat-label>
                     <input
                       type="text"
                       [(ngModel)]="i.label2"
@@ -198,7 +198,7 @@
                     class="custom-form-field custom-form-field-bg-white w-100 mb-3"
                     appearance="outline"
                   >
-                    <mat-label>Shelf</mat-label>
+                    <mat-label data-automation-id="shelf-label">Shelf</mat-label>
                     <input
                       type="text"
                       [(ngModel)]="i.label3"
@@ -213,7 +213,7 @@
                     class="custom-form-field custom-form-field-bg-white w-100 mb-3"
                     appearance="outline"
                   >
-                    <mat-label>Bin</mat-label>
+                    <mat-label data-automation-id="bin-label">Bin</mat-label>
                     <input
                       type="text"
                       [(ngModel)]="i.label4"

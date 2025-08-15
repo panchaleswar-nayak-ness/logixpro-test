@@ -1,9 +1,9 @@
-<div class="d-xl-flex justify-content-between align-items-center">
-    <h2 class="card-header-title mb-0 mb-sm-3 mb-md-3 mb-lg-0 d-flex align-items-center">
+<div class="d-xl-flex justify-content-between align-items-center" data-automation-id="employees-info-header-row">
+    <h2 class="card-header-title mb-0 mb-sm-3 mb-md-3 mb-lg-0 d-flex align-items-center" data-automation-id="employees-info-title">
       <div
         class="dialog-close-button-fix close-button d-flex justify-content-center align-items-center me-lg-3"
-        *ngIf="isLookUp">
-        <span class="material-symbols-outlined cursor-pointer"(click)="backEmpAction()"
+        *ngIf="isLookUp" data-automation-id="employees-info-back-btn-wrap">
+        <span class="material-symbols-outlined cursor-pointer" (click)="backEmpAction()"
           matTooltip="Back to employee list" matTooltipPosition="above" data-automation-id="button-back">
           arrow_back
         </span>
@@ -15,16 +15,16 @@
       </div>
       <span data-automation-id="label-employees-information">Employees Information</span>
     </h2>
-    <mat-form-field class="action-dropdown d-block" appearance="outline">
+    <mat-form-field class="action-dropdown d-block" appearance="outline" data-automation-id="employees-info-actions-formfield">
       <mat-label data-automation-id="label-actions">Actions</mat-label>
       <mat-select #matRef class="employees-action"
-        (selectionChange)="actionDialog($event.value, empData, $event)">
+        (selectionChange)="actionDialog($event.value, empData, $event)" data-automation-id="employees-info-actions-select">
         <mat-option (click)="openDialog()" *ngIf="(env !== 'AD' && env !== 'AZUREAD') && !isLookUp" data-automation-id="add-employee-option">Add Employee</mat-option>
         <mat-option value="edit" *ngIf="isLookUp" data-automation-id="edit-employee-option">Edit</mat-option>
         <mat-option value="delete" *ngIf="isLookUp" data-automation-id="button-delete">Delete</mat-option>
         <mat-option value="print" (click)="printEmpList()" data-automation-id="print-employee-list-option">Print Employee List</mat-option>
       </mat-select>
-      <span class="material-symbols-outlined icon-expand-more">
+      <span class="material-symbols-outlined icon-expand-more" data-automation-id="employees-info-actions-expand">
         expand_more
       </span>
     </mat-form-field>
@@ -32,7 +32,7 @@
   <div class="emp-details-table mt-3 {{!isLookUp ? 'box-border' : ''}}" *ngIf="!isLookUp">
 
     <!-- employee lookup here -->
-    <app-employees-lookup [childLookUp]="isLookUp" (updateIsLookUp)="updateIsLookUp($event)">
+    <app-employees-lookup [childLookUp]="isLookUp" (updateIsLookUp)="updateIsLookUp($event)" data-automation-id="employees-info-lookup-component">
     </app-employees-lookup>
 
   </div>

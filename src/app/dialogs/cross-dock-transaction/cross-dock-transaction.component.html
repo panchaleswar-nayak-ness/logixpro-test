@@ -1,7 +1,7 @@
 <div class="d-flex justify-content-between align-items-center" mat-dialog-title>
     <div class="w-48px"></div>
-    <h1 class="m-0" mat-dialog-title>Cross Dock Transactions</h1>
-    <button mat-icon-button class="close-button dialog-close-button-fix" (click)="onNoClick()">
+    <h1 class="m-0" mat-dialog-title data-automation-id="cross-dock-transactions-header">Cross Dock Transactions</h1>
+    <button mat-icon-button class="close-button dialog-close-button-fix" (click)="onNoClick()" data-automation-id="close-button">
         <mat-icon class="close-icon">close</mat-icon>
     </button>
 </div>
@@ -9,26 +9,26 @@
     <div class="row">
         <div class="col-xl-8 offset-xl-2">
             <div class="d-flex align-items-center justify-content-center flex-wrap gap-12 mb-3">
-                <div class="text-center"> <span class="label label-gray px-2 f-14 mb-1">
+                <div class="text-center"> <span class="label label-gray px-2 f-14 mb-1" data-automation-id="item-number-label">
                     <span replacePlaceholder [replacePlaceHolder]="placeholders.itemNumber" [fallbackPlaceHolder]="placeholders.itemNumberFallback">{{ItemNumber}}</span>:&nbsp;<b>{{itemWhse}}</b></span>
                 </div>
-                <div class="text-center"> <span class="label label-gray px-2 f-14 mb-1">Description:&nbsp;<b>{{description}}</b></span></div>
-                <div class="text-center"> <span class="label label-gray px-2 f-14 mb-1">Backorder Total:&nbsp;<b>{{backOrderTotal}}</b></span></div>
-                <div class="text-center"> <span class="label label-gray px-2 f-14 mb-1">Allocated Total:&nbsp;<b>{{allocatedTotal}}</b></span></div>
-                <div class="text-center"> <span class="label label-gray px-2 f-14 mb-1">Qty Available:&nbsp;<b>{{numberRecords}}</b></span></div>
+                <div class="text-center"> <span class="label label-gray px-2 f-14 mb-1" data-automation-id="description-label">Description:&nbsp;<b>{{description}}</b></span></div>
+                <div class="text-center"> <span class="label label-gray px-2 f-14 mb-1" data-automation-id="backorder-total-label">Backorder Total:&nbsp;<b>{{backOrderTotal}}</b></span></div>
+                <div class="text-center"> <span class="label label-gray px-2 f-14 mb-1" data-automation-id="allocated-total-label">Allocated Total:&nbsp;<b>{{allocatedTotal}}</b></span></div>
+                <div class="text-center"> <span class="label label-gray px-2 f-14 mb-1" data-automation-id="qty-available-label">Qty Available:&nbsp;<b>{{numberRecords}}</b></span></div>
             </div>
         </div>
     </div>
 
     <div class="d-flex justify-content-end mb-3">
         <div class="d-flex align-items-center gap-12">
-            <button mat-flat-button color="primary" class="sm-icon-button" (click)="leftClick()" class="sm-icon-button" *ngIf="lowerBound!=1">
+            <button mat-flat-button color="primary" class="sm-icon-button" (click)="leftClick()" class="sm-icon-button" *ngIf="lowerBound!=1" data-automation-id="pagination-left-button">
                 <span class="material-symbols-outlined">
                     keyboard_arrow_left
                 </span>
             </button>
-            <div class="text-chrome-600"><b>{{upperBound}}</b> of {{crossDock.numberRecords}}</div>
-            <button mat-flat-button color="primary" (click)="rightClick()" class="sm-icon-button" *ngIf="upperBound!=crossDock.numberRecords">
+            <div class="text-chrome-600" data-automation-id="pagination-info"><b>{{upperBound}}</b> of {{crossDock.numberRecords}}</div>
+            <button mat-flat-button color="primary" (click)="rightClick()" class="sm-icon-button" *ngIf="upperBound!=crossDock.numberRecords" data-automation-id="pagination-right-button">
                 <span class="material-symbols-outlined">
                     keyboard_arrow_right
                 </span>
@@ -38,7 +38,7 @@
 
     <div class="card p-3 mb-3">
         <div class="d-flex justify-content-between align-items-center mb-3">
-            <h2 class="card-header-title mb-0 d-flex align-items-center me-3">
+            <h2 class="card-header-title mb-0 d-flex align-items-center me-3" data-automation-id="order-section-header">
                 <div class="mat-icon-wrap me-lg-3">
                     <span class="material-symbols-outlined">
                         category
@@ -47,15 +47,15 @@
                 <span>Order</span>
             </h2>
             <mat-form-field class="action-dropdown custom-form-field-bg-white" appearance="outline">
-                <mat-select #openAction class="employees-action" placeholder="Actions" >
+                <mat-select #openAction class="employees-action" placeholder="Actions"  [attr.data-automation-id]="'actions-dropdown' + (openAction.value ? '-' + openAction.value : '')">
                     
-                    <mat-option [disabled]="!selectedRowObj" value="new_tote" (click)="getNxtToteIds()">Next Tote</mat-option>
-                    <mat-option [disabled]="!selectedRowObj" value="clear" (click)="openUserFieldsDialogue()">User Fields</mat-option>
-                    <mat-option [disabled]="!selectedRowObj" value="viewOrderStatus" (click)="viewOrderStatus()">View Order Status</mat-option>
-                    <mat-option [disabled]="!selectedRowObj" value="viewReprocess" (click)="openReprocessTransactionViewDialogue()">View Reprocess</mat-option>
-                    <mat-option [disabled]="!selectedRowObj" value="completePick" (click)="completePick()">Complete Pick</mat-option>
-                    <mat-option [disabled]="!selectedRowObj" value="printToteLabel" (click)="print('printtotelabel')">Print Tote Label</mat-option>
-                    <mat-option [disabled]="!selectedRowObj" value="printItemLabel" (click)="print('printitemlabel')">Print Item Label</mat-option>
+                    <mat-option [disabled]="!selectedRowObj" value="new_tote" (click)="getNxtToteIds()" data-automation-id="next-tote-option">Next Tote</mat-option>
+                    <mat-option [disabled]="!selectedRowObj" value="clear" (click)="openUserFieldsDialogue()" data-automation-id="user-fields-option">User Fields</mat-option>
+                    <mat-option [disabled]="!selectedRowObj" value="viewOrderStatus" (click)="viewOrderStatus()" data-automation-id="view-order-status-option">View Order Status</mat-option>
+                    <mat-option [disabled]="!selectedRowObj" value="viewReprocess" (click)="openReprocessTransactionViewDialogue()" data-automation-id="view-reprocess-option">View Reprocess</mat-option>
+                    <mat-option [disabled]="!selectedRowObj" value="completePick" (click)="completePick()" data-automation-id="complete-pick-option">Complete Pick</mat-option>
+                    <mat-option [disabled]="!selectedRowObj" value="printToteLabel" (click)="print('printtotelabel')" data-automation-id="print-tote-label-option">Print Tote Label</mat-option>
+                    <mat-option [disabled]="!selectedRowObj" value="printItemLabel" (click)="print('printitemlabel')" data-automation-id="print-item-label-option">Print Item Label</mat-option>
                 </mat-select>
                 <span class="material-symbols-outlined icon-expand-more">
                     expand_more
@@ -65,57 +65,57 @@
         <div class="list-row-seperator">
         <ng-container *ngFor="let t of transactions;let i = index">
         
-        <div (click)="selectRow(i,t)"  [class.selection] = "selectedRow==i" class="list-item pt-3 px-3 my-2" >
+        <div (click)="selectRow(i,t)"  [class.selection] = "selectedRow==i" class="list-item pt-3 px-3 my-2" [attr.data-automation-id]="'transaction-row-' + i">
             <div class="row">
                 <div class="col-xl-3">
                     <mat-form-field class="custom-form-field w-100 mb-2" appearance="outline">
-                        <mat-label>Order No.</mat-label>
-                        <input (keydown.shift.enter)="$event.preventDefault()" matInput type="text" value="{{t.orderNumber}}" disabled>
+                        <mat-label data-automation-id="order-no-label">Order No.</mat-label>
+                        <input (keydown.shift.enter)="$event.preventDefault()" matInput type="text" value="{{t.orderNumber}}" disabled data-automation-id="order-no-input">
                       </mat-form-field>
                 </div>
                 <div class="col-xl-3">
                     <mat-form-field class="custom-form-field w-100 mb-2" appearance="outline">
-                        <mat-label>Host Transaction ID</mat-label>
-                        <input (keydown.shift.enter)="$event.preventDefault()" matInput type="text" value="{{t.hostTransactionID}}" disabled>
+                        <mat-label data-automation-id="host-transaction-id-label">Host Transaction ID</mat-label>
+                        <input (keydown.shift.enter)="$event.preventDefault()" matInput type="text" value="{{t.hostTransactionID}}" disabled data-automation-id="host-transaction-id-input">
                       </mat-form-field>
                 </div>
                 <div class="col-xl-3">
                     <mat-form-field class="custom-form-field w-100 mb-2" appearance="outline">
-                        <mat-label>Transaction Qty</mat-label>
-                        <input (keydown.shift.enter)="$event.preventDefault()" matInput type="text" value="{{t.transactionQuantity}}" disabled>
+                        <mat-label data-automation-id="transaction-qty-label">Transaction Qty</mat-label>
+                        <input (keydown.shift.enter)="$event.preventDefault()" matInput type="text" value="{{t.transactionQuantity}}" disabled data-automation-id="transaction-qty-input">
                       </mat-form-field>
                 </div>
                 <div class="col-xl-3">
                     <mat-form-field class="custom-form-field w-100 mb-2" appearance="outline">
-                        <mat-label>Completed Qty</mat-label>
-                        <input [NumbersOnly]="true" #completefocus  (keydown.shift.enter)="$event.preventDefault()" matInput type="text" value="{{t.completedQuantity}}" #compQty (focusout)="compQtyChange({ i, compQty : compQty.value })">
-
+                        <mat-label data-automation-id="completed-qty-label">Completed Qty</mat-label>
+                        <input [NumbersOnly]="true" #completefocus  (keydown.shift.enter)="$event.preventDefault()" matInput type="text" value="{{t.completedQuantity}}" #compQty (focusout)="compQtyChange({ i, compQty : compQty.value })" data-automation-id="completed-qty-input">
+                        
                       </mat-form-field>
                 </div>
             </div>
             <div class="row">
                 <div class="col-xl-3">
                     <mat-form-field class="custom-form-field w-100 mb-2" appearance="outline">
-                        <mat-label>Import Date</mat-label>
-                        <input (keydown.shift.enter)="$event.preventDefault()" matInput type="text" value="{{t.importDate}}" disabled>
+                        <mat-label data-automation-id="import-date-label">Import Date</mat-label>
+                        <input (keydown.shift.enter)="$event.preventDefault()" matInput type="text" value="{{t.importDate}}" disabled data-automation-id="import-date-input">
                       </mat-form-field>
                 </div>
                 <div class="col-xl-3">
                     <mat-form-field class="custom-form-field w-100 mb-2" appearance="outline">
-                        <mat-label>Required Date</mat-label>
-                        <input (keydown.shift.enter)="$event.preventDefault()" matInput type="text" value="{{t.requiredDate}}" disabled>
+                        <mat-label data-automation-id="required-date-label">Required Date</mat-label>
+                        <input (keydown.shift.enter)="$event.preventDefault()" matInput type="text" value="{{t.requiredDate}}" disabled data-automation-id="required-date-input">
                       </mat-form-field>
                 </div>
                 <div class="col-xl-3">
                     <mat-form-field class="custom-form-field w-100 mb-2" appearance="outline">
-                        <mat-label>Priority</mat-label>
-                        <input (keydown.shift.enter)="$event.preventDefault()" matInput type="text" value="{{t.priority}}" disabled>
+                        <mat-label data-automation-id="priority-label">Priority</mat-label>
+                        <input (keydown.shift.enter)="$event.preventDefault()" matInput type="text" value="{{t.priority}}" disabled data-automation-id="priority-input">
                       </mat-form-field>
                 </div>
                 <div class="col-xl-3">
-                    <mat-form-field class="custom-form-field w-100 mb-2" appearance="outline" >
-                        <mat-label>Tote ID</mat-label>
-                        <input  matInput type="text" value="{{t.toteID}}">
+                    <mat-form-field class="custom-form-field w-100 mb-2" appearance="outline">
+                        <mat-label data-automation-id="tote-id-label">Tote ID</mat-label>
+                        <input matInput type="text" value="{{t.toteID}}" data-automation-id="tote-id-input">
                       </mat-form-field>
                 </div>
             </div>
@@ -130,10 +130,10 @@
 </div>
 
 <div class="d-flex gap-12 mb-1" mat-dialog-actions>
-    <button mat-stroked-button color="primary" class="btn-lg" (click)="refresh()">
+    <button mat-stroked-button color="primary" class="btn-lg" (click)="refresh()" data-automation-id="refresh-button">
         Refresh
     </button>
-    <button mat-flat-button color="primary" class="btn-lg flex-grow-1" (click)="submit()">
+    <button mat-flat-button color="primary" class="btn-lg flex-grow-1" (click)="submit()" data-automation-id="cancel-crossdock-button">
         Cancel Crossdock
     </button>
 </div>
