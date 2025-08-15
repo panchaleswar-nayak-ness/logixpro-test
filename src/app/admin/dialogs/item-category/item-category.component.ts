@@ -1,4 +1,4 @@
-import { Component, ElementRef, EventEmitter, Inject, OnInit, Output, QueryList, Renderer2, ViewChildren, ChangeDetectorRef } from '@angular/core';
+import { Component, ElementRef, EventEmitter, Inject, OnInit, Output, QueryList, Renderer2, ViewChildren } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { AuthService } from '../../../common/init/auth.service';
 import labels from 'src/app/common/labels/labels.json';
@@ -29,7 +29,6 @@ export class  ItemCategoryComponent implements OnInit {
     private global:GlobalService,
     private authService: AuthService,
     private renderer: Renderer2,
-    private cdr: ChangeDetectorRef,
     public dialogRef: MatDialogRef<any>, 
     @Inject(MAT_DIALOG_DATA) public data: any,
     public route: Router
@@ -72,8 +71,6 @@ export class  ItemCategoryComponent implements OnInit {
         this.dialogRef.close({category: '', subCategory: ''});
       }
       
-      // Trigger change detection to ensure UI updates
-      this.cdr.detectChanges();
       
       setTimeout(() => {
         const inputElements = this.categoryCategory.toArray();
@@ -92,9 +89,6 @@ export class  ItemCategoryComponent implements OnInit {
       fromDB:false
     });
     this.enableButton.unshift({index:-1,value:true});
-    
-    // Trigger change detection to ensure UI updates
-    this.cdr.detectChanges();
     
     setTimeout(() => {
       const inputElements = this.categoryCategory.toArray();
