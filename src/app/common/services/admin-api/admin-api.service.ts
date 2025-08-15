@@ -1322,8 +1322,12 @@ export class AdminApiService implements IAdminApiService {
     return this.Api.OpenTransactionTable(payload);
   }
 
-  public UpdateEmergency(payload: UpdateEmergencyRequest) {
-    return this.Api.updateEmergency(payload);
+  public UpdateEmergencyOpenTrans(payload: UpdateEmergencyRequest) {
+    return this.Api.updateEmergencyOpenTrans(payload);
+  }
+
+  public UpdateEmergencyReprocessTrans(payload: UpdateEmergencyRequest) {
+    return this.Api.updateEmergencyReprocessTrans(payload);
   }
 
   public HoldTransactionsData(body: any) {

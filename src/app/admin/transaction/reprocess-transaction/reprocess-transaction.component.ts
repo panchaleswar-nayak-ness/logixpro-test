@@ -20,6 +20,7 @@ import { Column, DialogConstants, StringConditions, TableName, ToasterMessages, 
 import { Router } from '@angular/router';
 import { AppNames, AppRoutes, RouteUpdateMenu } from 'src/app/common/constants/menu.constants';
 import { CurrentTabDataService } from '../../inventory-master/current-tab-data-service';
+import { UpdateEmergencyRequest } from 'src/app/common/interface/admin/opentransaction.interfaces';
 
 
 @Component({
@@ -898,5 +899,35 @@ export class ReprocessTransactionComponent implements OnInit {
       saveState:true
       
     };
+  }
+
+  //Toggles the emergency flag and updates the backend, showing success or error feedback based on the response.
+  onCheckboxToggle(
+    element: Record<string, boolean | string | number>,
+    column: string,
+    isChecked: boolean
+  ): void {
+    const previousValue = element[column];
+    element[column] = isChecked;
+
+    const payload: UpdateEmergencyRequest = {
+      id: element['id'] as number,
+      emergency: isChecked
+    };
+    this.iAdminApiService.UpdateEmergencyReprocessTrans(payload).subscribe({
+      next: (response) => {
+        if (!response || !response.isExecuted) {
+          element[column] = previousValue;
+          this.global.ShowToastr(ToasterType.Error, ToasterMessages.RecordUpdateFailed, ToasterTitle.Error);
+        } else {
+          this.global.ShowToastr(ToasterType.Success, ToasterMessages.RecordUpdatedSuccessful, ToasterTitle.Success);
+        }
+      },
+      error: (err) => {
+        element[column] = previousValue;
+        console.error('UpdateEmergency API error:', err);
+        this.global.ShowToastr(ToasterType.Error, this.global.globalErrorMsg(), ToasterTitle.Error);
+      }
+    });
   }
 }
