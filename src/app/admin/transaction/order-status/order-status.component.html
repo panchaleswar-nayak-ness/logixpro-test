@@ -13,14 +13,14 @@
         [completeOrderEvent]="completeOrderEvent" 
         [reprocessOrderEvent]="reprocessOrderEvent" 
         [totalLinesOrderEvent]="totalLinesOrderEvent" 
-        [currentStatusOrderEvent]="currentStatusOrderEvent">
+        [currentStatusOrderEvent]="currentStatusOrderEvent"  [automationId]="'tran-select-order'">
       </app-tran-select-order>
     </div>
     <div class="col-xl-6 mb-3">
       <app-tran-carousel-lzone 
         [fieldNames]="fieldNames"
         [clearEvent]="clearEvent" 
-        [locationZonesEvent]="locationZonesEvent">
+        [locationZonesEvent]="locationZonesEvent" [automationId]="'tran-carousel-lzone'">
       </app-tran-carousel-lzone>
     </div>
   </div>
@@ -40,7 +40,7 @@
         (openOrders)="openOrderChange($event)"
         [orderNoEvent]="orderNoEvent" 
         [orderStatusTable]="orderStatusTable"
-        [toteIdEvent]="toteIdEvent">
+        [toteIdEvent]="toteIdEvent" [automationId]="'tran-order-list'">
       </app-tran-order-list>
     </div>
   </div>
