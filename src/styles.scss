@@ -1314,7 +1314,8 @@ h4.main-section-title {
 
 .label {
   border-radius: 999px;
-  height: 28px;
+  min-height: 28px;
+  height: auto;
   cursor: default;
   display: inline-flex;
   align-items: center;
