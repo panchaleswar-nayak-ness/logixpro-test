@@ -256,7 +256,10 @@ export const ToasterMessages = {
     EnterValidPositiveQuantity: 'Please enter a valid positive number for the quantity.',
     PrintSuccessfullyCompleted:'Print successfully completed',
     UnableToPrint: 'Unable to print',
-    UnableToAssignLocation: "Unable to assign location"
+    UnableToAssignLocation: "Unable to assign location",
+    CannotAssignMultipleMarkoutFunctions: 'Cannot assign multiple Markout functions to the same group.',
+    OnlyOneMarkoutFunctionAllowed: 'Only one Markout function can be assigned per group.',
+    StaffAlreadyHasMarkoutAssigned: 'Staff has already one markout assigned'
 }
 
 
@@ -759,3 +762,13 @@ export class ConsoleErrorMessages {
 export const PickToteFilterpreferences = {
     preferences: "PickToteFilterPrefs",
 }
+
+export const MarkoutFunctions = {
+    MarkoutProcess: 'Markout Process',
+    RGTPMarkout: 'RGTP Markout'
+} as const;
+
+export const MarkoutFunctionsList = [
+    MarkoutFunctions.MarkoutProcess,
+    MarkoutFunctions.RGTPMarkout
+] as const;

@@ -246,6 +246,10 @@
         "Permission": "Markout Process"
     },
     {
+        "path": "/ConsolidationManager/RGTPMarkout",
+        "Permission": "RGTP Markout"
+    },
+    {
         "path": "/ConsolidationManager/RouteIDM",
         "Permission": "RouteID Management"
     },
