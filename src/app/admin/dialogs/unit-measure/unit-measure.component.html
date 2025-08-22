@@ -42,7 +42,7 @@
                                         <input  #unit_name [autofocus]="i === 0" (keydown)="enableDisableButton(i)"
                                         (keydown.shift.enter)="$event.preventDefault()" 
                                         matInput type="text" name="{{unit}}" value="{{unit}}" maxlength="50"
-                                        [attr.data-automation-id]="'unit-measure-input-' + i + '-' + unit">
+                                        [attr.data-automation-id]="'unit-measure-input-' + i">
                                     </mat-form-field>
 
                                     <button [disabled]="(enableButton[i] && enableButton[i].value!=null) ? enableButton[i].value:false" mat-flat-button color="primary" class="xsm-icon-button" (click)="saveUnitMeasure(unit_name.value, unit)" [attr.data-automation-id]="'save-unit-measure-button-' + i ">

@@ -1,12 +1,12 @@
 <div class="row w-100 mt-2 mx-0">
   <div class="d-block d-xl-flex justify-content-between align-items-center">
-    <app-icon-heading-component class="card-header-title mb-3 d-flex align-items-center" heading="Location Zones" icon="location_on"></app-icon-heading-component>
+    <app-icon-heading-component class="card-header-title mb-3 d-flex align-items-center" heading="Location Zones" icon="location_on" [automationId]="'location-zones-heading'"></app-icon-heading-component>
     <div class="d-block d-xl-flex justify-content-end">
       <button
         mat-flat-button
         color="primary"
         class="add-icon-button mb-3"
-        (click)="addNewLocation()"
+        (click)="addNewLocation()" data-automation-id="add-location-zone-button"
       >
         <span
           class="material-symbols-outlined"
@@ -33,7 +33,7 @@
           [(ngModel)]="newLocationVal"
           (ngModelChange)="newLocationValue()"
           matInput
-          maxlength="2"
+          maxlength="2" data-automation-id="new-zone-name-input"
         />
       </mat-form-field>
     </div>
@@ -46,7 +46,7 @@
             (click)="saveNewLocation()"
             mat-flat-button
             color="primary"
-            class="xsm-icon-button"
+            class="xsm-icon-button" data-automation-id="button-save"
           >
             <mat-icon class="material-symbols-outlined"> save </mat-icon>
           </button>
@@ -55,7 +55,7 @@
             matTooltip="Delete"
             mat-flat-button
             color="warn"
-            class="xsm-icon-button"
+            class="xsm-icon-button" data-automation-id="button-close"
           >
             <mat-icon class="material-symbols-outlined"> close </mat-icon>
           </button>
@@ -85,7 +85,7 @@
                       [(ngModel)]="i[feature.property]"
                       (ngModelChange)="zoneChange(i, false, feature.property)"
                       [checked]="i[feature.property]"
-                      color="primary"
+                      color="primary" [attr.data-automation-id]="'zone-toggle-' + i.zone + '-' + feature.property"
                     ></mat-slide-toggle>
                   </div>
                 </div>
@@ -102,7 +102,7 @@
                       [(ngModel)]="i.zone"
                       (ngModelChange)="zoneChange(i, false)"
                       matInput
-                      maxlength="2"
+                      maxlength="2" data-automation-id="zone-name-input-{{i.zone}}"
                     />
                   </mat-form-field>
                 </div>
@@ -118,7 +118,7 @@
                       [(ngModel)]="i.locationName"
                       matInput
                       maxlength="255"
-                      readonly="true"
+                      readonly="true" data-automation-id="location-name-input-{{i.zone}}"
                     />
                     <span matSuffix>
                       <mat-icon class="text-tertiary-900 rotate-45">unfold_more</mat-icon>
@@ -135,7 +135,7 @@
                       [disabled]="!i.includeCFCarouselPick"
                       [(ngModel)]="i.parentZone"
                       (ngModelChange)="zoneChange(i, false)"
-                      class="employees-action"
+                      class="employees-action" data-automation-id="parent-zone-select-{{i.zone}}"
                     >
                       <mat-option
                         *ngFor="let s of parentZones"
@@ -159,7 +159,7 @@
                       [(ngModel)]="i.sequence"
                       (ngModelChange)="zoneChange(i, false)"
                       matInput
-                      maxlength="6"
+                      maxlength="6" data-automation-id="sequence-input-{{i.zone}}"
                     />
                   </mat-form-field>
                 </div>
@@ -174,7 +174,7 @@
                       [(ngModel)]="i.label1"
                       (ngModelChange)="zoneChange(i, false)"
                       matInput
-                      maxlength="20"
+                      maxlength="20" data-automation-id="carousel-input-{{i.zone}}"
                     />
                   </mat-form-field>
                 </div>
@@ -189,7 +189,7 @@
                       [(ngModel)]="i.label2"
                       (ngModelChange)="zoneChange(i, false)"
                       matInput
-                      maxlength="20"
+                      maxlength="20" data-automation-id="row-input-{{i.zone}}"
                     />
                   </mat-form-field>
                 </div>
@@ -204,7 +204,7 @@
                       [(ngModel)]="i.label3"
                       (ngModelChange)="zoneChange(i, false)"
                       matInput
-                      maxlength="20"
+                      maxlength="20" data-automation-id="shelf-input-{{i.zone}}"
                     />
                   </mat-form-field>
                 </div>
@@ -219,7 +219,7 @@
                       [(ngModel)]="i.label4"
                       (ngModelChange)="zoneChange(i, false)"
                       matInput
-                      maxlength="20"
+                      maxlength="20" data-automation-id="bin-input-{{i.zone}}"
                     />
                   </mat-form-field>
                 </div>
@@ -231,7 +231,7 @@
                       mat-button
                       class="w-100 btn-regular"
                       color="warn"
-                      (click)="delLocationZone(i.zone)"
+                      (click)="delLocationZone(i.zone)" data-automation-id="delete-location-zone-button-{{i.zone}}"
                     >
                       Delete Location Zone
                     </button>

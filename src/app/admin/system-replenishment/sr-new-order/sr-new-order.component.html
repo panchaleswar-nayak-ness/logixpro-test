@@ -2,68 +2,68 @@
 [numberSelectedRep]="numberSelectedRep"
 [kanban]="kanban"
 (onChangeKanbanEmit)="onChangeKanban($event)"
-(createNewOrdersListEmit)="kanban = $event; createNewOrdersList()">
+(createNewOrdersListEmit)="kanban = $event; createNewOrdersList()" data-automation-id="sr-new-input-fields-component">
 </app-sr-new-input-fields>
-<mat-card class="mat-elevation-z g-card mb-3">
+<mat-card class="mat-elevation-z g-card mb-3" data-automation-id="new-orders-table-card">
     <mat-card-content>
         <div class="row mb-3">
             <div class="col-12 col-xl-7">
                 <div class="d-xl-flex gap-12 align-items-center flex-wrap">
-                    <mat-form-field class="action-dropdown d-xl-flex d-block mb-3 mb-xl-0" appearance="outline">
-                        <mat-label>Search</mat-label>
+                    <mat-form-field class="action-dropdown d-xl-flex d-block mb-3 mb-xl-0" appearance="outline" data-automation-id="search-column-dropdown">
+                        <mat-label data-automation-id="search-label">Search</mat-label>
                         <mat-select class="employees-action" (selectionChange)="searchChange($event.value)" [(ngModel)]="tablePayloadObj.searchColumn">
-                            <mat-option value=""></mat-option>
-                            <mat-option *ngFor="let option of searchColumnOptions" [value]="option.value">{{option.viewValue}}</mat-option>
+                            <mat-option value="" data-automation-id="search-option-empty"></mat-option>
+                            <mat-option *ngFor="let option of searchColumnOptions" [value]="option.value" data-automation-id="search-option-{{option.value}}">{{option.viewValue}}</mat-option>
                         </mat-select>
-                        <span class="material-symbols-outlined icon-expand-more">expand_more</span>
+                        <span class="material-symbols-outlined icon-expand-more" data-automation-id="search-expand-icon">expand_more</span>
                     </mat-form-field>
 
                     <span class="v-br d-none d-xl-block">-</span>
 
                     <div class="d-xl-flex g-mini-search-box mb-3 mb-xl-0 col-xl-3 searchBoxDiv-style">
-                        <mat-form-field class="w-100 bg-white br-8" appearance="fill" [floatLabel]="getFloatLabelValue()" [hideRequiredMarker]="hideRequiredControl.value" (keyup.enter)="closeautoMenu()">
-                            <span class="material-symbols-outlined icon-search">Search</span>
+                        <mat-form-field class="w-100 bg-white br-8" appearance="fill" [floatLabel]="getFloatLabelValue()" [hideRequiredMarker]="hideRequiredControl.value" (keyup.enter)="closeautoMenu()" data-automation-id="search-input-field">
+                            <span class="material-symbols-outlined icon-search" data-automation-id="search-icon">Search</span>
                             <input type="text" placeholder="Search" aria-label="Search" matInput [disabled]="tablePayloadObj.searchColumn.length < 1" [matAutocomplete]="auto" [(ngModel)]="tablePayloadObj.searchString" (keyup.enter)="search(); getSearchOptions()" (keyup)="autocompleteSearchColumn()" (focus)="getSearchOptions(true)">
-                            <button matSuffix *ngIf="tablePayloadObj.searchString" class="clear-btn"  (click)=" tablePayloadObj.searchString = '';newReplenishmentOrders()"><mat-icon class="text-20 text-chrome-600">cancel</mat-icon></button>
+                            <button matSuffix *ngIf="tablePayloadObj.searchString" class="clear-btn"  (click)=" tablePayloadObj.searchString = '';newReplenishmentOrders()" data-automation-id="clear-search-btn"><mat-icon class="text-20 text-chrome-600">cancel</mat-icon></button>
                             <mat-autocomplete #auto="matAutocomplete" (optionSelected)="search()" #autocompleteInventory>
-                                <mat-option *ngFor="let option of searchAutocompleteList" [value]="option">{{option}}</mat-option>
-                                <mat-option *ngIf="searchAutocompleteList?.length ==0" disabled>No data found</mat-option>
+                                <mat-option *ngFor="let option of searchAutocompleteList" [value]="option" data-automation-id="autocomplete-option-{{option}}">{{option}}</mat-option>
+                                <mat-option *ngIf="searchAutocompleteList?.length ==0" disabled data-automation-id="autocomplete-option-empty">No data found</mat-option>
                             </mat-autocomplete>
                         </mat-form-field>
                     </div>
 
-                    <mat-form-field class="action-dropdown d-xl-flex d-block  mb-3 mb-xl-0" appearance="outline">
-                        <mat-label>Show</mat-label>
+                    <mat-form-field class="action-dropdown d-xl-flex d-block  mb-3 mb-xl-0" appearance="outline" data-automation-id="show-dropdown">
+                        <mat-label data-automation-id="show-label">Show</mat-label>
                         <mat-select class="employees-action" (selectionChange)="showChange($event.value)"  >
-                            <mat-option value="1">All</mat-option>
-                            <mat-option value="2">Reorder</mat-option>
+                            <mat-option value="1" data-automation-id="show-option-1">All</mat-option>
+                            <mat-option value="2" data-automation-id="show-option-2">Reorder</mat-option>
                         </mat-select>
-                        <span class="material-symbols-outlined icon-expand-more">expand_more</span>
+                        <span class="material-symbols-outlined icon-expand-more" data-automation-id="show-expand-icon">expand_more</span>
                     </mat-form-field>
                 </div>
             </div>
             <div class="col-xl-5 d-xl-flex flex-row-reverse">
-                <mat-form-field class="action-dropdown d-xl-flex d-block w-30" appearance="outline">
-                    <mat-label>Action</mat-label>
+                <mat-form-field class="action-dropdown d-xl-flex d-block w-30" appearance="outline" data-automation-id="actions-dropdown">
+                    <mat-label data-automation-id="actions-label">Action</mat-label>
                     <mat-select #openActionDropDown class="employees-action" (selectionChange)="openAction($event)">
-                        <mat-option value="1">{{itemNumber}}</mat-option>
-                        <mat-option value="2" (click)="actionChange('2')">Print</mat-option>
-                        <mat-option value="3" [disabled]="!this.newOrderListCreated" (click)="viewAllItems()">View All Items</mat-option>
-                        <mat-option value="4" [disabled]="!this.newOrderListCreated" (click)="viewSelectedItems()">View Selected Items</mat-option>
-                        <mat-option value="5" [disabled]="tableData.length == 0" (click)="actionChange('5')">Select All</mat-option>
-                        <mat-option value="6" [disabled]="tableData.length == 0 || numberSelectedRep == 0" (click)="actionChange('6')">Unselect All</mat-option>
+                        <mat-option value="1" data-automation-id="actions-option-1">{{itemNumber}}</mat-option>
+                        <mat-option value="2" (click)="actionChange('2')" data-automation-id="actions-option-2">Print</mat-option>
+                        <mat-option value="3" [disabled]="!this.newOrderListCreated" (click)="viewAllItems()" data-automation-id="actions-option-3">View All Items</mat-option>
+                        <mat-option value="4" [disabled]="!this.newOrderListCreated" (click)="viewSelectedItems()" data-automation-id="actions-option-4">View Selected Items</mat-option>
+                        <mat-option value="5" [disabled]="tableData.length == 0" (click)="actionChange('5')" data-automation-id="actions-option-5">Select All</mat-option>
+                        <mat-option value="6" [disabled]="tableData.length == 0 || numberSelectedRep == 0" (click)="actionChange('6')" data-automation-id="actions-option-6">Unselect All</mat-option>
                     </mat-select>
-                    <span class="material-symbols-outlined icon-expand-more">
+                    <span class="material-symbols-outlined icon-expand-more" data-automation-id="actions-expand-icon">
                         expand_more
                     </span>
                 </mat-form-field>
             </div>
         </div>
 
-        <div class="card br-14 table-responsive borderless">
+        <div class="card br-14 table-responsive borderless" data-automation-id="new-orders-table-wrapper">
             <ng-scrollbar class="mat-table-scrollbar mattableScrollbar-style" track="all">
 
-                <table class="w-100 table-borderless" mat-table [dataSource]="filteredTableData" matSort (matSortChange)="announceSortChange($event)">
+                <table class="w-100 table-borderless" mat-table [dataSource]="filteredTableData" matSort (matSortChange)="announceSortChange($event)" data-automation-id="new-orders-table">
 
                     <ng-container matColumnDef="Item Number">
                         <th mat-header-cell mat-sort-header *matHeaderCellDef > {{itemNumber}}</th>
@@ -193,15 +193,15 @@
                 [pageSize]="tablePayloadObj.length" 
                 [disabled]="tableData.length == 0 && filteredTableData.length == 0"
                 [pageSizeOptions]="[10,15,20,25,50,100]" 
-                (page)="paginatorChange($event)">
+                (page)="paginatorChange($event)" data-automation-id="new-orders-paginator">
             </mat-paginator>
         </div>
     </mat-card-content>
 </mat-card>
 <div>
-    <button mat-flat-button color="primary" class="w-100 btn-lg" (click)="processReplenishments()" [disabled]="numberSelectedRep == 0">
+    <button mat-flat-button color="primary" class="w-100 btn-lg" (click)="processReplenishments()" [disabled]="numberSelectedRep == 0" data-automation-id="process-replenishments-btn">
         Process Replenishments
     </button>
 </div>
 
-<app-table-context-menu-component (optionSelected)="optionSelected($event)" *ngIf="tabIndex == 0 && isActiveTrigger" [componentName]="'sysRepNewOrd'"></app-table-context-menu-component>
+<app-table-context-menu-component (optionSelected)="optionSelected($event)" *ngIf="tabIndex == 0 && isActiveTrigger" [componentName]="'sysRepNewOrd'" data-automation-id="new-orders-context-menu"></app-table-context-menu-component>

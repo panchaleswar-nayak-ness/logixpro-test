@@ -1,8 +1,8 @@
 <form [formGroup]="editTransactionForm" (ngSubmit)="editTransaction()" name="editTransactionForm">
     <div class="d-flex justify-content-between mb-4 align-items-center">
         <div class="div-width" ></div>
-        <h1 class="m-0" mat-dialog-title>Reprocess Transaction Detail</h1>
-        <button mat-icon-button class="close-button dialog-close-button-fix" [mat-dialog-close]="true">
+        <h1 class="m-0" mat-dialog-title data-automation-id="heading-reprocess-transaction-detail">Reprocess Transaction Detail</h1>
+        <button mat-icon-button class="close-button dialog-close-button-fix" [mat-dialog-close]="true" data-automation-id="button-close-dialog">
             <mat-icon class="close-icon">close</mat-icon>
         </button>
     </div>
@@ -10,7 +10,7 @@
         <ng-scrollbar mat-dialog-content class="ng-scrollbar-height">
             <div class="card p-3 mb-3">
                 <div class="d-flex align-items-center gap-12 mb-4">
-                    <h2 class="card-header-title mb-0 d-flex align-items-center me-3">
+                    <h2 class="card-header-title mb-0 d-flex align-items-center me-3" data-automation-id="heading-editable-fields">
                         <div class="mat-icon-wrap me-lg-3">
                             <span class="material-symbols-outlined">
                                 edit_square
@@ -19,24 +19,24 @@
                         <span>Editable Fields</span>
                     </h2>
                     <div class="d-flex gap-12">
-                        <mat-checkbox color="primary" formControlName="label" checked>Label</mat-checkbox>
-                        <mat-checkbox color="primary" formControlName="emergency" checked>Emergency</mat-checkbox>
+                        <mat-checkbox color="primary" formControlName="label" checked data-automation-id="checkbox-label">Label</mat-checkbox>
+                        <mat-checkbox color="primary" formControlName="emergency" checked data-automation-id="checkbox-emergency">Emergency</mat-checkbox>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-xl-3">
                         <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline">
-                            <mat-label>Trans. Qty</mat-label>
+                            <mat-label data-automation-id="label-transaction-quantity">Trans. Qty</mat-label>
                             <input #trans_qty maxlength="9" [NumbersOnly]="true" matInput maxlength="11" type="text"
-                                value="" formControlName="transactionQuantity">
+                                value="" formControlName="transactionQuantity" data-automation-id="input-transaction-quantity">
                         </mat-form-field>
                     </div>
                     <div class="col-xl-3">
                         <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline">
-                            <mat-label>{{fieldNames?.unitOfMeasure}}</mat-label>
-                            <mat-select formControlName="unitOfMeasure">
+                            <mat-label data-automation-id="label-unit-of-measure">{{fieldNames?.unitOfMeasure}}</mat-label>
+                            <mat-select formControlName="unitOfMeasure" data-automation-id="select-unit-of-measure">
                                 <mat-option *ngFor="let type of unitOfMeasure_list"
-                                    value="{{type}}">{{type}}</mat-option>
+                                    value="{{type}}" [attr.data-automation-id]="'option-unit-of-measure-' + type">{{type}}</mat-option>
                             </mat-select>
                             <span class="material-symbols-outlined icon-expand-more">
                                 expand_more
@@ -45,14 +45,14 @@
                     </div>
                     <div class="col-xl-3">
                         <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline">
-                            <mat-label>Serial Number</mat-label>
-                            <input matInput maxlength="50" type="text" value="Label" formControlName="serialNumber">
+                            <mat-label data-automation-id="label-serial-number">Serial Number</mat-label>
+                            <input matInput maxlength="50" type="text" value="Label" formControlName="serialNumber" data-automation-id="input-serial-number">
                         </mat-form-field>
                     </div>
                     <div class="col-xl-3">
                         <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline">
-                            <mat-label>Lot number</mat-label>
-                            <input matInput maxlength="50" type="text" value="Label" formControlName="lotNumber">
+                            <mat-label data-automation-id="label-lot-number">Lot number</mat-label>
+                            <input matInput maxlength="50" type="text" value="Label" formControlName="lotNumber" data-automation-id="input-lot-number">
                         </mat-form-field>
                     </div>
                 </div>
@@ -61,9 +61,9 @@
                     <div class="col-xl-3">
 
                         <mat-form-field class="custom-form-field w-100 __grab_cursor mb-3" appearance="outline">
-                            <mat-label>Expiration Date</mat-label>
+                            <mat-label data-automation-id="label-expiration-date">Expiration Date</mat-label>
                             <input matInput formControlName="expirationDate" [value]="expDate" [(ngModel)]="expDate"
-                                [matDatepicker]="start" (dateChange)="onDateChange($event.value,'1')" readonly>
+                                [matDatepicker]="start" (dateChange)="onDateChange($event.value,'1')" readonly data-automation-id="input-expiration-date">
                             <mat-datepicker-toggle matSuffix [for]="start" ngDefaultControl></mat-datepicker-toggle>
                             <mat-datepicker #start></mat-datepicker>
                         </mat-form-field>
@@ -71,23 +71,23 @@
                     </div>
                     <div class="col-xl-3">
                         <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline">
-                            <mat-label>Revision</mat-label>
-                            <input matInput maxlength="50" type="text" value="Label" formControlName="revision">
+                            <mat-label data-automation-id="label-revision">Revision</mat-label>
+                            <input matInput maxlength="50" type="text" value="Label" formControlName="revision" data-automation-id="input-revision">
                         </mat-form-field>
                     </div>
                     <div class="col-xl-3">
                         <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline">
-                            <mat-label>Host Transaction ID</mat-label>
+                            <mat-label data-automation-id="label-host-transaction-id">Host Transaction ID</mat-label>
                             <input matInput maxlength="50" type="text" value="Label"
-                                formControlName="hostTransactionID">
+                                formControlName="hostTransactionID" data-automation-id="input-host-transaction-id">
                         </mat-form-field>
                     </div>
                     <div class="col-xl-3">
 
                         <mat-form-field class="custom-form-field w-100 __grab_cursor mb-3" appearance="outline">
-                            <mat-label>Required Date</mat-label>
+                            <mat-label data-automation-id="label-required-date">Required Date</mat-label>
                             <input matInput formControlName="requiredDate" [value]="reqDate" [(ngModel)]="reqDate"
-                                [matDatepicker]="req" (dateChange)="onDateChange($event.value)" readonly>
+                                [matDatepicker]="req" (dateChange)="onDateChange($event.value)" readonly data-automation-id="input-required-date">
                             <mat-datepicker-toggle matSuffix [for]="req" ngDefaultControl></mat-datepicker-toggle>
                             <mat-datepicker #req></mat-datepicker>
                         </mat-form-field>
@@ -100,22 +100,22 @@
                 <div class="row">
                     <div class="col-xl-4">
                         <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline">
-                            <mat-label>Batch Pick ID</mat-label>
-                            <input maxlength="50" matInput type="text" value="Label" formControlName="batchPickID">
+                            <mat-label data-automation-id="label-batch-pick-id">Batch Pick ID</mat-label>
+                            <input maxlength="50" matInput type="text" value="Label" formControlName="batchPickID" data-automation-id="input-batch-pick-id">
                         </mat-form-field>
                     </div>
                     <div class="col-xl-4">
                         <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline">
-                            <mat-label>Line Number</mat-label>
+                            <mat-label data-automation-id="label-line-number">Line Number</mat-label>
                             <input maxlength="9" [NumbersOnly]="true" matInput type="text" value="Label"
-                                formControlName="lineNumber">
+                                formControlName="lineNumber" data-automation-id="input-line-number">
                         </mat-form-field>
                     </div>
                     <div class="col-xl-4">
                         <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline">
-                            <mat-label>Line Sequence</mat-label>
+                            <mat-label data-automation-id="label-line-sequence">Line Sequence</mat-label>
                             <input maxlength="9" [NumbersOnly]="true" matInput type="text" value="Label"
-                                formControlName="lineSequence">
+                                formControlName="lineSequence" data-automation-id="input-line-sequence">
                         </mat-form-field>
                     </div>
 
@@ -124,16 +124,16 @@
                 <div class="row">
                     <div class="col-xl-6">
                         <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline">
-                            <mat-label>Priority</mat-label>
+                            <mat-label data-automation-id="label-priority">Priority</mat-label>
                             <input maxlength="9" [NumbersOnly]="true" matInput type="text" value="Label"
-                                formControlName="priority">
+                                formControlName="priority" data-automation-id="input-priority">
                         </mat-form-field>
                     </div>
                     <div class="col-xl-6">
                         <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline">
-                            <mat-label>Warehouse</mat-label>
-                            <mat-select formControlName="wareHouse">
-                                <mat-option *ngFor="let type of warehouse_list" value="{{type}}">{{type}}</mat-option>
+                            <mat-label data-automation-id="label-warehouse">Warehouse</mat-label>
+                            <mat-select formControlName="wareHouse" data-automation-id="select-warehouse">
+                                <mat-option *ngFor="let type of warehouse_list" value="{{type}}" [attr.data-automation-id]="'option-warehouse-' + type">{{type}}</mat-option>
                             </mat-select>
                             <span class="material-symbols-outlined icon-expand-more">
                                 expand_more
@@ -146,27 +146,27 @@
                 <div class="row">
                     <div class="col-xl-4">
                         <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline">
-                            <mat-label>Notes</mat-label>
-                            <textarea maxlength="255" matInput formControlName="notes"></textarea>
+                            <mat-label data-automation-id="label-notes">Notes</mat-label>
+                            <textarea maxlength="255" matInput formControlName="notes" data-automation-id="input-notes"></textarea>
                         </mat-form-field>
                     </div>
                     <div class="col-xl-4">
                         <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline">
-                            <mat-label>{{fieldNames?.userField1}}</mat-label>
-                            <textarea maxlength="255" matInput formControlName="userField1"></textarea>
+                            <mat-label data-automation-id="label-user-field-1">{{fieldNames?.userField1}}</mat-label>
+                            <textarea maxlength="255" matInput formControlName="userField1" data-automation-id="input-user-field-1"></textarea>
                         </mat-form-field>
                     </div>
                     <div class="col-xl-4">
                         <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline">
-                            <mat-label>{{fieldNames?.userField2}}</mat-label>
-                            <textarea maxlength="255" matInput formControlName="userField2"></textarea>
+                            <mat-label data-automation-id="label-user-field-2">{{fieldNames?.userField2}}</mat-label>
+                            <textarea maxlength="255" matInput formControlName="userField2" data-automation-id="input-user-field-2"></textarea>
                         </mat-form-field>
                     </div>
                 </div>
 
                 <div class="card p-3 mb-3">
                     <div class="d-flex align-items-center gap-12 mb-4">
-                        <h2 class="card-header-title mb-0 d-flex align-items-center me-3">
+                        <h2 class="card-header-title mb-0 d-flex align-items-center me-3" data-automation-id="heading-locked-fields">
                             <div class="mat-icon-wrap me-lg-3">
                                 <span class="material-symbols-outlined">
                                     lock
@@ -179,26 +179,26 @@
                     <div class="row">
                         <div class="col-xl-3">
                             <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline">
-                                <mat-label>Order number</mat-label>
-                                <input formControlName="orderNumber" matInput type="text" value="Label">
+                                <mat-label data-automation-id="label-order-number">Order number</mat-label>
+                                <input formControlName="orderNumber" matInput type="text" value="Label" data-automation-id="input-order-number">
                             </mat-form-field>
                         </div>
                         <div class="col-xl-3">
                             <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline">
-                                <mat-label replacePlaceholder >{{itemNumber}}</mat-label>
-                                <input formControlName="itemNumber" matInput type="text" value="Label">
+                                <mat-label replacePlaceholder data-automation-id="label-item-number">{{itemNumber}}</mat-label>
+                                <input formControlName="itemNumber" matInput type="text" value="Label" data-automation-id="input-item-number">
                             </mat-form-field>
                         </div>
                         <div class="col-xl-3">
                             <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline">
-                                <mat-label>Transaction Type</mat-label>
-                                <input formControlName="transactionType" matInput type="text" value="Label">
+                                <mat-label data-automation-id="label-transaction-type">Transaction Type</mat-label>
+                                <input formControlName="transactionType" matInput type="text" value="Label" data-automation-id="input-transaction-type">
                             </mat-form-field>
                         </div>
                         <div class="col-xl-3">
                             <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline">
-                                <mat-label>Transaction Date/Time</mat-label>
-                                <input formControlName="importDate" matInput type="text" value="Label">
+                                <mat-label data-automation-id="label-transaction-date-time">Transaction Date/Time</mat-label>
+                                <input formControlName="importDate" matInput type="text" value="Label" data-automation-id="input-transaction-date-time">
                             </mat-form-field>
                         </div>
                     </div>
@@ -206,26 +206,26 @@
                     <div class="row">
                         <div class="col-xl-3">
                             <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline">
-                                <mat-label>Record Created By</mat-label>
-                                <input formControlName="importBy" matInput type="text" value="Label">
+                                <mat-label data-automation-id="label-record-created-by">Record Created By</mat-label>
+                                <input formControlName="importBy" matInput type="text" value="Label" data-automation-id="input-record-created-by">
                             </mat-form-field>
                         </div>
                         <div class="col-xl-3">
                             <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline">
-                                <mat-label>Zone</mat-label>
-                                <input formControlName="zone" matInput type="text" value="Label">
+                                <mat-label data-automation-id="label-zone">Zone</mat-label>
+                                <input formControlName="zone" matInput type="text" value="Label" data-automation-id="input-zone">
                             </mat-form-field>
                         </div>
                         <div class="col-xl-3">
                             <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline">
-                                <mat-label>{{this.fieldMappings?.carousel || this.placeholders.carouselFallback}}</mat-label>
-                                <input formControlName="carousel" matInput type="text" value="Label">
+                                <mat-label data-automation-id="label-carousel">{{this.fieldMappings?.carousel || this.placeholders.carouselFallback}}</mat-label>
+                                <input formControlName="carousel" matInput type="text" value="Label" data-automation-id="input-carousel">
                             </mat-form-field>
                         </div>
                         <div class="col-xl-3">
                             <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline">
-                                <mat-label>{{this.fieldMappings?.row || this.placeholders.rowFallback}}</mat-label>
-                                <input formControlName="row" matInput type="text" value="Label">
+                                <mat-label data-automation-id="label-row">{{this.fieldMappings?.row || this.placeholders.rowFallback}}</mat-label>
+                                <input formControlName="row" matInput type="text" value="Label" data-automation-id="input-row">
                             </mat-form-field>
                         </div>
                     </div>
@@ -233,14 +233,14 @@
                     <div class="row">
                         <div class="col-xl-6">
                             <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline">
-                                <mat-label>{{this.fieldMappings?.shelf || this.placeholders.shelfFallback }}</mat-label>
-                                <input formControlName="shelf" matInput type="text" value="Label">
+                                <mat-label data-automation-id="label-shelf">{{this.fieldMappings?.shelf || this.placeholders.shelfFallback }}</mat-label>
+                                <input formControlName="shelf" matInput type="text" value="Label" data-automation-id="input-shelf">
                             </mat-form-field>
                         </div>
                         <div class="col-xl-6">
                             <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline">
-                                <mat-label>{{this.fieldMappings?.bin || this.placeholders.binFallback}}</mat-label>
-                                <input formControlName="bin" matInput type="text" value="">
+                                <mat-label data-automation-id="label-bin">{{this.fieldMappings?.bin || this.placeholders.binFallback}}</mat-label>
+                                <input formControlName="bin" matInput type="text" value="" data-automation-id="input-bin">
                             </mat-form-field>
                         </div>
                     </div>
@@ -248,20 +248,20 @@
                     <div class="row">
                         <div class="col-xl-4">
                             <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline">
-                                <mat-label>Reason</mat-label>
-                                <textarea matInput formControlName="reason"></textarea>
+                                <mat-label data-automation-id="label-reason">Reason</mat-label>
+                                <textarea matInput formControlName="reason" data-automation-id="input-reason"></textarea>
                             </mat-form-field>
                         </div>
                         <div class="col-xl-4">
                             <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline">
-                                <mat-label>Reason Message</mat-label>
-                                <textarea matInput formControlName="reasonMessage"></textarea>
+                                <mat-label data-automation-id="label-reason-message">Reason Message</mat-label>
+                                <textarea matInput formControlName="reasonMessage" data-automation-id="input-reason-message"></textarea>
                             </mat-form-field>
                         </div>
                         <div class="col-xl-4">
                             <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline">
-                                <mat-label>Item Description</mat-label>
-                                <textarea matInput formControlName="description"></textarea>
+                                <mat-label data-automation-id="label-item-description">Item Description</mat-label>
+                                <textarea matInput formControlName="description" data-automation-id="input-item-description"></textarea>
                             </mat-form-field>
                         </div>
                     </div>
@@ -271,9 +271,9 @@
         </ng-scrollbar>
     </div>
     <div mat-dialog-actions *ngIf="!isHistory">
-        <button type="button" (click)="closeWindow()" mat-stroked-button color="primary" class="btn-lg">Close Without
+        <button type="button" (click)="closeWindow()" mat-stroked-button color="primary" class="btn-lg" data-automation-id="button-close-without-saving">Close Without
             Saving Changes</button>
         <button type="submit" mat-flat-button color="primary" class="btn-lg flex-grow-1"
-            [disabled]="!editTransactionForm.valid">Save</button>
+            [disabled]="!editTransactionForm.valid" data-automation-id="button-save">Save</button>
     </div>
 </form>

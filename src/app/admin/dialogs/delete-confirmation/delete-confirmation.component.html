@@ -2,7 +2,7 @@
   <mat-dialog-content>
     <div class="prompt-wrap">
       <div class="d-flex justify-content-center prompt-icon-wrap">
-        <span #cancel class="material-symbols-outlined prompt-icon-delete">
+        <span #cancel class="material-symbols-outlined prompt-icon-delete" data-automation-id="delete-confirmation-icon">
           delete
         </span>
 
@@ -10,11 +10,11 @@
       <p class="prompt-message py-4 mb-0" *ngIf="this.Message == ''" data-automation-id="delete-confirmation-message">
         Are you sure you want to {{action}}{{data && data.actionMessage}}? {{data && data.message}}
       </p>
-      <p class="prompt-message py-4 mb-0" *ngIf="this.Message != ''">
+      <p class="prompt-message py-4 mb-0" *ngIf="this.Message != ''" data-automation-id="delete-confirmation-custom-message">
        {{this.Message}}
       </p>
 
-      <p class="bold text-danger mb-4">This action can not be undone.</p>
+      <p class="bold text-danger mb-4" data-automation-id="delete-confirmation-warning">This action can not be undone.</p>
       <div class="br-14 px-4 py-3 checkbox-background mb-4">
         <mat-checkbox (change)="checkOptions($event)" class="example-margin" color="primary" data-automation-id="delete-understand-checkbox">I understand data cannot be recovered</mat-checkbox>
       </div>

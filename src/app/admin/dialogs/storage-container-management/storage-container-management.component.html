@@ -1,7 +1,7 @@
 <div class="d-flex justify-content-between mb-4 align-items-center">
   <div class="divWithClass"></div>
-  <h1 class="m-0" mat-dialog-title>Storage Container Management</h1>
-  <button mat-icon-button class="close-button dialog-close-button-fix" [mat-dialog-close]="false">
+  <h1 class="m-0" mat-dialog-title data-automation-id="scm-title">Storage Container Management</h1>
+  <button mat-icon-button class="close-button dialog-close-button-fix" [mat-dialog-close]="false" data-automation-id="scm-close-btn">
     <mat-icon class="close-icon">close</mat-icon>
   </button>
 </div>
@@ -10,10 +10,10 @@
   <div class="row">
 
     <div class="col-xl-5">
-      <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline">
-        <mat-label>Zone</mat-label>
-                <mat-select [(ngModel)]="scm.carouselZone" class="employees-action" [disabled]="checkDisabled('carouselZone')" autoFocus #zone (selectionChange)="zoneChanged()">
-          <mat-option *ngFor="let option of carouselZones" [value]="option">
+      <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline" data-automation-id="scm-zone-ff">
+        <mat-label data-automation-id="scm-zone-lbl">Zone</mat-label>
+        <mat-select [(ngModel)]="scm.carouselZone" class="employees-action" [disabled]="checkDisabled('carouselZone')" autoFocus #zone (selectionChange)="zoneChanged()" data-automation-id="scm-zone-sel">
+          <mat-option *ngFor="let option of carouselZones; let i = index" [value]="option" [attr.data-automation-id]="'scm-zone-opt-' + i">
             {{ option.zone }}
           </mat-option>
         </mat-select>
@@ -22,28 +22,28 @@
     </div>
 
     <div class="col-xl-5">
-      <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline">
-        <mat-label>{{ data.rowFieldAlias }}</mat-label>
-                <input matInput [(ngModel)]="scm.tray" [disabled]="checkDisabled('tray')" autoFocus #storageContainer (keydown.enter)="handleEnter()">
+      <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline" data-automation-id="scm-row-ff">
+        <mat-label data-automation-id="scm-row-lbl">{{ data.rowFieldAlias }}</mat-label>
+        <input matInput [(ngModel)]="scm.tray" [disabled]="checkDisabled('tray')" autoFocus #storageContainer (keydown.enter)="handleEnter()" data-automation-id="scm-row-inp">
       </mat-form-field>
     </div>
 
     <div class="col-xl-2">
-      <button mat-mini-fab color="primary" [disabled]="checkDisabled('tray')" (click)="validateScannedContainer()">
+      <button mat-mini-fab color="primary" [disabled]="checkDisabled('tray')" (click)="validateScannedContainer()" data-automation-id="scm-validate-btn">
         <mat-icon class="material-symbols-outlined icon-expand-more">check</mat-icon>
       </button>
     </div>
 
     <div class="col-xl-12">
-      <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline">
-        <mat-label>Container Type</mat-label>
+      <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline" data-automation-id="scm-type-ff">
+        <mat-label data-automation-id="scm-type-lbl">Container Type</mat-label>
         <mat-select [(ngModel)]="scm.containerType"
                     #containerTypeDropdown
                     class="employees-action"
                     [disabled]="checkDisabled('containerType')"
-                    (selectionChange)="containerTypeChanged()">
-
-          <mat-option *ngFor="let option of containerTypes" [value]="option.id">
+                    (selectionChange)="containerTypeChanged()" data-automation-id="scm-ff-select">
+ 
+          <mat-option *ngFor="let option of containerTypes; let i=index" [value]="option.id" [attr.data-automation-id]="'scm-type-opt-' + i">
             {{ option.name }}
           </mat-option>
         </mat-select>
@@ -52,13 +52,13 @@
     </div>
 
     <div class="col-xl-12" *ngIf="scm.containerType != 0">
-      <div class="d-flex align-items-center text-tertary-900 mb-2 text-14 lh-24">
+      <div class="d-flex align-items-center text-tertary-900 mb-2 text-14 lh-24" data-automation-id="scm-info-msg">
         <mat-icon class="material-symbols-outlined text-18 text-tertary-900 lh-24">info</mat-icon>
         <div>{{ inventoryMapRecords.count }} Inventory map {{ inventoryMapRecords.label }} with Bin</div>
       </div>
-      <table class="w-100 br-20 overflow-hidden mb-2">
-        <tr *ngFor="let row of tableMatrix">
-          <td *ngFor="let cell of row" class="bg-primary-10 text-chrome-600 p-4 text-center">
+      <table class="w-100 br-20 overflow-hidden mb-2" data-automation-id="scm-table">
+        <tr *ngFor="let row of tableMatrix; let rowIdx = index">
+          <td *ngFor="let cell of row; let colIdx = index" class="bg-primary-10 text-chrome-600 p-4 text-center" [attr.data-automation-id]="'scm-table-cell-' + rowIdx + '-' + colIdx">
             {{ cell || '-' }}
           </td>
         </tr>
@@ -68,5 +68,5 @@
 </div>
 
 <mat-dialog-actions>
-  <button id="saveBtn" type="submit" mat-flat-button class="btn-lg flex-grow-1" color="primary" [disabled]="checkDisabled('save')" (click)="save()">Save</button>
+  <button id="saveBtn" type="submit" mat-flat-button class="btn-lg flex-grow-1" color="primary" [disabled]="checkDisabled('save')" (click)="save()" data-automation-id="scm-save-btn">Save</button>
 </mat-dialog-actions>

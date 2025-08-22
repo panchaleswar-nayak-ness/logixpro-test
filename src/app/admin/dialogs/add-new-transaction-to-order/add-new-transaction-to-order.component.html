@@ -1,7 +1,7 @@
 <div class="d-flex justify-content-between mb-4 align-items-center">
     <div class="divWithClass"></div>
-    <h1 class="m-0" mat-dialog-title>Add New Transaction</h1>
-    <button mat-icon-button class="close-button dialog-close-button-fix" [mat-dialog-close]="true">
+    <h1 class="m-0" mat-dialog-title data-automation-id="heading-add-new-transaction">Add New Transaction</h1>
+    <button mat-icon-button class="close-button dialog-close-button-fix" [mat-dialog-close]="true" data-automation-id="close-button">
         <mat-icon class="close-icon">close</mat-icon>
     </button>
 </div>
@@ -12,7 +12,7 @@
         <div class="col-xl-6">
             <div class="card p-3">
                 <div class="d-flex justify-content-between align-items-center mb-3">
-                    <app-icon-heading-component heading="Required Info" icon="info">
+                    <app-icon-heading-component heading="Required Info" icon="info" data-automation-id="heading-required-info">
                     </app-icon-heading-component>
                 </div>
                 <div class="row">
@@ -20,12 +20,12 @@
 
                         <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline"
                         [floatLabel]="getFloatLabelValue()" [hideRequiredMarker]="hideRequiredControl.value" >
-                        <mat-label replacePlaceholder [replacePlaceHolder]="placeholders.itemNumber" [fallbackPlaceHolder]="placeholders.itemNumberFallback">Item Number</mat-label>
+                        <mat-label replacePlaceholder [replacePlaceHolder]="placeholders.itemNumber" [fallbackPlaceHolder]="placeholders.itemNumberFallback" data-automation-id="label-item-number">Item Number</mat-label>
                         <input #item_num type="text" placeholder="Search"  class="pac-container" aria-label="Number" matInput [(ngModel)]='itemNumber' 
-                          maxlength="255" [matAutocomplete]="auto"   (keyup)="onKeydownEvent($event)" >
-                          <button matSuffix *ngIf="itemNumber" class="clear-btn"  (click)="itemNumber=''"><mat-icon class="text-20 text-chrome-600">cancel</mat-icon></button>
-                        <mat-autocomplete #auto="matAutocomplete" (optionSelected)="searchData()">
-                          <mat-option *ngFor="let option of searchAutocompleteList" [value]="option.itemNumber" (click)="$event.stopPropagation()">
+                          maxlength="255" [matAutocomplete]="auto"   (keyup)="onKeydownEvent($event)" data-automation-id="input-item-number">
+                          <button matSuffix *ngIf="itemNumber" class="clear-btn"  (click)="itemNumber=''" data-automation-id="clear-button"><mat-icon class="text-20 text-chrome-600">cancel</mat-icon></button>
+                        <mat-autocomplete #auto="matAutocomplete" (optionSelected)="searchData()" data-automation-id="autocomplete-item-number">
+                          <mat-option *ngFor="let option of searchAutocompleteList; let i = index"[value]="option.itemNumber" (click)="$event.stopPropagation()" [attr.data-automation-id]="'option-item-number-' + option.itemNumber">
                             {{option.itemNumber}}  
                           </mat-option>
                         </mat-autocomplete>
@@ -37,9 +37,9 @@
                     <div class="col-md-12">
 
                         <mat-form-field class="custom-form-field w-100 __grab_cursor" appearance="outline">
-                            <mat-label>Quantity</mat-label>
+                            <mat-label data-automation-id="label-quantity">Quantity</mat-label>
                             <input  min="1" matInput type="number" placeholder="Quantity" aria-label="Quantity" matInput  maxlength="9"
-                                [(ngModel)]='quantity'>
+                                [(ngModel)]='quantity' data-automation-id="input-quantity">
                         </mat-form-field>
                     </div>
                 </div>
@@ -49,15 +49,15 @@
         <div class="col-xl-6">
             <div class="card p-3">
                 <div class="d-flex justify-content-between align-items-center mb-3">
-                        <app-icon-heading-component heading="Transaction Dates Info" icon=" date_range">
+                        <app-icon-heading-component heading="Transaction Dates Info" icon=" date_range" data-automation-id="heading-transaction-dates-info">
                         </app-icon-heading-component>
                 </div>
                 <div class="row">
                     <div class="col-md-12">
 
                         <mat-form-field class="custom-form-field w-100 __grab_cursor mb-3" appearance="outline">
-                            <mat-label>Require Date</mat-label>
-                            <input matInput [matDatepicker]="requireDate" [(ngModel)]="requiredDate">
+                            <mat-label data-automation-id="label-require-date">Require Date</mat-label>
+                            <input matInput [matDatepicker]="requireDate" [(ngModel)]="requiredDate" data-automation-id="input-require-date">
                             <mat-datepicker-toggle matSuffix [for]="requireDate"
                                 ngDefaultControl></mat-datepicker-toggle>
                             <mat-datepicker #requireDate></mat-datepicker>
@@ -69,8 +69,8 @@
                     <div class="col-md-12">
 
                         <mat-form-field class="custom-form-field w-100 __grab_cursor" appearance="outline">
-                            <mat-label>Expiration Date</mat-label>
-                            <input matInput [matDatepicker]="expDate" [(ngModel)]="expirationDate">
+                            <mat-label data-automation-id="label-expiration-date">Expiration Date</mat-label>
+                            <input matInput [matDatepicker]="expDate" [(ngModel)]="expirationDate" data-automation-id="input-expiration-date">
                             <mat-datepicker-toggle matSuffix [for]="expDate" ngDefaultControl></mat-datepicker-toggle>
                             <mat-datepicker #expDate></mat-datepicker>
                         </mat-form-field>
@@ -86,7 +86,7 @@
 
                 <div class="card p-3">
                     <div class="d-flex justify-content-between align-items-center mb-3">
-                        <app-icon-heading-component heading="Transaction Info" icon="receipt">
+                        <app-icon-heading-component heading="Transaction Info" icon="receipt" data-automation-id="heading-transaction-info">
                         </app-icon-heading-component>
                     </div>
 
@@ -95,32 +95,32 @@
                         <div class="col-md-3">
 
                             <mat-form-field class="custom-form-field mb-3 w-100" appearance="outline">
-                                <mat-label>Line Number</mat-label>
-                                <input matInput type="text"  formControlName="lineNumber" maxlength="9">
+                                <mat-label data-automation-id="label-line-number">Line Number</mat-label>
+                                <input matInput type="text"  formControlName="lineNumber" maxlength="9" data-automation-id="input-line-number">
                             </mat-form-field>
 
                         </div>
                         <div class="col-md-3">
 
                             <mat-form-field class="custom-form-field  mb-3 w-100" appearance="outline">
-                                <mat-label>Line Sequence</mat-label>
-                                <input matInput type="text" formControlName="lineSequence" maxlength="9">
+                                <mat-label data-automation-id="label-line-sequence">Line Sequence</mat-label>
+                                <input matInput type="text" formControlName="lineSequence" maxlength="9" data-automation-id="input-line-sequence">
                             </mat-form-field>
 
                         </div>
                         <div class="col-md-3">
 
                             <mat-form-field class="custom-form-field  mb-3 w-100" appearance="outline">
-                                <mat-label>Priority</mat-label>
-                                <input matInput type="text" formControlName="priority" maxlength="9">
+                                <mat-label data-automation-id="label-priority">Priority</mat-label>
+                                <input matInput type="text" formControlName="priority" maxlength="9" data-automation-id="input-priority">
                             </mat-form-field>
 
                         </div>
                         <div class="col-md-3">
 
                             <mat-form-field class="custom-form-field mb-3 w-100" appearance="outline">
-                                <mat-label>Tote Number</mat-label>
-                                <input matInput type="text" formControlName="toteNumber" maxlength="9">
+                                <mat-label data-automation-id="label-tote-number">Tote Number</mat-label>
+                                <input matInput type="text" formControlName="toteNumber" maxlength="9" data-automation-id="input-tote-number">
                             </mat-form-field>
 
                         </div>
@@ -130,32 +130,32 @@
                         <div class="col-md-3">
 
                             <mat-form-field class="custom-form-field mb-3 w-100" appearance="outline">
-                                <mat-label>Batch Pick ID</mat-label>
-                                <input matInput type="text" formControlName="batchPickID" maxlength="50">
+                                <mat-label data-automation-id="label-batch-pick-id">Batch Pick ID</mat-label>
+                                <input matInput type="text" formControlName="batchPickID" maxlength="50" data-automation-id="input-batch-pick-id">
                             </mat-form-field>
 
                         </div>
                         <div class="col-md-3">
 
                             <mat-form-field class="custom-form-field mb-3 w-100" appearance="outline">
-                                <mat-label>Warehouse</mat-label>
-                                <input matInput type="text" formControlName="warehouse" maxlength="9">
+                                <mat-label data-automation-id="label-warehouse">Warehouse</mat-label>
+                                <input matInput type="text" formControlName="warehouse" maxlength="9" data-automation-id="input-warehouse">
                             </mat-form-field>
 
                         </div>
                         <div class="col-md-3">
 
                             <mat-form-field class="custom-form-field mb-3 w-100" appearance="outline">
-                                <mat-label>Lot Number</mat-label>
-                                <input matInput type="text" formControlName="lotNumber" maxlength="9">
+                                <mat-label data-automation-id="label-lot-number">Lot Number</mat-label>
+                                <input matInput type="text" formControlName="lotNumber" maxlength="9" data-automation-id="input-lot-number">
                             </mat-form-field>
 
                         </div>
                         <div class="col-md-3">
 
                             <mat-form-field class="custom-form-field mb-3 w-100" appearance="outline">
-                                <mat-label>Serial Number</mat-label>
-                                <input matInput type="text" formControlName="serialNumber" maxlength="9">
+                                <mat-label data-automation-id="label-serial-number">Serial Number</mat-label>
+                                <input matInput type="text" formControlName="serialNumber" maxlength="9" data-automation-id="input-serial-number">
                             </mat-form-field>
 
                         </div>
@@ -165,8 +165,8 @@
                         <div class="col-md-3">
 
                             <mat-form-field class="custom-form-field w-100" appearance="outline">
-                                <mat-label>Host Transaction ID</mat-label>
-                                <input matInput type="text" formControlName="hostTranID" maxlength="50">
+                                <mat-label data-automation-id="label-host-transaction-id">Host Transaction ID</mat-label>
+                                <input matInput type="text" formControlName="hostTranID" maxlength="50" data-automation-id="input-host-transaction-id">
                             </mat-form-field>
 
                         </div>
@@ -174,10 +174,10 @@
 
                          
                             <mat-form-field class="custom-form-field w-100" appearance="outline">
-                                <mat-label>Emergency</mat-label>
-                                    <mat-select  class="employees-action" placeholder="Actions"  formControlName="emergency" >
-                                      <mat-option value="True">Yes</mat-option>
-                                      <mat-option value="False">No</mat-option>
+                                <mat-label data-automation-id="label-emergency">Emergency</mat-label>
+                                    <mat-select  class="employees-action" placeholder="Actions"  formControlName="emergency" data-automation-id="select-emergency">
+                                      <mat-option value="True" data-automation-id="option-emergency-yes">Yes</mat-option>
+                                      <mat-option value="False" data-automation-id="option-emergency-no">No</mat-option>
                             
                                     </mat-select>
                                     <span class="material-symbols-outlined icon-expand-more">
@@ -191,8 +191,8 @@
                         <div class="col-md-3">
 
                             <mat-form-field class="custom-form-field w-100" appearance="outline">
-                                <mat-label>Notes</mat-label>
-                                <input matInput type="text" formControlName="notes" maxlength="255">
+                                <mat-label data-automation-id="label-notes">Notes</mat-label>
+                                <input matInput type="text" formControlName="notes" maxlength="255" data-automation-id="input-notes">
                             </mat-form-field>
 
                         </div>
@@ -212,7 +212,7 @@
 
                 <div class="card p-3">
                     <div class="d-flex justify-content-between align-items-center mb-3">
-                        <app-icon-heading-component heading="Transaction User Fields Info" icon="receipt">
+                        <app-icon-heading-component heading="Transaction User Fields Info" icon="receipt" data-automation-id="heading-transaction-user-fields-info">
                         </app-icon-heading-component>
                     </div>
 
@@ -221,32 +221,32 @@
                         <div class="col-md-3">
 
                             <mat-form-field class="custom-form-field mb-3 w-100" appearance="outline">
-                                <mat-label replacePlaceholder [replacePlaceHolder]="placeholders.userField1" [fallbackPlaceHolder]="placeholders.userField1Fallback"> UF1 </mat-label>
-                                <input matInput type="text" formControlName="userField1" maxlength="9">
+                                <mat-label replacePlaceholder [replacePlaceHolder]="placeholders.userField1" [fallbackPlaceHolder]="placeholders.userField1Fallback" data-automation-id="label-user-field-1"> UF1 </mat-label>
+                                <input matInput type="text" formControlName="userField1" maxlength="9" data-automation-id="input-user-field-1">
                             </mat-form-field>
 
                         </div>
                         <div class="col-md-3">
 
                             <mat-form-field class="custom-form-field mb-3 w-100" appearance="outline">
-                                <mat-label replacePlaceholder [replacePlaceHolder]="placeholders.userField2" [fallbackPlaceHolder]="placeholders.userField2Fallback"> UF2 </mat-label>
-                                <input matInput type="text" formControlName="userField2" maxlength="9">
+                                <mat-label replacePlaceholder [replacePlaceHolder]="placeholders.userField2" [fallbackPlaceHolder]="placeholders.userField2Fallback" data-automation-id="label-user-field-2"> UF2 </mat-label>
+                                <input matInput type="text" formControlName="userField2" maxlength="9" data-automation-id="input-user-field-2">
                             </mat-form-field>
 
                         </div>
                         <div class="col-md-3">
 
                             <mat-form-field class="custom-form-field mb-3 w-100" appearance="outline">
-                                <mat-label replacePlaceholder [replacePlaceHolder]="placeholders.userField3" [fallbackPlaceHolder]="placeholders.userField3Fallback"> UF3 </mat-label>
-                                <input matInput type="text" formControlName="userField3" maxlength="9">
+                                <mat-label replacePlaceholder [replacePlaceHolder]="placeholders.userField3" [fallbackPlaceHolder]="placeholders.userField3Fallback" data-automation-id="label-user-field-3"> UF3 </mat-label>
+                                <input matInput type="text" formControlName="userField3" maxlength="9" data-automation-id="input-user-field-3">
                             </mat-form-field>
 
                         </div>
                         <div class="col-md-3">
 
                             <mat-form-field class="custom-form-field mb-3 w-100" appearance="outline">
-                                <mat-label replacePlaceholder [replacePlaceHolder]="placeholders.userField4" [fallbackPlaceHolder]="placeholders.userField4Fallback"> UF4 </mat-label>
-                                <input matInput type="text" formControlName="userField4" maxlength="9">
+                                <mat-label replacePlaceholder [replacePlaceHolder]="placeholders.userField4" [fallbackPlaceHolder]="placeholders.userField4Fallback" data-automation-id="label-user-field-4"> UF4 </mat-label>
+                                <input matInput type="text" formControlName="userField4" maxlength="9" data-automation-id="input-user-field-4">
                             </mat-form-field>
 
                         </div>
@@ -256,32 +256,32 @@
                         <div class="col-md-3">
 
                             <mat-form-field class="custom-form-field mb-3 w-100" appearance="outline">
-                                <mat-label replacePlaceholder [replacePlaceHolder]="placeholders.userField5" [fallbackPlaceHolder]="placeholders.userField5Fallback"> UF5 </mat-label>
-                                <input matInput type="text" formControlName="userField5" maxlength="9">
+                                <mat-label replacePlaceholder [replacePlaceHolder]="placeholders.userField5" [fallbackPlaceHolder]="placeholders.userField5Fallback" data-automation-id="label-user-field-5"> UF5 </mat-label>
+                                <input matInput type="text" formControlName="userField5" maxlength="9" data-automation-id="input-user-field-5">
                             </mat-form-field>
 
                         </div>
                         <div class="col-md-3">
 
                             <mat-form-field class="custom-form-field mb-3 w-100" appearance="outline">
-                                <mat-label replacePlaceholder [replacePlaceHolder]="placeholders.userField6" [fallbackPlaceHolder]="placeholders.userField6Fallback"> UF6 </mat-label>
-                                <input matInput type="text" formControlName="userField6" maxlength="9">
+                                <mat-label replacePlaceholder [replacePlaceHolder]="placeholders.userField6" [fallbackPlaceHolder]="placeholders.userField6Fallback" data-automation-id="label-user-field-6"> UF6 </mat-label>
+                                <input matInput type="text" formControlName="userField6" maxlength="9" data-automation-id="input-user-field-6">
                             </mat-form-field>
 
                         </div>
                         <div class="col-md-3">
 
                             <mat-form-field class="custom-form-field mb-3 w-100" appearance="outline">
-                                <mat-label replacePlaceholder [replacePlaceHolder]="placeholders.userField7" [fallbackPlaceHolder]="placeholders.userField7Fallback"> UF7 </mat-label>
-                                <input matInput type="text" formControlName="userField7" maxlength="9">
+                                <mat-label replacePlaceholder [replacePlaceHolder]="placeholders.userField7" [fallbackPlaceHolder]="placeholders.userField7Fallback" data-automation-id="label-user-field-7"> UF7 </mat-label>
+                                <input matInput type="text" formControlName="userField7" maxlength="9" data-automation-id="input-user-field-7">
                             </mat-form-field>
 
                         </div>
                         <div class="col-md-3">
 
                             <mat-form-field class="custom-form-field mb-3 w-100" appearance="outline">
-                                <mat-label replacePlaceholder [replacePlaceHolder]="placeholders.userField8" [fallbackPlaceHolder]="placeholders.userField8Fallback"> UF8 </mat-label>
-                                <input matInput type="text" formControlName="userField8" maxlength="9">
+                                <mat-label replacePlaceholder [replacePlaceHolder]="placeholders.userField8" [fallbackPlaceHolder]="placeholders.userField8Fallback" data-automation-id="label-user-field-8"> UF8 </mat-label>
+                                <input matInput type="text" formControlName="userField8" maxlength="9" data-automation-id="input-user-field-8">
                             </mat-form-field>
 
                         </div>
@@ -291,16 +291,16 @@
                         <div class="col-md-3">
 
                             <mat-form-field class="custom-form-field w-100" appearance="outline">
-                                <mat-label replacePlaceholder [replacePlaceHolder]="placeholders.userField9" [fallbackPlaceHolder]="placeholders.userField9Fallback"> UF9 </mat-label>
-                                <input matInput type="text" formControlName="userField9" maxlength="9">
+                                <mat-label replacePlaceholder [replacePlaceHolder]="placeholders.userField9" [fallbackPlaceHolder]="placeholders.userField9Fallback" data-automation-id="label-user-field-9"> UF9 </mat-label>
+                                <input matInput type="text" formControlName="userField9" maxlength="9" data-automation-id="input-user-field-9">
                             </mat-form-field>
 
                         </div>
                         <div class="col-md-3">
 
                             <mat-form-field class="custom-form-field w-100" appearance="outline">
-                                <mat-label replacePlaceholder [replacePlaceHolder]="placeholders.userField10" [fallbackPlaceHolder]="placeholders.userField10Fallback"> UF10 </mat-label>
-                                <input matInput type="text" formControlName="userField10" maxlength="9">
+                                <mat-label replacePlaceholder [replacePlaceHolder]="placeholders.userField10" [fallbackPlaceHolder]="placeholders.userField10Fallback" data-automation-id="label-user-field-10"> UF10 </mat-label>
+                                <input matInput type="text" formControlName="userField10" maxlength="9" data-automation-id="input-user-field-10">
                             </mat-form-field>
 
                         </div>
@@ -321,7 +321,7 @@
 </ng-scrollbar>
 
 <mat-dialog-actions>
-    <button (click)="saveTransaction()" [disabled]="quantity===0 || quantity===undefined  ||  quantity<0 || itemNumber===''" type="submit" mat-flat-button class="btn-lg mt-3 w-100" color="primary" >
+    <button (click)="saveTransaction()" [disabled]="quantity===0 || quantity===undefined  ||  quantity<0 || itemNumber===''" type="submit" mat-flat-button class="btn-lg mt-3 w-100" color="primary" data-automation-id="save-transaction-button">
         Save
       </button>
     </mat-dialog-actions>

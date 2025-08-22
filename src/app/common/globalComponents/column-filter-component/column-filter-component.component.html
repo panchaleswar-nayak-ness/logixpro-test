@@ -1,11 +1,11 @@
 <div class="d-xl-flex gap-12 align-items-center">
   <mat-form-field class="action-dropdown w-100 mb-3 mb-xl-0" appearance="outline">
     <mat-label>Select</mat-label>
-    <mat-select class="employees-action" [(ngModel)]="this.searchCol" (selectionChange)="selectionChange($event.value)" (keyup.enter)="colKeyUpEnter($event)">
-      <mat-option value=""></mat-option>
-      <mat-option *ngFor="let colDef of filteredTableColumns" [value]="colDef">
-  {{ colDef }}
-</mat-option>
+    <mat-select class="employees-action" [(ngModel)]="this.searchCol" (selectionChange)="selectionChange($event.value)" (keyup.enter)="colKeyUpEnter($event)" data-automation-id="column-filter-select">
+      <mat-option value="" data-automation-id="column-filter-option-empty"></mat-option>
+      <mat-option *ngFor="let colDef of filteredTableColumns; let i = index" [value]="colDef" [attr.data-automation-id]="'column-filter-option-' + i">
+        {{ colDef }}
+      </mat-option>
     </mat-select>
     <span class="material-symbols-outlined icon-expand-more">expand_more</span>
   </mat-form-field>
@@ -15,16 +15,16 @@
   <div class="d-flex g-mini-search-box w-100 mb-3 mb-xl-0">
     <mat-form-field class="w-100 bg-white br-8" appearance="fill" [floatLabel]="getFloatLabelValue()" [hideRequiredMarker]="hideRequiredControl.value">
       <span class="material-symbols-outlined icon-search">Search</span>
-      <input type="text" placeholder="Search" aria-label="Number" matInput [(ngModel)]='searchString' [disabled]="!searchCol" [matAutocomplete]="auto" (ngModelChange)="autoComplete($event)" (keyup.enter)="searchKeyUpEnter($event)" (keyup)="searchKeyUp($event)" (focus)="searchFocus($event)">
-      <button matSuffix *ngIf="searchString" class="clear-btn" (click)="searchString = '';this.searchCol = ''; this.searchByInput.next(''); clearInputField('')"><mat-icon class="text-20 text-chrome-600">cancel</mat-icon></button>
+      <input type="text" placeholder="Search" aria-label="Number" matInput [(ngModel)]='searchString' [disabled]="!searchCol" [matAutocomplete]="auto" (ngModelChange)="autoComplete($event)" (keyup.enter)="searchKeyUpEnter($event)" (keyup)="searchKeyUp($event)" (focus)="searchFocus($event)" [attr.data-automation-id]="'column-filter-input-' + searchString">
+      <button matSuffix *ngIf="searchString" class="clear-btn" (click)="searchString = '';this.searchCol = ''; this.searchByInput.next(''); clearInputField('')" data-automation-id="clear-button"><mat-icon class="text-20 text-chrome-600">cancel</mat-icon></button>
       <mat-autocomplete class="auto-comp-custom" #auto="matAutocomplete" (optionSelected)="optionSelected($event)">
-        <mat-option *ngFor="let option of searchAutocompleteList" [value]="option">{{option}}</mat-option>
-        <mat-option *ngIf="showNoDataMessage && searchAutocompleteList?.length == 0" disabled>No data found</mat-option>
+        <mat-option *ngFor="let option of searchAutocompleteList; let i = index" [value]="option" [attr.data-automation-id]="'column-filter-autocomplete-option-' + i">{{option}}</mat-option>
+        <mat-option *ngIf="showNoDataMessage && searchAutocompleteList?.length == 0" disabled data-automation-id="column-filter-autocomplete-no-data">No data found</mat-option>
       </mat-autocomplete>
     </mat-form-field>
   </div>
 
   <div class="d-block d-lg-flex" *ngIf="showClearBtn">
-    <button (click)="clearBtn($event)" mat-stroked-button appearance="outline" color="warn" class="button-remove-all-w-stroke mb-3 mb-xl-0 w-100 flex-grow-1">Clear</button>
+    <button (click)="clearBtn($event)" mat-stroked-button appearance="outline" color="warn" class="button-remove-all-w-stroke mb-3 mb-xl-0 w-100 flex-grow-1" data-automation-id="clear-button">Clear</button>
   </div>
 </div>

@@ -15,18 +15,18 @@
               <div class="search-box zone-search-box">
                 <div class="d-flex g-mini-search-box">
                   <mat-form-field class="w-100" appearance="fill">
-                    <span class="material-symbols-outlined icon-search">
+                    <span class="material-symbols-outlined icon-search" data-automation-id="label-search-icon">
                       search
                     </span>
                     <input type="text" [(ngModel)]="bpSettingInp" placeholder="Search Zones"
-                      aria-label="Search zone-search-box" matInput (keyup)="zoneFilter($event)" maxlength="2">
-                    <button matSuffix *ngIf="bpSettingInp" class="clear-btn" (click)="clearZones()"><mat-icon
+                      aria-label="Search zone-search-box" matInput (keyup)="zoneFilter($event)" maxlength="2" data-automation-id="zone-search-input">
+                    <button matSuffix *ngIf="bpSettingInp" class="clear-btn" (click)="clearZones()" data-automation-id="button-clear-search"><mat-icon
                         class="text-20 text-chrome-600">cancel</mat-icon></button>
 
                   </mat-form-field>
                   <button mat-flat-button color="primary" class=" mat-button-icon" (click)="addZoneDialog()"
-                    [disabled]="!isLookUp">
-                    <span class="material-symbols-outlined" matTooltip="Add new zone" matTooltipPosition="above">
+                    [disabled]="!isLookUp" data-automation-id="add-zone-button">
+                    <span class="material-symbols-outlined" matTooltip="Add new zone" matTooltipPosition="above" data-automation-id="label-add-zone">
                       add
                     </span>
                   </button>
@@ -43,7 +43,7 @@
                       </tr>
                       <!-- Start Location Column -->
                       <ng-container matColumnDef="zones">
-                        <th width="80%" mat-header-cell *matHeaderCellDef mat-sort-header>Zone</th>
+                        <th width="80%" mat-header-cell *matHeaderCellDef mat-sort-header data-automation-id="label-zone">Zone</th>
                         <td width="80%" mat-cell *matCellDef="let element ; let i = index"> {{element.zones}} </td>
                       </ng-container>
                       <ng-container matColumnDef="actions">
@@ -52,12 +52,12 @@
                         <td width="20%" class="text-center" mat-cell *matCellDef="let element">
 
                           <button mat-icon-button aria-label="Edit" (click)="editZoneDialog(element)"
-                            matTooltip="Edit zone" matTooltipPosition="above">
-                            <mat-icon class="icon-circle-edit">border_color</mat-icon>
+                            matTooltip="Edit zone" matTooltipPosition="above" data-automation-id="edit-zone-button">
+                            <mat-icon class="icon-circle-edit" data-automation-id="label-edit-zone">border_color</mat-icon>
                           </button>
                           <button class="me-0" mat-icon-button aria-label="Delete" (click)="deleteZone(element)"
-                            matTooltip="Remove zone" matTooltipPosition="above">
-                            <mat-icon class="icon-circle-cancel">close</mat-icon>
+                            matTooltip="Remove zone" matTooltipPosition="above" data-automation-id="button-close">
+                            <mat-icon class="icon-circle-cancel" data-automation-id="label-delete-zone">close</mat-icon>
                           </button>
 
 
@@ -88,19 +88,19 @@
               <div class="search-box zone-search-box">
                 <div class="d-flex g-mini-search-box">
                   <mat-form-field class="w-100" appearance="fill">
-                    <span class="material-symbols-outlined icon-search">
+                    <span class="material-symbols-outlined icon-search" data-automation-id="label-search-icon">
                       search
                     </span>
                     <input type="text" placeholder="Search Locations" aria-label="Search Locations"
-                      [(ngModel)]="bpSettingLocInp" matInput (keyup)="applyFilter($event)" maxlength="50">
+                      [(ngModel)]="bpSettingLocInp" matInput (keyup)="applyFilter($event)" maxlength="50" data-automation-id="location-search-input">
 
-                    <button matSuffix *ngIf="bpSettingLocInp" class="clear-btn" (click)="clear()"><mat-icon
+                    <button matSuffix *ngIf="bpSettingLocInp" class="clear-btn" (click)="clear()" data-automation-id="button-clear-search"><mat-icon
                         class="text-20 text-chrome-600">cancel</mat-icon></button>
 
                   </mat-form-field>
                   <button mat-flat-button color="primary" class=" mat-button-icon" (click)="addLocationDialog()"
-                    [disabled]="!isLookUp" matTooltip="Add new location" matTooltipPosition="above">
-                    <span class="material-symbols-outlined">
+                    [disabled]="!isLookUp" matTooltip="Add new location" matTooltipPosition="above" data-automation-id="add-location-button">
+                    <span class="material-symbols-outlined" data-automation-id="label-add-location">
                       add
                     </span>
                   </button>
@@ -118,7 +118,7 @@
 
                       <!-- Start Location Column -->
                       <ng-container matColumnDef="startLocation">
-                        <th width="40%" mat-header-cell *matHeaderCellDef mat-sort-header>Start Location
+                        <th width="40%" mat-header-cell *matHeaderCellDef mat-sort-header data-automation-id="label-start-location">Start Location
                         </th>
                         <td width="40%" mat-cell *matCellDef="let element"> {{element.startLocation}}
                         </td>
@@ -126,7 +126,7 @@
 
                       <!-- End Location Column -->
                       <ng-container matColumnDef="endLocation">
-                        <th width="40%" mat-header-cell *matHeaderCellDef mat-sort-header>End Location
+                        <th width="40%" mat-header-cell *matHeaderCellDef mat-sort-header data-automation-id="label-end-location">End Location
                         </th>
                         <td width="40%" mat-cell *matCellDef="let element"> {{element.endLocation}}
                         </td>
@@ -139,12 +139,12 @@
                         <td width="20%" mat-cell class="text-center" *matCellDef="let element">
 
                           <button mat-icon-button aria-label="Edit" (click)="editLocationDialog(element)"
-                            matTooltip="Edit location" matTooltipPosition="above">
-                            <mat-icon class="icon-circle-edit">border_color</mat-icon>
+                            matTooltip="Edit location" matTooltipPosition="above" data-automation-id="edit-location-button">
+                            <mat-icon class="icon-circle-edit" data-automation-id="label-edit-location">border_color</mat-icon>
                           </button>
                           <button class="me-0" mat-icon-button aria-label="Remove Location"
-                            (click)="deleteLocation(element)" matTooltip="Remove location" matTooltipPosition="above">
-                            <mat-icon class="icon-circle-cancel">close</mat-icon>
+                            (click)="deleteLocation(element)" matTooltip="Remove location" matTooltipPosition="above" data-automation-id="button-delete">
+                            <mat-icon class="icon-circle-cancel" data-automation-id="label-delete-location">close</mat-icon>
                           </button>
                         </td>
 
@@ -176,12 +176,12 @@
               <div class="g-details-wrap my-3" *ngIf="isLookUp">
                 <div class="d-flex align-items-center gap-12">
                   <mat-form-field class="w-100" appearance="outline">
-                    <mat-label>Maximum Handheld Orders</mat-label>
+                    <mat-label data-automation-id="label-maximum-handheld-orders">Maximum Handheld Orders</mat-label>
                     <input matInput type="text" [NumbersOnly]="true" [(ngModel)]="maxOrders">
                   </mat-form-field>
                   <button mat-flat-button color="primary" class="xsm-icon-button" matTooltip="Save Max Handheld Orders"
-                    matTooltipPosition="above" (click)="saveMaximumOrders()">
-                    <mat-icon class="material-symbols-outlined">save</mat-icon>
+                    matTooltipPosition="above" (click)="saveMaximumOrders()" data-automation-id="button-save">
+                    <mat-icon class="material-symbols-outlined" data-automation-id="label-save-max-orders">save</mat-icon>
                   </button>
                 </div>
               </div>
@@ -206,18 +206,18 @@
               <div class="search-box zone-search-box">
                 <div class="d-flex g-mini-search-box pb-2">
                   <mat-form-field class="w-100" appearance="fill">
-                    <span class="material-symbols-outlined icon-search">
+                    <span class="material-symbols-outlined icon-search" data-automation-id="label-search-icon">
                       search
                     </span>
                     <input type="text" placeholder="Search Functions allowed" aria-label="Search Group Allowed" matInput
-                      [(ngModel)]="searchfuncAllowed" (keyup)="applyFunctionAllowedFilter($event)">
+                      [(ngModel)]="searchfuncAllowed" (keyup)="applyFunctionAllowedFilter($event)" data-automation-id="function-allowed-search-input">
                     <button matSuffix *ngIf="searchfuncAllowed" class="clear-btn"
-                      (click)="searchfuncAllowed='';getFuncationAllowedList()"><mat-icon
+                      (click)="searchfuncAllowed='';getFuncationAllowedList()" data-automation-id="button-clear-search"><mat-icon
                         class="text-20 text-chrome-600">cancel</mat-icon></button>
                   </mat-form-field>
                   <button mat-flat-button color="primary" class=" mat-button-icon" [disabled]="!isLookUp"
-                    (click)="AddFunctionAllowedDialog()">
-                    <span class="material-symbols-outlined">
+                    (click)="AddFunctionAllowedDialog()" data-automation-id="add-function-allowed-button">
+                    <span class="material-symbols-outlined" data-automation-id="label-add-function-allowed">
                       add
                     </span>
                   </button>
@@ -225,7 +225,7 @@
                 <div class="row mt-1 mb-2">
                   <div class="col-md-12">
                     <button mat-stroked-button color="primary" class="button-add-all w-100 mb-3" [disabled]="!isLookUp"
-                      (click)="getFuncationAllowedList()">
+                      (click)="getFuncationAllowedList()" data-automation-id="add-all-functions-button">
                       Add All
                     </button>
                   </div>
@@ -244,7 +244,7 @@
                         </tr>
                         <!-- Start Location Column -->
                         <ng-container matColumnDef="Function">
-                          <th width="80%" mat-header-cell *matHeaderCellDef>Function</th>
+                          <th width="80%" mat-header-cell *matHeaderCellDef data-automation-id="label-function">Function</th>
                           <td width="80%" mat-cell *matCellDef="let element"> {{element}}
                           </td>
                         </ng-container>
@@ -253,8 +253,8 @@
                           </th>
                           <td width="20%" class="text-center" mat-cell *matCellDef="let element">
                             <button mat-icon-button aria-label="Delete" (click)="deleteFuncationAllowed(element)"
-                              matTooltip="delete function allowed" matTooltipPosition="above">
-                              <mat-icon class="icon-circle-cancel">close</mat-icon>
+                              matTooltip="delete function allowed" matTooltipPosition="above" data-automation-id="button-close">
+                              <mat-icon class="icon-circle-cancel" data-automation-id="label-delete-function">close</mat-icon>
                             </button>
 
                           </td>
@@ -287,16 +287,16 @@
               <div class="search-box zone-search-box">
                 <div class="d-flex g-mini-search-box">
                   <mat-form-field class="w-100" appearance="fill">
-                    <span class="material-symbols-outlined icon-search">search</span>
+                    <span class="material-symbols-outlined icon-search"  data-automation-id="label-search-icon">search</span>
                     <input type="text" placeholder="Search Groups Allowed" [(ngModel)]="grpAllFilter"
-                      aria-label="Search Groups Allowed" matInput (keyup)="groupAllowedFilter($event)" maxlength="50">
-                    <button matSuffix *ngIf="grpAllFilter" class="clear-btn" (click)="clearGrp()"><mat-icon
+                      aria-label="Search Groups Allowed" matInput (keyup)="groupAllowedFilter($event)" maxlength="50" data-automation-id="groups-allowed-search-input">
+                    <button matSuffix *ngIf="grpAllFilter" class="clear-btn" (click)="clearGrp()" data-automation-id="button-clear-search"><mat-icon
                         class="text-20 text-chrome-600">cancel</mat-icon></button>
                   </mat-form-field>
                   <button mat-flat-button color="primary" class=" mat-button-icon" [disabled]="!isLookUp"
-                    (click)="grpAllowedDialog()">
+                    (click)="grpAllowedDialog()" data-automation-id="add-group-allowed-button">
                     <span class="material-symbols-outlined" matTooltip="Add group allowed"
-                      matTooltipPosition="above">add</span>
+                      matTooltipPosition="above" data-automation-id="label-add-group-allowed">add</span>
                   </button>
                 </div>
                 <mat-list class="zones-list g-card-list" role="list">
@@ -313,7 +313,7 @@
                         </tr>
                         <!-- Start Location Column -->
                         <ng-container matColumnDef="groups">
-                          <th width="80%" mat-header-cell *matHeaderCellDef>Group</th>
+                          <th width="80%" mat-header-cell *matHeaderCellDef data-automation-id="label-group">Group</th>
                           <td width="80%" mat-cell *matCellDef="let element"> {{element.groupName}}
                           </td>
                         </ng-container>
@@ -322,8 +322,8 @@
                           </th>
                           <td width="20%" class="text-center" mat-cell *matCellDef="let element">
                             <button mat-icon-button aria-label="Delete" (click)="deleteGrpAllowed(element)"
-                              matTooltip="Remove group allowed" matTooltipPosition="above">
-                              <mat-icon class="icon-circle-cancel">close</mat-icon>
+                              matTooltip="Remove group allowed" matTooltipPosition="above" data-automation-id="button-close">
+                              <mat-icon class="icon-circle-cancel" data-automation-id="label-delete-group">close</mat-icon>
                             </button>
 
                           </td>

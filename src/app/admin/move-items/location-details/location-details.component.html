@@ -1,11 +1,11 @@
 <div class="d-flex justify-content-between align-items-center mb-3">
-    <app-icon-heading-component heading="Location Details" icon="analytics"></app-icon-heading-component>
+    <app-icon-heading-component heading="Location Details" icon="analytics" data-automation-id="heading-location-details"></app-icon-heading-component>
     <div class="d-flex d-lg-block">
-        <mat-form-field class="action-dropdown mb-3 mb-xl-0 action-dropdown" appearance="outline" >
-            <mat-label>Actions</mat-label>
-            <mat-select class="employees-action" >
-                <mat-option>Preview Top 50 Pages Only</mat-option>
-                <mat-option>Print Location Labels</mat-option>
+        <mat-form-field class="action-dropdown mb-3 mb-xl-0 action-dropdown" appearance="outline" data-automation-id="form-field-actions">
+            <mat-label data-automation-id="label-actions">Actions</mat-label>
+            <mat-select class="employees-action" data-automation-id="select-actions">
+                <mat-option data-automation-id="option-preview-top-50">Preview Top 50 Pages Only</mat-option>
+                <mat-option data-automation-id="option-print-location-labels">Print Location Labels</mat-option>
             </mat-select>
             <span class="material-symbols-outlined icon-expand-more">
                 expand_more
@@ -16,31 +16,31 @@
 
 <div class="row">
     <div class="col-xl-6">
-        <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline">
-            <mat-label>Required Date</mat-label>
-            <input matInput [value]="reqDate" [(ngModel)]="reqDate" (ngModelChange)="setReqDate()" [matDatepicker]="requiredDate">
-            <mat-datepicker-toggle matSuffix [for]="requiredDate" ngDefaultControl></mat-datepicker-toggle>
+        <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline" data-automation-id="form-field-required-date">
+            <mat-label data-automation-id="label-required-date">Required Date</mat-label>
+            <input matInput [value]="reqDate" [(ngModel)]="reqDate" (ngModelChange)="setReqDate()" [matDatepicker]="requiredDate" data-automation-id="input-required-date">
+            <mat-datepicker-toggle matSuffix [for]="requiredDate" ngDefaultControl data-automation-id="datepicker-toggle-required-date"></mat-datepicker-toggle>
             <mat-datepicker #requiredDate></mat-datepicker>
         </mat-form-field>
     </div>
     <div class="col-xl-6">
-        <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline">
-            <mat-label>Priority</mat-label>
-            <input [disabled]="isMoveQty" [NumbersOnly]="true" #myInput (input)="restrictTo4Digits()" (focusout)="onBlurPriority()" [(ngModel)]="from_priority" (ngModelChange)="setPriority()" type="number" placeholder="Search" matInput maxlength="4">
+        <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline" data-automation-id="form-field-priority">
+            <mat-label data-automation-id="label-priority">Priority</mat-label>
+            <input [disabled]="isMoveQty" [NumbersOnly]="true" #myInput (input)="restrictTo4Digits()" (focusout)="onBlurPriority()" [(ngModel)]="from_priority" (ngModelChange)="setPriority()" type="number" placeholder="Search" matInput maxlength="4" data-automation-id="input-priority">
         </mat-form-field>
     </div>
 </div>
 
 <div class="row row-flex align-items-center">
     <div class="col-xl-6">
-        <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline">
-            <mat-label>Move Qty</mat-label>
-            <input [disabled]="isMoveQty" [NumbersOnly]="true" [(ngModel)]="from_itemQuantity" (ngModelChange)="setMoveQty()" type="number" placeholder="Search" matInput maxlength="255">
+        <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline" data-automation-id="form-field-move-qty">
+            <mat-label data-automation-id="label-move-qty">Move Qty</mat-label>
+            <input [disabled]="isMoveQty" [NumbersOnly]="true" [(ngModel)]="from_itemQuantity" (ngModelChange)="setMoveQty()" type="number" placeholder="Search" matInput maxlength="255" data-automation-id="input-move-qty">
         </mat-form-field>
     </div>
     <div class="col-xl-6">
         <div class="mb-3">
-            <mat-checkbox *ngIf="tableType == stringConditions.MoveTo" class="px-2" [(ngModel)]="isDedicated" (ngModelChange)="setDedicated()" color="primary">Dedicated?</mat-checkbox>
+            <mat-checkbox *ngIf="tableType == stringConditions.MoveTo" class="px-2" [(ngModel)]="isDedicated" (ngModelChange)="setDedicated()" color="primary" data-automation-id="checkbox-dedicated">Dedicated?</mat-checkbox>
         </div>
     </div>
 </div>
@@ -48,117 +48,117 @@
 <div class="row">
     <div class="col-xl-6 mb-3">
         <div class="d-flex justify-content-between align-items-center flex-wrap">
-            <mat-label class="bold mb-2">Move From</mat-label>
-            <div class="label label-yellow px-2 mb-2"  *ngIf="moveFromDedicated!=''">{{moveFromDedicated}} </div>
+            <mat-label class="bold mb-2" data-automation-id="label-move-from">Move From</mat-label>
+            <div class="label label-yellow px-2 mb-2"  *ngIf="moveFromDedicated!=''" data-automation-id="label-move-from-dedicated">{{moveFromDedicated}} </div>
         </div>
         <div class="card p-2">
             <mat-form-field class="custom-form-field w-100 mb-2"
-                appearance="outline">
-                <mat-label>Warehouse</mat-label>
-                <input disabled [(ngModel)]="from_warehouse" type="text" matInput maxlength="255">
+                appearance="outline" data-automation-id="form-field-move-from-warehouse">
+                <mat-label data-automation-id="label-move-from-warehouse">Warehouse</mat-label>
+                <input disabled [(ngModel)]="from_warehouse" type="text" matInput maxlength="255" data-automation-id="input-move-from-warehouse">
             </mat-form-field>
 
             <mat-form-field class="custom-form-field w-100 mb-2"
-                appearance="outline">
-                <mat-label>Location</mat-label>
-                <input disabled [(ngModel)]="from_locationShow"  type="text" matInput maxlength="255">
+                appearance="outline" data-automation-id="form-field-move-from-location">
+                <mat-label data-automation-id="label-move-from-location">Location</mat-label>
+                <input disabled [(ngModel)]="from_locationShow"  type="text" matInput maxlength="255" data-automation-id="input-move-from-location">
             </mat-form-field>
 
             <mat-form-field class="custom-form-field  w-100 mb-2"
-                appearance="outline">
-                <mat-label>{{itemNumber}} </mat-label>
-                <input disabled [(ngModel)]="from_itemNo"  type="text" matInput maxlength="255">
+                appearance="outline" data-automation-id="form-field-move-from-item-number">
+                <mat-label data-automation-id="label-move-from-item-number">{{itemNumber}} </mat-label>
+                <input disabled [(ngModel)]="from_itemNo"  type="text" matInput maxlength="255" data-automation-id="input-move-from-item-number">
             </mat-form-field>
 
             <mat-form-field class="custom-form-field  w-100 mb-2"
-                appearance="outline">
-                <mat-label>Description</mat-label>
-                <input disabled [(ngModel)]="from_description"  type="text" matInput maxlength="255">
+                appearance="outline" data-automation-id="form-field-move-from-description">
+                <mat-label data-automation-id="label-move-from-description">Description</mat-label>
+                <input disabled [(ngModel)]="from_description"  type="text" matInput maxlength="255" data-automation-id="input-move-from-description">
             </mat-form-field>
 
             <mat-form-field class="custom-form-field  w-100 mb-2"
-                appearance="outline">
-                <mat-label>Item Quantity</mat-label>
-                <input disabled [(ngModel)]="from_itemQtyShow"  type="text" matInput maxlength="255">
+                appearance="outline" data-automation-id="form-field-move-from-item-quantity">
+                <mat-label data-automation-id="label-move-from-item-quantity">Item Quantity</mat-label>
+                <input disabled [(ngModel)]="from_itemQtyShow"  type="text" matInput maxlength="255" data-automation-id="input-move-from-item-quantity">
             </mat-form-field>
 
             <mat-form-field class="custom-form-field  w-100 mb-2"
-                appearance="outline">
-                <mat-label>Cell Size</mat-label>
-                <input disabled [(ngModel)]="from_cellSize"  type="text" matInput maxlength="255">
+                appearance="outline" data-automation-id="form-field-move-from-cell-size">
+                <mat-label data-automation-id="label-move-from-cell-size">Cell Size</mat-label>
+                <input disabled [(ngModel)]="from_cellSize"  type="text" matInput maxlength="255" data-automation-id="input-move-from-cell-size">
             </mat-form-field>
 
             <mat-form-field class="custom-form-field  w-100 mb-2"
-                appearance="outline">
-                <mat-label>Lot Number</mat-label>
-                <input disabled [(ngModel)]="from_lotNo"  type="text" matInput maxlength="255">
+                appearance="outline" data-automation-id="form-field-move-from-lot-number">
+                <mat-label data-automation-id="label-move-from-lot-number">Lot Number</mat-label>
+                <input disabled [(ngModel)]="from_lotNo"  type="text" matInput maxlength="255" data-automation-id="input-move-from-lot-number">
             </mat-form-field>
 
             <mat-form-field class="custom-form-field  w-100"
-                appearance="outline">
-                <mat-label>Serial Number</mat-label>
-                <input disabled [(ngModel)]="from_serialNo"  type="text" matInput maxlength="255">
+                appearance="outline" data-automation-id="form-field-move-from-serial-number">
+                <mat-label data-automation-id="label-move-from-serial-number">Serial Number</mat-label>
+                <input disabled [(ngModel)]="from_serialNo"  type="text" matInput maxlength="255" data-automation-id="input-move-from-serial-number">
             </mat-form-field>
         </div>
     </div>
     <div class="col-xl-6 mb-3">
         <div class="d-flex justify-content-between align-items-center flex-wrap" >
-            <mat-label class="bold mb-2">Move To</mat-label>
-            <div class="label label-yellow px-2 mb-2"  *ngIf="moveToDedicated!=''" >{{moveToDedicated}}</div>
+            <mat-label class="bold mb-2" data-automation-id="label-move-to">Move To</mat-label>
+            <div class="label label-yellow px-2 mb-2"  *ngIf="moveToDedicated!=''" data-automation-id="label-move-to-dedicated">{{moveToDedicated}}</div>
         </div>
         <div class="card p-2">
             <mat-form-field class="custom-form-field  w-100 mb-2"
-                appearance="outline">
-                <mat-label>Warehouse</mat-label>
-                <input disabled [(ngModel)]="to_warehouse"  type="text" matInput maxlength="255">
+                appearance="outline" data-automation-id="form-field-move-to-warehouse">
+                <mat-label data-automation-id="label-move-to-warehouse">Warehouse</mat-label>
+                <input disabled [(ngModel)]="to_warehouse"  type="text" matInput maxlength="255" data-automation-id="input-move-to-warehouse">
             </mat-form-field>
 
             <mat-form-field class="custom-form-field  w-100 mb-2"
-                appearance="outline">
-                <mat-label>Location</mat-label>
-                <input disabled [(ngModel)]="to_locationShow"  type="text" matInput maxlength="255">
+                appearance="outline" data-automation-id="form-field-move-to-location">
+                <mat-label data-automation-id="label-move-to-location">Location</mat-label>
+                <input disabled [(ngModel)]="to_locationShow"  type="text" matInput maxlength="255" data-automation-id="input-move-to-location">
             </mat-form-field>
 
             <mat-form-field class="custom-form-field  w-100 mb-2"
-                appearance="outline">
-                <mat-label>{{itemNumber}} </mat-label>
-                <input disabled [(ngModel)]="to_itemNo" type="text" matInput maxlength="255">
+                appearance="outline" data-automation-id="form-field-move-to-item-number">
+                <mat-label data-automation-id="label-move-to-item-number">{{itemNumber}} </mat-label>
+                <input disabled [(ngModel)]="to_itemNo" type="text" matInput maxlength="255" data-automation-id="input-move-to-item-number">
             </mat-form-field>
 
             <mat-form-field class="custom-form-field  w-100 mb-2"
-                appearance="outline">
-                <mat-label>Description</mat-label>
-                <input disabled [(ngModel)]="to_description" type="text" matInput maxlength="255">
+                appearance="outline" data-automation-id="form-field-move-to-description">
+                <mat-label data-automation-id="label-move-to-description">Description</mat-label>
+                <input disabled [(ngModel)]="to_description" type="text" matInput maxlength="255" data-automation-id="input-move-to-description">
             </mat-form-field>
 
             <mat-form-field class="custom-form-field  w-100 mb-2"
-                appearance="outline">
-                <mat-label>Item Quantity</mat-label>
-                <input disabled [(ngModel)]="to_itemQtyShow" type="text" matInput maxlength="255">
+                appearance="outline" data-automation-id="form-field-move-to-item-quantity">
+                <mat-label data-automation-id="label-move-to-item-quantity">Item Quantity</mat-label>
+                <input disabled [(ngModel)]="to_itemQtyShow" type="text" matInput maxlength="255" data-automation-id="input-move-to-item-quantity">
             </mat-form-field>
 
             <mat-form-field class="custom-form-field  w-100 mb-2"
-                appearance="outline">
-                <mat-label>Cell Size</mat-label>
-                <input disabled [(ngModel)]="to_cellSize" type="text" matInput maxlength="255">
+                appearance="outline" data-automation-id="form-field-move-to-cell-size">
+                <mat-label data-automation-id="label-move-to-cell-size">Cell Size</mat-label>
+                <input disabled [(ngModel)]="to_cellSize" type="text" matInput maxlength="255" data-automation-id="input-move-to-cell-size">
             </mat-form-field>
 
             <mat-form-field class="custom-form-field  w-100 mb-2"
-                appearance="outline">
-                <mat-label>Lot Number</mat-label>
-                <input disabled [(ngModel)]="to_lotNo" type="text" matInput maxlength="255">
+                appearance="outline" data-automation-id="form-field-move-to-lot-number">
+                <mat-label data-automation-id="label-move-to-lot-number">Lot Number</mat-label>
+                <input disabled [(ngModel)]="to_lotNo" type="text" matInput maxlength="255" data-automation-id="input-move-to-lot-number">
             </mat-form-field>
 
             <mat-form-field class="custom-form-field mb-2  w-100"
-                appearance="outline">
-                <mat-label>Serial Number</mat-label>
-                <input disabled [(ngModel)]="to_serialNo" type="text" matInput maxlength="255">
+                appearance="outline" data-automation-id="form-field-move-to-serial-number">
+                <mat-label data-automation-id="label-move-to-serial-number">Serial Number</mat-label>
+                <input disabled [(ngModel)]="to_serialNo" type="text" matInput maxlength="255" data-automation-id="input-move-to-serial-number">
             </mat-form-field>
 
             <mat-form-field class="custom-form-field  w-100"
-                appearance="outline">
-                <mat-label>Qty to Fill Location</mat-label>
-                <input [(ngModel)]="fillQtytoShow" disabled type="text" matInput maxlength="255">
+                appearance="outline" data-automation-id="form-field-qty-to-fill-location">
+                <mat-label data-automation-id="label-move-to-qty-to-fill-location">Qty to Fill Location</mat-label>
+                <input [(ngModel)]="fillQtytoShow" disabled type="text" matInput maxlength="255" data-automation-id="input-qty-to-fill-location">
             </mat-form-field>
         </div>
     </div>

@@ -1,26 +1,26 @@
 <div class="row w-100 mt-4 mx-0">
     <div class="col-xl-4 mb-3 mb-xl-0">
         <div class="d-flex justify-content-between align-items-center mb-3">
-            <app-icon-heading-component heading="Stock Count Confirmation" icon=" confirmation_number">
+            <app-icon-heading-component heading="Stock Count Confirmation" icon=" confirmation_number" [automationId]="'stock-count-confirmation-heading'">
             </app-icon-heading-component>
         </div>
         <div class="card p-3">
             <div class="row">
                 <div class="col">
                     <div class="d-flex justify-content-between mb-3">
-                        Carousel Pick<mat-slide-toggle color="primary">
+                        Carousel Pick<mat-slide-toggle color="primary" data-automation-id="toggle-carousel-pick">
                         </mat-slide-toggle>
                     </div>
                     <div class="d-flex justify-content-between mb-3">
-                        Carousel Put Away<mat-slide-toggle color="primary">
+                        Carousel Put Away<mat-slide-toggle color="primary" data-automation-id="toggle-carousel-put-away">
                         </mat-slide-toggle>
                     </div>
                     <div class="d-flex justify-content-between mb-3">
-                        Hot Pick<mat-slide-toggle color="primary">
+                        Hot Pick<mat-slide-toggle color="primary" data-automation-id="toggle-hot-pick">
                         </mat-slide-toggle>
                     </div>
                     <div class="d-flex justify-content-between mb-3">
-                        Hot Put Away<mat-slide-toggle color="primary">
+                        Hot Put Away<mat-slide-toggle color="primary" data-automation-id="toggle-hot-put-away">
                         </mat-slide-toggle>
                     </div>
                 </div>
@@ -29,24 +29,24 @@
     </div>
     <div class="col-xl-4 mb-3 mb-xl-0">
         <div class="d-flex justify-content-between align-items-center mb-3">
-            <app-icon-heading-component heading="Other Setting" icon="settings_applications">
+            <app-icon-heading-component heading="Other Setting" icon="settings_applications" [automationId]="'other-setting-heading'">
             </app-icon-heading-component>
         </div>
         <div class="card p-3">
             <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline">
                 <mat-label>Idle Warning Time</mat-label>
-                <input matInput type="text" value="123456" />
+                <input matInput type="text" value="123456" data-automation-id="input-idle-warning-time" />
             </mat-form-field>
             <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline">
                 <mat-label>Idle Log-Off Time</mat-label>
-                <input matInput type="text" value="12345" />
+                <input matInput type="text" value="12345" data-automation-id="input-idle-logoff-time" />
             </mat-form-field>
             <div class="d-flex justify-content-between mb-3">
-                Force Order Number for Hot Pick<mat-slide-toggle color="primary">
+                Force Order Number for Hot Pick<mat-slide-toggle color="primary" data-automation-id="toggle-force-order-hot-pick">
                 </mat-slide-toggle>
             </div>
             <div class="d-flex justify-content-between mb-3">
-                Force Order Number for Hot Put Away<mat-slide-toggle color="primary">
+                Force Order Number for Hot Put Away<mat-slide-toggle color="primary" data-automation-id="toggle-force-order-hot-put-away">
                 </mat-slide-toggle>
             </div>
         </div>
@@ -68,12 +68,12 @@
                     <div class="row align-items-center">
                         <div class="col-6">
                             <mat-form-field class="custom-form-field w-100" appearance="outline">
-                                <input matInput type="text" disabled value="Carousel POD 02">
+                                <input matInput type="text" disabled value="Carousel POD 02" data-automation-id="inactive-carousels-carousel-name-input">
                             </mat-form-field>
                         </div>
                         <div class="col-6 mt-3">
                             <div class="d-flex justify-content-between mb-3 ml-30percent">
-                                <mat-slide-toggle color="primary">
+                                <mat-slide-toggle color="primary" data-automation-id="toggle-inactive-carousel">
                                 </mat-slide-toggle>
                             </div>
                         </div>
