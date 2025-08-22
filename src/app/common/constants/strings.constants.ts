@@ -256,7 +256,10 @@ export const ToasterMessages = {
     EnterValidPositiveQuantity: 'Please enter a valid positive number for the quantity.',
     PrintSuccessfullyCompleted:'Print successfully completed',
     UnableToPrint: 'Unable to print',
-    UnableToAssignLocation: "Unable to assign location"
+    UnableToAssignLocation: "Unable to assign location",
+    ZoneWouldBeADuplicateAndCannotBeAdded: "Zone would be a duplicate and cannot be added.",
+    LocationZoneCannotBeDeleted: "Location Zone cannot be deleted because there are allocated quantities in an Inventory Map location matching the zone",
+    CannotInsertDuplicateZone: "Cannot insert duplicate Zone"
 }
 
 
@@ -528,7 +531,8 @@ export const Style = {
     w402px: '402px',
     w1080px: '1080px',
     auto:'auto',
-    w990px: '990px'
+    w990px: '990px',
+    w56vw: '56vw'
 }
 
 export const FilterColumnName = {
