@@ -29,6 +29,7 @@ import { GlobalService } from 'src/app/common/services/global.service';
 import { PickToteManagerService } from 'src/app/common/services/pick-tote-manager.service'
 import {  TableConstant ,ToasterTitle,ResponseStrings,Column,ToasterType,zoneType,DialogConstants,ColumnDef,UniqueConstants,Style,StringConditions, Placeholders, ToasterMessages, FIELDS_DEFAULT_AN, ConfirmationMessages, FormatValues, ConfirmationHeadings, DISABLED_FIELDS} from 'src/app/common/constants/strings.constants';
 import { FilterOrder, FilterTransaction, SavedFilterChangeEvent, FilterData, OrderData } from 'src/app/common/types/pick-tote-manager.types';
+import { InputType } from 'src/app/common/enums/CommonEnums';
 
 export interface PeriodicElement {
   name: string;
@@ -625,14 +626,83 @@ UserField10:string = this.fieldMappings.userField10;
     }
     this.orderBydataSource = new MatTableDataSource<OrderData>(this.orderByData);
   }
-  onChangeFunctionsFields(element: FilterData): void {
-    // Validate input
-    if (!element || !element.field) {
+  /**
+   * Validates if the filter element is valid
+   * @param element The filter element to validate
+   * @returns boolean indicating if the element is valid
+   */
+  private isValidFilterElement(element: FilterData | null | undefined): element is FilterData {
+    const isValid = !!element?.field?.trim();
+    if (!isValid) {
       this.global.ShowToastr(
         ToasterType.Error,
         ToasterMessages.InvalidInputForFilter,
         ToasterTitle.Error
     );
+    }
+    return isValid;
+  }
+
+  /**
+   * Applies the default format to disabled fields
+   * @param element The filter element to check and update
+   * @returns boolean indicating if the field was a disabled field
+   */
+  private applyDisabledFieldFormatting(element: FilterData): boolean {
+    if (DISABLED_FIELDS.includes(element.field)) {
+      element.format = FormatValues.NUMERIC;
+      return true;
+    }
+    return false;
+  }
+
+  /**
+   * Gets all filter rows with the same field as the given element
+   * @param element The element to find matches for
+   * @returns Array of matching filter data
+   */
+  private getSameFieldRows(element: FilterData): FilterData[] {
+    return this.filterData.filter(
+      (row) => row.field === element.field && row !== element
+    );
+  }
+
+  /**
+   * Handles format synchronization between related filter fields
+   * @param element The current filter element
+   * @param sameFieldRows Other rows with the same field
+   */
+  private handleFormatSynchronization(element: FilterData, sameFieldRows: FilterData[]): void {
+    // Get the most common format from existing rows
+    const formatCounts = sameFieldRows.reduce((acc, row) => {
+      if (row.format) {
+        acc[row.format] = (acc[row.format] || 0) + 1;
+      }
+      return acc;
+    }, {} as Record<string, number>);
+
+    const mostCommonFormat = Object.entries(formatCounts)
+      .sort((a, b) => b[1] - a[1])[0]?.[0];
+
+    // If current element has a different format than the most common one
+    if (element.format && mostCommonFormat && element.format !== mostCommonFormat) {
+      this.showFormatMismatchDialog(element, sameFieldRows, mostCommonFormat);
+      return;
+    }
+
+    // If current element has no format but others do, sync it
+    if (mostCommonFormat && !element.format) {
+      element.format = mostCommonFormat;
+    }
+  }
+
+  /**
+   * Handles changes to filter fields, ensuring format consistency
+   * @param element The filter element that was changed
+   */
+  onChangeFunctionsFields(element: FilterData): void {
+    // Validate input
+    if (!this.isValidFilterElement(element)) {
       return;
     }
   
@@ -640,31 +710,20 @@ UserField10:string = this.fieldMappings.userField10;
     element.isSaved = false;
   
     // Apply numeric format for disabled fields
-    if (DISABLED_FIELDS.includes(element.field)) {
-      element.format = FormatValues.NUMERIC;
+    if (this.applyDisabledFieldFormatting(element)) {
       return;
     }
   
     // Find rows with the same field (excluding the current row)
-    const sameFieldRows: FilterData[] = this.filterData.filter(
-      (row) => row.field === element.field && row !== element
-    );
+    const sameFieldRows = this.getSameFieldRows(element);
   
     // No related rows, no further action needed
-    if (!sameFieldRows.length) {
-      return;
-    }
-    const existingFormat = sameFieldRows[0].format;
- // Handle format mismatch
- if (existingFormat && element.format && existingFormat !== element.format) {
-  this.showFormatMismatchDialog(element, sameFieldRows, existingFormat);
+    if (sameFieldRows.length === 0) {
   return;
 }
 
-// If current row has no format but others do, sync it
-if (existingFormat && !element.format) {
-  element.format = existingFormat;
-}
+    // Handle format synchronization
+    this.handleFormatSynchronization(element, sameFieldRows);
 }
   clearMatSelectList() {
     this.matRef.options.forEach((data: MatOption) => data.deselect());
@@ -1698,16 +1757,18 @@ refreshOrderDataGrid() {
   
   //Determines the appropriate HTML input type (date, number, or text) 
   // based on the field name and its format in filterData.  
-  getInputType(field: string): 'date' | 'number' | 'text' {
+  getInputType(field: string): InputType {
     // Date fields take priority
     if (this.DATE_FIELDS.has(field)) {
-      return 'date';
-    }
-    const elementFormat = this.filterData.find(el => el.field === field)?.format;
-    return elementFormat === FormatValues.NUMERIC
-      ? 'number'
-      : 'text';
-  }
+      return InputType.Date;
+      }
+      
+      const elementFormat = this.filterData.find(el => el.field === field)?.format;
+      
+      return elementFormat === FormatValues.NUMERIC
+      ? InputType.Number
+      : InputType.Text;
+      }
   
   isTooltipDisabled(value: string): boolean {
     return value.length < 25;
@@ -1791,7 +1852,7 @@ private showFormatMismatchDialog(
     },
   });
 
-  dialogRef.afterClosed().subscribe((result: string | undefined) => {
+  dialogRef.afterClosed().subscribe((result: string) => {
     if (result === StringConditions.Yes) {
       // Update format for the current element and related rows
       this.onSaveSingleFilter(element);
