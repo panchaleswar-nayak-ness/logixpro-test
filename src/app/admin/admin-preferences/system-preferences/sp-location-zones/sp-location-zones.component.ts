@@ -156,7 +156,7 @@ export class SpLocationZonesComponent implements OnInit {
           }
         }
       }
-      if (type === zoneType.includePick) {
+      if (type === zoneType.includeCFCarouselPick) {
         if (zone.includeCFCarouselPick) {
           if (!zone.cartonFlow) {
             this.alterParentZones(false, zone.zone);
@@ -167,6 +167,9 @@ export class SpLocationZonesComponent implements OnInit {
           }
           // Reset Case Label when Include CF Carousel Pick is enabled
           zone.caseLabel = '';
+        } else {
+          // Clear Parent Zone when Include CF Carousel Pick is disabled
+          zone.parentZone = '';
         }
       }
       let oldZone: string = this.duplicateLocationZone.filter(
