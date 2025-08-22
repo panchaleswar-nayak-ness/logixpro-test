@@ -341,7 +341,8 @@ export const KeyboardKeys = {
 export const zoneType = {
     carousel: 'carousel',
     cartonFlow: 'cartonFlow',
-    includePick: 'includePick'
+    includePick: 'includePick',
+    includeCFCarouselPick: 'includeCFCarouselPick'
 }
 
 export const alertMessage = {
