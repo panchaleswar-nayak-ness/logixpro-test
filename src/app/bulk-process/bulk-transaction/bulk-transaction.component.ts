@@ -18,6 +18,7 @@ import { ApiResponse } from 'src/app/common/types/CommonTypes';
 import { GeneralSetup } from 'src/app/common/Model/preferences';
 import { PrintApiService } from 'src/app/common/services/print-api/print-api.service';
 import { IPrintApiService } from 'src/app/common/services/print-api/print-api-interface';
+import { BmSlaperLabelSplitEntryComponent } from 'src/app/admin/dialogs/bm-slaper-label-split-entry/bm-slaper-label-split-entry.component';
 
 @Component({
   selector: 'app-bulk-transaction',
@@ -418,9 +419,18 @@ export class BulkTransactionComponent implements OnInit {
     if (this.Prefernces?.workstationPreferences) {
       const { pickToTotes, putAwayFromTotes } = this.Prefernces.workstationPreferences;
       if (pickToTotes && this.bulkTransactionType === BulkTransactionType.PICK) {
+        if(this.view == BulkTransactionView.ORDER)
+        {
+          this.OpenSlaperLabelNextToteId();
+        }else{
           this.OpenNextToteId();
+        }
       } else if (putAwayFromTotes && this.bulkTransactionType === BulkTransactionType.PUT_AWAY) {
+        if(this.view == BulkTransactionView.ORDER){
+          this.OpenSlaperLabelNextToteId();
+        }else{
           this.OpenNextToteId();
+        }
       } else {
           this.changeVisibiltyVerifyBulk(false);
       }
@@ -509,6 +519,35 @@ export class BulkTransactionComponent implements OnInit {
 
   OpenNextToteId() {
     const dialogRefTote = this.global.OpenDialog(BmToteidEntryComponent, {
+      height: DialogConstants.auto,
+      width: Style.w990px,
+      autoFocus: DialogConstants.autoFocus,
+      disableClose: true,
+      data: {
+        selectedOrderList: this.selectedOrders,
+        nextToteID: this.NextToteID,
+        BulkProcess: true,
+        autoPrintPickToteLabels: this.Prefernces?.workstationPreferences?.autoPrintPickToteLabels,
+        view: this.view,
+        type: this.bulkTransactionType
+      }
+    });
+    dialogRefTote.afterClosed().subscribe((result) => {
+      if (result.length > 0) {
+        this.selectedOrders = result;
+        this.selectedOrders.forEach((order) => {
+          order.orderLines.forEach((orderLine) => {
+            orderLine.toteId = order.toteId;
+          });
+        });
+        this.verifyBulks = !this.verifyBulks;
+        localStorage.setItem(localStorageKeys.VerifyBulks, this.verifyBulks.toString());
+      }
+    });
+  }
+
+  OpenSlaperLabelNextToteId() {
+    const dialogRefTote = this.global.OpenDialog(BmSlaperLabelSplitEntryComponent, {
       height: DialogConstants.auto,
       width: Style.w990px,
       autoFocus: DialogConstants.autoFocus,
