@@ -402,3 +402,27 @@ export class PartialToteIdResponse {
     partialToteID: string;
     orderLines: OrderLineResource[];
 }
+export interface SlapperLabelResponse {
+    id: number;
+    orderNumber: string;
+    itemNumber: string;
+    description: string;
+    lineNumber: number;
+    batchId: string | null;
+    toteId: string;
+    transactionQuantity: number;
+    zone: string;
+    completedBy: string | null;
+    completedDate: string | null;
+    completedQuantity: number;
+    transactionType: string;
+    unitOfMeasure: string;
+    lotNumber: string;
+    expirationDate: string | null;
+    serialNumber: string;
+    statusCode: string | null;
+    warehouse: string | null;
+    location: string;
+    assignedUser: string | null;
+    isPartialCase: boolean;
+}

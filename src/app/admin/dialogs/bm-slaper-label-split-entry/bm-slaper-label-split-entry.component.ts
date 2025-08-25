@@ -9,7 +9,7 @@ import {DialogConstants, Style, ToasterMessages, ToasterTitle, ToasterType} from
 import {IBulkProcessApiService} from 'src/app/common/services/bulk-process-api/bulk-process-api-interface';
 import {BulkProcessApiService} from 'src/app/common/services/bulk-process-api/bulk-process-api.service';
 import {HttpStatusCode} from '@angular/common/http';
-import {AssignToteToOrderDto, PartialToteIdRequest, PartialToteIdResponse} from "../../../common/Model/bulk-transactions";
+import {AssignToteToOrderDto, PartialToteIdRequest, PartialToteIdResponse, SlapperLabelResponse} from "../../../common/Model/bulk-transactions";
 import { PrintApiService } from 'src/app/common/services/print-api/print-api.service';
 import { BmToteidEntryComponent } from '../bm-toteid-entry/bm-toteid-entry.component';
 
@@ -71,7 +71,6 @@ export class BmSlaperLabelSplitEntryComponent implements OnInit {
           this.selectedList[i]['toteId'] = undefined;
           this.selectedList[i]['partialToteId'] = undefined;
         });
-        console.log('Cleared all Tote IDs and Partial Tote IDs. Updated selectedList:', this.selectedList);
       }
     }
     printAllToteLabels() {
@@ -102,7 +101,6 @@ export class BmSlaperLabelSplitEntryComponent implements OnInit {
       if(this.view != 'batch' && this.view != 'tote'){
         this.selectedList[index]['toteId'] = undefined;
         this.selectedList[index]['partialToteId'] = undefined;
-        console.log(`Removed Tote ID and Partial Tote ID for index ${index}. Updated selectedList:`, this.selectedList);
       }
     }
   
@@ -115,11 +113,8 @@ export class BmSlaperLabelSplitEntryComponent implements OnInit {
         if (res.body?.nextId) {
           this.nextToteID = res.body.nextId;
           this.selectedList[index]['partialToteId'] = parseInt(this.nextToteID);
-          console.log(`Generated Partial Tote ID for index ${index}:`, this.selectedList[index]['partialToteId']);
-          console.log('Updated selectedList:', this.selectedList);
         }
       }).catch((error) => {
-        console.error('Error getting next tote ID:', error);
         this.global.ShowToastr(ToasterType.Error, 'Failed to get next tote ID', ToasterTitle.Error);
       });
     }
@@ -227,13 +222,9 @@ export class BmSlaperLabelSplitEntryComponent implements OnInit {
           toteID: item.toteId,
           partialToteID: item.partialToteId?.toString()
         }));
-
-        // Log the request data being sent
-        console.log('Request data being sent:', requestData);
         
         // Validate that Partial Tote Id values are present
         const itemsWithPartialToteId = requestData.filter(item => item.partialToteID);
-        console.log('Items with Partial Tote ID:', itemsWithPartialToteId);
         
         if (itemsWithPartialToteId.length === 0) {
           this.global.ShowToastr(ToasterType.Info, 'No Partial Tote IDs found. Please generate Partial Tote IDs first using the Next Tote ID buttons or enter them manually.', ToasterTitle.Warning);
@@ -244,12 +235,18 @@ export class BmSlaperLabelSplitEntryComponent implements OnInit {
         const response: PartialToteIdResponse[] = await this.iBulkProcessApiService.GetNextToteIdForSlapperLabelAsync(requestData);
         
         if (response && response.length > 0) {
-          // Open the BmToteidEntryComponent modal with the response data
+          // Process the response to group records by order number
+          const processedResponse = this.processApiResponse(response as any as SlapperLabelResponse[]);
+          
+          // Close the current dialog before opening the new one
+          this.dialogRef.close();
+          
+          // Open the BmToteidEntryComponent modal with the processed response data
           const dialogRef = this.global.OpenDialog(BmToteidEntryComponent, {
-            height: 'auto',
-            width: Style.w786px,
+            height: DialogConstants.auto,
+            width: Style.w990px,
             data: {
-              selectedOrderList: response,
+              selectedOrderList: processedResponse,
               nextToteID: this.nextToteID,
               BulkProcess: this.BulkProcess,
               view: this.view,
@@ -274,5 +271,91 @@ export class BmSlaperLabelSplitEntryComponent implements OnInit {
         console.error('Error creating next tote:', error);
         this.global.ShowToastr(ToasterType.Error, 'Failed to create tote IDs', ToasterTitle.Error);
       }
+    }
+
+    /**
+     * Process the API response to group records by order number
+     * Shows one row for all records with isPartialCase: true for each order number
+     * Shows individual rows for records with isPartialCase: false
+     */
+    private processApiResponse(response: SlapperLabelResponse[]): SlapperLabelResponse[] {
+      console.log('Processing API response:', response);
+      const processedList: SlapperLabelResponse[] = [];
+      
+      // Group records by order number
+      const groupedByOrder = this.groupByOrderNumber(response);
+      console.log('Grouped by order number:', groupedByOrder);
+      
+      // Process each order number group
+      Object.keys(groupedByOrder).forEach(orderNumber => {
+        const orderRecords = groupedByOrder[orderNumber];
+        console.log(`Processing order ${orderNumber} with ${orderRecords.length} records`);
+        
+        // Separate partial case and non-partial case records
+        const partialCaseRecords = orderRecords.filter(record => record.isPartialCase === true);
+        const nonPartialCaseRecords = orderRecords.filter(record => record.isPartialCase === false);
+        
+        console.log(`Order ${orderNumber}: ${partialCaseRecords.length} partial case records, ${nonPartialCaseRecords.length} non-partial case records`);
+        
+        // Add individual rows for non-partial case records
+        nonPartialCaseRecords.forEach(record => {
+          processedList.push(record);
+        });
+        
+        // Add one consolidated row for all partial case records of this order
+        if (partialCaseRecords.length > 0) {
+          const consolidatedPartialRecord = this.createConsolidatedPartialRecord(partialCaseRecords, orderNumber);
+          processedList.push(consolidatedPartialRecord);
+          console.log(`Created consolidated record for order ${orderNumber}:`, consolidatedPartialRecord);
+        }
+      });
+      
+      console.log('Final processed list:', processedList);
+      return processedList;
+    }
+
+    /**
+     * Group records by order number
+     */
+    private groupByOrderNumber(response: SlapperLabelResponse[]): { [orderNumber: string]: SlapperLabelResponse[] } {
+      const grouped: { [orderNumber: string]: SlapperLabelResponse[] } = {};
+      
+      response.forEach(record => {
+        if (!grouped[record.orderNumber]) {
+          grouped[record.orderNumber] = [];
+        }
+        grouped[record.orderNumber].push(record);
+      });
+      
+      return grouped;
+    }
+
+    /**
+     * Create a consolidated record for all partial case records of the same order
+     */
+    private createConsolidatedPartialRecord(partialRecords: SlapperLabelResponse[], orderNumber: string): SlapperLabelResponse {
+      // Use the first record as base and modify it to represent all partial records
+      const baseRecord = { ...partialRecords[0] };
+      
+      // Use only the first tote ID instead of concatenating all of them
+      // This ensures we show one single tote ID instead of comma-separated values
+      baseRecord.toteId = partialRecords[0].toteId;
+      
+      // Sum up the transaction quantities
+      const totalQuantity = partialRecords.reduce((sum, record) => sum + record.transactionQuantity, 0);
+      baseRecord.transactionQuantity = totalQuantity;
+      
+      // Mark as consolidated partial case
+      baseRecord.isPartialCase = true;
+      
+      // Update description to indicate this is a consolidated record
+      baseRecord.description = `Consolidated Partial Case (${partialRecords.length} totes)`;
+      
+      // Add metadata to indicate this is a consolidated record
+      (baseRecord as any).isConsolidated = true;
+      (baseRecord as any).originalPartialRecords = partialRecords;
+      (baseRecord as any).consolidatedToteCount = partialRecords.length;
+      
+      return baseRecord;
     }
 }

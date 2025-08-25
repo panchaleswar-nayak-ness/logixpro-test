@@ -52,6 +52,12 @@ export class BmToteidEntryComponent implements OnInit {
     if (this.view == 'tote') {
       this.selectedList.forEach((x: any) => { x.toteId = x.toteId });
     }
+    
+    // Assign sequential tote numbers (1, 2, 3, etc.) to each item
+    this.selectedList.forEach((item: any, index: number) => {
+      item.toteNumber = index + 1;
+    });
+    
     this.companyInfo();
   }
 
