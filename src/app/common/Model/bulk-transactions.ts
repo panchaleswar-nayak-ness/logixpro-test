@@ -42,6 +42,7 @@ export class OrderResponse {
     exportBatchId?: string | null;
     toteNumber: number;
     orderLines: OrderLineResource[];
+    isSlapperLabel? : boolean;
 }
 
 export class TotesResponse {
@@ -84,6 +85,7 @@ export class OrderLineResource {
     warehouse?: string | null;
     location?: string | null;
     assignedUser?: string | null;
+    isPartialCase?: boolean;
 }
 
 export class TotesRequest {
@@ -384,4 +386,19 @@ export interface OrderLine {
 export class BulkZone {
     wsid: string;
     zone: string;
+}
+
+export class PartialToteIdRequest {
+    orderNumber?: string;
+    toteNumber?: string;
+    toteID?: string;
+    partialToteID?: string;
+}
+
+export class PartialToteIdResponse {
+    orderNumber: string;
+    toteNumber: string;
+    toteID: string;
+    partialToteID: string;
+    orderLines: OrderLineResource[];
 }

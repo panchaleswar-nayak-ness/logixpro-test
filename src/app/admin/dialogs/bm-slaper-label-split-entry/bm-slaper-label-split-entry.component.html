@@ -82,7 +82,7 @@
                                                     (change)="validtote($event,i)"    
                                                     [(ngModel)]="list.toteId"
                                                     [value]="list.toteId===undefined?'':list.toteId"
-                                                    [disabled]="view == 'batch' || view == 'tote'" [attr.data-automation-id]="'input-tote-id-' + (list.toteId || '')">
+                                                    disabled [attr.data-automation-id]="'input-tote-id-' + (list.toteId || '')">
                                                 </mat-form-field>
 
                                             </div>
@@ -93,7 +93,8 @@
 
                                                 <mat-form-field class="custom-form-field w-100" appearance="outline" data-automation-id="form-field-partial-tote-id">
                                                     <input matInput type="text" maxlength="50" 
-                                                    [value]="list.partialToteId===undefined?'':list.partialToteId"
+                                                    [(ngModel)]="list.partialToteId"
+                                                    (ngModelChange)="onPartialToteIdChange($event, i)"
                                                     [attr.data-automation-id]="'input-partial-tote-id-' + i">
                                                 </mat-form-field>
 

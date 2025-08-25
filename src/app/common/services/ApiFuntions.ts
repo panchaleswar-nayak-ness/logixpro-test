@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/internal/Observable';
 import { BaseService } from './base-service.service';
 import { AuthService } from '../init/auth.service';
-import { AssignToteToOrderDto, NextToteId } from '../Model/bulk-transactions';
+import { AssignToteToOrderDto, NextToteId, PartialToteIdRequest, PartialToteIdResponse } from '../Model/bulk-transactions';
 import {
   MarkoutBlossomTotenRequest,
   MarkoutCompleteTransactionRequest,
@@ -2433,6 +2433,11 @@ public ResolveMarkoutTote(toteId: number) {
       false,
       showLoader
     );
+  }
+
+  public async GetNextToteIdForSlapperLabelAsync(request: PartialToteIdRequest[]): Promise<PartialToteIdResponse[]> {
+    const response = await this.ApiBase.PutAsync<PartialToteIdRequest[]>('/totes/nexttoteforslapperlable', request);
+    return response.body as PartialToteIdResponse[] || [];
   }
   
 }
