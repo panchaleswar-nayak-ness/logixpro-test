@@ -160,7 +160,7 @@ export const ConfirmationMessages = {
     IrreversibleActionWarning :'This action cannot be undone.',
     UpdateAllInterface: 'Click OK to update all devices with Com Port: {{comPort}}',
     UpdateAllInterfaceWithZone: 'Click OK to update all devices with Com Port: {{comPort}} and Zone: {{zone}}',
-    InconsistentFormat: (fieldName: string) => `An "${fieldName}" was added with Alphanumeric format Changing to Numeric will update that entry as well. Do you want to continue?`,
+    InconsistentFormat: (fieldName: string, newFormat: string, oldFormat: string) => `An "${fieldName}" was added with ${oldFormat} format. Changing to ${newFormat} will update that entry as well. Do you want to continue?`,
 }
 
 export const ToasterMessages = {
@@ -794,4 +794,8 @@ export const DISABLED_FIELDS = [
   export const FormatValues = {
     NUMERIC : '123',
     ALPHA_NUMERIC : 'A+N',
+  }
+  export const FormatType = {
+    NUMERIC : 'Numeric',
+    ALPHA_NUMERIC : 'Alphanumeric',
   }

@@ -27,7 +27,7 @@ import { IInductionManagerApiService } from 'src/app/common/services/induction-m
 import { InductionManagerApiService } from 'src/app/common/services/induction-manager-api/induction-manager-api.service';
 import { GlobalService } from 'src/app/common/services/global.service';
 import { PickToteManagerService } from 'src/app/common/services/pick-tote-manager.service'
-import {  TableConstant ,ToasterTitle,ResponseStrings,Column,ToasterType,zoneType,DialogConstants,ColumnDef,UniqueConstants,Style,StringConditions, Placeholders, ToasterMessages, FIELDS_DEFAULT_AN, ConfirmationMessages, FormatValues, ConfirmationHeadings, DISABLED_FIELDS} from 'src/app/common/constants/strings.constants';
+import {  TableConstant ,ToasterTitle,ResponseStrings,Column,ToasterType,zoneType,DialogConstants,ColumnDef,UniqueConstants,Style,StringConditions, Placeholders, ToasterMessages, FIELDS_DEFAULT_AN, ConfirmationMessages, FormatValues, ConfirmationHeadings, DISABLED_FIELDS, FormatType} from 'src/app/common/constants/strings.constants';
 import { FilterOrder, FilterTransaction, SavedFilterChangeEvent, FilterData, OrderData } from 'src/app/common/types/pick-tote-manager.types';
 import { InputType } from 'src/app/common/enums/CommonEnums';
 
@@ -1840,11 +1840,14 @@ private showFormatMismatchDialog(
     return;
   }
 
+  const currentFormat = existingFormat === FormatValues.NUMERIC ? FormatType.NUMERIC : FormatType.ALPHA_NUMERIC;
+  const newFormat = element.format === FormatValues.NUMERIC ? FormatType.NUMERIC : FormatType.ALPHA_NUMERIC;
+
   const dialogRef = this.global.OpenDialog(ConfirmationDialogComponent, {
     height: 'auto',
     autoFocus: DialogConstants.autoFocus,
     data: {
-      message: ConfirmationMessages.InconsistentFormat(element.field),
+      message: ConfirmationMessages.InconsistentFormat(element.field, newFormat, currentFormat),
       heading : ConfirmationHeadings.ChangeFormatType,
       customButtonText: true,
       btn1Text: StringConditions.Yes,
@@ -1871,4 +1874,3 @@ private showFormatMismatchDialog(
 }
   
 }
-
