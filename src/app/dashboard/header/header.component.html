@@ -1,21 +1,21 @@
 <mat-toolbar>
-  <button mat-icon-button aria-label="icon-button with menu icon" (click)="toggleSidebar()">
+  <button mat-icon-button aria-label="icon-button with menu icon" (click)="toggleSidebar()" data-automation-id="menu-toggle-button">
     <mat-icon>menu</mat-icon>
   </button>
   <div class="breadcrumb-menu ps-1 ps-xl-3 h-30px">
 
 
     <ul aria-label="breadcrumb" class="breadcrumb m-0">
-      <li class="cursor-pointer" *ngIf="isConfigUser" (click)="routeToLogin()">
+      <li class="cursor-pointer" *ngIf="isConfigUser" (click)="routeToLogin()" data-automation-id="logixpro-breadcrumb">
         LogixPro
       </li>
       
       <ng-container *ngFor="let item of breadcrumbList; index as i;">      
-        <li *ngIf="i < (breadcrumbList.length-1) && !isConfigUser" class="breadcrumb-item cursor-pointer" (click)="breadCrumbClick(item.menu,i)">
+        <li *ngIf="i < (breadcrumbList.length-1) && !isConfigUser" class="breadcrumb-item cursor-pointer" (click)="breadCrumbClick(item.menu,i)" [attr.data-automation-id]="'breadcrumb-item-' + item.name">
           {{item?.name}}
         </li>
         
-        <li *ngIf="i>=(breadcrumbList.length-1) " class="breadcrumb-item active cursor-pointer" (click)="breadCrumbClick(item.menu)">
+        <li *ngIf="i>=(breadcrumbList.length-1) " class="breadcrumb-item active cursor-pointer" (click)="breadCrumbClick(item.menu)" [attr.data-automation-id]="'active-breadcrumb-item-'  + item.name">
           {{item.name}}
         </li>
       </ng-container>      
@@ -26,7 +26,7 @@
     <div class="d-flex align-items-center">
     <ul class="row m-0 align-items-center">
       <li>
-        <button mat-button [matMenuTriggerFor]="menu" class="user">
+        <button mat-button [matMenuTriggerFor]="menu" class="user" data-automation-id="user-menu-button">
           <mat-icon class="material-symbols-outlined me-1">account_circle</mat-icon>
           <ng-container *ngIf="!ConfigUserLogin">
             {{userData.userName}}
@@ -36,20 +36,20 @@
           </ng-container>
           <mat-icon class="user-image-icon h-18px">keyboard_arrow_down</mat-icon>
         </button>
-        <mat-menu #menu="matMenu" class="custom mat-menu-panel " xPosition="before">
+        <mat-menu #menu="matMenu" class="custom mat-menu-panel " xPosition="before" data-automation-id="user-dropdown-menu">
           <div class="px-3 mb-2 text-tertiary-900">
-            <div class="text-14 text-chrome-600 my-1">Theme Options</div>
-            <mat-radio-group class="d-flex flex-column text-14" color="primary" aria-label="Select an option" (change)="selectTheme($event.value)" [value]="themeRadio">
-              <mat-radio-button *ngFor="let theme of themes" class="mb-1" [value]="theme.value">{{ theme.name }}</mat-radio-button>
+            <div class="text-14 text-chrome-600 my-1" data-automation-id="theme-options-label">Theme Options</div>
+            <mat-radio-group class="d-flex flex-column text-14" color="primary" aria-label="Select an option" (change)="selectTheme($event.value)" [value]="themeRadio" data-automation-id="theme-radio-group">
+              <mat-radio-button *ngFor="let theme of themes; let i = index" class="mb-1" [value]="theme.value" [attr.data-automation-id]="'theme-option-'  + theme.value">{{ theme.name }}</mat-radio-button>
             </mat-radio-group>
             </div>
-          <button mat-menu-item (click)="openPrintSetting()">
+          <button mat-menu-item (click)="openPrintSetting()" data-automation-id="printer-settings-button">
             <mat-icon class="material-symbols-outlined">
               print
             </mat-icon>
             Printer Settings
           </button>
-          <button mat-menu-item (click)="logout()">
+          <button mat-menu-item (click)="logout()" data-automation-id="logout-button">
             <mat-icon>exit_to_app</mat-icon>
             Logout
           </button>
@@ -62,23 +62,23 @@
 
 
 </mat-toolbar>
-<div class="overlay z-index-999999" *ngIf="spinnerService.visibility | async">
+<div class="overlay z-index-999999" *ngIf="spinnerService.visibility | async" data-automation-id="spinner-overlay">
   <div class="center">
-    <mat-spinner [diameter]="50"></mat-spinner>
+    <mat-spinner [diameter]="50" data-automation-id="main-spinner"></mat-spinner>
   </div>
 </div>
-<div class="overlay z-index-999999 dark" *ngIf="spinnerService.IsLoader">
+<div class="overlay z-index-999999 dark" *ngIf="spinnerService.IsLoader" data-automation-id="location-spinner-overlay">
   <div class="center d-flex flex-column align-items-center">
-    <mat-spinner [diameter]="50"></mat-spinner>
-    <p >
+    <mat-spinner [diameter]="50" data-automation-id="location-spinner"></mat-spinner>
+    <p data-automation-id="location-spinner-text">
       Finding your location
     </p>
   </div>
 </div>
-<div class="overlay z-index-999999 dark" *ngIf="spinnerService.assigningLocations">
+<div class="overlay z-index-999999 dark" *ngIf="spinnerService.assigningLocations" data-automation-id="assigning-locations-overlay">
   <div class="center d-flex flex-column align-items-center">
-    <mat-spinner [diameter]="50"></mat-spinner>
-    <p style="text-align:center">
+    <mat-spinner [diameter]="50" data-automation-id="assigning-locations-spinner"></mat-spinner>
+    <p style="text-align:center" data-automation-id="assigning-locations-text">
       Now Assigning Locations
     </p>
   </div>

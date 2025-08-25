@@ -19,7 +19,7 @@
                 <div class="col-xl-4">
                     <mat-form-field class="custom-form-field w-100 __grab_cursor mb-3" appearance="outline">
                         <mat-label data-automation-id="transaction-type-label">Transaction Type</mat-label>
-                        <mat-select [(ngModel)]="this.oTTempUpdatePayload.transType" data-automation-id="transaction-type-select">
+                        <mat-select [(ngModel)]="this.oTTempUpdatePayload.transType" [attr.data-automation-id]="'transaction-type-select-' + this.oTTempUpdatePayload.transType">
                             <mat-option *ngFor="let type of transactionTypes" [value]="type.value" [attr.data-automation-id]="'transaction-type-option-' + type.value">
                                 {{type.title}}
                             </mat-option>
@@ -33,7 +33,7 @@
                 <div class="col-xl-4">
                     <mat-form-field class="custom-form-field w-100 __grab_cursor mb-3" appearance="outline">
                         <mat-label data-automation-id="warehouse-label">Warehouse</mat-label>
-                        <mat-select [(ngModel)]="this.oTTempUpdatePayload.warehouse" data-automation-id="warehouse-select">
+                        <mat-select [(ngModel)]="this.oTTempUpdatePayload.warehouse" [attr.data-automation-id]="'warehouse-select-' + this.oTTempUpdatePayload.warehouse">
                             <mat-option *ngFor="let wharehouse of wharehouses" [value]="wharehouse" [attr.data-automation-id]="'warehouse-option-' + wharehouse">
                                 {{wharehouse}}
                             </mat-option>

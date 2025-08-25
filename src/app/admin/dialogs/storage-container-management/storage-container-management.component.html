@@ -13,7 +13,7 @@
       <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline" data-automation-id="scm-zone-ff">
         <mat-label data-automation-id="scm-zone-lbl">Zone</mat-label>
         <mat-select [(ngModel)]="scm.carouselZone" class="employees-action" [disabled]="checkDisabled('carouselZone')" autoFocus #zone (selectionChange)="zoneChanged()" data-automation-id="scm-zone-sel">
-          <mat-option *ngFor="let option of carouselZones; let i = index" [value]="option" [attr.data-automation-id]="'scm-zone-opt-' + i">
+          <mat-option *ngFor="let option of carouselZones; let i = index" [value]="option" [attr.data-automation-id]="'scm-zone-opt-' + option.zone">
             {{ option.zone }}
           </mat-option>
         </mat-select>
@@ -43,7 +43,7 @@
                     [disabled]="checkDisabled('containerType')"
                     (selectionChange)="containerTypeChanged()" data-automation-id="scm-ff-select">
  
-          <mat-option *ngFor="let option of containerTypes; let i=index" [value]="option.id" [attr.data-automation-id]="'scm-type-opt-' + i">
+          <mat-option *ngFor="let option of containerTypes; let i=index" [value]="option.id" [attr.data-automation-id]="'scm-type-opt-' + option.name">
             {{ option.name }}
           </mat-option>
         </mat-select>
@@ -58,7 +58,7 @@
       </div>
       <table class="w-100 br-20 overflow-hidden mb-2" data-automation-id="scm-table">
         <tr *ngFor="let row of tableMatrix; let rowIdx = index">
-          <td *ngFor="let cell of row; let colIdx = index" class="bg-primary-10 text-chrome-600 p-4 text-center" [attr.data-automation-id]="'scm-table-cell-' + rowIdx + '-' + colIdx">
+          <td *ngFor="let cell of row; let colIdx = index" class="bg-primary-10 text-chrome-600 p-4 text-center" [attr.data-automation-id]="'scm-table-cell-' + (cell || '-')">
             {{ cell || '-' }}
           </td>
         </tr>

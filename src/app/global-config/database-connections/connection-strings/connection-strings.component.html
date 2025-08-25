@@ -3,7 +3,7 @@
         <div class="row">
             <div class="d-flex justify-content-between align-items-center mb-2">
                 <div>
-                    <app-icon-heading-component heading="Connection Strings" icon="cable">
+                    <app-icon-heading-component heading="Connection Strings" icon="cable" [automationId]="'connection-strings-heading'">
                     </app-icon-heading-component>
                 </div>
             </div>
@@ -13,7 +13,7 @@
             <div class="row">
                 <div class="col-6 offset-6">
                     <div class="d-flex gap-12 mb-3 justify-content-end">
-                        <button (click)="addConnString()" mat-flat-button color="primary" class="add-icon-button"  [disabled]="isAddedNewRow">
+                        <button (click)="addConnString()" mat-flat-button color="primary" class="add-icon-button"  [disabled]="isAddedNewRow" data-automation-id="add-connection-button">
                             <span class="material-symbols-outlined" matTooltip="Add Connection String" 
                                 matTooltipPosition="above">
                                 add
@@ -28,9 +28,9 @@
 
                 <div class="card-header">
                     <div class="row">
-                        <div class="col-3 ">Connection Name</div>
-                        <div class="col-3 ">Database Name</div>
-                        <div class="col-2 px-2">Server Name</div>
+                        <div class="col-3 " data-automation-id="connection-name-header">Connection Name</div>
+                        <div class="col-3 " data-automation-id="database-name-header">Database Name</div>
+                        <div class="col-2 px-2" data-automation-id="server-name-header">Server Name</div>
                         <div class="col-4 "></div>
                     </div>
                 </div>
@@ -39,16 +39,16 @@
                     
 
                     <div class="row">
-                        <mat-radio-group aria-label="Select an option" color="primary" class="w-100">
+                        <mat-radio-group aria-label="Select an option" color="primary" class="w-100" data-automation-id="connection-strings-group">
                             <ng-container *ngFor="let item of connectionStringData;let index = index;trackBy:trackByIndex;" track="all" mat-dialog-content>
                                 <div class="row align-items-center mb-3">
 
                                     <div class="col-3" >
                                         <mat-form-field class="custom-form-field w-100" appearance="outline">
                                             <input matInput type="text" [(ngModel)]="item.connectionName" name="connectionName" (ngModelChange)="onInputValueChange($event,item,index)" #specialFeature maxlength="50"
-                                                [value]="item.connectionName">
+                                                [value]="item.connectionName" data-automation-id="connection-name-input">
                                                 <mat-hint class="error-message text-danger-shade text-14 padding-top-5per"
-                                                *ngIf="item.isDuplicate">
+                                                *ngIf="item.isDuplicate" data-automation-id="duplicate-error-message">
                                                 Field can not be duplicate
                                               </mat-hint>
                                         </mat-form-field >
@@ -60,7 +60,7 @@
                                             <mat-form-field class="custom-form-field w-100" appearance="outline">
 
                                                 <input matInput type="text" #specialFeature maxlength="50" name="databaseName" [(ngModel)]="item.databaseName" (ngModelChange)="onInputValueChange($event,item,index)"
-                                                    [value]="item.databaseName">
+                                                    [value]="item.databaseName" data-automation-id="database-name-input">
                                             </mat-form-field>
 
                                         </div>
@@ -70,7 +70,7 @@
                                             <mat-form-field class="custom-form-field w-100" appearance="outline">
 
                                                 <input matInput type="text" #specialFeature maxlength="50"  name="databaseName" [(ngModel)]="item.serverName" (ngModelChange)="onInputValueChange($event,item,index)"
-                                                    [value]="item.serverName">
+                                                    [value]="item.serverName" data-automation-id="server-name-input">
                                             </mat-form-field>
 
                                         </div>
@@ -78,14 +78,14 @@
                                     <div class="col-3 overflow-auto">
                                         <div class="d-flex gap-12 align-items-center pe-0 pe-xl-3 justifly-content-center">
                                             <button type="button" mat-flat-button 
-                                               (click)="openSqlAuth(item)" class="button-primary-i button-md flex-grow-1"  [disabled]="item.isSqlButtonDisable"> Set SQL Auth</button>
+                                               (click)="openSqlAuth(item)" class="button-primary-i button-md flex-grow-1"  [disabled]="item.isSqlButtonDisable" data-automation-id="set-sql-auth-button"> Set SQL Auth</button>
 
                                             <button mat-flat-button color="primary" class="xsm-icon-button m-1 m-xl-0" [disabled]="item.isButtonDisable"
-                                               (click)="saveString(item,index)" #namebutton>
+                                               (click)="saveString(item,index)" #namebutton data-automation-id="save-button">
                                                 <mat-icon class="material-symbols-outlined" matTooltip="Save" matTooltipPosition="above">save</mat-icon>
                                             </button>
 
-                                            <button (click)="deleteString(item)" mat-flat-button color="warn" class="xsm-icon-button m-1 m-xl-0" matTooltip="Delete" matTooltipPosition="above">
+                                            <button (click)="deleteString(item)" mat-flat-button color="warn" class="xsm-icon-button m-1 m-xl-0" matTooltip="Delete" matTooltipPosition="above" data-automation-id="delete-button">
                                                 <mat-icon class="material-symbols-outlined">close</mat-icon>
                                             </button>
                                         </div>

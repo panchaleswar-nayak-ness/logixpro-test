@@ -16,7 +16,7 @@
     <div class="col-xl-12 mb-2">
     <mat-form-field class="custom-form-field w-100" appearance="outline">
         <mat-label data-automation-id="file-format-label">File Format</mat-label>
-        <mat-select class="employees-action" [(ngModel)]="type" data-automation-id="file-format-select">
+        <mat-select class="employees-action" [(ngModel)]="type" [attr.data-automation-id]="'file-format-select-' + type">
             <mat-option value="pdf" data-automation-id="file-format-option-pdf">PDF (PDF Format)</mat-option>
             <mat-option value="csv" data-automation-id="file-format-option-csv">CSV (Comma Sepereated File - Openable in Excel)</mat-option> 
             <mat-option value="txt" data-automation-id="file-format-option-txt">TXT (Text Format )</mat-option>  

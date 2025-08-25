@@ -1,44 +1,44 @@
 <div class="d-flex justify-content-between mb-4 align-items-center">
     <div class="w-48px"></div>
-<h1 class="m-0" mat-dialog-title>Group Allowed</h1>
-<button mat-icon-button class="close-button dialog-close-button-fix" [mat-dialog-close]="true">
-    <mat-icon class="close-icon">close</mat-icon>
+<h1 class="m-0" mat-dialog-title data-automation-id="grpallowed-title">Group Allowed</h1>
+<button mat-icon-button class="close-button dialog-close-button-fix" [mat-dialog-close]="true" data-automation-id="grpallowed-close-btn">
+    <mat-icon class="close-icon" data-automation-id="grpallowed-close-icon">close</mat-icon>
 </button>
 </div>
 <div class="">
 
-        <form class="form pb-4" [formGroup]="controlNameForm" (ngSubmit)="onSend(controlNameForm)">
-                <mat-form-field class="d-block w-100" appearance="outline">
-                    <mat-label>Select Group</mat-label>
+        <form class="form pb-4" [formGroup]="controlNameForm" (ngSubmit)="onSend(controlNameForm)" data-automation-id="grpallowed-form">
+                <mat-form-field class="d-block w-100" appearance="outline" data-automation-id="grpallowed-ff">
+                    <mat-label data-automation-id="grpallowed-lbl">Select Group</mat-label>
                     <input type="text"
                            placeholder=""
                            aria-label="Number"
                            matInput
                            formControlName="controlName"
-                           [matAutocomplete]="auto" (blur)="blurInput()">
+                           [matAutocomplete]="auto" (blur)="blurInput()" data-automation-id="grpallowed-inp">
 
 
 
-                    <mat-autocomplete class="card" autoActiveFirstOption #auto="matAutocomplete" (optionSelected)="controlNameForm.controls['controlName'].setValue($event.option.value)">
-                        <h6 class="card-header matAutoCompHeader stickyHeader ps-4"><span>Group Name</span></h6>
+                    <mat-autocomplete class="card" autoActiveFirstOption #auto="matAutocomplete" (optionSelected)="controlNameForm.controls['controlName'].setValue($event.option.value)" data-automation-id="grpallowed-auto">
+                        <h6 class="card-header matAutoCompHeader stickyHeader ps-4"><span data-automation-id="grpallowed-auto-header-span">Group Name</span></h6>
                         <div class=" custom-scroll">
                         <mat-option *ngFor="let option of filteredOptions | async"
-                            [value]="option.groupName" class="w-900px">
-                            <div>
-                                <span class="g-name-style">{{option.groupName}}</span>
+                            [value]="option.groupName" class="w-900px" [attr.data-automation-id]="'grpallowed-opt-' + option.groupName">
+                            <div [attr.data-automation-id]="'grpallowed-opt-div-' + option.groupName">
+                                <span class="g-name-style" [attr.data-automation-id]="'grpallowed-opt-name-span-' + option.groupName">{{option.groupName}}</span>
                             </div>
                         </mat-option>
-                        <mat-option *ngIf="(filteredOptions | async)?.length == 0">No data found.</mat-option>
+                        <mat-option *ngIf="(filteredOptions | async)?.length == 0" data-automation-id="grpallowed-no-data-opt">No data found.</mat-option>
                     </div>
                     </mat-autocomplete>
-                    <span class="material-symbols-outlined icon-expand-more">
+                    <span class="material-symbols-outlined icon-expand-more" data-automation-id="grpallowed-expand-icon">
                         expand_more
                       </span>
                   </mat-form-field>
-                  <div class="error" *ngIf="hasError('controlName', 'required')">This field is required.</div>
+                  <div class="error" *ngIf="hasError('controlName', 'required')" data-automation-id="grpallowed-required-err">This field is required.</div>
             <mat-dialog-actions align="end">
                 <button type="submit" mat-flat-button class="form-button-submit btn-lg w-100"
-                    color="primary" [disabled]="!controlNameForm.valid">{{formBtnLabel}}</button>
+                    color="primary" [disabled]="!controlNameForm.valid" data-automation-id="grpallowed-submit-btn">{{formBtnLabel}}</button>
             </mat-dialog-actions>
 
         </form>

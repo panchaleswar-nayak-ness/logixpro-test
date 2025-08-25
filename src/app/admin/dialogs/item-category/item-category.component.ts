@@ -1,4 +1,4 @@
-import { Component, ElementRef, Inject, OnInit, QueryList, Renderer2, ViewChildren } from '@angular/core';
+import { Component, ElementRef, EventEmitter, Inject, OnInit, Output, QueryList, Renderer2, ViewChildren } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { AuthService } from '../../../common/init/auth.service';
 import labels from 'src/app/common/labels/labels.json';
@@ -22,6 +22,7 @@ export class  ItemCategoryComponent implements OnInit {
   public category:string;
   public subCategory:string;
   public iCommonAPI : ICommonApi;
+  @Output() selectionCleared = new EventEmitter<void>();
 
   constructor(
     public commonAPI : CommonApiService,
@@ -42,22 +43,41 @@ export class  ItemCategoryComponent implements OnInit {
 
   enableDisableButton(i:any)
   {
-    this.enableButton[i].value=false;
+    if(this.enableButton[i]) {
+      this.enableButton[i].value = false;
+    }
   }
 
  getCategoryList(){ 
     this.iCommonAPI.getCategory().subscribe((res) => {
       this.categoryList = res.data;
-      this.enableButton=[];
+      this.enableButton = [];
+      let categoryFound = false;
+      
       for(let i = 0; i < this.categoryList.length; i++) {
-        this.categoryList.fromDB = true;
-        if(this.categoryList[i].category == this.category && this.categoryList[i].subCategory == this.subCategory) this.categoryList[i].IsSelected = true;
+        this.categoryList[i].fromDB = true;
+        if(this.categoryList[i].category == this.category && this.categoryList[i].subCategory == this.subCategory) {
+          this.categoryList[i].IsSelected = true;
+          categoryFound = true;
+        }
         this.enableButton.push({index : i, value : true});
       }
+      
+      // If the currently selected category is not found in the updated list, clear the selection
+      if(!categoryFound && (this.category || this.subCategory)) {
+        this.category = '';
+        this.subCategory = '';
+        // Close the dialog with empty category to notify parent that selection was cleared
+        this.dialogRef.close({category: '', subCategory: ''});
+      }
+      
+      
       setTimeout(() => {
         const inputElements = this.categoryCategory.toArray();
-        const inputElement = inputElements[0].nativeElement as HTMLInputElement;
-        this.renderer.selectRootElement(inputElement).focus();
+        if (inputElements.length > 0) {
+          const inputElement = inputElements[0].nativeElement as HTMLInputElement;
+          this.renderer.selectRootElement(inputElement).focus();
+        }
       }, 100);
      });
   }
@@ -68,16 +88,15 @@ export class  ItemCategoryComponent implements OnInit {
       subCategory: "",
       fromDB:false
     });
-    this.enableButton.push({index:-1,value:true})
-    const lastIndex = this.categoryList.length - 1;
+    this.enableButton.unshift({index:-1,value:true});
+    
     setTimeout(() => {
       const inputElements = this.categoryCategory.toArray();
-      if (inputElements.length > lastIndex) {
+      if (inputElements.length > 0) {
         const inputElement = inputElements[0].nativeElement as HTMLInputElement;
         this.renderer.selectRootElement(inputElement).focus();
       }
     });
-
   }
 
   saveCategory(category : any, oldCat : any, subCategory : any, oldSubCat : any) {
@@ -112,21 +131,26 @@ export class  ItemCategoryComponent implements OnInit {
     }
   }
 
-  dltCategory(category : any, subCategory : any){
-    const dialogRef:any = this.global.OpenDialog(DeleteConfirmationComponent, {
+  dltCategory(category: string, subCategory: string) {
+    const dialogRef = this.global.OpenDialog(DeleteConfirmationComponent, {
       height: DialogConstants.auto,
       width: Style.w480px,
       autoFocus: DialogConstants.autoFocus,
-      disableClose : true,
-      data:{ mode: Mode.DeleteCategory, category, subCategory }
-    });
+      disableClose: true,
+      data: { mode: Mode.DeleteCategory, category, subCategory }
+    }) as MatDialogRef<DeleteConfirmationComponent>;
 
-    dialogRef.afterClosed().subscribe(result => { 
-     if(result === StringConditions.Yes)
-      if(category && subCategory) this.getCategoryList();
-      else {
-        this.enableButton.shift();
-        this.categoryList.shift();
+    dialogRef.afterClosed().subscribe(result => {
+      if (result === StringConditions.Yes || (result && result.isExecuted === true)) {
+        // If the deleted category is the currently selected one
+        if (this.category === category && this.subCategory === subCategory) {
+          // Emit event to notify parent to clear selection, but do not close the dialog
+          this.selectionCleared.emit();
+          // Also clear the selection in the dialog
+          this.category = '';
+          this.subCategory = '';
+        }
+        this.getCategoryList();
       }
     });
   }

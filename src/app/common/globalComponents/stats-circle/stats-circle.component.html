@@ -1,4 +1,4 @@
 <div [class]="divClass">
-    <p class="counter-count mb-1 bg-primary-900">{{value}}</p>
-    <p class="employee-p text-tertiary-900 mb-1">{{title}}</p>
+    <p class="counter-count mb-1 bg-primary-900" [attr.data-automation-id]="'counter-count-' + value">{{value}}</p>
+    <p class="employee-p text-tertiary-900 mb-1" [attr.data-automation-id]="'employee-title-' + title">{{title}}</p>
 </div>

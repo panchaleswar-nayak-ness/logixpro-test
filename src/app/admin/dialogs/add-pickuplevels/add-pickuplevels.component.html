@@ -1,39 +1,39 @@
 <div class="d-flex justify-content-between mb-4 align-items-center">
     <div class="divWithClass" ></div>
-    <h1 class="m-0" mat-dialog-title>{{form_heading}}</h1>
-    <button mat-icon-button class="close-button dialog-close-button-fix" [mat-dialog-close]="true">
-        <mat-icon class="close-icon">close</mat-icon>
+    <h1 class="m-0" mat-dialog-title data-automation-id="addpicklvl-title">{{form_heading}}</h1>
+    <button mat-icon-button class="close-button dialog-close-button-fix" [mat-dialog-close]="true" data-automation-id="addpicklvl-close-btn">
+        <mat-icon class="close-icon" data-automation-id="addpicklvl-close-icon">close</mat-icon>
     </button>
 </div>
 <div class="">
 
-        <form class="form pb-4 pickUpLevelFormStyle h-330px" #pickUpLevelForm="ngForm" (ngSubmit)="onSend(pickUpLevelForm)">
+        <form class="form pb-4 pickUpLevelFormStyle h-330px" #pickUpLevelForm="ngForm" (ngSubmit)="onSend(pickUpLevelForm)" data-automation-id="addpicklvl-form">
 
-            <mat-form-field class="mb-3 w-100" appearance="outline">
-                <mat-label>Pick Level</mat-label>
-                <input disabled matInput type="text" name="picklvl" required="required" [(ngModel)]="picklvl">
+            <mat-form-field class="mb-3 w-100" appearance="outline" data-automation-id="addpicklvl-picklvl-ff">
+                <mat-label data-automation-id="addpicklvl-picklvl-lbl">Pick Level</mat-label>
+                <input disabled matInput type="text" name="picklvl" required="required" [(ngModel)]="picklvl" data-automation-id="addpicklvl-picklvl-inp">
             </mat-form-field>
-            <mat-form-field class="mb-3 w-100" appearance="outline">
-                <mat-label>Start Shelf</mat-label>
-                <input #start_shelf matInput type="text" [NumbersOnly]="true" name="startShelf" required="required" [(ngModel)]="startShelf" maxlength="2" (keydown.space)="$event.preventDefault()" (keyup)="checkIfValid()">
+            <mat-form-field class="mb-3 w-100" appearance="outline" data-automation-id="addpicklvl-startshelf-ff">
+                <mat-label data-automation-id="addpicklvl-startshelf-lbl">Start Shelf</mat-label>
+                <input #start_shelf matInput type="text" [NumbersOnly]="true" name="startShelf" required="required" [(ngModel)]="startShelf" maxlength="2" (keydown.space)="$event.preventDefault()" (keyup)="checkIfValid()" data-automation-id="addpicklvl-startshelf-inp">
             </mat-form-field>
-            <mat-form-field class="mb-3 w-100" appearance="outline">
-                <mat-label>End Shelf</mat-label>
-                <input matInput type="text" [NumbersOnly]="true" name="endShelf" required="required" [(ngModel)]="endShelf" maxlength="2" (keydown.space)="$event.preventDefault()" (keyup)="checkIfValid()">
+            <mat-form-field class="mb-3 w-100" appearance="outline" data-automation-id="addpicklvl-endshelf-ff">
+                <mat-label data-automation-id="addpicklvl-endshelf-lbl">End Shelf</mat-label>
+                <input matInput type="text" [NumbersOnly]="true" name="endShelf" required="required" [(ngModel)]="endShelf" maxlength="2" (keydown.space)="$event.preventDefault()" (keyup)="checkIfValid()" data-automation-id="addpicklvl-endshelf-inp">
             </mat-form-field>
-            <mat-form-field class="mb-3 w-100" appearance="outline">
-                <mat-label>Start Carousel</mat-label>
-                <input matInput type="text" [NumbersOnly]="true" name="startCarousel" required="required" [(ngModel)]="startCarousel" maxlength="2" (keydown.space)="$event.preventDefault()" (keyup)="checkIfValid()">
+            <mat-form-field class="mb-3 w-100" appearance="outline" data-automation-id="addpicklvl-startcar-ff">
+                <mat-label data-automation-id="addpicklvl-startcar-lbl">Start Carousel</mat-label>
+                <input matInput type="text" [NumbersOnly]="true" name="startCarousel" required="required" [(ngModel)]="startCarousel" maxlength="2" (keydown.space)="$event.preventDefault()" (keyup)="checkIfValid()" data-automation-id="addpicklvl-startcar-inp">
             </mat-form-field>
             
-            <mat-form-field class="mb-3 w-100" appearance="outline">
-                <mat-label>End Carousel</mat-label>
-                <input matInput type="text" [NumbersOnly]="true" name="endCarousel" required="required" [(ngModel)]="endCarousel" maxlength="2" (keydown.space)="$event.preventDefault()" (keyup)="checkIfValid()">
+            <mat-form-field class="mb-3 w-100" appearance="outline" data-automation-id="addpicklvl-endcar-ff">
+                <mat-label data-automation-id="addpicklvl-endcar-lbl">End Carousel</mat-label>
+                <input matInput type="text" [NumbersOnly]="true" name="endCarousel" required="required" [(ngModel)]="endCarousel" maxlength="2" (keydown.space)="$event.preventDefault()" (keyup)="checkIfValid()" data-automation-id="addpicklvl-endcar-inp">
             </mat-form-field>
             
             <mat-dialog-actions align="end">
                 <button type="submit" mat-flat-button class="form-button-submit w-100 btn-lg"
-                    color="primary" [disabled]="isValidForm">{{form_btn_label}}</button>
+                    color="primary" [disabled]="isValidForm" data-automation-id="addpicklvl-submit-btn">{{form_btn_label}}</button>
             </mat-dialog-actions>
 
         </form>

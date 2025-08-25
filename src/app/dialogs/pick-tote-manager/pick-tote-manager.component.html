@@ -50,7 +50,7 @@
 
                 <mat-form-field class="action-dropdown" appearance="outline" data-automation-id="filter-actions-dropdown">
                   <mat-label data-automation-id="filter-actions-label">Actions</mat-label>
-                  <mat-select #matRef class="employees-action" placeholder="Actions" (selectionChange)="onFilterAction($event)" data-automation-id="filter-actions-select">
+                  <mat-select #matRef class="employees-action" placeholder="Actions" (selectionChange)="onFilterAction($event)" [attr.data-automation-id]="'filter-actions-select-' + (matRef.value || '')">
                     <mat-option value="rename" [disabled]="!isFilterAdd" data-automation-id="filter-action-rename">Rename Filter</mat-option>
                     <mat-option value="view_default" data-automation-id="filter-action-view-default">View Default</mat-option>
                     <mat-option value="set_default" [disabled]="!isFilterAdd" data-automation-id="filter-action-set-default">Set Default</mat-option>
@@ -374,7 +374,7 @@
                     </app-icon-heading-component>
                     <mat-form-field class="action-dropdown" appearance="outline" data-automation-id="order-actions-dropdown">
                       <mat-label data-automation-id="order-actions-label">Actions</mat-label>
-                      <mat-select #orderRef class="employees-action" placeholder="Actions" (selectionChange)="onChangeOrderAction($event.value)" data-automation-id="order-actions-select">
+                      <mat-select #orderRef class="employees-action" placeholder="Actions" (selectionChange)="onChangeOrderAction($event.value)" [attr.data-automation-id]="'order-actions-select-' + (orderRef.value || '')">
                         <mat-option value="fill_top_orders" data-automation-id="order-action-select-all">Select All</mat-option>
                         <mat-option value="unselect_all_orders" data-automation-id="order-action-unselect-all">Un-Select All Orders</mat-option>
                         <mat-option value="select_order" [disabled]="isOrderSelect" data-automation-id="order-action-select-order">Select Order</mat-option>
@@ -596,7 +596,7 @@
                     </app-icon-heading-component>
                     <mat-form-field class="action-dropdown" appearance="outline" data-automation-id="order-actions-dropdown">
                       <mat-label data-automation-id="order-actions-label">Actions</mat-label>
-                      <mat-select #orderZoneRef class="employees-action" placeholder="Actions" (selectionChange)="onChangeOrderActionZone($event.value)" data-automation-id="order-actions-select">
+                      <mat-select #orderZoneRef class="employees-action" placeholder="Actions" (selectionChange)="onChangeOrderActionZone($event.value)" [attr.data-automation-id]="'order-actions-select-' + (orderZoneRef.value || '')">
                         <mat-option value="fill_top_orders" data-automation-id="order-action-select-all">Select All</mat-option>
                         <mat-option value="unselect_all_orders" data-automation-id="order-action-unselect-all">Un-Select All Orders</mat-option>
                         <mat-option value="select_order" [disabled]="isOrderSelectZone" data-automation-id="order-action-select-order">Select Order</mat-option>

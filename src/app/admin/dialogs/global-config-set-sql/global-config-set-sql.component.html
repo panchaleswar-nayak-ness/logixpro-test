@@ -1,38 +1,38 @@
 <div class="d-flex justify-content-between mb-4 align-items-center">
     <div class="w-48px"></div>
-  <h1 class="m-0" mat-dialog-title>{{formHeading}}</h1>
-  <button mat-icon-button class="close-button dialog-close-button-fix" [mat-dialog-close]="true">
-    <mat-icon class="close-icon">close</mat-icon>
+  <h1 class="m-0" mat-dialog-title data-automation-id="gcssql-title">{{formHeading}}</h1>
+  <button mat-icon-button class="close-button dialog-close-button-fix" [mat-dialog-close]="true" data-automation-id="gcssql-close-btn">
+    <mat-icon class="close-icon" data-automation-id="gcssql-close-icon">close</mat-icon>
   </button>
   </div>
   <!-- Error message FOR DEV USE-->
           <div class="label-red p-3 d-flex br-8 mb-3">
-              <mat-icon class="material-symbols-outlined">notification_important</mat-icon>
-              <span class="ps-2 w-100">Warning! Setting the user name and password fields will set this connection to use SQL Authentication.To use Windows Authentication make sure these fields are empty.</span>
+              <mat-icon class="material-symbols-outlined" data-automation-id="gcssql-warn-icon">notification_important</mat-icon>
+              <span class="ps-2 w-100" data-automation-id="gcssql-warn-text">Warning! Setting the user name and password fields will set this connection to use SQL Authentication.To use Windows Authentication make sure these fields are empty.</span>
           </div>
   
   
   
-     <div class="mb-3"> <strong>{{connectionName}}</strong></div>
-      <mat-form-field class="mb-3 w-100" appearance="outline">
-        <mat-label>Username</mat-label>
-        <input #user_name [(ngModel)]="userName" [value]="userName" matInput type="text" maxlength="30">
+     <div class="mb-3"> <strong data-automation-id="gcssql-connname">{{connectionName}}</strong></div>
+      <mat-form-field class="mb-3 w-100" appearance="outline" data-automation-id="gcssql-username-ff">
+        <mat-label data-automation-id="gcssql-username-lbl">Username</mat-label>
+        <input #user_name [(ngModel)]="userName" [value]="userName" matInput type="text" maxlength="30" data-automation-id="gcssql-username-inp">
       </mat-form-field>
       
-      <mat-form-field class="mb-3 w-100" appearance="outline">
-        <mat-label>Password</mat-label>
-        <input [(ngModel)]="password"  [type]="togglePassword ? 'password' : 'text'" [value]="password" matInput   [maxLength]="32">
-        <button type="button" mat-icon-button matSuffix (click)="togglePassword = !togglePassword" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="togglePassword">
-          <mat-icon>{{togglePassword ? 'visibility_off' : 'visibility'}}</mat-icon>
+      <mat-form-field class="mb-3 w-100" appearance="outline" data-automation-id="gcssql-password-ff">
+        <mat-label data-automation-id="gcssql-password-lbl">Password</mat-label>
+        <input [(ngModel)]="password"  [type]="togglePassword ? 'password' : 'text'" [value]="password" matInput   [maxLength]="32" data-automation-id="gcssql-password-inp">
+        <button type="button" mat-icon-button matSuffix (click)="togglePassword = !togglePassword" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="togglePassword" data-automation-id="gcssql-password-toggle-btn">
+          <mat-icon data-automation-id="gcssql-password-toggle-icon">{{togglePassword ? 'visibility_off' : 'visibility'}}</mat-icon>
         </button>
       </mat-form-field>
       
   
       <mat-dialog-actions   dialog-actions align="end">
-        <button mat-flat-button class="form-button-submit btn-lg w-100 mb-3"  (click)="saveLogin()" color="primary">Save Login</button>
+        <button mat-flat-button class="form-button-submit btn-lg w-100 mb-3"  (click)="saveLogin()" color="primary" data-automation-id="gcssql-save-btn">Save Login</button>
         
       </mat-dialog-actions>
       <mat-dialog-actions   dialog-actions align="end">
-        <button (click)="clearLoginInfo()" mat-stroked-button class="form-button-submit btn-lg w-100 mb-3" color="primary">Clear Login Info</button>
+        <button (click)="clearLoginInfo()" mat-stroked-button class="form-button-submit btn-lg w-100 mb-3" color="primary" data-automation-id="gcssql-clear-btn">Clear Login Info</button>
         
       </mat-dialog-actions>

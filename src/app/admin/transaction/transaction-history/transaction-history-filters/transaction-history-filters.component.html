@@ -14,7 +14,7 @@
 
                 <div class="col-xl-3">
                     <mat-form-field class="custom-form-field w-100 __grab_cursor mb-3" appearance="outline">
-                        <mat-label data-automation-id="label-completed-date-start">Completed Date (Start)</mat-label>
+                        <mat-label data-automation-id="label-completed-date-start">Select Start Date</mat-label>
                         <input matInput [(ngModel)]="sDate" [matDatepicker]="start"
                             (dateChange)="onDateChange($event.value)" [attr.data-automation-id]="'input-completed-date-start-' + sDate">
                         <mat-datepicker-toggle matSuffix [for]="start" ngDefaultControl></mat-datepicker-toggle>
@@ -26,7 +26,7 @@
 
 
                     <mat-form-field class="custom-form-field w-100 __grab_cursor mb-3" appearance="outline">
-                        <mat-label data-automation-id="label-end-date">End Date</mat-label>
+                        <mat-label data-automation-id="label-end-date">Select End Date</mat-label>
                         <input matInput [matDatepicker]="end" [(ngModel)]="eDate" 
                             (dateChange)="onEndDateChange($event.value)" [attr.data-automation-id]="'input-end-date-' + eDate">
                         <mat-datepicker-toggle matSuffix [for]="end" ngDefaultControl></mat-datepicker-toggle>
@@ -43,7 +43,7 @@
                         <input [(ngModel)]="orderNumber" [min]="0" [matAutocomplete]="auto" matInput class="" value="" type="text" (ngModelChange)="this.searchByOrderNumber.next($event)" type="text" placeholder="Search" aria-label="Number" matInput data-automation-id="input-order-number">
                         <button matSuffix *ngIf="orderNumber" class="clear-btn"  (click)="clear()" data-automation-id="clear-order-number-button"><mat-icon class="text-20 text-chrome-600">cancel</mat-icon></button>
                         <mat-autocomplete #auto="matAutocomplete" (optionSelected)="searchData($event.option.value)" data-automation-id="autocomplete-order-number">
-                            <mat-option *ngFor="let option of searchAutocompleteList; let i= index" [value]="option" [attr.data-automation-id]="'autocomplete-option-order-number-' + i">
+                            <mat-option *ngFor="let option of searchAutocompleteList" [value]="option" [attr.data-automation-id]="'autocomplete-option-order-number-' + option">
                                 {{option}}
                             </mat-option>
                         </mat-autocomplete>
@@ -51,20 +51,22 @@
 
 
                 </div>
+                  </div>
 
-                <div class="col-xl-3  justify-content-center  ">
-
-                    <button mat-flat-button class="btn-regular w-100 mb-3" color="primary" (click)="resetToTodaysDate()" data-automation-id="reset-todays-date-button" >
-
-                        <mat-label data-automation-id="label-reset-todays-date"> Reset to Today's Date</mat-label>
-                    </button>
-
-
-                </div>
-
-            </div>
-
-
+           <div class="row">
+  <div class="col-xl-3 offset-xl-6">
+    <button mat-flat-button class="btn-regular w-100 mb-3" color="primary"
+      (click)="resetToTodaysDate()" data-automation-id="reset-todays-date-button" aria-label="Reset to Today's Date">
+      Reset to Today's Date
+    </button>
+  </div>
+  <div class="col-xl-3">
+    <button mat-stroked-button color="primary" class="btn-regular w-100 mb-3"
+      (click)="clearFilters($event)" data-automation-id="place-trans-on-hold-button" aria-label="Clear Filters">
+      Clear Filters
+    </button>
+  </div>
+</div>
 
         </mat-card-content>
 

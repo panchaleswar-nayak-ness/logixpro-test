@@ -22,7 +22,7 @@
             <mat-form-field class="action-dropdown" appearance="outline" data-automation-id="actions-dropdown">
                 <mat-label data-automation-id="actions-label">Actions</mat-label>
                 <mat-select class="employees-action" [(ngModel)]="selectedOption" #actionRef
-                    (openedChange)="actionDialog($event)" data-automation-id="actions-select">
+                    (openedChange)="actionDialog($event)" [attr.data-automation-id]="'actions-select-' + (actionRef.value || '')">
                     <mat-option value="clearTote" data-automation-id="clear-tote-option">Clear Tote</mat-option>
                     <mat-option value="fullTote" data-automation-id="full-tote-option">Full Tote</mat-option>
                     <mat-option value="printToteLabel" (click)="print('tote-label')" data-automation-id="print-tote-label-option">Print Tote Label</mat-option>
