@@ -11,12 +11,12 @@ import {
 } from 'src/app/consolidation-manager/cm-markout/models/markout-model';
 import { AddPickToteInductionFilter } from 'src/app/induction-manager/models/PickToteInductionModel';
 import { InventoryMap, UpdateSCReq } from '../Model/storage-container-management';
-import {IQueryParams} from '../../app/../consolidation-manager/cm-route-id-management/routeid-list/routeid-IQueryParams'
+import {IQueryParams} from 'src/app/consolidation-manager/cm-route-id-management/routeid-list/routeid-IQueryParams'
 import { MarkoutAuditResponse, MarkoutPickLinesResponse, MarkoutResponse } from 'src/app/consolidation-manager/cm-markout-new/models/cm-markout-new-models';
 import { ZoneListPayload } from 'src/app/bulk-process/preferences/preference.models';
 import { DevicePreferenceRequest, DevicePreferencesTableRequest } from '../interface/admin/device-preferences';
 import { UpdateEmergencyRequest } from '../interface/admin/opentransaction.interfaces';
-import { ApiResponse, ApiResponseData } from '../types/CommonTypes';
+import { ApiResponse, ApiResponseData, ApiResult } from '../types/CommonTypes';
 import { PrintOrdersPayload } from '../interface/bulk-transactions/bulk-pick';
 
 
@@ -2438,6 +2438,11 @@ public ResolveMarkoutTote(toteId: number) {
   public async GetNextToteIdForSlapperLabelAsync(request: PartialToteIdRequest[]): Promise<PartialToteIdResponse[]> {
     const response = await this.ApiBase.PutAsync<PartialToteIdRequest[]>('/totes/nexttoteforslapperlable', request);
     return response.body as PartialToteIdResponse[] || [];
+  }
+
+  public async SubmitCaseWiseOrders(request: PartialToteIdResponse[]): Promise<ApiResult<PartialToteIdResponse[]>> {
+    const response = await this.ApiBase.PostAsync<PartialToteIdResponse[]>('/totes/submitcasewiseorders', request);
+    return (response.body as unknown as ApiResult<PartialToteIdResponse[]>) || { isSuccess: false, value: null, errorMessage: 'No response received' };
   }
   
 }

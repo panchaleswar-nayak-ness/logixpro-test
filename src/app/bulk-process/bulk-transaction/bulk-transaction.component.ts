@@ -562,16 +562,16 @@ export class BulkTransactionComponent implements OnInit {
       }
     });
     dialogRefTote.afterClosed().subscribe((result) => {
-      if (result.length > 0) {
-        this.selectedOrders = result;
-        this.selectedOrders.forEach((order) => {
-          order.orderLines.forEach((orderLine) => {
-            orderLine.toteId = order.toteId;
-          });
-        });
-        this.verifyBulks = !this.verifyBulks;
-        localStorage.setItem(localStorageKeys.VerifyBulks, this.verifyBulks.toString());
-      }
+      // if (result.length > 0) {
+      //   this.selectedOrders = result;
+      //   this.selectedOrders.forEach((order) => {
+      //     order.orderLines.forEach((orderLine) => {
+      //       orderLine.toteId = order.toteId;
+      //     });
+      //   });
+      //   this.verifyBulks = !this.verifyBulks;
+      //   localStorage.setItem(localStorageKeys.VerifyBulks, this.verifyBulks.toString());
+      // }
     });
   }
 

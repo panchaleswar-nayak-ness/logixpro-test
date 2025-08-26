@@ -11,6 +11,8 @@ import {BulkProcessApiService} from 'src/app/common/services/bulk-process-api/bu
 import {HttpStatusCode} from '@angular/common/http';
 import {AssignToteToOrderDto} from "../../../common/Model/bulk-transactions";
 import { PrintApiService } from 'src/app/common/services/print-api/print-api.service';
+import { ApiResult } from 'src/app/common/types/CommonTypes';
+import { PartialToteIdResponse } from 'src/app/common/Model/bulk-transactions';
 
 @Component({
   selector: 'app-bm-toteid-entry',
@@ -123,6 +125,10 @@ export class BmToteidEntryComponent implements OnInit {
   }
 
   submitOrder() {
+    if(this.data.rawOrderList != null){
+      this.submitCaseWiseOrders();
+      return;
+    }
     if (this.selectedList.find(x => x.IsTote == true)) {
       const dialogRef: any = this.global.OpenDialog(AlertConfirmationComponent, {
         height: 'auto',
@@ -158,6 +164,35 @@ export class BmToteidEntryComponent implements OnInit {
     } else {
       this.updateToteID();
     }
+  }
+
+  submitCaseWiseOrders() {
+    // Ensure rawOrderList is valid before proceeding
+    if (!this.data.rawOrderList || !Array.isArray(this.data.rawOrderList) || this.data.rawOrderList.length === 0) {
+      this.global.ShowToastr(ToasterType.Error, 'No valid order data to submit', ToasterTitle.Error);
+      return;
+    }
+
+    this.iBulkProcessApiService.SubmitCaseWiseOrders(this.data.rawOrderList)
+      .then((result: ApiResult<PartialToteIdResponse[]>) => {
+        if (result.isSuccess) {
+          this.global.ShowToastr(ToasterType.Success, ToasterMessages.RecordUpdatedSuccessful, ToasterTitle.Success);
+          
+          // Transform the data to match what the parent component expects
+          const transformedData = this.data.rawOrderList.map(item => ({
+            ...item,
+            toteId: item.toteID, // Map toteID to toteId for parent component compatibility
+            orderLines: item.orderLines || []
+          }));
+          
+          this.dialogRef.close(transformedData);
+        } else {
+          this.global.ShowToastr(ToasterType.Error, result.errorMessage || ToasterMessages.SomethingWentWrong, ToasterTitle.Error);
+        }
+      })
+      .catch((error) => {
+        this.global.ShowToastr(ToasterType.Error, ToasterMessages.SomethingWentWrong, ToasterTitle.Error);
+      });
   }
 
   ClosePopup() {
