@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
-import { OperationTypes } from '../enums/CommonEnums';
+import { FiltrationDatatypes, OperationTypes } from '../enums/CommonEnums';
 import { FilterationColumns } from '../Model/pick-Tote-Manager';
-import { filtrationDatatypes, filtrationGridOperationKeys } from '../constants/strings.constants';
+import { DATE_COLUMNS, FILTRATION_GRID_OPERATION_KEYS, OPERATION_CONDITIONS } from '../constants/strings.constants';
 
 @Injectable({
   providedIn: 'root'
@@ -20,13 +20,13 @@ export class DirectFilterationColumnsService {
    * @returns The updated array of FilterationColumns objects
    */
   createFilterationColumn(selectedItem: string | number | boolean | Date | null | undefined, filterColumnName: string, condition: string, type: string): FilterationColumns[] {
-    if (condition === filtrationGridOperationKeys.Clear) {
+    if (condition === FILTRATION_GRID_OPERATION_KEYS.Clear) {
       // Clear specific column filter
       this.clearColumnFilter(filterColumnName);
       return this.filterationColumns;
     }
     
-    if (condition === filtrationGridOperationKeys.Clears) {
+    if (condition === FILTRATION_GRID_OPERATION_KEYS.Clears) {
       // Clear all filters
       this.filterationColumns = [];
       return this.filterationColumns;
@@ -51,7 +51,7 @@ export class DirectFilterationColumnsService {
     
     // For between operations, we need a second value (will be filled by user input)
     let value2 = null;
-    let isInput = condition.toLowerCase().includes( filtrationGridOperationKeys.Between);
+    let isInput = condition.toLowerCase().includes( FILTRATION_GRID_OPERATION_KEYS.Between);
 
     // Create the FilterationColumns object
     const filterationColumn: FilterationColumns = {
@@ -82,11 +82,11 @@ export class DirectFilterationColumnsService {
   updateFilterationColumnWithInput(columnName: string, condition: string, value: any, value2?: any): FilterationColumns[] {
     
     // Determine column type based on value
-    let columnType = filtrationDatatypes.String;
-    if (typeof value === filtrationDatatypes.Number || !isNaN(Number(value))) {
-      columnType = filtrationDatatypes.Integer;
+    let columnType = FiltrationDatatypes.String;
+    if (typeof value === FiltrationDatatypes.Number || !isNaN(Number(value))) {
+      columnType = FiltrationDatatypes.Integer;
     } else if (this.isDateString(value)) {
-      columnType = filtrationDatatypes.Datetime;
+      columnType = FiltrationDatatypes.Datetime;
     }
     
     // Determine grid operation based on condition
@@ -99,7 +99,7 @@ export class DirectFilterationColumnsService {
       Value: value,
       Value2: value2 || '',
       GridOperation: gridOperation,
-      IsInput: condition.toLowerCase().includes(filtrationGridOperationKeys.Between)
+      IsInput: condition.toLowerCase().includes(FILTRATION_GRID_OPERATION_KEYS.Between)
     };
 
     // Check if we already have a filter for this column
@@ -150,26 +150,7 @@ export class DirectFilterationColumnsService {
    * @returns The corresponding GridOperation value
    */
   private mapConditionToGridOperation(condition: string): string {
-    const conditionMap: Record<string, string> = {
-      'equals to': 'Equals',
-      'is not equals to': 'NotEquals',
-      'is greater than or equal to': 'GreaterThanOrEqual',
-      'is less than or equal to': 'LessThanOrEqual',
-      'is greater than': 'GreaterThan',
-      'is less than': 'LessThan',
-      'is like': 'Like',
-      'contains': 'Contains',
-      'is not like': 'NotLike',
-      'does not contains': 'DoesNotContain',
-      'begins with': 'Begins',
-      'does not begins with': 'DoesNotBegin',
-      'ends with': 'EndsWith',
-      'does not ends with': 'DoesNotEndWith',
-      'is between': 'Between',
-      'between': 'Between'
-    };
-  
-    return conditionMap[condition.toLowerCase()] ?? 'Equals';
+    return OPERATION_CONDITIONS[condition.toLowerCase()] ?? FILTRATION_GRID_OPERATION_KEYS.Equals;
   }
   
   /**
@@ -178,25 +159,17 @@ export class DirectFilterationColumnsService {
    * @param columnName The column name
    * @returns The column type
    */
-  private determineColumnType(type: string | null | undefined, columnName: string): 'datetime' | 'int' | 'boolean' | 'string' {
-    const dateColumns = new Set([
-      'expirationDate',
-      'putAwayDate',
-      'importDate',
-      'requiredDate',
-      'completedDate',
-      'exportDate',
-      'inductionDate'
-    ]);
   
-    if ((!type || type.trim() !== '') && dateColumns.has(columnName)) {
-      return  'datetime';
+  private determineColumnType(type: string | null | undefined, columnName: string): FiltrationDatatypes {
+    
+    if ((!type || type.trim() !== '') && DATE_COLUMNS.has(columnName)) {
+      return  FiltrationDatatypes.Datetime;
     }
   
-    if (type === filtrationDatatypes.Number) return 'int';
-    if (type ===  filtrationDatatypes.Boolean) return 'boolean';
+    if (type === FiltrationDatatypes.Number) return   FiltrationDatatypes.Integer;
+    if (type ===  FiltrationDatatypes.Boolean) return   FiltrationDatatypes.Boolean;
   
-    return 'string';
+    return  FiltrationDatatypes.String;
   }
 
   private formatValue(value: string | number | boolean | Date | null | undefined, type: string): string | number | boolean | Date | null {
@@ -211,7 +184,7 @@ export class DirectFilterationColumnsService {
    * @returns True if the string is a valid date
    */
   private isDateString(dateStr: string): boolean {
-    if (typeof dateStr !== filtrationDatatypes.String) return false;
+    if (typeof dateStr !== FiltrationDatatypes.String) return false;
     
     const date = new Date(dateStr);
     return !isNaN(date.getTime());

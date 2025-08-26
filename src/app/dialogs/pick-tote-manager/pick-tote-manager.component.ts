@@ -27,7 +27,7 @@ import { IInductionManagerApiService } from 'src/app/common/services/induction-m
 import { InductionManagerApiService } from 'src/app/common/services/induction-manager-api/induction-manager-api.service';
 import { GlobalService } from 'src/app/common/services/global.service';
 import { PickToteManagerService } from 'src/app/common/services/pick-tote-manager.service'
-import {  TableConstant ,ToasterTitle,ResponseStrings,Column,ToasterType,zoneType,DialogConstants,ColumnDef,UniqueConstants,Style,StringConditions, Placeholders, ToasterMessages} from 'src/app/common/constants/strings.constants';
+import {  TableConstant ,ToasterTitle,ResponseStrings,Column,ToasterType,zoneType,DialogConstants,ColumnDef,UniqueConstants,Style,StringConditions, Placeholders, ToasterMessages, INPUT_TYPES} from 'src/app/common/constants/strings.constants';
 import { FilterOrder, FilterTransaction, SavedFilterChangeEvent, FilterData, OrderData } from 'src/app/common/types/pick-tote-manager.types';
 import { TableContextMenuService } from 'src/app/common/globalComponents/table-context-menu-component/table-context-menu.service';
 import { FilterationColumns, PeriodicElement } from 'src/app/common/Model/pick-Tote-Manager';
@@ -1662,7 +1662,7 @@ refreshOrderDataGrid() {
       Column.ImportDate
     ]);
   
-    return dateFields.has(field) ? 'date' : 'text';
+    return dateFields.has(field) ? INPUT_TYPES.Date : INPUT_TYPES.Text;
   }  
 
   onContextMenu(event: MouseEvent, SelectedItem: string | number | boolean | Date | null | undefined, FilterColumnName?: string, FilterConditon?: string | undefined, FilterItemType?: string | number | boolean | Date | null | undefined) {

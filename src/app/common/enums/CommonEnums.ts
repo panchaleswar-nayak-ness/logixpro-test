@@ -127,3 +127,12 @@ export type QuantityFilterTypeUnion =
 | FilterType.LessThan
 | FilterType.LessThanEqual
 | FilterType.Range; 
+
+export enum FiltrationDatatypes {
+  String = "string",
+  Number = "number",
+  Date = "date",
+  Datetime = "datetime",
+  Integer = "int",
+  Boolean = "boolean"
+}

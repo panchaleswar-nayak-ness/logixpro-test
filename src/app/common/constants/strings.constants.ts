@@ -759,16 +759,40 @@ export class ConsoleErrorMessages {
 export const PickToteFilterpreferences = {
     preferences: "PickToteFilterPrefs",
 }
-export const filtrationGridOperationKeys = {
+export const FILTRATION_GRID_OPERATION_KEYS = {
     Between: "between",
     Clear: "clear",
     Clears: "clears",   
+    Equals: "Equals",   
 }
-export const filtrationDatatypes = {
-    String: "string",
-    Number: "number",
-    Date: "date",   
-    Datetime: 'datetime',   
-    Integer : 'int',
-    Boolean : 'boolean'
+export const INPUT_TYPES = {
+    Date: "date",
+    Text: "text"
 }
+export const DATE_COLUMNS = new Set([
+      'expirationDate',
+      'putAwayDate',
+      'importDate',
+      'requiredDate',
+      'completedDate',
+      'exportDate',
+      'inductionDate'
+    ]);
+    export const OPERATION_CONDITIONS: Record<string, string> = {
+      'equals to': 'Equals',
+      'is not equals to': 'NotEquals',
+      'is greater than or equal to': 'GreaterThanOrEqual',
+      'is less than or equal to': 'LessThanOrEqual',
+      'is greater than': 'GreaterThan',
+      'is less than': 'LessThan',
+      'is like': 'Like',
+      'contains': 'Contains',
+      'is not like': 'NotLike',
+      'does not contains': 'DoesNotContain',
+      'begins with': 'Begins',
+      'does not begins with': 'DoesNotBegin',
+      'ends with': 'EndsWith',
+      'does not ends with': 'DoesNotEndWith',
+      'is between': 'Between',
+      'between': 'Between'
+    };
