@@ -8,7 +8,7 @@ import {GlobalService} from 'src/app/common/services/global.service';
 import {DialogConstants, Style, ToasterMessages, ToasterTitle, ToasterType} from 'src/app/common/constants/strings.constants';
 import {IBulkProcessApiService} from 'src/app/common/services/bulk-process-api/bulk-process-api-interface';
 import {BulkProcessApiService} from 'src/app/common/services/bulk-process-api/bulk-process-api.service';
-import {HttpStatusCode} from '@angular/common/http';
+import {HttpStatusCode, HttpResponse} from '@angular/common/http';
 import {AssignToteToOrderDto, PartialToteIdRequest, PartialToteIdResponse, SlapperLabelResponse, ConsolidatedSlapperLabelResponse} from "../../../common/Model/bulk-transactions";
 import { PrintApiService } from 'src/app/common/services/print-api/print-api.service';
 import { BmToteidEntryComponent } from '../bm-toteid-entry/bm-toteid-entry.component';
@@ -175,7 +175,7 @@ export class BmSlaperLabelSplitEntryComponent implements OnInit {
       });
   
       this.iBulkProcessApiService.AssignToteToOrder(orders)
-        .then((res: any) => {
+        .then((res: HttpResponse<AssignToteToOrderDto[]>) => {
           if (res.status == HttpStatusCode.NoContent) {
             if (this.autoPrintPickToteLabels) {
               this.printAllToteLabels();
