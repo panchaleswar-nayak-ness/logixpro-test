@@ -122,6 +122,8 @@ export class BmSlaperLabelSplitEntryComponent implements OnInit {
     }
 
     submitOrder() {
+      debugger;
+      console.log('submitOrder', this.selectedList);
       if (this.selectedList.find(x => x.IsTote == true)) {
         const dialogRef: any = this.global.OpenDialog(AlertConfirmationComponent, {
           height: 'auto',
@@ -249,6 +251,7 @@ export class BmSlaperLabelSplitEntryComponent implements OnInit {
             width: Style.w990px,
             data: {
               selectedOrderList: processedResponse,
+              rawOrderList: response,
               nextToteID: this.nextToteID,
               BulkProcess: this.BulkProcess,
               view: this.view,
@@ -281,23 +284,18 @@ export class BmSlaperLabelSplitEntryComponent implements OnInit {
      * Shows individual rows for records with isPartialCase: false
      */
     private processApiResponse(response: SlapperLabelResponse[]): SlapperLabelResponse[] {
-      console.log('Processing API response:', response);
       const processedList: SlapperLabelResponse[] = [];
       
       // Group records by order number
       const groupedByOrder = this.groupByOrderNumber(response);
-      console.log('Grouped by order number:', groupedByOrder);
       
       // Process each order number group
       Object.keys(groupedByOrder).forEach(orderNumber => {
         const orderRecords = groupedByOrder[orderNumber];
-        console.log(`Processing order ${orderNumber} with ${orderRecords.length} records`);
         
         // Separate partial case and non-partial case records
         const partialCaseRecords = orderRecords.filter(record => record.isPartialCase === true);
         const nonPartialCaseRecords = orderRecords.filter(record => record.isPartialCase === false);
-        
-        console.log(`Order ${orderNumber}: ${partialCaseRecords.length} partial case records, ${nonPartialCaseRecords.length} non-partial case records`);
         
         // Add individual rows for non-partial case records
         nonPartialCaseRecords.forEach(record => {
@@ -349,9 +347,6 @@ export class BmSlaperLabelSplitEntryComponent implements OnInit {
       
       // Mark as consolidated partial case
       baseRecord.isPartialCase = true;
-      
-      // Update description to indicate this is a consolidated record
-      baseRecord.description = `Consolidated Partial Case (${partialRecords.length} totes)`;
       
       // Add metadata to indicate this is a consolidated record
       (baseRecord as ConsolidatedSlapperLabelResponse).isConsolidated = true;
