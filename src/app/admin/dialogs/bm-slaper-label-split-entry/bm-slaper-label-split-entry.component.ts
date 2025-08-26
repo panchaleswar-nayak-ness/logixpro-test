@@ -218,7 +218,7 @@ export class BmSlaperLabelSplitEntryComponent implements OnInit {
         console.log('Current selectedList:', this.selectedList);
         
         // Prepare the request data
-        const requestData: PartialToteIdRequest[] = this.selectedList.map((item: any) => ({
+        const requestData: PartialToteIdRequest[] = this.selectedList.map((item) => ({
           orderNumber: item.orderNumber,
           toteNumber: item.toteNumber?.toString(),
           toteID: item.toteId,
@@ -238,7 +238,7 @@ export class BmSlaperLabelSplitEntryComponent implements OnInit {
         
         if (response && response.length > 0) {
           // Process the response to group records by order number
-          const processedResponse = this.processApiResponse(response as any as SlapperLabelResponse[]);
+          const processedResponse = this.processApiResponse(response as unknown as SlapperLabelResponse[]);
           
           // Close the current dialog before opening the new one
           this.dialogRef.close();
