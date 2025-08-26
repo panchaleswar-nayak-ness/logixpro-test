@@ -426,3 +426,10 @@ export interface SlapperLabelResponse {
     assignedUser: string | null;
     isPartialCase: boolean;
 }
+
+// Extended interface for consolidated records
+export interface ConsolidatedSlapperLabelResponse extends SlapperLabelResponse {
+    isConsolidated: boolean;
+    originalPartialRecords: SlapperLabelResponse[];
+    consolidatedToteCount: number;
+  }

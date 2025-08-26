@@ -9,9 +9,11 @@ import {DialogConstants, Style, ToasterMessages, ToasterTitle, ToasterType} from
 import {IBulkProcessApiService} from 'src/app/common/services/bulk-process-api/bulk-process-api-interface';
 import {BulkProcessApiService} from 'src/app/common/services/bulk-process-api/bulk-process-api.service';
 import {HttpStatusCode} from '@angular/common/http';
-import {AssignToteToOrderDto, PartialToteIdRequest, PartialToteIdResponse, SlapperLabelResponse} from "../../../common/Model/bulk-transactions";
+import {AssignToteToOrderDto, PartialToteIdRequest, PartialToteIdResponse, SlapperLabelResponse, ConsolidatedSlapperLabelResponse} from "../../../common/Model/bulk-transactions";
 import { PrintApiService } from 'src/app/common/services/print-api/print-api.service';
 import { BmToteidEntryComponent } from '../bm-toteid-entry/bm-toteid-entry.component';
+
+
 
 @Component({
     selector: 'app-bm-slaper-label-split-entry',
@@ -333,9 +335,9 @@ export class BmSlaperLabelSplitEntryComponent implements OnInit {
     /**
      * Create a consolidated record for all partial case records of the same order
      */
-    private createConsolidatedPartialRecord(partialRecords: SlapperLabelResponse[], orderNumber: string): SlapperLabelResponse {
+    private createConsolidatedPartialRecord(partialRecords: SlapperLabelResponse[], orderNumber: string): ConsolidatedSlapperLabelResponse {
       // Use the first record as base and modify it to represent all partial records
-      const baseRecord = { ...partialRecords[0] };
+      const baseRecord = { ...partialRecords[0] } as ConsolidatedSlapperLabelResponse;
       
       // Use only the first tote ID instead of concatenating all of them
       // This ensures we show one single tote ID instead of comma-separated values
@@ -352,9 +354,9 @@ export class BmSlaperLabelSplitEntryComponent implements OnInit {
       baseRecord.description = `Consolidated Partial Case (${partialRecords.length} totes)`;
       
       // Add metadata to indicate this is a consolidated record
-      (baseRecord as any).isConsolidated = true;
-      (baseRecord as any).originalPartialRecords = partialRecords;
-      (baseRecord as any).consolidatedToteCount = partialRecords.length;
+      (baseRecord as ConsolidatedSlapperLabelResponse).isConsolidated = true;
+      (baseRecord as ConsolidatedSlapperLabelResponse).originalPartialRecords = partialRecords;
+      (baseRecord as ConsolidatedSlapperLabelResponse).consolidatedToteCount = partialRecords.length;
       
       return baseRecord;
     }
