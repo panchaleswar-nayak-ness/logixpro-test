@@ -1,40 +1,40 @@
 
-<div class="d-flex justify-content-between mb-4 align-items-center">
-    <div class="divWithClass"></div>
-<h1 class="m-0" mat-dialog-title>Set Control Name</h1>
-<button mat-icon-button class="close-button dialog-close-button-fix" [mat-dialog-close]="true">
-    <mat-icon class="close-icon">close</mat-icon>
+<div class="d-flex justify-content-between mb-4 align-items-center" data-automation-id="addgrp-header">
+    <div class="divWithClass" data-automation-id="addgrp-header-spacer"></div>
+<h1 class="m-0" mat-dialog-title data-automation-id="addgrp-title">Set Control Name</h1>
+<button mat-icon-button class="close-button dialog-close-button-fix" [mat-dialog-close]="true" data-automation-id="addgrp-close-btn">
+    <mat-icon class="close-icon" data-automation-id="addgrp-close-icon">close</mat-icon>
 </button>
 </div>
-<div class="">
-    <div mat-dialog-content>
+<div class="" data-automation-id="addgrp-content-wrapper">
+    <div mat-dialog-content data-automation-id="addgrp-dialog-content">
 
-        <form class="C-NameFormClass" [formGroup]="controlNameForm" (ngSubmit)="onSend(controlNameForm)">
+        <form class="C-NameFormClass" [formGroup]="controlNameForm" (ngSubmit)="onSend(controlNameForm)" data-automation-id="addgrp-form">
 
-            <mat-form-field class="w-100" appearance="outline">
-                <mat-label>Control Name</mat-label>
+            <mat-form-field class="w-100" appearance="outline" data-automation-id="addgrp-cn-ff">
+                <mat-label data-automation-id="addgrp-cn-lbl">Control Name</mat-label>
                 <input #control_name type="text" placeholder="Control Name" aria-label="Number" matInput
-                    formControlName="controlName" [matAutocomplete]="auto" [(ngModel)]="controlNameInput">
-                <button matSuffix *ngIf="controlNameInput" class="clear-btn" (click)="controlNameInput = ''"><mat-icon
-                        class="text-20 text-chrome-600">cancel</mat-icon></button>
+                    formControlName="controlName" [matAutocomplete]="auto" [(ngModel)]="controlNameInput" data-automation-id="addgrp-cn-inp">
+                <button matSuffix *ngIf="controlNameInput" class="clear-btn" (click)="controlNameInput = ''" data-automation-id="addgrp-clear-btn"><mat-icon
+                        class="text-20 text-chrome-600" data-automation-id="addgrp-clear-icon">cancel</mat-icon></button>
 
-                    <mat-autocomplete class="card" panelWidth="auto" autoActiveFirstOption #auto="matAutocomplete" (optionSelected)="controlNameForm.controls['controlName'].setValue($event.option.value)">
-                        <h6 class="card-header matAutoCompHeader"><span class="controlNameStyleC">Control Name</span> <span class="functionStyleC">Function</span></h6>
-                        <div class=" custom-scroll">
+                    <mat-autocomplete class="card" panelWidth="auto" autoActiveFirstOption #auto="matAutocomplete" (optionSelected)="controlNameForm.controls['controlName'].setValue($event.option.value)" data-automation-id="addgrp-cn-auto">
+                        <h6 class="card-header matAutoCompHeader" data-automation-id="addgrp-auto-header"><span class="controlNameStyleC" data-automation-id="addgrp-auto-hdr-cn-span">Control Name</span> <span class="functionStyleC" data-automation-id="addgrp-auto-hdr-func-span">Function</span></h6>
+                        <div class=" custom-scroll" data-automation-id="addgrp-auto-scroll">
                         <mat-option class="matAutoCompTableContent" *ngFor="let option of filteredOptions | async"
-                            [value]="option.controlName">
-                            <div class="loc_option">
-                                <span class="controlNameOptionStyleC" [matTooltip]="option?.controlName" matTooltipPosition="above" matTooltipShowDelay="500">{{option.controlName}}</span> 
-                                <span class="functionOptionStyleC" [matTooltip]="option?.function" matTooltipPosition="above" matTooltipShowDelay="500">{{option.function}}</span>
+                            [value]="option.controlName" [attr.data-automation-id]="'addgrp-opt-' + option.controlName">
+                            <div class="loc_option" [attr.data-automation-id]="'addgrp-opt-div-' + option.controlName">
+                                <span class="controlNameOptionStyleC" [matTooltip]="option?.controlName" matTooltipPosition="above" matTooltipShowDelay="500" [attr.data-automation-id]="'addgrp-opt-cn-span-' + option.controlName">{{option.controlName}}</span> 
+                                <span class="functionOptionStyleC" [matTooltip]="option?.function" matTooltipPosition="above" matTooltipShowDelay="500" [attr.data-automation-id]="'addgrp-opt-func-span-' + option.function">{{option.function}}</span>
                             </div>
                         </mat-option>
                     </div>
                 </mat-autocomplete>
 
             </mat-form-field>
-            <div class="error" *ngIf="hasError('controlName', 'required')">This field is required.</div>
+            <div class="error" *ngIf="hasError('controlName', 'required')" data-automation-id="addgrp-cn-required-err">This field is required.</div>
             
-            <button type="submit" mat-flat-button  class="btn-lg w-100 flex-1" color="primary" [disabled]="!controlNameForm.valid">{{form_btn_label}}</button>
+            <button type="submit" mat-flat-button  class="btn-lg w-100 flex-1" color="primary" [disabled]="!controlNameForm.valid" data-automation-id="addgrp-submit-btn">{{form_btn_label}}</button>
 
         </form>
     </div>

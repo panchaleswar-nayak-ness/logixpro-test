@@ -306,7 +306,7 @@ export class GlobalService {
     } else {
       this.ShowToastr(
         ToasterType.Error,
-        'print unsuccessfully complete',
+        res.body?.data?.error,
         ToasterTitle.Error
       );
       return false;

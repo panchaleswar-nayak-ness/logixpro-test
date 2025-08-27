@@ -1,7 +1,7 @@
 <div class="d-flex justify-content-between align-items-center mb-3">
     <div class="w-48px"></div>
-    <h1 class="m-0" mat-dialog-title>Order Manager Update Record(s)</h1>
-    <button mat-icon-button class="close-button dialog-close-button-fix" [mat-dialog-close]="true">
+    <h1 class="m-0" mat-dialog-title data-automation-id="order-manager-update-header">Order Manager Update Record(s)</h1>
+    <button mat-icon-button class="close-button dialog-close-button-fix" [mat-dialog-close]="true" data-automation-id="close-button">
         <mat-icon class="close-icon">close</mat-icon>
     </button>
 </div>
@@ -12,20 +12,20 @@
             <div class="row">
                 <div class="col-xl-4">
                     <mat-form-field class="w-100 custom-form-field mb-3" appearance="outline">
-                        <mat-label>Order Number</mat-label>
-                        <input #ordFocus formControlName="orderNum" type="text" matInput>
+                        <mat-label data-automation-id="order-number-label">Order Number</mat-label>
+                        <input #ordFocus formControlName="orderNum" type="text" matInput data-automation-id="order-number-input">
                     </mat-form-field>
                 </div>
                 <div class="col-xl-4">
                     <mat-form-field class="w-100 custom-form-field mb-3" appearance="outline">
-                        <mat-label>Item Number</mat-label>
-                        <input formControlName="itemNum" type="text" matInput>
+                        <mat-label data-automation-id="item-number-label">Item Number</mat-label>
+                        <input formControlName="itemNum" type="text" matInput data-automation-id="item-number-input">
                     </mat-form-field>
                 </div>
                 <div class="col-xl-4">
                     <mat-form-field class="w-100 custom-form-field mb-3" appearance="outline">
-                        <mat-label>Supplier Item ID</mat-label>
-                        <input formControlName="supItemNum" type="text" matInput>
+                        <mat-label data-automation-id="supplier-item-id-label">Supplier Item ID</mat-label>
+                        <input formControlName="supItemNum" type="text" matInput data-automation-id="supplier-item-id-input">
                     </mat-form-field>
                 </div>
             </div>
@@ -33,14 +33,14 @@
             <div class="row">
                 <div class="col-xl-4">
                     <mat-form-field class="w-100 custom-form-field mb-3" appearance="outline">
-                        <mat-label>Required Date</mat-label>
-                        <input formControlName="reqDate" type="date" matInput>
+                        <mat-label data-automation-id="required-date-label">Required Date</mat-label>
+                        <input formControlName="reqDate" type="date" matInput data-automation-id="required-date-input">
                     </mat-form-field>
                 </div>
                 <div class="col-xl-8">
                     <mat-form-field class="w-100 custom-form-field mb-3" appearance="outline">
-                        <mat-label>Notes</mat-label>
-                        <input formControlName="notes" maxlength="255" type="text" matInput>
+                        <mat-label data-automation-id="notes-label">Notes</mat-label>
+                        <input formControlName="notes" maxlength="255" type="text" matInput data-automation-id="notes-input">
                     </mat-form-field>
                 </div>
             </div>
@@ -48,20 +48,20 @@
             <div class="row">
                 <div class="col-xl-4">
                     <mat-form-field class="w-100 custom-form-field mb-3" appearance="outline">
-                        <mat-label>Priority</mat-label>
-                        <input formControlName="priority" #prio (input)="prio.value = globalService.setNumericInRange(prio.value, globalService.sqlLimits.numerics.smallint, '');" type="text" matInput>
+                        <mat-label data-automation-id="priority-label">Priority</mat-label>
+                        <input formControlName="priority" #prio (input)="prio.value = globalService.setNumericInRange(prio.value, globalService.sqlLimits.numerics.smallint, '');" type="text" matInput data-automation-id="priority-input">
                     </mat-form-field>
                 </div>
                 <div class="col-xl-4">
                     <mat-form-field class="w-100 custom-form-field mb-3" appearance="outline">
-                        <mat-label replacePlaceholder [replacePlaceHolder]="placeholders.userField1" [fallbackPlaceHolder]="placeholders.userField1Fallback"> UF1 </mat-label>
-                        <input formControlName="user1" maxlength="255" type="text" matInput>
+                        <mat-label replacePlaceholder [replacePlaceHolder]="placeholders.userField1" [fallbackPlaceHolder]="placeholders.userField1Fallback" data-automation-id="user-field-1-label"> UF1 </mat-label>
+                        <input formControlName="user1" maxlength="255" type="text" matInput data-automation-id="user-field-1-input">
                     </mat-form-field>
                 </div>
                 <div class="col-xl-4">
                     <mat-form-field class="w-100 custom-form-field mb-3" appearance="outline">
-                        <mat-label replacePlaceholder [replacePlaceHolder]="placeholders.userField2" [fallbackPlaceHolder]="placeholders.userField2Fallback"> UF2 </mat-label>
-                        <input formControlName="user2" maxlength="255" type="text" matInput>
+                        <mat-label replacePlaceholder [replacePlaceHolder]="placeholders.userField2" [fallbackPlaceHolder]="placeholders.userField2Fallback" data-automation-id="user-field-2-label"> UF2 </mat-label>
+                        <input formControlName="user2" maxlength="255" type="text" matInput data-automation-id="user-field-2-input">
                     </mat-form-field>
                 </div>
             </div>
@@ -69,20 +69,20 @@
             <div class="row">
                 <div class="col-xl-4">
                     <mat-form-field class="w-100 custom-form-field mb-3" appearance="outline">
-                        <mat-label replacePlaceholder [replacePlaceHolder]="placeholders.userField3" [fallbackPlaceHolder]="placeholders.userField3Fallback"> UF3 </mat-label>
-                        <input formControlName="user3" maxlength="255" type="text" matInput>
+                        <mat-label replacePlaceholder [replacePlaceHolder]="placeholders.userField3" [fallbackPlaceHolder]="placeholders.userField3Fallback" data-automation-id="user-field-3-label"> UF3 </mat-label>
+                        <input formControlName="user3" maxlength="255" type="text" matInput data-automation-id="user-field-3-input">
                     </mat-form-field>
                 </div>
                 <div class="col-xl-4">
                     <mat-form-field class="w-100 custom-form-field mb-3" appearance="outline">
-                        <mat-label replacePlaceholder [replacePlaceHolder]="placeholders.userField4" [fallbackPlaceHolder]="placeholders.userField4Fallback"> UF4 </mat-label>
-                        <input formControlName="user4" maxlength="255" type="text" matInput>
+                        <mat-label replacePlaceholder [replacePlaceHolder]="placeholders.userField4" [fallbackPlaceHolder]="placeholders.userField4Fallback" data-automation-id="user-field-4-label"> UF4 </mat-label>
+                        <input formControlName="user4" maxlength="255" type="text" matInput data-automation-id="user-field-4-input">
                     </mat-form-field>
                 </div>
                 <div class="col-xl-4">
                     <mat-form-field class="w-100 custom-form-field mb-3" appearance="outline">
-                        <mat-label replacePlaceholder [replacePlaceHolder]="placeholders.userField5" [fallbackPlaceHolder]="placeholders.userField5Fallback"> UF5 </mat-label>
-                        <input formControlName="user5" maxlength="255" type="text" matInput>
+                        <mat-label replacePlaceholder [replacePlaceHolder]="placeholders.userField5" [fallbackPlaceHolder]="placeholders.userField5Fallback" data-automation-id="user-field-5-label"> UF5 </mat-label>
+                        <input formControlName="user5" maxlength="255" type="text" matInput data-automation-id="user-field-5-input">
                     </mat-form-field>
                 </div>
             </div>
@@ -90,20 +90,20 @@
             <div class="row">
                 <div class="col-xl-4">
                     <mat-form-field class="w-100 custom-form-field mb-3" appearance="outline">
-                        <mat-label replacePlaceholder [replacePlaceHolder]="placeholders.userField6" [fallbackPlaceHolder]="placeholders.userField6Fallback"> UF6 </mat-label>
-                        <input formControlName="user6" maxlength="255" type="text" matInput>
+                        <mat-label replacePlaceholder [replacePlaceHolder]="placeholders.userField6" [fallbackPlaceHolder]="placeholders.userField6Fallback" data-automation-id="user-field-6-label"> UF6 </mat-label>
+                        <input formControlName="user6" maxlength="255" type="text" matInput data-automation-id="user-field-6-input">
                     </mat-form-field>
                 </div>
                 <div class="col-xl-4">
                     <mat-form-field class="w-100 custom-form-field mb-3" appearance="outline">
-                        <mat-label replacePlaceholder [replacePlaceHolder]="placeholders.userField7" [fallbackPlaceHolder]="placeholders.userField7Fallback"> UF7 </mat-label>
-                        <input formControlName="user7" maxlength="255" type="text" matInput>
+                        <mat-label replacePlaceholder [replacePlaceHolder]="placeholders.userField7" [fallbackPlaceHolder]="placeholders.userField7Fallback" data-automation-id="user-field-7-label"> UF7 </mat-label>
+                        <input formControlName="user7" maxlength="255" type="text" matInput data-automation-id="user-field-7-input">
                     </mat-form-field>
                 </div>
                 <div class="col-xl-4">
                     <mat-form-field class="w-100 custom-form-field mb-3" appearance="outline">
-                        <mat-label replacePlaceholder [replacePlaceHolder]="placeholders.userField8" [fallbackPlaceHolder]="placeholders.userField8Fallback"> UF8 </mat-label>
-                        <input formControlName="user8" maxlength="255" type="text" matInput>
+                        <mat-label replacePlaceholder [replacePlaceHolder]="placeholders.userField8" [fallbackPlaceHolder]="placeholders.userField8Fallback" data-automation-id="user-field-8-label"> UF8 </mat-label>
+                        <input formControlName="user8" maxlength="255" type="text" matInput data-automation-id="user-field-8-input">
                     </mat-form-field>
                 </div>
             </div>
@@ -111,22 +111,22 @@
             <div class="row">
                 <div class="col-xl-4">
                     <mat-form-field class="w-100 custom-form-field mb-3" appearance="outline">
-                        <mat-label replacePlaceholder [replacePlaceHolder]="placeholders.userField9" [fallbackPlaceHolder]="placeholders.userField9Fallback"> UF9 </mat-label>
-                        <input formControlName="user9" maxlength="255" type="text" matInput>
+                        <mat-label replacePlaceholder [replacePlaceHolder]="placeholders.userField9" [fallbackPlaceHolder]="placeholders.userField9Fallback" data-automation-id="user-field-9-label"> UF9 </mat-label>
+                        <input formControlName="user9" maxlength="255" type="text" matInput data-automation-id="user-field-9-input">
                     </mat-form-field>
                 </div>
                 <div class="col-xl-4">
                     <mat-form-field class="w-100 custom-form-field mb-3" appearance="outline">
-                        <mat-label replacePlaceholder [replacePlaceHolder]="placeholders.userField10" [fallbackPlaceHolder]="placeholders.userField10Fallback"> UF10 </mat-label>
-                        <input formControlName="user10" maxlength="255" type="text" matInput>
+                        <mat-label replacePlaceholder [replacePlaceHolder]="placeholders.userField10" [fallbackPlaceHolder]="placeholders.userField10Fallback" data-automation-id="user-field-10-label"> UF10 </mat-label>
+                        <input formControlName="user10" maxlength="255" type="text" matInput data-automation-id="user-field-10-input">
                     </mat-form-field>
                 </div>
                 <div class="col-xl-4">
                     <mat-form-field class="custom-form-field w-100 __grab_cursor mb-3" appearance="outline">
-                        <mat-label>Emergency</mat-label>
-                        <mat-select formControlName="emergency">
-                            <mat-option value="True">True</mat-option>
-                            <mat-option value="False">False</mat-option>
+                        <mat-label data-automation-id="emergency-label">Emergency</mat-label>
+                        <mat-select formControlName="emergency" data-automation-id="emergency-select">
+                            <mat-option value="True" data-automation-id="emergency-true-option">True</mat-option>
+                            <mat-option value="False" data-automation-id="emergency-false-option">False</mat-option>
                         </mat-select>
                         <span class="material-symbols-outlined icon-expand-more text-20">
                             expand_more
@@ -139,10 +139,10 @@
             <div class="row">
                 <div class="col-xl-4">
                     <mat-form-field class="custom-form-field w-100 __grab_cursor mb-3" appearance="outline">
-                        <mat-label>Label</mat-label>
-                        <mat-select formControlName="label">
-                            <mat-option value="True">True</mat-option>
-                            <mat-option value="False">False</mat-option>
+                        <mat-label data-automation-id="label-label">Label</mat-label>
+                        <mat-select formControlName="label" data-automation-id="label-select">
+                            <mat-option value="True" data-automation-id="label-true-option">True</mat-option>
+                            <mat-option value="False" data-automation-id="label-false-option">False</mat-option>
                         </mat-select>
                         <span class="material-symbols-outlined icon-expand-more text-20">
                             expand_more
@@ -156,5 +156,5 @@
 </mat-dialog-content>
 
 <div mat-dialog-actions>
-    <button mat-flat-button color="primary" class="btn-lg w-100" (click)="openOmChangesConfirm()">Update</button>
+    <button mat-flat-button color="primary" class="btn-lg w-100" (click)="openOmChangesConfirm()" data-automation-id="update-button">Update</button>
 </div>

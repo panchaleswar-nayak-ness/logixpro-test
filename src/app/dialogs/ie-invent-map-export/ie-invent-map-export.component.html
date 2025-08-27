@@ -138,7 +138,7 @@
                       appearance="outline" disabled
                     >
                     
-                      <mat-select class="employees-action" data-automation-id="am-pm-select">
+                      <mat-select class="employees-action" [attr.data-automation-id]="'am-pm-select-' + i">
                         <mat-option value="123456" data-automation-id="am-pm-option-1">0000</mat-option>
                         <mat-option value="987654" data-automation-id="am-pm-option-2">0000</mat-option>
                         <mat-option value="147852" data-automation-id="am-pm-option-3">0000</mat-option>

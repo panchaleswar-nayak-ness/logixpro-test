@@ -1,17 +1,17 @@
 <div class="d-flex justify-content-between mb-4 align-items-center">
     <div class="divWithClass"></div>
-<h2 class="card-header-title m-0">{{form_heading}}</h2>
-<button mat-icon-button class="close-button dialog-close-button-fix" [mat-dialog-close]="true">
-    <mat-icon class="close-icon">close</mat-icon>
+<h2 class="card-header-title m-0" data-automation-id="addloc-title">{{form_heading}}</h2>
+<button mat-icon-button class="close-button dialog-close-button-fix" [mat-dialog-close]="true" data-automation-id="addloc-close-btn">
+    <mat-icon class="close-icon" data-automation-id="addloc-close-icon">close</mat-icon>
 </button>
 </div>
 <div>
     <div mat-dialog-content>
 
-        <form class="form pb-4" #zoneForm="ngForm" (ngSubmit)="onSend(zoneForm)">
+        <form class="form pb-4" #zoneForm="ngForm" (ngSubmit)="onSend(zoneForm)" data-automation-id="addloc-form">
 
-            <mat-form-field class="mb-3 w-100" appearance="outline">
-                <mat-label>Start Location</mat-label>
+            <mat-form-field class="mb-3 w-100" appearance="outline" data-automation-id="addloc-start-ff">
+                <mat-label data-automation-id="addloc-start-lbl">Start Location</mat-label>
                 <input  #start_location  type="text"
                 placeholder="Pick one"
                 aria-label="Number"
@@ -19,33 +19,33 @@
                 [(ngModel)]="startLocation"
                 [matAutocomplete]="auto"
                 name="startLocation" re
-                quired="required"
+                quired="required" data-automation-id="addloc-start-inp"
                 (keyup)="getstartLocationList()" (focusout)="onBlur()" >
-                <mat-autocomplete #auto="matAutocomplete" >
-                    <mat-option *ngFor="let option of startLocationList" [value]="option">
+                <mat-autocomplete #auto="matAutocomplete" data-automation-id="addloc-start-auto">
+                    <mat-option *ngFor="let option of startLocationList" [value]="option" [attr.data-automation-id]="'addloc-start-opt-' + option">
                       {{option}}
                     </mat-option>
                 </mat-autocomplete>
             </mat-form-field>
-            <mat-form-field class="mb-3 w-100" appearance="outline">
-                <mat-label>End Location</mat-label>
+            <mat-form-field class="mb-3 w-100" appearance="outline" data-automation-id="addloc-end-ff">
+                <mat-label data-automation-id="addloc-end-lbl">End Location</mat-label>
                 <input type="text"
                 placeholder="Pick one"
                 aria-label="Number"
                 matInput
                 [(ngModel)]="endLocation"
                 [matAutocomplete]="auto1"
-                name="endLocation" required="required"
+                name="endLocation" required="required" data-automation-id="addloc-end-inp"
                 (keyup)="getendLocationList()" (focusout)="onBlur()">
-                <mat-autocomplete #auto1="matAutocomplete" >
-                    <mat-option *ngFor="let option of endLocationList" [value]="option">
+                <mat-autocomplete #auto1="matAutocomplete" data-automation-id="addloc-end-auto">
+                    <mat-option *ngFor="let option of endLocationList" [value]="option" [attr.data-automation-id]="'addloc-end-opt-' + option">
                       {{option}}
                     </mat-option>
                 </mat-autocomplete>
             </mat-form-field>
             <mat-dialog-actions align="end">                
                 <button type="submit"  [disabled]="!(startLocation&&endLocation)" mat-flat-button class="form-button-submit w-100 btn-lg"
-                    color="primary">{{form_btn_label}}</button>
+                    color="primary" data-automation-id="addloc-submit-btn">{{form_btn_label}}</button>
             </mat-dialog-actions>
 
         </form>

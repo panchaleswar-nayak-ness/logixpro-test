@@ -1,7 +1,7 @@
 <div class="d-flex justify-content-between align-items-center mb-3">
     <div class="w-48px"></div>
     <h1 class="m-0" mat-dialog-title data-automation-id="om-user-field-data-dialog-title">User Fields Data</h1>
-    <button mat-icon-button class="close-button dialog-close-button-fix" [mat-dialog-close]="true" data-automation-id="om-user-field-data-close-button">
+    <button mat-icon-button class="close-button dialog-close-button-fix" [mat-dialog-close]="true" data-automation-id="close-button">
         <mat-icon class="close-icon">close</mat-icon>
     </button>
 </div>
@@ -11,13 +11,13 @@
         <div class="col-xl-6">
             <mat-form-field class="w-100 custom-form-field mb-3" appearance="outline">
                 <mat-label replacePlaceholder [replacePlaceHolder]="placeholders.userField1" [fallbackPlaceHolder]="placeholders.userField1Fallback" data-automation-id="user-field-1-label"> {{UserField1}} </mat-label>
-                <input #userFocus type="text" aria-label="Search" matInput [(ngModel)]="userFieldData.userField1" [attr.data-automation-id]="'user-field-1-input-' + userFieldData.userField1">
+                <input #userFocus type="text" aria-label="Search" matInput [(ngModel)]="userFieldData.userField1" data-automation-id="user-field-1-input">
             </mat-form-field>
         </div>
         <div class="col-xl-6">
             <mat-form-field class="w-100 custom-form-field mb-3" appearance="outline">
                 <mat-label replacePlaceholder [replacePlaceHolder]="placeholders.userField2" [fallbackPlaceHolder]="placeholders.userField2Fallback" data-automation-id="user-field-2-label"> {{UserField2}} </mat-label>
-                <input type="text" aria-label="Search" matInput [(ngModel)]="userFieldData.userField2" [attr.data-automation-id]="'user-field-2-input-' + userFieldData.userField2">
+                <input type="text" aria-label="Search" matInput [(ngModel)]="userFieldData.userField2" data-automation-id="user-field-2-input">
             </mat-form-field>
         </div>
     </div>
@@ -25,13 +25,13 @@
         <div class="col-xl-6">
             <mat-form-field class="w-100 custom-form-field mb-3" appearance="outline">
                 <mat-label replacePlaceholder [replacePlaceHolder]="placeholders.userField3" [fallbackPlaceHolder]="placeholders.userField3Fallback" data-automation-id="user-field-3-label"> {{UserField3}} </mat-label>
-                <input type="text" aria-label="Search" matInput [(ngModel)]="userFieldData.userField3" [attr.data-automation-id]="'user-field-3-input-' + userFieldData.userField3">
+                <input type="text" aria-label="Search" matInput [(ngModel)]="userFieldData.userField3" data-automation-id="user-field-3-input">
             </mat-form-field>
         </div>
         <div class="col-xl-6">
             <mat-form-field class="w-100 custom-form-field mb-3" appearance="outline">
                 <mat-label replacePlaceholder [replacePlaceHolder]="placeholders.userField4" [fallbackPlaceHolder]="placeholders.userField4Fallback" data-automation-id="user-field-4-label"> {{UserField4}} </mat-label>
-                <input type="text" aria-label="Search" matInput [(ngModel)]="userFieldData.userField4" [attr.data-automation-id]="'user-field-4-input-' + userFieldData.userField4">
+                <input type="text" aria-label="Search" matInput [(ngModel)]="userFieldData.userField4" data-automation-id="user-field-4-input">
             </mat-form-field>
         </div>
     </div>
@@ -39,13 +39,13 @@
         <div class="col-xl-6">
             <mat-form-field class="w-100 custom-form-field mb-3" appearance="outline">
                 <mat-label replacePlaceholder [replacePlaceHolder]="placeholders.userField5" [fallbackPlaceHolder]="placeholders.userField5Fallback" data-automation-id="user-field-5-label"> {{UserField5}} </mat-label>
-                <input type="text" aria-label="Search" matInput [(ngModel)]="userFieldData.userField5" [attr.data-automation-id]="'user-field-5-input-' + userFieldData.userField5">
+                <input type="text" aria-label="Search" matInput [(ngModel)]="userFieldData.userField5" data-automation-id="user-field-5-input">
             </mat-form-field>
         </div>
         <div class="col-xl-6">
             <mat-form-field class="w-100 custom-form-field mb-3" appearance="outline">
                 <mat-label replacePlaceholder [replacePlaceHolder]="placeholders.userField6" [fallbackPlaceHolder]="placeholders.userField6Fallback" data-automation-id="user-field-6-label"> {{UserField6}} </mat-label>
-                <input type="text" aria-label="Search" matInput [(ngModel)]="userFieldData.userField6" [attr.data-automation-id]="'user-field-6-input-' + userFieldData.userField6">
+                <input type="text" aria-label="Search" matInput [(ngModel)]="userFieldData.userField6" data-automation-id="user-field-6-input">
             </mat-form-field>
         </div>
     </div>
@@ -53,13 +53,13 @@
         <div class="col-xl-6">
             <mat-form-field class="w-100 custom-form-field mb-3" appearance="outline">
                 <mat-label replacePlaceholder [replacePlaceHolder]="placeholders.userField7" [fallbackPlaceHolder]="placeholders.userField7Fallback" data-automation-id="user-field-7-label"> {{UserField7}} </mat-label>
-                <input type="text" aria-label="Search" matInput [(ngModel)]="userFieldData.userField7" [attr.data-automation-id]="'user-field-7-input-' + userFieldData.userField7">
+                <input type="text" aria-label="Search" matInput [(ngModel)]="userFieldData.userField7" data-automation-id="user-field-7-input">
             </mat-form-field>
         </div>
         <div class="col-xl-6">
             <mat-form-field class="w-100 custom-form-field mb-3" appearance="outline">
                 <mat-label replacePlaceholder [replacePlaceHolder]="placeholders.userField8" [fallbackPlaceHolder]="placeholders.userField8Fallback" data-automation-id="user-field-8-label"> {{UserField8}} </mat-label>
-                <input type="text" aria-label="Search" matInput [(ngModel)]="userFieldData.userField8" [attr.data-automation-id]="'user-field-8-input-' + userFieldData.userField8">
+                <input type="text" aria-label="Search" matInput [(ngModel)]="userFieldData.userField8" data-automation-id="user-field-8-input">
             </mat-form-field>
         </div>
     </div>
@@ -67,20 +67,20 @@
         <div class="col-xl-6">
             <mat-form-field class="w-100 custom-form-field mb-3" appearance="outline">
                 <mat-label replacePlaceholder [replacePlaceHolder]="placeholders.userField9" [fallbackPlaceHolder]="placeholders.userField9Fallback" data-automation-id="user-field-9-label"> {{UserField9}} </mat-label>
-                <input type="text" aria-label="Search" matInput [(ngModel)]="userFieldData.userField9" [attr.data-automation-id]="'user-field-9-input-' + userFieldData.userField9">
+                <input type="text" aria-label="Search" matInput [(ngModel)]="userFieldData.userField9" data-automation-id="user-field-9-input">
             </mat-form-field>
         </div>
         <div class="col-xl-6">
             <mat-form-field class="w-100 custom-form-field mb-3" appearance="outline">
                 <mat-label replacePlaceholder [replacePlaceHolder]="placeholders.userField10" [fallbackPlaceHolder]="placeholders.userField10Fallback" data-automation-id="user-field-10-label"> {{UserField10}} </mat-label>
-                <input type="text" aria-label="Search" matInput [(ngModel)]="userFieldData.userField10" [attr.data-automation-id]="'user-field-10-input-' + userFieldData.userField10">
+                <input type="text" aria-label="Search" matInput [(ngModel)]="userFieldData.userField10" data-automation-id="user-field-10-input">
             </mat-form-field>
         </div>
     </div>
 </mat-dialog-content>
 
 <mat-dialog-actions>
-    <button mat-flat-button color="primary" class="btn-lg w-100" (click)="updateUserFieldData()" data-automation-id="om-user-field-data-save-button">
+    <button mat-flat-button color="primary" class="btn-lg w-100" (click)="updateUserFieldData()" data-automation-id="save-button">
         Save
     </button>
 </mat-dialog-actions>

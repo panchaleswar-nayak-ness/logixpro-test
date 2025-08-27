@@ -2,7 +2,7 @@
     <mat-dialog-content>
       <div class="prompt-wrap">
         <div class="d-flex justify-content-center prompt-icon-wrap">
-            <span #cancel class="material-symbols-outlined prompt-icon-add text-24">
+            <span #cancel class="material-symbols-outlined prompt-icon-add text-24" data-automation-id="add-heading">
                 add
             </span>
 
@@ -19,8 +19,8 @@
     <mat-dialog-actions class="d-flex flex-column justify-content-center">
 
       
-      <button   (click)="openBatchConfirmationDialog()" class="mat-button-base prompt-action-accent-button mb-3 btn-lg w-100" mat-stroked-button mat-button>Ok</button>
-      <button class="mat-button-base prompt-action-basic-button btn-lg w-100 mb-3" mat-button mat-dialog-close>
+      <button   (click)="openBatchConfirmationDialog()" class="mat-button-base prompt-action-accent-button mb-3 btn-lg w-100" mat-stroked-button mat-button data-automation-id="ok-button">Ok</button>
+      <button class="mat-button-base prompt-action-basic-button btn-lg w-100 mb-3" mat-button mat-dialog-close data-automation-id="close-button">
         Close
       </button>
       

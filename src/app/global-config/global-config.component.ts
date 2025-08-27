@@ -10,6 +10,7 @@ import { IUserAPIService } from '../common/services/user-api/user-api-interface'
 import { UserApiService } from '../common/services/user-api/user-api.service';
 import { GlobalService } from '../common/services/global.service';
 import { ToasterTitle, ToasterType } from 'src/app/common/constants/strings.constants';
+import { HeaderInterceptor } from '../common/init/header-interceptor.interceptor';
 @Component({
   selector: 'global-config',
   templateUrl: './global-config.component.html', 
@@ -64,6 +65,10 @@ export class GlobalConfigComponent {
             loginTime: res.data.loginTime,
           };
           localStorage.setItem('userConfig', JSON.stringify(data));
+          
+          // Reset session timeout flag after successful login
+          HeaderInterceptor.resetSessionTimeoutFlag();
+          
           window.location.href =  '/#/globalconfig/home';
           window.location.reload();
         } else {

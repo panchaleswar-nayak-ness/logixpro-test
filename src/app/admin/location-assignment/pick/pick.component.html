@@ -3,7 +3,7 @@
         <mat-card class="mat-elevation-z g-card mb-2">
             <mat-card-content>
                 <div class="d-flex justify-content-between align-items-center mb-3">
-                    <app-icon-heading-component heading="Pick Order Selection" icon="format_list_numbered">
+                    <app-icon-heading-component heading="Pick Order Selection" icon="format_list_numbered" [automationId]="'pick-order-selection-heading'">
                     </app-icon-heading-component>
                 </div>
                 <div class="row">
@@ -14,8 +14,8 @@
                                     <span class="material-symbols-outlined icon-search">
                                         search
                                     </span>
-                                    <input #alertInput type="text" placeholder="Search" aria-label="Search" matInput maxlength="255" [(ngModel)]="orderNumberSearch" (keyup)="Search()" #autoFocusField>
-                                    <button *ngIf="orderNumberSearch != ''" matSuffix class="clear-btn" (click)="orderNumberSearch = ''; Search()"><mat-icon class="text-20 text-chrome-600">cancel</mat-icon></button>
+                                    <input #alertInput type="text" placeholder="Search" aria-label="Search" matInput maxlength="255" [(ngModel)]="orderNumberSearch" (keyup)="Search()" #autoFocusField data-automation-id="order-search-input">
+                                    <button *ngIf="orderNumberSearch != ''" matSuffix class="clear-btn" (click)="orderNumberSearch = ''; Search()" data-automation-id="clear-search-button"><mat-icon class="text-20 text-chrome-600">cancel</mat-icon></button>
                                 </mat-form-field>
 
                             </div>
@@ -25,10 +25,10 @@
                     <div class="col-xxl-7">
                         <div class="d-xxl-block d-flex justify-content-end">
                             <div class="d-xxl-block d-flex float-end pick-card-button" >
-                            <button mat-stroked-button color="primary" class="button-add-all mb-3 " (click)="openLAQ()" onclick="this.blur()" >
+                            <button mat-stroked-button color="primary" class="button-add-all mb-3 " (click)="openLAQ()" onclick="this.blur()" data-automation-id="print-reports-button">
                                 Print Short Reports
                             </button>
-                            <button mat-stroked-button color="primary" class="button-add-all mb-3 ms-2 float-end pick-card-button" (click)="addAll()"  >
+                            <button mat-stroked-button color="primary" class="button-add-all mb-3 ms-2 float-end pick-card-button" (click)="addAll()" data-automation-id="add-all-button">
                                 Add All
                             </button>
                             </div>
@@ -41,13 +41,13 @@
                         <table mat-table #table1 [dataSource]="tableData1" class="w-100" matSort #MatSort1="matSort" (matSortChange)="announceSortChange1($event)">
 
                             <ng-container matColumnDef="status" sticky>
-                                <th class="w-200px" mat-header-cell *matHeaderCellDef mat-sort-header>
+                                <th class="w-200px" mat-header-cell *matHeaderCellDef mat-sort-header data-automation-id="status-header">
                                     Status </th>
-                                <td mat-cell *matCellDef="let element"
+                                <td mat-cell *matCellDef="let element; let i = index"
                                 #tooltip="matTooltip" matTooltipPosition="above" [matTooltip]="element.orderNumber" 
                 class="pick-card"
                 [matTooltipDisabled]="element.orderNumber && element.orderNumber.length>=20?false:true"
-                                >
+                                [attr.data-automation-id]="'status-cell-' + i ">
                                     <div class="label px-2 me-2"
                                     [ngClass]="[
                                     element.status == 'In Stock' ? 'label-gray' : '',
@@ -61,53 +61,53 @@
 
                             <ng-container matColumnDef="orderNumber">
                                 <th mat-header-cell *matHeaderCellDef mat-sort-header
-                                    sortActionDescription="Sort by number"> Order No.
+                                    sortActionDescription="Sort by number" data-automation-id="order-number-header"> Order No.
                                 </th>
-                                <td mat-cell *matCellDef="let element"
+                                <td mat-cell *matCellDef="let element; let i = index"
                                 #tooltip="matTooltip" matTooltipPosition="above" [matTooltip]="element.orderNumber" 
                 class="pick-card"
                 [matTooltipDisabled]="element.orderNumber && element.orderNumber.length>=20?false:true"
-                                > {{element.orderNumber}} </td>
+                                [attr.data-automation-id]="'order-number-cell-' + i "> {{element.orderNumber}} </td>
                             </ng-container>
 
                             <ng-container matColumnDef="priority">
                                 <th mat-header-cell *matHeaderCellDef mat-sort-header
-                                    sortActionDescription="Sort by number"> Priority
+                                    sortActionDescription="Sort by number" data-automation-id="priority-header"> Priority
                                 </th>
-                                <td mat-cell *matCellDef="let element"
+                                <td mat-cell *matCellDef="let element; let i = index"
                                 #tooltip="matTooltip" matTooltipPosition="above" [matTooltip]="element.priority" 
                 class="pick-card"
                 [matTooltipDisabled]="element.priority && element.priority.length>=20?false:true"
-                                > {{element.priority}} </td>
+                                [attr.data-automation-id]="'priority-cell-' + i "> {{element.priority}} </td>
                             </ng-container>
 
                             <ng-container matColumnDef="itemCount">
                                 <th mat-header-cell *matHeaderCellDef mat-sort-header
-                                    sortActionDescription="Sort by number"> Quantity
+                                    sortActionDescription="Sort by number" data-automation-id="quantity-header"> Quantity
                                 </th>
-                                <td mat-cell *matCellDef="let element"
+                                <td mat-cell *matCellDef="let element; let i = index"
                                 #tooltip="matTooltip" matTooltipPosition="above" [matTooltip]="element.itemCount" 
                 class="pick-card"
                 [matTooltipDisabled]="element.itemCount && element.itemCount.length>=20?false:true"
-                                > {{element.itemCount}} </td>
+                                [attr.data-automation-id]="'quantity-cell-' + i "> {{element.itemCount}} </td>
                             </ng-container>
 
                             <ng-container matColumnDef="requiredDate">
                                 <th mat-header-cell *matHeaderCellDef mat-sort-header
-                                    sortActionDescription="Sort by number"> Required Date
+                                    sortActionDescription="Sort by number" data-automation-id="required-date-header"> Required Date
                                 </th>
-                                <td mat-cell *matCellDef="let element"
+                                <td mat-cell *matCellDef="let element; let i = index"
                                 #tooltip="matTooltip" matTooltipPosition="above" [matTooltip]="element.requiredDate" 
                 class="pick-card"
                 [matTooltipDisabled]="element.requiredDate && element.requiredDate.length>=20?false:true"
-                                > {{element.requiredDate}} </td>
+                                [attr.data-automation-id]="'required-date-cell-' + i "> {{element.requiredDate}} </td>
                             </ng-container>
 
                             <ng-container matColumnDef="action" stickyEnd>
-                                <th mat-header-cell *matHeaderCellDef> </th>
-                                <td mat-cell *matCellDef="let element" class="text-end">
+                                <th mat-header-cell *matHeaderCellDef data-automation-id="actions-header"> </th>
+                                <td mat-cell *matCellDef="let element; let i = index" class="text-end">
                                     <button mat-flat-button aria-label="Add Function" matTooltip="Add" color="primary"
-                                        matTooltipPosition="above" (click)="add(element)" class="mx-auto xsm-icon-button">
+                                        matTooltipPosition="above" (click)="add(element)" class="mx-auto xsm-icon-button" [attr.data-automation-id]="'add-button-' + i ">
                                         <mat-icon>add</mat-icon>
                                     </button>
                                 </td>
@@ -125,7 +125,7 @@
                     </ng-scrollbar>
                 </div>
                 <mat-paginator class="d-flex justify-content-start" showFirstLastButtons [pageSizeOptions]="[10, 20]" [pageSize]="10" #paginator1
-                    aria-label="Select page of periodic elements">
+                    aria-label="Select page of periodic elements" data-automation-id="pick-orders-paginator">
                 </mat-paginator>
 
             </mat-card-content>
@@ -149,7 +149,7 @@
 
 
 <button color="primary" class="mat-focus-indicator w-100 btn-lg mat-flat-button mat-button-base mat-primary mb-3 pick-card-button"
-    (click)="locationAssignment()"  ng-reflect-color="primary" ng-reflect-disabled="false"><span
+    (click)="locationAssignment()"  ng-reflect-color="primary" ng-reflect-disabled="false" data-automation-id="location-assignment-button"><span
         class="mat-button-wrapper"> Location
         Assignment
     </span><span matripple="" class="mat-ripple mat-button-ripple" ng-reflect-disabled="false"

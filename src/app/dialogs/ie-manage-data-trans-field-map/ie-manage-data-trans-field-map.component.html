@@ -13,7 +13,7 @@
   <div class="d-flex">
       <mat-form-field class="action-dropdown custom-form-field-bg-white mb-2 flex-grow-1" appearance="outline">
           <mat-label data-automation-id="table-label">Table</mat-label>
-          <mat-select #matRef class="employees-action" placeholder="Actions" data-automation-id="table-select">
+          <mat-select #matRef class="employees-action" placeholder="Actions" [attr.data-automation-id]="'table-select-' + (matRef.value || '')">
             <mat-option value="add_new_transaction1" data-automation-id="table-option-inventory">Inventory</mat-option>
               <mat-option value="add_new_transaction" data-automation-id="table-option-inventory-map">Inventory Map</mat-option>
           </mat-select>

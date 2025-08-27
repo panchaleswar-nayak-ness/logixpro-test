@@ -22,6 +22,7 @@ import { AppNames, AppRoutes, RouteNames, RouteUpdateMenu } from 'src/app/common
 import { DatePipe } from '@angular/common';
 import { Router } from '@angular/router';
 import { CurrentTabDataService } from 'src/app/admin/inventory-master/current-tab-data-service';
+import {TransactionConstants} from 'src/app/common/constants/admin/transaction-constants';
 
 @Component({
   selector: 'app-transaction-history-list',
@@ -105,7 +106,7 @@ export class TransactionHistoryListComponent implements OnInit, AfterViewInit {
   public dataSource: any = new MatTableDataSource();
   @Input() tabIndex:any;
   public detailDataTransHistory: any;
-  public startDate: any = new Date(1973,10,7);
+  public startDate: Date = new Date(TransactionConstants.defaultStartDate);
   public endDate: any = new Date();
   public orderNo: any;
   public payload: any;
@@ -120,18 +121,25 @@ export class TransactionHistoryListComponent implements OnInit, AfterViewInit {
   onDestroy$: Subject<boolean> = new Subject();
   private subscription: Subscription = new Subscription();
 
-  @Input() set startDateEvent(event: Event) {
-    if (event) {
-      this.startDate = event;
-      this.getContentData();
+  @Input() set startDateEvent(inputStartDate: Date) {
+    if (inputStartDate) {
+      this.startDate = inputStartDate;
+    } else {
+      this.startDate = new Date(TransactionConstants.defaultStartDate);
     }
+    this.getContentData();
   }
+    
+
   @Input() set endDateEvent(event: Event) {
     if (event) {
       this.endDate = event;
+    }else{
+       this.endDate = new Date();
+    }
       this.getContentData();
     }
-  }
+  
   @Input() set resetEvent(event: any) {
     if (event) {
       this.startDate = event.endDate;
@@ -151,6 +159,16 @@ export class TransactionHistoryListComponent implements OnInit, AfterViewInit {
       this.columnSearch.searchValue = '';
     }
   }
+
+  @Input() set cleanFilter(event: Event) {
+  if (event) {
+    this.startDate = new Date(TransactionConstants.defaultStartDate);
+    this.endDate = new Date();
+    this.orderNo = '';
+    this.getContentData(); // Refresh data after resetting filters
+  }
+}
+
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort, { static: true }) sort: MatSort;
   pageEvent: PageEvent;

@@ -4,7 +4,7 @@
       <!-- Main Section Option (Import Export) -->
       <ng-container *ngIf="!isDefaultAppVerify?.isVerified">
         <div class="label-red p-3 d-flex br-8 mb-3">
-            <mat-icon class="material-symbols-outlined">notification_important</mat-icon>
+            <mat-icon class="material-symbols-outlined" data-automation-id="notification-icon">notification_important</mat-icon>
             <span class="ps-2 w-100">This workstation does not have permission to access {{isDefaultAppVerify?.appName}}</span>
         </div>
       </ng-container>
@@ -14,11 +14,11 @@
             <div matRipple [matRippleColor]="tab_hover_color" class="main-section-option">
               <a class="main-section-option-link" href="#"></a>
               <div class="main-section-icon">
-                <span class="material-symbols-outlined">
+                <span class="material-symbols-outlined" [attr.data-automation-id]="'icon-' + item.info.iconName">
                  {{item.info.iconName}}
                 </span>
               </div>
-              <h4 class="main-section-title text-22">{{item.displayname}}</h4>
+              <h4 class="main-section-title text-22" [attr.data-automation-id]="'title-' + item.displayname">{{item.displayname}}</h4>
             </div>
           </div>
         </ng-container>

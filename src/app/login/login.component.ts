@@ -24,6 +24,7 @@ import { LocalStorageService } from 'src/app/common/services/LocalStorage.servic
 import { filter } from 'rxjs';
 import { ConfirmationDialogComponent } from '../admin/dialogs/confirmation-dialog/confirmation-dialog.component';
 import { UserAccessLevels } from '../common/services/user-access-levels/user-access-levels';
+import { HeaderInterceptor } from '../common/init/header-interceptor.interceptor';
 type Version = {version: string};
 
 @Component({
@@ -204,6 +205,9 @@ export class LoginComponent {
 
       this.userAccessLevels.Init(response.data.userName);
       await this.userAccessLevels.RefreshAccessLevelByGroupCache(response.data.userName);
+  
+      // Reset session timeout flag after successful login
+      HeaderInterceptor.resetSessionTimeoutFlag();
   
       const lastRoute = localStorage.getItem('LastRoute');
       const url = lastRoute ? `/#${lastRoute}` : "/#/dashboard";

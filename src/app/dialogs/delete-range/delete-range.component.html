@@ -12,7 +12,7 @@
             <mat-form-field class="action-dropdown w-100 mb-2" appearance="outline">
                 <mat-label data-automation-id="filter-label">Filter</mat-label>
                 <mat-select class="employees-action" [(ngModel)]="repByDeletePayload.identity"
-                    (selectionChange)="showChange()" data-automation-id="filter-select">
+                    (selectionChange)="showChange()"  [attr.data-automation-id]="'filter-select-' + (repByDeletePayload.identity || '')">
                     <mat-option value="Batch Pick ID" data-automation-id="filter-option-batch-pick-id">Batch Pick ID</mat-option>
                     <mat-option value="Pick Location" data-automation-id="filter-option-pick-location">Pick Location</mat-option>
                     <mat-option value="Put Away Location" data-automation-id="filter-option-put-away-location">Put Away Location</mat-option>

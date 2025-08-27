@@ -120,6 +120,9 @@ export enum FilterType {
     Range = 'range'
   }
   
+export enum ErrorCode {
+    UnableToPrint = 555
+}
 export type QuantityFilterTypeUnion =
 | FilterType.Equals
 | FilterType.GreaterThan
@@ -136,3 +139,10 @@ export enum FiltrationDatatypes {
   Integer = "int",
   Boolean = "boolean"
 }
+
+export enum InputType {
+    Date = 'date',
+    Number = 'number',
+    Text = 'text',
+    }
+

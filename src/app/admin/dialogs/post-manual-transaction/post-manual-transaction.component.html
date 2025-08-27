@@ -1,20 +1,20 @@
 <div class="d-flex justify-content-between mb-4 align-items-center">
     <div class="div-width"></div>
-    <h1 class="m-0" mat-dialog-title>Post Transaction</h1>
-    <button mat-icon-button class="close-button dialog-close-button-fix" [mat-dialog-close]="false">
-        <mat-icon class="close-icon">close</mat-icon>
+    <h1 class="m-0" mat-dialog-title data-automation-id="postmt-title">Post Transaction</h1>
+    <button mat-icon-button class="close-button dialog-close-button-fix" [mat-dialog-close]="false" data-automation-id="postmt-close-btn">
+        <mat-icon class="close-icon" data-automation-id="postmt-close-icon">close</mat-icon>
     </button>
 </div>
 <div>
     <div class="w-100">
         <div class="col-12 mb-2">
-            <p class="prompt-message py-4 mb-0 text-center">
-                <b>{{message}}</b>
+            <p class="prompt-message py-4 mb-0 text-center" data-automation-id="postmt-message">
+                <b data-automation-id="postmt-message-bold">{{message}}</b>
             </p>
         </div>
         <div class="d-flex justify-content-end pt-3">
             <button mat-flat-button color="primary" class="button-primary btn-lg flex-grow-1" cdkFocusInitial
-                [mat-dialog-close]="true">Ok</button>
+                [mat-dialog-close]="true" data-automation-id="postmt-ok-btn">Ok</button>
         </div>
     </div>
 </div>

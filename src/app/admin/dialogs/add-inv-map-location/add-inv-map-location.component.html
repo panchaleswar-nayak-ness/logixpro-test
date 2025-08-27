@@ -27,7 +27,8 @@
                                     <mat-autocomplete class="br-14 otocompletestyle" autoActiveFirstOption #auto="matAutocomplete" data-automation-id="addinvmap-locname-auto">
                                         <h6 class="card-header matAutoCompHeader stickyHeader"> <span class="locationStickyHeaderStyle"> Location</span> <span class="zoneStickyHeaderStyle">Zone</span></h6>
                                         <mat-option class="" *ngFor="let option of filteredOptions | async; let i = index"
-                                                [value]="option.locationName" (onSelectionChange)="loadLocationZones(locationZoneType.Location,option,$event)" [attr.data-automation-id]="'addinvmap-locname-opt-' + i">                                            <div class="loc_option">
+                                            [value]="option.locationName" (onSelectionChange)="loadLocationZones(locationZoneType.Location,option,$event)" [attr.data-automation-id]="'addinvmap-locname-opt-' + i">
+                                            <div class="loc_option">
                                                 <span class="optionLocationNameStyle" [attr.data-automation-id]="'addinvmap-locname-span-' + i">{{option.locationName}}</span> <span class="optionZoneStyle" [attr.data-automation-id]="'addinvmap-locname-zone-span-' + i">{{option.zone}}</span>
                                             </div>
                                         </mat-option>
@@ -77,8 +78,10 @@
                                     <mat-autocomplete autoActiveFirstOption #autoZone="matAutocomplete" class="br-14 otocompletestyle" data-automation-id="addinvmap-zone-auto">
                                         <h6 class="card-header matAutoCompHeader stickyHeader"><span class="zoneStickyHeaderStyle zone-padding">Zone</span> <span class="locationStickyHeaderStyle location-padding">Location</span></h6>
                                         <mat-option *ngFor="let option of filteredOptions | async; let i = index"
-                                                 [value]="option.zone"  (onSelectionChange)="loadLocationZones(locationZoneType.Zone,option,$event)"  [attr.data-automation-id]="'addinvmap-zone-opt-' + i">                                            <div class="loc_option">
-                                                <span class="optionZoneStyle" [attr.data-automation-id]="'addinvmap-zone-span-' + i">{{option.zone}}  </span> <span class="optionLocationNameStyle" [attr.data-automation-id]="'addinvmap-zone-locname-span-' + i">{{option.locationName}}</span>                                            </div>
+                                            [value]="option.zone"  (onSelectionChange)="loadLocationZones(locationZoneType.Zone,option,$event)"  [attr.data-automation-id]="'addinvmap-zone-opt-' + i">
+                                            <div class="loc_option">
+                                                <span class="optionZoneStyle" [attr.data-automation-id]="'addinvmap-zone-span-' + i">{{option.zone}}  </span> <span class="optionLocationNameStyle" [attr.data-automation-id]="'addinvmap-zone-locname-span-' + i">{{option.locationName}}</span>
+                                            </div>
                                         </mat-option>
                                     </mat-autocomplete>
                                 </mat-form-field>

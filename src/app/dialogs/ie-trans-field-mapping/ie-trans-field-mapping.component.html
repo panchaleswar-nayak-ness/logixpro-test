@@ -12,7 +12,7 @@
 <div class="d-block d-xl-flex justify-content-between align-items-center w-100">
 <div class="d-flex">
     <mat-form-field class="action-dropdown custom-form-field-bg-white mb-2 flex-grow-1" appearance="outline">
-        <mat-select #matRef class="employees-action" data-automation-id="placeholder-select">
+        <mat-select #matRef class="employees-action" [attr.data-automation-id]="'placeholder-select-' + (matRef.value || '')">
             <mat-option value="0" data-automation-id="placeholder-option-1">Placeholder1</mat-option>
             <mat-option value="1" data-automation-id="placeholder-option-2">Placeholder2</mat-option>
             <mat-option value="2" data-automation-id="placeholder-option-3">Placeholder3</mat-option>

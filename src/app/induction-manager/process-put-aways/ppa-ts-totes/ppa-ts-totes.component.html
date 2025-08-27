@@ -22,7 +22,7 @@
                     <mat-form-field class="custom-form-field w-100" appearance="outline">
                         <mat-label data-automation-id="enter-tote-id-label">Enter Tote ID</mat-label>
                         <input (keyup.enter)="callFun('updateToteID',$event)" matInput type="text" [(ngModel)]="toteID" data-automation-id="enter-tote-id-input">
-                        <button matSuffix *ngIf="toteID" class="clear-btn" (click)="toteID=''" data-automation-id="clear-tote-id-button"><mat-icon
+                        <button matSuffix *ngIf="toteID" class="clear-btn" (click)="toteID=''" data-automation-id="clear-button"><mat-icon
                                 class="text-20 text-chrome-600">cancel</mat-icon></button>
                     </mat-form-field>
                 </div>

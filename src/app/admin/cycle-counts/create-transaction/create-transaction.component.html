@@ -3,11 +3,11 @@
       <div class="col-12">
         <mat-tab-group [(selectedIndex)]="selectedIndex" (selectedIndexChange)="onTabChange($event)">
           <mat-tab label="Create Count">
-                <app-create-counts></app-create-counts>
+                <app-create-counts data-automation-id="ct-create-counts-component"></app-create-counts>
             </mat-tab>
 
             <mat-tab label="Count Queue">
-                <app-count-queue></app-count-queue>
+                <app-count-queue data-automation-id="ct-count-queue-component"></app-count-queue>
             </mat-tab>
         </mat-tab-group>
       </div>

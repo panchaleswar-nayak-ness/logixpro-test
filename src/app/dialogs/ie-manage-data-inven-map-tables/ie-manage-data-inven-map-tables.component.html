@@ -12,7 +12,7 @@
   <div class="d-block d-xl-flex justify-content-between align-items-center w-100">
   <div class="d-flex">
       <mat-form-field class="action-dropdown custom-form-field-bg-white mb-2 flex-grow-1" appearance="outline">
-          <mat-select #matRef class="employees-action" value="0" data-automation-id="map-type-select">
+          <mat-select #matRef class="employees-action" value="0" [attr.data-automation-id]="'map-type-select-' + (matRef.value || 'unselected')">
             <mat-option value="0" data-automation-id="map-type-option-current">Current Map</mat-option>
             <mat-option value="1" data-automation-id="map-type-option-import">Import Map</mat-option>
             <mat-option value="2" data-automation-id="map-type-option-export">Export Map</mat-option>
@@ -28,7 +28,7 @@
   <div class="d-flex justify-content-end"> 
     <mat-form-field class="action-dropdown custom-form-field-bg-white mb-2 flex-grow-1" appearance="outline">
         <mat-label data-automation-id="actions-label">Actions</mat-label>
-        <mat-select #matRef class="employees-action" placeholder="Actions" data-automation-id="actions-select">
+        <mat-select #matRef class="employees-action" placeholder="Actions" [attr.data-automation-id]="'actions-select-' + (matRef.value || '')">
             <mat-option value="add_new_transaction" data-automation-id="action-option-import">Import Inventory Map Locations</mat-option>
             <mat-option value="add_new_transaction" data-automation-id="action-option-get">Get Inventory Map Locations</mat-option>
             <mat-option value="add_new_transaction" data-automation-id="action-option-delete">Delete</mat-option>

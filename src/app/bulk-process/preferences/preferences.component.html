@@ -3,8 +3,8 @@
     <div class="row g-2">
       <div class="col-xl-12">
         <div class="label-blue3 p-3 d-flex br-8 mb-2">
-          <mat-icon class="material-symbols-outlined">info</mat-icon>
-          <span class="ps-2 w-100">
+          <mat-icon class="material-symbols-outlined" data-automation-id="info-icon">info</mat-icon>
+          <span class="ps-2 w-100" data-automation-id="workstation-preferences-info">
             These settings are Workstation Preferences, changing will affect only this workstation.
           </span>
         </div>
@@ -26,10 +26,10 @@
               <div class="d-flex align-items-center justify-content-start">
                 <mat-form-field appearance="outline" class="mb-2 w-100">
     
-                  <span class="material-symbols-outlined icon-search text-chrome-600 me-2">
+                  <span class="material-symbols-outlined icon-search text-chrome-600 me-2" data-automation-id="allzones-search-icon">
                     Search
                   </span>
-                  <input matInput type="text" [(ngModel)]="allZonesFilter" placeholder="Search Zones" data-automation-id="allzones-search-inp" />
+                  <input matInput type="text" [(ngModel)]="allZonesFilter" placeholder="Search Zones" data-automation-id="allzones-search-input" />
                   <button *ngIf="allZonesFilter" matSuffix mat-icon-button aria-label="Clear" (click)="allZonesFilter=''" data-automation-id="allzones-clear-btn">
                     <mat-icon>close</mat-icon>
                   </button>
@@ -41,8 +41,8 @@
                 <ng-scrollbar class="mat-table-scrollbar scrollbar-hover-padding count-table-scrollbar" track="all">
                   <table mat-table [dataSource]="filteredAvailableZones" class="custom-table">
                     <ng-container matColumnDef="zone">
-                      <th mat-header-cell *matHeaderCellDef>Zone</th>
-                      <td mat-cell *matCellDef="let zone">
+                      <th mat-header-cell *matHeaderCellDef data-automation-id="allzones-table-header-zone">Zone</th>
+                      <td mat-cell *matCellDef="let zone; let i = index" [attr.data-automation-id]="'allzones-table-data-zone-' + i ">
                         <div class="d-flex align-items-center justify-content-between mt-2">
                           <div class="selected-zone-text w-100">
                             {{ zone.zone }}</div>
@@ -68,10 +68,10 @@
             <div class="card p-3">
               <div class="d-flex align-items-center justify-content-start">
                 <mat-form-field appearance="outline" class="mb-2 w-100">
-                  <span class="material-symbols-outlined icon-search text-chrome-600 me-2">
+                  <span class="material-symbols-outlined icon-search text-chrome-600 me-2" data-automation-id="selzones-search-icon">
                     Search
                   </span>
-                  <input matInput type="text" [(ngModel)]="selectedZonesFilter" placeholder="Search Selected Zones" data-automation-id="selzones-search-inp" />
+                  <input matInput type="text" [(ngModel)]="selectedZonesFilter" placeholder="Search Selected Zones" data-automation-id="selzones-search-input" />
                   <button *ngIf="selectedZonesFilter" matSuffix mat-icon-button aria-label="Clear"
                     (click)="selectedZonesFilter=''" data-automation-id="selzones-clear-btn">
                     <mat-icon>close</mat-icon>
@@ -85,8 +85,8 @@
                 <ng-scrollbar class="mat-table-scrollbar scrollbar-hover-padding count-table-scrollbar" track="all">
                   <table mat-table [dataSource]="filteredBulkZones" class="custom-table">
                     <ng-container matColumnDef="Zone">
-                      <th mat-header-cell *matHeaderCellDef>Selected Zone</th>
-                      <td mat-cell *matCellDef="let element; let i = index">
+                      <th mat-header-cell *matHeaderCellDef data-automation-id="selzones-table-header-zone">Selected Zone</th>
+                      <td mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'selzones-table-data-zone-' + i">
                         <div class="d-flex align-items-center justify-content-between mt-2">
                           <div class="selected-zone-text w-100">
                             {{ element.zone }}
@@ -118,12 +118,12 @@
             <mat-form-field class="action-dropdown custom-form-field-bg-white w-100" appearance="outline"
               *ngIf="companyInfo" data-automation-id="sortconf-ff">
               <mat-label data-automation-id="sortconf-lbl">Order Sort</mat-label>
-              <mat-select class="employees-action" [(ngModel)]="companyInfo.orderSort" (ngModelChange)="payload()" [disableOptionCentering]="true" data-automation-id="sortconf-sel">
+              <mat-select class="employees-action" [(ngModel)]="companyInfo.orderSort" (ngModelChange)="payload()" [disableOptionCentering]="true" [attr.data-automation-id]="'sortconf-select-' + (companyInfo.orderSort || '')">
                 <ng-container *ngFor="let item of orderSortOptions; let i = index">
-                  <mat-option [value]="item" [attr.data-automation-id]="'sortconf-opt-' + i">{{ item }}</mat-option>
+                  <mat-option [value]="item" [attr.data-automation-id]="'sortconf-option-'  + item">{{ item }}</mat-option>
                 </ng-container>
               </mat-select>
-              <span class="material-symbols-outlined icon-expand-more">expand_more</span>
+              <span class="material-symbols-outlined icon-expand-more" data-automation-id="sortconf-expand-icon">expand_more</span>
             </mat-form-field>
           </div>
         </div>

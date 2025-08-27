@@ -46,19 +46,11 @@
 
 
                 </mat-form-field>
-                
-                <div class="row px-3">
-                  <mat-label class="mb-2" data-automation-id="filter-order-label"><b>Filter Order / Item By:</b></mat-label>
-                  <mat-radio-group color="primary" [(ngModel)]="filterByNumeric" (change)="onFilterByChanged($event.value)" data-automation-id="filter-order-radio-group">
-                    <mat-radio-button class="me-3" [value]="true" data-automation-id="filter-order-numeric-radio">Numeric</mat-radio-button>
-                    <mat-radio-button [value]="false" data-automation-id="filter-order-alphanumeric-radio">Alphanumeric</mat-radio-button>
-                  </mat-radio-group>
-                </div>
               </div>
 
                 <mat-form-field class="action-dropdown" appearance="outline" data-automation-id="filter-actions-dropdown">
                   <mat-label data-automation-id="filter-actions-label">Actions</mat-label>
-                  <mat-select #matRef class="employees-action" placeholder="Actions" (selectionChange)="onFilterAction($event)" data-automation-id="filter-actions-select">
+                  <mat-select #matRef class="employees-action" placeholder="Actions" (selectionChange)="onFilterAction($event)" [attr.data-automation-id]="'filter-actions-select-' + (matRef.value || '')">
                     <mat-option value="rename" [disabled]="!isFilterAdd" data-automation-id="filter-action-rename">Rename Filter</mat-option>
                     <mat-option value="view_default" data-automation-id="filter-action-view-default">View Default</mat-option>
                     <mat-option value="set_default" [disabled]="!isFilterAdd" data-automation-id="filter-action-set-default">Set Default</mat-option>
@@ -94,7 +86,7 @@
                         <!-- Position Column -->
                         <ng-container matColumnDef="sequence">
                           <th mat-header-cell *matHeaderCellDef data-automation-id="table-header-sequence"> Sequence </th>
-                          <td mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'table-row-' + i + '-sequence-cell'">
+                          <td mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'table-row-sequence-cell-' + i">
                             <div>
                               <mat-form-field class="custom-form-field w-80" appearance="outline" [attr.data-automation-id]="'sequence-field-' + i">
                                 <input matInput type="text" maxlength="255" [(ngModel)]="element.sequence" disabled [attr.data-automation-id]="'sequence-input-' + i">
@@ -106,10 +98,10 @@
                         <!-- Name Column -->
                         <ng-container matColumnDef="field">
                           <th mat-header-cell *matHeaderCellDef data-automation-id="table-header-field"> Field </th>
-                          <td mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'table-row-' + i + '-field-cell'">
+                          <td mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'table-row-field-cell-' + i">
                             <div>
                               <mat-form-field class="custom-form-field w-160" appearance="outline" [attr.data-automation-id]="'field-dropdown-' + i" >
-                                <mat-select #matRef class="employees-action" [(ngModel)]="element.field" (ngModelChange)="onChangeFunctionsFields(element)" [attr.data-automation-id]="'field-select-' + i">
+                                <mat-select #matRef class="employees-action" [(ngModel)]="element.field" (ngModelChange)="onChangeFunctionsFields(element)" [attr.data-automation-id]="'field-select-' + element.field + '-' + i">
                                   <mat-option value="Order Number" data-automation-id="field-option-order-number">Order Number</mat-option>
                                   <mat-option value="Required Date" data-automation-id="field-option-required-date">Required Date</mat-option>
                                   <mat-option value="Priority" data-automation-id="field-option-priority">Priority</mat-option>
@@ -134,13 +126,34 @@
                           </td>
                         </ng-container>
 
+                                                <!-- Format Column -->
+                        <ng-container matColumnDef="format">
+                          <th mat-header-cell *matHeaderCellDef data-automation-id="table-header-format"> Format </th>
+                          <td mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'table-row-format-cell-' + i">
+                            <div>
+                              <mat-form-field class="custom-form-field w-90" matTooltip="A+N:Alphanumeric (treat values like A123, B5SC)&#10; 123:Numeric (treat values like 123, 456)" matTooltipClass="cart-management-multiline-tooltip" appearance="outline" [attr.data-automation-id]="'format-dropdown-' + i">
+                                <mat-select
+                                [(ngModel)]="element.format"
+                                (ngModelChange)="onFormatChange($event,element, i)"
+                                [attr.data-automation-id]="'format-select-' + i"
+                                [disabled]="isFormatDisabled(element.field)">
+                                <mat-option value="A+N" data-automation-id="format-option-an">A+N</mat-option>
+                                <mat-option value="123" data-automation-id="format-option-123">123</mat-option>
+                              </mat-select>
+                                <span matSuffix class="material-symbols-outlined icon-expand-more" [attr.data-automation-id]="'format-expand-icon-' + i">
+                                  expand_more
+                                </span>
+                              </mat-form-field>
+                            </div>
+                          </td>
+                        </ng-container>
                         <!-- Name Column -->
                         <ng-container matColumnDef="criteria">
                           <th mat-header-cell *matHeaderCellDef data-automation-id="table-header-criteria"> Criteria </th>
-                          <td mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'table-row-' + i + '-criteria-cell'">
+                          <td mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'table-row-criteria-cell-' + i">
                             <div>
                               <mat-form-field class="custom-form-field w-160" appearance="outline" [attr.data-automation-id]="'criteria-dropdown-' + i">
-                                <mat-select #matRef class="employees-action" [(ngModel)]="element.criteria" (ngModelChange)="onChangeFunctionsFields(element)" [attr.data-automation-id]="'criteria-select-' + i">
+                                <mat-select #matRef class="employees-action" [(ngModel)]="element.criteria" (ngModelChange)="onChangeFunctionsFields(element)" [attr.data-automation-id]="'criteria-select-' + element.criteria">
                                   <mat-option value="Equals" data-automation-id="criteria-option-equals">Equals</mat-option>
                                   <mat-option value="Not Equal To" data-automation-id="criteria-option-not-equal">Not Equal To</mat-option>
                                   <mat-option value="Greater Than" data-automation-id="criteria-option-greater-than">Greater Than</mat-option>
@@ -161,7 +174,7 @@
                         <!-- Name Column -->
                         <ng-container matColumnDef="value">
                           <th mat-header-cell *matHeaderCellDef data-automation-id="table-header-value"> Value </th>
-                          <td mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'table-row-' + i + '-value-cell'">
+                          <td mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'table-row-value-cell-' + i ">
                             <div>
                               <mat-form-field class="custom-form-field" appearance="outline" [attr.data-automation-id]="'value-field-' + i">
                                 <input matInput [type]="getInputType(element.field)" maxlength="255" [(ngModel)]="element.value" (ngModelChange)="onChangeFunctionsFields(element)" [attr.data-automation-id]="'value-input-' + i">
@@ -173,10 +186,10 @@
                         <!-- Name Column -->
                         <ng-container matColumnDef="andOr">
                           <th mat-header-cell *matHeaderCellDef data-automation-id="table-header-and-or"> And/Or </th>
-                          <td mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'table-row-' + i + '-and-or-cell'">
+                          <td mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'table-row-and-or-cell-' + i">
                             <div>
                               <mat-form-field class="custom-form-field w-90" appearance="outline" [attr.data-automation-id]="'and-or-dropdown-' + i" >
-                                <mat-select #matRef class="employees-action" [(ngModel)]="element.andOr" (ngModelChange)="onChangeFunctionsFields(element)" [attr.data-automation-id]="'and-or-select-' + i">
+                                <mat-select #matRef class="employees-action" [(ngModel)]="element.andOr" (ngModelChange)="onChangeFunctionsFields(element)" [attr.data-automation-id]="'and-or-select-' + element.andOr+ '-' + i">
                                   <mat-option value="And" data-automation-id="and-or-option-and">And</mat-option>
                                   <mat-option value="Or" data-automation-id="and-or-option-or">Or</mat-option>
                                 </mat-select>
@@ -190,7 +203,7 @@
 
                         <ng-container matColumnDef="actions" stickyEnd>
                           <th mat-header-cell *matHeaderCellDef class="custom-header-cell" data-automation-id="table-header-actions"></th>
-                          <td mat-cell *matCellDef="let element; let i = index" class="custom-cell" [attr.data-automation-id]="'table-row-' + i + '-actions-cell'">
+                          <td mat-cell *matCellDef="let element; let i = index" class="custom-cell" [attr.data-automation-id]="'table-row-actions-cell-' + i">
                             <div class="d-flex justify-content-end">
                               <div class="d-flex gap-12">
                                 <button mat-flat-button color="primary" class="xsm-icon-button" (click)="onSaveSingleFilter(element)" [disabled]="element.isSaved" [attr.data-automation-id]="'save-filter-button-' + i">
@@ -231,7 +244,7 @@
                         <!-- Position Column -->
                         <ng-container matColumnDef="sequence">
                           <th mat-header-cell *matHeaderCellDef data-automation-id="order-by-table-header-sequence"> Sequence </th>
-                          <td mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'order-by-table-row-' + i + '-sequence-cell'">
+                          <td mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'order-by-table-row-sequence-cell-' + i ">
                             
                               <mat-form-field class="custom-form-field w-80" appearance="outline" [attr.data-automation-id]="'order-by-sequence-field-' + i" >
                                 <input matInput type="number" min="0" #specialFeature maxlength="255" [(ngModel)]="element.sequence" (ngModelChange)="onChangeFunctionsFields(element)" (focusout)="isUniqueSeq(element)" [attr.data-automation-id]="'order-by-sequence-input-' + i">
@@ -243,11 +256,11 @@
                         <!-- Name Column -->
                         <ng-container matColumnDef="field">
                           <th mat-header-cell *matHeaderCellDef data-automation-id="order-by-table-header-field"> Field </th>
-                          <td mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'order-by-table-row-' + i + '-field-cell'">
+                          <td mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'order-by-table-row-field-cell-' + i">
                             
                               <mat-form-field class="custom-form-field w-170" appearance="outline" [attr.data-automation-id]="'order-by-field-dropdown-' + i">
 
-                                <mat-select #matRef class="employees-action" [(ngModel)]="element.field" (ngModelChange)="onChangeFunctionsFields(element)" [attr.data-automation-id]="'order-by-field-select-' + i">
+                                <mat-select #matRef class="employees-action" [(ngModel)]="element.field" (ngModelChange)="onChangeFunctionsFields(element)" [attr.data-automation-id]="'order-by-field-select-' + element.field + '-' + i">
                                   <mat-option value="Order Number">Order Number</mat-option>
                                   <mat-option value="Required Date">Required Date</mat-option>
                                   <mat-option value="Priority">Priority</mat-option>
@@ -281,10 +294,10 @@
                         <!-- Name Column -->
                         <ng-container matColumnDef="sortOrder">
                           <th mat-header-cell *matHeaderCellDef data-automation-id="order-by-table-header-sort-order"> Sort Order</th>
-                          <td mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'order-by-table-row-' + i + '-sort-order-cell'">
+                          <td mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'order-by-table-row-sort-order-cell' + i ">
                             <div>
                               <mat-form-field class="custom-form-field w-100" appearance="outline" [attr.data-automation-id]="'order-by-sort-order-field-' + i">
-                                <mat-select #matRef class="employees-action"  [(ngModel)]="element.sortOrder" (ngModelChange)="onChangeFunctionsFields(element)" [attr.data-automation-id]="'order-by-sort-order-select-' + i">
+                                <mat-select #matRef class="employees-action"  [(ngModel)]="element.sortOrder" (ngModelChange)="onChangeFunctionsFields(element)" [attr.data-automation-id]="'order-by-sort-order-select-' + element.sortOrder + '-' + i">
                                   <mat-option value="DESC" data-automation-id="sort-order-option-desc">DESC</mat-option>
                                   <mat-option value="ASC" data-automation-id="sort-order-option-asc">ASC</mat-option>
                                 </mat-select>
@@ -297,7 +310,7 @@
                         </ng-container>
                         <ng-container matColumnDef="id">
                           <th mat-header-cell *matHeaderCellDef class="d-none" data-automation-id="order-by-table-header-id"> ID</th>
-                          <td mat-cell *matCellDef="let element; let i = index" class="d-none" [attr.data-automation-id]="'order-by-table-row-' + i + '-id-cell'">
+                          <td mat-cell *matCellDef="let element; let i = index" class="d-none" [attr.data-automation-id]="'order-by-table-row-id-cell'+ i">
                             <div >
                               <mat-form-field class="custom-form-field w-100" appearance="outline" [attr.data-automation-id]="'order-by-id-field-' + i">
                                 <input matInput type="text" [(ngModel)]="element.id" [attr.data-automation-id]="'order-by-id-input-' + i">
@@ -312,7 +325,7 @@
 
                         <ng-container matColumnDef="actions" stickyEnd>
                           <th mat-header-cell *matHeaderCellDef class="custom-header-cell" data-automation-id="order-by-table-header-actions"></th>
-                          <td mat-cell *matCellDef="let element; let i = index" class="custom-cell" [attr.data-automation-id]="'order-by-table-row-' + i + '-actions-cell'">
+                          <td mat-cell *matCellDef="let element; let i = index" class="custom-cell" [attr.data-automation-id]="'order-by-table-row-actions-cell-' + i">
                             <div class="d-flex justify-content-end">
                               <div class="d-flex gap-12">
                                 <button mat-flat-button color="primary" class="xsm-icon-button" (click)="onSaveSingleOrder(element)" [disabled]="element.isSaved" [attr.data-automation-id]="'save-order-button-' + i">
@@ -361,7 +374,7 @@
                     </app-icon-heading-component>
                     <mat-form-field class="action-dropdown" appearance="outline" data-automation-id="order-actions-dropdown">
                       <mat-label data-automation-id="order-actions-label">Actions</mat-label>
-                      <mat-select #orderRef class="employees-action" placeholder="Actions" (selectionChange)="onChangeOrderAction($event.value)" data-automation-id="order-actions-select">
+                      <mat-select #orderRef class="employees-action" placeholder="Actions" (selectionChange)="onChangeOrderAction($event.value)" [attr.data-automation-id]="'order-actions-select-' + (orderRef.value || '')">
                         <mat-option value="fill_top_orders" data-automation-id="order-action-select-all">Select All</mat-option>
                         <mat-option value="unselect_all_orders" data-automation-id="order-action-unselect-all">Un-Select All Orders</mat-option>
                         <mat-option value="select_order" [disabled]="isOrderSelect" data-automation-id="order-action-select-order">Select Order</mat-option>
@@ -378,7 +391,7 @@
                         <!-- Position Column -->
                         <ng-container matColumnDef="orderno">
                           <th mat-header-cell *matHeaderCellDef data-automation-id="orders-table-header-order-number"> Order Number </th>
-                          <td mat-cell *matCellDef="let element; let i = index"  [class.selected]="element.isSelected" [attr.data-automation-id]="'orders-table-row-' + i + '-order-number-cell'">
+                          <td mat-cell *matCellDef="let element; let i = index"  [class.selected]="element.isSelected" [attr.data-automation-id]="'orders-table-row-order-number-cell-' + i">
                             <div class="pe-2">
                               {{element.orderNumber}}
                             </div>
@@ -388,7 +401,7 @@
                         <!-- Name Column -->
                         <ng-container matColumnDef="requireddate">
                           <th mat-header-cell *matHeaderCellDef data-automation-id="orders-table-header-required-date"> Required Date </th>
-                          <td mat-cell *matCellDef="let element; let i = index" [class.selected]="element.isSelected" [attr.data-automation-id]="'orders-table-row-' + i + '-required-date-cell'">
+                          <td mat-cell *matCellDef="let element; let i = index" [class.selected]="element.isSelected" [attr.data-automation-id]="'orders-table-row-required-date-cell-' + i ">
                             <div class="pe-2">
                               {{element.reqDate}}
                             </div>
@@ -397,7 +410,7 @@
                          <!-- Name Column -->
                          <ng-container matColumnDef="transactionsline">
                           <th mat-header-cell *matHeaderCellDef data-automation-id="orders-table-header-total-lines"> Total Lines </th>
-                          <td mat-cell *matCellDef="let element; let i = index" [class.selected]="element.isSelected" [attr.data-automation-id]="'orders-table-row-' + i + '-total-lines-cell'">
+                          <td mat-cell *matCellDef="let element; let i = index" [class.selected]="element.isSelected" [attr.data-automation-id]="'orders-table-row-total-lines-cell' + i">
                             <div class="pe-2">
                               {{element.otLines}}
                             </div>
@@ -407,7 +420,7 @@
                         <!-- Name Column -->
                         <ng-container matColumnDef="priority">
                           <th mat-header-cell *matHeaderCellDef data-automation-id="orders-table-header-priority"> Priority </th>
-                          <td mat-cell *matCellDef="let element; let i = index" [class.selected]="element.isSelected" [attr.data-automation-id]="'orders-table-row-' + i + '-priority-cell'">
+                          <td mat-cell *matCellDef="let element; let i = index" [class.selected]="element.isSelected" [attr.data-automation-id]="'orders-table-row-priority-cell-' + i ">
                             <div class="pe-2">
                               {{element.priority}}
                             </div>
@@ -476,7 +489,7 @@
 
                 <ng-container matColumnDef="default">
                   <th mat-header-cell *matHeaderCellDef data-automation-id="batch-by-zone-table-header-default">Default</th>
-                  <td mat-cell *matCellDef="let row; let i = index" [attr.data-automation-id]="'batch-by-zone-table-row-' + i + '-default-cell'">
+                  <td mat-cell *matCellDef="let row; let i = index" [attr.data-automation-id]="'batch-by-zone-table-row-default-cell-' + i">
                     <div class="px-2">
                       <mat-radio-button color="primary" [checked]="row.defaultZone" (change)="onSelectBatchZone(row)" [attr.data-automation-id]="'batch-by-zone-default-radio-' + i"></mat-radio-button>
                     </div>
@@ -486,7 +499,7 @@
                 <!-- Position Column -->
                 <ng-container matColumnDef="zone">
                   <th mat-header-cell *matHeaderCellDef data-automation-id="batch-by-zone-table-header-zone"> Zone </th>
-                  <td mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'batch-by-zone-table-row-' + i + '-zone-cell'">
+                  <td mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'batch-by-zone-table-row-zone-cell-' + i">
                     <div class="pe-2">
                       <mat-form-field class="custom-form-field w-100" appearance="outline" [attr.data-automation-id]="'batch-by-zone-zone-field-' + i">
                         <input matInput type="text" #specialFeature maxlength="255" [(ngModel)]="element.zone" [attr.data-automation-id]="'batch-by-zone-zone-input-' + i">
@@ -498,7 +511,7 @@
                 <!-- Name Column -->
                 <ng-container matColumnDef="batchtype">
                   <th mat-header-cell *matHeaderCellDef data-automation-id="batch-by-zone-table-header-batch-type"> Batch Type </th>
-                  <td mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'batch-by-zone-table-row-' + i + '-batch-type-cell'">
+                  <td mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'batch-by-zone-table-row-batch-type-cell-' + i">
                     <div class="pe-2">
                       <mat-form-field class="custom-form-field w-100" appearance="outline" [attr.data-automation-id]="'batch-by-zone-batch-type-field-' + i">
 
@@ -511,7 +524,7 @@
                 <!-- Name Column -->
                 <ng-container matColumnDef="totalorders">
                   <th mat-header-cell *matHeaderCellDef data-automation-id="batch-by-zone-table-header-total-orders"> Total Orders </th>
-                  <td mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'batch-by-zone-table-row-' + i + '-total-orders-cell'">
+                  <td mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'batch-by-zone-table-row-total-orders-cell-' + i">
                     <div class="pe-2">
                       <mat-form-field class="custom-form-field w-100" appearance="outline" [attr.data-automation-id]="'batch-by-zone-total-orders-field-' + i">
 
@@ -523,7 +536,7 @@
                 <!-- Name Column -->
                 <ng-container matColumnDef="totallocations">
                   <th mat-header-cell *matHeaderCellDef data-automation-id="batch-by-zone-table-header-total-locations"> Total Locations </th>
-                  <td mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'batch-by-zone-table-row-' + i + '-total-locations-cell'">
+                  <td mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'batch-by-zone-table-row-total-locations-cell-' + i">
                     <div class="pe-2">
                       <mat-form-field class="custom-form-field w-100" appearance="outline" [attr.data-automation-id]="'batch-by-zone-total-locations-field-' + i">
 
@@ -535,7 +548,7 @@
 
                 <ng-container matColumnDef="actions">
                   <th mat-header-cell *matHeaderCellDef data-automation-id="batch-by-zone-table-header-actions"></th>
-                  <td mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'batch-by-zone-table-row-' + i + '-actions-cell'">
+                  <td mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'batch-by-zone-table-row-actions-cell-' + i">
                     <div class="d-flex justify-content-end">
                       <button mat-icon-button [matMenuTriggerFor]="appMenu" aria-label="" class="circle-icon-o"
                         appearance="outline" [attr.data-automation-id]="'batch-by-zone-actions-button-' + i">
@@ -585,7 +598,7 @@
                     </app-icon-heading-component>
                     <mat-form-field class="action-dropdown" appearance="outline" data-automation-id="order-actions-dropdown">
                       <mat-label data-automation-id="order-actions-label">Actions</mat-label>
-                      <mat-select #orderZoneRef class="employees-action" placeholder="Actions" (selectionChange)="onChangeOrderActionZone($event.value)" data-automation-id="order-actions-select">
+                      <mat-select #orderZoneRef class="employees-action" placeholder="Actions" (selectionChange)="onChangeOrderActionZone($event.value)" [attr.data-automation-id]="'order-actions-select-' + (orderZoneRef.value || '')">
                         <mat-option value="fill_top_orders" data-automation-id="order-action-select-all">Select All</mat-option>
                         <mat-option value="unselect_all_orders" data-automation-id="order-action-unselect-all">Un-Select All Orders</mat-option>
                         <mat-option value="select_order" [disabled]="isOrderSelectZone" data-automation-id="order-action-select-order">Select Order</mat-option>
@@ -602,7 +615,7 @@
                         <!-- Position Column -->
                         <ng-container matColumnDef="orderno">
                           <th mat-header-cell *matHeaderCellDef data-automation-id="orders-table-header-order-number"> Order Number </th>
-                          <td mat-cell *matCellDef="let element"  [class.selected]="element.isSelected" data-automation-id="orders-table-row-order-number-cell">
+                          <td mat-cell *matCellDef="let element; let i = index"  [class.selected]="element.isSelected" [attr.data-automation-id]="'orders-table-row-order-number-cell-' + i">
                               {{element.orderNumber}}
                           </td>
                         </ng-container>
@@ -610,14 +623,14 @@
                         <!-- Name Column -->
                         <ng-container matColumnDef="requireddate">
                           <th mat-header-cell *matHeaderCellDef data-automation-id="orders-table-header-required-date"> Required Date </th>
-                          <td mat-cell *matCellDef="let element" [class.selected]="element.isSelected" data-automation-id="orders-table-row-required-date-cell">
+                          <td mat-cell *matCellDef="let element; let i = index" [class.selected]="element.isSelected" [attr.data-automation-id]="'orders-table-row-required-date-cell-' + i">
                               {{element.reqDate}}
                           </td>
                         </ng-container>
 
                         <ng-container matColumnDef="transactionsline">
                           <th mat-header-cell *matHeaderCellDef data-automation-id="orders-table-header-total-lines"> Total Lines</th>
-                          <td mat-cell *matCellDef="let element" [class.selected]="element.isSelected" data-automation-id="orders-table-row-total-lines-cell">
+                          <td mat-cell *matCellDef="let element; let i = index" [class.selected]="element.isSelected" [attr.data-automation-id]="'orders-table-row-total-lines-cell-' + i">
                             {{element.otLines}}
                           </td>
                         </ng-container>
@@ -625,7 +638,7 @@
                         <!-- Name Column -->
                         <ng-container matColumnDef="priority">
                           <th mat-header-cell *matHeaderCellDef data-automation-id="orders-table-header-priority"> Priority </th>
-                          <td mat-cell *matCellDef="let element" [class.selected]="element.isSelected" data-automation-id="orders-table-row-priority-cell">
+                          <td mat-cell *matCellDef="let element; let i = index" [class.selected]="element.isSelected" [attr.data-automation-id]="'orders-table-row-priority-cell-' + i">
                               {{element.priority}}
                           </td>
                         </ng-container>
@@ -655,10 +668,10 @@
 
                         <ng-container *ngFor="let column of filterBatchTransColumns" [cdkColumnDef]="column.columnDef">
                           <th mat-header-cell *cdkHeaderCellDef mat-sort-header data-automation-id="transactions-table-header-column-header">{{ column.header }}</th>
-                          <td mat-cell *cdkCellDef="let row"
+                          <td mat-cell *cdkCellDef="let row; let i = index"
                               [matTooltip]="column.cell(row)"
                               matTooltipPosition="above"
-                              [matTooltipDisabled]="isTooltipDisabled(column.cell(row))" data-automation-id="transactions-table-row-cell">
+                              [matTooltipDisabled]="isTooltipDisabled(column.cell(row))" [attr.data-automation-id]="'transactions-table-row-cell-'+column.columnDef+'-'+ i">
                             {{ column.cell(row) }}
                           </td>
                         </ng-container>

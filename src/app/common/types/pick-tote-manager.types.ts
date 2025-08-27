@@ -7,11 +7,13 @@ export type SavedFilterChangeEvent = {
 export type FilterData = {
   sequence: number;
   field: string;
+  format: string;
   criteria: string;
   value: string;
   andOr: string;
   isSaved: boolean;
   is_db?: boolean;
+  isNumericFormat?: boolean;
 };
 
 export type OrderData = {

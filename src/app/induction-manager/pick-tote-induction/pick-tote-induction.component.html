@@ -3,14 +3,14 @@
     <div class="d-flex justify-content-between align-items-center mb-3">
       <app-icon-heading-component
         heading="Pick Tote Induction"
-        icon="conveyor_belt"
+        icon="conveyor_belt" [automationId]="'heading-pick-tote-induction'"
       >
       </app-icon-heading-component>
       <button
         mat-flat-button
         color="primary"
         class="primary-button btn-regular mb-xl-0 matFlatButton-style"
-        (click)="refreshOrders(); refreshSpecificinput()"
+        (click)="refreshOrders(); refreshSpecificinput()"  data-automation-id="button-refresh-orders"
       >
         Refresh Orders
       </button>
@@ -22,20 +22,20 @@
             <div class="col-lg-12">
               <mat-form-field
                 class="action-dropdown w-100"
-                appearance="outline"
+                appearance="outline" data-automation-id="form-field-zone-group"
               >
-                <mat-label>Zone Group</mat-label>
+                <mat-label data-automation-id="label-zone-group">Zone Group</mat-label>
                 <mat-select
                   #zoneGroupSelect
-                  (selectionChange)="showChange($event.value)"
+                  (selectionChange)="showChange($event.value)"  data-automation-id="select-zone-group"
                 >
-                  <ng-container *ngFor="let item of zoneGroupingsList">
-                    <mat-option [value]="item.Id">{{
+                  <ng-container *ngFor="let item of zoneGroupingsList; let i = index">
+                    <mat-option [value]="item.Id" [attr.data-automation-id]="'option-zone-group-' + item.ZoneGroup">{{
                       item.ZoneGroup
                     }}</mat-option>
                   </ng-container>
                 </mat-select>
-                <span class="material-symbols-outlined icon-expand-more">
+                <span class="material-symbols-outlined icon-expand-more" data-automation-id="icon-expand-more-zone-group">
                   expand_more
                 </span>
               </mat-form-field>
@@ -44,9 +44,9 @@
               <mat-form-field
                 class="custom-form-field w-100"
                 appearance="outline"
-                (click)="openSelectZones()"
+                (click)="openSelectZones()"   data-automation-id="form-field-selected-zones"
               >
-                <mat-label>Selected Zones from Group</mat-label>
+                <mat-label data-automation-id="label-selected-zones">Selected Zones from Group</mat-label>
                 <input
                   matInput
                   type="text"
@@ -54,10 +54,10 @@
                   [(ngModel)]="selectedZones"
                   [ngModel]="getDisplayZones()"
                   matTooltip="{{ selectedZones }}"
-                  matTooltipPosition="above"
+                  matTooltipPosition="above"   [attr.data-automation-id]="'input-selected-zones-' + selectedZones"
                 />
                 <span matSuffix>
-                  <mat-icon class="unfold_more">unfold_more</mat-icon>
+                  <mat-icon class="unfold_more" data-automation-id="icon-unfold-more-selected-zones">unfold_more</mat-icon>
                 </span>
               </mat-form-field>
             </div>
@@ -67,16 +67,16 @@
       <div class="col-lg-8">
         <div class="card p-3">
           <div class="mb-2">
-            <mat-label><b>Specific Order Induction</b></mat-label>
-            <span class="label label-gray px-2 f-14 mb-1 mx-2">Start Zone:&nbsp;<b>{{ startZone || "-" }}</b></span>
+            <mat-label data-automation-id="label-specific-order-induction"><b>Specific Order Induction</b></mat-label>
+            <span class="label label-gray px-2 f-14 mb-1 mx-2" data-automation-id="label-start-zone">Start Zone:&nbsp;<b>{{ startZone || "-" }}</b></span>
           </div>
           <div class="row g-2">
             <div class="col-lg-4">
               <mat-form-field
                 class="custom-form-field w-100 col-6"
-                appearance="outline"
+                appearance="outline" data-automation-id="form-field-order-number"
               >
-                <mat-label>Enter Order</mat-label>
+                <mat-label data-automation-id="label-order-number">Enter Order</mat-label>
                 <input
                   #orderNumberInput
                   matInput
@@ -84,16 +84,16 @@
                   (input)="orderNumber = orderNumber.trim()"
                   [(ngModel)]="orderNumber"
                   (keyup.enter)="getTransactionQty()"
-                  (blur)="getTransactionQty()"
+                  (blur)="getTransactionQty()" data-automation-id="input-order-number"
                 />
               </mat-form-field>
             </div>
             <div class="col-lg-4">
               <mat-form-field
                 class="custom-form-field w-100 col-6"
-                appearance="outline"
+                appearance="outline"  data-automation-id="form-field-tote-id"
               >
-                <mat-label>Enter Tote</mat-label>
+                <mat-label data-automation-id="label-tote-id">Enter Tote</mat-label>
                 <input
                   #toteIdInput
                   matInput
@@ -101,30 +101,30 @@
                   type="text"
                   value=""
                   [(ngModel)]="toteId"
-                  (keyup.enter)="onEnter()"
+                  (keyup.enter)="onEnter()" data-automation-id="input-tote-id"
                 />
               </mat-form-field>
             </div>
             <div class="col-lg-4">
               <mat-form-field
                 class="custom-form-field w-100 col-6"
-                appearance="outline"
+                appearance="outline" data-automation-id="form-field-transaction-quantity"
               >
-                <mat-label>Transaction Quantity</mat-label>
+                <mat-label data-automation-id="label-transaction-quantity">Transaction Quantity</mat-label>
                 <input
                   matInput
                   type="number"
                   [(ngModel)]="transactionQty"
-                  disabled
+                  disabled data-automation-id="input-transaction-quantity"
                 />
               </mat-form-field>
             </div>
-            <div class="col-lg-6">
+            <div class="col-lg-6" data-automation-id="label-split-toggle">
               Split
               <mat-slide-toggle
                 class="mx-4"
                 color="primary"
-                [(ngModel)]="splitToggle"
+                [(ngModel)]="splitToggle" data-automation-id="toggle-split"
               >
               </mat-slide-toggle>
             </div>
@@ -135,8 +135,8 @@
   </mat-card-content>
 </mat-card>
 
-<mat-tab-group dynamicHeight #tabGroup (selectedTabChange)="onTabClick($event)">
-  <mat-tab label="Non Super Batch Orders">
+<mat-tab-group dynamicHeight #tabGroup (selectedTabChange)="onTabClick($event)" data-automation-id="tab-group-pick-tote-induction">
+  <mat-tab label="Non Super Batch Orders" data-automation-id="tab-non-super-batch-orders">
     <app-non-super-batch-orders
       [specificInductionSuccess]="specificInductionSuccess"
       [transactionQtyRecieved]="transactionQty"
@@ -145,7 +145,7 @@
       [pickToteSuppressInfoMessages]="pickToteSuppressInfoMessages"
     ></app-non-super-batch-orders>
   </mat-tab>
-  <mat-tab label="Super Batch Orders">
+  <mat-tab label="Super Batch Orders" data-automation-id="tab-super-batch-orders">
     <app-super-batch-orders
       [zones]="zoneList"
       (someEvent)="clearSuperBatchFilters($event)"

@@ -17,7 +17,7 @@
 
 
 <button color="primary" class="mat-focus-indicator w-100 btn-lg mat-flat-button mat-button-base mat-primary mb-3 count-btn-primary"
-  ng-reflect-color="primary" ng-reflect-disabled="false" (click)="quarantineDialog()"><span
+  ng-reflect-color="primary" ng-reflect-disabled="false" (click)="quarantineDialog()" data-automation-id="location-assignment-button"><span
     class="mat-button-wrapper"> Location Assignment
   </span><span matripple="" class="mat-ripple mat-button-ripple" ng-reflect-disabled="false" ng-reflect-centered="false"
     ng-reflect-trigger="[object HTMLButtonElement]"></span><span class="mat-button-focus-overlay"></span></button>
@@ -26,15 +26,15 @@
 
   <div class="d-flex flex-column justify-content-center px-2 py-4">
     <div class="d-flex justify-content-between">
-      <h2 class="p-0 me-2">Mark Selected Orders for Pick Location Assignment</h2>
-      <button mat-icon-button class="close-button br-14" [mat-dialog-close]="true">
+      <h2 class="p-0 me-2" data-automation-id="location-assignment-dialog-heading">Mark Selected Orders for Pick Location Assignment</h2>
+      <button mat-icon-button class="close-button br-14" [mat-dialog-close]="true" data-automation-id="close-button">
         <mat-icon class="close-icon">close</mat-icon>
       </button>
     </div>
     <div>
-      <p class="bold text-tritary-900 mb-4 pt-4">Do you want to mark these orders for location assignment?</p>
+      <p class="bold text-tritary-900 mb-4 pt-4" data-automation-id="confirmation-message">Do you want to mark these orders for location assignment?</p>
       <div class="d-flex justify-content-end text-center">
-        <button mat-flat-button color="primary" class="custom-btn" (click)="locationAssignment()">
+        <button mat-flat-button color="primary" class="custom-btn" (click)="locationAssignment()" data-automation-id="continue-button">
           Continue
         </button>
       </div>
