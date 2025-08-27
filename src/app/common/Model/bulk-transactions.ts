@@ -456,3 +456,12 @@ export interface MatTableOrderLine extends OrderLineResource {
     selected?: boolean;
     NextToteID?: number;
 }
+
+export class RemoveOrderLinesRequest {
+    orderNumbers: string[];
+}
+
+export interface RemoveOrderLinesResponse {
+    isSuccess: boolean;
+    errorMessages: string[];
+}

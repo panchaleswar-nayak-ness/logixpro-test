@@ -753,8 +753,16 @@ export class PrintReports {
 }
 
 export class ConsoleErrorMessages {
-    static readonly ErrorPrintingReprocessReport = "Error occurred while printing reprocess report after allocation:"
-    static readonly ErrorFindingAssignedOrderLines = "Error occurred while finding order lines assigned locations:"
+  static readonly ErrorPrintingReprocessReport = "Error occurred while printing reprocess report after allocation:"
+  static readonly ErrorFindingAssignedOrderLines = "Error occurred while finding order lines assigned locations:"
+}
+
+export class ApiErrorMessages {
+  static readonly UnexpectedResponseStatus = "Unexpected response status"
+  static readonly FailedToRemoveOrderLines = "Failed to remove order lines"
+  static readonly FailedToRemoveOrderLinesFromTote = "Failed to remove order lines from tote"
+  static readonly ErrorRemovingOrderLinesFromTote = "Error removing order lines from tote"
+  static readonly ErrorSubmittingCaseWiseOrders = "Error submitting case-wise orders"
 }
 export const PickToteFilterpreferences = {
     preferences: "PickToteFilterPrefs",

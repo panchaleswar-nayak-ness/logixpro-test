@@ -5,11 +5,11 @@ import {AuthService} from 'src/app/common/init/auth.service';
 import {IAdminApiService} from 'src/app/common/services/admin-api/admin-api-interface';
 import {AdminApiService} from 'src/app/common/services/admin-api/admin-api.service';
 import {GlobalService} from 'src/app/common/services/global.service';
-import {DialogConstants, Style, ToasterMessages, ToasterTitle, ToasterType} from 'src/app/common/constants/strings.constants';
+import {DialogConstants, Style, ToasterMessages, ToasterTitle, ToasterType, ApiErrorMessages} from 'src/app/common/constants/strings.constants';
 import {IBulkProcessApiService} from 'src/app/common/services/bulk-process-api/bulk-process-api-interface';
 import {BulkProcessApiService} from 'src/app/common/services/bulk-process-api/bulk-process-api.service';
 import {HttpStatusCode} from '@angular/common/http';
-import {AssignToteToOrderDto} from "../../../common/Model/bulk-transactions";
+import {AssignToteToOrderDto, RemoveOrderLinesRequest, RemoveOrderLinesResponse} from "../../../common/Model/bulk-transactions";
 import { PrintApiService } from 'src/app/common/services/print-api/print-api.service';
 import { ApiResult } from 'src/app/common/types/CommonTypes';
 import { PartialToteIdResponse } from 'src/app/common/Model/bulk-transactions';
@@ -126,7 +126,9 @@ export class BmToteidEntryComponent implements OnInit {
 
   submitOrder() {
     if(this.data.rawOrderList != null){
-      this.submitCaseWiseOrders();
+      this.submitCaseWiseOrders().catch(error => {
+        this.global.ShowToastr(ToasterType.Error, ApiErrorMessages.ErrorSubmittingCaseWiseOrders, ToasterTitle.Error);
+      });
       return;
     }
     if (this.selectedList.find(x => x.IsTote == true)) {
@@ -166,25 +168,48 @@ export class BmToteidEntryComponent implements OnInit {
     }
   }
 
-  submitCaseWiseOrders() {
+  async removeOrderLinesFromTote(): Promise<boolean> {
+    try {
+      const uniqueOrderNumbers = [...new Set(this.data.rawOrderList.map((item: any) => item.orderNumber))].filter((orderNumber): orderNumber is string => typeof orderNumber === 'string');
+      const request: RemoveOrderLinesRequest = {
+        orderNumbers: uniqueOrderNumbers
+      };
+      const result: RemoveOrderLinesResponse = await this.iBulkProcessApiService.RemoveOrderLinesFromTote(request);
+      if (result.isSuccess) {
+        return true;
+      } else {
+        // Display all error messages or fallback to default message
+        const errorMessage = result.errorMessages && result.errorMessages.length > 0 
+          ? result.errorMessages.join(', ') 
+          : ApiErrorMessages.FailedToRemoveOrderLinesFromTote;
+        this.global.ShowToastr(ToasterType.Error, errorMessage, ToasterTitle.Error);
+        return false;
+      }
+    } catch (error) {
+      this.global.ShowToastr(ToasterType.Error, ApiErrorMessages.ErrorRemovingOrderLinesFromTote, ToasterTitle.Error);
+      return false;
+    }
+  }
+
+  async submitCaseWiseOrders() {
     // Ensure rawOrderList is valid before proceeding
     if (!this.data.rawOrderList || !Array.isArray(this.data.rawOrderList) || this.data.rawOrderList.length === 0) {
       this.global.ShowToastr(ToasterType.Error, 'No valid order data to submit', ToasterTitle.Error);
       return;
     }
 
+    // First, remove order lines from tote
+    const removeSuccess = await this.removeOrderLinesFromTote();
+    if (!removeSuccess) {
+      return; // Stop execution if removal failed
+    }
+
     this.iBulkProcessApiService.SubmitCaseWiseOrders(this.data.rawOrderList)
       .then((result: ApiResult<PartialToteIdResponse[]>) => {
         if (result.isSuccess) {
           this.global.ShowToastr(ToasterType.Success, ToasterMessages.RecordUpdatedSuccessful, ToasterTitle.Success);
-          // Transform the data to match what the parent component expects
-          // Based on your API response, it's returning a flat array directly
-          // So we'll use result.value which should have the correct IDs
           const apiResponseData = result.value || [];
-          
-          // Group by orderNumber and create proper orderLines structure
           const orderGroups = new Map();
-          
           apiResponseData.forEach(item => {
             const orderNumber = item.orderNumber;
             if (!orderGroups.has(orderNumber)) {
@@ -195,14 +220,10 @@ export class BmToteidEntryComponent implements OnInit {
                 orderLines: []
               });
             }
-            
-            // Add this item as an order line with all properties from API response
             orderGroups.get(orderNumber).orderLines.push({
               ...item // This should include the correct id from API response
             });
           });
-          
-          // Convert the Map to an array
           const transformedData = Array.from(orderGroups.values());
           this.dialogRef.close(transformedData);
         } else {

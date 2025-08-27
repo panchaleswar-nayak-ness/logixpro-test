@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/internal/Observable';
 import { BaseService } from './base-service.service';
 import { AuthService } from '../init/auth.service';
-import { AssignToteToOrderDto, NextToteId, PartialToteIdRequest, PartialToteIdResponse } from '../Model/bulk-transactions';
+import { AssignToteToOrderDto, NextToteId, PartialToteIdRequest, PartialToteIdResponse, RemoveOrderLinesRequest, RemoveOrderLinesResponse } from '../Model/bulk-transactions';
 import {
   MarkoutBlossomTotenRequest,
   MarkoutCompleteTransactionRequest,
@@ -18,6 +18,7 @@ import { DevicePreferenceRequest, DevicePreferencesTableRequest } from '../inter
 import { UpdateEmergencyRequest } from '../interface/admin/opentransaction.interfaces';
 import { ApiResponse, ApiResponseData, ApiResult } from '../types/CommonTypes';
 import { PrintOrdersPayload } from '../interface/bulk-transactions/bulk-pick';
+import { ApiErrorMessages } from '../constants/strings.constants';
 
 
 
@@ -2444,5 +2445,24 @@ public ResolveMarkoutTote(toteId: number) {
     const response = await this.ApiBase.PostAsync<PartialToteIdResponse[]>('/totes/submitcasewiseorders', request);
     return (response.body as unknown as ApiResult<PartialToteIdResponse[]>) || { isSuccess: false, value: null, errorMessage: 'No response received' };
   }
-  
+
+  public async RemoveOrderLinesFromTote(request: RemoveOrderLinesRequest): Promise<RemoveOrderLinesResponse> {
+    try {
+      const response = await this.ApiBase.DeleteAsync('/api/totes/removeorderlines', request);
+      // 204 No Content means success for DELETE operations
+      if (response.status === 204) {
+        return { isSuccess: true, errorMessages: [] };
+      }
+      // For any other status, treat as error
+      return { isSuccess: false, errorMessages: [ApiErrorMessages.UnexpectedResponseStatus] };
+    } catch (error: any) {
+      // If error has structured error messages, use them
+      if (error?.error?.errorMessages && Array.isArray(error.error.errorMessages)) {
+        return { isSuccess: false, errorMessages: error.error.errorMessages };
+      }
+      // Fallback error message
+      return { isSuccess: false, errorMessages: [ApiErrorMessages.FailedToRemoveOrderLines] };
+    }
+  }
+
 }
