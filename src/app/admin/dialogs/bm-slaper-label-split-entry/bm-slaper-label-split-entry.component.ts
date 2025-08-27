@@ -242,9 +242,6 @@ export class BmSlaperLabelSplitEntryComponent implements OnInit {
           // Process the response to group records by order number
           const processedResponse = this.processApiResponse(response as unknown as SlapperLabelResponse[]);
           
-          // Close the current dialog before opening the new one
-          this.dialogRef.close();
-          
           // Open the BmToteidEntryComponent modal with the processed response data
           const dialogRef = this.global.OpenDialog(BmToteidEntryComponent, {
             height: DialogConstants.auto,
@@ -265,8 +262,11 @@ export class BmSlaperLabelSplitEntryComponent implements OnInit {
 
           dialogRef.afterClosed().subscribe((result) => {
             if (result) {
-              // Handle the result if needed
-              this.global.ShowToastr(ToasterType.Success, 'Tote IDs created successfully', ToasterTitle.Success);
+              // Pass the result from BmToteidEntryComponent back to BulkTransactionComponent
+              this.dialogRef.close(result);
+            } else {
+              // If no result or cancelled, close with false
+              this.dialogRef.close(false);
             }
           });
         } else {

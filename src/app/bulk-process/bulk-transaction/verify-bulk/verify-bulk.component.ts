@@ -45,6 +45,7 @@ export class VerifyBulkComponent implements OnInit {
   @Input() orderLines;
   @Input() Prefernces: BulkPreferences;
   @Input() bulkTransactionType: string;
+  @Input() isSlapperLabelFlow: boolean = false; // New flag to identify slapper label flow
   IsLoading: boolean = true;
   OldSelectedList: any = [];
   taskCompleteNewRequest: TaskCompleteNewRequest[] = [];
@@ -111,16 +112,41 @@ export class VerifyBulkComponent implements OnInit {
   }
 
   ngAfterViewInit() {
-    const map = new Map();
-    this.orderLines.forEach((obj: { itemNumber: any; }) => {
-      if (!map.has(obj.itemNumber)) {
-        map.set(obj.itemNumber, obj);
+    console.log('VerifyBulkComponent received orderLines:', this.orderLines);
+    
+    // Only apply new data transformation logic if we're in the slapper label flow
+    if (this.isSlapperLabelFlow) {
+      // Check if we have nested structure (orderLines array) or flat structure
+      let flatOrderLines: any[] = [];
+      
+      if (this.orderLines && this.orderLines.length > 0 && this.orderLines[0].orderLines) {
+        // Nested structure - flatten the orderLines arrays
+        this.orderLines.forEach((order: any) => {
+          if (order.orderLines && order.orderLines.length > 0) {
+            flatOrderLines.push(...order.orderLines);
+          }
+        });
+      } else {
+        // Flat structure - use as is
+        flatOrderLines = this.orderLines;
       }
-    });
-    this.OldSelectedList = Array.from(map.values());
-    this.orderLines = new MatTableDataSource(
-      this.orderLines
-    );
+      
+      // Create search list for filtering (deduplicate by itemNumber for search suggestions)
+      const map = new Map();
+      flatOrderLines.forEach((obj: { itemNumber: any; }) => {
+        if (!map.has(obj.itemNumber)) {
+          map.set(obj.itemNumber, obj);
+        }
+      });
+      this.OldSelectedList = Array.from(map.values());
+      
+      // Use the flat order lines for the table (no deduplication)
+      this.orderLines = new MatTableDataSource(flatOrderLines);
+    } else {
+      // Preserve existing functionality - use orderLines as is
+      this.OldSelectedList = this.orderLines;
+    }
+    
     this.orderLines.paginator = this.paginator;
     this.getWorkstationSetupInfo();
     setTimeout(() => {

@@ -49,6 +49,7 @@ export class BulkTransactionComponent implements OnInit {
   isZoneSelected: boolean = false;
   generalSetupInfo: GeneralSetup;
   isBatchIdGenerationEnabled:boolean=false;
+  isSlapperLabelFlow: boolean = false; // Track when we're in slapper label flow
   public iBulkProcessApiService: IBulkProcessApiService;
   public iAdminApiService: IAdminApiService;
   public iPrintApiService: IPrintApiService;
@@ -446,6 +447,8 @@ export class BulkTransactionComponent implements OnInit {
         this.bulkOrderBatchToteQty();
       }
       localStorage.removeItem(localStorageKeys.VerifyBulks);
+      // Reset the slapper label flow flag when closing verify-bulk
+      this.isSlapperLabelFlow = false;
     }
     this.verifyBulks = !this.verifyBulks;
     localStorage.setItem(localStorageKeys.VerifyBulks, this.verifyBulks.toString());
@@ -455,6 +458,8 @@ export class BulkTransactionComponent implements OnInit {
     this.view = event;
     this.selectedOrders = [];
     this.status.orderLinesCount = 0;
+    // Reset slapper label flow flag when view changes
+    this.isSlapperLabelFlow = false;
     if (event == BulkTransactionView.BATCH) {
       this.bulkBatchesObservable().subscribe((res) => this.orders = res);
       this.displayedColumns = BATCH_DISPLAYED_COLUMNS;
@@ -482,6 +487,8 @@ export class BulkTransactionComponent implements OnInit {
   selectOrder(event) {
     event.toteNumber = this.selectedOrders.length + 1;
     this.orderLines = [];
+    // Reset slapper label flow flag when new orders are selected
+    this.isSlapperLabelFlow = false;
     if (this.view == BulkTransactionView.BATCH) {
       this.selectedOrders = event.orders;
       this.orders = this.orders.filter((element) => element.batchId != event.batchId);
@@ -547,6 +554,7 @@ export class BulkTransactionComponent implements OnInit {
   }
 
   OpenSlaperLabelNextToteId() {
+    this.isSlapperLabelFlow = true; // Set flag to indicate we're in slapper label flow
     const dialogRefTote = this.global.OpenDialog(BmSlaperLabelSplitEntryComponent, {
       height: DialogConstants.auto,
       width: Style.w990px,
@@ -562,21 +570,27 @@ export class BulkTransactionComponent implements OnInit {
       }
     });
     dialogRefTote.afterClosed().subscribe((result) => {
-      // if (result.length > 0) {
-      //   this.selectedOrders = result;
-      //   this.selectedOrders.forEach((order) => {
-      //     order.orderLines.forEach((orderLine) => {
-      //       orderLine.toteId = order.toteId;
-      //     });
-      //   });
-      //   this.verifyBulks = !this.verifyBulks;
-      //   localStorage.setItem(localStorageKeys.VerifyBulks, this.verifyBulks.toString());
-      // }
+      if (result && result.length > 0) {
+        this.selectedOrders = result;
+        // Clear orderLines and rebuild it from the nested structure
+        this.orderLines = [];
+        this.selectedOrders.forEach((order) => {
+          order.orderLines.forEach((orderLine) => {
+            orderLine.toteId = orderLine.toteId;
+          });
+          // Add all order lines to the flat orderLines array
+          this.orderLines = this.orderLines.concat(order.orderLines);
+        });
+        this.verifyBulks = !this.verifyBulks;
+        localStorage.setItem(localStorageKeys.VerifyBulks, this.verifyBulks.toString());
+      }
     });
   }
 
   removeOrder(event: OrderResponse | TotesResponse | BatchesResponse) {
     this.orderLines = [];
+    // Reset slapper label flow flag when orders are removed
+    this.isSlapperLabelFlow = false;
   
     const index = this.originalOrders.findIndex(x => x === event);
     this.orders.splice(index, 0, event);
@@ -616,6 +630,8 @@ export class BulkTransactionComponent implements OnInit {
     this.selectedOrders.forEach((element, index) => { element.toteNumber = index + 1; this.status.orderLinesCount = this.status.orderLinesCount + element.lineCount; this.orderLines = this.orderLines.concat(element.orderLines); });
     this.orderLines = this.sortByLocation(this.orderLines);
     this.orders = [];
+    // Reset slapper label flow flag when new orders are appended
+    this.isSlapperLabelFlow = false;
   }
 
   getworkstationbulkzone() {
@@ -636,6 +652,8 @@ export class BulkTransactionComponent implements OnInit {
     this.batchSeleted = false;
     this.status.orderLinesCount = 0;
     this.orderLines = [];
+    // Reset slapper label flow flag when all orders are removed
+    this.isSlapperLabelFlow = false;
   }
 
   async printDetailList() {

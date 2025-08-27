@@ -177,14 +177,33 @@ export class BmToteidEntryComponent implements OnInit {
       .then((result: ApiResult<PartialToteIdResponse[]>) => {
         if (result.isSuccess) {
           this.global.ShowToastr(ToasterType.Success, ToasterMessages.RecordUpdatedSuccessful, ToasterTitle.Success);
-          
           // Transform the data to match what the parent component expects
-          const transformedData = this.data.rawOrderList.map(item => ({
-            ...item,
-            toteId: item.toteID, // Map toteID to toteId for parent component compatibility
-            orderLines: item.orderLines || []
-          }));
+          // Based on your API response, it's returning a flat array directly
+          // So we'll use result.value which should have the correct IDs
+          const apiResponseData = result.value || [];
           
+          // Group by orderNumber and create proper orderLines structure
+          const orderGroups = new Map();
+          
+          apiResponseData.forEach(item => {
+            const orderNumber = item.orderNumber;
+            if (!orderGroups.has(orderNumber)) {
+              orderGroups.set(orderNumber, {
+                orderNumber: orderNumber,
+                toteId: item.toteID, // Use toteID from API response
+                toteNumber: 1, // Default tote number
+                orderLines: []
+              });
+            }
+            
+            // Add this item as an order line with all properties from API response
+            orderGroups.get(orderNumber).orderLines.push({
+              ...item // This should include the correct id from API response
+            });
+          });
+          
+          // Convert the Map to an array
+          const transformedData = Array.from(orderGroups.values());
           this.dialogRef.close(transformedData);
         } else {
           this.global.ShowToastr(ToasterType.Error, result.errorMessage || ToasterMessages.SomethingWentWrong, ToasterTitle.Error);
