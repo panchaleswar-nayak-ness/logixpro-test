@@ -432,4 +432,27 @@ export interface ConsolidatedSlapperLabelResponse extends SlapperLabelResponse {
     isConsolidated: boolean;
     originalPartialRecords: SlapperLabelResponse[];
     consolidatedToteCount: number;
-  }
+}
+
+// Minimal interfaces for verify-bulk component
+export interface DialogResponse {
+    type?: string;
+    newQuantity?: number;
+    SelectedItem?: string;
+}
+
+export interface FullToteResponse {
+    NewToteID: string;
+    NewToteQTY: number;
+    Id: number;
+}
+
+export interface OrderLineWithSelection extends OrderLineResource {
+    selected?: boolean;
+    NextToteID?: number;
+}
+
+export interface MatTableOrderLine extends OrderLineResource {
+    selected?: boolean;
+    NextToteID?: number;
+}
