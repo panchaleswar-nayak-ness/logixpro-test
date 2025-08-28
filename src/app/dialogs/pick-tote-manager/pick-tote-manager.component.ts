@@ -32,6 +32,7 @@ import { FilterOrder, FilterTransaction, SavedFilterChangeEvent, FilterData, Ord
 import { TableContextMenuService } from 'src/app/common/globalComponents/table-context-menu-component/table-context-menu.service';
 import { FilterationColumns, PeriodicElement } from 'src/app/common/Model/pick-Tote-Manager';
 import { InputType } from 'src/app/common/enums/CommonEnums';
+import { NgZone } from '@angular/core';
 
 @Component({
   selector: 'app-pick-tote-manager',
@@ -446,7 +447,7 @@ filterationColumns : FilterationColumns[] = [];
   }
   public iInductionManagerApi: IInductionManagerApiService;
   constructor(
-
+    private ngZone: NgZone,
     private contextMenuService : TableContextMenuService,
     private pickToteManagerService: PickToteManagerService,
     private global: GlobalService,
@@ -1763,9 +1764,9 @@ refreshOrderDataGrid() {
   onContextMenu(event: MouseEvent, SelectedItem: string | number | boolean | Date | null | undefined, FilterColumnName?: string, FilterConditon?: string | undefined, FilterItemType?: string | number | boolean | Date | null | undefined) {
     event.preventDefault()
     this.isActiveTrigger = true;
-    setTimeout(() => {
+     this.ngZone.run(() => {
       this.contextMenuService.updateContextMenuState(event, SelectedItem, FilterColumnName, FilterConditon, FilterItemType);
-    }, 100);
+     });
   }
 
   directFilterationColumnsSelected(filterationColumns: FilterationColumns[]) {
@@ -1781,7 +1782,7 @@ refreshOrderDataGrid() {
     {
       this.filterString = UniqueConstants.OneEqualsOne
     }
-    let paylaod = {
+    let payload = {
       Draw: 0,
       OrderNumber: this.selectedOrderValue,
       sRow: 1,
@@ -1792,7 +1793,7 @@ refreshOrderDataGrid() {
       Filter: this.filterString,
       filtrationColumns :  this.filterationColumns
     };
-    this.iInductionManagerApi.PickToteTransDT(paylaod).subscribe((result: { data: { pickToteManTrans?: FilterTransaction[] }; }) => {
+    this.iInductionManagerApi.PickToteTransDT(payload).subscribe((result: { data: { pickToteManTrans?: FilterTransaction[] }; }) => {
       const pickToteManTrans = result.data.pickToteManTrans ?? [];
       if (pickToteManTrans.length >= 0) {
         this.filterOrderTransactionSource = new MatTableDataSource<FilterTransaction>(
