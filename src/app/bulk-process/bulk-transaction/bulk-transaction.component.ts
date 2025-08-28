@@ -420,22 +420,44 @@ export class BulkTransactionComponent implements OnInit {
     if (this.Prefernces?.workstationPreferences) {
       const { pickToTotes, putAwayFromTotes } = this.Prefernces.workstationPreferences;
       if (pickToTotes && this.bulkTransactionType === BulkTransactionType.PICK) {
-        if(this.view == BulkTransactionView.ORDER)
-        {
+        if(this.view == BulkTransactionView.ORDER && this.checkLocationZoneAndOpenSlapperLabel()) {
           this.OpenSlaperLabelNextToteId();
-        }else{
+        } else {
           this.OpenNextToteId();
         }
       } else if (putAwayFromTotes && this.bulkTransactionType === BulkTransactionType.PUT_AWAY) {
-        if(this.view == BulkTransactionView.ORDER){
+        if(this.view == BulkTransactionView.ORDER && this.checkLocationZoneAndOpenSlapperLabel()) {
           this.OpenSlaperLabelNextToteId();
-        }else{
+        } else {
           this.OpenNextToteId();
         }
       } else {
           this.changeVisibiltyVerifyBulk(false);
       }
     }
+  }
+
+  private checkLocationZoneAndOpenSlapperLabel(): boolean {
+    let shouldOpenSlapperLabel = false;
+    
+    this.iAdminApiService.LocationZone().subscribe({
+      next: (res) => {
+        console.log('res:--->', res);
+        if (res?.isExecuted && res.data && Array.isArray(res.data) && res.data.length === 1) {
+          if(res.data[0].caseLabel && res.data[0].caseLabel.trim() !== ''){
+            shouldOpenSlapperLabel = true;
+          }
+        } else {
+          shouldOpenSlapperLabel = false;
+        }
+      },
+      error: (err) => {
+        console.error('Failed to fetch location zones:', err);
+        shouldOpenSlapperLabel = false;
+      }
+    });
+    
+    return shouldOpenSlapperLabel;
   }
 
   changeVisibiltyVerifyBulk(event: boolean) {
