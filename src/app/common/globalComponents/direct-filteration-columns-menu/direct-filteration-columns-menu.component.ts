@@ -2,12 +2,12 @@ import { Component, ViewChild, Output, EventEmitter, Input, OnInit } from '@angu
 import { TableContextMenuComponentComponent } from '../table-context-menu-component/table-context-menu-component.component';
 import { DirectFilterationColumnsService } from '../../services/direct-filteration-columns.service';
 import { InputFilterComponent } from 'src/app/dialogs/input-filter/input-filter.component';
-import { DialogConstants, FILTRATION_GRID_OPERATION_KEYS } from '../../constants/strings.constants';
+import { DialogConstants, FILTRATION_GRID_OPERATION_KEYS, StringConditions, Style } from '../../constants/strings.constants';
 import { GlobalService } from 'src/app/common/services/global.service';
 import { ContextMenuFiltersService } from 'src/app/common/init/context-menu-filters.service';
 import { TableContextMenuService } from '../table-context-menu-component/table-context-menu.service';
 import { FilterationColumns, InputDialogResult } from '../../Model/pick-Tote-Manager';
-import { FiltrationDatatypes } from '../../enums/CommonEnums';
+import { FiltrationDataTypes } from '../../enums/CommonEnums';
 
 @Component({
   selector: 'app-direct-filteration-columns-menu',
@@ -47,12 +47,12 @@ export class DirectFilterationColumnsMenuComponent extends TableContextMenuCompo
 override InputFilterSearch(FilterColumnName: string, Condition: string, TypeOfElement: string) {
   const dialogRef = this.global.OpenDialog(InputFilterComponent, {
     height: DialogConstants.auto,
-    width: '480px',
+    width: Style.w480px,
     data: {
       FilterColumnName,
       Condition,
       TypeOfElement,
-      butttonText: "Filter"
+      butttonText: StringConditions.Filter
     },
     autoFocus: DialogConstants.autoFocus,
     disableClose: true,
@@ -74,8 +74,8 @@ private handleDialogResult(result: InputDialogResult): void {
 }
 
 private handleBetweenCondition(result: InputDialogResult): void {
-  if (!result.SelectedItem2 && typeof result.SelectedItem === FiltrationDatatypes.String && result.SelectedItem.includes(' and ')) {
-    const parts = result.SelectedItem.split(' and ');
+  if (!result.SelectedItem2 && typeof result.SelectedItem === FiltrationDataTypes.String && result.SelectedItem.includes(FILTRATION_GRID_OPERATION_KEYS.And)) {
+    const parts = result.SelectedItem.split(FILTRATION_GRID_OPERATION_KEYS.And);
     result.SelectedItem = parts[0];
     result.SelectedItem2 = parts[1];
   }

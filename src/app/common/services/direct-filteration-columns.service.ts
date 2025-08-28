@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { FiltrationDatatypes, OperationTypes } from '../enums/CommonEnums';
+import { AllDataTypeValues, FiltrationDataTypes } from '../enums/CommonEnums';
 import { FilterationColumns } from '../Model/pick-Tote-Manager';
 import { DATE_COLUMNS, FILTRATION_GRID_OPERATION_KEYS, OPERATION_CONDITIONS } from '../constants/strings.constants';
 
@@ -79,14 +79,14 @@ export class DirectFilterationColumnsService {
    * @param value2 The second value (for Between operations)
    * @returns The updated array of FilterationColumns objects
    */
-  updateFilterationColumnWithInput(columnName: string, condition: string, value: any, value2?: any): FilterationColumns[] {
+  updateFilterationColumnWithInput(columnName: string, condition: string, value: AllDataTypeValues, value2?: AllDataTypeValues): FilterationColumns[] {
     
     // Determine column type based on value
-    let columnType = FiltrationDatatypes.String;
-    if (typeof value === FiltrationDatatypes.Number || !isNaN(Number(value))) {
-      columnType = FiltrationDatatypes.Integer;
-    } else if (this.isDateString(value)) {
-      columnType = FiltrationDatatypes.Datetime;
+    let columnType = FiltrationDataTypes.String;
+    if (typeof value === FiltrationDataTypes.Number || !isNaN(Number(value))) {
+      columnType = FiltrationDataTypes.Integer;
+    } else if (this.isDateString(value as string)) {
+      columnType = FiltrationDataTypes.Datetime;
     }
     
     // Determine grid operation based on condition
@@ -160,19 +160,19 @@ export class DirectFilterationColumnsService {
    * @returns The column type
    */
   
-  private determineColumnType(type: string | null | undefined, columnName: string): FiltrationDatatypes {
+  private determineColumnType(type: string | null | undefined, columnName: string): FiltrationDataTypes {
     
     if ((!type || type.trim() !== '') && DATE_COLUMNS.has(columnName)) {
-      return  FiltrationDatatypes.Datetime;
+      return  FiltrationDataTypes.Datetime;
     }
   
-    if (type === FiltrationDatatypes.Number) return   FiltrationDatatypes.Integer;
-    if (type ===  FiltrationDatatypes.Boolean) return   FiltrationDatatypes.Boolean;
+    if (type === FiltrationDataTypes.Number) return   FiltrationDataTypes.Integer;
+    if (type ===  FiltrationDataTypes.Boolean) return   FiltrationDataTypes.Boolean;
   
-    return  FiltrationDatatypes.String;
+    return  FiltrationDataTypes.String;
   }
 
-  private formatValue(value: string | number | boolean | Date | null | undefined, type: string): string | number | boolean | Date | null {
+  private formatValue(value: AllDataTypeValues, type: string): AllDataTypeValues {
     if (value == null) return null;
 
     return value;
@@ -184,7 +184,7 @@ export class DirectFilterationColumnsService {
    * @returns True if the string is a valid date
    */
   private isDateString(dateStr: string): boolean {
-    if (typeof dateStr !== FiltrationDatatypes.String) return false;
+    if (typeof dateStr !== FiltrationDataTypes.String) return false;
     
     const date = new Date(dateStr);
     return !isNaN(date.getTime());

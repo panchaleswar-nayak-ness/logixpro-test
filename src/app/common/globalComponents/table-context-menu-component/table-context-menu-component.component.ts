@@ -106,13 +106,10 @@ export class TableContextMenuComponentComponent implements OnInit{
   getType(val) : string {
      return this.filterService.getType(val);
   }
- 
+
   onContextMenuCommand(SelectedItem: any, FilterColumnName: any, Condition: any, Type: any) 
   {
-    if (this.componentName == 'InvMap' || this.componentName == 'moveItem' || this.componentName == 'sysRepCurOrd' || this.componentName == 'sysRepNewOrd' 
-        || this.componentName == 'omCreateOrd' || this.componentName == 'omOrderManager' || this.componentName == 'eventLog' || this.componentName == 'toteTransManager' 
-  || this.componentName == 'orderTransactions')
-    {
+ if (this.isPrimaryComponent(this.componentName)) {
       if(SelectedItem != undefined && Condition !== 'clear') {
         this.filterString = this.filterService.onContextMenuCommand(SelectedItem, FilterColumnName, Condition, Type);
       }
@@ -143,4 +140,18 @@ export class TableContextMenuComponentComponent implements OnInit{
     
     this.optionSelected.emit(this.filterString);
   }
+  private isPrimaryComponent(name: string): boolean {
+ const primaryComponents = [
+    'InvMap',
+    'moveItem',
+    'sysRepCurOrd',
+    'sysRepNewOrd',
+    'omCreateOrd',
+    'omOrderManager',
+    'eventLog',
+    'toteTransManager',
+    'orderTransactions'
+ ];
+  return primaryComponents.includes(name);
+}
 }

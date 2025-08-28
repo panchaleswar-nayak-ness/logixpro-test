@@ -77,6 +77,7 @@ export const StringConditions = {
     False: 'False',
     clear: 'clear',
     filter: 'filter',
+    Filter: 'Filter',
     MoveTo: 'MoveTo',
     edit: 'edit',
     MoveFrom: 'MoveFrom',
@@ -772,6 +773,7 @@ export const FILTRATION_GRID_OPERATION_KEYS = {
     Clear: "clear",
     Clears: "clears",   
     Equals: "Equals",   
+    And: " and "   
 }
 export const INPUT_TYPES = {
     Date: "date",

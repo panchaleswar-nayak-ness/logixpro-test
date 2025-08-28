@@ -187,9 +187,9 @@ export class BaseService {
     return await lastValueFrom(this.request('POST', endPoint,{body:model}, undefined, 'body', spinnerShow));
   }
 
-  public Post<T>(endPoint: string, reqPaylaod: T) {
-    return this.request<T>('POST', endPoint, { body: reqPaylaod }).pipe(  // piping out the body for now for backward compatibility
-      map(response => response.body)
+  public Post<T>(endPoint: string, reqPaylaod: unknown): Observable<T | null> {
+    return this.request<unknown>('POST', endPoint, { body: reqPaylaod }).pipe(  // piping out the body for now for backward compatibility
+      map(response => response.body as T || null)
     );
   }
 

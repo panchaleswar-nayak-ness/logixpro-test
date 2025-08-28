@@ -131,7 +131,7 @@ export type QuantityFilterTypeUnion =
 | FilterType.LessThanEqual
 | FilterType.Range; 
 
-export enum FiltrationDatatypes {
+export enum FiltrationDataTypes {
   String = "string",
   Number = "number",
   Date = "date",
@@ -146,3 +146,4 @@ export enum InputType {
     Text = 'text',
     }
 
+    export type AllDataTypeValues = string | number | boolean | Date | null | undefined;
