@@ -9,11 +9,10 @@ import {DialogConstants, Style, ToasterMessages, ToasterTitle, ToasterType} from
 import {IBulkProcessApiService} from 'src/app/common/services/bulk-process-api/bulk-process-api-interface';
 import {BulkProcessApiService} from 'src/app/common/services/bulk-process-api/bulk-process-api.service';
 import {HttpStatusCode, HttpResponse} from '@angular/common/http';
-import {AssignToteToOrderDto, PartialToteIdRequest, PartialToteIdResponse, SlapperLabelResponse, ConsolidatedSlapperLabelResponse} from "../../../common/Model/bulk-transactions";
+import {AssignToteToOrderDto, PartialToteIdRequest, PartialToteIdResponse, SlapperLabelResponse, ConsolidatedSlapperLabelResponse, WorkStationSetupResponse, DialogData, SelectedListItem} from "../../../common/Model/bulk-transactions";
 import { PrintApiService } from 'src/app/common/services/print-api/print-api.service';
 import { BmToteidEntryComponent } from '../bm-toteid-entry/bm-toteid-entry.component';
-
-
+import { UserSession } from 'src/app/common/types/CommonTypes';
 
 @Component({
     selector: 'app-bm-slaper-label-split-entry',
@@ -21,20 +20,20 @@ import { BmToteidEntryComponent } from '../bm-toteid-entry/bm-toteid-entry.compo
     styleUrls: ['./bm-slaper-label-split-entry.component.scss'],
 })
 export class BmSlaperLabelSplitEntryComponent implements OnInit {
-    selectedList: any;
-    nextToteID: any;
-    preferences: any;
-    userData: any;
-    BulkProcess: any = false;
+    selectedList: SelectedListItem[];
+    nextToteID: string;
+    preferences: WorkStationSetupResponse;
+    userData: UserSession;
+    BulkProcess: boolean = false;
     view: string;
     autoPrintPickToteLabels: boolean;
-    batchid: any;
+    batchid: string;
     public iAdminApiService: IAdminApiService;
     public iBulkProcessApiService: IBulkProcessApiService;
     constructor(
-      public dialogRef: MatDialogRef<any>,
+      public dialogRef: MatDialogRef<BmSlaperLabelSplitEntryComponent>,
       public bulkProcessApiService: BulkProcessApiService,
-      @Inject(MAT_DIALOG_DATA) public data: any,
+      @Inject(MAT_DIALOG_DATA) public data: DialogData,
       private global: GlobalService,
       public adminApiService: AdminApiService,
       private authService: AuthService,
@@ -76,9 +75,9 @@ export class BmSlaperLabelSplitEntryComponent implements OnInit {
       }
     }
     printAllToteLabels() {
-      let orderNumbers = this.selectedList.map(o =>o['orderNumber']);
-      let toteIds = this.selectedList.map(o => o['toteId']);
-      let positions = this.selectedList.map(o => o['toteNumber']);
+      let orderNumbers = this.selectedList.map(o => o['orderNumber']).filter((num): num is string => num !== undefined);
+      let toteIds = this.selectedList.map(o => o['toteId']).filter((id): id is string => id !== undefined);
+      let positions = this.selectedList.map(o => o['toteNumber']).filter((pos): pos is number => pos !== undefined);
   
       if (this.view == 'batchmanager') {
         this.printApiService.PrintBatchManagerToteLabel(positions, toteIds, orderNumbers, this.batchid);
@@ -89,8 +88,8 @@ export class BmSlaperLabelSplitEntryComponent implements OnInit {
     }
     printTote(index) {
       let orderNumber = [this.selectedList[index]['orderNumber']];
-      let toteId = [this.selectedList[index]['toteId']];
-      let position = [this.selectedList[index]['toteNumber']];
+      let toteId = [this.selectedList[index]['toteId']].filter((id): id is string => id !== undefined);
+      let position = [this.selectedList[index]['toteNumber']].filter((pos): pos is number => pos !== undefined);
   
       if (this.view == 'batchmanager') {
         this.printApiService.PrintBatchManagerToteLabel(position, toteId, orderNumber, this.batchid);
@@ -113,8 +112,8 @@ export class BmSlaperLabelSplitEntryComponent implements OnInit {
 
       this.bulkProcessApiService.BatchNextTote(1).then((res) => {
         if (res.body?.nextId) {
-          this.nextToteID = res.body.nextId;
-          this.selectedList[index]['partialToteId'] = parseInt(this.nextToteID);
+          this.nextToteID = res.body.nextId.toString();
+          this.selectedList[index]['partialToteId'] = this.nextToteID.toString();
         }
       }).catch((error) => {
         this.global.ShowToastr(ToasterType.Error, 'Failed to get next tote ID', ToasterTitle.Error);
@@ -170,7 +169,7 @@ export class BmSlaperLabelSplitEntryComponent implements OnInit {
       this.selectedList.forEach((element, i) => {
         let order: AssignToteToOrderDto = {
           orderNumber: element.orderNumber,
-          toteId: element.toteId,
+          toteId: element.toteId || '',
           type: this.data.type
         };
         orders.push(order);
@@ -190,10 +189,11 @@ export class BmSlaperLabelSplitEntryComponent implements OnInit {
         });
     }
   
-    async validtote($event: any, i: any = null) {
-      if ($event.target.value) {
+    async validtote($event: Event, i: number) {
+      const target = $event.target as HTMLInputElement;
+      if (target.value) {
         var obj = {
-          toteid: $event.target.value
+          toteid: target.value
         }
         let res: any = await this.iBulkProcessApiService.validtote(obj);
         if (res?.status == HttpStatusCode.NoContent) {
@@ -206,9 +206,9 @@ export class BmSlaperLabelSplitEntryComponent implements OnInit {
     }
 
     // Handle manual input changes for Partial Tote ID
-    onPartialToteIdChange(value: any, index: number) {
+    onPartialToteIdChange(value: string | number, index: number) {
       if (value !== undefined && value !== null && value !== '') {
-        this.selectedList[index].partialToteId = value;
+        this.selectedList[index].partialToteId = value.toString();
         console.log(`Partial Tote ID changed for index ${index}:`, value);
         console.log('Updated selectedList:', this.selectedList);
       }
@@ -221,7 +221,7 @@ export class BmSlaperLabelSplitEntryComponent implements OnInit {
         const requestData: PartialToteIdRequest[] = this.selectedList.map((item) => ({
           orderNumber: item.orderNumber,
           toteNumber: item.toteNumber?.toString(),
-          toteID: item.toteId,
+          toteID: item.toteId || '',
           partialToteID: item.partialToteId?.toString()
         }));
         // Call the API

@@ -465,3 +465,28 @@ export interface RemoveOrderLinesResponse {
     isSuccess: boolean;
     errorMessages: string[];
 }
+
+// Interface for the dialog data in BmSlaperLabelSplitEntryComponent
+export interface DialogData {
+    selectedOrderList: SlapperLabelResponse[];
+    nextToteID: string;
+    BulkProcess: boolean;
+    view: string;
+    autoPrintPickToteLabels: boolean;
+    batchid: string;
+    type: string;
+}
+
+// Interface for the dialog data in BmToteidEntryComponent
+export interface BmToteidEntryDialogData extends DialogData {
+    rawOrderList?: PartialToteIdResponse[];
+}
+
+// Interface for items in selectedList with additional properties
+export interface SelectedListItem extends Omit<SlapperLabelResponse, 'toteId'> {
+    toteId?: string;
+    partialToteId?: string;
+    toteNumber?: number;
+    IsTote?: boolean;
+    IsError?: boolean;
+}
