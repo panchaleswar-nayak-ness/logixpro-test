@@ -61,9 +61,10 @@
                 <ng-container matColumnDef="{{col.colDef}}" *ngFor="let col of displayedColumns; let indexOfelement=index;">
                   <th class="header container-table-header" mat-header-cell  *matHeaderCellDef mat-sort-header [attr.data-automation-id]="'invmap-col-header-' + col.colDef">{{ col.colTitle }}</th>
                   <td class="container-table-data" mat-cell *matCellDef="let element; let i = index" 
-                  (dblclick)="col.colDef == 'Item Number' && viewInInventoryMaster(element)"
-                  (contextmenu)=" onContextMenu($event,  element[col.colHeader], col.colDef)"  
-                  [ngClass]="{'quarantineColor': element.warehouse.includes('Quarantine')}" [attr.data-automation-id]="'invmap-col-' + col.colDef + '-' + i">{{ element[col.colHeader] }}</td>
+                    (dblclick)="col.colDef == 'Item Number' && viewInInventoryMaster(element)"
+                    (contextmenu)=" onContextMenu($event,  element[col.colHeader], col.colDef)"  
+                    [ngClass]="{'quarantineColor': element.warehouse.includes('Quarantine')}" [attr.data-automation-id]="'invmap-col-' + col.colDef + '-' + i"
+                  >{{ element[col.colHeader] }}</td>
                 </ng-container>
 
                 <ng-container matColumnDef="actions" stickyEnd>

@@ -201,12 +201,13 @@
 
                         <td mat-cell *matCellDef="let element; let j = index" (contextmenu)="onContextMenu($event,  element[col.colHeader], col.colDef)" [attr.data-automation-id]="'table-data-' + col.colDef + '-' + j">
                             <div *ngIf="col.colDef != 'Transaction Type'"
-                            #tooltip="matTooltip" matTooltipPosition="above" [matTooltip]="element[col.colHeader]" 
-                             [matTooltipDisabled]="element[col.colHeader] && element[col.colHeader].length>=20?false:true"
+                                #tooltip="matTooltip" matTooltipPosition="above" [matTooltip]="element[col.colHeader]" 
+                                [matTooltipDisabled]="element[col.colHeader] && element[col.colHeader].length>=20?false:true"
                             >{{ element[col.colHeader] }}</div>
                             <div class="px-2"
-                            [ngClass]="{'label label-red' : element.transactionType.toLowerCase() == 'pick' && element.transactionQuantity > element.availableQuantity}" 
-                            *ngIf="col.colDef == 'Transaction Type'">{{ element[col.colHeader] }}</div>
+                                [ngClass]="{'label label-red' : element.transactionType.toLowerCase() == 'pick' && element.transactionQuantity > element.availableQuantity}" 
+                                *ngIf="col.colDef == 'Transaction Type'"
+                            >{{ element[col.colHeader] }}</div>
                         </td>
                     </ng-container>
                     

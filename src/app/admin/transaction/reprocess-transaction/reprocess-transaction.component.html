@@ -132,7 +132,6 @@
                                         (dblclick)="col.colDef == 'Item Number' && viewInInventoryMaster(element)"
                                         #tooltip="matTooltip" [matTooltip]="element[col.colHeader]"
                                         matTooltipPosition="above"
-
                                         [matTooltipDisabled]="element[col.colHeader] && element[col.colHeader].length>=25?false:true"
                                         [attr.data-automation-id]="'table-row-' + i "
                                     >{{ element[col.colHeader] }}</td>

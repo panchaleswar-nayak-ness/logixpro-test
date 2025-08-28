@@ -47,17 +47,17 @@
 
             <ng-container matColumnDef="itemNumber">
                 <th mat-header-cell *matHeaderCellDef replacePlaceholder [replacePlaceHolder]="placeholders.itemNumber" [fallbackPlaceHolder]="placeholders.itemNumberFallback" data-automation-id="table-header-item-number">{{ItemNumber}}</th>
-                <td mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'table-row-' + i + '-' + element.itemNumber + '-item-number-cell'">{{element?.itemNumber}} </td>
+                <td mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'table-row-' + i + '-' + element.itemNumber + '-item-number-cell'">{{ element?.itemNumber }}</td>
             </ng-container>
 
             <ng-container matColumnDef="transQty">
                 <th mat-header-cell *matHeaderCellDef data-automation-id="table-header-transaction-qty">Transaction Qty</th>
-                <td mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'table-row-' + i + '-' + element.itemNumber + '-transaction-qty-cell'">{{element?.transQty}} </td>
+                <td mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'table-row-' + i + '-' + element.itemNumber + '-transaction-qty-cell'">{{ element?.transQty }}</td>
             </ng-container>
 
             <ng-container matColumnDef="compQty">
                 <th mat-header-cell *matHeaderCellDef data-automation-id="table-header-picked-qty">Picked Qty</th>
-                <td mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'table-row-' + i + '-' + element.itemNumber + '-picked-qty-cell'">{{element?.compQty}} </td>
+                <td mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'table-row-' + i + '-' + element.itemNumber + '-picked-qty-cell'">{{ element?.compQty }}</td>
             </ng-container>
 
             <ng-container matColumnDef="toteQty">
@@ -71,7 +71,7 @@
 
             <ng-container matColumnDef="totalQty">
                 <th mat-header-cell *matHeaderCellDef data-automation-id="table-header-total-qty">Total Qty</th>
-                <td mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'table-row-' + i + '-' + element.itemNumber + '-total-qty-cell'">{{calculateTotal(element)}} </td>
+                <td mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'table-row-' + i + '-' + element.itemNumber + '-total-qty-cell'">{{ calculateTotal(element) }}</td>
             </ng-container>
             
             <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky:true" data-automation-id="blossom-table-header-row"></tr>
