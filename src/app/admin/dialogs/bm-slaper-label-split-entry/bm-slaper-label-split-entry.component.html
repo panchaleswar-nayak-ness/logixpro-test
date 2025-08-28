@@ -23,11 +23,6 @@
                     class="button-add-all bg-white button custom-button-width" data-automation-id="print-all-button">
                     Print All
                 </button>
-                <!-- <button (click)="createNextTote()" mat-flat-button color="primary" class="add-icon-button">
-                    <span class="material-symbols-outlined">
-                        add
-                    </span>
-                </button> -->
             </div>
         </div>
     </div>
@@ -36,11 +31,11 @@
 
 
         <div class="card-header">
-            <div class="row">
+            <div class="row g-2">
                 <div class="col-2 bm-card-padding" data-automation-id="table-header-order-number">Order No.</div>
-                <div class="col-2 px-4" data-automation-id="table-header-tote-number">Tote No.</div>
-                <div class="col-3 px-4" data-automation-id="table-header-tote-id">Tote ID.</div>
-                <div class="col-5 px-4" data-automation-id="table-header-partial-tote-id">Partial Tote ID.</div>
+                <div class="col-2 " data-automation-id="table-header-tote-number">Tote No.</div>
+                <div class="col-2 " data-automation-id="table-header-tote-id">Tote ID.</div>
+                <div class="col-6 " data-automation-id="table-header-partial-tote-id">Partial Tote ID.</div>
             </div>
         </div>
 
@@ -48,74 +43,59 @@
 
         <ng-scrollbar class="bm-toeid-height h-380px">
             <div class="card-body">
-                <div class="container">
+                <div class="container px-0">
 
-                    <div class="row">
+                    <div class="row g-2">
                         <mat-radio-group aria-label="Select an option" color="primary" class="w-100" data-automation-id="radio-group-tote-list">
 
-                            <div *ngFor="let list of selectedList;let i=index" class="d-flex mb-1">
+                            <div *ngFor="let list of selectedList;let i=index" class="container px-0">
+                                <div class="row g-2">
+                                    <div class="col-2">
+                                        <mat-form-field class="custom-form-field w-100" appearance="outline" data-automation-id="form-field-order-number">
+                                            <input disabled matInput type="text" #catName maxlength="50" [value]="list.orderNumber" [attr.data-automation-id]="'input-order-number-' + i">
+                                        </mat-form-field>
+                                    </div>
+                                    <div class="col-2">
+                                        <mat-form-field class="custom-form-field w-100" appearance="outline" data-automation-id="form-field-tote-number">
+                                            <input disabled matInput type="text" #catName maxlength="50" [value]="list.toteNumber" [attr.data-automation-id]="'input-tote-number-' + i">
+                                        </mat-form-field>
+                                    </div>
+                                    <div class="col-2">
+                                        <div class="d-flex gap-12 align-items-center">
 
-                                <div class="container">
-
-                                    <div class="row">
-
-
-                                        <div class="col-2">
-                                            <mat-form-field class="custom-form-field w-100" appearance="outline" data-automation-id="form-field-order-number">
-                                                <input disabled matInput type="text" #catName maxlength="50" [value]="list.orderNumber" [attr.data-automation-id]="'input-order-number-' + i">
+                                            <mat-form-field class="custom-form-field w-100"   [ngClass]="{'mat-form-field-invalid':list.IsError == true}"  appearance="outline" data-automation-id="form-field-tote-id">
+                                        
+                                                <input matInput type="text" maxlength="50" 
+                                                (change)="validtote($event,i)"    
+                                                [(ngModel)]="list.toteId"
+                                                [value]="list.toteId===undefined?'':list.toteId"
+                                                disabled [attr.data-automation-id]="'input-tote-id-' + (list.toteId || '')">
                                             </mat-form-field>
+
                                         </div>
+                                    </div>
+                                    <div class="col-6">
+                                        <div class="d-flex gap-12 align-items-center">
 
-
-                                        <div class="col-2">
-                                            <mat-form-field class="custom-form-field w-100" appearance="outline" data-automation-id="form-field-tote-number">
-                                                <input disabled matInput type="text" #catName maxlength="50" [value]="list.toteNumber" [attr.data-automation-id]="'input-tote-number-' + i">
+                                            <mat-form-field class="custom-form-field" appearance="outline" data-automation-id="form-field-partial-tote-id">
+                                                <input matInput type="text" maxlength="50" 
+                                                [(ngModel)]="list.partialToteId"
+                                                (ngModelChange)="onPartialToteIdChange($event, i)"
+                                                [attr.data-automation-id]="'input-partial-tote-id-' + i">
                                             </mat-form-field>
-                                        </div>
 
-                                        <div class="col-3">
-                                            <div class="d-flex gap-12 align-items-center">
-
-                                                <mat-form-field class="custom-form-field w-100"   [ngClass]="{'mat-form-field-invalid':list.IsError == true}"  appearance="outline" data-automation-id="form-field-tote-id">
+                                            <button (click)="nextToteIdForRow(i)" [disabled]="view == 'batch' || view == 'tote'" mat-stroked-button color="primary" class="btn-regular w-auto" [attr.data-automation-id]="'next-tote-id-button-' + i">
+                                                Next Tote ID
+                                            </button>
                                             
-                                                    <input matInput type="text" maxlength="50" 
-                                                    (change)="validtote($event,i)"    
-                                                    [(ngModel)]="list.toteId"
-                                                    [value]="list.toteId===undefined?'':list.toteId"
-                                                    disabled [attr.data-automation-id]="'input-tote-id-' + (list.toteId || '')">
-                                                </mat-form-field>
+                                            <button (click)="removeToteID(i)" [disabled]="view == 'batch' || view == 'tote'" mat-flat-button color="warn" class="xsm-icon-button" [attr.data-automation-id]="'remove-tote-id-button-' + i">
+                                                <mat-icon class="material-symbols-outlined">close</mat-icon>
+                                            </button>
 
-                                            </div>
+                                            <button (click)="printTote(i)" mat-flat-button color="primary" class="xsm-icon-button" [attr.data-automation-id]="'print-tote-id-button-' + i">
+                                                <mat-icon class="material-symbols-outlined">print</mat-icon>
+                                            </button>
                                         </div>
-
-                                        <div class="col-3">
-                                            <div class="d-flex gap-20 align-items-center">
-
-                                                <mat-form-field class="custom-form-field w-100" appearance="outline" data-automation-id="form-field-partial-tote-id">
-                                                    <input matInput type="text" maxlength="50" 
-                                                    [(ngModel)]="list.partialToteId"
-                                                    (ngModelChange)="onPartialToteIdChange($event, i)"
-                                                    [attr.data-automation-id]="'input-partial-tote-id-' + i">
-                                                </mat-form-field>
-
-                                                <button (click)="nextToteIdForRow(i)" [disabled]="view == 'batch' || view == 'tote'" mat-stroked-button color="primary" class="button-primary-o" style="min-width: 140px;" [attr.data-automation-id]="'next-tote-id-button-' + i">
-                                                    Next Tote ID
-                                                </button>
-
-                                            </div>
-                                        </div>
-                                        <div class="col-3">
-                                            <div class="d-flex gap-12 align-items-center justify-content-end">
-                                                <button (click)="removeToteID(i)" [disabled]="view == 'batch' || view == 'tote'" mat-flat-button color="warn" class="xsm-icon-button" [attr.data-automation-id]="'remove-tote-id-button-' + i">
-                                                    <mat-icon class="material-symbols-outlined">close</mat-icon>
-                                                </button>
-
-                                                <button (click)="printTote(i)" mat-flat-button color="primary" class="xsm-icon-button" [attr.data-automation-id]="'print-tote-id-button-' + i">
-                                                    <mat-icon class="material-symbols-outlined">print</mat-icon>
-                                                </button>
-                                            </div>
-                                        </div>
-
                                     </div>
                                 </div>
                             </div>
