@@ -104,3 +104,10 @@ export interface PeriodicElement {
   weight: number;
   symbol: string;
 }
+export interface InputDialogResult {
+  Condition: string;
+  SelectedColumn: string;
+  SelectedItem2: string;
+  SelectedItem: string;
+  Type: string;
+}

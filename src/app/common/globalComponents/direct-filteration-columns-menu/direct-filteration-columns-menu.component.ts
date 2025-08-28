@@ -6,7 +6,7 @@ import { DialogConstants, FILTRATION_GRID_OPERATION_KEYS } from '../../constants
 import { GlobalService } from 'src/app/common/services/global.service';
 import { ContextMenuFiltersService } from 'src/app/common/init/context-menu-filters.service';
 import { TableContextMenuService } from '../table-context-menu-component/table-context-menu.service';
-import { FilterationColumns } from '../../Model/pick-Tote-Manager';
+import { FilterationColumns, InputDialogResult } from '../../Model/pick-Tote-Manager';
 import { FiltrationDatatypes } from '../../enums/CommonEnums';
 
 @Component({
@@ -44,41 +44,54 @@ export class DirectFilterationColumnsMenuComponent extends TableContextMenuCompo
   /**
    * Override the InputFilterSearch method to handle input filters
    */
-  override InputFilterSearch(FilterColumnName: string, Condition: string, TypeOfElement: any) {
-    const dialogRef : any = this.global.OpenDialog(InputFilterComponent, {
-      height: DialogConstants.auto,
-      width: '480px',
-      data:{
-        FilterColumnName: FilterColumnName,
-        Condition: Condition,
-        TypeOfElement: TypeOfElement,
-        butttonText: "Filter"
-      },
-      autoFocus: DialogConstants.autoFocus,
-      disableClose: true,
-    });
+override InputFilterSearch(FilterColumnName: string, Condition: string, TypeOfElement: string) {
+  const dialogRef = this.global.OpenDialog(InputFilterComponent, {
+    height: DialogConstants.auto,
+    width: '480px',
+    data: {
+      FilterColumnName,
+      Condition,
+      TypeOfElement,
+      butttonText: "Filter"
+    },
+    autoFocus: DialogConstants.autoFocus,
+    disableClose: true,
+  });
 
-    dialogRef.afterClosed().subscribe((result : any) => {
-      if (result.SelectedColumn) {
-        // For Between operations, we need to handle two values
-        if (result.Condition.toLowerCase().includes( FILTRATION_GRID_OPERATION_KEYS.Between)) {
-          // If SelectedItem2 is not provided, split SelectedItem by ' and '
-          if (!result.SelectedItem2 && typeof result.SelectedItem === FiltrationDatatypes.String && result.SelectedItem.includes(' and ')) {
-            const parts = result.SelectedItem.split(' and ');
-            result.SelectedItem = parts[0];
-            result.SelectedItem2 = parts[1];
-          }
-          const filterationColumns = this.directFilterService.updateFilterationColumnWithInput(
-            result.SelectedColumn, result.Condition, result.SelectedItem, result.SelectedItem2
-          );
-          this.filterationColumnsSelected.emit(filterationColumns);
-        } else {
-          const filterationColumns = this.directFilterService.createFilterationColumn(
-            result.SelectedItem, result.SelectedColumn, result.Condition, result.Type
-          );
-          this.filterationColumnsSelected.emit(filterationColumns);
-        }
-      }
-    });
+  dialogRef.afterClosed().subscribe((result: InputDialogResult) => {
+    if (result.SelectedColumn) {
+      this.handleDialogResult(result);
+    }
+  });
+}
+
+private handleDialogResult(result: InputDialogResult): void {
+  if (result.Condition.includes(FILTRATION_GRID_OPERATION_KEYS.Between)) {
+    this.handleBetweenCondition(result);
+  } else {
+    this.handleOtherConditions(result);
   }
+}
+
+private handleBetweenCondition(result: InputDialogResult): void {
+  if (!result.SelectedItem2 && typeof result.SelectedItem === FiltrationDatatypes.String && result.SelectedItem.includes(' and ')) {
+    const parts = result.SelectedItem.split(' and ');
+    result.SelectedItem = parts[0];
+    result.SelectedItem2 = parts[1];
+  }
+
+  const filterationColumns = this.directFilterService.updateFilterationColumnWithInput(
+    result.SelectedColumn, result.Condition, result.SelectedItem, result.SelectedItem2
+  );
+
+  this.filterationColumnsSelected.emit(filterationColumns);
+}
+
+private handleOtherConditions(result: InputDialogResult): void {
+  const filterationColumns = this.directFilterService.createFilterationColumn(
+    result.SelectedItem, result.SelectedColumn, result.Condition, result.Type
+  );
+
+  this.filterationColumnsSelected.emit(filterationColumns);
+}
 }

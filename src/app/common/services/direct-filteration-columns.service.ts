@@ -51,7 +51,7 @@ export class DirectFilterationColumnsService {
     
     // For between operations, we need a second value (will be filled by user input)
     let value2 = null;
-    let isInput = condition.toLowerCase().includes( FILTRATION_GRID_OPERATION_KEYS.Between);
+    let isInput = condition.includes( FILTRATION_GRID_OPERATION_KEYS.Between);
 
     // Create the FilterationColumns object
     const filterationColumn: FilterationColumns = {
