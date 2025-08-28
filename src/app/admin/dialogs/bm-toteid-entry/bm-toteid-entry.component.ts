@@ -198,12 +198,7 @@ export class BmToteidEntryComponent implements OnInit {
       return;
     }
 
-    // First, remove order lines from tote
-    const removeSuccess = await this.removeOrderLinesFromTote();
-    if (!removeSuccess) {
-      return; // Stop execution if removal failed
-    }
-
+    
     this.iBulkProcessApiService.SubmitCaseWiseOrders(this.data.rawOrderList)
       .then((result: ApiResult<PartialToteIdResponse[]>) => {
         if (result.isSuccess) {
@@ -232,7 +227,12 @@ export class BmToteidEntryComponent implements OnInit {
       })
       .catch((error) => {
         this.global.ShowToastr(ToasterType.Error, ToasterMessages.SomethingWentWrong, ToasterTitle.Error);
-      });
+    });
+    // Now, remove order lines from tote
+    const removeSuccess = await this.removeOrderLinesFromTote();
+    if (!removeSuccess) {
+      return; // Stop execution if removal failed
+    }
   }
 
   ClosePopup() {

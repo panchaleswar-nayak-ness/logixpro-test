@@ -2448,9 +2448,12 @@ public ResolveMarkoutTote(toteId: number) {
 
   public async RemoveOrderLinesFromTote(request: RemoveOrderLinesRequest): Promise<RemoveOrderLinesResponse> {
     try {
-      const response = await this.ApiBase.DeleteAsync('/api/totes/removeorderlines', request);
+      // Convert the request to query parameters
+      const orderNumbersString = request.orderNumbers.join(',');
+      const response = await this.ApiBase.DeleteAsync(`/totes/removeorderlines?orderNumbers=${encodeURIComponent(orderNumbersString)}`);
+      
       // 204 No Content means success for DELETE operations
-      if (response.status === 204) {
+      if (response.status === 204 || response.status === 200) {
         return { isSuccess: true, errorMessages: [] };
       }
       // For any other status, treat as error
