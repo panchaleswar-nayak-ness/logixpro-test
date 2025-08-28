@@ -216,8 +216,6 @@ export class BmSlaperLabelSplitEntryComponent implements OnInit {
 
     async createNextTote() {
       try {
-        // Log the current state of selectedList to debug
-        console.log('Current selectedList:', this.selectedList);
         
         // Prepare the request data
         const requestData: PartialToteIdRequest[] = this.selectedList.map((item) => ({
@@ -226,15 +224,6 @@ export class BmSlaperLabelSplitEntryComponent implements OnInit {
           toteID: item.toteId,
           partialToteID: item.partialToteId?.toString()
         }));
-        
-        // Validate that Partial Tote Id values are present
-        const itemsWithPartialToteId = requestData.filter(item => item.partialToteID);
-        
-        if (itemsWithPartialToteId.length === 0) {
-          this.global.ShowToastr(ToasterType.Info, 'No Partial Tote IDs found. Please generate Partial Tote IDs first using the Next Tote ID buttons or enter them manually.', ToasterTitle.Warning);
-          return;
-        }
-
         // Call the API
         const response: PartialToteIdResponse[] = await this.iBulkProcessApiService.GetNextToteIdForSlapperLabelAsync(requestData);
         

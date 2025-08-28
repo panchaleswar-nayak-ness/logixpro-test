@@ -221,6 +221,11 @@ export class BmToteidEntryComponent implements OnInit {
           });
           const transformedData = Array.from(orderGroups.values());
           this.dialogRef.close(transformedData);
+          // Now, remove order lines from tote
+          const removeSuccess = this.removeOrderLinesFromTote();
+          if (!removeSuccess) {
+            return; // Stop execution if removal failed
+          }
         } else {
           this.global.ShowToastr(ToasterType.Error, result.errorMessage || ToasterMessages.SomethingWentWrong, ToasterTitle.Error);
         }
@@ -228,11 +233,7 @@ export class BmToteidEntryComponent implements OnInit {
       .catch((error) => {
         this.global.ShowToastr(ToasterType.Error, ToasterMessages.SomethingWentWrong, ToasterTitle.Error);
     });
-    // Now, remove order lines from tote
-    const removeSuccess = await this.removeOrderLinesFromTote();
-    if (!removeSuccess) {
-      return; // Stop execution if removal failed
-    }
+    
   }
 
   ClosePopup() {

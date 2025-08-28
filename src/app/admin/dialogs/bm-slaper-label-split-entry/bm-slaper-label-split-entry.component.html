@@ -110,7 +110,7 @@
         <button  mat-stroked-button class="btn-lg" (click)="createNextTote()" [disabled]="view == 'batch' || view == 'tote'" color="primary" data-automation-id="create-next-tote-button">
             Create Tote ID's
         </button>
-        <button (click)="submitOrder()" mat-flat-button color="primary" class="flex-grow-1 form-button-submit btn-lg" data-automation-id="submit-order-button">
+        <button disabled (click)="submitOrder()" mat-flat-button color="primary" class="flex-grow-1 form-button-submit btn-lg" data-automation-id="submit-order-button">
             Submit
         </button>
         </div> 
