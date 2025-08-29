@@ -146,4 +146,10 @@ export enum InputType {
     Text = 'text',
     }
 
-    export type AllDataTypeValues = string | number | boolean | Date | null | undefined;
+export type AllDataTypeValues = string | number | boolean | Date | null | undefined;
+
+export enum PaginationData   {
+    StartRow = 1,
+    EndRow = 10,
+    Draw = 0,
+}

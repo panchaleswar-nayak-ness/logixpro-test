@@ -31,7 +31,7 @@ import {  TableConstant ,ToasterTitle,ResponseStrings,Column,ToasterType,zoneTyp
 import { FilterOrder, FilterTransaction, SavedFilterChangeEvent, FilterData, OrderData, PickToteTransPayload } from 'src/app/common/types/pick-tote-manager.types';
 import { TableContextMenuService } from 'src/app/common/globalComponents/table-context-menu-component/table-context-menu.service';
 import { FilterationColumns, PeriodicElement } from 'src/app/common/Model/pick-Tote-Manager';
-import { AllDataTypeValues, InputType } from 'src/app/common/enums/CommonEnums';
+import { AllDataTypeValues, InputType, PaginationData } from 'src/app/common/enums/CommonEnums';
 import { NgZone } from '@angular/core';
 
 @Component({
@@ -454,7 +454,7 @@ filterationColumns : FilterationColumns[] = [];
     public inductionManagerApi: InductionManagerApiService,
     private authService: AuthService,
     public dialogRef: MatDialogRef<any>,
-    @Inject(MAT_DIALOG_DATA) public data: any,
+    @Inject(MAT_DIALOG_DATA) public data: any
   ) {
     this.iInductionManagerApi = inductionManagerApi;
   }
@@ -1088,10 +1088,10 @@ userFields = Array.from({ length: 9 }, (_, i) => ({
       this.isOrderSelect = false;
       this.selectedOrderValue =row.orderNumber; 
       const payload: PickToteTransPayload = {
-        Draw: 0,
+        Draw: PaginationData.Draw,
         OrderNumber: row.orderNumber,
-        SRow: 1,
-        ERow: 10,
+        SRow: PaginationData.StartRow,
+        ERow: PaginationData.EndRow,
         SortColumnNumber: 0,
         SortOrder: UniqueConstants.Asc,
         Filter: UniqueConstants.OneEqualsOne,
@@ -1155,10 +1155,10 @@ userFields = Array.from({ length: 9 }, (_, i) => ({
       });
       this.isOrderSelectZone = false;
       const payload: PickToteTransPayload = {
-        Draw: 0,
+        Draw: PaginationData.Draw,
         OrderNumber: row.orderNumber,
-        SRow: 1,
-        ERow: 10,
+        SRow: PaginationData.StartRow,
+        ERow: PaginationData.EndRow,
         SortColumnNumber: 0,
         SortOrder: UniqueConstants.Asc,
         Filter: UniqueConstants.OneEqualsOne,
@@ -1326,10 +1326,10 @@ clearOrderSelection() {
 
     if (event.value === 'vAllOrderZone') {
       const payload: PickToteTransPayload = {
-        Draw: 0,
+        Draw: PaginationData.Draw,
         OrderNumber: orderNum,
-        SRow: 1,
-        ERow: 10,
+        SRow: PaginationData.StartRow,
+        ERow: PaginationData.EndRow,
         SortColumnNumber: 0,
         SortOrder: UniqueConstants.Asc,
         Filter: UniqueConstants.OneEqualsOne,
@@ -1360,10 +1360,10 @@ clearOrderSelection() {
       });
       if (orderNum !== '') {
         const payload: PickToteTransPayload = {
-          Draw: 0,
+          Draw: PaginationData.Draw,
           OrderNumber: orderNum,
-          SRow: 1,
-          ERow: 10,
+          SRow: PaginationData.StartRow,
+          ERow: PaginationData.EndRow,
           SortColumnNumber: 0,
           SortOrder: UniqueConstants.Asc,
           Filter: UniqueConstants.OneEqualsOne,
@@ -1397,10 +1397,10 @@ clearOrderSelection() {
 
     if (event.value === 'vAllOrderFilter') {
       const payload: PickToteTransPayload = {
-        Draw: 0,
+        Draw: PaginationData.Draw,
         OrderNumber: orderNum ?? 'EAGLES',
-        SRow: 1,
-        ERow: 10,
+        SRow: PaginationData.StartRow,
+        ERow: PaginationData.EndRow,
         SortColumnNumber: 0,
         SortOrder: UniqueConstants.Asc,
         Filter: UniqueConstants.OneEqualsOne,
@@ -1431,10 +1431,10 @@ clearOrderSelection() {
       });
       if (orderNum !== '') {
         const payload: PickToteTransPayload = {
-          Draw: 0,
+          Draw: PaginationData.Draw,
           OrderNumber: orderNum,
-          SRow: 1,
-          ERow: 10,
+          SRow: PaginationData.StartRow,
+          ERow: PaginationData.EndRow,
           SortColumnNumber: 0,
           SortOrder: UniqueConstants.Asc,
           Filter: UniqueConstants.OneEqualsOne,
@@ -1788,10 +1788,10 @@ refreshOrderDataGrid() {
       this.filterString = UniqueConstants.OneEqualsOne
     }
       const payload: PickToteTransPayload = {
-      Draw: 0,
+      Draw: PaginationData.Draw,
       OrderNumber: this.selectedOrderValue,
-      SRow: 1,
-      ERow: 10,
+      SRow: PaginationData.StartRow,
+      ERow: PaginationData.EndRow,
       SortColumnNumber: 0,
       SortOrder: UniqueConstants.Asc,
       Filter: this.filterString,
