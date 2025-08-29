@@ -134,7 +134,20 @@
                                         matTooltipPosition="above"
                                         [matTooltipDisabled]="element[col.colHeader] && element[col.colHeader].length>=25?false:true"
                                         [attr.data-automation-id]="'table-row-' + i "
-                                    >{{ element[col.colHeader] }}</td>
+                                    >
+                                        <ng-container *ngIf="col.colDef === 'Emergency'; else textContent">
+                                            <div style="display: flex; justify-content: center; align-items: center;">
+                                                <mat-checkbox [checked]="element[col.colHeader]" [disabled]="isHistory"
+                                                    (change)="onCheckboxToggle(element,col.colHeader,$event.checked)"
+                                                    class="example-margin" color="primary">
+                                                </mat-checkbox>
+                                            </div>
+                                        </ng-container>
+
+                                        <ng-template #textContent>
+                                            {{ element[col.colHeader] }}
+                                        </ng-template>
+                                    </td>
                                 </ng-container>
 
                                 <ng-container matColumnDef="actions" stickyEnd>

@@ -161,7 +161,8 @@ export interface IAdminApiService
     ScanValidateOrder(payload : any); 
     DeleteOrder(payload : any); 
     OrderStatusData(payload : any); 
-    UpdateEmergency(payload : UpdateEmergencyRequest); 
+    UpdateEmergencyOpenTrans(payload : UpdateEmergencyRequest); 
+    UpdateEmergencyReprocessTrans(payload : UpdateEmergencyRequest); 
     OpenTransactionTable(payload : any); 
     HoldTransactionsData(payload : any);  
     UpdateTransaction(payload : any); 

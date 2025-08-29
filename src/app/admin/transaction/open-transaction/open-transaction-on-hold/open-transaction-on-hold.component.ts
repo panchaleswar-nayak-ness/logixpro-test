@@ -418,7 +418,7 @@ onCheckboxToggle(
     emergency: isChecked
   };
 
-  this.iAdminApiService.UpdateEmergency(payload).subscribe({
+  this.iAdminApiService.UpdateEmergencyOpenTrans(payload).subscribe({
     next: (response) => {
       if (!response || !response.isExecuted) {
         element[column] = previousValue;
