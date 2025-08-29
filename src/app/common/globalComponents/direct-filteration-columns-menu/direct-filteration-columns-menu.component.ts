@@ -7,7 +7,8 @@ import { GlobalService } from 'src/app/common/services/global.service';
 import { ContextMenuFiltersService } from 'src/app/common/init/context-menu-filters.service';
 import { TableContextMenuService } from '../table-context-menu-component/table-context-menu.service';
 import { FilterationColumns, InputDialogResult } from '../../Model/pick-Tote-Manager';
-import { AllDataTypeValues, FiltrationDataTypes } from '../../enums/CommonEnums';
+import { FiltrationDataTypes } from '../../enums/CommonEnums';
+import { AllDataTypeValues } from '../../types/pick-tote-manager.types';
 
 @Component({
   selector: 'app-direct-filteration-columns-menu',

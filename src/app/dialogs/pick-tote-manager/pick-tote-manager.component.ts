@@ -28,10 +28,10 @@ import { InductionManagerApiService } from 'src/app/common/services/induction-ma
 import { GlobalService } from 'src/app/common/services/global.service';
 import { PickToteManagerService } from 'src/app/common/services/pick-tote-manager.service'
 import {  TableConstant ,ToasterTitle,ResponseStrings,Column,ToasterType,zoneType,DialogConstants,ColumnDef,UniqueConstants,Style,StringConditions, Placeholders, ToasterMessages, FormatValues, FIELDS_DEFAULT_AN, ConfirmationMessages, ConfirmationHeadings, DISABLED_FIELDS, FormatType, INPUT_TYPES, DATE_COLUMNS} from 'src/app/common/constants/strings.constants';
-import { FilterOrder, FilterTransaction, SavedFilterChangeEvent, FilterData, OrderData, PickToteTransPayload } from 'src/app/common/types/pick-tote-manager.types';
+import { FilterOrder, FilterTransaction, SavedFilterChangeEvent, FilterData, OrderData, PickToteTransPayload, AllDataTypeValues } from 'src/app/common/types/pick-tote-manager.types';
 import { TableContextMenuService } from 'src/app/common/globalComponents/table-context-menu-component/table-context-menu.service';
 import { FilterationColumns, PeriodicElement } from 'src/app/common/Model/pick-Tote-Manager';
-import { AllDataTypeValues, InputType, PaginationData } from 'src/app/common/enums/CommonEnums';
+import { InputType, PaginationData } from 'src/app/common/enums/CommonEnums';
 import { NgZone } from '@angular/core';
 
 @Component({

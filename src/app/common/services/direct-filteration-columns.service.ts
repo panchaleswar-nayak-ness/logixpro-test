@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
-import { AllDataTypeValues, FiltrationDataTypes } from '../enums/CommonEnums';
+import { FiltrationDataTypes } from '../enums/CommonEnums';
 import { FilterationColumns } from '../Model/pick-Tote-Manager';
 import { DATE_COLUMNS, FILTRATION_GRID_OPERATION_KEYS, OPERATION_CONDITIONS } from '../constants/strings.constants';
+import { AllDataTypeValues } from '../types/pick-tote-manager.types';
 
 @Injectable({
   providedIn: 'root'

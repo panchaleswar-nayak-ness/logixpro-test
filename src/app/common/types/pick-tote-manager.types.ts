@@ -33,6 +33,7 @@ export type FilterOrder = {
   otLines: number | string;
   isSelected: boolean;
 };
+export type AllDataTypeValues = string | number | boolean | Date | null | undefined;
 
 export type FilterTransaction = {
   orderNumber: string;
