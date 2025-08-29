@@ -2515,4 +2515,7 @@ button.active-btn{
   // input{
   //   -webkit-user-select:all !important;
   // }
-
+  .cart-management-multiline-tooltip {
+    max-width: 400px !important;
+    white-space: pre-line !important;
+  }

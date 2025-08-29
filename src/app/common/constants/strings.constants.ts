@@ -130,7 +130,8 @@ export const ConfirmationHeadings = {
     CreateBatchNow: "Create Batch Now?",
     PrintBatchOrOrder:"Print Batch Or Order",
     NoOffCarouselPicksFound:"No Off-Carousel Picks Found",
-    ResolveToteId: "Resolve Tote ID"
+    ResolveToteId: "Resolve Tote ID",
+    ChangeFormatType: "Change Format Type"
 }
 export const ConfirmationButtonText = {
     ResetPassword: 'Reset Password Now',
@@ -158,7 +159,8 @@ export const ConfirmationMessages = {
     ResolvedToteConfirmation:"Are you sure you want to mark this Tote ID as resolved? This will remove this Tote ID from the Markout.",
     IrreversibleActionWarning :'This action cannot be undone.',
     UpdateAllInterface: 'Click OK to update all devices with Com Port: {{comPort}}',
-    UpdateAllInterfaceWithZone: 'Click OK to update all devices with Com Port: {{comPort}} and Zone: {{zone}}'
+    UpdateAllInterfaceWithZone: 'Click OK to update all devices with Com Port: {{comPort}} and Zone: {{zone}}',
+    InconsistentFormat: (fieldName: string, newFormat: string, oldFormat: string) => `An "${fieldName}" was added with ${oldFormat} format. Changing to ${newFormat} will update that entry as well. Do you want to continue?`,
 }
 
 export const ToasterMessages = {
@@ -259,7 +261,11 @@ export const ToasterMessages = {
     UnableToAssignLocation: "Unable to assign location",
     CannotAssignMultipleMarkoutFunctions: 'Cannot assign multiple Markout functions to the same group.',
     OnlyOneMarkoutFunctionAllowed: 'Only one Markout function can be assigned per group.',
-    StaffAlreadyHasMarkoutAssigned: 'Staff has already one markout assigned'
+    StaffAlreadyHasMarkoutAssigned: 'Staff has already one markout assigned',
+    InvalidInputForFilter: "Some of the inputs are missing values. Cannot add row to filter.",
+    ZoneWouldBeADuplicateAndCannotBeAdded: "Zone would be a duplicate and cannot be added.",
+    LocationZoneCannotBeDeleted: "Location Zone cannot be deleted because there are allocated quantities in an Inventory Map location matching the zone",
+    CannotInsertDuplicateZone: "Cannot insert duplicate Zone"
 }
 
 
@@ -341,7 +347,8 @@ export const KeyboardKeys = {
 export const zoneType = {
     carousel: 'carousel',
     cartonFlow: 'cartonFlow',
-    includePick: 'includePick'
+    includePick: 'includePick',
+    includeCFCarouselPick: 'includeCFCarouselPick'
 }
 
 export const alertMessage = {
@@ -531,7 +538,8 @@ export const Style = {
     w402px: '402px',
     w1080px: '1080px',
     auto:'auto',
-    w990px: '990px'
+    w990px: '990px',
+    w56vw: '56vw'
 }
 
 export const FilterColumnName = {
@@ -772,3 +780,36 @@ export const MarkoutFunctionsList = [
     MarkoutFunctions.MarkoutProcess,
     MarkoutFunctions.RGTPMarkout
 ] as const;
+
+export const DISABLED_FIELDS = [
+    'priority',
+    'Required Date',
+    'Emergency',
+    'Import Date'
+  ];
+  
+  export const FIELDS_DEFAULT_AN = new Set<string>([
+    'userField1',
+    'userField2',
+    'userField3',
+    'userField4',
+    'userField5',
+    'userField6',
+    'userField7',
+    'userField8',
+    'userField9',
+    'userField10',
+    'Emergency',
+    'Zone',
+    'expirationDate',
+    'Warehouse',
+    'requiredDate'
+  ]);
+  export const FormatValues = {
+    NUMERIC : '123',
+    ALPHA_NUMERIC : 'A+N',
+  }
+  export const FormatType = {
+    NUMERIC : 'Numeric',
+    ALPHA_NUMERIC : 'Alphanumeric',
+  }
