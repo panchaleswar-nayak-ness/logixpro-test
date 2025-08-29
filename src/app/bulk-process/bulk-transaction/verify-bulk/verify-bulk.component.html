@@ -84,46 +84,46 @@
               <table mat-table [dataSource]="orderLines" class="custom-table table-fix">
 
                 <ng-container matColumnDef="OrderNo">
-                  <th mat-header-cell *matHeaderCellDef data-automation-id="verify-bulk-th-order-no"> Order No.</th>
-                  <td mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'verify-bulk-td-order-no-' + i">{{element.orderNumber}} </td>
+                  <th mat-header-cell *matHeaderCellDef data-automation-id="verify-bulk-th-order-no">Order No.</th>
+                  <td mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'verify-bulk-td-order-no-' + i">{{ element.orderNumber }}</td>
                 </ng-container>
                 <ng-container matColumnDef="ItemNo">
-                  <th mat-header-cell *matHeaderCellDef data-automation-id="verify-bulk-th-item-no"> {{itemNumber}} </th>
-                  <td mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'verify-bulk-td-item-no-' + i">{{element.itemNumber}} </td>
+                  <th mat-header-cell *matHeaderCellDef data-automation-id="verify-bulk-th-item-no">{{ itemNumber }}</th>
+                  <td mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'verify-bulk-td-item-no-' + i">{{ element.itemNumber }}</td>
                 </ng-container>
 
                 <ng-container matColumnDef="Description">
                   <th mat-header-cell *matHeaderCellDef data-automation-id="verify-bulk-th-description">Description</th>
-                  <td mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'verify-bulk-td-description-' + i">{{element.description}} </td>
+                  <td mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'verify-bulk-td-description-' + i">{{ element.description }}</td>
                 </ng-container>
 
                 <ng-container matColumnDef="LineNo">
                   <th mat-header-cell *matHeaderCellDef data-automation-id="verify-bulk-th-line-no">Line No.</th>
-                  <td mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'verify-bulk-td-line-no-' + i">{{element.lineNumber}} </td>
+                  <td mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'verify-bulk-td-line-no-' + i">{{ element.lineNumber }}</td>
                 </ng-container>
 
                 <ng-container matColumnDef="Whse">
-                  <th mat-header-cell *matHeaderCellDef data-automation-id="verify-bulk-th-whse"> Whse </th>
-                  <td mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'verify-bulk-td-whse-' + i"> {{element.exportBatchId}} </td>
+                  <th mat-header-cell *matHeaderCellDef data-automation-id="verify-bulk-th-whse">Whse</th>
+                  <td mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'verify-bulk-td-whse-' + i">{{ element.exportBatchId }}</td>
                 </ng-container>
 
                 <ng-container matColumnDef="Location">
-                  <th mat-header-cell *matHeaderCellDef data-automation-id="verify-bulk-th-location"> Location</th>
-                  <td mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'verify-bulk-td-location-' + i">{{element.location}} </td>
+                  <th mat-header-cell *matHeaderCellDef data-automation-id="verify-bulk-th-location">Location</th>
+                  <td mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'verify-bulk-td-location-' + i">{{ element.location }}</td>
                 </ng-container>
 
                 <ng-container matColumnDef="LotNo">
-                  <th mat-header-cell *matHeaderCellDef data-automation-id="verify-bulk-th-lot-no"> Lot No. </th>
-                  <td mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'verify-bulk-td-lot-no-' + i"> {{element.lotNumber}} </td>
+                  <th mat-header-cell *matHeaderCellDef data-automation-id="verify-bulk-th-lot-no">Lot No.</th>
+                  <td mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'verify-bulk-td-lot-no-' + i">{{ element.lotNumber }}</td>
                 </ng-container>
 
                 <ng-container matColumnDef="SerialNo">
-                  <th mat-header-cell *matHeaderCellDef data-automation-id="verify-bulk-th-serial-no"> Serial No. </th>
-                  <td mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'verify-bulk-td-serial-no-' + i"> {{element.serialNumber}} </td>
+                  <th mat-header-cell *matHeaderCellDef data-automation-id="verify-bulk-th-serial-no">Serial No.</th>
+                  <td mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'verify-bulk-td-serial-no-' + i">{{ element.serialNumber }}</td>
                 </ng-container>
 
                 <ng-container matColumnDef="OrderQty" stickyEnd>
-                  <th mat-header-cell *matHeaderCellDef data-automation-id="verify-bulk-th-order-qty"> Order Qty</th>
+                  <th mat-header-cell *matHeaderCellDef data-automation-id="verify-bulk-th-order-qty">Order Qty</th>
                   <td mat-cell *matCellDef="let element; let i = index" class="show-arrow" [attr.data-automation-id]="'verify-bulk-td-order-qty-' + i">
                     <div class="d-flex align-items-center justify-content-between">{{element.transactionQuantity}}
                       <span matTooltip="Copy to Completed Qty." matTooltipPosition="above"
@@ -133,20 +133,20 @@
                   </td>
                 </ng-container>
                 <ng-container matColumnDef="CompletedQty" stickyEnd>
-                  <th mat-header-cell *matHeaderCellDef data-automation-id="verify-bulk-th-completed-qty"> Completed Qty</th>
+                  <th mat-header-cell *matHeaderCellDef data-automation-id="verify-bulk-th-completed-qty">Completed Qty</th>
                   <td mat-cell *matCellDef="let element; let i = index"
                     matTooltip='Press "Copy Quantities" to update the Completed Quantity to the Order Quantity. Or double-click in the Completed Quantity field.'
                     (click)="numberSelection(element)" [attr.data-automation-id]="'verify-bulk-td-completed-qty-' + i">
                     <mat-form-field class="custom-form-field" appearance="outline" style="width:100px">
-                      <input matInput type="text" readonly [(ngModel)]="element.completedQuantity" maxlength="50" [attr.data-automation-id]="'verify-bulk-input-completed-qty-'+i" >
+                      <input matInput type="text" readonly [(ngModel)]="element.completedQuantity" maxlength="50" [attr.data-automation-id]="'verify-bulk-input-completed-qty-' + i" >
                     </mat-form-field>
                   </td>
                 </ng-container>
                 <ng-container matColumnDef="ToteID" stickyEnd>
-                  <th mat-header-cell *matHeaderCellDef data-automation-id="verify-bulk-th-tote-id"> Tote ID</th>
-                  <td mat-cell *matCellDef="let element; let i = index" matTooltip="Display  the Tote ID.">
+                  <th mat-header-cell *matHeaderCellDef data-automation-id="verify-bulk-th-tote-id">Tote ID</th>
+                  <td mat-cell *matCellDef="let element; let i = index" matTooltip="Display the Tote ID.">
                     <mat-form-field class="custom-form-field" appearance="outline" style="width:100px">
-                      <input matInput type="text" [(ngModel)]="element.toteId" maxlength="50" readonly [attr.data-automation-id]="'verify-bulk-input-tote-id-'+i">
+                      <input matInput type="text" [(ngModel)]="element.toteId" maxlength="50" readonly [attr.data-automation-id]="'verify-bulk-input-tote-id-' + i">
                     </mat-form-field>
                   </td>
                 </ng-container>
@@ -156,7 +156,7 @@
 
                   <td mat-cell *matCellDef="let element;let i = index;" class="actionContainerdata" [attr.data-automation-id]="'verify-bulk-td-action-' + i">
                     <button mat-icon-button [matMenuTriggerFor]="appMenu" aria-label=""
-                      [ngClass]="{'active-btn':element.selected}" class="circle-icon-o" appearance="outline" [attr.data-automation-id]="'verify-bulk-action-menu-button-'+i">
+                      [ngClass]="{'active-btn':element.selected}" class="circle-icon-o" appearance="outline" [attr.data-automation-id]="'verify-bulk-action-menu-button-' + i">
                       <mat-icon data-automation-id="verify-bulk-action-menu-icon">more_horiz</mat-icon>
                     </button>
 
