@@ -438,22 +438,21 @@ export class BulkTransactionComponent implements OnInit {
   }
 
   private checkLocationZoneAndOpenSlapperLabel(): boolean {
-    let shouldOpenSlapperLabel = false;
+    let shouldOpenSlapperLabel = true;
     
     this.iAdminApiService.LocationZone().subscribe({
       next: (res) => {
-        console.log('res:--->', res);
         if (res?.isExecuted && res.data && Array.isArray(res.data) && res.data.length === 1) {
           if(res.data[0].caseLabel && res.data[0].caseLabel.trim() !== ''){
             shouldOpenSlapperLabel = true;
           }
         } else {
-          shouldOpenSlapperLabel = false;
+          shouldOpenSlapperLabel = true;
         }
       },
       error: (err) => {
         console.error('Failed to fetch location zones:', err);
-        shouldOpenSlapperLabel = false;
+        shouldOpenSlapperLabel = true;
       }
     });
     

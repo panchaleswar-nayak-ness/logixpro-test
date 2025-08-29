@@ -12,7 +12,7 @@ import {HttpStatusCode, HttpResponse} from '@angular/common/http';
 import {AssignToteToOrderDto, PartialToteIdRequest, PartialToteIdResponse, SlapperLabelResponse, ConsolidatedSlapperLabelResponse, WorkStationSetupResponse, DialogData, SelectedListItem} from "../../../common/Model/bulk-transactions";
 import { PrintApiService } from 'src/app/common/services/print-api/print-api.service';
 import { BmToteidEntryComponent } from '../bm-toteid-entry/bm-toteid-entry.component';
-import { UserSession } from 'src/app/common/types/CommonTypes';
+import { UserSession, ApiResponse } from 'src/app/common/types/CommonTypes';
 
 @Component({
     selector: 'app-bm-slaper-label-split-entry',
@@ -51,23 +51,37 @@ export class BmSlaperLabelSplitEntryComponent implements OnInit {
   
     ngOnInit(): void {
       this.userData = this.authService.userData();
-      if (this.view == 'tote') {
-        this.selectedList.forEach((x: any) => { x.toteId = x.toteId });
-      }
       this.companyInfo();
     }
   
     // TODO: No need to get workstation preferences again.  We can pass them from the parent component.
     companyInfo() {
-      this.iAdminApiService.WorkstationSetupInfo().subscribe((res: any) => {
-        if (res.isExecuted && res.data) {
-          this.preferences = res.data;
+      this.iAdminApiService.WorkstationSetupInfo().subscribe({
+        next: (res: ApiResponse<WorkStationSetupResponse>) => {
+          if (res.isExecuted && res.data) {
+            this.preferences = res.data;
+          } else {
+            console.warn('Workstation setup info not executed or no data received:', res);
+            this.global.ShowToastr(ToasterType.Info, ToasterMessages.ErrorWhileRetrievingData, ToasterTitle.Info);
+          }
+        },
+        error: (error) => {
+          console.error('Error fetching workstation setup info:', error);
+          this.global.ShowToastr(ToasterType.Error, ToasterMessages.ErrorWhileRetrievingData, ToasterTitle.Error);
         }
-      })
+      });
+    }
+
+    /**
+     * Check if the current view allows editing (not batch or tote view)
+     * @returns true if editing is allowed, false otherwise
+     */
+    private isEditingAllowed(): boolean {
+      return this.view !== 'batch' && this.view !== 'tote';
     }
   
     clearAll() {
-      if(this.view != 'batch' && this.view != 'tote'){
+      if (this.isEditingAllowed()) {
         this.selectedList.forEach((element, i) => {
           this.selectedList[i]['toteId'] = undefined;
           this.selectedList[i]['partialToteId'] = undefined;
@@ -87,26 +101,44 @@ export class BmSlaperLabelSplitEntryComponent implements OnInit {
   
     }
     printTote(index) {
-      let orderNumber = [this.selectedList[index]['orderNumber']];
-      let toteId = [this.selectedList[index]['toteId']].filter((id): id is string => id !== undefined);
-      let position = [this.selectedList[index]['toteNumber']].filter((pos): pos is number => pos !== undefined);
-  
-      if (this.view == 'batchmanager') {
-        this.printApiService.PrintBatchManagerToteLabel(position, toteId, orderNumber, this.batchid);
-      } else {
-        this.iAdminApiService.PrintTotes(orderNumber, toteId, this.data.type, index);
+      try {
+        // Validate index bounds
+        if (index < 0 || index >= this.selectedList.length) {
+          this.global.ShowToastr(ToasterType.Error, ToasterMessages.MissingDataFromPrint, ToasterTitle.Error);
+          return;
+        }
+
+        const selectedItem = this.selectedList[index];
+        
+        // Validate required data
+        if (!selectedItem.orderNumber || !selectedItem.toteId || !selectedItem.toteNumber) {
+          this.global.ShowToastr(ToasterType.Error, ToasterMessages.MissingDataFromPrint, ToasterTitle.Error);
+          return;
+        }
+
+        let orderNumber = [selectedItem.orderNumber];
+        let toteId = [selectedItem.toteId].filter((id): id is string => id !== undefined);
+        let position = [selectedItem.toteNumber].filter((pos): pos is number => pos !== undefined);
+     
+        if (this.view == 'batchmanager') {
+          this.printApiService.PrintBatchManagerToteLabel(position, toteId, orderNumber, this.batchid);
+        } else {
+          this.iAdminApiService.PrintTotes(orderNumber, toteId, this.data.type, index);
+        }
+      } catch (error) {
+        console.error('Error in printTote function:', error);
+        this.global.ShowToastr(ToasterType.Error, ToasterMessages.UnableToPrint, ToasterTitle.Error);
       }
-  
     }
     removeToteID(index) {
-      if(this.view != 'batch' && this.view != 'tote'){
+      if (this.isEditingAllowed()) {
         this.selectedList[index]['toteId'] = undefined;
         this.selectedList[index]['partialToteId'] = undefined;
       }
     }
   
     nextToteIdForRow(index: number) {
-      if (this.view == 'batch' || this.view == 'tote') {
+      if (!this.isEditingAllowed()) {
         return;
       }
 
@@ -116,13 +148,11 @@ export class BmSlaperLabelSplitEntryComponent implements OnInit {
           this.selectedList[index]['partialToteId'] = this.nextToteID.toString();
         }
       }).catch((error) => {
-        this.global.ShowToastr(ToasterType.Error, 'Failed to get next tote ID', ToasterTitle.Error);
+        this.global.ShowToastr(ToasterType.Error, ToasterMessages.SomethingWentWrong, ToasterTitle.Error);
       });
     }
 
     submitOrder() {
-      debugger;
-      console.log('submitOrder', this.selectedList);
       if (this.selectedList.find(x => x.IsTote == true)) {
         const dialogRef: any = this.global.OpenDialog(AlertConfirmationComponent, {
           height: 'auto',
@@ -153,7 +183,7 @@ export class BmSlaperLabelSplitEntryComponent implements OnInit {
         // TODO: No need to subscribe to afterClosed if we are not doing anything with the result.
         dialogRef.afterClosed().subscribe((result) => {
         });
-      } else if (this.view == 'batch' || this.view == 'tote') {
+      } else if (!this.isEditingAllowed()) {
         this.dialogRef.close(this.selectedList);
       } else {
         this.updateToteID();
@@ -259,11 +289,11 @@ export class BmSlaperLabelSplitEntryComponent implements OnInit {
             }
           });
         } else {
-          this.global.ShowToastr(ToasterType.Info, 'No tote IDs were generated', ToasterTitle.Warning);
+          this.global.ShowToastr(ToasterType.Info, ToasterMessages.NoRecordFound, ToasterTitle.Info);
         }
       } catch (error) {
         console.error('Error creating next tote:', error);
-        this.global.ShowToastr(ToasterType.Error, 'Failed to create tote IDs', ToasterTitle.Error);
+        this.global.ShowToastr(ToasterType.Error, ToasterMessages.SomethingWentWrong, ToasterTitle.Error);
       }
     }
 
