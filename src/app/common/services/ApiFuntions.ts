@@ -845,8 +845,8 @@ export class ApiFuntions {
     return this.ApiBase.Get('/Induction/ordersfilterzone', body);
   }
 
-  public PickToteTransDT(body: PickToteTransPayload): Observable<ApiResponse<PickToteTransPayload> | null> {
-    return this.ApiBase.Post<ApiResponse<PickToteTransPayload>>('/Induction/picktotetransdt', body);
+  public PickToteTransDT(body: PickToteTransPayload): Observable<PickToteTransPayload | null> {
+    return this.ApiBase.Post<PickToteTransPayload>('/Induction/picktotetransdt', body);
   }
   public PickBatchFilterOrderData(body: any): Observable<any> {
     return this.ApiBase.Get('/Induction/pickbatchfilterorderdata', body);
