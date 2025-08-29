@@ -19,7 +19,7 @@ export class DirectFilterationColumnsService {
    * @param type The type of the value
    * @returns The updated array of FilterationColumns objects
    */
-  createFilterationColumn(selectedItem: string | number | boolean | Date | null | undefined, filterColumnName: string, condition: string, type: string): FilterationColumns[] {
+  createFilterationColumn(selectedItem: AllDataTypeValues, filterColumnName: string, condition: string, type: string): FilterationColumns[] {
     if (condition === FILTRATION_GRID_OPERATION_KEYS.Clear) {
       // Clear specific column filter
       this.clearColumnFilter(filterColumnName);
@@ -41,7 +41,7 @@ export class DirectFilterationColumnsService {
     }
 
     // Determine column type based on the value type
-    let columnType = this.determineColumnType(type, filterColumnName);
+    let columnType = this.determineColumnType(filterColumnName, type);
     
     // Determine grid operation based on condition
     const gridOperation = this.mapConditionToGridOperation(condition);
@@ -67,7 +67,7 @@ export class DirectFilterationColumnsService {
 
     return [...this.filterationColumns];
   }
-  isNullOrEmpty(str: string | number | boolean | Date | null | undefined): boolean {
+  isNullOrEmpty(str: AllDataTypeValues): boolean {
     return str == null || str == undefined;
   }
 
@@ -160,7 +160,7 @@ export class DirectFilterationColumnsService {
    * @returns The column type
    */
   
-  private determineColumnType(type: string | null | undefined, columnName: string): FiltrationDataTypes {
+  private determineColumnType(columnName: string, type?: string): FiltrationDataTypes {
     
     if ((!type || type.trim() !== '') && DATE_COLUMNS.has(columnName)) {
       return  FiltrationDataTypes.Datetime;

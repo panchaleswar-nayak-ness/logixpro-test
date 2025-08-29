@@ -7,7 +7,7 @@ import { GlobalService } from 'src/app/common/services/global.service';
 import { ContextMenuFiltersService } from 'src/app/common/init/context-menu-filters.service';
 import { TableContextMenuService } from '../table-context-menu-component/table-context-menu.service';
 import { FilterationColumns, InputDialogResult } from '../../Model/pick-Tote-Manager';
-import { FiltrationDataTypes } from '../../enums/CommonEnums';
+import { AllDataTypeValues, FiltrationDataTypes } from '../../enums/CommonEnums';
 
 @Component({
   selector: 'app-direct-filteration-columns-menu',
@@ -30,7 +30,7 @@ export class DirectFilterationColumnsMenuComponent extends TableContextMenuCompo
   /**
    * Override the onContextMenuCommand method to create FilterationColumns objects directly
    */
-  override onContextMenuCommand(SelectedItem: string | number | boolean | Date | null | undefined, FilterColumnName: string, Condition: string, Type: string) {
+  override onContextMenuCommand(SelectedItem: AllDataTypeValues, FilterColumnName: string, Condition: string, Type: string) {
 
     // Now create FilterationColumns objects directly
     const filterationColumns = this.directFilterService.createFilterationColumn(
