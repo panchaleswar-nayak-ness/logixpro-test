@@ -35,12 +35,12 @@
 
               <ng-container matColumnDef="toteId">
                 <th mat-header-cell mat-sort-header *matHeaderCellDef data-automation-id="table-header-tote-id">Tote ID</th>
-                <td mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'table-row-' + i + '-' + element.itemNumber + '-tote-id-cell'">{{element?.toteId}} </td>
+                <td mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'table-row-' + i + '-' + element.itemNumber + '-tote-id-cell'">{{ element?.toteId }}</td>
               </ng-container>
 
               <ng-container matColumnDef="itemNumber">
                 <th mat-header-cell mat-sort-header *matHeaderCellDef replacePlaceholder [replacePlaceHolder]="placeholders.itemNumber" [fallbackPlaceHolder]="placeholders.itemNumberFallback" data-automation-id="table-header-item-number">{{ItemNumber}}</th>
-                <td mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'table-row-' + i + '-' + element.itemNumber + '-item-number-cell'">{{element?.itemNumber}} </td>
+                <td mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'table-row-' + i + '-' + element.itemNumber + '-item-number-cell'">{{ element?.itemNumber }}</td>
               </ng-container>
 
               <ng-container matColumnDef="location">
@@ -48,27 +48,27 @@
                 <td mat-cell *matCellDef="let element; let i = index" 
                 #tooltip="matTooltip" matTooltipPosition="above"
                 [matTooltip]="element.location" 
-                [attr.data-automation-id]="'table-row-' + i + '-' + element.itemNumber + '-location-cell'">{{element?.location}} </td>
+                [attr.data-automation-id]="'table-row-' + i + '-' + element.itemNumber + '-location-cell'">{{ element?.location }}</td>
               </ng-container>
 
               <ng-container matColumnDef="compQty">
                 <th mat-header-cell *matHeaderCellDef mat-sort-header data-automation-id="table-header-picked-qty">Picked Qty</th>
-                <td mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'table-row-' + i + '-' + element.itemNumber + '-picked-qty-cell'">{{element?.compQty}} </td>
+                <td mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'table-row-' + i + '-' + element.itemNumber + '-picked-qty-cell'">{{ element?.compQty }}</td>
               </ng-container>
 
               <ng-container matColumnDef="completedDate">
                 <th mat-header-cell *matHeaderCellDef mat-sort-header data-automation-id="table-header-completed-date">Completed Date</th>
-                <td mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'table-row-' + i + '-' + element.itemNumber + '-completed-date-cell'">{{element?.completedDate| date:'M/d/yyyy h:mm:ss a' }} </td>
+                <td mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'table-row-' + i + '-' + element.itemNumber + '-completed-date-cell'">{{ element?.completedDate| date:'M/d/yyyy h:mm:ss a' }}</td>
               </ng-container>
 
               <ng-container matColumnDef="transQty">
                 <th mat-header-cell *matHeaderCellDef mat-sort-header data-automation-id="table-header-trans-qty">Trans Qty</th>
-                <td mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'table-row-' + i + '-' + element.itemNumber + '-trans-qty-cell'">{{element?.transQty}} </td>
+                <td mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'table-row-' + i + '-' + element.itemNumber + '-trans-qty-cell'">{{ element?.transQty }}</td>
               </ng-container>
 
               <ng-container matColumnDef="shortQty">
                 <th mat-header-cell *matHeaderCellDef mat-sort-header data-automation-id="table-header-short-qty">Short Qty</th>
-                <td mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'table-row-' + i + '-' + element.itemNumber + '-short-qty-cell'">{{element?.shortQty}} </td>
+                <td mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'table-row-' + i + '-' + element.itemNumber + '-short-qty-cell'">{{ element?.shortQty }}</td>
               </ng-container>
 
               <ng-container matColumnDef="actions" stickyEnd>
