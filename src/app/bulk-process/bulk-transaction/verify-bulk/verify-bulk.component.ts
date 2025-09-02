@@ -115,41 +115,59 @@ export class VerifyBulkComponent implements OnInit {
   }
 
   ngAfterViewInit() {
-    console.log('VerifyBulkComponent received orderLines:', this.orderLines);
-    
-    // Only apply new data transformation logic if we're in the slapper label flow
+    this.processOrderLinesData();
+    this.initializeComponent();
+  }
+
+  private processOrderLinesData() {
     if (this.isSlapperLabelFlow) {
-      // Check if we have nested structure (orderLines array) or flat structure
-      let flatOrderLines: OrderLineResource[] = [];
-      
-      if (this.orderLines && this.orderLines.length > 0 && this.orderLines[0].orderLines) {
-        // Nested structure - flatten the orderLines arrays
-        this.orderLines.forEach((order: { orderLines?: OrderLineResource[] }) => {
-          if (order.orderLines && order.orderLines.length > 0) {
-            flatOrderLines.push(...order.orderLines);
-          }
-        });
-      } else {
-        // Flat structure - use as is
-        flatOrderLines = this.orderLines;
-      }
-      
-      // Create search list for filtering (deduplicate by itemNumber for search suggestions)
-      const map = new Map();
-      flatOrderLines.forEach((obj: OrderLineResource) => {
-        if (!map.has(obj.itemNumber)) {
-          map.set(obj.itemNumber, obj);
+      this.processSlapperLabelFlow();
+    } else {
+      this.processStandardFlow();
+    }
+  }
+
+  private processSlapperLabelFlow() {
+    const flatOrderLines = this.flattenOrderLines();
+    this.createSearchList(flatOrderLines);
+    this.orderLines = new MatTableDataSource(flatOrderLines);
+  }
+
+  private processStandardFlow() {
+    // Preserve existing functionality - use orderLines as is
+    this.OldSelectedList = this.orderLines;
+  }
+
+  private flattenOrderLines(): OrderLineResource[] {
+    let flatOrderLines: OrderLineResource[] = [];
+    
+    if (this.orderLines && this.orderLines.length > 0 && this.orderLines[0].orderLines) {
+      // Nested structure - flatten the orderLines arrays
+      this.orderLines.forEach((order: { orderLines?: OrderLineResource[] }) => {
+        if (order.orderLines && order.orderLines.length > 0) {
+          flatOrderLines.push(...order.orderLines);
         }
       });
-      this.OldSelectedList = Array.from(map.values());
-      
-      // Use the flat order lines for the table (no deduplication)
-      this.orderLines = new MatTableDataSource(flatOrderLines);
     } else {
-      // Preserve existing functionality - use orderLines as is
-      this.OldSelectedList = this.orderLines;
+      // Flat structure - use as is
+      flatOrderLines = this.orderLines;
     }
     
+    return flatOrderLines;
+  }
+
+  private createSearchList(flatOrderLines: OrderLineResource[]) {
+    // Create search list for filtering (deduplicate by itemNumber for search suggestions)
+    const map = new Map();
+    flatOrderLines.forEach((obj: OrderLineResource) => {
+      if (!map.has(obj.itemNumber)) {
+        map.set(obj.itemNumber, obj);
+      }
+    });
+    this.OldSelectedList = Array.from(map.values());
+  }
+
+  private initializeComponent() {
     this.orderLines.paginator = this.paginator;
     this.getWorkstationSetupInfo();
     setTimeout(() => {
@@ -230,7 +248,7 @@ export class VerifyBulkComponent implements OnInit {
     }
   }
 
-  numberSelection(element: any) {
+  numberSelection(element: OrderLineResource & { NextToteID?: number }) {
     element.NextToteID = this.NextToteID;
     let record = this.taskCompleteNewRequest.find((x: TaskCompleteNewRequest) => x.id == element.id);
 
@@ -522,8 +540,8 @@ export class VerifyBulkComponent implements OnInit {
 
   printTote(index: number) {
     const transactionType = this.bulkTransactionType;
-    let orderNumber = [this.orderLines.filteredData[index].orderNumber].filter((num): num is string => num != null);
-    let toteId = [this.orderLines.filteredData[index].toteId].filter((id): id is string => id != null);
+    let orderNumber: string[] = [this.orderLines.filteredData[index].orderNumber || ''];
+    let toteId: string[] = [this.orderLines.filteredData[index].toteId || ''];
     this.iAdminApiService.PrintTotes(orderNumber, toteId, transactionType, index);
   }
 

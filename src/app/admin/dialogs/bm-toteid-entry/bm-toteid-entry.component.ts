@@ -14,13 +14,21 @@ import { PrintApiService } from 'src/app/common/services/print-api/print-api.ser
 import { ApiResult } from 'src/app/common/types/CommonTypes';
 import { PartialToteIdResponse } from 'src/app/common/Model/bulk-transactions';
 
+interface SelectedOrderItem {
+  orderNumber: string;
+  toteId?: string | number;
+  toteNumber?: number;
+  IsTote?: boolean;
+  IsError?: boolean;
+}
+
 @Component({
   selector: 'app-bm-toteid-entry',
   templateUrl: './bm-toeid-entry.component.html',
   styleUrls: ['./bm-toeid-entry.component.scss'],
 })
 export class BmToteidEntryComponent implements OnInit {
-  selectedList: any;
+  selectedList: SelectedOrderItem[];
   nextToteID: any;
   preferences: any;
   userData: any;
@@ -52,11 +60,11 @@ export class BmToteidEntryComponent implements OnInit {
   ngOnInit(): void {
     this.userData = this.authService.userData();
     if (this.view == 'tote') {
-      this.selectedList.forEach((x: any) => { x.toteId = x.toteId });
+      this.selectedList.forEach((x: SelectedOrderItem) => { x.toteId = x.toteId });
     }
     
     // Assign sequential tote numbers (1, 2, 3, etc.) to each item
-    this.selectedList.forEach((item: any, index: number) => {
+    this.selectedList.forEach((item: SelectedOrderItem, index: number) => {
       item.toteNumber = index + 1;
     });
     
@@ -74,15 +82,15 @@ export class BmToteidEntryComponent implements OnInit {
 
   clearAll() {
     if(this.view != 'batch' && this.view != 'tote'){
-      this.selectedList.forEach((element, i) => {
-        this.selectedList[i]['toteId'] = undefined;
+      this.selectedList.forEach((element: SelectedOrderItem, i) => {
+        this.selectedList[i].toteId = undefined;
       });
     }
   }
   printAllToteLabels() {
-    let orderNumbers = this.selectedList.map(o =>o['orderNumber']);
-    let toteIds = this.selectedList.map(o => o['toteId']);
-    let positions = this.selectedList.map(o => o['toteNumber']);
+    let orderNumbers = this.selectedList.map(o => o.orderNumber);
+    let toteIds = this.selectedList.map(o => String(o.toteId!));
+    let positions = this.selectedList.map(o => o.toteNumber!);
 
     if (this.view == 'batchmanager') {
       this.printApiService.PrintBatchManagerToteLabel(positions, toteIds, orderNumbers, this.batchid);
@@ -91,10 +99,10 @@ export class BmToteidEntryComponent implements OnInit {
     }
 
   }
-  printTote(index) {
-    let orderNumber = [this.selectedList[index]['orderNumber']];
-    let toteId = [this.selectedList[index]['toteId']];
-    let position = [this.selectedList[index]['toteNumber']];
+  printTote(index: number) {
+    let orderNumber = [this.selectedList[index].orderNumber];
+    let toteId = [String(this.selectedList[index].toteId!)];
+    let position = [this.selectedList[index].toteNumber!];
 
     if (this.view == 'batchmanager') {
       this.printApiService.PrintBatchManagerToteLabel(position, toteId, orderNumber, this.batchid);
@@ -103,9 +111,9 @@ export class BmToteidEntryComponent implements OnInit {
     }
 
   }
-  removeToteID(index) {
+  removeToteID(index: number) {
     if(this.view != 'batch' && this.view != 'tote'){
-      this.selectedList[index]['toteId'] = undefined;
+      this.selectedList[index].toteId = undefined;
     }
   }
 
@@ -116,10 +124,10 @@ export class BmToteidEntryComponent implements OnInit {
 
     this.bulkProcessApiService.BatchNextTote(this.selectedList.length).then((res) => {
       this.nextToteID = res.body?.nextId;
-      this.selectedList.forEach((element, i) => {
+      this.selectedList.forEach((element: SelectedOrderItem, i) => {
         this.selectedList[i].IsTote = false;
         this.selectedList[i].IsError = false;
-        this.selectedList[i]['toteId'] = i == 0 ? parseInt(this.nextToteID) : parseInt(this.nextToteID) + i;
+        this.selectedList[i].toteId = i == 0 ? parseInt(this.nextToteID) : parseInt(this.nextToteID) + i;
       });
     });
   }
@@ -242,10 +250,10 @@ export class BmToteidEntryComponent implements OnInit {
 
   updateToteID() {
     let orders: AssignToteToOrderDto[] = [];
-    this.selectedList.forEach((element, i) => {
+    this.selectedList.forEach((element: SelectedOrderItem, i) => {
       let order: AssignToteToOrderDto = {
         orderNumber: element.orderNumber,
-        toteId: element.toteId,
+        toteId: String(element.toteId),
         type: this.data.type
       };
       orders.push(order);
