@@ -7,6 +7,9 @@ import { InventoryMap, UpdateSCReq } from '../../Model/storage-container-managem
 import { UserAccessLevels } from '../user-access-levels/user-access-levels';
 import { DevicePreferenceRequest, DevicePreferencesTableRequest } from '../../interface/admin/device-preferences';
 import { UpdateEmergencyRequest } from '../../interface/admin/opentransaction.interfaces';
+import { ImportTypeConfig, AuditTransferFileFormData } from '../../interface/audit-file-field-mapping-manager/import-type-config.interface';
+import { Observable } from 'rxjs';
+import { InventoryCompareConfigResponse } from '../../interface/audit-file-field-mapping-manager/inventory-compare-response.interface';
 
 
 @Injectable({
@@ -2158,6 +2161,17 @@ export class AdminApiService implements IAdminApiService {
 
     public createInventoryMapAsync(body: InventoryMap) {
       return this.Api.createInventoryMapAsync(body);
+    }
+
+    public UpdateImportType(body: AuditTransferFileFormData): Observable<InventoryCompareConfigResponse | null> {
+      const payload: ImportTypeConfig = {
+        importTypeName: 'InventoryCompare',
+        importPath: body.importFilePath,
+        archivePath: body.backupFilePath,
+        fileExtension: body.extensionImportFile,
+        isActive: body.active
+      };
+      return this.Api.updateImportType(payload);
     }
   }
 

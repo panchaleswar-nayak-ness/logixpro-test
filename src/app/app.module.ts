@@ -166,6 +166,7 @@ import {OrderDetailsComponent} from './dialogs/order-details/order-details.compo
 import { ZoneGroupsComponent } from './dialogs/zone-groups/zone-groups.component';
 import { ImprefInductionFilterComponent } from './dialogs/impref-induction-filter/impref-induction-filter.component';
 import { ImportCountBatchesComponent } from './admin/cycle-counts/import-count-batches/import-count-batches.component';
+import { AuditTransferFileComponent } from './admin/cycle-counts/dialogs/audit-transfer-file/audit-transfer-file.component';
 import { MatSelectModule } from '@angular/material/select';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 
@@ -290,6 +291,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
     OrderDetailsComponent,
     ZoneGroupsComponent,
     ImprefInductionFilterComponent,
+    AuditTransferFileComponent
   ],
   imports: [
     BrowserModule,

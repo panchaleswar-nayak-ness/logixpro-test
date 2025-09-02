@@ -1,38 +1,93 @@
-.table-responsive {
-    display: block;
-    width: 100%;
-    // height: 200px;
-    overflow-x: auto;
-    overflow-y: auto;
-    .mat-table {
-        width: 100%;
-        max-width: 100%;
-        height: 150px;
-        display: table;
-        border-collapse: collapse;
-        margin: 0 0 1rem 0;
-    }
-    .mat-row,
-    .mat-header-row {
-        display: table-row;
-    }
-    .mat-cell,
-    .mat-header-cell {
-        word-wrap: initial;
-        display: table-cell;
-        padding: 0px 12px;
-        line-break: unset;
-        width: auto;
+.container-table-header
+{
+    width:auto; padding: 5px 12px;
+
+}
+.border{
+
+    border: 0;
+}
+.container-table-data{
+
+    padding: 10px 12px; text-overflow: ellipsis; overflow: hidden; max-width: 20ch; white-space: nowrap;
+}
+.filter
+{
+    gap:12px
+}
+.actionContainer-Header{
+
+    border: 0;height: 66px; padding-left:65px;width: 88px;
+}
+.actionContainerdata{
+    border: 0; padding-left: 24px; background: var(--clr-pure-white);
+}
+.quarantineColor{
+    background-color: #FCEAEE;
+    min-height: 40px;
+}
+mat-row, mat-footer-row{
+    min-height: 40px;
+}
+
+.scroll-bar{
+    height: 575px;
+}
+.dialogButton{
+    flex: 1;
+}
+table{
+    mat-row, mat-header-row{
+        display: table-row!important;
         white-space: nowrap;
-        overflow: hidden;
-        vertical-align: middle;
-    }
-    .tableScrolbar{
-        height:200px;
-        .bodertable{
-            .tr-matheader{
-                background-color: var(--clr-table-header);
+        th, td{
+            vertical-align: middle;
+            border-bottom: 1px solid var(--clr-pure-white);
+            &:first-child{
+                padding-left: 28px !important;
             }
         }
     }
+}
+
+.view-all-loacation-heading {
+    width:48px
+}
+/* Base Style for Badges */
+.status-badge {
+    display: inline-block;
+    font-weight: bold;
+    font-size: 12px;
+    padding: 4px 10px;
+    border-radius: 15px; /* Adjusted for rounded corners */
+    text-align: center;
+    min-width: 120px;
+}
+
+/* Different Status Colors */
+.status-initialized {
+    background-color: #D4D3F7; /* Light Purple */
+    color: #212063; /* Dark Blue */
+    border-radius: 15px; /* Left and right curved */
+}
+
+.status-induction {
+    background-color: #FFEECB; /* Light Yellow */
+    color: #9C6500; /* Dark Yellow */
+    border-radius: 15px; /* Left and right curved */
+}
+
+.status-completed {
+    background-color: #B8E0D2; /* Light Green */
+    color: #2D6A4F; /* Dark Green */
+    border-radius: 15px; /* Left and right curved */
+}
+
+.min-max-height-table{
+    min-height: 150px;
+     max-height: 200px;
+}
+
+.scroll-min-height {
+    min-height: 200px;
   }
