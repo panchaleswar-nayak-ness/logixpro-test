@@ -1,0 +1,79 @@
+// Use global .mat-table-scrollbar class from styles.scss
+// Use global .custom-form-field class from styles.scss
+
+// Component-specific styles that don't have global equivalents
+table {
+
+  th,
+  td {
+    white-space: nowrap;
+    padding-right: 16px;
+  }
+
+  tr {
+    display: table-row !important;
+    white-space: nowrap;
+
+    th,
+    td {
+      vertical-align: middle;
+      padding-right: 16px;
+
+      &:first-child {
+        padding-left: 20px !important;
+      }
+
+      &:last-child {
+        padding-right: 20px !important;
+      }
+    }
+  }
+
+  .highlight-row {
+    background-color: #FCEAEE;
+  }
+
+
+
+  .selected {
+    background-color: var(--clr-primary-300) !important;
+    border-radius: 0px !important;
+
+    color: var(--clr-pure-white);
+
+
+  }
+}
+
+
+// Use Bootstrap utility classes instead of custom styles
+// .back-btn styling can be replaced with Bootstrap classes in HTML
+// .transfer-button-container can use Bootstrap pt-4 class in HTML
+// .audit-field-mapping-margin-left can use Bootstrap ms-1 class in HTML
+
+// Global utility classes for form validation
+.text-error {
+  color: var(--clr-danger-shade);
+}
+
+// Form field validation styling using global classes
+.custom-form-field.mat-form-field-invalid .mat-form-field-outline {
+  color: var(--clr-danger-shade);
+}
+
+.required-field .mat-form-field-outline {
+  border-color: var(--clr-danger-shade);
+}
+
+.mat-error {
+  font-size: 12px;
+  margin-top: 4px;
+}
+
+.circle-icon-o{
+  min-height: 48px;
+  min-width: 48px;
+}
+.w-pad-field{
+  width: 200px;
+}

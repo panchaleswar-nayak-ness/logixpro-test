@@ -132,6 +132,8 @@ export const ConfirmationHeadings = {
     PrintBatchOrOrder:"Print Batch Or Order",
     NoOffCarouselPicksFound:"No Off-Carousel Picks Found",
     ResolveToteId: "Resolve Tote ID",
+    ContinueCreatingTransaction: 'Continue Creating Transactions?',
+    AssignLocation: 'Assign Location',
     ChangeFormatType: "Change Format Type"
 }
 export const ConfirmationButtonText = {
@@ -151,16 +153,19 @@ export const ConfirmationMessages = {
     ConfirmationToClearAllInventoryMap : "Click OK to clear all Inventory Map records matching Location Number (Zone + Carousal + Row + Shelf + Bin) Criteria!",
     ClearWholeLocationPutAwayQuantity:"Clear Whole Location cannot proceed because the Allocated Pick or Allocated Put Away quantity is greater than zero.",
     DeleteLicenseConfirmation:"Are you sure you want to delete this License?",
-    TouchYesToPrintlabelForItemInBatch: "Touch 'Yes' to print a label for each item in this batch",
-    TouchYesToPrintAllAsBatch:"Touch 'Yes' to print all orders as a batch",
+    TouchYesToPrintlabelForItemInBatch: "Touch ‘Yes’ to print a label for each item in this batch",
+    TouchYesToPrintAllAsBatch:"Touch ‘Yes’ to print all orders as a batch",
     TouchNoToPrintEachOrder: "Touch 'No' to print a page for each order.",
     AssignOrdersToBatch: (batchId: string | number) =>
-        `Touch 'Yes' to Assign the Selected Orders to Batch ID ${batchId}. Touch 'No' to Cancel Batching.`,
+        `Touch ‘Yes’ to Assign the Selected Orders to Batch ID ${batchId}. Touch ‘No’ to Cancel Batching.`,
     NoOffCarouselPicks:"There are no off-carousel picks for the order(s) selected.",    
     ResolvedToteConfirmation:"Are you sure you want to mark this Tote ID as resolved? This will remove this Tote ID from the Markout.",
     IrreversibleActionWarning :'This action cannot be undone.',
     UpdateAllInterface: 'Click OK to update all devices with Com Port: {{comPort}}',
     UpdateAllInterfaceWithZone: 'Click OK to update all devices with Com Port: {{comPort}} and Zone: {{zone}}',
+    ContinueCreatingTransaction: 'You will now create a “Count” Transaction for each Item Number in the Queue.',
+    InfoText: 'These items will be removed from the Discrepancies List.',
+    ClickYesToAssignLocation: 'Click Yes to close the Cycle Count Manager screen and go the Location Assignment Screen.',
     InconsistentFormat: (fieldName: string, newFormat: string, oldFormat: string) => `An "${fieldName}" was added with ${oldFormat} format. Changing to ${newFormat} will update that entry as well. Do you want to continue?`,
 }
 
@@ -233,7 +238,7 @@ export const ToasterMessages = {
     LocationDeleted: 'Location deleted successfully',
     DeleteFailed:"Delete Failed",
     FieldEmptyDefault:"Field cannot be empty. Default value has been applied.",
-    ZoneAndLocationNameNeedToBeSet: 'Zone and Location Name need to be set via the Preferences - Location Zones screen in order to save.',
+    ZoneAndLocationNameNeedToBeSet:" “Zone and Location Name need to be set via the Preferences - Location Zones screen in order to save”",
     Consolidationzones:"Failed to load consolidation zones.",
     Consolidationstatuscount:"Failed to load consolidation status count.",
     RouteidCount:"Failed to load route id status count.",
@@ -266,10 +271,17 @@ export const ToasterMessages = {
     InvalidInputForFilter: "Some of the inputs are missing values. Cannot add row to filter.",
     ZoneWouldBeADuplicateAndCannotBeAdded: "Zone would be a duplicate and cannot be added.",
     LocationZoneCannotBeDeleted: "Location Zone cannot be deleted because there are allocated quantities in an Inventory Map location matching the zone",
-    CannotInsertDuplicateZone: "Cannot insert duplicate Zone"
+    CannotInsertDuplicateZone: "Cannot insert duplicate Zone",
+    AddedInQueueSuccess:"Added in Queue",
+    AddedInQueueFailed:"Added in Queue failed",
+    RemoveFromQueueSuccess:"Remove from Queue",
+    RemoveFromQueueFailed:"Remove from Queue failed",
+    CountQueueActionTypeError:"Unhandled action type",
+    ConfigurationUpdateSuccess: 'Configuration updated successfully',
+    ConfigurationUpdateFailed: 'Failed to update configuration',
+    FieldRequiresBothStartPositionAndFieldLength: (fieldName: string) => `${fieldName} requires both Start Position and Field Length values`,
+    FieldHasInvalidValues: (fieldName: string) => `${fieldName} has invalid values. Please check the minimum requirements.`
 }
-
-
 
 export const LiveAnnouncerMessage = {
     SortingCleared: 'Sorting cleared'
@@ -538,8 +550,8 @@ export const Style = {
     w786px: '786px',
     w402px: '402px',
     w1080px: '1080px',
-    auto:'auto',
     w990px: '990px',
+    auto:'auto',
     w56vw: '56vw'
 }
 
@@ -725,7 +737,7 @@ export const defaultWorkstationSetup: WorkStationSetup = {
         pfSetting: ""
       }
     ]
-};
+}
 
 export const defaultEmployeeAccessLevels: EmployeeAccessLevel ={
     lastRefreshedDateTime : new Date(),
@@ -769,7 +781,13 @@ export class ConsoleErrorMessages {
     static readonly ErrorFindingAssignedOrderLines = "Error occurred while finding order lines assigned locations:"
 }
 export const PickToteFilterpreferences = {
-    preferences: "PickToteFilterPrefs",
+    preferences: "PickToteFilterPrefs"
+}
+export const importFieldMappingDialogSizes  = {
+  CCDiscrepancies : {
+    width: '800px',
+    height: '650px'
+  }
 }
 export const FILTRATION_GRID_OPERATION_KEYS = {
     Between: "between",

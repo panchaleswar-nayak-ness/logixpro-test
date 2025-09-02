@@ -58,6 +58,7 @@ export const AppRoutes = {
     Dashboard: '/dashboard',
     InductionManagerAdmin:'/InductionManager/Admin',
     Markout: '/MarkoutProcess',
+    AuditFileFieldMappingComponent: '/admin/auditFileFieldMapping',
 }
 
 export const AppNames: {

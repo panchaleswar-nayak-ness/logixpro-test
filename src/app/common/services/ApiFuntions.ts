@@ -19,6 +19,9 @@ import { UpdateEmergencyRequest } from '../interface/admin/opentransaction.inter
 import { ApiResponse, ApiResponseData } from '../types/CommonTypes';
 import { PrintOrdersPayload } from '../interface/bulk-transactions/bulk-pick';
 import { PickToteTransPayload, PickToteTransResponse } from '../types/pick-tote-manager.types';
+import { ImportTypeConfig } from '../interface/audit-file-field-mapping-manager/import-type-config.interface';
+import { InventoryCompareConfigResponse } from '../interface/audit-file-field-mapping-manager/inventory-compare-response.interface';
+import { InventoryCompareConfigPayload } from '../interface/audit-file-field-mapping-manager/inventory-compare.interface';
 
 
 
@@ -2437,6 +2440,19 @@ public ResolveMarkoutTote(toteId: number) {
       false,
       showLoader
     );
+  }
+
+  public updateImportType(payload: ImportTypeConfig): Observable<InventoryCompareConfigResponse | null> {
+    return this.ApiBase.Post('/ImportConfig/UpdateImportType', payload) as Observable<InventoryCompareConfigResponse | null>;
+  }
+
+  // Inventory Compare endpoints
+  public getInventoryCompareConfig(): Observable<InventoryCompareConfigResponse> {
+    return this.ApiBase.Get<InventoryCompareConfigResponse>('/InventoryCompare/GetInventoryCompareConfig');
+  }
+
+  public updateInventoryCompareConfig(payload: InventoryCompareConfigPayload): Observable<InventoryCompareConfigResponse | null> {
+    return this.ApiBase.Post('/InventoryCompare/UpdateInventoryCompareConfig', payload) as Observable<InventoryCompareConfigResponse | null>;
   }
   
 }
