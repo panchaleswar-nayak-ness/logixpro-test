@@ -27,22 +27,22 @@ import { IInductionManagerApiService } from 'src/app/common/services/induction-m
 import { InductionManagerApiService } from 'src/app/common/services/induction-manager-api/induction-manager-api.service';
 import { GlobalService } from 'src/app/common/services/global.service';
 import { PickToteManagerService } from 'src/app/common/services/pick-tote-manager.service'
-import {  TableConstant ,ToasterTitle,ResponseStrings,Column,ToasterType,zoneType,DialogConstants,ColumnDef,UniqueConstants,Style,StringConditions, Placeholders, ToasterMessages, FIELDS_DEFAULT_AN, ConfirmationMessages, FormatValues, ConfirmationHeadings, DISABLED_FIELDS, FormatType} from 'src/app/common/constants/strings.constants';
-import { FilterOrder, FilterTransaction, SavedFilterChangeEvent, FilterData, OrderData } from 'src/app/common/types/pick-tote-manager.types';
-import { InputType } from 'src/app/common/enums/CommonEnums';
+import {  TableConstant ,ToasterTitle,ResponseStrings,Column,ToasterType,zoneType,DialogConstants,ColumnDef,UniqueConstants,Style,StringConditions, Placeholders, ToasterMessages, FormatValues, FIELDS_DEFAULT_AN, ConfirmationMessages, ConfirmationHeadings, DISABLED_FIELDS, FormatType, INPUT_TYPES, DATE_COLUMNS} from 'src/app/common/constants/strings.constants';
+import { FilterOrder, FilterTransaction, SavedFilterChangeEvent, FilterData, OrderData, PickToteTransPayload, AllDataTypeValues } from 'src/app/common/types/pick-tote-manager.types';
+import { TableContextMenuService } from 'src/app/common/globalComponents/table-context-menu-component/table-context-menu.service';
+import { FilterationColumns, PeriodicElement } from 'src/app/common/Model/pick-Tote-Manager';
+import { InputType, PaginationData } from 'src/app/common/enums/CommonEnums';
+import { NgZone } from '@angular/core';
 
-export interface PeriodicElement {
-  name: string;
-  position: number;
-  weight: number;
-  symbol: string;
-}
 @Component({
   selector: 'app-pick-tote-manager',
   templateUrl: './pick-tote-manager.component.html',
   styleUrls: ['./pick-tote-manager.component.scss'],
 })
 export class PickToteManagerComponent implements OnInit {
+  selectedOrderValue: string = '';
+  filterString : string = UniqueConstants.OneEqualsOne;
+
 fieldMappings = JSON.parse(localStorage.getItem('fieldMappings') ?? '{}');
 ItemNumber: string = this.fieldMappings.itemNumber;
 UnitOfMeasure: string = this.fieldMappings.unitOfMeasure;
@@ -83,6 +83,8 @@ UserField10:string = this.fieldMappings.userField10;
   useDefaultZone;
   batchByZoneData: any[] = []; 
   tabIndex: number = 0;
+  isActiveTrigger:boolean =false;
+
   isAllSelected() {
     const numSelected = this.selection.selected.length;
     const numRows = this.dataSource.data.length;
@@ -418,7 +420,7 @@ UserField10:string = this.fieldMappings.userField10;
   ];
 
   displayedTransColumns = this.filterBatchTransColumns.map((c) => c.columnDef);
-
+filterationColumns : FilterationColumns[] = [];
   displayedColumns4: string[] = [
     UniqueConstants.Select,
     TableConstant.zone,
@@ -445,6 +447,8 @@ UserField10:string = this.fieldMappings.userField10;
   }
   public iInductionManagerApi: IInductionManagerApiService;
   constructor(
+    private ngZone: NgZone,
+    private contextMenuService : TableContextMenuService,
     private pickToteManagerService: PickToteManagerService,
     private global: GlobalService,
     public inductionManagerApi: InductionManagerApiService,
@@ -1082,16 +1086,18 @@ userFields = Array.from({ length: 9 }, (_, i) => ({
         }
       });
       this.isOrderSelect = false;
-      let paylaod = {
-        Draw: 0,
+      this.selectedOrderValue =row.orderNumber; 
+      const payload: PickToteTransPayload = {
+        Draw: PaginationData.Draw,
         OrderNumber: row.orderNumber,
-        sRow: 1,
-        eRow: 10,
+        SRow: PaginationData.StartRow,
+        ERow: PaginationData.EndRow,
         SortColumnNumber: 0,
         SortOrder: UniqueConstants.Asc,
-        Filter: UniqueConstants.OneEqualsOne
+        Filter: UniqueConstants.OneEqualsOne,
+        FiltrationColumns :  this.filterationColumns
       };
-      this.iInductionManagerApi.PickToteTransDT(paylaod).subscribe((res) => {
+      this.iInductionManagerApi.PickToteTransDT(payload).subscribe((res) => {
         if (res) {
           this.filterOrderTransactionSource = new MatTableDataSource<any>(
             res.data.pickToteManTrans
@@ -1148,16 +1154,17 @@ userFields = Array.from({ length: 9 }, (_, i) => ({
         }
       });
       this.isOrderSelectZone = false;
-      let paylaod = {
-        Draw: 0,
+      const payload: PickToteTransPayload = {
+        Draw: PaginationData.Draw,
         OrderNumber: row.orderNumber,
-        sRow: 1,
-        eRow: 10,
+        SRow: PaginationData.StartRow,
+        ERow: PaginationData.EndRow,
         SortColumnNumber: 0,
         SortOrder: UniqueConstants.Asc,
-        Filter: UniqueConstants.OneEqualsOne
+        Filter: UniqueConstants.OneEqualsOne,
+        FiltrationColumns:[]
       };
-      this.iInductionManagerApi.PickToteTransDT(paylaod).subscribe((res) => {
+      this.iInductionManagerApi.PickToteTransDT(payload).subscribe((res) => {
         if (res) {
           this.zoneOrderTransactionSource = new MatTableDataSource<any>(
             res.data.pickToteManTrans
@@ -1318,16 +1325,17 @@ clearOrderSelection() {
     });
 
     if (event.value === 'vAllOrderZone') {
-      let paylaod = {
-        Draw: 0,
+      const payload: PickToteTransPayload = {
+        Draw: PaginationData.Draw,
         OrderNumber: orderNum,
-        sRow: 1,
-        eRow: 10,
+        SRow: PaginationData.StartRow,
+        ERow: PaginationData.EndRow,
         SortColumnNumber: 0,
         SortOrder: UniqueConstants.Asc,
-        Filter: UniqueConstants.OneEqualsOne
+        Filter: UniqueConstants.OneEqualsOne,
+        FiltrationColumns : []
       };
-      this.iInductionManagerApi.PickToteTransDT(paylaod).subscribe((res) => {
+      this.iInductionManagerApi.PickToteTransDT(payload).subscribe((res) => {
         if (res.data.pickToteManTrans?.length > 0) {
           this.zoneOrderTransactionSource = new MatTableDataSource<any>(
             res.data.pickToteManTrans
@@ -1351,16 +1359,17 @@ clearOrderSelection() {
         }
       });
       if (orderNum !== '') {
-        let paylaod = {
-          Draw: 0,
+        const payload: PickToteTransPayload = {
+          Draw: PaginationData.Draw,
           OrderNumber: orderNum,
-          sRow: 1,
-          eRow: 10,
+          SRow: PaginationData.StartRow,
+          ERow: PaginationData.EndRow,
           SortColumnNumber: 0,
           SortOrder: UniqueConstants.Asc,
-          Filter: UniqueConstants.OneEqualsOne
+          Filter: UniqueConstants.OneEqualsOne,
+          FiltrationColumns:[]
         };
-        this.iInductionManagerApi.PickToteTransDT(paylaod).subscribe((res) => {
+        this.iInductionManagerApi.PickToteTransDT(payload).subscribe((res) => {
           if (res.data.pickToteManTrans?.length > 0) {
             this.zoneOrderTransactionSource = new MatTableDataSource<any>(
               res.data.pickToteManTrans
@@ -1387,16 +1396,17 @@ clearOrderSelection() {
     });
 
     if (event.value === 'vAllOrderFilter') {
-      let paylaod = {
-        Draw: 0,
+      const payload: PickToteTransPayload = {
+        Draw: PaginationData.Draw,
         OrderNumber: orderNum ?? 'EAGLES',
-        sRow: 1,
-        eRow: 10,
+        SRow: PaginationData.StartRow,
+        ERow: PaginationData.EndRow,
         SortColumnNumber: 0,
         SortOrder: UniqueConstants.Asc,
-        Filter: UniqueConstants.OneEqualsOne
+        Filter: UniqueConstants.OneEqualsOne,
+        FiltrationColumns:[]
       };
-      this.iInductionManagerApi.PickToteTransDT(paylaod).subscribe((res) => {
+      this.iInductionManagerApi.PickToteTransDT(payload).subscribe((res) => {
         if (res.data.pickToteManTrans?.length > 0) {
           this.filterOrderTransactionSource = new MatTableDataSource<any>(
             res.data.pickToteManTrans
@@ -1420,16 +1430,17 @@ clearOrderSelection() {
         }
       });
       if (orderNum !== '') {
-        let paylaod = {
-          Draw: 0,
+        const payload: PickToteTransPayload = {
+          Draw: PaginationData.Draw,
           OrderNumber: orderNum,
-          sRow: 1,
-          eRow: 10,
+          SRow: PaginationData.StartRow,
+          ERow: PaginationData.EndRow,
           SortColumnNumber: 0,
           SortOrder: UniqueConstants.Asc,
-          Filter: UniqueConstants.OneEqualsOne
+          Filter: UniqueConstants.OneEqualsOne,
+          FiltrationColumns: []
         };
-        this.iInductionManagerApi.PickToteTransDT(paylaod).subscribe((res) => {
+        this.iInductionManagerApi.PickToteTransDT(payload).subscribe((res) => {
           if (res.data.pickToteManTrans?.length > 0) {
             this.filterOrderTransactionSource = new MatTableDataSource<any>(
               res.data.pickToteManTrans
@@ -1753,8 +1764,57 @@ refreshOrderDataGrid() {
           });
       }
     });
+  }  
+
+  onContextMenu(event: MouseEvent, SelectedItem: AllDataTypeValues, FilterColumnName?: string, FilterConditon?: string | undefined, FilterItemType?: AllDataTypeValues) {
+    event.preventDefault()
+    this.isActiveTrigger = true;
+     this.ngZone.run(() => {
+      this.contextMenuService.updateContextMenuState(event, SelectedItem, FilterColumnName, FilterConditon, FilterItemType);
+     });
   }
-  
+
+  directFilterationColumnsSelected(filterationColumns: FilterationColumns[]) {
+    // Directly use the FilterationColumns objects
+    this.filterationColumns = filterationColumns;
+    
+    // Call the existing method to get content data
+    this.getContentData();
+    this.isActiveTrigger = false;
+  }
+  getContentData(){
+    if(this.filterString == "")
+    {
+      this.filterString = UniqueConstants.OneEqualsOne
+    }
+      const payload: PickToteTransPayload = {
+      Draw: PaginationData.Draw,
+      OrderNumber: this.selectedOrderValue,
+      SRow: PaginationData.StartRow,
+      ERow: PaginationData.EndRow,
+      SortColumnNumber: 0,
+      SortOrder: UniqueConstants.Asc,
+      Filter: this.filterString,
+      FiltrationColumns :  this.filterationColumns
+    };
+    this.iInductionManagerApi.PickToteTransDT(payload).subscribe((result: { data: { pickToteManTrans?: FilterTransaction[] }; }) => {
+      const pickToteManTrans = result.data.pickToteManTrans ?? [];
+      if (pickToteManTrans.length >= 0) {
+        this.filterOrderTransactionSource = new MatTableDataSource<FilterTransaction>(
+          pickToteManTrans
+        );
+        this.filterOrderTransactionSource.paginator = this.filterBatchTrans;
+        this.filterOrderTransactionSource.sort = this.viewFilterTransSort;
+      } else {
+        this.global.ShowToastr(
+          ToasterType.Error,
+          this.global.globalErrorMsg(),
+          ToasterTitle.Error
+        );
+      }
+    });
+
+   }
   //Determines the appropriate HTML input type (date, number, or text) 
   // based on the field name and its format in filterData.  
   getInputType(field: string): InputType {
@@ -1874,3 +1934,4 @@ private showFormatMismatchDialog(
 }
   
 }
+

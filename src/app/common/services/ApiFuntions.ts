@@ -18,6 +18,7 @@ import { DevicePreferenceRequest, DevicePreferencesTableRequest } from '../inter
 import { UpdateEmergencyRequest } from '../interface/admin/opentransaction.interfaces';
 import { ApiResponse, ApiResponseData } from '../types/CommonTypes';
 import { PrintOrdersPayload } from '../interface/bulk-transactions/bulk-pick';
+import { PickToteTransPayload, PickToteTransResponse } from '../types/pick-tote-manager.types';
 import { ImportTypeConfig } from '../interface/audit-file-field-mapping-manager/import-type-config.interface';
 import { InventoryCompareConfigResponse } from '../interface/audit-file-field-mapping-manager/inventory-compare-response.interface';
 import { InventoryCompareConfigPayload } from '../interface/audit-file-field-mapping-manager/inventory-compare.interface';
@@ -847,10 +848,9 @@ export class ApiFuntions {
     return this.ApiBase.Get('/Induction/ordersfilterzone', body);
   }
 
-  public PickToteTransDT(body: any): Observable<any> {
-    return this.ApiBase.Get('/Induction/picktotetransdt', body);
+  public PickToteTransDT(body: PickToteTransPayload): Observable<PickToteTransPayload | null> {
+    return this.ApiBase.Post<PickToteTransPayload>('/Induction/picktotetransdt', body);
   }
-
   public PickBatchFilterOrderData(body: any): Observable<any> {
     return this.ApiBase.Get('/Induction/pickbatchfilterorderdata', body);
   }

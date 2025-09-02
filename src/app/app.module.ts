@@ -179,6 +179,13 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatSliderModule } from '@angular/material/slider';
 import { MatCardModule } from '@angular/material/card';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import {
+  DirectFilterationColumnsService
+} from './common/services/direct-filteration-columns.service';
+import {
+  DirectFilterationColumnsMenuComponent
+} from './common/globalComponents/direct-filteration-columns-menu/direct-filteration-columns-menu.component';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -291,6 +298,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
     OrderDetailsComponent,
     ZoneGroupsComponent,
     ImprefInductionFilterComponent,
+    DirectFilterationColumnsMenuComponent,  // Add this line
     AuditTransferFileComponent
   ],
   imports: [
