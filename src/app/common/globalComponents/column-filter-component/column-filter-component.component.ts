@@ -94,10 +94,4 @@ export class ColumnFilterComponentComponent {
     });
   }
 
-  get filteredTableColumns(): string[] {
-  return this.tableColumns
-    ?.filter(col => !!col.colDef)
-    .map(col => col.colDef) ?? [];
-}
-
 }
