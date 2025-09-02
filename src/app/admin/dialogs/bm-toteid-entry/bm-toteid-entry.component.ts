@@ -9,18 +9,10 @@ import {DialogConstants, Style, ToasterMessages, ToasterTitle, ToasterType, ApiE
 import {IBulkProcessApiService} from 'src/app/common/services/bulk-process-api/bulk-process-api-interface';
 import {BulkProcessApiService} from 'src/app/common/services/bulk-process-api/bulk-process-api.service';
 import {HttpStatusCode} from '@angular/common/http';
-import {AssignToteToOrderDto, RemoveOrderLinesRequest, RemoveOrderLinesResponse} from "../../../common/Model/bulk-transactions";
+import {AssignToteToOrderDto, RemoveOrderLinesRequest, RemoveOrderLinesResponse, SelectedOrderItem} from "../../../common/Model/bulk-transactions";
 import { PrintApiService } from 'src/app/common/services/print-api/print-api.service';
 import { ApiResult } from 'src/app/common/types/CommonTypes';
 import { PartialToteIdResponse } from 'src/app/common/Model/bulk-transactions';
-
-interface SelectedOrderItem {
-  orderNumber: string;
-  toteId?: string | number;
-  toteNumber?: number;
-  IsTote?: boolean;
-  IsError?: boolean;
-}
 
 @Component({
   selector: 'app-bm-toteid-entry',

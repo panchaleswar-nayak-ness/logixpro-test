@@ -490,3 +490,12 @@ export interface SelectedListItem extends Omit<SlapperLabelResponse, 'toteId'> {
     IsTote?: boolean;
     IsError?: boolean;
 }
+
+// Interface for selected order items in BmToteidEntry component
+export interface SelectedOrderItem {
+    orderNumber: string;
+    toteId?: string | number;
+    toteNumber?: number;
+    IsTote?: boolean;
+    IsError?: boolean;
+}
