@@ -19,6 +19,10 @@ import { UpdateEmergencyRequest } from '../interface/admin/opentransaction.inter
 import { ApiResponse, ApiResponseData, ApiResult } from '../types/CommonTypes';
 import { PrintOrdersPayload } from '../interface/bulk-transactions/bulk-pick';
 import { ApiErrorMessages } from '../constants/strings.constants';
+import { PickToteTransPayload, PickToteTransResponse } from '../types/pick-tote-manager.types';
+import { ImportTypeConfig } from '../interface/audit-file-field-mapping-manager/import-type-config.interface';
+import { InventoryCompareConfigResponse } from '../interface/audit-file-field-mapping-manager/inventory-compare-response.interface';
+import { InventoryCompareConfigPayload } from '../interface/audit-file-field-mapping-manager/inventory-compare.interface';
 
 
 
@@ -845,10 +849,9 @@ export class ApiFuntions {
     return this.ApiBase.Get('/Induction/ordersfilterzone', body);
   }
 
-  public PickToteTransDT(body: any): Observable<any> {
-    return this.ApiBase.Get('/Induction/picktotetransdt', body);
+  public PickToteTransDT(body: PickToteTransPayload): Observable<PickToteTransPayload | null> {
+    return this.ApiBase.Post<PickToteTransPayload>('/Induction/picktotetransdt', body);
   }
-
   public PickBatchFilterOrderData(body: any): Observable<any> {
     return this.ApiBase.Get('/Induction/pickbatchfilterorderdata', body);
   }
@@ -1516,8 +1519,12 @@ export class ApiFuntions {
     return this.ApiBase.Get(`/Admin/opentransaction`, Body);
   }
 
-public updateEmergency(payload: UpdateEmergencyRequest): Observable<ApiResponse<UpdateEmergencyRequest> | null> {
-  return this.ApiBase.Put<ApiResponse<UpdateEmergencyRequest>>('/Admin/updateEmergency', payload);
+public updateEmergencyOpenTrans(payload: UpdateEmergencyRequest): Observable<ApiResponse<UpdateEmergencyRequest> | null> {
+  return this.ApiBase.Put<ApiResponse<UpdateEmergencyRequest>>('/Admin/updateEmergency/openTransactions', payload);
+}
+
+public updateEmergencyReprocessTrans(payload: UpdateEmergencyRequest): Observable<ApiResponse<UpdateEmergencyRequest> | null> {
+  return this.ApiBase.Put<ApiResponse<UpdateEmergencyRequest>>('/Admin/updateEmergency/reprocessTransactions', payload);
 }
 
   public HoldTransactionsData(Body: any): Observable<any> {
@@ -2468,4 +2475,16 @@ public ResolveMarkoutTote(toteId: number) {
     }
   }
 
+  public updateImportType(payload: ImportTypeConfig): Observable<InventoryCompareConfigResponse | null> {
+    return this.ApiBase.Post('/ImportConfig/UpdateImportType', payload) as Observable<InventoryCompareConfigResponse | null>;
+  }
+
+  // Inventory Compare endpoints
+  public getInventoryCompareConfig(): Observable<InventoryCompareConfigResponse> {
+    return this.ApiBase.Get<InventoryCompareConfigResponse>('/InventoryCompare/GetInventoryCompareConfig');
+  }
+
+  public updateInventoryCompareConfig(payload: InventoryCompareConfigPayload): Observable<InventoryCompareConfigResponse | null> {
+    return this.ApiBase.Post('/InventoryCompare/UpdateInventoryCompareConfig', payload) as Observable<InventoryCompareConfigResponse | null>;
+  }
 }

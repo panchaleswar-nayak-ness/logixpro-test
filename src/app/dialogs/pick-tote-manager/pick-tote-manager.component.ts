@@ -27,21 +27,22 @@ import { IInductionManagerApiService } from 'src/app/common/services/induction-m
 import { InductionManagerApiService } from 'src/app/common/services/induction-manager-api/induction-manager-api.service';
 import { GlobalService } from 'src/app/common/services/global.service';
 import { PickToteManagerService } from 'src/app/common/services/pick-tote-manager.service'
-import {  TableConstant ,ToasterTitle,ResponseStrings,Column,ToasterType,zoneType,DialogConstants,ColumnDef,UniqueConstants,Style,StringConditions, Placeholders, ToasterMessages} from 'src/app/common/constants/strings.constants';
-import { FilterOrder, FilterTransaction, SavedFilterChangeEvent, FilterData, OrderData } from 'src/app/common/types/pick-tote-manager.types';
+import {  TableConstant ,ToasterTitle,ResponseStrings,Column,ToasterType,zoneType,DialogConstants,ColumnDef,UniqueConstants,Style,StringConditions, Placeholders, ToasterMessages, FormatValues, FIELDS_DEFAULT_AN, ConfirmationMessages, ConfirmationHeadings, DISABLED_FIELDS, FormatType, INPUT_TYPES, DATE_COLUMNS} from 'src/app/common/constants/strings.constants';
+import { FilterOrder, FilterTransaction, SavedFilterChangeEvent, FilterData, OrderData, PickToteTransPayload, AllDataTypeValues } from 'src/app/common/types/pick-tote-manager.types';
+import { TableContextMenuService } from 'src/app/common/globalComponents/table-context-menu-component/table-context-menu.service';
+import { FilterationColumns, PeriodicElement } from 'src/app/common/Model/pick-Tote-Manager';
+import { InputType, PaginationData } from 'src/app/common/enums/CommonEnums';
+import { NgZone } from '@angular/core';
 
-export interface PeriodicElement {
-  name: string;
-  position: number;
-  weight: number;
-  symbol: string;
-}
 @Component({
   selector: 'app-pick-tote-manager',
   templateUrl: './pick-tote-manager.component.html',
   styleUrls: ['./pick-tote-manager.component.scss'],
 })
 export class PickToteManagerComponent implements OnInit {
+  selectedOrderValue: string = '';
+  filterString : string = UniqueConstants.OneEqualsOne;
+
 fieldMappings = JSON.parse(localStorage.getItem('fieldMappings') ?? '{}');
 ItemNumber: string = this.fieldMappings.itemNumber;
 UnitOfMeasure: string = this.fieldMappings.unitOfMeasure;
@@ -55,6 +56,10 @@ UserField7:string = this.fieldMappings.userField7;
 UserField8:string = this.fieldMappings.userField8;
 UserField9:string = this.fieldMappings.userField9;
 UserField10:string = this.fieldMappings.userField10;
+ DATE_FIELDS = new Set<string>([
+  Column.RequiredDate,
+  Column.ImportDate
+]);
 
   placeholders = Placeholders;
   ELEMENT_DATA: PeriodicElement[] = [
@@ -66,7 +71,6 @@ UserField10:string = this.fieldMappings.userField10;
   @ViewChild('field_focus') field_focus: ElementRef;
 
   isFilter: string = StringConditions.filter;
-  filterByNumeric : boolean = false;
   savedFilterList: any[] = [];
   filteredOptions: Observable<any[]>;
   savedFilter = new FormControl('');
@@ -79,7 +83,8 @@ UserField10:string = this.fieldMappings.userField10;
   useDefaultZone;
   batchByZoneData: any[] = []; 
   tabIndex: number = 0;
- 
+  isActiveTrigger:boolean =false;
+
   isAllSelected() {
     const numSelected = this.selection.selected.length;
     const numRows = this.dataSource.data.length;
@@ -128,6 +133,7 @@ UserField10:string = this.fieldMappings.userField10;
   disFilterColumns: string[] = [
     'sequence',
     'field',
+    'format',
     'criteria',
     'value',
     'andOr',
@@ -414,7 +420,7 @@ UserField10:string = this.fieldMappings.userField10;
   ];
 
   displayedTransColumns = this.filterBatchTransColumns.map((c) => c.columnDef);
-
+filterationColumns : FilterationColumns[] = [];
   displayedColumns4: string[] = [
     UniqueConstants.Select,
     TableConstant.zone,
@@ -441,6 +447,8 @@ UserField10:string = this.fieldMappings.userField10;
   }
   public iInductionManagerApi: IInductionManagerApiService;
   constructor(
+    private ngZone: NgZone,
+    private contextMenuService : TableContextMenuService,
     private pickToteManagerService: PickToteManagerService,
     private global: GlobalService,
     public inductionManagerApi: InductionManagerApiService,
@@ -466,7 +474,6 @@ UserField10:string = this.fieldMappings.userField10;
     }
     
     this.allSelectOrders = this.data.allOrders;
-    this.filterByNumeric = this.pickToteManagerService.GetPickToteFilterNumeric();
   }
 
   pickBatchZonesSelect() {
@@ -538,6 +545,11 @@ UserField10:string = this.fieldMappings.userField10;
     );
   }
 
+
+  getDefaultFormat(field: string): string {
+    return DISABLED_FIELDS.includes(field) ? FormatValues.NUMERIC : (FIELDS_DEFAULT_AN.has(field) ? FormatValues.ALPHA_NUMERIC : '');
+  }
+
   onAddFilter(filterData?: FilterData[]): void {
     if (filterData?.length) {
       const formattedFilters = filterData.map((filter) => {
@@ -551,6 +563,7 @@ UserField10:string = this.fieldMappings.userField10;
           andOr: filter.andOr,
           isSaved: true,
           is_db: true,
+          format: filter.isNumericFormat ? FormatValues.NUMERIC : FormatValues.ALPHA_NUMERIC, // Set format based on isNumericFormat
         };
       });
   
@@ -564,6 +577,7 @@ UserField10:string = this.fieldMappings.userField10;
         value: '',
         andOr: 'And',
         isSaved: false,
+        format: this.getDefaultFormat(ColumnDef.Emergency),
       });
   
       this.isFilterAdd = false;
@@ -616,9 +630,105 @@ UserField10:string = this.fieldMappings.userField10;
     }
     this.orderBydataSource = new MatTableDataSource<OrderData>(this.orderByData);
   }
-  onChangeFunctionsFields(element: FilterData): void {
-    element.isSaved = false;
+  /**
+   * Validates if the filter element is valid
+   * @param element The filter element to validate
+   * @returns boolean indicating if the element is valid
+   */
+  private isValidFilterElement(element: FilterData | null | undefined): element is FilterData {
+    const isValid = !!element?.field?.trim();
+    if (!isValid) {
+      this.global.ShowToastr(
+        ToasterType.Error,
+        ToasterMessages.InvalidInputForFilter,
+        ToasterTitle.Error
+    );
+    }
+    return isValid;
   }
+
+  /**
+   * Applies the default format to disabled fields
+   * @param element The filter element to check and update
+   * @returns boolean indicating if the field was a disabled field
+   */
+  private applyDisabledFieldFormatting(element: FilterData): boolean {
+    if (DISABLED_FIELDS.includes(element.field)) {
+      element.format = FormatValues.NUMERIC;
+      return true;
+    }
+    return false;
+  }
+
+  /**
+   * Gets all filter rows with the same field as the given element
+   * @param element The element to find matches for
+   * @returns Array of matching filter data
+   */
+  private getSameFieldRows(element: FilterData): FilterData[] {
+    return this.filterData.filter(
+      (row) => row.field === element.field && row !== element
+    );
+  }
+
+  /**
+   * Handles format synchronization between related filter fields
+   * @param element The current filter element
+   * @param sameFieldRows Other rows with the same field
+   */
+  private handleFormatSynchronization(element: FilterData, sameFieldRows: FilterData[]): void {
+    // Get the most common format from existing rows
+    const formatCounts = sameFieldRows.reduce((acc, row) => {
+      if (row.format) {
+        acc[row.format] = (acc[row.format] || 0) + 1;
+      }
+      return acc;
+    }, {} as Record<string, number>);
+
+    const mostCommonFormat = Object.entries(formatCounts)
+      .sort((a, b) => b[1] - a[1])[0]?.[0];
+
+    // If current element has a different format than the most common one
+    if (element.format && mostCommonFormat && element.format !== mostCommonFormat) {
+      this.showFormatMismatchDialog(element, sameFieldRows, mostCommonFormat);
+      return;
+    }
+
+    // If current element has no format but others do, sync it
+    if (mostCommonFormat && !element.format) {
+      element.format = mostCommonFormat;
+    }
+  }
+
+  /**
+   * Handles changes to filter fields, ensuring format consistency
+   * @param element The filter element that was changed
+   */
+  onChangeFunctionsFields(element: FilterData): void {
+    // Validate input
+    if (!this.isValidFilterElement(element)) {
+      return;
+    }
+  
+    // Mark element as unsaved
+    element.isSaved = false;
+  
+    // Apply numeric format for disabled fields
+    if (this.applyDisabledFieldFormatting(element)) {
+      return;
+    }
+  
+    // Find rows with the same field (excluding the current row)
+    const sameFieldRows = this.getSameFieldRows(element);
+  
+    // No related rows, no further action needed
+    if (sameFieldRows.length === 0) {
+  return;
+}
+
+    // Handle format synchronization
+    this.handleFormatSynchronization(element, sameFieldRows);
+}
   clearMatSelectList() {
     this.matRef.options.forEach((data: MatOption) => data.deselect());
   }
@@ -826,13 +936,6 @@ userFields = Array.from({ length: 9 }, (_, i) => ({
       paginator.pageSize = 10;
     }
   }
-// Set Numeric or Alphanumeric as selected
-onFilterByChanged(isNumeric: boolean): void {
-  this.filterByNumeric = this.pickToteManagerService.SetPickToteFilterNumeric(isNumeric);
-  if (!this.global.isNullOrEmpty(this.savedFilter?.value)) {
-    this.ordersFilterZoneSelect();
-  }
-}
 
   ordersFilterZoneSelect(zone = '', rp = false, type = '') {
     let payload;
@@ -847,7 +950,6 @@ onFilterByChanged(isNumeric: boolean): void {
         UseDefFilter: 0,
         UseDefZone: 0,
         RP: false,
-        FilterByNumeric : this.filterByNumeric
       };
       this.iInductionManagerApi
         .OrdersFilterZoneSelect(payload)
@@ -984,16 +1086,18 @@ onFilterByChanged(isNumeric: boolean): void {
         }
       });
       this.isOrderSelect = false;
-      let paylaod = {
-        Draw: 0,
+      this.selectedOrderValue =row.orderNumber; 
+      const payload: PickToteTransPayload = {
+        Draw: PaginationData.Draw,
         OrderNumber: row.orderNumber,
-        sRow: 1,
-        eRow: 10,
+        SRow: PaginationData.StartRow,
+        ERow: PaginationData.EndRow,
         SortColumnNumber: 0,
         SortOrder: UniqueConstants.Asc,
-        Filter: UniqueConstants.OneEqualsOne
+        Filter: UniqueConstants.OneEqualsOne,
+        FiltrationColumns :  this.filterationColumns
       };
-      this.iInductionManagerApi.PickToteTransDT(paylaod).subscribe((res) => {
+      this.iInductionManagerApi.PickToteTransDT(payload).subscribe((res) => {
         if (res) {
           this.filterOrderTransactionSource = new MatTableDataSource<any>(
             res.data.pickToteManTrans
@@ -1050,16 +1154,17 @@ onFilterByChanged(isNumeric: boolean): void {
         }
       });
       this.isOrderSelectZone = false;
-      let paylaod = {
-        Draw: 0,
+      const payload: PickToteTransPayload = {
+        Draw: PaginationData.Draw,
         OrderNumber: row.orderNumber,
-        sRow: 1,
-        eRow: 10,
+        SRow: PaginationData.StartRow,
+        ERow: PaginationData.EndRow,
         SortColumnNumber: 0,
         SortOrder: UniqueConstants.Asc,
-        Filter: UniqueConstants.OneEqualsOne
+        Filter: UniqueConstants.OneEqualsOne,
+        FiltrationColumns:[]
       };
-      this.iInductionManagerApi.PickToteTransDT(paylaod).subscribe((res) => {
+      this.iInductionManagerApi.PickToteTransDT(payload).subscribe((res) => {
         if (res) {
           this.zoneOrderTransactionSource = new MatTableDataSource<any>(
             res.data.pickToteManTrans
@@ -1105,7 +1210,7 @@ onFilterByChanged(isNumeric: boolean): void {
             } else {
                 this.global.ShowToastr(
                     ToasterType.Error,
-                    res.responseMessage ?? this.global.globalErrorMsg(),
+                    res.responseMessage?? this.global.globalErrorMsg(),
                     ToasterTitle.Error
                 );
             }
@@ -1220,16 +1325,17 @@ clearOrderSelection() {
     });
 
     if (event.value === 'vAllOrderZone') {
-      let paylaod = {
-        Draw: 0,
+      const payload: PickToteTransPayload = {
+        Draw: PaginationData.Draw,
         OrderNumber: orderNum,
-        sRow: 1,
-        eRow: 10,
+        SRow: PaginationData.StartRow,
+        ERow: PaginationData.EndRow,
         SortColumnNumber: 0,
         SortOrder: UniqueConstants.Asc,
-        Filter: UniqueConstants.OneEqualsOne
+        Filter: UniqueConstants.OneEqualsOne,
+        FiltrationColumns : []
       };
-      this.iInductionManagerApi.PickToteTransDT(paylaod).subscribe((res) => {
+      this.iInductionManagerApi.PickToteTransDT(payload).subscribe((res) => {
         if (res.data.pickToteManTrans?.length > 0) {
           this.zoneOrderTransactionSource = new MatTableDataSource<any>(
             res.data.pickToteManTrans
@@ -1253,16 +1359,17 @@ clearOrderSelection() {
         }
       });
       if (orderNum !== '') {
-        let paylaod = {
-          Draw: 0,
+        const payload: PickToteTransPayload = {
+          Draw: PaginationData.Draw,
           OrderNumber: orderNum,
-          sRow: 1,
-          eRow: 10,
+          SRow: PaginationData.StartRow,
+          ERow: PaginationData.EndRow,
           SortColumnNumber: 0,
           SortOrder: UniqueConstants.Asc,
-          Filter: UniqueConstants.OneEqualsOne
+          Filter: UniqueConstants.OneEqualsOne,
+          FiltrationColumns:[]
         };
-        this.iInductionManagerApi.PickToteTransDT(paylaod).subscribe((res) => {
+        this.iInductionManagerApi.PickToteTransDT(payload).subscribe((res) => {
           if (res.data.pickToteManTrans?.length > 0) {
             this.zoneOrderTransactionSource = new MatTableDataSource<any>(
               res.data.pickToteManTrans
@@ -1289,16 +1396,17 @@ clearOrderSelection() {
     });
 
     if (event.value === 'vAllOrderFilter') {
-      let paylaod = {
-        Draw: 0,
+      const payload: PickToteTransPayload = {
+        Draw: PaginationData.Draw,
         OrderNumber: orderNum ?? 'EAGLES',
-        sRow: 1,
-        eRow: 10,
+        SRow: PaginationData.StartRow,
+        ERow: PaginationData.EndRow,
         SortColumnNumber: 0,
         SortOrder: UniqueConstants.Asc,
-        Filter: UniqueConstants.OneEqualsOne
+        Filter: UniqueConstants.OneEqualsOne,
+        FiltrationColumns:[]
       };
-      this.iInductionManagerApi.PickToteTransDT(paylaod).subscribe((res) => {
+      this.iInductionManagerApi.PickToteTransDT(payload).subscribe((res) => {
         if (res.data.pickToteManTrans?.length > 0) {
           this.filterOrderTransactionSource = new MatTableDataSource<any>(
             res.data.pickToteManTrans
@@ -1322,16 +1430,17 @@ clearOrderSelection() {
         }
       });
       if (orderNum !== '') {
-        let paylaod = {
-          Draw: 0,
+        const payload: PickToteTransPayload = {
+          Draw: PaginationData.Draw,
           OrderNumber: orderNum,
-          sRow: 1,
-          eRow: 10,
+          SRow: PaginationData.StartRow,
+          ERow: PaginationData.EndRow,
           SortColumnNumber: 0,
           SortOrder: UniqueConstants.Asc,
-          Filter: UniqueConstants.OneEqualsOne
+          Filter: UniqueConstants.OneEqualsOne,
+          FiltrationColumns: []
         };
-        this.iInductionManagerApi.PickToteTransDT(paylaod).subscribe((res) => {
+        this.iInductionManagerApi.PickToteTransDT(payload).subscribe((res) => {
           if (res.data.pickToteManTrans?.length > 0) {
             this.filterOrderTransactionSource = new MatTableDataSource<any>(
               res.data.pickToteManTrans
@@ -1353,16 +1462,17 @@ clearOrderSelection() {
   }
 
   onSaveSingleFilter(element: any) {
-    if (element.value === '') {
+    if (element.value === '' || element.format === '') {
         this.global.ShowToastr(
             ToasterType.Error,
-            'Some of the inputs are missing values. Cannot add row to filter.',
+            ToasterMessages.InvalidInputForFilter,
             ToasterTitle.Error
         );
     } else {
         let payload = {
             Sequence: element.sequence,
             Field: element.field,
+            IsNumericFormat : element.format == FormatValues.NUMERIC ? true : false,
             Criteria: element.criteria,
             Value: element.value,
             AndOr: element.andOr,
@@ -1381,6 +1491,8 @@ clearOrderSelection() {
                             );
                             this.filterSeq = element.sequence;
                             this.refreshFilterDataGrid();
+                            // Update format based on API response
+                            element.format = res.data.isNumericFormat ? FormatValues.NUMERIC : FormatValues.ALPHA_NUMERIC;
                         } else {
                             this.global.ShowToastr(
                                 ToasterType.Error,
@@ -1402,6 +1514,8 @@ clearOrderSelection() {
                             );
                             this.filterSeq = element.sequence;
                             this.refreshFilterDataGrid();
+                            // Update format based on API response
+                            element.format = res.data.isNumericFormat ? FormatValues.NUMERIC : FormatValues.ALPHA_NUMERIC;
                         } else {
                             this.global.ShowToastr(
                                 ToasterType.Error,
@@ -1650,19 +1764,174 @@ refreshOrderDataGrid() {
           });
       }
     });
-  }
-
-  getInputType(field: string): string {
-    const dateFields = new Set<string>([
-      Column.RequiredDate,
-      Column.ImportDate
-    ]);
-  
-    return dateFields.has(field) ? 'date' : 'text';
   }  
 
+  onContextMenu(event: MouseEvent, SelectedItem: AllDataTypeValues, FilterColumnName?: string, FilterConditon?: string | undefined, FilterItemType?: AllDataTypeValues) {
+    event.preventDefault()
+    this.isActiveTrigger = true;
+     this.ngZone.run(() => {
+      this.contextMenuService.updateContextMenuState(event, SelectedItem, FilterColumnName, FilterConditon, FilterItemType);
+     });
+  }
+
+  directFilterationColumnsSelected(filterationColumns: FilterationColumns[]) {
+    // Directly use the FilterationColumns objects
+    this.filterationColumns = filterationColumns;
+    
+    // Call the existing method to get content data
+    this.getContentData();
+    this.isActiveTrigger = false;
+  }
+  getContentData(){
+    if(this.filterString == "")
+    {
+      this.filterString = UniqueConstants.OneEqualsOne
+    }
+      const payload: PickToteTransPayload = {
+      Draw: PaginationData.Draw,
+      OrderNumber: this.selectedOrderValue,
+      SRow: PaginationData.StartRow,
+      ERow: PaginationData.EndRow,
+      SortColumnNumber: 0,
+      SortOrder: UniqueConstants.Asc,
+      Filter: this.filterString,
+      FiltrationColumns :  this.filterationColumns
+    };
+    this.iInductionManagerApi.PickToteTransDT(payload).subscribe((result: { data: { pickToteManTrans?: FilterTransaction[] }; }) => {
+      const pickToteManTrans = result.data.pickToteManTrans ?? [];
+      if (pickToteManTrans.length >= 0) {
+        this.filterOrderTransactionSource = new MatTableDataSource<FilterTransaction>(
+          pickToteManTrans
+        );
+        this.filterOrderTransactionSource.paginator = this.filterBatchTrans;
+        this.filterOrderTransactionSource.sort = this.viewFilterTransSort;
+      } else {
+        this.global.ShowToastr(
+          ToasterType.Error,
+          this.global.globalErrorMsg(),
+          ToasterTitle.Error
+        );
+      }
+    });
+
+   }
+  //Determines the appropriate HTML input type (date, number, or text) 
+  // based on the field name and its format in filterData.  
+  getInputType(field: string): InputType {
+    // Date fields take priority
+    if (this.DATE_FIELDS.has(field)) {
+      return InputType.Date;
+      }
+      
+      const elementFormat = this.filterData.find(el => el.field === field)?.format;
+      
+      return elementFormat === FormatValues.NUMERIC
+      ? InputType.Number
+      : InputType.Text;
+      }
+  
   isTooltipDisabled(value: string): boolean {
     return value.length < 25;
     
   }
+  isFormatDisabled(field: string): boolean {
+    // Case-insensitive check for robustness
+    return DISABLED_FIELDS.some(f => f.toLowerCase() === (field || '').toLowerCase());
+  }
+
+  /**
+ * Handles format changes for a filter, ensuring consistency across filters with the same field.
+ * @param newFormat - The newly selected format value
+ * @param element - The filter data being modified
+ * @param index - The index of the filter in the filterData array
+ */
+onFormatChange(newFormat: string, element: FilterData, index: number): void {
+  // Validate input
+  if (!element || !newFormat) {
+    this.global.ShowToastr(
+      ToasterType.Error,
+      ToasterMessages.InvalidInputForFilter,
+      ToasterTitle.Error
+  );
+    return;
+  }
+
+  // Get related rows with the same field (excluding current)
+  const relatedRows: FilterData[] = this.filterData.filter(
+    (row, idx) => row.field === element.field && idx !== index
+  );
+
+  // If no related rows, apply change and exit
+  if (!relatedRows.length) {
+    this.onChangeFunctionsFields(element);
+    return;
+  }
+
+  const existingFormat = relatedRows[0]?.format;
+
+  // Check for format mismatch
+  if (existingFormat && newFormat !== existingFormat) {
+    this.showFormatMismatchDialog(element, relatedRows, existingFormat);
+    return;
+  }
+
+  // No mismatch, proceed with change
+  this.onChangeFunctionsFields(element);
 }
+  
+/**
+ * Displays a confirmation dialog for format mismatch and handles user response.
+ * @param element - The filter data with the new format
+ * @param relatedRows - Other filters with the same field
+ * @param existingFormat - The current format of related filters
+ */
+private showFormatMismatchDialog(
+  element: FilterData,
+  relatedRows: FilterData[],
+  existingFormat: string
+): void {
+  // Validate inputs
+  if (!element || !relatedRows || !existingFormat) {
+    this.global.ShowToastr(
+      ToasterType.Error,
+      ToasterMessages.InvalidInputForFilter,
+      ToasterTitle.Error
+  );
+    return;
+  }
+
+  const currentFormat = existingFormat === FormatValues.NUMERIC ? FormatType.NUMERIC : FormatType.ALPHA_NUMERIC;
+  const newFormat = element.format === FormatValues.NUMERIC ? FormatType.NUMERIC : FormatType.ALPHA_NUMERIC;
+
+  const dialogRef = this.global.OpenDialog(ConfirmationDialogComponent, {
+    height: 'auto',
+    autoFocus: DialogConstants.autoFocus,
+    data: {
+      message: ConfirmationMessages.InconsistentFormat(element.field, newFormat, currentFormat),
+      heading : ConfirmationHeadings.ChangeFormatType,
+      customButtonText: true,
+      btn1Text: StringConditions.Yes,
+      btn2Text: StringConditions.No
+    },
+  });
+
+  dialogRef.afterClosed().subscribe((result: string) => {
+    if (result === StringConditions.Yes) {
+      // Update format for the current element and related rows
+      this.onSaveSingleFilter(element);
+      relatedRows.forEach((row) => {
+        row.format = element.format;
+        this.onSaveSingleFilter(row);
+      });
+    } else {
+      // Revert to existing format
+      element.format = existingFormat;
+    }
+
+    // Trigger change handling regardless of user choice
+    this.onChangeFunctionsFields(element);
+  });
+}
+  
+}
+

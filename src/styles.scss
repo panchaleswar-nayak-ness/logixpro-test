@@ -1651,6 +1651,19 @@ button.default-btn {
   }
 }
 
+// Compact form field for smaller inputs
+.compact-form-field.mat-form-field-appearance-outline {
+  .mat-form-field-infix {
+    width: 8rem !important;
+    max-width: 10rem !important;
+    min-height: 48px !important;
+  }
+  
+  .mat-form-field-wrapper {
+    min-height: 48px !important;
+  }
+}
+
 //   .custom-form-field.mat-form-field-appearance-outline .mat-form-field-infix{
 //     min-width: none;
 //     width: auto!important;
@@ -2515,4 +2528,7 @@ button.active-btn{
   // input{
   //   -webkit-user-select:all !important;
   // }
-
+  .cart-management-multiline-tooltip {
+    max-width: 400px !important;
+    white-space: pre-line !important;
+  }

@@ -1,0 +1,140 @@
+<mat-card class="mat-elevation-z g-card mb-3">
+  <div class="d-flex align-items-center mb-4">
+    <button mat-icon-button class="circle-icon-o round me-2" (click)="router.navigate(['/admin/cycleCounts'])">
+      <span class="material-symbols-outlined cursor-pointer">
+          arrow_back
+      </span>
+    </button>
+    <h2 class="card-header-title mb-0 me-4 d-flex align-items-center">
+      <div class="mat-icon-wrap me-1 me-lg-3">
+        <span class="material-symbols-outlined">assignment</span>
+      </div>
+      <span>Audit File Field-Mapping Manager</span>
+    </h2>
+  </div>
+
+  <div class="card br-14 table-responsive borderless overflow-auto">
+    <div class="mat-table-scrollbar mattableScrollbar-style">
+      <form [formGroup]="fieldMappingForm">
+        <table mat-table [dataSource]="fieldMappingsFormArray.controls" class="w-100 borderless" matSort>
+        <!-- PickPro Field -->
+        <ng-container matColumnDef="pickProField">
+          <th mat-header-cell *matHeaderCellDef class="fw-bold">PickPro Field</th>
+          <td mat-cell *matCellDef="let element; let i = index">
+            <div [formGroup]="element">
+              {{element.get('pickProField')?.value}}
+              <span *ngIf="isFieldItemNumberAndHostQtyRequired(element.get('pickProField')?.value)" 
+                    class="text-danger ms-1">*</span>
+            </div>
+          </td>
+        </ng-container>
+
+        <!-- Start Position -->
+        <ng-container matColumnDef="startPosition">
+          <th mat-header-cell *matHeaderCellDef>Start Position</th>
+          <td mat-cell *matCellDef="let element; let i = index">
+            <div [formGroup]="element">
+              <mat-form-field appearance="outline" class="custom-form-field w-100">
+                <input matInput type="number" formControlName="startPosition" min="1" />
+                <mat-error *ngIf="element.get('startPosition')?.hasError('required')">
+                  Start Position is required
+                </mat-error>
+                <mat-error *ngIf="element.get('startPosition')?.hasError('min')">
+                  Start Position must be at least 1
+                </mat-error>
+              </mat-form-field>
+            </div>
+          </td>
+        </ng-container>
+
+        <!-- Field Length -->
+        <ng-container matColumnDef="fieldLength">
+          <th mat-header-cell *matHeaderCellDef>Field Length</th>
+          <td mat-cell *matCellDef="let element; let i = index">
+            <div [formGroup]="element">
+              <mat-form-field appearance="outline" class="custom-form-field w-100">
+                <input matInput type="number" formControlName="fieldLength" min="1" />
+                <mat-error *ngIf="element.get('fieldLength')?.hasError('required')">
+                  Field Length is required
+                </mat-error>
+                <mat-error *ngIf="element.get('fieldLength')?.hasError('min')">
+                  Field Length must be at least 1
+                </mat-error>
+              </mat-form-field>
+            </div>
+          </td>
+        </ng-container>
+
+        <!-- End Position -->
+        <ng-container matColumnDef="endPosition">
+          <th mat-header-cell *matHeaderCellDef>End Position</th>
+          <td mat-cell *matCellDef="let element; let i = index">
+            <div [formGroup]="element">
+              <mat-form-field appearance="outline" class="custom-form-field w-100">
+                <input matInput formControlName="endPosition" readonly />
+              </mat-form-field>
+            </div>
+          </td>
+        </ng-container>
+
+        <!-- Pad Field from Left -->
+        <ng-container matColumnDef="padField">
+          <th mat-header-cell *matHeaderCellDef class="w-pad-field text-center">Pad Field from Left</th>
+          <td mat-cell *matCellDef="let element; let i = index" class="w-pad-field text-center">
+            <div [formGroup]="element">
+              <mat-checkbox color="primary" formControlName="padField"></mat-checkbox>
+            </div>
+          </td>
+        </ng-container>
+
+        <!-- Field Type -->
+        <ng-container matColumnDef="fieldType">
+          <th mat-header-cell *matHeaderCellDef>Field Type</th>
+          <td mat-cell *matCellDef="let element; let i = index">
+            <div [formGroup]="element">
+              <mat-form-field appearance="outline" class="custom-form-field w-100" floatLabel="never">
+                <input matInput formControlName="fieldType" readonly />
+              </mat-form-field>
+            </div>
+          </td>
+        </ng-container>
+
+        <!-- Import Format -->
+        <ng-container matColumnDef="importFormat">
+          <th mat-header-cell *matHeaderCellDef>Import Format</th>
+          <td mat-cell *matCellDef="let element; let i = index">
+            <div [formGroup]="element">
+              <!-- expiration date gets the real mat-select -->
+              <mat-form-field appearance="outline" class="custom-form-field w-100" 
+                              *ngIf="element.get('pickProField')?.value === PickProFields.ExpirationDate" 
+                              floatLabel="never">
+                <mat-select formControlName="importFormat" class="w-100">
+                  <mat-option *ngFor="let fmt of dateFormats" [value]="fmt">
+                    {{ fmt }}
+                  </mat-option>
+                </mat-select>
+                <mat-icon matSuffix>arrow_drop_down</mat-icon>
+              </mat-form-field>
+              <!-- everything else gets an empty, bordered box -->
+              <mat-form-field appearance="outline" class="custom-form-field w-100" 
+                              *ngIf="element.get('pickProField')?.value !== PickProFields.ExpirationDate">
+                <input matInput readonly />
+              </mat-form-field>
+            </div>
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns; trackBy: trackByPickProField"></tr>
+      </table>
+      </form>
+    </div>
+  </div>
+
+  
+</mat-card>
+<div class="mb-4">
+  <button type="submit" mat-flat-button class="form-button-submit btn-lg w-100 mb-3" color="primary" (click)="transferFilePathSetup()">
+    Transfer File Path Setup
+  </button>
+</div>

@@ -16,13 +16,4 @@ export class PickToteManagerService {
     );
     return value;
   }
-   GetPickToteFilterNumeric(): boolean {
-    const existingPref = localStorage.getItem(PickToteFilterpreferences.preferences);
-    if (!existingPref) return false;
-    try {
-      return JSON.parse(existingPref);
-    } catch (error) {
-      return false;
-    }
-  }
 }
