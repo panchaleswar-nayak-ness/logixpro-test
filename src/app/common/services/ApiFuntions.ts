@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/internal/Observable';
 import { BaseService } from './base-service.service';
 import { AuthService } from '../init/auth.service';
-import { AssignToteToOrderDto, NextToteId, PartialToteIdRequest, PartialToteIdResponse, RemoveOrderLinesRequest, RemoveOrderLinesResponse } from '../Model/bulk-transactions';
+import { AssignToteToOrderDto, NextToteId, PartialToteIdRequest, PartialToteIdResponse, RemoveOrderLinesRequest, RemoveOrderLinesResponse, TaskCompleteNewRequest } from '../Model/bulk-transactions';
 import {
   MarkoutBlossomTotenRequest,
   MarkoutCompleteTransactionRequest,
@@ -16,13 +16,13 @@ import { MarkoutAuditResponse, MarkoutPickLinesResponse, MarkoutResponse } from 
 import { ZoneListPayload } from 'src/app/bulk-process/preferences/preference.models';
 import { DevicePreferenceRequest, DevicePreferencesTableRequest } from '../interface/admin/device-preferences';
 import { UpdateEmergencyRequest } from '../interface/admin/opentransaction.interfaces';
-import { ApiResponse, ApiResponseData, ApiResult } from '../types/CommonTypes';
-import { PrintOrdersPayload } from '../interface/bulk-transactions/bulk-pick';
+import { PrintOrdersPayload, PrintTransactionPayload } from '../interface/bulk-transactions/bulk-pick';
 import { ApiErrorMessages } from '../constants/strings.constants';
 import { PickToteTransPayload, PickToteTransResponse } from '../types/pick-tote-manager.types';
 import { ImportTypeConfig } from '../interface/audit-file-field-mapping-manager/import-type-config.interface';
 import { InventoryCompareConfigResponse } from '../interface/audit-file-field-mapping-manager/inventory-compare-response.interface';
 import { InventoryCompareConfigPayload } from '../interface/audit-file-field-mapping-manager/inventory-compare.interface';
+import { ApiResponse, ApiResponseData, ApiResult } from '../types/CommonTypes';
 
 
 
@@ -2125,6 +2125,10 @@ public updateEmergencyReprocessTrans(payload: UpdateEmergencyRequest): Observabl
     return await this.ApiBase.PutAsync('/bulktransactions/taskcomplete', body);
   }
 
+  public async updateOpenTransactionsZoneCaseQuantity(body: TaskCompleteNewRequest[]) {
+    return await this.ApiBase.PatchAsync('/bulktransactions/zonecasequantities', body);
+  }
+
   public async fullTote(body: any) {
     return await this.ApiBase.PutAsync('/totes/fulltote', body);
   }
@@ -2186,6 +2190,14 @@ public updateEmergencyReprocessTrans(payload: UpdateEmergencyRequest): Observabl
 
   public async PrintBulkTraveler(body: any) {
     return await this.ApiBase.PostAsync(`/print/BulkTransactionsTraveler`, body);
+  }
+
+  public async PrintBulkTransactionsTravelerOrder(body: PrintTransactionPayload) {
+    return await this.ApiBase.PostAsync(`/print/BulkTransactionsTravelerOrder`, body);
+  }
+
+  public async PrintOCPItem(body: PrintTransactionPayload) {
+    return await this.ApiBase.PostAsync(`/print/OCPItem`, body);
   }
 
   public async ProcessPickPrintPickTote(body: any) {

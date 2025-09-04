@@ -15,7 +15,7 @@ import {
   OrderLineWithSelection
 } from 'src/app/common/Model/bulk-transactions';
 import { SetTimeout } from 'src/app/common/constants/numbers.constants';
-import { DialogConstants, Placeholders, ResponseStrings, Style, ToasterMessages, ToasterTitle, ToasterType } from 'src/app/common/constants/strings.constants';
+import { ConfirmationHeadings, ConfirmationMessages, DialogConstants, Placeholders, ResponseStrings, Style, ToasterMessages, ToasterTitle, ToasterType } from 'src/app/common/constants/strings.constants';
 import { IAdminApiService } from 'src/app/common/services/admin-api/admin-api-interface';
 import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.service';
 import { IBulkProcessApiService } from 'src/app/common/services/bulk-process-api/bulk-process-api-interface';
@@ -374,6 +374,11 @@ export class VerifyBulkComponent implements OnInit {
         
         let res = await this.iBulkProcessApiService.bulkPickTaskComplete(ordersNew);
         if (res?.status == HttpStatusCode.Ok) {
+          // Call additional API for slapper label to update open transactions with zone case quantities
+          if (this.isSlapperLabelFlow) {
+            await this.iBulkProcessApiService.updateOpenTransactionsZoneCaseQuantity(ordersNew);
+          }
+          
           if (this.bulkTransactionType == BulkTransactionType.PICK && res?.body.length > 0) {
             await this.TaskCompleteEOB(res?.body);
           }
@@ -531,11 +536,37 @@ export class VerifyBulkComponent implements OnInit {
     }
   }
   printAllToteLabels() {
-    if (this.bulkTransactionType != BulkTransactionType.COUNT) {
-      let orderNumbers = this.orderLines.filteredData.map(o => o.orderNumber).filter((num): num is string => num != null);
-      let toteIds = this.orderLines.filteredData.map(o => o.toteId).filter((id): id is string => id != null);
-      this.iAdminApiService.PrintTotes(orderNumbers, toteIds, this.bulkTransactionType);
+    if(this.isSlapperLabelFlow) {
+      this.printOffCarouselPickItemLabels();
+    } else {
+      if (this.bulkTransactionType != BulkTransactionType.COUNT) {
+        let orderNumbers = this.orderLines.filteredData.map(o => o['orderNumber']);
+        let toteIds = this.orderLines.filteredData.map(o => o['toteId']);
+        this.iAdminApiService.PrintTotes(orderNumbers, toteIds, this.bulkTransactionType);
+      }
     }
+  }
+
+  printBatchOrOrders() {
+    const dialogRef1 = this.global.OpenDialog(ConfirmationDialogComponent, {
+      height: DialogConstants.auto,
+      width: Style.w560px,
+      autoFocus: DialogConstants.autoFocus,
+      disableClose: true,
+      data: {
+        message: ConfirmationMessages.PrintBatchOrOrders,          
+        heading: ConfirmationHeadings.PrintBatchOrOrders,
+        buttonFields: true,
+        threeButtons: true
+      },
+    });
+    dialogRef1.afterClosed().subscribe(async (res: string) => {
+      if(res){
+        let transIDs = this.orderLines.filteredData.filter(o => !o.isPartialCase).map(o => o.id);
+        if (res == ResponseStrings.Yes) this.printApiService.PrintBulkTraveler(transIDs);
+        else if (res == ResponseStrings.No) this.printApiService.PrintBulkTransactionsTravelerOrder(transIDs);
+      }
+    });
   }
 
   printTote(index: number) {
@@ -545,10 +576,33 @@ export class VerifyBulkComponent implements OnInit {
     this.iAdminApiService.PrintTotes(orderNumber, toteId, transactionType, index);
   }
 
-
   printBulkTraveler() {
-    let transIDs = this.orderLines.filteredData.map(o => o['id']);
-    this.printApiService.PrintBulkTraveler(transIDs);
+    if(this.isSlapperLabelFlow) {
+      this.printBatchOrOrders();      
+    } else {
+      let transIDs = this.orderLines.filteredData.map(o => o['id']);
+      this.printApiService.PrintBulkTraveler(transIDs);
+    }
+  }
+
+  printOffCarouselPickItemLabels() {
+    const dialogRef1 = this.global.OpenDialog(ConfirmationDialogComponent, {
+      height: DialogConstants.auto,
+      width: Style.w560px,
+      autoFocus: DialogConstants.autoFocus,
+      disableClose: true,
+      data: {
+        message: ConfirmationMessages.PrintOffCarouselPickItemLabels,          
+        heading: ConfirmationHeadings.PrintOffCarouselPickItemLabels,
+        buttonFields: true,
+      },
+    });
+    dialogRef1.afterClosed().subscribe(async (res: string) => {
+      if (res == ResponseStrings.Yes) {
+        let transIDs = this.orderLines.filteredData.filter(o => o.isPartialCase).map(o => o.id);
+        this.printApiService.PrintOCPItem(transIDs);
+      }
+    }); 
   }
 
   @ViewChild('tooltip') tooltip: MatTooltip;
