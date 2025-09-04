@@ -99,8 +99,9 @@
                     #inputVal matInput type="text" [(ngModel)]="inputValue"
                     [disabled]="!dataSource2?.filteredData || !dataSource2?.filteredData.length"
                     (keypress)="openST($event)" (keyup)="getNextItemNumber($event)" (ngModelChange)="searchByItemNumber.next($event)" [matAutocomplete]="itemNumberAuto"
+                    (blur)="onInputBlur($event)"
                     data-automation-id="process-put-aways-input-value-input">
-                    <button matSuffix *ngIf="inputValue" class="clear-btn" (click)="inputValue=''; searchAutocompleteItemNumbers=[]" data-automation-id="process-put-aways-clear-input-value-button"><mat-icon class="text-20 text-chrome-600">cancel</mat-icon></button>  
+                    <button matSuffix *ngIf="inputValue" class="clear-btn" (click)="clearInputValue()" data-automation-id="process-put-aways-clear-input-value-button"><mat-icon class="text-20 text-chrome-600">cancel</mat-icon></button>  
 
                     <mat-autocomplete class="card custom-scroll" #itemNumberAuto="matAutocomplete" (optionSelected)="onAutocompleteOptionSelected($event)">
                       <h6 class="card-header matAutoCompHeader">
