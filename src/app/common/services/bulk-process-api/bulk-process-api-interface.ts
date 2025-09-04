@@ -1,5 +1,6 @@
 import { ZoneListPayload } from "src/app/bulk-process/preferences/preference.models";
-import {AssignToteToOrderDto, NextToteId} from "../../Model/bulk-transactions";
+import {AssignToteToOrderDto, NextToteId, PartialToteIdRequest, PartialToteIdResponse, RemoveOrderLinesRequest, RemoveOrderLinesResponse} from "../../Model/bulk-transactions";
+import { ApiResult } from "../../types/CommonTypes";
 
 export interface IBulkProcessApiService {
   bulkPickoOrderBatchToteQty(payload: any);
@@ -29,4 +30,7 @@ export interface IBulkProcessApiService {
   bulkPickTaskComplete(body:any);
   fullTote(body:any);
   AssignToteToOrder(orders: AssignToteToOrderDto[]);
+  GetNextToteIdForSlapperLabelAsync(request: PartialToteIdRequest[]): Promise<PartialToteIdResponse[]>;
+  SubmitCaseWiseOrders(request: PartialToteIdResponse[]): Promise<ApiResult<PartialToteIdResponse[]>>;
+  RemoveOrderLinesFromTote(request: RemoveOrderLinesRequest): Promise<RemoveOrderLinesResponse>;
 }

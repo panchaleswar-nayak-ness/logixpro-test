@@ -25,6 +25,12 @@ export interface ApiResponse<T> {
     statusCode: number;
 }
 
+export interface ApiResult<T> {
+    isSuccess: boolean;
+    value: T | null;
+    errorMessage?: string;
+}
+
 export interface ApiResponseData {
     responseMessage: string;
     isExecuted: boolean;
