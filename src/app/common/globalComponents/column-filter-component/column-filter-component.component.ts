@@ -31,6 +31,14 @@ export class ColumnFilterComponentComponent {
 
   @Output() valueChangeEvent = new EventEmitter<{ searchCol: any, searchString: any }>();
 
+  get sortedColumns(): TableHeaderDefinitions[] {
+    return [...(this.tableColumns ?? [])].sort((a, b) => {
+      const sortKeyA = a.colTitle || a.colDef;
+      const sortKeyB = b.colTitle || b.colDef;
+      return sortKeyA.localeCompare(sortKeyB);
+    });
+  }
+
   constructor(private currentTabDataService: CurrentTabDataService){}
 
   hideRequiredControl = new FormControl(false);
