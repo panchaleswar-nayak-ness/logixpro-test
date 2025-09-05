@@ -380,7 +380,7 @@ export class OpenTransactionOnHoldComponent implements OnInit, AfterViewInit {
       searchPayload = {
         query: this.orderNumber,
         tableName: 2,
-        column: 'orderNumber',
+        column: Column.OrderNumber,
       };
     } else {
       searchPayload = {
