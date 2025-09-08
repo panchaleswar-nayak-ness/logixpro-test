@@ -375,12 +375,7 @@ export class VerifyBulkComponent implements OnInit {
 
         
         let res = await this.iBulkProcessApiService.bulkPickTaskComplete(ordersNew);
-        if (res?.status == HttpStatusCode.Ok) {
-          // Call additional API for slapper label to update open transactions with zone case quantities
-          if (this.isSlapperLabelFlow) {
-            await this.iBulkProcessApiService.updateOpenTransactionsZoneCaseQuantity(ordersNew);
-          }
-          
+        if (res?.status == HttpStatusCode.Ok) {                              
           if (this.bulkTransactionType == BulkTransactionType.PICK && res?.body.length > 0) {
             await this.TaskCompleteEOB(res?.body);
           }

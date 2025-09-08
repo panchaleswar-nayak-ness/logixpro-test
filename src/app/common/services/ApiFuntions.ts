@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/internal/Observable';
 import { BaseService } from './base-service.service';
 import { AuthService } from '../init/auth.service';
-import { AssignToteToOrderDto, NextToteId, PartialToteIdRequest, PartialToteIdResponse, RemoveOrderLinesRequest, RemoveOrderLinesResponse, TaskCompleteNewRequest } from '../Model/bulk-transactions';
+import { AssignToteToOrderDto, NextToteId, OrderLineResource, PartialToteIdRequest, PartialToteIdResponse, RemoveOrderLinesRequest, RemoveOrderLinesResponse } from '../Model/bulk-transactions';
 import {
   MarkoutBlossomTotenRequest,
   MarkoutCompleteTransactionRequest,
@@ -2125,7 +2125,7 @@ public updateEmergencyReprocessTrans(payload: UpdateEmergencyRequest): Observabl
     return await this.ApiBase.PutAsync('/bulktransactions/taskcomplete', body);
   }
 
-  public async updateOpenTransactionsZoneCaseQuantity(body: TaskCompleteNewRequest[]) {
+  public async updateOpenTransactionsZoneCaseQuantity(body: OrderLineResource[]) {
     return await this.ApiBase.PatchAsync('/bulktransactions/zonecasequantities', body);
   }
 
