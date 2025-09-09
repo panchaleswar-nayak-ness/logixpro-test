@@ -135,6 +135,7 @@
                       [disabled]="!i.includeCFCarouselPick"
                       [(ngModel)]="i.parentZone"
                       (ngModelChange)="zoneChange(i, false)"
+                      [disableOptionCentering]="true"
                       class="employees-action" data-automation-id="parent-zone-select-{{i.zone}}"
                     >
                       <mat-option
@@ -233,6 +234,7 @@
                       [(ngModel)]="i.caseLabel"
                       (ngModelChange)="zoneChange(i, false)"
                       [disabled]="i.carousel || i.includeCFCarouselPick"
+                      [disableOptionCentering]="true"
                       class="employees-action" data-automation-id="case-label-select-{{i.zone}}"
                     >
                       <mat-option
