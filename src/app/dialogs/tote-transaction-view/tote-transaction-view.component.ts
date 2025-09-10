@@ -22,6 +22,7 @@ import {  ToasterTitle ,ToasterType,DialogConstants,Style,Column,UniqueConstants
 import {PrintApiService} from "../../common/services/print-api/print-api.service";
 import { IAdminApiService } from 'src/app/common/services/admin-api/admin-api-interface';
 import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.service';
+import { MatSort } from '@angular/material/sort';
 
 @Component({
   selector: 'app-tote-transaction-view',
@@ -40,6 +41,7 @@ export class ToteTransactionViewComponent implements OnInit {
   cell: any;
   isData: any;
   @ViewChild('actionRef') actionRef: MatSelect;
+  @ViewChild(MatSort) sort: MatSort;
   pageEvent: PageEvent;
   public sortCol: any = 0;
   public sortOrder: any = UniqueConstants.Asc;
@@ -139,6 +141,7 @@ export class ToteTransactionViewComponent implements OnInit {
             this.isData = true;
 
             this.dataSource = new MatTableDataSource<any>(res.data);
+            this.dataSource.sort = this.sort;
           } else {
             this.isData = false;
           }
