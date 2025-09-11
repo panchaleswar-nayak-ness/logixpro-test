@@ -46,14 +46,7 @@
 
 
                 </mat-form-field>
-                
-                <div class="row px-3">
-                  <mat-label class="mb-2"><b>Filter Order / Item By:</b></mat-label>
-                  <mat-radio-group color="primary" [(ngModel)]="filterByNumeric" (change)="onFilterByChanged($event.value)">
-                    <mat-radio-button class="me-3" [value]="true">Numeric</mat-radio-button>
-                    <mat-radio-button [value]="false">Alphanumeric</mat-radio-button>
-                  </mat-radio-group>
-                </div>
+
               </div>
 
                 <mat-form-field class="action-dropdown" appearance="outline">
@@ -103,6 +96,28 @@
                           </td>
                         </ng-container>
 
+                        <!-- Format Column -->
+                        <ng-container matColumnDef="format">
+                          <th mat-header-cell *matHeaderCellDef data-automation-id="table-header-format"> Format </th>
+                          <td mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'table-row-format-cell-' + i">
+                            <div>
+                              <mat-form-field class="custom-form-field w-90" matTooltip="A+N:Alphanumeric (treat values like A123, B5SC)&#10; 123:Numeric (treat values like 123, 456)" matTooltipClass="cart-management-multiline-tooltip" appearance="outline" [attr.data-automation-id]="'format-dropdown-' + i">
+                                <mat-select
+                                  [(ngModel)]="element.format"
+                                  (ngModelChange)="onFormatChange($event,element, i)"
+                                  [attr.data-automation-id]="'format-select-' + i"
+                                  [disabled]="isFormatDisabled(element.field)">
+                                  <mat-option value="A+N" data-automation-id="format-option-an">A+N</mat-option>
+                                  <mat-option value="123" data-automation-id="format-option-123">123</mat-option>
+                                </mat-select>
+                                <span matSuffix class="material-symbols-outlined icon-expand-more" [attr.data-automation-id]="'format-expand-icon-' + i">
+                                  expand_more
+                                </span>
+                              </mat-form-field>
+                            </div>
+                          </td>
+                        </ng-container>
+
                         <!-- Name Column -->
                         <ng-container matColumnDef="field">
                           <th mat-header-cell *matHeaderCellDef> Field </th>
@@ -118,11 +133,11 @@
                                   <mat-option value="Import Date" >Import Date</mat-option>
                                   <mat-option value="Item Number" >{{ItemNumber}}</mat-option>
                                   <mat-option value="Notes" >Notes</mat-option>
-                               
+
                                   <mat-option *ngFor="let field of userFields" [value]="field.value" replacePlaceholder [replacePlaceHolder]="field.replacePlaceholder" [fallbackPlaceHolder]="field.fallbackPlaceholder">
                                     {{ field.placeholder }}
                                   </mat-option>
-                                                                 
+
                                   <mat-option value="Warehouse" >Warehouse</mat-option>
                                   <mat-option value="Zone" >Zone</mat-option>
                                 </mat-select>
@@ -232,11 +247,11 @@
                         <ng-container matColumnDef="sequence">
                           <th mat-header-cell *matHeaderCellDef> Sequence </th>
                           <td mat-cell *matCellDef="let element">
-                            
+
                               <mat-form-field class="custom-form-field w-80" appearance="outline"  >
                                 <input matInput type="number" min="0" #specialFeature maxlength="255" [(ngModel)]="element.sequence" (ngModelChange)="onChangeFunctionsFields(element)" (focusout)="isUniqueSeq(element)">
                               </mat-form-field>
-                            
+
                           </td>
                         </ng-container>
 
@@ -244,7 +259,7 @@
                         <ng-container matColumnDef="field">
                           <th mat-header-cell *matHeaderCellDef> Field </th>
                           <td mat-cell *matCellDef="let element">
-                            
+
                               <mat-form-field class="custom-form-field w-170" appearance="outline" >
 
                                 <mat-select #matRef class="employees-action" [(ngModel)]="element.field" (ngModelChange)="onChangeFunctionsFields(element)">
@@ -258,11 +273,11 @@
                                   <mat-option value="Item Number" disabled>{{ItemNumber}}</mat-option>
                                   <mat-option value="Notes" disabled>Notes</mat-option>
 
-                                  <mat-option *ngFor="let field of userFields" 
-                                    [value]="'UF' + (field.value.split(' ')[2])" 
-                                    disabled 
-                                    replacePlaceholder 
-                                    [replacePlaceHolder]="field.replacePlaceholder" 
+                                  <mat-option *ngFor="let field of userFields"
+                                    [value]="'UF' + (field.value.split(' ')[2])"
+                                    disabled
+                                    replacePlaceholder
+                                    [replacePlaceHolder]="field.replacePlaceholder"
                                     [fallbackPlaceHolder]="field.fallbackPlaceholder">
                                     {{ field.placeholder }}
                                   </mat-option>
@@ -274,7 +289,7 @@
                                   expand_more
                                 </span>
                               </mat-form-field>
-                            
+
                           </td>
                         </ng-container>
 
@@ -559,7 +574,7 @@
           </div>
         </mat-tab>
         <mat-tab label="Batch Results" class="b-result">
-            
+
             <div class="p-3">
               <div class="mb-2">
                 <mat-label><b>View Order Lines</b></mat-label>

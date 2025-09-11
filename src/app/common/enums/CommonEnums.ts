@@ -119,7 +119,7 @@ export enum FilterType {
     LessThanEqual = 'lessThanEqual',
     Range = 'range'
   }
-  
+
 export enum ErrorCode {
     UnableToPrint = 555
 }
@@ -129,4 +129,10 @@ export type QuantityFilterTypeUnion =
 | FilterType.GreaterThanEqual
 | FilterType.LessThan
 | FilterType.LessThanEqual
-| FilterType.Range; 
+| FilterType.Range;
+
+export enum InputType {
+  Date = 'date',
+  Number = 'number',
+  Text = 'text',
+}

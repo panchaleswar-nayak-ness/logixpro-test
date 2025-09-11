@@ -130,7 +130,8 @@ export const ConfirmationHeadings = {
     CreateBatchNow: "Create Batch Now?",
     PrintBatchOrOrder:"Print Batch Or Order",
     NoOffCarouselPicksFound:"No Off-Carousel Picks Found",
-    ResolveToteId: "Resolve Tote ID"
+    ResolveToteId: "Resolve Tote ID",
+    ChangeFormatType: "Change Format Type"
 }
 export const ConfirmationButtonText = {
     ResetPassword: 'Reset Password Now',
@@ -154,11 +155,12 @@ export const ConfirmationMessages = {
     TouchNoToPrintEachOrder: "Touch 'No' to print a page for each order.",
     AssignOrdersToBatch: (batchId: string | number) =>
         `Touch 'Yes' to Assign the Selected Orders to Batch ID ${batchId}. Touch 'No' to Cancel Batching.`,
-    NoOffCarouselPicks:"There are no off-carousel picks for the order(s) selected.",    
+    NoOffCarouselPicks:"There are no off-carousel picks for the order(s) selected.",
     ResolvedToteConfirmation:"Are you sure you want to mark this Tote ID as resolved? This will remove this Tote ID from the Markout.",
     IrreversibleActionWarning :'This action cannot be undone.',
     UpdateAllInterface: 'Click OK to update all devices with Com Port: {{comPort}}',
-    UpdateAllInterfaceWithZone: 'Click OK to update all devices with Com Port: {{comPort}} and Zone: {{zone}}'
+    UpdateAllInterfaceWithZone: 'Click OK to update all devices with Com Port: {{comPort}} and Zone: {{zone}}',
+    InconsistentFormat: (fieldName: string, newFormat: string, oldFormat: string) => `An "${fieldName}" was added with ${oldFormat} format. Changing to ${newFormat} will update that entry as well. Do you want to continue?`,
 }
 
 export const ToasterMessages = {
@@ -256,6 +258,7 @@ export const ToasterMessages = {
     PrintSuccessfullyCompleted:'Print successfully completed',
     UnableToPrint: 'Unable to print',
     UnableToAssignLocation: "Unable to assign location",
+    InvalidInputForFilter: "Some of the inputs are missing values. Cannot add row to filter.",
     ZoneWouldBeADuplicateAndCannotBeAdded: "Zone would be a duplicate and cannot be added.",
     LocationZoneCannotBeDeleted: "Location Zone cannot be deleted because there are allocated quantities in an Inventory Map location matching the zone",
     CannotInsertDuplicateZone: "Cannot insert duplicate Zone"
@@ -762,4 +765,36 @@ export class ConsoleErrorMessages {
 }
 export const PickToteFilterpreferences = {
     preferences: "PickToteFilterPrefs",
+}
+export const DISABLED_FIELDS = [
+  'priority',
+  'Required Date',
+  'Emergency',
+  'Import Date'
+];
+
+export const FIELDS_DEFAULT_AN = new Set<string>([
+  'userField1',
+  'userField2',
+  'userField3',
+  'userField4',
+  'userField5',
+  'userField6',
+  'userField7',
+  'userField8',
+  'userField9',
+  'userField10',
+  'Emergency',
+  'Zone',
+  'expirationDate',
+  'Warehouse',
+  'requiredDate'
+]);
+export const FormatValues = {
+  NUMERIC : '123',
+  ALPHA_NUMERIC : 'A+N',
+}
+export const FormatType = {
+  NUMERIC : 'Numeric',
+  ALPHA_NUMERIC : 'Alphanumeric',
 }

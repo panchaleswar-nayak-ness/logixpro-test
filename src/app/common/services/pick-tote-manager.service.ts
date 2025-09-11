@@ -6,7 +6,7 @@ import {PickToteFilterpreferences } from '../constants/strings.constants';
 })
 export class PickToteManagerService {
   constructor() {}
-  // This method updates the preference for applying a numeric filter on the "Pick Tote" UI feature. 
+  // This method updates the preference for applying a numeric filter on the "Pick Tote" UI feature.
   // It stores the preference directly in the browser's local storage so that it persists across sessions.
    SetPickToteFilterNumeric(value: boolean): boolean {
     // Save the preference directly without user-specific settings
@@ -15,14 +15,5 @@ export class PickToteManagerService {
       JSON.stringify(value)
     );
     return value;
-  }
-   GetPickToteFilterNumeric(): boolean {
-    const existingPref = localStorage.getItem(PickToteFilterpreferences.preferences);
-    if (!existingPref) return false;
-    try {
-      return JSON.parse(existingPref);
-    } catch (error) {
-      return false;
-    }
   }
 }

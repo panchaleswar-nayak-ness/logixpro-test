@@ -623,7 +623,7 @@ button {
 .mat-nav-list .mat-list-item {
   border-radius: 100px;
   overflow: hidden;
-  padding: 0 12px 0 0 !important; 
+  padding: 0 12px 0 0 !important;
 }
 
 .mat-tab-header {
@@ -2363,62 +2363,62 @@ button.default-btn {
 .ng-scrollbar:hover {
 
   --scrollbar-size: 10px!important; /* Change the value as per your desired scrollbar width */
-  
-  
+
+
   }
- 
+
 //-------------- ACCORDIAN-CLASSES ----START-------------------
 
   .mat-expansion-panel {
     background: var(--clr-pure-white);
     color: rgba(0, 0, 0, .87)
   }
-  
+
   .mat-expansion-panel:not([class*=mat-elevation-z]) {
     box-shadow: none;
     border:1px solid var(--clr-tertiary-50)
   }
-  
+
   .mat-action-row {
     border-top-color: rgba(0, 0, 0, .12)
   }
-  
+
   .mat-expansion-panel .mat-expansion-panel-header.cdk-keyboard-focused:not([aria-disabled=true]),
   .mat-expansion-panel .mat-expansion-panel-header.cdk-program-focused:not([aria-disabled=true]),
   .mat-expansion-panel:not(.mat-expanded) .mat-expansion-panel-header:hover:not([aria-disabled=true]) {
     background: rgba(0, 0, 0, .04)
   }
-  
+
   @media(hover: none) {
     .mat-expansion-panel:not(.mat-expanded):not([aria-disabled=true]) .mat-expansion-panel-header:hover {
       background: var(--clr-pure-white)
     }
   }
-  
+
   .mat-expansion-panel-header-title {
     color: var(--clr-tertiary-900);
     font-size:16px;
     // font-weight: 600;
   }
-  
+
   .mat-expansion-panel-header-description,
   .mat-expansion-indicator::after {
     color: rgba(0, 0, 0, .54)
   }
-  
+
   .mat-expansion-panel-header[aria-disabled=true] {
     color: rgba(0, 0, 0, .26)
   }
-  
+
   .mat-expansion-panel-header[aria-disabled=true] .mat-expansion-panel-header-title,
   .mat-expansion-panel-header[aria-disabled=true] .mat-expansion-panel-header-description {
     color: inherit
   }
-  
+
   .mat-expansion-panel-header {
     height: 48px
   }
-  
+
   .mat-expansion-panel-header.mat-expanded {
     height: 64px;
     &::before{
@@ -2431,7 +2431,7 @@ button.default-btn {
   }
   }
 
-  .mat-accordion .mat-expansion-panel:not(.mat-expanded), 
+  .mat-accordion .mat-expansion-panel:not(.mat-expanded),
   .mat-accordion .mat-expansion-panel:not(.mat-expansion-panel-spacing) {
     border-radius: 10px !important;
 }
@@ -2516,3 +2516,7 @@ button.active-btn{
   //   -webkit-user-select:all !important;
   // }
 
+.cart-management-multiline-tooltip {
+  max-width: 400px !important;
+  white-space: pre-line !important;
+}
