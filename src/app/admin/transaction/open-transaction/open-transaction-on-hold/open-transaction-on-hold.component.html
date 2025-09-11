@@ -22,7 +22,7 @@
                 <div class="col-xl-3">
                     <mat-form-field class="custom-form-field w-100 __grab_cursor mb-3" appearance="outline">
                         <mat-label data-automation-id="label-end-date">Select End Date</mat-label>
-                        <input matInput [(ngModel)]="eDate" [matDatepicker]="end" (dateChange)="onEndDateChange($event.value)" [attr.data-automation-id]="'input-end-date-' + eDate">
+                        <input matInput [(ngModel)]="eDate" [disabled]="!sDate" [min]="sDate" [matDatepicker]="end" (dateChange)="onEndDateChange($event.value)" [attr.data-automation-id]="'input-end-date-' + eDate">
                         <mat-datepicker-toggle matSuffix [for]="end" ngDefaultControl></mat-datepicker-toggle>
                         <mat-datepicker #end></mat-datepicker>
                     </mat-form-field>
