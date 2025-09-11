@@ -53,7 +53,6 @@ export class  ItemCategoryComponent implements OnInit {
       this.categoryList = res.data;
       this.enableButton = [];
       let categoryFound = false;
-
       for(let i = 0; i < this.categoryList.length; i++) {
         this.categoryList[i].fromDB = true;
         if(this.categoryList[i].category == this.category && this.categoryList[i].subCategory == this.subCategory) {
@@ -62,7 +61,6 @@ export class  ItemCategoryComponent implements OnInit {
         }
         this.enableButton.push({index : i, value : true});
       }
-
       // If the currently selected category is not found in the updated list, clear the selection
       if(!categoryFound && (this.category || this.subCategory)) {
         this.category = '';
@@ -70,7 +68,7 @@ export class  ItemCategoryComponent implements OnInit {
         // Close the dialog with empty category to notify parent that selection was cleared
         this.dialogRef.close({category: '', subCategory: ''});
       }
-
+      
       setTimeout(() => {
         const inputElements = this.categoryCategory.toArray();
         if (inputElements.length > 0) {
@@ -88,15 +86,14 @@ export class  ItemCategoryComponent implements OnInit {
       fromDB:false
     });
     this.enableButton.unshift({index:-1,value:true});
-    const lastIndex = this.categoryList.length - 1;
+    
     setTimeout(() => {
       const inputElements = this.categoryCategory.toArray();
-      if (inputElements.length > lastIndex) {
+      if (inputElements.length > 0) {
         const inputElement = inputElements[0].nativeElement as HTMLInputElement;
         this.renderer.selectRootElement(inputElement).focus();
       }
     });
-
   }
 
   saveCategory(category : any, oldCat : any, subCategory : any, oldSubCat : any) {

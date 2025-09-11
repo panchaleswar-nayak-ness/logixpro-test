@@ -1,74 +1,74 @@
 <div class="d-flex justify-content-between mb-4 align-items-center">
   <div class="divWithClass"></div>
-<h1 class="m-0" mat-dialog-title>{{form_heading}}</h1>
-<button mat-icon-button class="close-button dialog-close-button-fix" [mat-dialog-close]="true">
-  <mat-icon class="close-icon">close</mat-icon>
+<h1 class="m-0" mat-dialog-title data-automation-id="addemp-title">{{form_heading}}</h1>
+<button mat-icon-button class="close-button dialog-close-button-fix" [mat-dialog-close]="true" data-automation-id="addemp-close-btn">
+  <mat-icon class="close-icon" data-automation-id="addemp-close-icon">close</mat-icon>
 </button>
 </div>
     <div class="px-3">
 
-  <form [formGroup]="empForm" (ngSubmit)="onSubmit(empForm)">
+  <form [formGroup]="empForm" (ngSubmit)="onSubmit(empForm)" data-automation-id="addemp-form">
 
 
-    <mat-checkbox *ngIf="data?.mode === 'edit'" matInput  formControlName="active"  class="example-margin custom-checkbox mb-3 activeCheckboxstyle" color="primary">Active</mat-checkbox>
-    <mat-form-field class="mb-3 w-100" appearance="outline">
-      <mat-label>Last Name</mat-label>
-      <input #last_name matInput type="text" formControlName="lastName" maxlength="30" (keydown.space)="$event.preventDefault();">
+    <mat-checkbox *ngIf="data?.mode === 'edit'" matInput  formControlName="active"  class="example-margin custom-checkbox mb-3 activeCheckboxstyle" color="primary" data-automation-id="addemp-active-chk">Active</mat-checkbox>
+    <mat-form-field class="mb-3 w-100" appearance="outline" data-automation-id="addemp-lastname-ff">
+      <mat-label data-automation-id="addemp-lastname-lbl">Last Name</mat-label>
+      <input #last_name matInput type="text" formControlName="lastName" maxlength="30" (keydown.space)="$event.preventDefault();" data-automation-id="addemp-lastname-inp">
     </mat-form-field>
     
-    <mat-form-field class="mb-3 w-100" appearance="outline">
-      <mat-label>First Name</mat-label>
-      <input matInput type="text" formControlName="firstName" maxlength="30" (keydown.space)="$event.preventDefault();">
+    <mat-form-field class="mb-3 w-100" appearance="outline" data-automation-id="addemp-firstname-ff">
+      <mat-label data-automation-id="addemp-firstname-lbl">First Name</mat-label>
+      <input matInput type="text" formControlName="firstName" maxlength="30" (keydown.space)="$event.preventDefault();" data-automation-id="addemp-firstname-inp">
     </mat-form-field>
     
-    <mat-form-field class="mb-3 w-100" appearance="outline">
-      <mat-label>MI</mat-label>
-      <input matInput type="text" formControlName="mi" maxlength="10">
+    <mat-form-field class="mb-3 w-100" appearance="outline" data-automation-id="addemp-mi-ff">
+      <mat-label data-automation-id="addemp-mi-lbl">MI</mat-label>
+      <input matInput type="text" formControlName="mi" maxlength="10" data-automation-id="addemp-mi-inp">
     </mat-form-field>
  
-    <mat-form-field class="mb-3 w-100" appearance="outline">
-      <mat-label>Username</mat-label>
-      <input matInput  type="text"  formControlName="userName" [maxlength]="50" [readonly]="isDisabledUsername" (keydown.space)="$event.preventDefault()">
+    <mat-form-field class="mb-3 w-100" appearance="outline" data-automation-id="addemp-username-ff">
+      <mat-label data-automation-id="addemp-username-lbl">Username</mat-label>
+      <input matInput  type="text"  formControlName="userName" [maxlength]="50" [readonly]="isDisabledUsername" (keydown.space)="$event.preventDefault()" data-automation-id="addemp-username-inp">
     </mat-form-field>
 
-    <mat-form-field class="mb-3 w-100" appearance="outline">
-      <mat-label>Access Level</mat-label>
-      <mat-select formControlName="accessLevel">
-        <mat-option value="administrator">Administrator</mat-option>
-        <mat-option value="staff_member">Staff Member</mat-option>
+    <mat-form-field class="mb-3 w-100" appearance="outline" data-automation-id="addemp-access-ff">
+      <mat-label data-automation-id="addemp-access-lbl">Access Level</mat-label>
+      <mat-select formControlName="accessLevel" data-automation-id="addemp-access-sel">
+        <mat-option value="administrator" data-automation-id="addemp-access-opt-administrator">Administrator</mat-option>
+        <mat-option value="staff_member" data-automation-id="addemp-access-opt-staff_member">Staff Member</mat-option>
       </mat-select>
-      <span class="material-symbols-outlined icon-expand-more">
+      <span class="material-symbols-outlined icon-expand-more" data-automation-id="addemp-access-expand-icon">
         expand_more
       </span>
     </mat-form-field>
 
-    <mat-form-field class="mb-3 w-100" appearance="outline"  *ngIf="(env === 'SD') && this.isEdit == true">
-      <mat-label>Group</mat-label>
-      <mat-select formControlName="groupName" (selectionChange)="groupChange($event)">
-        <mat-option *ngFor="let item of allGroups" [value]="item.groupName">{{item.groupName}}</mat-option>
+    <mat-form-field class="mb-3 w-100" appearance="outline"  *ngIf="(env === 'SD') && this.isEdit == true" data-automation-id="addemp-group-ff">
+      <mat-label data-automation-id="addemp-group-lbl">Group</mat-label>
+      <mat-select formControlName="groupName" (selectionChange)="groupChange($event)" data-automation-id="addemp-group-sel">
+        <mat-option *ngFor="let item of allGroups" [value]="item.groupName" [attr.data-automation-id]="'addemp-group-opt-' + item.groupName">{{item.groupName}}</mat-option>
       </mat-select>
-      <span class="material-symbols-outlined icon-expand-more">
+      <span class="material-symbols-outlined icon-expand-more" data-automation-id="addemp-group-expand-icon">
         expand_more
       </span>
     </mat-form-field>
 
-    <mat-form-field class="mb-1 w-100" appearance="outline" (click)="toggleDisabled()" *ngIf="(env === 'SD'|| env === 'ADLDS')">
-      <mat-label>Password</mat-label>
-      <input matInput [type]="toggle_password ? 'password' : 'text'" #focusFeild formControlName="password" 
+    <mat-form-field class="mb-1 w-100" appearance="outline" (click)="toggleDisabled()" *ngIf="(env === 'SD'|| env === 'ADLDS')" data-automation-id="addemp-password-ff">
+      <mat-label data-automation-id="addemp-password-lbl">Password</mat-label>
+      <input matInput [type]="toggle_password ? 'password' : 'text'" #focusFeild formControlName="password" data-automation-id="addemp-password-inp"
       (ngModelChange)="ChangePassword($event)"
       (focusout)="isEmptyPass()" (keydown.space)="$event.preventDefault()" [maxlength]="env === 'SD' ? 8 : 16">
       <button *ngIf="!isDisabledPassword && (!isEdit)"
-       type="button" mat-icon-button matSuffix (click)="toggle_password = !toggle_password" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="toggle_password">
-        <mat-icon>{{toggle_password ? 'visibility_off' : 'visibility'}}</mat-icon>
+       type="button" mat-icon-button matSuffix (click)="toggle_password = !toggle_password" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="toggle_password" data-automation-id="addemp-password-toggle-btn">
+        <mat-icon data-automation-id="addemp-password-toggle-icon">{{toggle_password ? 'visibility_off' : 'visibility'}}</mat-icon>
       </button>
     </mat-form-field>
 
-    <mat-form-field class="mb-1 w-100" appearance="outline" *ngIf="isEmail">
-      <mat-label>Email Address</mat-label>
-      <input matInput type="email" formControlName="emailAddress" maxlength="255" pattern="^[\w-\.]+@([\w-]+\.)+[\w-]{3,4}$" (keydown.space)="$event.preventDefault();">
+    <mat-form-field class="mb-1 w-100" appearance="outline" *ngIf="isEmail" data-automation-id="addemp-email-ff">
+      <mat-label data-automation-id="addemp-email-lbl">Email Address</mat-label>
+      <input matInput type="email" formControlName="emailAddress" maxlength="255" pattern="^[\w-\.]+@([\w-]+\.)+[\w-]{3,4}$" (keydown.space)="$event.preventDefault();" data-automation-id="addemp-email-inp">
     </mat-form-field>
 
-    <mat-hint class="error-message emailErrorMsg-style text-danger-shade text-14"
+    <mat-hint class="error-message emailErrorMsg-style text-danger-shade text-14" data-automation-id="addemp-email-error-hint"
     *ngIf="empForm.get('emailAddress')?.invalid && (empForm.get('emailAddress')?.dirty || empForm.get('emailAddress')?.touched)">
    Invalid email address
   </mat-hint>
@@ -76,7 +76,7 @@
 
     <mat-dialog-actions align="end">
        
-      <button type="submit" mat-flat-button class="form-button-submit btn-lg w-100 mb-3" [disabled]="!empForm.valid" color="primary">{{form_btn_label}}</button>
+      <button type="submit" mat-flat-button class="form-button-submit btn-lg w-100 mb-3" [disabled]="!empForm.valid" color="primary" data-automation-id="addemp-submit-btn">{{form_btn_label}}</button>
     </mat-dialog-actions>
 
   </form>

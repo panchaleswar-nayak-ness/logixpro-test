@@ -9,7 +9,7 @@
         <div class="col-xl-3">
           <mat-form-field class="action-dropdown custom-form-field-bg-white w-100 mb-3 mb-xl-0" appearance="outline" data-automation-id="form-field-transaction-type">
             <mat-label data-automation-id="label-transaction-type">Transaction Type</mat-label>
-            <mat-select [(ngModel)]="transType" (ngModelChange)="onTransTypeChange()" class="employees-action" value="pick" data-automation-id="select-transaction-type">
+            <mat-select [(ngModel)]="transType" (ngModelChange)="onTransTypeChange()" class="employees-action" value="pick" [attr.data-automation-id]="'select-transaction-type-' + transType">
               <mat-option value="Pick" data-automation-id="option-transaction-type-pick">Pick</mat-option>
               <mat-option value="Put Away" data-automation-id="option-transaction-type-put-away">Put Away</mat-option>
             </mat-select>
@@ -24,7 +24,7 @@
             <mat-label data-automation-id="label-order-number">Order Number</mat-label>
             <input type="text" placeholder="Search" #autoFocusField aria-label="Number" matInput
               [(ngModel)]="orderNumber" maxlength="255" [matAutocomplete]="auto"
-              (ngModelChange)="this.searchByInput.next($event); onOrderNoChange()" data-automation-id="input-order-number" />
+              (ngModelChange)="this.searchByInput.next($event); onOrderNoChange()" [attr.data-automation-id]="'input-order-number-' + orderNumber" />
             <button matSuffix *ngIf="orderNumber" class="clear-btn" (click)="clear.emit();orderNumber =''" data-automation-id="clear-order-number-button">
               <mat-icon class="text-20 text-chrome-600">cancel</mat-icon>
             </button>
@@ -40,7 +40,7 @@
           <div class="d-flex justify-content-end">
             <mat-form-field class="action-dropdown custom-form-field w-100 mb-3" appearance="outline" data-automation-id="form-field-actions">
               <mat-select #matRef class="employees-action" placeholder="Actions" [(ngModel)]="selectedOption"
-                (openedChange)="actionDialog.emit({param1: $event, param2: selectedOption })" data-automation-id="select-actions">
+                (openedChange)="actionDialog.emit({param1: $event, param2: selectedOption })" [attr.data-automation-id]="'select-actions-' + selectedOption">
                 <mat-option [disabled]="!isPost" value="post_order" data-automation-id="option-action-post-order">Post Order</mat-option>
                 <mat-option [disabled]="!isPost" value="delete_order" data-automation-id="option-action-delete-order">Delete Order</mat-option>
                 <mat-option [disabled]="!orderNumber" value="add_new_transaction" data-automation-id="option-action-add-new-transaction">Add New Transaction To Order</mat-option>

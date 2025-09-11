@@ -26,7 +26,7 @@
                 <mat-form-field class="action-dropdown mb-3 flex-grow-1" appearance="outline">
                     <mat-label data-automation-id="label-action">Action</mat-label>
                     <mat-select   #matRef class="employees-action" (openedChange)="actionDialog($event)"
-                        [(value)]="selectedVariable" data-automation-id="select-action">
+                        [(value)]="selectedVariable" [attr.data-automation-id]="'select-action-' + (selectedVariable || '')">
                         <mat-option value="set_column_sq" data-automation-id="option-action-set_column_sq">Set Column Sequence</mat-option>
                     </mat-select>
                     <span class="material-symbols-outlined icon-expand-more">
@@ -52,8 +52,21 @@
                             (dblclick)="col.colDef == 'Item Number' && viewInInventoryMaster(element)"
                             (contextmenu)="onContextMenu($event, element[col.colHeader], col.colDef)"
                             #tooltip="matTooltip" [matTooltip]="element[col.colHeader]"   matTooltipPosition="above"  [matTooltipDisabled]="element[col.colHeader] && element[col.colHeader].length>=19?false:true"
-                            class="transaction-cell-style" [attr.data-automation-id]="'table-row-' + rowIndex + '-' + col.colDef + '-' + element[col.colHeader]"
-                        >{{ element[col.colHeader] }}</td>
+                            class="transaction-cell-style" [attr.data-automation-id]="'table-row-' + rowIndex "
+                        >
+                            <ng-container *ngIf="col.colDef === 'Emergency'; else textContent">
+                                <div style="display: flex; justify-content: center; align-items: center;">
+                                    <mat-checkbox [checked]="element[col.colHeader]" 
+                                        [disabled]="true"
+                                        color="primary">
+                                    </mat-checkbox>
+                                </div>
+                            </ng-container>
+
+                            <ng-template #textContent>
+                                {{ element[col.colHeader] }}
+                            </ng-template>
+                        </td>
                     </ng-container>
 
                     <ng-container matColumnDef="actions" stickyEnd>

@@ -1,8 +1,8 @@
-<mat-card class="mat-elevation-z g-card h-100">
+<mat-card class="mat-elevation-z g-card h-100" data-automation-id="route-id-management-card">
     <mat-card-content>
       <div class="d-block d-xl-flex justify-content-between align-items-center mb-3 flex-wrap">
         <div class="d-flex align-items-center">
-          <h2 class="col card-header-title d-flex align-items-center mb-xl-0 mb-3">
+          <h2 class="col card-header-title d-flex align-items-center mb-xl-0 mb-3" data-automation-id="route-id-management-heading">
             <div class="mat-icon-wrap me-3">
               <span class="material-symbols-outlined"> dns </span>
             </div>
@@ -17,20 +17,21 @@
   <div class="col-xxl-7">
       <div class="row g-3">
         <div class="col-xl-5">
-          <div class="card px-3 py-2 w-100 h-100">
+          <div class="card px-3 py-2 w-100 h-100" data-automation-id="consolidation-zone-card">
             <mat-form-field
               class="action-dropdown my-auto w-100 flex-1"
               appearance="outline"
+              data-automation-id="consolidation-zone-field"
             >
-            <mat-label>Consolidation Zone</mat-label>
+            <mat-label data-automation-id="consolidation-zone-label">Consolidation Zone</mat-label>
             
-            <mat-select class="employees-action" [(ngModel)]="Zone" (selectionChange)="onSelectionChange($event.value)">
-              <mat-option *ngFor="let zone of consolidationZones" [value]="zone.resource.description">
+            <mat-select class="employees-action" [(ngModel)]="Zone" (selectionChange)="onSelectionChange($event.value)" data-automation-id="consolidation-zone-select">
+              <mat-option *ngFor="let zone of consolidationZones; let i = index" [value]="zone.resource.description" [attr.data-automation-id]="'consolidation-zone-option-' + i + '-' + zone.resource.description">
                 {{ zone.resource.description }}
               </mat-option>
             </mat-select>
             
-              <span class="material-symbols-outlined icon-expand-more">
+              <span class="material-symbols-outlined icon-expand-more" data-automation-id="consolidation-zone-expand-icon">
                 expand_more
               </span>
             </mat-form-field>
@@ -39,34 +40,36 @@
         </div>
 
 <div class="col-xl-7">
-    <div class="card px-3 py-2">
-        <div class="d-flex title text-tertiary-900">
+    <div class="card px-3 py-2" data-automation-id="auto-release-card">
+        <div class="d-flex title text-tertiary-900" data-automation-id="auto-release-title">
           <span class="me-2">Auto Release</span>
           <mat-icon class="material-symbols-outlined text-16 lh-24" matTooltip="Totes start releasing at the upper threshold and 
-          stop at the lower threshold (both set between 1-100)." matTooltipPosition="above">info</mat-icon>
+          stop at the lower threshold (both set between 1-100)." matTooltipPosition="above" data-automation-id="auto-release-info-icon">info</mat-icon>
         </div>
       
-        <div class="threshold-container d-flex align-items-center text-tertiary-900">
-          <label class="w-auto me-3">Upper Threshold: <strong>{{ upperThreshold }} % </strong></label>
+        <div class="threshold-container d-flex align-items-center text-tertiary-900" data-automation-id="upper-threshold-container">
+          <label class="w-auto me-3" data-automation-id="upper-threshold-label">Upper Threshold: <strong data-automation-id="upper-threshold-value">{{ upperThreshold }} % </strong></label>
           <mat-slider
             min="0"
             max="100"
             step="1"
             [(ngModel)]="upperThreshold"
             (ngModelChange)="adjustUpperThreshold($event)"
-            color="primary">
+            color="primary"
+            data-automation-id="upper-threshold-slider">
           </mat-slider>
         </div>
         
-        <div class="threshold-container d-flex align-items-center text-tertiary-900">
-          <label class="w-auto me-3">Lower Threshold: <strong>{{ lowerThreshold }} % </strong></label>
+        <div class="threshold-container d-flex align-items-center text-tertiary-900" data-automation-id="lower-threshold-container">
+          <label class="w-auto me-3" data-automation-id="lower-threshold-label">Lower Threshold: <strong data-automation-id="lower-threshold-value">{{ lowerThreshold }} % </strong></label>
           <mat-slider
             min="0"
             max="100"
             step="1"
             [(ngModel)]="lowerThreshold"
             (ngModelChange)="adjustLowerThreshold($event)"
-            color="primary">
+            color="primary"
+            data-automation-id="lower-threshold-slider">
           </mat-slider>
         </div>
         
@@ -74,12 +77,12 @@
     </div>
   </div>
   <div class="col-xl-12">
-    <div class="d-md-flex d-block card px-3 pt-3 pb-2 w-100">
+    <div class="d-md-flex d-block card px-3 pt-3 pb-2 w-100" data-automation-id="consolidation-status-card">
       <div class="row align-items-center mb-2">
         <div class="col-md-12">
           <div class="d-flex justify-content-between align-items-center">
             <div>
-              <h2 class="d-flex align-items-center text-tertiary-900 f-16 bold">
+              <h2 class="d-flex align-items-center text-tertiary-900 f-16 bold" data-automation-id="consolidation-status-heading">
                 {{consolidationStatusCard}}
                
               </h2>
@@ -88,20 +91,20 @@
         </div>
       </div>
   
-      <div class="row d-flex justify-content-between align-items-center">
-        <div *ngFor="let info of info; trackBy: trackByTitle" class="col-md-4">
+      <div class="row d-flex justify-content-between align-items-center" data-automation-id="consolidation-status-info-container">
+        <div *ngFor="let info of info; trackBy: trackByTitle; let i = index" class="col-md-4" [attr.data-automation-id]="'consolidation-status-info-' + i + '-' + info.title">
           
           <div class="row d-flex justify-content-between align-items-center ">
             <div class="d-flex  "> 
-            <mat-card class="mat-elevation-z g-card br-14"[class]="info.colorClass + ' w-100 mb-2'">
+            <mat-card class="mat-elevation-z g-card br-14"[class]="info.colorClass + ' w-100 mb-2'" [attr.data-automation-id]="'consolidation-status-card-' + i + '-' + info.title">
                 <mat-card-content>
                 <div class="row">
-                    <div class="col-12 title-wrap text-14">
+                    <div class="col-12 title-wrap text-14" [attr.data-automation-id]="'consolidation-status-title-' + i + '-' + info.title">
                         <strong> {{ info.title }} </strong>
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-12">
+                    <div class="col-12" [attr.data-automation-id]="'consolidation-status-value-' + i + '-' + info.title">
                     <strong>{{ info.value }}</strong>
                     </div>
                 </div>
@@ -119,38 +122,38 @@
       
     </div>
     <div class="col-xxl-5">
-  <div class="custom bg-50 br-14">
-    <div class="counter bg-tertiary-10 mt-0 p-3">
+  <div class="custom bg-50 br-14" data-automation-id="route-id-status-container">
+    <div class="counter bg-tertiary-10 mt-0 p-3" data-automation-id="route-id-status-counter">
       
      
-        <h6 class="text-tertiary-900 mb-3 bold">{{routeIdStatusCountCard}}</h6>
-        <div>
+        <h6 class="text-tertiary-900 mb-3 bold" data-automation-id="route-id-status-heading">{{routeIdStatusCountCard}}</h6>
+        <div data-automation-id="route-id-status-row-1">
         <div class="row g-0">
-          <div class="col employees text-center mb-3">
-            <app-stats-circle [value]="statusConNotStarted" title="Con. Not Started"></app-stats-circle>
+          <div class="col employees text-center mb-3" data-automation-id="con-not-started-container">
+            <app-stats-circle [value]="statusConNotStarted" title="Con. Not Started" data-automation-id="con-not-started-stats"></app-stats-circle>
             
           </div>
-          <div class="col customer text-center mb-3">
-          <app-stats-circle [value]="statusInConsolidation" title="In Consolidation"></app-stats-circle>
+          <div class="col customer text-center mb-3" data-automation-id="in-consolidation-container">
+          <app-stats-circle [value]="statusInConsolidation" title="In Consolidation" data-automation-id="in-consolidation-stats"></app-stats-circle>
           
           </div>
-          <div class="col customer text-center mb-3">
-            <app-stats-circle [value]="statusReadyForRelease" title="Ready For release"></app-stats-circle>
+          <div class="col customer text-center mb-3" data-automation-id="ready-for-release-container">
+            <app-stats-circle [value]="statusReadyForRelease" title="Ready For release" data-automation-id="ready-for-release-stats"></app-stats-circle>
           </div>
         </div>
       </div>
-      <div>
+      <div data-automation-id="route-id-status-row-2">
         <div class="row g-0">
-          <div class="col employees text-center mb-3">
-             <app-stats-circle [value]="statusReleaseRequested" title="Release Requested"></app-stats-circle>
+          <div class="col employees text-center mb-3" data-automation-id="release-requested-container">
+             <app-stats-circle [value]="statusReleaseRequested" title="Release Requested" data-automation-id="release-requested-stats"></app-stats-circle>
             
           </div>
-          <div class="col customer text-center mb-3">
-         <app-stats-circle [value]="statusActiveRelease" title="Active Release"></app-stats-circle>
+          <div class="col customer text-center mb-3" data-automation-id="active-release-container">
+         <app-stats-circle [value]="statusActiveRelease" title="Active Release" data-automation-id="active-release-stats"></app-stats-circle>
           
           </div>
-          <div class="col customer text-center mb-3">
-            <app-stats-circle [value]="statusInShipping" title="In Shipping"></app-stats-circle>
+          <div class="col customer text-center mb-3" data-automation-id="in-shipping-container">
+            <app-stats-circle [value]="statusInShipping" title="In Shipping" data-automation-id="in-shipping-stats"></app-stats-circle>
           </div>
         </div>
       </div>

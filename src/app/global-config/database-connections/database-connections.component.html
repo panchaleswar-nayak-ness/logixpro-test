@@ -1,31 +1,31 @@
 <div class="f-container">
-    <app-header (toggleSidebarForMe)="sideBarToggler()" >
+    <app-header (toggleSidebarForMe)="sideBarToggler()" data-automation-id="header-main">
     </app-header>
     <mat-sidenav-container class="main-container">
-        <mat-sidenav #sidenav mode="side" disableClose="true" [opened]="sideBarOpen">
-            <app-side-nav [sideBarOpen]="sideBarOpen"></app-side-nav>
+        <mat-sidenav #sidenav mode="side" disableClose="true" [opened]="sideBarOpen" data-automation-id="main-sidenav">
+            <app-side-nav [sideBarOpen]="sideBarOpen" data-automation-id="side-nav"></app-side-nav>
           </mat-sidenav>
         <mat-sidenav-content>
-            <div class="dashboard-section" [ngClass]="{'side-bar-opened' : sideBarOpen}">
-                <div class="breadcrumb-menu">
-                    <nav aria-label="breadcrumb" class="breadcrumb">
+            <div class="dashboard-section" [ngClass]="{'side-bar-opened' : sideBarOpen}" data-automation-id="dashboard-section">
+                <div class="breadcrumb-menu" data-automation-id="breadcrumb-menu">
+                    <nav aria-label="breadcrumb" class="breadcrumb" data-automation-id="breadcrumb-nav">
                     </nav>
                 </div>
                 <div class="container-fluid p-0 h-auto">
 
                     <div class="row mb-3">
                         <div class="col-12">
-                            <app-config-database [connectionStringData]="dbConnectionData" (configdbUpdateEvent)="updateListEventRec($event)" ></app-config-database>
+                            <app-config-database [connectionStringData]="dbConnectionData" (configdbUpdateEvent)="updateListEventRec($event)" data-automation-id="config-database"></app-config-database>
                         </div>
                     </div>
 
                     <div class="row">
                         <div class="col-12">
-                            <app-connection-strings [connectionStringData]="dbConnectionData" (connectionUpdateEvent)="updateListEventRec($event)"></app-connection-strings>
+                            <app-connection-strings [connectionStringData]="dbConnectionData" (connectionUpdateEvent)="updateListEventRec($event)" data-automation-id="connection-strings"></app-connection-strings>
                         </div>
                     </div>
                 </div>
-                <router-outlet></router-outlet>
+                <router-outlet data-automation-id="router-outlet"></router-outlet>
             </div>
         </mat-sidenav-content>
     </mat-sidenav-container>

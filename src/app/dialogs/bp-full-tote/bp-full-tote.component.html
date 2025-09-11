@@ -1,7 +1,7 @@
 <div class="d-flex justify-content-between align-items-center" mat-dialog-title>
     <div class="w-48px"></div>
-    <h1 class="m-0" mat-dialog-title>Blossom Tote</h1>
-    <button mat-icon-button class="close-button dialog-close-button-fix" [mat-dialog-close]="false">
+    <h1 class="m-0" mat-dialog-title data-automation-id="bp-full-tote-dialog-title">Blossom Tote</h1>
+    <button mat-icon-button class="close-button dialog-close-button-fix" [mat-dialog-close]="false" data-automation-id="bp-full-tote-close-button">
         <mat-icon class="close-icon">close</mat-icon>
     </button>
 </div>
@@ -16,20 +16,20 @@
     <div class="row">
         <div class="col-xl-4">
             <mat-form-field class="custom-form-field w-100 mat-form-field-disabled" appearance="outline">
-                <mat-label>Tote Number</mat-label>
-                <input matInput type="text" [value]="data.toteNumber" readonly>
+                <mat-label data-automation-id="tote-number-label">Tote Number</mat-label>
+                <input matInput type="text" [value]="data.toteNumber" readonly data-automation-id="tote-number-input">
             </mat-form-field>
         </div>
         <div class="col-xl-4">
             <mat-form-field class="custom-form-field w-100 mat-form-field-disabled" appearance="outline">
-                <mat-label>Full Tote ID</mat-label>
-                <input matInput type="text" [value]="data.toteId" readonly>
+                <mat-label data-automation-id="full-tote-id-label">Full Tote ID</mat-label>
+                <input matInput type="text" [value]="data.toteId" readonly data-automation-id="full-tote-id-input">
             </mat-form-field>
         </div>
         <div class="col-xl-4">
             <mat-form-field class="custom-form-field w-100 mat-form-field-disabled" appearance="outline">
-                <mat-label>Qty Put in Full Tote</mat-label>
-                <input matInput type="text" [value]="data.PutFullToteQty" readonly>
+                <mat-label data-automation-id="qty-full-tote-label">Qty Put in Full Tote</mat-label>
+                <input matInput type="text" [value]="data.PutFullToteQty" readonly data-automation-id="qty-full-tote-input">
             </mat-form-field>
         </div>
     </div>
@@ -38,21 +38,21 @@
     <div class="row">
         <div class="col-xl-6">
             <mat-form-field class="custom-form-field w-100 mb-2" appearance="outline">
-                <mat-label>New Tote ID</mat-label>
-                <input matInput type="text" [(ngModel)]="data.NewToteID"> <!-- (change)="validtote($event)" -->
+                <mat-label data-automation-id="new-tote-id-label">New Tote ID</mat-label>
+                <input matInput type="text" [(ngModel)]="data.NewToteID" data-automation-id="new-tote-id-input"> <!-- (change)="validtote($event)" -->
                 <button matSuffix class="clear-btn" (click)="data.NewToteID = ''" matTooltip="Cancel Full Tote process and close this screen."
-                 matTooltipPosition="above" *ngIf="data.NewToteID != ''"><mat-icon class="text-22 text-chrome-600  d-flex align-items-center">cancel</mat-icon></button>
+                 matTooltipPosition="above" *ngIf="data.NewToteID != ''" data-automation-id="clear-new-tote-button"><mat-icon class="text-22 text-chrome-600  d-flex align-items-center">cancel</mat-icon></button>
             </mat-form-field>
-            <button mat-stroked-button color="primary" (click)="CreateNextToteID()" class="btn-regular w-100">
+            <button mat-stroked-button color="primary" (click)="CreateNextToteID()" class="btn-regular w-100" data-automation-id="create-next-tote-button">
                 Create Next Tote ID
             </button>
         </div>
         <div class="col-xl-6">
             <mat-form-field class="custom-form-field w-100 mb-2" appearance="outline" (click)="openNumberSelection()">
-                <mat-label>Qty Put in New Tote</mat-label>
-                <input matInput type="text" [value]="data.PutNewToteQty" readonly>
+                <mat-label data-automation-id="qty-new-tote-label">Qty Put in New Tote</mat-label>
+                <input matInput type="text" [value]="data.PutNewToteQty" readonly data-automation-id="qty-new-tote-input">
             </mat-form-field>
-            <button mat-stroked-button color="primary" class="btn-regular w-100" (click)="putAllInNewTote()">
+            <button mat-stroked-button color="primary" class="btn-regular w-100" (click)="putAllInNewTote()" data-automation-id="put-all-new-tote-button">
                 Put All in New Tote
             </button>
         </div>
@@ -63,7 +63,7 @@
     <!-- <button mat-stroked-button color="primary" class="btn-lg">
       Choose a Different Transaction
     </button> -->
-    <button mat-flat-button color="primary" class="btn-lg flex-grow-1" (click)="done()">
+    <button mat-flat-button color="primary" class="btn-lg flex-grow-1" (click)="done()" data-automation-id="done-button">
         Done
     </button>
   </div>

@@ -1,7 +1,7 @@
 <div class="d-flex justify-content-between align-items-center mb-2">
     <div class="w-48px"></div>
-    <h1 class="m-0" mat-dialog-title>Choose Export Type</h1>
-    <button mat-icon-button class="close-button dialog-close-button-fix" [mat-dialog-close]="true">
+    <h1 class="m-0" mat-dialog-title data-automation-id="br-choose-report-type-dialog-title">Choose Export Type</h1>
+    <button mat-icon-button class="close-button dialog-close-button-fix" [mat-dialog-close]="true" data-automation-id="br-choose-report-type-close-button">
         <mat-icon class="close-icon">close</mat-icon>
     </button>
 </div>
@@ -9,17 +9,17 @@
 <div class="row align-items-center">
     <div class="col-xl-12 mb-2">
     <mat-form-field class="custom-form-field w-100" appearance="outline">
-        <mat-label>Export Filename</mat-label>
-        <input #expFile matInput type="text" [(ngModel)]="exportFileName">
+        <mat-label data-automation-id="export-filename-label">Export Filename</mat-label>
+        <input #expFile matInput type="text" [(ngModel)]="exportFileName" data-automation-id="export-filename-input">
     </mat-form-field>
 </div>
     <div class="col-xl-12 mb-2">
     <mat-form-field class="custom-form-field w-100" appearance="outline">
-        <mat-label>File Format</mat-label>
-        <mat-select class="employees-action" [(ngModel)]="type">
-            <mat-option value="pdf">PDF (PDF Format)</mat-option>
-            <mat-option value="csv">CSV (Comma Sepereated File - Openable in Excel)</mat-option> 
-            <mat-option value="txt">TXT (Text Format )</mat-option>  
+        <mat-label data-automation-id="file-format-label">File Format</mat-label>
+        <mat-select class="employees-action" [(ngModel)]="type" [attr.data-automation-id]="'file-format-select-' + type">
+            <mat-option value="pdf" data-automation-id="file-format-option-pdf">PDF (PDF Format)</mat-option>
+            <mat-option value="csv" data-automation-id="file-format-option-csv">CSV (Comma Sepereated File - Openable in Excel)</mat-option> 
+            <mat-option value="txt" data-automation-id="file-format-option-txt">TXT (Text Format )</mat-option>  
         </mat-select>
         <span class="material-symbols-outlined icon-expand-more">
             expand_more
@@ -29,5 +29,5 @@
 </div>
 
 <div class="row mt-2">
-    <button type="button" mat-flat-button color="primary" (click)="ExportSubmit()" [disabled]="!type || !exportFileName" class="button-primary-i mb-2 btn-lg w-100">Export</button>
+    <button type="button" mat-flat-button color="primary" (click)="ExportSubmit()" [disabled]="!type || !exportFileName" class="button-primary-i mb-2 btn-lg w-100" data-automation-id="export-button">Export</button>
 </div>

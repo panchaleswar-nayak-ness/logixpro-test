@@ -2,7 +2,7 @@
     <mat-card-content>
         <div class="d-flex align-items-center mb-3 flex-wrap">
 
-            <app-icon-heading-component class="card-header-title mb-3 d-flex align-items-center me-4" heading="Transaction Details" icon="dvr" data-automation-id="heading-transaction-details"></app-icon-heading-component>
+            <app-icon-heading-component class="card-header-title mb-3 d-flex align-items-center me-4" heading="Transaction Details" icon="dvr" [automationId]="'heading-transaction-details'"></app-icon-heading-component>
             <mat-checkbox [disabled]="!item" [(ngModel)]="emergency" color="primary" (ngModelChange)="onFieldChange(emergency)"
                 class="example-margin custom-checkbox mb-3" data-automation-id="checkbox-emergency">Emergency</mat-checkbox>
         </div>
@@ -11,7 +11,7 @@
                 <mat-form-field class="action-dropdown custom-form-field w-100 mb-3" appearance="outline" data-automation-id="form-field-transaction-type">
                     <mat-label data-automation-id="label-transaction-type">Transaction Type</mat-label>
                     <mat-select [disabled]="!item" [(ngModel)]="transType" #matRef class="employees-action"
-                        placeholder="Actions" (ngModelChange)="onFieldChange(transType)" data-automation-id="select-transaction-type">
+                        placeholder="Actions" (ngModelChange)="onFieldChange(transType)" [attr.data-automation-id]="'select-transaction-type-' + transType">
                         <mat-option value="Pick" data-automation-id="option-transaction-type-pick">Pick</mat-option>
                         <mat-option value="Put Away" data-automation-id="option-transaction-type-put-away">Put Away</mat-option>
                         <mat-option value="Count" data-automation-id="option-transaction-type-count">Count</mat-option>
@@ -27,7 +27,7 @@
                     [class.mat-form-field-invalid]="isInvalid" data-automation-id="form-field-required-date">
                     <mat-label data-automation-id="label-required-date">Required Date</mat-label>
                     <input  [disabled]="!item" maxlength="11" matInput [matDatepicker]="requiredDate"
-                        [(ngModel)]="reqDate" (focusout)="this.onFormFieldFocusOut.emit()" (ngModelChange)="onFieldChange(reqDate)" data-automation-id="input-required-date">
+                        [(ngModel)]="reqDate" (focusout)="this.onFormFieldFocusOut.emit()" (ngModelChange)="onFieldChange(reqDate)" [attr.data-automation-id]="'input-required-date-' + reqDate">
                     <mat-datepicker-toggle matSuffix [for]="requiredDate" ngDefaultControl></mat-datepicker-toggle>
                     <mat-datepicker #requiredDate></mat-datepicker>
                 </mat-form-field>

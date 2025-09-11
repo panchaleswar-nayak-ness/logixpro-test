@@ -1,14 +1,14 @@
-<mat-tab-group dynamicHeight>
-    <mat-tab label="Consolidation">
+<mat-tab-group dynamicHeight data-automation-id="consolidation-preferences-tab-group">
+    <mat-tab label="Consolidation" data-automation-id="consolidation-tab">
         <app-preferences-consolidation (consolidationEvnt)="getPreferences()"
-            [pref]="preferencesData"></app-preferences-consolidation>
+            [pref]="preferencesData" data-automation-id="preferences-consolidation-component"></app-preferences-consolidation>
     </mat-tab>
-    <mat-tab label="Shipping">
+    <mat-tab label="Shipping" data-automation-id="shipping-tab">
         <app-preferences-shipping (shippingEvnt)="getPreferences()"
-            [shippingData]="preferencesData"></app-preferences-shipping>
+            [shippingData]="preferencesData" data-automation-id="preferences-shipping-component"></app-preferences-shipping>
     </mat-tab>
-    <mat-tab label="Markout">
+    <mat-tab label="Markout" data-automation-id="markout-tab">
         <app-preferences-markout (markoutEvnt)="getPreferences()"
-            [pref]="preferencesData"></app-preferences-markout>
+            [pref]="preferencesData" data-automation-id="preferences-markout-component"></app-preferences-markout>
     </mat-tab>
 </mat-tab-group>

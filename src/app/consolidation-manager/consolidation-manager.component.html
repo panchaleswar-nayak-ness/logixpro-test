@@ -1,90 +1,103 @@
-<div class="main-section-options">
+<div class="main-section-options" data-automation-id="consolidation-manager-options">
     <div class="container-fluid">
-      <div class="row g-4">
+      <div class="row g-4" data-automation-id="consolidation-options-row">
         <!-- Main Section Option (Import Export) -->
     
         <div class="col-xl-3 col-lg-6"
-        [ngClass]="isAuthorized('Consolidation Mngr') ? 'isDivDisabled' : ''">
+        [ngClass]="isAuthorized('Consolidation Mngr') ? 'isDivDisabled' : ''" data-automation-id="consolidation-option-container">
           <div matRipple [matRippleColor]="tabHoverColor" class="main-section-option" 
           routerLink="/ConsolidationManager/Consolidation"
-          (click)="updateMenu('consolidationManager', '/ConsolidationManager/Consolidation')">
-            <a class="main-section-option-link" href="#"></a>
-            <div class="main-section-icon">
+          (click)="updateMenu('consolidationManager', '/ConsolidationManager/Consolidation')" data-automation-id="consolidation-option">
+            <a class="main-section-option-link" href="#" data-automation-id="consolidation-link"></a>
+            <div class="main-section-icon" data-automation-id="consolidation-icon">
               <span class="material-symbols-outlined">insert_chart</span>
             </div>
-            <h4 class="main-section-title text-22">Consolidation</h4>
+            <h4 class="main-section-title text-22" data-automation-id="consolidation-title">Consolidation</h4>
           </div>
         </div>
   
         <div class="col-xl-3 col-lg-6"  
-        [ngClass]="isAuthorized('Consolidation Staging Loc') ? 'isDivDisabled' : ''">
+        [ngClass]="isAuthorized('Consolidation Staging Loc') ? 'isDivDisabled' : ''" data-automation-id="staging-locations-option-container">
           <div matRipple [matRippleColor]="tabHoverColor" class="main-section-option" 
           routerLink="/ConsolidationManager/StagingLocations"
-          (click)="updateMenu('consolidationManager', '/ConsolidationManager/StagingLocations')">
-            <a class="main-section-option-link" href="#"></a>
-            <div class="main-section-icon">
+          (click)="updateMenu('consolidationManager', '/ConsolidationManager/StagingLocations')" data-automation-id="staging-locations-option">
+            <a class="main-section-option-link" href="#" data-automation-id="staging-locations-link"></a>
+            <div class="main-section-icon" data-automation-id="staging-locations-icon">
               <span class="material-symbols-outlined">
                 add_location_alt
               </span>
             </div>
-            <h4 class="main-section-title text-22">Staging Locations</h4>
+            <h4 class="main-section-title text-22" data-automation-id="staging-locations-title">Staging Locations</h4>
           </div>
         </div>
   
         <div class="col-xl-3 col-lg-6" 
         [ngClass]="isAuthorized('Consolidation Mgr Admin') ? 'isDivDisabled' : ''"
-        >
-          <div matRipple [matRippleColor]="tabHoverColor" routerLink="Preferences"  class="main-section-option bg-white" (click)="updateMenu('consolidationManager', '/ConsolidationManager/Preferences')">
-            <a class="main-section-option-link" href="#"></a>
-            <div class="main-section-icon">
+        data-automation-id="preferences-option-container">
+          <div matRipple [matRippleColor]="tabHoverColor" routerLink="Preferences"  class="main-section-option bg-white" (click)="updateMenu('consolidationManager', '/ConsolidationManager/Preferences')" data-automation-id="preferences-option">
+            <a class="main-section-option-link" href="#" data-automation-id="preferences-link"></a>
+            <div class="main-section-icon" data-automation-id="preferences-icon">
               <span class="material-symbols-outlined">
                 tune
               </span>
             </div>
-            <h4 class="main-section-title text-22">Preferences</h4>
+            <h4 class="main-section-title text-22" data-automation-id="preferences-title">Preferences</h4>
           </div>
         </div>
   
         <div class="col-xl-3 col-lg-6" 
-        [ngClass]="isAuthorized('Consolidation Mgr Admin') ? 'isDivDisabled' : ''">
-          <div matRipple [matRippleColor]="tabHoverColor" routerLink="Reports" class="main-section-option bg-white" (click)="updateMenu('consolidationManager', '/ConsolidationManager/Reports')">
-            <a class="main-section-option-link" href="/ConsolidationManager/Reports"></a>
-            <div class="main-section-icon">
+        [ngClass]="isAuthorized('Consolidation Mgr Admin') ? 'isDivDisabled' : ''" data-automation-id="reports-option-container">
+          <div matRipple [matRippleColor]="tabHoverColor" routerLink="Reports" class="main-section-option bg-white" (click)="updateMenu('consolidationManager', '/ConsolidationManager/Reports')" data-automation-id="reports-option">
+            <a class="main-section-option-link" href="/ConsolidationManager/Reports" data-automation-id="reports-link"></a>
+            <div class="main-section-icon" data-automation-id="reports-icon">
               <span class="material-symbols-outlined">
                 analytics
               </span>
             </div>
-            <h4 class="main-section-title text-22">Reports</h4>
+            <h4 class="main-section-title text-22" data-automation-id="reports-title">Reports</h4>
           </div>
         </div>
   
         <div class="col-xl-3 col-lg-6"
-        [ngClass]="isAuthorized('Consolidation Order Status') ? 'isDivDisabled' : ''">
+        [ngClass]="isAuthorized('Consolidation Order Status') ? 'isDivDisabled' : ''" data-automation-id="order-status-option-container">
           <div matRipple [matRippleColor]="tabHoverColor" class="main-section-option bg-white"
-          routerLink="/ConsolidationManager/OrderStatus" [queryParams]="{IsOrderStatus:true}" >
-            <a class="main-section-option-link" href="#"></a>
-            <div class="main-section-icon">
+          routerLink="/ConsolidationManager/OrderStatus" [queryParams]="{IsOrderStatus:true}" data-automation-id="order-status-option">
+            <a class="main-section-option-link" href="#" data-automation-id="order-status-link"></a>
+            <div class="main-section-icon" data-automation-id="order-status-icon">
               <span class="material-symbols-outlined">
                 view_module
               </span>
             </div>
-            <h4 class="main-section-title text-22">Order Status</h4>
+            <h4 class="main-section-title text-22" data-automation-id="order-status-title">Order Status</h4>
           </div>
         </div>
 
 
         
         <div class="col-xl-3 col-lg-6"
-        [ngClass]="isAuthorized('Markout Process') ? 'isDivDisabled' : ''">
+        [ngClass]="isAuthorized('Markout Process') ? 'isDivDisabled' : ''" data-automation-id="markout-option-container">
           <div matRipple [matRippleColor]="tabHoverColor" class="main-section-option bg-white"
-          routerLink="/ConsolidationManager/Markout"   (click)="updateMenu('consolidationManager', '/ConsolidationManager/Markout')">
-            <a class="main-section-option-link" href="#"></a>
-            <div class="main-section-icon">
+          routerLink="/ConsolidationManager/Markout"   (click)="updateMenu('consolidationManager', '/ConsolidationManager/Markout')" data-automation-id="markout-option">
+            <a class="main-section-option-link" href="#" data-automation-id="markout-link"></a>
+            <div class="main-section-icon" data-automation-id="markout-icon">
               <span class="material-symbols-outlined">
                schema
               </span>
             </div>
-            <h4 class="main-section-title text-22">Markout</h4>
+            <h4 class="main-section-title text-22" data-automation-id="markout-title">Markout</h4>
+          </div>
+        </div>
+        
+        <div class="col-xl-3 col-lg-6"  [ngClass]="isAuthorized('RGTP Markout') ? 'isDivDisabled' : ''" data-automation-id="rgtp-markout-option-container">
+          <div matRipple [matRippleColor]="tabHoverColor" class="main-section-option bg-white"
+          routerLink="/ConsolidationManager/RGTPMarkout"   (click)="updateMenu('consolidationManager', '/ConsolidationManager/RGTPMarkout')" data-automation-id="rgtp-markout-option">
+            <a class="main-section-option-link" href="#" data-automation-id="rgtp-markout-link"></a>
+            <div class="main-section-icon" data-automation-id="rgtp-markout-icon">
+              <span class="material-symbols-outlined">
+               schema
+              </span>
+            </div>
+            <h4 class="main-section-title text-22" data-automation-id="rgtp-markout-title">RGTP Markout</h4>
           </div>
         </div>
         
@@ -101,16 +114,16 @@
           </div>
         </div>
         <div class="col-xl-3 col-lg-6"
-        [ngClass]="{ 'isDivDisabled': isAuthorized('RouteID Management') }">
+        [ngClass]="{ 'isDivDisabled': isAuthorized('RouteID Management') }" data-automation-id="route-id-management-option-container">
           <div matRipple [matRippleColor]="tabHoverColor" class="main-section-option bg-white"
-          routerLink="/ConsolidationManager/RouteIDM"   (click)="updateMenu('consolidationManager', '/ConsolidationManager/RouteIDM')">
-            <a class="main-section-option-link" href="#"></a>
-            <div class="main-section-icon">
+          routerLink="/ConsolidationManager/RouteIDM"   (click)="updateMenu('consolidationManager', '/ConsolidationManager/RouteIDM')" data-automation-id="route-id-management-option">
+            <a class="main-section-option-link" href="#" data-automation-id="route-id-management-link"></a>
+            <div class="main-section-icon" data-automation-id="route-id-management-icon">
               <span class="material-symbols-outlined">
                schema
               </span>
             </div>
-            <h4 class="main-section-title text-22">Route ID Management</h4>
+            <h4 class="main-section-title text-22" data-automation-id="route-id-management-title">Route ID Management</h4>
           </div>
         </div>
   

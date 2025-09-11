@@ -1,31 +1,31 @@
-<div class="f-container">
-    <app-header (toggleSidebarForMe)="sideBarToggler()" >
+<div class="f-container" data-automation-id="container-main">
+    <app-header (toggleSidebarForMe)="sideBarToggler()" data-automation-id="header-main">
     </app-header>
-    <mat-sidenav-container class="main-container">
-        <mat-sidenav #sidenav mode="side" disableClose="true" [opened]="sideBarOpen">
-            <app-side-nav [sideBarOpen]="sideBarOpen"></app-side-nav>
+    <mat-sidenav-container class="main-container" data-automation-id="sidenav-container-main">
+        <mat-sidenav #sidenav mode="side" disableClose="true" [opened]="sideBarOpen" data-automation-id="sidenav-main">
+            <app-side-nav [sideBarOpen]="sideBarOpen" data-automation-id="side-nav-main"></app-side-nav>
           </mat-sidenav>
-        <mat-sidenav-content>
-            <div class="dashboard-section" [ngClass]="{'side-bar-opened' : sideBarOpen}">
-                <div class="breadcrumb-menu">
-                    <nav aria-label="breadcrumb" class="breadcrumb">
+        <mat-sidenav-content data-automation-id="sidenav-content-main">
+            <div class="dashboard-section" [ngClass]="{'side-bar-opened' : sideBarOpen}" data-automation-id="dashboard-section">
+                <div class="breadcrumb-menu" data-automation-id="breadcrumb-menu">
+                    <nav aria-label="breadcrumb" class="breadcrumb" data-automation-id="breadcrumb-nav">
                     </nav>
                 </div>
-                <div class="container-fluid p-0 h-auto">
+                <div class="container-fluid p-0 h-auto" data-automation-id="container-fluid">
 
-                    <div class="row mb-3">
-                        <div class="col-12">
-                            <app-user-account></app-user-account>
+                    <div class="row mb-3" data-automation-id="row-user-account">
+                        <div class="col-12" data-automation-id="col-user-account">
+                            <app-user-account data-automation-id="component-user-account"></app-user-account>
                         </div>
                     </div>
 
-                    <div class="row">
-                        <div class="col-12">
-                            <app-connected-users></app-connected-users>
+                    <div class="row" data-automation-id="row-connected-users">
+                        <div class="col-12" data-automation-id="col-connected-users">
+                            <app-connected-users data-automation-id="component-connected-users"></app-connected-users>
                         </div>
                     </div>
                 </div>
-                <router-outlet></router-outlet>
+                <router-outlet data-automation-id="router-outlet-main"></router-outlet>
             </div>
         </mat-sidenav-content>
     </mat-sidenav-container>

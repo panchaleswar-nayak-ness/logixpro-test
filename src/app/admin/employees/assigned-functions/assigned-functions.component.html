@@ -16,13 +16,13 @@
       Remove All
     </button>
     <div class="card w-100">
-      <div class="card-header">
+      <div class="card-header" data-automation-id="Assigned-text">
         Assigned
       </div>
       <div class="card-body py-0 px-2">
         <mat-list class="zones-list g-card-list list-style-1 pt-0" role="list">
           <ng-scrollbar *ngIf="!filterValue" class="ng-scrollbar-height" pointerEventsMethod="scrollbar">
-            <mat-list-item class="pt-2" role="listitem"
+            <mat-list-item class="pt-2" role="listitem" [attr.data-automation-id]="'assigned-functions-listitem-' + groupname"
               *ngFor="let groupname of assignedFunctions | filterUnassignedFunc:filterName">
               <span class="list-label zone-list-label" data-automation-id="label-assigned-function">
                 {{groupname}}

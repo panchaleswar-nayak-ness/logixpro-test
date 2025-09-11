@@ -65,7 +65,7 @@
                         <mat-label data-automation-id="label-order-number">Order Number</mat-label>
                         <input type="text" maxlength="50" aria-label="Number" matInput
                             [matAutocomplete]="autoOrder" [(ngModel)]="orderNumber" (input)="onOrderInputChange()"
-  (paste)="onOrderPaste($event)" (keyup)="orderSelected()" data-automation-id="input-order-number">
+  (paste)="onOrderPaste($event)" (keyup)="orderSelected()" [attr.data-automation-id]="'input-order-number-' + orderNumber">
                             <button matSuffix (click)="orderClear(true)" *ngIf="orderNumber" class="clear-btn"><mat-icon class="text-20 text-chrome-600">cancel</mat-icon></button>
 
                         <mat-autocomplete class="card custom-scroll" panelWidth="auto" 
@@ -93,7 +93,7 @@
                     <mat-form-field class="w-100 bg-white" appearance="outline">
                         <mat-label replacePlaceholder [replacePlaceHolder]="placeholders.itemNumber" [fallbackPlaceHolder]="placeholders.itemNumberFallback" data-automation-id="label-item-number">{{LabelitemNumber}}</mat-label>
                         <input type="text" maxlength="50" matInput [matAutocomplete]="auto" [(ngModel)]="itemNumber" (input)="onItemInputChange()"
-  (paste)="onItemPaste($event)" class="ps-0" data-automation-id="input-item-number">
+  (paste)="onItemPaste($event)" class="ps-0" [attr.data-automation-id]="'input-item-number-' + itemNumber">
                         <button matSuffix *ngIf="itemNumber" class="clear-btn"  (click)="itemClear(true)"><mat-icon class="text-20 text-chrome-600">cancel</mat-icon></button>
                         <mat-autocomplete class="card custom-scroll" panelWidth="auto" 
                             #auto="matAutocomplete" (optionSelected)="listSelected()">

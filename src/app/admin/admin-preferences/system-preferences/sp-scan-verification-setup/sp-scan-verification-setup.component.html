@@ -1,7 +1,7 @@
 <div class="row w-100 mt-2 mx-0">
     <div class="col-xl-12">
         <div class="col-xl-12 mt-3 p-3 d-flex br-8 mb-3 label-red text-danger">
-            <mat-icon class="material-symbols-outlined">info_outline</mat-icon>
+            <mat-icon class="material-symbols-outlined" data-automation-id="scan-verification-info-icon">info_outline</mat-icon>
             <span class="ps-2 w-100">The Settings below will only affect individual locations in the Inventory Map.
                 Click “ Manage Default Scan Verification(s)” to default handling.</span>
         </div>
@@ -35,17 +35,17 @@
                         <table mat-table [dataSource]="displayedColumns" class="w-100 table1">
                             <ng-container matColumnDef="transType">
                                 <th mat-header-cell *matHeaderCellDef data-automation-id="label-trans-type"> Trans. Type </th>
-                                <td mat-cell *matCellDef="let element">
+                                <td mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'scan-verification-cell-transtype-' + (element.transType || i)">
                                     <mat-form-field
                                         class="action-dropdown custom-form-field custom-form-field-bg-white w-100"
                                         appearance="outline">
                                         <mat-label data-automation-id="label-trans-type">Trans. Type</mat-label>
                                         <mat-select class="employees-action" placeholder="Actions" data-automation-id="select-trans-type">
-                                            <mat-option value="Pick">Pick</mat-option>
-                                            <mat-option value="Put Away">Put Away</mat-option>
-                                            <mat-option value="Count">Count</mat-option>
+                                            <mat-option value="Pick" data-automation-id="option-trans-type-pick">Pick</mat-option>
+                                            <mat-option value="Put Away" data-automation-id="option-trans-type-putaway">Put Away</mat-option>
+                                            <mat-option value="Count" data-automation-id="option-trans-type-count">Count</mat-option>
                                         </mat-select>
-                                        <span class="material-symbols-outlined icon-expand-more">
+                                        <span class="material-symbols-outlined icon-expand-more" data-automation-id="scan-verification-expand-icon-transtype">
                                             expand_more
                                         </span>
                                     </mat-form-field>
@@ -55,32 +55,32 @@
 
                             <ng-container matColumnDef="scanSequence">
                                 <th mat-header-cell *matHeaderCellDef data-automation-id="label-scan-sequence">Scan Sequence</th>
-                                <td mat-cell *matCellDef="let element">
-                                    <mat-form-field class="custom-form-field w-100" appearance="outline">
+                                <td mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'scan-verification-cell-scansequence-' + (element.totalTransactions || i)">
+                                    <mat-form-field class="custom-form-field w-100" appearance="outline" data-automation-id="scan-verification-form-field-scansequence">
                                         <input matInput type="text" value="{{element.totalTransactions}}" data-automation-id="input-scan-sequence" />
                                     </mat-form-field>
                                 </td>
                             </ng-container>
 
                             <ng-container matColumnDef="field">
-                                <th mat-header-cell *matHeaderCellDef data-automation-id="label-field"> Field</th>
-                                <td mat-cell *matCellDef="let element; let i = index;">
+                                <th mat-header-cell *matHeaderCellDef data-automation-id="th-field"> Field</th>
+                                <td mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'scan-verification-cell-field-' + (element.field || i)">
                                     <mat-form-field
                                         class="action-dropdown custom-form-field custom-form-field-bg-white w-100"
                                         appearance="outline">
                                         <mat-label data-automation-id="label-expiration-date">Expiration Date</mat-label>
                                         <mat-select class="employees-action" placeholder="Actions" data-automation-id="select-field">
-                                            <mat-option value="Expiration Date">Expiration Date</mat-option>
-                                            <mat-option value="Item Number" replacePlaceholder [replacePlaceHolder]="placeholders.itemNumber" [fallbackPlaceHolder]="placeholders.itemNumberFallback">Item Number</mat-option>
-                                            <mat-option value="Location Number">Location Number</mat-option>
-                                            <mat-option value="Lot Number">Lot Number</mat-option>
-                                            <mat-option value="Serial Number">Serial Number</mat-option>
-                                            <mat-option value="Supplier Item ID">Supplier Item ID</mat-option>
-                                            <mat-option value="Tote ID">Tote ID</mat-option>
-                                            <mat-option value="User Field1" replacePlaceholder [replacePlaceHolder]="placeholders.userField1" [fallbackPlaceHolder]="placeholders.userField1Fallback"> UF1 </mat-option>
-                                            <mat-option value="User Field2" replacePlaceholder [replacePlaceHolder]="placeholders.userField2" [fallbackPlaceHolder]="placeholders.userField2Fallback"> UF2 </mat-option>
+                                            <mat-option value="Expiration Date" data-automation-id="option-field-expiration-date">Expiration Date</mat-option>
+                                            <mat-option value="Item Number" replacePlaceholder [replacePlaceHolder]="placeholders.itemNumber" [fallbackPlaceHolder]="placeholders.itemNumberFallback" data-automation-id="option-field-item-number">Item Number</mat-option>
+                                            <mat-option value="Location Number" data-automation-id="option-field-location-number">Location Number</mat-option>
+                                            <mat-option value="Lot Number" data-automation-id="option-field-lot-number">Lot Number</mat-option>
+                                            <mat-option value="Serial Number" data-automation-id="option-field-serial-number">Serial Number</mat-option>
+                                            <mat-option value="Supplier Item ID" data-automation-id="option-field-supplier-item-id">Supplier Item ID</mat-option>
+                                            <mat-option value="Tote ID" data-automation-id="option-field-tote-id">Tote ID</mat-option>
+                                            <mat-option value="User Field1" replacePlaceholder [replacePlaceHolder]="placeholders.userField1" [fallbackPlaceHolder]="placeholders.userField1Fallback" data-automation-id="option-field-user-field1"> UF1 </mat-option>
+                                            <mat-option value="User Field2" replacePlaceholder [replacePlaceHolder]="placeholders.userField2" [fallbackPlaceHolder]="placeholders.userField2Fallback" data-automation-id="option-field-user-field2"> UF2 </mat-option>
                                         </mat-select>
-                                        <span class="material-symbols-outlined icon-expand-more">
+                                        <span class="material-symbols-outlined icon-expand-more" data-automation-id="scan-verification-expand-icon-field">
                                             expand_more
                                         </span>
                                     </mat-form-field>
@@ -89,17 +89,17 @@
 
                             <ng-container matColumnDef="verifyType">
                                 <th mat-header-cell *matHeaderCellDef data-automation-id="label-verify-type">Verify Type</th>
-                                <td mat-cell *matCellDef="let element">
+                                <td mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'scan-verification-cell-verifytype-' + (element.verifyType || i)">
                                     <mat-form-field
                                         class="action-dropdown custom-form-field custom-form-field-bg-white w-100"
                                         appearance="outline">
                                         <mat-label data-automation-id="label-verify-type">All</mat-label>
                                         <mat-select class="employees-action" placeholder="Actions" data-automation-id="select-verify-type">
-                                            <mat-option value="All">All</mat-option>
-                                            <mat-option value="Range">Range</mat-option>
+                                            <mat-option value="All" data-automation-id="option-verify-type-all">All</mat-option>
+                                            <mat-option value="Range" data-automation-id="option-verify-type-range">Range</mat-option>
 
                                         </mat-select>
-                                        <span class="material-symbols-outlined icon-expand-more">
+                                        <span class="material-symbols-outlined icon-expand-more" data-automation-id="scan-verification-expand-icon-verifytype">
                                             expand_more
                                         </span>
                                     </mat-form-field>
@@ -108,8 +108,8 @@
 
                             <ng-container matColumnDef="verifyStringStart">
                                 <th mat-header-cell *matHeaderCellDef data-automation-id="label-verify-string-start">Verify String Start</th>
-                                <td mat-cell *matCellDef="let element">
-                                    <mat-form-field class="custom-form-field w-100" appearance="outline">
+                                <td mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'scan-verification-cell-verifystringstart-' + (element.verifyStringStart || i)">
+                                    <mat-form-field class="custom-form-field w-100" appearance="outline" data-automation-id="scan-verification-form-field-verifystringstart">
                                         <input matInput [NumbersOnly]="true" data-automation-id="input-verify-string-start" />
                                     </mat-form-field>
                                 </td>
@@ -117,8 +117,8 @@
 
                             <ng-container matColumnDef="verifyStringLength">
                                 <th mat-header-cell *matHeaderCellDef data-automation-id="label-verify-string-length">Verify String Length</th>
-                                <td mat-cell *matCellDef="let element">
-                                    <mat-form-field class="custom-form-field w-100" appearance="outline">
+                                <td mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'scan-verification-cell-verifystringlength-' + (element.verifyStringLength || i)">
+                                    <mat-form-field class="custom-form-field w-100" appearance="outline" data-automation-id="scan-verification-form-field-verifystringlength">
                                         <input matInput [NumbersOnly]="true" data-automation-id="input-verify-string-length" />
                                     </mat-form-field>
                                 </td>
@@ -126,19 +126,19 @@
 
                             <ng-container matColumnDef="actions" stickyEnd>
                                 <th mat-header-cell *matHeaderCellDef class="ps-2" data-automation-id="label-actions">Actions</th>
-                                <td mat-cell *matCellDef="let element; let i = index" class="ps-2">
+                                <td mat-cell *matCellDef="let element; let i = index" class="ps-2" [attr.data-automation-id]="'scan-verification-cell-actions-' + i">
                                     <div class="d-flex gap-12">
 
                                         <button matTooltip="Print" mat-flat-button color="primary"
                                             class="xsm-icon-button" data-automation-id="button-print">
-                                            <mat-icon class="material-symbols-outlined">
+                                            <mat-icon class="material-symbols-outlined" data-automation-id="scan-verification-print-icon">
                                                 print
                                             </mat-icon>
                                         </button>
 
                                         <button matTooltip="Delete" mat-flat-button color="warn"
                                             class="xsm-icon-button" data-automation-id="button-delete">
-                                            <mat-icon class="material-symbols-outlined">
+                                            <mat-icon class="material-symbols-outlined" data-automation-id="scan-verification-delete-icon">
                                                 close
                                             </mat-icon>
                                         </button>
@@ -146,14 +146,14 @@
                                     </div>
                                 </td>
                             </ng-container>
-                            <tr class="mat-row" *matNoDataRow>
+                            <tr class="mat-row" *matNoDataRow data-automation-id="scan-verification-no-data-row">
                                 <td class="mat-cell" [attr.colspan]="displayedColumns.length">
                                     <b>No data found.</b>
                                 </td>
                             </tr>
 
-                            <tr mat-header-row *matHeaderRowDef="displayedColumns;sticky:true"></tr>
-                            <tr mat-row *matRowDef="let row; columns: displayedColumns; "></tr>
+                            <tr mat-header-row *matHeaderRowDef="displayedColumns;sticky:true" data-automation-id="scan-verification-header-row"></tr>
+                            <tr mat-row *matRowDef="let row; columns: displayedColumns; let i = index" [attr.data-automation-id]="'scan-verification-row-' + (row.id || i)"></tr>
                         </table>
                     </ng-scrollbar>
                 </div>
@@ -169,127 +169,127 @@
                 <table class="w-100 table1" mat-table
                     [dataSource]="dataSource1" matSort>
                     <ng-container matColumnDef="location">
-                        <th mat-header-cell mat-sort-header *matHeaderCellDef>Location </th>
+                        <th mat-header-cell mat-sort-header *matHeaderCellDef data-automation-id="th-location">Location </th>
                         <td mat-cell *matCellDef="let element" [class.selected]="element.isSelected">
                             aaa
                         </td>
                     </ng-container>
                     <ng-container matColumnDef="locationName">
-                        <th class="" mat-header-cell mat-sort-header *matHeaderCellDef>Location
+                        <th class="" mat-header-cell mat-sort-header *matHeaderCellDef data-automation-id="th-locationname">Location
                             Number</th>
-                        <td [class.selected]="element.isSelected" mat-cell *matCellDef="let element" class="">
+                        <td [class.selected]="element.isSelected" mat-cell *matCellDef="let element; let i = index" class="" [attr.data-automation-id]="'scan-verification-cell2-locationname-' + (element.locationName || i)">
                             aaa
                         </td>
                     </ng-container>
                     <ng-container matColumnDef="zone">
-                        <th mat-header-cell mat-sort-header *matHeaderCellDef> Zone </th>
-                        <td [class.selected]="element.isSelected" mat-cell *matCellDef="let element">aaa</td>
+                        <th mat-header-cell mat-sort-header *matHeaderCellDef data-automation-id="th-zone"> Zone </th>
+                        <td [class.selected]="element.isSelected" mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'scan-verification-cell2-zone-' + (element.zone || i)">aaa</td>
                     </ng-container>
                     <ng-container matColumnDef="carousel">
-                        <th mat-header-cell mat-sort-header *matHeaderCellDef> Carousel </th>
-                        <td [class.selected]="element.isSelected" mat-cell *matCellDef="let element">aaa</td>
+                        <th mat-header-cell mat-sort-header *matHeaderCellDef data-automation-id="th-carousel"> Carousel </th>
+                        <td [class.selected]="element.isSelected" mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'scan-verification-cell2-carousel-' + (element.carousel || i)">aaa</td>
                     </ng-container>
                     <ng-container matColumnDef="row">
-                        <th mat-header-cell mat-sort-header *matHeaderCellDef> Row </th>
-                        <td [class.selected]="element.isSelected" mat-cell *matCellDef="let element">aaa</td>
+                        <th mat-header-cell mat-sort-header *matHeaderCellDef data-automation-id="th-row"> Row </th>
+                        <td [class.selected]="element.isSelected" mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'scan-verification-cell2-row-' + (element.row || i)">aaa</td>
                     </ng-container>
                     <ng-container matColumnDef="shelf">
-                        <th mat-header-cell mat-sort-header *matHeaderCellDef> shelf </th>
-                        <td [class.selected]="element.isSelected" mat-cell *matCellDef="let element">aaa</td>
+                        <th mat-header-cell mat-sort-header *matHeaderCellDef data-automation-id="th-shelf"> shelf </th>
+                        <td [class.selected]="element.isSelected" mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'scan-verification-cell2-shelf-' + (element.shelf || i)">aaa</td>
                     </ng-container>
                     <ng-container matColumnDef="bin">
-                        <th mat-header-cell mat-sort-header *matHeaderCellDef> Bin </th>
-                        <td [class.selected]="element.isSelected" mat-cell *matCellDef="let element">aaa</td>
+                        <th mat-header-cell mat-sort-header *matHeaderCellDef data-automation-id="th-bin"> Bin </th>
+                        <td [class.selected]="element.isSelected" mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'scan-verification-cell2-bin-' + (element.bin || i)">aaa</td>
                     </ng-container>
                     <ng-container matColumnDef="warehouse">
-                        <th mat-header-cell mat-sort-header *matHeaderCellDef> Warehouse</th>
-                        <td [class.selected]="element.isSelected" mat-cell *matCellDef="let element">aaa</td>
+                        <th mat-header-cell mat-sort-header *matHeaderCellDef data-automation-id="th-warehouse"> Warehouse</th>
+                        <td [class.selected]="element.isSelected" mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'scan-verification-cell2-warehouse-' + (element.warehouse || i)">aaa</td>
                     </ng-container>
                     <ng-container matColumnDef="cellSize">
-                        <th mat-header-cell mat-sort-header *matHeaderCellDef> Cell Size</th>
-                        <td [class.selected]="element.isSelected" mat-cell *matCellDef="let element">aaa</td>
+                        <th mat-header-cell mat-sort-header *matHeaderCellDef data-automation-id="th-cellsize"> Cell Size</th>
+                        <td [class.selected]="element.isSelected" mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'scan-verification-cell2-cellsize-' + (element.cellSize || i)">aaa</td>
                     </ng-container>
                     <ng-container matColumnDef="velocityCode">
-                        <th mat-header-cell mat-sort-header *matHeaderCellDef> Velocity Code</th>
-                        <td [class.selected]="element.isSelected" mat-cell *matCellDef="let element">aaa</td>
+                        <th mat-header-cell mat-sort-header *matHeaderCellDef data-automation-id="th-velocitycode"> Velocity Code</th>
+                        <td [class.selected]="element.isSelected" mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'scan-verification-cell2-velocitycode-' + (element.velocityCode || i)">aaa</td>
                     </ng-container>
                     <ng-container matColumnDef="carouselLocation">
-                        <th mat-header-cell mat-sort-header *matHeaderCellDef> Carousel Location</th>
-                        <td [class.selected]="element.isSelected" mat-cell *matCellDef="let element">aaa</td>
+                        <th mat-header-cell mat-sort-header *matHeaderCellDef data-automation-id="th-carousellocation"> Carousel Location</th>
+                        <td [class.selected]="element.isSelected" mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'scan-verification-cell2-carousellocation-' + (element.carouselLocation || i)">aaa</td>
                     </ng-container>
                     <ng-container matColumnDef="cartonLocation">
-                        <th mat-header-cell mat-sort-header *matHeaderCellDef> Carton Flow Location</th>
-                        <td [class.selected]="element.isSelected" mat-cell *matCellDef="let element">aaa</td>
+                        <th mat-header-cell mat-sort-header *matHeaderCellDef data-automation-id="th-cartonlocation"> Carton Flow Location</th>
+                        <td [class.selected]="element.isSelected" mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'scan-verification-cell2-cartonlocation-' + (element.cartonLocation || i)">aaa</td>
                     </ng-container>
                     <ng-container matColumnDef="itemNumber">
-                        <th mat-header-cell mat-sort-header *matHeaderCellDef replacePlaceholder [replacePlaceHolder]="placeholders.itemNumber" [fallbackPlaceHolder]="placeholders.itemNumberFallback">Item Number</th>
-                        <td [class.selected]="element.isSelected" mat-cell *matCellDef="let element">aaa</td>
+                        <th mat-header-cell mat-sort-header *matHeaderCellDef data-automation-id="th-itemnumber" replacePlaceholder [replacePlaceHolder]="placeholders.itemNumber" [fallbackPlaceHolder]="placeholders.itemNumberFallback">Item Number</th>
+                        <td [class.selected]="element.isSelected" mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'scan-verification-cell2-itemnumber-' + (element.itemNumber || i)">aaa</td>
                     </ng-container>
                     <ng-container matColumnDef="description">
-                        <th mat-header-cell mat-sort-header *matHeaderCellDef>Description</th>
-                        <td [class.selected]="element.isSelected" mat-cell *matCellDef="let element">aaa</td>
+                        <th mat-header-cell mat-sort-header *matHeaderCellDef data-automation-id="th-description">Description</th>
+                        <td [class.selected]="element.isSelected" mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'scan-verification-cell2-description-' + (element.description || i)">aaa</td>
                     </ng-container>
                     <ng-container matColumnDef="serialNo">
-                        <th mat-header-cell mat-sort-header *matHeaderCellDef>Serial #</th>
-                        <td [class.selected]="element.isSelected" mat-cell *matCellDef="let element">aaa</td>
+                        <th mat-header-cell mat-sort-header *matHeaderCellDef data-automation-id="th-serialno">Serial #</th>
+                        <td [class.selected]="element.isSelected" mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'scan-verification-cell2-serialno-' + (element.serialNo || i)">aaa</td>
                     </ng-container>
                     <ng-container matColumnDef="lotNo">
-                        <th mat-header-cell mat-sort-header *matHeaderCellDef> Lot #</th>
-                        <td [class.selected]="element.isSelected" mat-cell *matCellDef="let element">aaa</td>
+                        <th mat-header-cell mat-sort-header *matHeaderCellDef data-automation-id="th-lotno"> Lot #</th>
+                        <td [class.selected]="element.isSelected" mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'scan-verification-cell2-lotno-' + (element.lotNo || i)">aaa</td>
                     </ng-container>
                     <ng-container matColumnDef="expriationDate">
-                        <th mat-header-cell mat-sort-header *matHeaderCellDef> Expriation Date</th>
-                        <td [class.selected]="element.isSelected" mat-cell *matCellDef="let element">aaa</td>
+                        <th mat-header-cell mat-sort-header *matHeaderCellDef data-automation-id="th-expriationdate"> Expriation Date</th>
+                        <td [class.selected]="element.isSelected" mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'scan-verification-cell2-expriationdate-' + (element.expriationDate || i)">aaa</td>
                     </ng-container>
                     <ng-container matColumnDef="UM">
-                        <th mat-header-cell mat-sort-header *matHeaderCellDef> UM</th>
-                        <td [class.selected]="element.isSelected" mat-cell *matCellDef="let element">aaa</td>
+                        <th mat-header-cell mat-sort-header *matHeaderCellDef data-automation-id="th-um"> UM</th>
+                        <td [class.selected]="element.isSelected" mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'scan-verification-cell2-um-' + (element.UM || i)">aaa</td>
                     </ng-container>
                     <ng-container matColumnDef="maxQty">
-                        <th mat-header-cell mat-sort-header *matHeaderCellDef> Max Qty</th>
-                        <td [class.selected]="element.isSelected" mat-cell *matCellDef="let element">aaa</td>
+                        <th mat-header-cell mat-sort-header *matHeaderCellDef data-automation-id="th-maxqty"> Max Qty</th>
+                        <td [class.selected]="element.isSelected" mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'scan-verification-cell2-maxqty-' + (element.maxQty || i)">aaa</td>
                     </ng-container>
                     <ng-container matColumnDef="qtyAllocatedPick">
-                        <th mat-header-cell mat-sort-header *matHeaderCellDef> Quantity Allocated Pick</th>
-                        <td [class.selected]="element.isSelected" mat-cell *matCellDef="let element">aaa</td>
+                        <th mat-header-cell mat-sort-header *matHeaderCellDef data-automation-id="th-qtyallocatedpick"> Quantity Allocated Pick</th>
+                        <td [class.selected]="element.isSelected" mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'scan-verification-cell2-qtyallocatedpick-' + (element.qtyAllocatedPick || i)">aaa</td>
                     </ng-container>
                     <ng-container matColumnDef="itemQty">
-                        <th mat-header-cell mat-sort-header *matHeaderCellDef> Item Qty</th>
-                        <td [class.selected]="element.isSelected" mat-cell *matCellDef="let element">aaa</td>
+                        <th mat-header-cell mat-sort-header *matHeaderCellDef data-automation-id="th-itemqty"> Item Qty</th>
+                        <td [class.selected]="element.isSelected" mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'scan-verification-cell2-itemqty-' + (element.itemQty || i)">aaa</td>
                     </ng-container>
                     <ng-container matColumnDef="putAwayDate">
-                        <th mat-header-cell mat-sort-header *matHeaderCellDef>Put Away Date</th>
-                        <td [class.selected]="element.isSelected" mat-cell *matCellDef="let element">aaa</td>
+                        <th mat-header-cell mat-sort-header *matHeaderCellDef data-automation-id="th-putawaydate">Put Away Date</th>
+                        <td [class.selected]="element.isSelected" mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'scan-verification-cell2-putawaydate-' + (element.putAwayDate || i)">aaa</td>
                     </ng-container>
                     <ng-container matColumnDef="dateSensitive">
-                        <th mat-header-cell mat-sort-header *matHeaderCellDef>Date Sensitive</th>
-                        <td [class.selected]="element.isSelected" mat-cell *matCellDef="let element">aaa</td>
+                        <th mat-header-cell mat-sort-header *matHeaderCellDef data-automation-id="th-datesensitive">Date Sensitive</th>
+                        <td [class.selected]="element.isSelected" mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'scan-verification-cell2-datesensitive-' + (element.dateSensitive || i)">aaa</td>
                     </ng-container>
                     <ng-container matColumnDef="shipVia">
-                        <th mat-header-cell mat-sort-header *matHeaderCellDef>Ship Via</th>
-                        <td [class.selected]="element.isSelected" mat-cell *matCellDef="let element">aaa</td>
+                        <th mat-header-cell mat-sort-header *matHeaderCellDef data-automation-id="th-shipvia">Ship Via</th>
+                        <td [class.selected]="element.isSelected" mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'scan-verification-cell2-shipvia-' + (element.shipVia || i)">aaa</td>
                     </ng-container>
                     <ng-container matColumnDef="shipToName">
-                        <th mat-header-cell mat-sort-header *matHeaderCellDef>Ship To Name</th>
-                        <td [class.selected]="element.isSelected" mat-cell *matCellDef="let element">aaa</td>
+                        <th mat-header-cell mat-sort-header *matHeaderCellDef data-automation-id="th-shiptoname">Ship To Name</th>
+                        <td [class.selected]="element.isSelected" mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'scan-verification-cell2-shiptoname-' + (element.shipToName || i)">aaa</td>
                     </ng-container>
                     <ng-container matColumnDef="dedicated">
-                        <th mat-header-cell mat-sort-header *matHeaderCellDef>Dedicated</th>
-                        <td [class.selected]="element.isSelected" mat-cell *matCellDef="let element">aaa</td>
+                        <th mat-header-cell mat-sort-header *matHeaderCellDef data-automation-id="th-dedicated">Dedicated</th>
+                        <td [class.selected]="element.isSelected" mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'scan-verification-cell2-dedicated-' + (element.dedicated || i)">aaa</td>
                     </ng-container>
                     <ng-container matColumnDef="masterLocation">
-                        <th mat-header-cell mat-sort-header *matHeaderCellDef>Master Location</th>
-                        <td [class.selected]="element.isSelected" mat-cell *matCellDef="let element">aaa</td>
+                        <th mat-header-cell mat-sort-header *matHeaderCellDef data-automation-id="th-masterlocation">Master Location</th>
+                        <td [class.selected]="element.isSelected" mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'scan-verification-cell2-masterlocation-' + (element.masterLocation || i)">aaa</td>
                     </ng-container>
                     <ng-container matColumnDef="InvMapID">
-                        <th mat-header-cell mat-sort-header *matHeaderCellDef>In Map ID</th>
-                        <td [class.selected]="element.isSelected" mat-cell *matCellDef="let element">aaa</td>
+                        <th mat-header-cell mat-sort-header *matHeaderCellDef data-automation-id="th-invmapid">In Map ID</th>
+                        <td [class.selected]="element.isSelected" mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'scan-verification-cell2-invmapid-' + (element.InvMapID || i)">aaa</td>
                     </ng-container>
 
 
 
 
-                    <tr class="mat-row" *matNoDataRow>
+                    <tr class="mat-row" *matNoDataRow data-automation-id="scan-verification-no-data-row2">
                         <td class="mat-cell " [attr.colspan]="dataSource1.length ">
                             No data available in table.
                         </td>
@@ -298,9 +298,9 @@
 
 
 
-                    <tr mat-header-row *matHeaderRowDef="dataSource1; sticky: true" class="table-header-clr">
+                    <tr mat-header-row *matHeaderRowDef="dataSource1; sticky: true" class="table-header-clr" data-automation-id="scan-verification-header-row2">
                     </tr>
-                    <tr mat-row *matRowDef="let element; columns: dataSource1; let i = index">
+                    <tr mat-row *matRowDef="let element; columns: dataSource1; let i = index" [attr.data-automation-id]="'scan-verification-row2-' + (element.id || i)">
                     </tr>
                 </table>
 
@@ -310,7 +310,7 @@
 
         <div class="table-pagination d-flex justify-content-start" *ngIf="  displayedColumns && dataSource1">
             <mat-paginator [pageSize]="10" showFirstLastButtons [pageSizeOptions]="[10, 20, 100]" mat-paginator-range-label="customLabel"
-                #paginator></mat-paginator>
+                #paginator data-automation-id="scan-verification-paginator"></mat-paginator>
 
 
         </div>

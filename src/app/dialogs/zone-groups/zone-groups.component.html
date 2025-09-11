@@ -1,10 +1,10 @@
   <div class="d-flex justify-content-between align-items-center mb-3">
     <div class="w-48px"></div>
-    <h1 class="m-0" mat-dialog-title>Zone Groups</h1>
+    <h1 class="m-0" mat-dialog-title data-automation-id="zone-groups-heading">Zone Groups</h1>
     <button
       mat-icon-button
       class="close-button dialog-close-button-fix"
-      [mat-dialog-close]="true"
+      [mat-dialog-close]="true" data-automation-id="close-button"
     >
       <mat-icon class="close-icon">close</mat-icon>
     </button>
@@ -13,9 +13,9 @@
   <div
     class="d-block d-xl-flex justify-content-between align-items-center w-100 gap-12 mt-3"
   >
-    <div class="label-blue3 p-3 d-flex br-8 mb-2 w-100">
-      <mat-icon class="material-symbols-outlined">info</mat-icon>
-      <span class="ps-2 w-100"
+    <div class="label-blue3 p-3 d-flex br-8 mb-2 w-100" data-automation-id="info-container">
+      <mat-icon class="material-symbols-outlined" data-automation-id="info-icon">info</mat-icon>
+      <span class="ps-2 w-100" data-automation-id="info-message"
         >This is used to add, edit and delete zone groups</span
       >
     </div>
@@ -25,12 +25,12 @@
         mat-flat-button
         color="primary"
         class="add-icon-button mb-2 flex-grow-1"
-        (click)="addRow()"
+        (click)="addRow()" data-automation-id="add-row-button"
       >
         <span
           class="material-symbols-outlined"
           matTooltip="Add new"
-          matTooltipPosition="above"
+          matTooltipPosition="above"  data-automation-id="add-icon"
           
         >
           add
@@ -40,11 +40,11 @@
   </div>
 
   <div
-    class="card br-14 table-responsive custom-table table-fix borderless px-0 mb-3"
+    class="card br-14 table-responsive custom-table table-fix borderless px-0 mb-3" data-automation-id="zone-groups-table-container"
   >
-    <ng-scrollbar class="mat-table-scrollbar h-60v">
-      <form [formGroup]="form">
-        <table mat-table class="w-100" formArrayName="items" [dataSource]="dataSource">
+    <ng-scrollbar class="mat-table-scrollbar h-60v" data-automation-id="zone-groups-table-scrollbar">
+      <form [formGroup]="form" data-automation-id="zone-groups-form">
+        <table mat-table class="w-100" formArrayName="items" [dataSource]="dataSource" data-automation-id="zone-groups-table">
           <!-- <ng-container cdkColumnDef="select">
             <mat-header-cell *cdkHeaderCellDef>
               <mat-checkbox
@@ -66,14 +66,14 @@
           </ng-container> -->
 
           <ng-container cdkColumnDef="zoneGroupName">
-            <th mat-header-cell *cdkHeaderCellDef> Zone Group Name </th>
+            <th mat-header-cell *cdkHeaderCellDef data-automation-id="zone-groups-table-header-zone-group-name"> Zone Group Name </th>
             <td mat-cell
               *cdkCellDef="let row; let rowIndex = index"
-              [formGroupName]="rowIndex"
+              [formGroupName]="rowIndex" [attr.data-automation-id]="'zone-groups-table-row-' + rowIndex + '-zone-group-name-cell'"
             >
               <mat-form-field
                 class="custom-form-field w-100 mb-0 pe-2"
-                appearance="outline"
+                appearance="outline"  [attr.data-automation-id]="'zone-group-name-field-' + rowIndex"
               >
                 <span matSuffix>
                 
@@ -84,30 +84,31 @@
                   type="text"
                   maxlength="50"
                   value="{{ row.zoneGroupName }}"
-                  formControlName="zoneGroupName"
+                  formControlName="zoneGroupName"  [attr.data-automation-id]="'zone-group-name-input-' + rowIndex"
                 />
               </mat-form-field>
             </td>
           </ng-container>
 
           <ng-container cdkColumnDef="selectedZone">
-            <th mat-header-cell *cdkHeaderCellDef> Selected Zone </th>
+            <th mat-header-cell *cdkHeaderCellDef data-automation-id="zone-groups-table-header-selected-zone"> Selected Zone </th>
             <td mat-cell
               *cdkCellDef="let row; let rowIndex = index"
               [formGroupName]="rowIndex"
+              [attr.data-automation-id]="'zone-groups-table-row-' + rowIndex + '-selected-zone-cell'"
             >
-              <div (click)="openSelectZones(rowIndex)">
+              <div (click)="openSelectZones(rowIndex)" [attr.data-automation-id]="'select-zones-click-area-' + rowIndex">
                 <mat-form-field
                   class="custom-form-field w-100 mb-0 pe-2"
-                  appearance="outline"
+                  appearance="outline" [attr.data-automation-id]="'selected-zone-field-' + rowIndex"
                 >
                   <span matSuffix>
-                    <mat-icon class="unfold_more">unfold_more</mat-icon>
+                    <mat-icon class="unfold_more" data-automation-id="unfold-icon">unfold_more</mat-icon>
                   </span>
                   <input
                     matInput
                     type="text"
-                    formControlName="selectedZone"
+                    formControlName="selectedZone" [attr.data-automation-id]="'selected-zone-input-' + rowIndex"
                   />
                 </mat-form-field>
               </div>
@@ -116,10 +117,10 @@
 
           <!-- Actions Column -->
           <ng-container matColumnDef="actions" stickyEnd>
-            <th mat-header-cell *matHeaderCellDef class="text-center"></th>
+            <th mat-header-cell *matHeaderCellDef class="text-center" data-automation-id="zone-groups-table-header-actions"></th>
             <td mat-cell
               *cdkCellDef="let row; let rowIndex = index"
-              [formGroupName]="rowIndex"
+              [formGroupName]="rowIndex"  [attr.data-automation-id]="'zone-groups-table-row-' + rowIndex + '-actions-cell'"
             >
               <div class="d-flex justify-content-center gap-3">
                 <button
@@ -127,18 +128,19 @@
                   color="primary"
                   class="xsm-icon-button"
                   (click)="saveItem(rowIndex)"
-                  [disabled]="!isRowDirty(rowIndex)"
+                  [disabled]="!isRowDirty(rowIndex)" [attr.data-automation-id]="'save-item-button-' + rowIndex"
                                   
                 >
-                  <mat-icon class="material-symbols-outlined">save</mat-icon>
+                  <mat-icon class="material-symbols-outlined" [attr.data-automation-id]="'save-item-icon-' + rowIndex">save</mat-icon>
                 </button>
                 <button
                   mat-flat-button
                   color="warn"
                   class="xsm-icon-button"
                   (click)="removeItem(rowIndex)"
+                  [attr.data-automation-id]="'remove-item-button-' + rowIndex"
                 >
-                  <mat-icon class="material-symbols-outlined">close</mat-icon>
+                  <mat-icon class="material-symbols-outlined" [attr.data-automation-id]="'remove-item-icon-' + rowIndex">close</mat-icon>
                 </button>
               </div>
             </td>
@@ -147,8 +149,9 @@
           <!-- Header and Row Declarations -->
           <tr mat-header-row
             *cdkHeaderRowDef="displayedColumns; sticky: true"
+            data-automation-id="zone-groups-table-header-row"
           ></tr>
-          <tr mat-row *cdkRowDef="let row; columns: displayedColumns"></tr>
+          <tr mat-row *cdkRowDef="let row; columns: displayedColumns; let i = index" [attr.data-automation-id]="'zone-groups-table-row-' + i"></tr>
         </table>
       </form>
     </ng-scrollbar>
@@ -161,7 +164,7 @@
       class="form-button-submit btn-lg flex-grow-1"
       color="primary"
       
-      (click)="refreshZones()"
+      (click)="refreshZones()" data-automation-id="done-button"
     >
       Done
     </button>

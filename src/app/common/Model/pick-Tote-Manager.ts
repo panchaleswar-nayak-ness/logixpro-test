@@ -88,3 +88,26 @@ export interface PickToteFilterPreference {
   userName: string;
   filterNumeric: boolean;
 }
+export interface FilterationColumns {
+  ColumnName: string;
+  ColumnType: string | number | Date | boolean;
+  Value: string | number | Date | boolean | null | undefined;
+  Value2: string | number | Date | boolean | null | undefined;
+  GridOperation: string;
+  IsInput: boolean;
+}
+
+
+export interface PeriodicElement {
+  name: string;
+  position: number;
+  weight: number;
+  symbol: string;
+}
+export interface InputDialogResult {
+  Condition: string;
+  SelectedColumn: string;
+  SelectedItem2: string;
+  SelectedItem: string;
+  Type: string;
+}

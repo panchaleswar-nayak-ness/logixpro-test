@@ -80,6 +80,7 @@ export class ToteTransactionViewComponent implements OnInit {
   }
   ngAfterViewInit(): void {
     this.fieldFocus?.nativeElement.focus();
+    this.dataSource.sort = this.sort;
   }
 
   displayedColumns: string[] = [

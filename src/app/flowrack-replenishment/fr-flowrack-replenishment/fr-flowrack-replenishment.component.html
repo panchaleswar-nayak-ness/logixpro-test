@@ -1,56 +1,56 @@
-<div class="inner-layout-1">
-    <div class="main-content mb-4">
-<mat-card class="mat-elevation-z g-card mb-3 mt-2 main-card" >
-    <mat-card-content>
-        <div class="d-flex justify-content-between align-items-center flex-wrap">
+<div class="inner-layout-1" data-automation-id="flowrack-replenishment-layout">
+    <div class="main-content mb-4" data-automation-id="flowrack-replenishment-content">
+<mat-card class="mat-elevation-z g-card mb-3 mt-2 main-card" data-automation-id="flowrack-replenishment-card">
+    <mat-card-content data-automation-id="flowrack-replenishment-card-content">
+        <div class="d-flex justify-content-between align-items-center flex-wrap" data-automation-id="flowrack-replenishment-header">
         
 
-            <app-icon-heading-component class="card-header-title mb-3 d-flex align-items-center" heading="FlowRack Replenishment" icon="schema"></app-icon-heading-component>
+            <app-icon-heading-component class="card-header-title mb-3 d-flex align-items-center" heading="FlowRack Replenishment" icon="schema" [automationId]="'flowrack-replenishment-heading'"></app-icon-heading-component>
         </div>
-        <div class="mb-4">
-            <mat-label>Current Zone: <span class="bold">{{zone}}</span></mat-label>
+        <div class="mb-4" data-automation-id="current-zone-container">
+            <mat-label data-automation-id="current-zone-label">Current Zone: <span class="bold" data-automation-id="current-zone-value">{{zone}}</span></mat-label>
         </div>
-        <div class="row" >
-            <div class="col-xl-4">
-                <mat-form-field class="custom-form-field  clear-btn-init w-100  mb-3" appearance="outline">
-                    <mat-label>Scan Item</mat-label>
-                    <input  #ord_focus matInput type="text" [(ngModel)]="itemNumScan" (keyup)="findItemLocation($event)" #autoFocusField (ngModelChange)="scanItemChange()">
-                    <button matSuffix *ngIf="itemNumScan != ''" class="clear-btn" (click)="clearItemNum()"><mat-icon class="text-20 text-chrome-600">cancel</mat-icon></button>
+        <div class="row" data-automation-id="flowrack-replenishment-form-row">
+            <div class="col-xl-4" data-automation-id="scan-item-container">
+                <mat-form-field class="custom-form-field  clear-btn-init w-100  mb-3" appearance="outline" data-automation-id="scan-item-field">
+                    <mat-label data-automation-id="scan-item-label">Scan Item</mat-label>
+                    <input  #ord_focus matInput type="text" [(ngModel)]="itemNumScan" (keyup)="findItemLocation($event)" #autoFocusField (ngModelChange)="scanItemChange()" data-automation-id="scan-item-input">
+                    <button matSuffix *ngIf="itemNumScan != ''" class="clear-btn" (click)="clearItemNum()" data-automation-id="clear-scan-item-button"><mat-icon class="text-20 text-chrome-600">cancel</mat-icon></button>
                 </mat-form-field>
             </div>
-            <div class="col-xl-4" >
-                <mat-form-field class="custom-form-field w-100  mb-3" appearance="outline"  >
+            <div class="col-xl-4" data-automation-id="select-location-container">
+                <mat-form-field class="custom-form-field w-100  mb-3" appearance="outline" data-automation-id="select-location-field">
                    
-                    <mat-label>Select Location</mat-label>
+                    <mat-label data-automation-id="select-location-label">Select Location</mat-label>
                   
-                  <input matInput type="text" [disabled]="locationRow" [(ngModel)]="itemLocation" [matAutocomplete]="auto" (keypress)="locationChange($event)" (ngModelChange)="locationChange($event)" #itemLocationFocus>
-                  <mat-autocomplete class="card custom-scroll"  #auto="matAutocomplete" (optionActivated)="values()" (optionSelected)="locationChangeSelect($event)" >                            
-                    <h6 class ="card-header matAutoCompHeader ">
-                      <span class="location-Style" >Location</span> 
-                      <span class="location-Style">Item Quantity</span> 
+                  <input matInput type="text" [disabled]="locationRow" [(ngModel)]="itemLocation" [matAutocomplete]="auto" (keypress)="locationChange($event)" (ngModelChange)="locationChange($event)" #itemLocationFocus data-automation-id="select-location-input">
+                  <mat-autocomplete class="card custom-scroll"  #auto="matAutocomplete" (optionActivated)="values()" (optionSelected)="locationChangeSelect($event)" data-automation-id="location-autocomplete">                            
+                    <h6 class ="card-header matAutoCompHeader " data-automation-id="location-autocomplete-header">
+                      <span class="location-Style" data-automation-id="location-header">Location</span> 
+                      <span class="location-Style" data-automation-id="item-quantity-header">Item Quantity</span> 
                     </h6> 
-                    <ng-scrollbar class="scrollbarStyle"  >
-                      <mat-option  [value]="option"  *ngFor="let option of locationSuggestions"  class="matAutoCompTableContent AutoCompTable-style"  >
-                        <div class="loc_option">
-                          <span  class="searchColumn searchColumn-width" >{{option.location}}</span> 
-                          <span  class="searchColumn searchColumn-width" >{{option.itemQuantity}}</span> 
+                    <ng-scrollbar class="scrollbarStyle" data-automation-id="location-autocomplete-scrollbar">
+                      <mat-option  [value]="option"  *ngFor="let option of locationSuggestions; let i = index"  class="matAutoCompTableContent AutoCompTable-style" [attr.data-automation-id]="'location-option-' + i + '-' + option.location">
+                        <div class="loc_option" data-automation-id="location-option-content">
+                          <span  class="searchColumn searchColumn-width" data-automation-id="location-option-location">{{option.location}}</span> 
+                          <span  class="searchColumn searchColumn-width" data-automation-id="location-option-quantity">{{option.itemQuantity}}</span> 
                         </div>
                       </mat-option>
                     </ng-scrollbar>
                   </mat-autocomplete> 
                 </mat-form-field>
             </div>
-            <div class="col-xl-4"   >
-                <div class="d-flex gap-12 align-items-center">
-                <mat-form-field class="custom-form-field w-100  mb-3 custom-form-width" appearance="outline" >
-                    <mat-label>Enter Quantity</mat-label>
-                    <input matInput type="number" [(ngModel)] = 'itemQty' [disabled]="itemQtyRow" (ngModelChange)="updateQty(itemQty)" #itemQtyFocus>
+            <div class="col-xl-4" data-automation-id="enter-quantity-container">
+                <div class="d-flex gap-12 align-items-center" data-automation-id="quantity-input-row">
+                <mat-form-field class="custom-form-field w-100  mb-3 custom-form-width" appearance="outline" data-automation-id="enter-quantity-field">
+                    <mat-label data-automation-id="enter-quantity-label">Enter Quantity</mat-label>
+                    <input matInput type="number" [(ngModel)] = 'itemQty' [disabled]="itemQtyRow" (ngModelChange)="updateQty(itemQty)" #itemQtyFocus data-automation-id="enter-quantity-input">
                 </mat-form-field>
-                <button [disabled]="calculator" mat-mini-fab color="Default" class="button-default-i icon-button-8br  mb-3" (click)="openCal()">
+                <button [disabled]="calculator" mat-mini-fab color="Default" class="button-default-i icon-button-8br  mb-3" (click)="openCal()" data-automation-id="calculator-button">
               <mat-icon class="material-symbols-outlined">calculate</mat-icon>
             </button>
         </div>
-        <div class="row">
+        <div class="row" data-automation-id="empty-row">
             
         </div>
             </div>
@@ -59,8 +59,8 @@
 </mat-card>
 </div>
 
-<div  >
+<div data-automation-id="submit-section">
     <button type="submit" [disabled]="submitBtnDisplay" mat-flat-button class="btn-lg w-100" color="primary" 
-    (click)="updateItemQuantity()">Submit</button>
+    (click)="updateItemQuantity()" data-automation-id="submit-button">Submit</button>
 </div>
 </div>

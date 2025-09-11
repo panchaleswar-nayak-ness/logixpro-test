@@ -1,21 +1,21 @@
 <div class="d-flex justify-content-between mb-4 align-items-center">
   <div class="divWithClass"></div>
-<h1 class="m-0" mat-dialog-title>{{form_heading}}</h1>
-<button mat-icon-button class="close-button dialog-close-button-fix" [mat-dialog-close]="true">
-  <mat-icon class="close-icon">close</mat-icon>
+<h1 class="m-0" mat-dialog-title data-automation-id="addnewgrp-title">{{form_heading}}</h1>
+<button mat-icon-button class="close-button dialog-close-button-fix" [mat-dialog-close]="true" data-automation-id="addnewgrp-close-btn">
+  <mat-icon class="close-icon" data-automation-id="addnewgrp-close-icon">close</mat-icon>
 </button>
 </div>
 <div mat-dialog-content>
 
-  <form class="form pb-4" #groupForm="ngForm" (ngSubmit)="onSend(groupForm)">
+  <form class="form pb-4" #groupForm="ngForm" (ngSubmit)="onSend(groupForm)" data-automation-id="addnewgrp-form">
 
     <mat-form-field class="mb-3 w-100" appearance="outline">
-      <mat-label>New Group Name</mat-label>
-      <input #new_group matInput type="text" maxlength="50" name="groupName" required="required" [(ngModel)]="groupName" (keyup)="checkIfValid(groupName)">
+      <mat-label data-automation-id="addnewgrp-name-lbl">New Group Name</mat-label>
+      <input #new_group matInput type="text" maxlength="50" name="groupName" required="required" [(ngModel)]="groupName" (keyup)="checkIfValid(groupName)" data-automation-id="addnewgrp-name-inp">
     </mat-form-field>
 
     <mat-dialog-actions align="end">
-      <button type="submit" [disabled]="isValidForm" mat-flat-button class="form-button-submit btn-lg w-100" color="primary">{{form_btn_label}}</button>
+      <button type="submit" [disabled]="isValidForm" mat-flat-button class="form-button-submit btn-lg w-100" color="primary" data-automation-id="addnewgrp-submit-btn">{{form_btn_label}}</button>
   </mat-dialog-actions>
 
   </form>

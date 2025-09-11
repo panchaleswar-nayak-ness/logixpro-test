@@ -1,32 +1,32 @@
 <div class="d-flex justify-content-between align-items-center mb-4">
     <div class="w-48px"></div>
-    <h1 class="m-0" mat-dialog-title>Transaction Quantity - Edit</h1>
-    <button mat-icon-button class="close-button dialog-close-button-fix" [mat-dialog-close]="true">
+    <h1 class="m-0" mat-dialog-title data-automation-id="transaction-qty-edit-heading">Transaction Quantity - Edit</h1>
+    <button mat-icon-button class="close-button dialog-close-button-fix" [mat-dialog-close]="true" data-automation-id="close-button">
         <mat-icon class="close-icon">close</mat-icon>
     </button>
 </div>
 <!-- Error message FOR DEV USE-->
-        <div class="label-blue3 p-3 d-flex br-8 mb-4">
-            <mat-icon class="material-symbols-outlined">notification_important</mat-icon>
-            <span class="ps-2 w-100">Transaction Quantity must be greater than 0 and less than or equal to Available Quantity and Replenishment Quantity.</span>
+        <div class="label-blue3 p-3 d-flex br-8 mb-4" data-automation-id="error-message-container">
+            <mat-icon class="material-symbols-outlined" data-automation-id="error-icon">notification_important</mat-icon>
+            <span class="ps-2 w-100" data-automation-id="error-message">Transaction Quantity must be greater than 0 and less than or equal to Available Quantity and Replenishment Quantity.</span>
         </div>
 <div>
-    <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline">
-        <mat-label>Available Quantity</mat-label>
-        <input matInput type="number" disabled [(ngModel)]="data.availableQuantity">
+    <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline" data-automation-id="available-quantity-field">
+        <mat-label data-automation-id="available-quantity-label">Available Quantity</mat-label>
+        <input matInput type="number" disabled [(ngModel)]="data.availableQuantity" data-automation-id="available-quantity-input">
     </mat-form-field>
 
-    <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline">
-        <mat-label>Replenishment Quantity </mat-label>
-        <input matInput type="number" disabled [(ngModel)]="data.replenishmentQuantity">
+    <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline" data-automation-id="replenishment-quantity-field">
+        <mat-label data-automation-id="replenishment-quantity-label">Replenishment Quantity </mat-label>
+        <input matInput type="number" disabled [(ngModel)]="data.replenishmentQuantity" data-automation-id="replenishment-quantity-input">
     </mat-form-field>
 
-    <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline">
-        <mat-label>Transaction Quantity</mat-label>
-        <input matInput #fieldFocus type="number" [(ngModel)]="data.transactionQuantity" #tq [NumbersOnly]="true" (keyup)="transactionQuantityChange()">
+    <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline" data-automation-id="transaction-quantity-field">
+        <mat-label data-automation-id="transaction-quantity-label">Transaction Quantity</mat-label>
+        <input matInput #fieldFocus type="number" [(ngModel)]="data.transactionQuantity" #tq [NumbersOnly]="true" (keyup)="transactionQuantityChange()" data-automation-id="transaction-quantity-input">
     </mat-form-field>
 </div>
 
 <div>
-    <button type="submit" mat-flat-button class="w-100 btn-lg" color="primary" (click)="transactionQtyReplenishmentUpdate()">Submit</button>
+    <button type="submit" mat-flat-button class="w-100 btn-lg" color="primary" (click)="transactionQtyReplenishmentUpdate()" data-automation-id="save-button">Submit</button>
 </div>

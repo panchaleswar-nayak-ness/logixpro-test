@@ -1,8 +1,8 @@
 <div class="d-flex justify-content-between mb-4 align-items-center">
   <div class="bm-toeid-width"></div>
-  <h1 class="m-0" mat-dialog-title>Picks Remaining</h1>
+  <h1 class="m-0" mat-dialog-title data-automation-id="pick-remaining-heading">Picks Remaining</h1>
 
-  <button mat-icon-button class="close-button dialog-close-button-fix" (click)="ClosePopup()">
+  <button mat-icon-button class="close-button dialog-close-button-fix" (click)="ClosePopup()" data-automation-id="pick-remaining-close-button">
     <mat-icon class="close-icon">close</mat-icon>
   </button>
 </div>
@@ -13,24 +13,24 @@
       <table mat-table [dataSource]="orders" class="custom-table table-fix">
 
         <ng-container matColumnDef="zone">
-          <th mat-header-cell *matHeaderCellDef> Zone.</th>
-          <td mat-cell *matCellDef="let element">{{element.zone}} </td>
+          <th mat-header-cell *matHeaderCellDef data-automation-id="pick-remaining-th-zone">Zone</th>
+          <td mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'pick-remaining-td-zone-' + i">{{ element.zone }}</td>
         </ng-container>
         <ng-container matColumnDef="orderNumber">
-          <th mat-header-cell *matHeaderCellDef> Order No.</th>
-          <td mat-cell *matCellDef="let element">{{element.orderNumber}} </td>
+          <th mat-header-cell *matHeaderCellDef data-automation-id="pick-remaining-th-order-number">Order No.</th>
+          <td mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'pick-remaining-td-order-number-' + i">{{ element.orderNumber }}</td>
         </ng-container>
         <ng-container matColumnDef="toteNumber">
-          <th mat-header-cell *matHeaderCellDef> Tote No.</th>
-          <td mat-cell *matCellDef="let element">{{element.toteNumber}} </td>
+          <th mat-header-cell *matHeaderCellDef data-automation-id="pick-remaining-th-tote-number">Tote No.</th>
+          <td mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'pick-remaining-td-tote-number-' + i">{{ element.toteNumber }}</td>
         </ng-container>
         <ng-container matColumnDef="toteID">
-          <th mat-header-cell *matHeaderCellDef> Tote ID.</th>
-          <td mat-cell *matCellDef="let element">{{element.toteID}} </td>
+          <th mat-header-cell *matHeaderCellDef data-automation-id="pick-remaining-th-tote-id">Tote ID</th>
+          <td mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'pick-remaining-td-tote-id-' + i">{{ element.toteID }}</td>
         </ng-container>
         <ng-container matColumnDef="picksQTY">
-          <th mat-header-cell *matHeaderCellDef> No. Of Picks</th>
-          <td mat-cell *matCellDef="let element">{{element.picksQTY}} </td>
+          <th mat-header-cell *matHeaderCellDef data-automation-id="pick-remaining-th-picks-qty">No. Of Picks</th>
+          <td mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'pick-remaining-td-picks-qty-' + i">{{ element.picksQTY }}</td>
         </ng-container>
         <tr mat-header-row *matHeaderRowDef="ordersDisplayedColumns; sticky:true"></tr>
         <tr mat-row *matRowDef="let row; columns: ordersDisplayedColumns;"></tr>
@@ -39,7 +39,7 @@
   </div>
 
   <div class="d-flex gap-12 mt-3" mat-dialog-actions>
-    <button (click)="ClosePopup()" mat-flat-button color="primary" class="flex-grow-1 form-button-submit btn-lg">
+    <button (click)="ClosePopup()" mat-flat-button color="primary" class="flex-grow-1 form-button-submit btn-lg" data-automation-id="pick-remaining-done-button">
       Done
     </button>
   </div>

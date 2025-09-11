@@ -1,7 +1,7 @@
 <div class="d-flex justify-content-between alighn-item-center mb-4">
     <div class="w-48px"></div>
-    <h1 class="m-0" mat-dialog-title>Reel Detail</h1>
-    <button mat-icon-button class="close-button dialog-close-button-fix" mat-dialog-close="true">
+    <h1 class="m-0" mat-dialog-title data-automation-id="reel-detail-heading">Reel Detail</h1>
+    <button mat-icon-button class="close-button dialog-close-button-fix" mat-dialog-close="true" data-automation-id="close-button">
         <mat-icon class="close-icon">close</mat-icon>
     </button>
 </div>
@@ -10,68 +10,68 @@
     <div class="card p-3">
     <div class="row mb-2">
             <div class="col-xl-4 ">
-                <mat-form-field class="custom-form-field __grab_cursor w-100" appearance="outline">
-                    <mat-label>Order Number</mat-label>
-                    <input #field_focus matInput [(ngModel)]="reelOrder">
+                <mat-form-field class="custom-form-field __grab_cursor w-100" appearance="outline" data-automation-id="order-number-field">
+                    <mat-label data-automation-id="order-number-label">Order Number</mat-label>
+                    <input #field_focus matInput [(ngModel)]="reelOrder" data-automation-id="order-number-input">
                 </mat-form-field>
             </div>
             <div class="col-xl-4 ">
-                <mat-form-field class="custom-form-field __grab_cursor w-100" appearance="outline">
-                    <mat-label>Lot Number</mat-label>
-                    <input matInput [(ngModel)]="reelLot">
+                <mat-form-field class="custom-form-field __grab_cursor w-100" appearance="outline" data-automation-id="lot-number-field">
+                    <mat-label data-automation-id="lot-number-label">Lot Number</mat-label>
+                    <input matInput [(ngModel)]="reelLot" data-automation-id="lot-number-input">
                 </mat-form-field>
             </div>
             <div class="col-xl-4 ">
 
-                <mat-form-field class="custom-form-field w-100 __grab_cursor mb-3" appearance="outline">
-                    <mat-label>Expiration Date</mat-label>
-                    <input matInput [matDatepicker]="requireDate" [(ngModel)]="reelExpDate">
+                <mat-form-field class="custom-form-field w-100 __grab_cursor mb-3" appearance="outline" data-automation-id="expiration-date-field">
+                    <mat-label data-automation-id="expiration-date-label">Expiration Date</mat-label>
+                    <input matInput [matDatepicker]="requireDate" [(ngModel)]="reelExpDate" data-automation-id="expiration-date-input">
                     <mat-datepicker-toggle matSuffix [for]="requireDate"
-                        ngDefaultControl></mat-datepicker-toggle>
-                    <mat-datepicker #requireDate></mat-datepicker>
+                        ngDefaultControl data-automation-id="expiration-date-toggle"></mat-datepicker-toggle>
+                    <mat-datepicker #requireDate data-automation-id="expiration-date-picker"></mat-datepicker>
                 </mat-form-field>
             </div>
         </div>
         <div class="row mb-2">
             <div class="col-xl-6 ">
-                <mat-form-field class="custom-form-field __grab_cursor w-100" appearance="outline">
-                    <mat-label>{{fieldNames.userField1}}</mat-label>
-                    <input matInput [(ngModel)]="reelUF1">
+                <mat-form-field class="custom-form-field __grab_cursor w-100" appearance="outline" data-automation-id="user-field-1-field">
+                    <mat-label data-automation-id="user-field-1-label">{{fieldNames.userField1}}</mat-label>
+                    <input matInput [(ngModel)]="reelUF1" data-automation-id="user-field-1-input">
                 </mat-form-field>
             </div>
                     <div class="col-xl-6 ">
-                        <mat-form-field class="custom-form-field __grab_cursor w-100" appearance="outline">
-                            <mat-label>{{fieldNames.userField2}} </mat-label>
-                            <input matInput  [(ngModel)]="reelUF2">
+                        <mat-form-field class="custom-form-field __grab_cursor w-100" appearance="outline" data-automation-id="user-field-2-field">
+                            <mat-label data-automation-id="user-field-2-label">{{fieldNames.userField2}} </mat-label>
+                            <input matInput  [(ngModel)]="reelUF2" data-automation-id="user-field-2-input">
                         </mat-form-field>
     </div>
     </div>
         <div class="row mb-2">
             <div class="col-xl-6 ">
-                <mat-form-field class="custom-form-field __grab_cursor w-100" appearance="outline" >
-                    <mat-label >Warehouse</mat-label>
+                <mat-form-field class="custom-form-field __grab_cursor w-100" appearance="outline" data-automation-id="warehouse-field" >
+                    <mat-label data-automation-id="warehouse-label">Warehouse</mat-label>
                     <span matSuffix>
-                        <mat-icon class="mat-icon-warehouse"  >unfold_more</mat-icon>
+                        <mat-icon class="mat-icon-warehouse" data-automation-id="warehouse-icon">unfold_more</mat-icon>
                       </span>
-                    <input matInput  [(ngModel)]="reelWarehouse" [disabled]="!wareHouseSensitivity" readonly="true" (click)="openWareHouse()">
+                    <input matInput  [(ngModel)]="reelWarehouse" [disabled]="!wareHouseSensitivity" readonly="true" (click)="openWareHouse()" data-automation-id="warehouse-input">
                 </mat-form-field>
             </div>
                     <div class="col-xl-6 ">
-                        <mat-form-field class="custom-form-field __grab_cursor w-100" appearance="outline">
-                            <mat-label>Parts to be Inducted</mat-label>
-                            <input matInput type="number" min=0 oninput="validity.valid||(value='');" [(ngModel)]="reelQty" (keyup)="fetchReelQty($event)" #reelQuantitytemp>
+                        <mat-form-field class="custom-form-field __grab_cursor w-100" appearance="outline" data-automation-id="parts-inducted-field">
+                            <mat-label data-automation-id="parts-inducted-label">Parts to be Inducted</mat-label>
+                            <input matInput type="number" min=0 oninput="validity.valid||(value='');" [(ngModel)]="reelQty" (keyup)="fetchReelQty($event)" #reelQuantitytemp data-automation-id="parts-inducted-input">
                         </mat-form-field>
     </div>
     </div>
     
     <div class="row">
         <div class="col-xl-12 ">
-            <mat-form-field class="custom-form-field __grab_cursor w-100" appearance="outline">
-                <mat-label>Notes</mat-label>
-                <textarea matInput  maxlength="255" [(ngModel)]="reelNotes"></textarea>
+            <mat-form-field class="custom-form-field __grab_cursor w-100" appearance="outline" data-automation-id="notes-field">
+                <mat-label data-automation-id="notes-label">Notes</mat-label>
+                <textarea matInput  maxlength="255" [(ngModel)]="reelNotes" data-automation-id="notes-input"></textarea>
             </mat-form-field>
         </div>
 </div>
 </div>
-<button mat-flat-button color="primary" type="button" class="btn-lg w-100 mt-2" (click)="reelDetailSubmit()">Submit</button>
+<button mat-flat-button color="primary" type="button" class="btn-lg w-100 mt-2" (click)="reelDetailSubmit()" data-automation-id="submit-button">Submit</button>
 </mat-dialog-content>

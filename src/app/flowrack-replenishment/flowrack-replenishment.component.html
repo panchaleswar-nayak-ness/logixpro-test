@@ -1,33 +1,33 @@
-<div class="main-section-options">
+<div class="main-section-options" data-automation-id="flowrack-replenishment-options">
     <div class="container-fluid">
-      <div class="row g-4">
+      <div class="row g-4" data-automation-id="flowrack-replenishment-options-row">
         <!-- Main Section Option (Import Export) -->
     
         <div class="col-xl-3 col-lg-6"
-        [ngClass]="isAuthorized('Flowrack Replenishment') ? 'isDivDisabled' : ''">
+        [ngClass]="isAuthorized('Flowrack Replenishment') ? 'isDivDisabled' : ''" data-automation-id="flowrack-replenishment-option-container">
           <div matRipple [matRippleColor]="tab_hover_color" class="main-section-option" 
           routerLink="/FlowrackReplenish/Flowrack"
-          (click)="updateMenu('FlowrackReplenish', '/FlowrackReplenish/Flowrack')">
-            <a class="main-section-option-link" href="#"></a>
-            <div class="main-section-icon">
+          (click)="updateMenu('FlowrackReplenish', '/FlowrackReplenish/Flowrack')" data-automation-id="flowrack-replenishment-option">
+            <a class="main-section-option-link" href="#" data-automation-id="flowrack-replenishment-link"></a>
+            <div class="main-section-icon" data-automation-id="flowrack-replenishment-icon">
               <span class="material-symbols-outlined">schema</span>
             </div>
-            <h4 class="main-section-title main-section-style" >Flowrack Replenishment</h4>
+            <h4 class="main-section-title main-section-style" data-automation-id="flowrack-replenishment-title">Flowrack Replenishment</h4>
           </div>
         </div>
   
         <div class="col-xl-3 col-lg-6"  
-        [ngClass]="isAuthorized('Flowrack Replenishment Preferences') ? 'isDivDisabled' : ''">
+        [ngClass]="isAuthorized('Flowrack Replenishment Preferences') ? 'isDivDisabled' : ''" data-automation-id="flowrack-preferences-option-container">
           <div matRipple [matRippleColor]="tab_hover_color" class="main-section-option" 
           routerLink="/FlowrackReplenish/Preferences"
-          (click)="updateMenu('FlowrackReplenish', '/FlowrackReplenish/Preferences')">
-            <a class="main-section-option-link" href="#"></a>
-            <div class="main-section-icon">
+          (click)="updateMenu('FlowrackReplenish', '/FlowrackReplenish/Preferences')" data-automation-id="flowrack-preferences-option">
+            <a class="main-section-option-link" href="#" data-automation-id="flowrack-preferences-link"></a>
+            <div class="main-section-icon" data-automation-id="flowrack-preferences-icon">
               <span class="material-symbols-outlined">
                 tune
               </span>
             </div>
-            <h4 class="main-section-title main-section-style" >Preferences</h4>
+            <h4 class="main-section-title main-section-style" data-automation-id="flowrack-preferences-title">Preferences</h4>
           </div>
         </div>
   

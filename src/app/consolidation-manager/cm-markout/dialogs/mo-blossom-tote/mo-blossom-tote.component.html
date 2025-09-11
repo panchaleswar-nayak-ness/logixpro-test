@@ -1,24 +1,24 @@
 <div class="d-flex justify-content-between mb-4 align-items-center">
     <div class="bm-toeid-width"></div>
-    <h1 class="m-0" mat-dialog-title>{{type == blossomType.Blossom ? 'Blossom': 'Blossom Complete'}}</h1>
-    <button mat-icon-button class="close-button dialog-close-button-fix" (click)="ClosePopup()">
+    <h1 class="m-0" mat-dialog-title data-automation-id="blossom-tote-heading">{{type == blossomType.Blossom ? 'Blossom': 'Blossom Complete'}}</h1>
+    <button mat-icon-button class="close-button dialog-close-button-fix" (click)="ClosePopup()" data-automation-id="close-button">
         <mat-icon class="close-icon">close</mat-icon>
     </button>
 </div>
 
-<div class="p-3 br-14 card mb-3">
+<div class="p-3 br-14 card mb-3" data-automation-id="tote-info-card">
     <div class="row g-md-3 g-0">
         <div class="col">
             <div class="d-xl-flex gap-12 align-items-center">
                 <div class="d-flex  flex-grow-1 min-width-40px">
                     <mat-form-field c class="custom-form-field-bg-white w-100 __grab_cursor mb-2 mb-xl-0"
-                        appearance="outline">
-                        <mat-label>New Tote ID</mat-label>
+                        appearance="outline" data-automation-id="new-tote-id-field">
+                        <mat-label data-automation-id="new-tote-id-label">New Tote ID</mat-label>
                         <input type="text" aria-label="Number" matInput [(ngModel)]='toteId'
-                         (change)="newToteIdValidation()">
+                         (change)="newToteIdValidation()" data-automation-id="new-tote-id-input">
                         <button 
                         matSuffix *ngIf="toteId" 
-                        class="clear-btn" (click)="toteId = ''; isBlossom = false;"><mat-icon
+                        class="clear-btn" (click)="toteId = ''; isBlossom = false;" data-automation-id="clear-tote-id-button"><mat-icon
                                 class="text-20 text-chrome-600">cancel</mat-icon></button>
                     </mat-form-field>
 
@@ -28,9 +28,9 @@
         <div class="col">
             <div class="d-xl-flex gap-12 align-items-center">
                 <div class="d-flex  flex-grow-1 min-width-40px">
-                    <mat-form-field c class="custom-form-field w-100 __grab_cursor" appearance="outline">
-                        <mat-label>Order No.</mat-label>
-                        <input type="text" aria-label="Number" matInput [(ngModel)]='orderNumber' disabled>
+                    <mat-form-field c class="custom-form-field w-100 __grab_cursor" appearance="outline" data-automation-id="order-number-field">
+                        <mat-label data-automation-id="order-number-label">Order No.</mat-label>
+                        <input type="text" aria-label="Number" matInput [(ngModel)]='orderNumber' disabled data-automation-id="order-number-input">
                     </mat-form-field>
 
                 </div>
@@ -39,49 +39,49 @@
     </div>
 </div>
 
-<div class="card br-14 table-responsive borderless">
-    <ng-scrollbar track="all" class="custom-scrollbar mat-table-scrollbar">
+<div class="card br-14 table-responsive borderless" data-automation-id="blossom-table-container">
+    <ng-scrollbar track="all" class="custom-scrollbar mat-table-scrollbar" data-automation-id="blossom-table-scrollbar">
 
         <table mat-table [dataSource]="markoutlistdataSource"
-            class="custom-table table-fix w-100">
+            class="custom-table table-fix w-100" data-automation-id="blossom-table">
 
             <ng-container matColumnDef="itemNumber">
-                <th mat-header-cell *matHeaderCellDef replacePlaceholder [replacePlaceHolder]="placeholders.itemNumber" [fallbackPlaceHolder]="placeholders.itemNumberFallback">{{ItemNumber}}</th>
-                <td mat-cell *matCellDef="let element">{{element?.itemNumber}} </td>
+                <th mat-header-cell *matHeaderCellDef replacePlaceholder [replacePlaceHolder]="placeholders.itemNumber" [fallbackPlaceHolder]="placeholders.itemNumberFallback" data-automation-id="table-header-item-number">{{ItemNumber}}</th>
+                <td mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'table-row-' + i + '-' + element.itemNumber + '-item-number-cell'">{{ element?.itemNumber }}</td>
             </ng-container>
 
             <ng-container matColumnDef="transQty">
-                <th mat-header-cell *matHeaderCellDef>Transaction Qty</th>
-                <td mat-cell *matCellDef="let element">{{element?.transQty}} </td>
+                <th mat-header-cell *matHeaderCellDef data-automation-id="table-header-transaction-qty">Transaction Qty</th>
+                <td mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'table-row-' + i + '-' + element.itemNumber + '-transaction-qty-cell'">{{ element?.transQty }}</td>
             </ng-container>
 
             <ng-container matColumnDef="compQty">
-                <th mat-header-cell *matHeaderCellDef>Picked Qty</th>
-                <td mat-cell *matCellDef="let element">{{element?.compQty}} </td>
+                <th mat-header-cell *matHeaderCellDef data-automation-id="table-header-picked-qty">Picked Qty</th>
+                <td mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'table-row-' + i + '-' + element.itemNumber + '-picked-qty-cell'">{{ element?.compQty }}</td>
             </ng-container>
 
             <ng-container matColumnDef="toteQty">
-                <th mat-header-cell *matHeaderCellDef>Add to {{type == blossomType.Blossom ? 'Current': 'New'}} Tote Qty</th>
-                <td mat-cell *matCellDef="let element">
+                <th mat-header-cell *matHeaderCellDef data-automation-id="table-header-tote-qty">Add to {{type == blossomType.Blossom ? 'Current': 'New'}} Tote Qty</th>
+                <td mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'table-row-' + i + '-' + element.itemNumber + '-tote-qty-cell'">
                     <mat-form-field c class="custom-form-field-bg-white w-100 __grab_cursor mb-2 mb-xl-0"
-                        appearance="outline">
-                        <input type="number" (change)="onChangeQTY(element)" [(ngModel)]="element.oldToteQty" aria-label="Number" matInput>
+                        appearance="outline" [attr.data-automation-id]="'tote-qty-field-' + element.itemNumber">
+                        <input type="number" (change)="onChangeQTY(element)" [(ngModel)]="element.oldToteQty" aria-label="Number" matInput [attr.data-automation-id]="'tote-qty-input-' + element.itemNumber">
                     </mat-form-field></td>
             </ng-container>
 
             <ng-container matColumnDef="totalQty">
-                <th mat-header-cell *matHeaderCellDef>Total Qty</th>
-                <td mat-cell *matCellDef="let element">{{calculateTotal(element)}} </td>
+                <th mat-header-cell *matHeaderCellDef data-automation-id="table-header-total-qty">Total Qty</th>
+                <td mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'table-row-' + i + '-' + element.itemNumber + '-total-qty-cell'">{{ calculateTotal(element) }}</td>
             </ng-container>
             
-            <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky:true"></tr>
-            <tr mat-row class="table-row" tabindex="1" *matRowDef="let row; columns: displayedColumns;"></tr>
+            <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky:true" data-automation-id="blossom-table-header-row"></tr>
+            <tr mat-row class="table-row" tabindex="1" *matRowDef="let row; columns: displayedColumns;" [attr.data-automation-id]="'blossom-table-row-' + row.itemNumber"></tr>
         </table>
     </ng-scrollbar>
 </div>
 
 <div class="row d-flex gap-12 mt-3" mat-dialog-actions>
-    <button [disabled]="!isBlossom" mat-flat-button color="primary" class="col btn-lg" (click)="type == blossomType.Blossom ? blossomTransactions() : blossomCompleteTransactions()">
+    <button [disabled]="!isBlossom" mat-flat-button color="primary" class="col btn-lg" (click)="type == blossomType.Blossom ? blossomTransactions() : blossomCompleteTransactions()" data-automation-id="submit-button">
         Submit
     </button>
 </div>
