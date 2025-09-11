@@ -8,7 +8,8 @@ import { IAdminApiService } from 'src/app/common/services/admin-api/admin-api-in
 import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.service';
 import { GlobalService } from 'src/app/common/services/global.service';
 import { zoneType, ToasterMessages, ToasterType ,ToasterTitle,ResponseStrings,DialogConstants,UniqueConstants,TableConstant,Style} from 'src/app/common/constants/strings.constants';
-import { ColumnAlias } from 'src/app/common/types/CommonTypes';
+import { ApiResponse, ColumnAlias, UserSession } from 'src/app/common/types/CommonTypes';
+import { LocationZone } from 'src/app/common/interface/admin/location-zones.interface';
 
 @Component({
   selector: 'app-sp-location-zones',
@@ -18,6 +19,21 @@ import { ColumnAlias } from 'src/app/common/types/CommonTypes';
 export class SpLocationZonesComponent implements OnInit {
   prevLocation : string;
   fieldMappings : ColumnAlias = JSON.parse(localStorage.getItem('fieldMappings') ?? '{}');
+
+  // Case Label dropdown options
+  caseLabelOptions = [
+    { value: '', label: '' },
+    { value: 'User Field 1', label: 'User Field 1' },
+    { value: 'User Field 2', label: 'User Field 2' },
+    { value: 'User Field 3', label: 'User Field 3' },
+    { value: 'User Field 4', label: 'User Field 4' },
+    { value: 'User Field 5', label: 'User Field 5' },
+    { value: 'User Field 6', label: 'User Field 6' },
+    { value: 'User Field 7', label: 'User Field 7' },
+    { value: 'User Field 8', label: 'User Field 8' },
+    { value: 'User Field 9', label: 'User Field 9' },
+    { value: 'User Field 10', label: 'User Field 10' }
+  ];
 
   toggleSwitches = [
     { label: this.fieldMappings?.carousel || TableConstant.Carousel, name: zoneType.carousel, property: zoneType.carousel },
@@ -61,27 +77,26 @@ export class SpLocationZonesComponent implements OnInit {
     },
     {
       label: 'Allow Clear Whole Location',
-      name: 'allowClearWholeLocation',
-      property: 'allowClearWholeLocation',
+      name: 'allowWholeClearLocation',
+      property: 'allowWholeClearLocation',
     },
 
   ];
   
-  public userData: any;
-  public zone: any;
+  public userData: UserSession;
   public newLocationVal = '';
   public newLocation = false;
   public locationSaveBtn = true;
   public iAdminApiService: IAdminApiService;
-  includeCf: false;
+  includeCf: boolean = false;
 
-  locationzone: any = [];
-  duplicateLocationZone: any = [];
+  locationzone: LocationZone[] = [];
+  duplicateLocationZone: LocationZone[] = [];
   constructor(
    
     public authService: AuthService,
-    private global: GlobalService,
-    private adminApiService: AdminApiService
+    public global: GlobalService,
+    public adminApiService: AdminApiService
   ) {
     this.iAdminApiService = adminApiService;
   }
@@ -91,13 +106,13 @@ export class SpLocationZonesComponent implements OnInit {
     this.getLocationZones();
   }
 
-  conflictCheck(zone: any) {
+  conflictCheck(zone: LocationZone) {
     if (zone.allocable && zone.kanbanZone) {
       let dialogRef: any = this.global.OpenDialog(
         KanbanZoneAllocationConflictComponent,
         {
-          height: 'auto',
-          width: '56vw',
+          height: DialogConstants.auto,
+          width: Style.w56vw,
           autoFocus: DialogConstants.autoFocus,
           disableClose: true,
         }
@@ -112,7 +127,7 @@ export class SpLocationZonesComponent implements OnInit {
     }
   }
 
-  zoneChange(zone: any, check, type?) {
+  zoneChange(zone: LocationZone, check, type?) {
     
     if (!check) {
       if (type === zoneType.carousel) {
@@ -124,6 +139,8 @@ export class SpLocationZonesComponent implements OnInit {
           if (zone.includeCFCarouselPick) {
             zone.includeCFCarouselPick = false;
           }
+          // Reset Case Label when Carousel is enabled
+          zone.caseLabel = '';
         } else {
           this.alterParentZones(false, zone.zone);
           if (zone.cartonFlow) {
@@ -139,7 +156,7 @@ export class SpLocationZonesComponent implements OnInit {
           }
         }
       }
-      if (type === zoneType.includePick) {
+      if (type === zoneType.includeCFCarouselPick) {
         if (zone.includeCFCarouselPick) {
           if (!zone.cartonFlow) {
             this.alterParentZones(false, zone.zone);
@@ -148,12 +165,17 @@ export class SpLocationZonesComponent implements OnInit {
           if (zone.carousel) {
             zone.carousel = false;
           }
+          // Reset Case Label when Include CF Carousel Pick is enabled
+          zone.caseLabel = '';
+        } else {
+          // Clear Parent Zone when Include CF Carousel Pick is disabled
+          zone.parentZone = '';
         }
       }
-      let oldZone: any = this.duplicateLocationZone.filter(
-        (x: any) => x.ID == zone.ID
+      let oldZone: string = this.duplicateLocationZone.filter(
+        (x: LocationZone) => x.id == zone.id
       )[0].zone;
-      let newZone: any = zone.zone;
+      let newZone: string = zone.zone;
       let seq = zone.sequence;
       if (newZone == '') {
         this.global.ShowToastr(
@@ -163,21 +185,19 @@ export class SpLocationZonesComponent implements OnInit {
         );
         zone.zone = oldZone;
         return;
-      } else if (seq < 0 || seq == '') {
-        if (seq < 0) {
+      } else if (seq < 0) {
           this.global.ShowToastr(
             ToasterType.Error,
             ToasterMessages.SequenceMustEqualOrGreaterZero,
             ToasterTitle.Error
-          );
-          return;
-        }
+        );
+        return;
       }
 
       let check = oldZone.toLowerCase() != newZone.toLowerCase();
       if (check) {
         let test = this.duplicateLocationZone.find(
-          (x: any) => x.zone == newZone
+          (x: LocationZone) => x.zone == newZone
         );
         if (test) {
           this.global.ShowToastr(
@@ -217,13 +237,13 @@ export class SpLocationZonesComponent implements OnInit {
     }
   }
 
-  parentZones: any = [];
+  parentZones: string[] = [];
   getLocationZones() {
-    this.iAdminApiService.LocationZone().subscribe((res) => {
+    this.iAdminApiService.LocationZone().subscribe((res : ApiResponse<LocationZone[]>) => {
       if (res.isExecuted && res.data) {
         this.locationzone = [];
-        res.data.forEach((zone: any, i) => {
-          zone.ID = i + 1;
+        res.data.forEach((zone: LocationZone, i) => {
+          zone.id = i + 1;
           if (zone.carousel && zone.zone != '') {
             this.parentZones.push(zone.zone);
 
@@ -240,10 +260,10 @@ export class SpLocationZonesComponent implements OnInit {
     });
   }
 
-  locationName(item: any) {
+  locationName(item: LocationZone) {
     this.prevLocation=item.locationName;
     let dialogRef: any = this.global.OpenDialog(LocationNameComponent, {
-      height: 'auto',
+      height: DialogConstants.auto,
       width: Style.w786px,
       autoFocus: DialogConstants.autoFocus,
       disableClose: true,
@@ -259,9 +279,9 @@ export class SpLocationZonesComponent implements OnInit {
     });
   }
 
-  delLocationZone(zone) {
+  delLocationZone(zone: string) {
     const dialogRef: any = this.global.OpenDialog(DeleteConfirmationComponent, {
-      height: 'auto',
+      height: DialogConstants.auto,
       width: Style.w600px,
       autoFocus: DialogConstants.autoFocus,
       disableClose: true,
@@ -280,7 +300,7 @@ export class SpLocationZonesComponent implements OnInit {
             this.getLocationZones();
             this.global.ShowToastr(
                ToasterType.Success,
-              'Deleted successfully',
+              ToasterMessages.ZoneDeletedSuccessfully,
                ToasterTitle.Success
 
             );
@@ -297,10 +317,10 @@ export class SpLocationZonesComponent implements OnInit {
     });
   }
 
-  alterParentZones(add, item) { 
+  alterParentZones(add: boolean, item: string) { 
     if (add && item != '') {
       let parentzone = this.parentZones;
-      const isNumberExist = (item, parentzone) => {
+      const isNumberExist = (item: string, parentzone: string[]) => {
         return parentzone.some((element) => element === item);
       };
       if (!isNumberExist(item, parentzone)) {
@@ -321,12 +341,12 @@ export class SpLocationZonesComponent implements OnInit {
     if (this.newLocationVal != '') {
       this.locationSaveBtn = false;
       let test = this.duplicateLocationZone.find(
-        (x: any) => x.zone == this.newLocationVal
+        (x: LocationZone) => x.zone == this.newLocationVal
       );
       if (test) {
         this.global.ShowToastr(
           ToasterType.Error,
-          'Zone would be a duplicate and cannot be added.',
+          ToasterMessages.ZoneWouldBeADuplicateAndCannotBeAdded,
           ToasterTitle.Error
         );
       }
@@ -351,7 +371,7 @@ export class SpLocationZonesComponent implements OnInit {
       } else {
         this.global.ShowToastr(
           ToasterType.Error,
-          'Cannot insert duplicate Zone',
+          ToasterMessages.CannotInsertDuplicateZone,
           ToasterTitle.Error
         );
         console.log('LocationZoneNewSave', res.responseMessage);
