@@ -241,8 +241,8 @@ export class VerifyBulkComponent implements OnInit {
           btn2Text: 'Leave Anyway'
         },
       });
-      dialogRef1.afterClosed().subscribe(async (resp: DialogResponse) => {
-        if (resp.type != ResponseStrings.Yes) {
+      dialogRef1.afterClosed().subscribe(async (resp: string) => {
+        if (resp != ResponseStrings.Yes) {
           this.back.emit(this.taskCompleted);
         }
         this.backCount = 0;
@@ -357,8 +357,8 @@ export class VerifyBulkComponent implements OnInit {
         buttonFields: true,
       },
     });
-    dialogRef1.afterClosed().subscribe(async (resp: DialogResponse) => {
-      if (resp.type == ResponseStrings.Yes) {
+    dialogRef1.afterClosed().subscribe(async (resp: string) => {
+      if (resp == ResponseStrings.Yes) {        
         const batchId = this.isBatchIdGenerationEnabled ? await this.getNextBatchID() : null;
         let ordersNew: TaskCompleteNewRequest[] = new Array();
         orderLines.forEach((orderLine: OrderLineResource) => {
@@ -434,9 +434,9 @@ export class VerifyBulkComponent implements OnInit {
           threeButtons: true
         },
       });
-      dialogRef1.afterClosed().subscribe(async (res: DialogResponse) => {
-        if (res.type == ResponseStrings.Yes) await this.taskComplete(this.orderLines.filteredData.filter((x: OrderLineResource) => x.completedQuantity > 0));
-        else if (res.type == ResponseStrings.No) await this.taskComplete(this.orderLines.filteredData);
+      dialogRef1.afterClosed().subscribe(async (res: string) => {
+        if (res == ResponseStrings.Yes) await this.taskComplete(this.orderLines.filteredData.filter((x: OrderLineResource) => x.completedQuantity > 0));
+        else if (res == ResponseStrings.No) await this.taskComplete(this.orderLines.filteredData);
       });
     }
     else await this.taskComplete(this.orderLines.filteredData);
@@ -512,8 +512,8 @@ export class VerifyBulkComponent implements OnInit {
         singleButton: true
       },
     });
-    dialogRef1.afterClosed().subscribe(async (resp: DialogResponse) => {
-      if (resp.type == ResponseStrings.Yes) this.back.emit(this.taskCompleted);
+    dialogRef1.afterClosed().subscribe(async (resp: string) => {
+      if (resp == ResponseStrings.Yes) this.back.emit(this.taskCompleted);
     });
   }
 
