@@ -27,9 +27,8 @@ import { IInductionManagerApiService } from 'src/app/common/services/induction-m
 import { InductionManagerApiService } from 'src/app/common/services/induction-manager-api/induction-manager-api.service';
 import { GlobalService } from 'src/app/common/services/global.service';
 import { PickToteManagerService } from 'src/app/common/services/pick-tote-manager.service'
-import {  TableConstant ,ToasterTitle,ResponseStrings,Column,ToasterType,zoneType,DialogConstants,ColumnDef,UniqueConstants,Style,StringConditions, Placeholders, ToasterMessages} from 'src/app/common/constants/strings.constants';
+import {  TableConstant ,ToasterTitle,ResponseStrings,Column,ToasterType,zoneType,DialogConstants,ColumnDef,UniqueConstants,Style,StringConditions, Placeholders, ToasterMessages, FormatValues, FIELDS_DEFAULT_AN, ConfirmationMessages, ConfirmationHeadings, DISABLED_FIELDS, FormatType, INPUT_TYPES, DATE_COLUMNS} from 'src/app/common/constants/strings.constants';
 import { FilterOrder, FilterTransaction, SavedFilterChangeEvent, FilterData, OrderData, PickToteTransPayload, AllDataTypeValues } from 'src/app/common/types/pick-tote-manager.types';
-import { InputType } from 'src/app/common/enums/CommonEnums';
 import { TableContextMenuService } from 'src/app/common/globalComponents/table-context-menu-component/table-context-menu.service';
 import { FilterationColumns, PeriodicElement } from 'src/app/common/Model/pick-Tote-Manager';
 import { InputType, PaginationData } from 'src/app/common/enums/CommonEnums';
@@ -85,7 +84,6 @@ UserField10:string = this.fieldMappings.userField10;
   batchByZoneData: any[] = []; 
   tabIndex: number = 0;
   isActiveTrigger:boolean =false;
- 
   isAllSelected() {
     const numSelected = this.selection.selected.length;
     const numRows = this.dataSource.data.length;
@@ -1766,6 +1764,7 @@ refreshOrderDataGrid() {
       }
     });
   }  
+
   onContextMenu(event: MouseEvent, SelectedItem: AllDataTypeValues, FilterColumnName?: string, FilterConditon?: string | undefined, FilterItemType?: AllDataTypeValues) {
     event.preventDefault()
     this.isActiveTrigger = true;
@@ -1778,8 +1777,8 @@ refreshOrderDataGrid() {
     // Directly use the FilterationColumns objects
     this.filterationColumns = filterationColumns;
     
-    const dateFields = new Set<string>([
-      Column.RequiredDate,
+    // Call the existing method to get content data
+    this.getContentData();
     this.isActiveTrigger = false;
   }
   getContentData(){
@@ -1792,7 +1791,7 @@ refreshOrderDataGrid() {
       OrderNumber: this.selectedOrderValue,
       SRow: PaginationData.StartRow,
       ERow: PaginationData.EndRow,
-      Column.ImportDate
+      SortColumnNumber: 0,
       SortOrder: UniqueConstants.Asc,
       Filter: this.filterString,
       FiltrationColumns :  this.filterationColumns
@@ -1802,7 +1801,7 @@ refreshOrderDataGrid() {
       if (pickToteManTrans.length >= 0) {
         this.filterOrderTransactionSource = new MatTableDataSource<FilterTransaction>(
           pickToteManTrans
-    ]);
+        );
         this.filterOrderTransactionSource.paginator = this.filterBatchTrans;
         this.filterOrderTransactionSource.sort = this.viewFilterTransSort;
       } else {
@@ -1812,12 +1811,9 @@ refreshOrderDataGrid() {
           ToasterTitle.Error
         );
       }
-    return dateFields.has(field) ? 'date' : 'text';
-  getInputType(field: string): InputType {
-    // Date fields take priority
-    if (this.DATE_FIELDS.has(field)) {
-      return InputType.Date;
-  }  
+    });
+
+   }
   //Determines the appropriate HTML input type (date, number, or text) 
   // based on the field name and its format in filterData.  
   getInputType(field: string): InputType {
