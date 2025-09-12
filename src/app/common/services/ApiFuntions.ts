@@ -16,13 +16,13 @@ import { MarkoutAuditResponse, MarkoutPickLinesResponse, MarkoutResponse } from 
 import { ZoneListPayload } from 'src/app/bulk-process/preferences/preference.models';
 import { DevicePreferenceRequest, DevicePreferencesTableRequest } from '../interface/admin/device-preferences';
 import { UpdateEmergencyRequest } from '../interface/admin/opentransaction.interfaces';
+import { ApiResponse, ApiResponseData, ApiResult } from '../types/CommonTypes';
 import { PrintOrdersPayload, PrintTransactionPayload } from '../interface/bulk-transactions/bulk-pick';
 import { ApiErrorMessages } from '../constants/strings.constants';
 import { PickToteTransPayload, PickToteTransResponse } from '../types/pick-tote-manager.types';
 import { ImportTypeConfig } from '../interface/audit-file-field-mapping-manager/import-type-config.interface';
 import { InventoryCompareConfigResponse } from '../interface/audit-file-field-mapping-manager/inventory-compare-response.interface';
 import { InventoryCompareConfigPayload } from '../interface/audit-file-field-mapping-manager/inventory-compare.interface';
-import { ApiResponse, ApiResponseData, ApiResult } from '../types/CommonTypes';
 
 
 

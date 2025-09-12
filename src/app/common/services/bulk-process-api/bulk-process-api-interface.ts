@@ -1,5 +1,5 @@
 import { ZoneListPayload } from "src/app/bulk-process/preferences/preference.models";
-import { AssignToteToOrderDto, OrderLineResource, PartialToteIdRequest, PartialToteIdResponse, RemoveOrderLinesRequest, RemoveOrderLinesResponse } from "../../Model/bulk-transactions";
+import {AssignToteToOrderDto, OrderLineResource, NextToteId, PartialToteIdRequest, PartialToteIdResponse, RemoveOrderLinesRequest, RemoveOrderLinesResponse} from "../../Model/bulk-transactions";
 import { ApiResult } from "../../types/CommonTypes";
 
 export interface IBulkProcessApiService {
