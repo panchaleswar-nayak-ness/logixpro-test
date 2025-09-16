@@ -1,31 +1,31 @@
 <div class="d-flex justify-content-between mb-4 align-items-center">
     <div  class="divWithClass"></div>
-<h1 class="m-0" mat-dialog-title>{{form_heading}}</h1>
-<button mat-icon-button class="close-button dialog-close-button-fix" [mat-dialog-close]="true">
-    <mat-icon class="close-icon">close</mat-icon>
+<h1 class="m-0" mat-dialog-title data-automation-id="addzone-title">{{form_heading}}</h1>
+<button mat-icon-button class="close-button dialog-close-button-fix" [mat-dialog-close]="true" data-automation-id="addzone-close-btn">
+    <mat-icon class="close-icon" data-automation-id="addzone-close-icon">close</mat-icon>
 </button>
 </div>
 <div>
     <div mat-dialog-content>
 
-        <form class="form pb-4" [formGroup]="addZoneForm" (ngSubmit)="onSubmit(addZoneForm)">
+        <form class="form pb-4" [formGroup]="addZoneForm" (ngSubmit)="onSubmit(addZoneForm)" data-automation-id="addzone-form">
 
-            <mat-form-field class="w-100 mb-2" appearance="outline">
-                <mat-label>Select Zone</mat-label>
+            <mat-form-field class="w-100 mb-2" appearance="outline" data-automation-id="addzone-zone-ff">
+                <mat-label data-automation-id="addzone-zone-lbl">Select Zone</mat-label>
                 <input  #select_zone type="text" placeholder="Select Zone" (blur)="blurInput()" aria-label="Select Zone" matInput formControlName="zoneList"
-                    [matAutocomplete]="auto" maxlength="2"value="{{editZoneName ?? ''}}">
-                    <mat-icon class="icon-kbdown-dropdown" matSuffix>keyboard_arrow_down</mat-icon>
+                    [matAutocomplete]="auto" maxlength="2" value="{{editZoneName ?? ''}}" data-automation-id="addzone-zone-inp">
+                    <mat-icon class="icon-kbdown-dropdown" matSuffix data-automation-id="addzone-zone-expand-icon">keyboard_arrow_down</mat-icon>
                 
-                    <mat-autocomplete  autoActiveFirstOption #auto="matAutocomplete" >
-                    <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
+                    <mat-autocomplete  autoActiveFirstOption #auto="matAutocomplete" data-automation-id="addzone-zone-auto">
+                    <mat-option *ngFor="let option of filteredOptions | async" [value]="option" [attr.data-automation-id]="'addzone-zone-opt-' + option">
                         {{option}}
                     </mat-option>
                 </mat-autocomplete>
             </mat-form-field>
-            <div class="error" *ngIf="hasError('zoneList', 'required')">This field is required.</div>
+            <div class="error" *ngIf="hasError('zoneList', 'required')" data-automation-id="addzone-zone-required-err">This field is required.</div>
             <mat-dialog-actions align="end">
                 <button type="submit" mat-flat-button class="form-button-submit btn-lg w-100"
-                    color="primary" [disabled]="!addZoneForm.valid">{{form_btn_label}}</button>
+                    color="primary" [disabled]="!addZoneForm.valid" data-automation-id="addzone-submit-btn">{{form_btn_label}}</button>
             </mat-dialog-actions>
 
         </form>

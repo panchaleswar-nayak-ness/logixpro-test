@@ -135,6 +135,7 @@
                       [disabled]="!i.includeCFCarouselPick"
                       [(ngModel)]="i.parentZone"
                       (ngModelChange)="zoneChange(i, false)"
+                      [disableOptionCentering]="true"
                       class="employees-action" data-automation-id="parent-zone-select-{{i.zone}}"
                     >
                       <mat-option
@@ -221,6 +222,30 @@
                       matInput
                       maxlength="20" data-automation-id="bin-input-{{i.zone}}"
                     />
+                  </mat-form-field>
+                </div>
+                <div class="col-xl-3">
+                  <mat-form-field
+                    class="action-dropdown custom-form-field-bg-white w-100 mb-3"
+                    appearance="outline"
+                  >
+                    <mat-label data-automation-id="case-label-label">Case Label</mat-label>
+                    <mat-select
+                      [(ngModel)]="i.caseLabel"
+                      (ngModelChange)="zoneChange(i, false)"
+                      [disabled]="i.carousel || i.includeCFCarouselPick"
+                      [disableOptionCentering]="true"
+                      class="employees-action" data-automation-id="case-label-select-{{i.zone}}"
+                    >
+                      <mat-option
+                        *ngFor="let option of caseLabelOptions"
+                        [value]="option.value"
+                        >{{ option.label }}</mat-option
+                      >
+                    </mat-select>
+                    <span class="material-symbols-outlined icon-expand-more" data-automation-id="case-label-expand-icon">
+                      expand_more
+                    </span>
                   </mat-form-field>
                 </div>
                 </div>

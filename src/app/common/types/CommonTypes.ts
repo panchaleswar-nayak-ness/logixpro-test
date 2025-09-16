@@ -9,7 +9,8 @@ export interface Operations {
 
 export interface TableHeaderDefinitions {
     colHeader: string,
-    colDef: string
+    colDef: string,
+    colTitle?: string
 }
 
 export type ValidWorkstation = {
@@ -23,6 +24,12 @@ export interface ApiResponse<T> {
     isExecuted: boolean;
     messages: any;
     statusCode: number;
+}
+
+export interface ApiResult<T> {
+    isSuccess: boolean;
+    value: T | null;
+    errorMessage?: string;
 }
 
 export interface ApiResponseData {

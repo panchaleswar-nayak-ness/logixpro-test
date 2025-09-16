@@ -1,8 +1,8 @@
 <div class="d-flex justify-content-between mb-4 align-items-center">
     <div class="div-width"></div>
-    <h1 class="m-0" mat-dialog-title>Temporary Manual Order Number - Add New</h1>
+    <h1 class="m-0" mat-dialog-title data-automation-id="heading-temporary-manual-order-number-add-new">Temporary Manual Order Number - Add New</h1>
 
-    <button mat-icon-button class="close-button dialog-close-button-fix" [mat-dialog-close]="false">
+    <button mat-icon-button class="close-button dialog-close-button-fix" [mat-dialog-close]="false" data-automation-id="close-dialog-button">
         <mat-icon class="close-icon">close</mat-icon>
     </button>
 </div>
@@ -14,14 +14,14 @@
             <ng-container *ngIf="this.orderRequired">
                 <div class="label-red p-3 d-flex br-8 mb-3">
                     <mat-icon class="material-symbols-outlined">notification_important</mat-icon>
-                    <span class="ps-2 w-100">Order Number can not be empty</span>
+                    <span class="ps-2 w-100" data-automation-id="error-order-number-required">Order Number can not be empty</span>
                 </div>
             </ng-container>
 
             <ng-container *ngIf="this.itemInvalid">
                 <div class="label-red p-3 d-flex br-8 mb-3">
                     <mat-icon class="material-symbols-outlined">notification_important</mat-icon>
-                    <span>{{ Itemnumber }}</span>
+                    <span data-automation-id="error-item-invalid">{{ Itemnumber }}</span>
                 </div>
             </ng-container>
         </div>
@@ -31,15 +31,15 @@
 
                 <mat-form-field class="custom-form-field  w-100 mb-3" appearance="outline"
                     [floatLabel]="getFloatLabelValue()" [hideRequiredMarker]="hideRequiredControl.value">
-                    <mat-label>Order Number</mat-label>
+                    <mat-label data-automation-id="label-order-number">Order Number</mat-label>
                     <input #ord_nmb type="text" placeholder="Search" aria-label="Number" matInput
                         [(ngModel)]='orderNumber' (focusout)="onFocusOutEvent($event,'order')" maxlength="50"
-                        [matAutocomplete]="auto" (ngModelChange)="this.searchByOrder.next($event)">
-                    <button matSuffix *ngIf="orderNumber" class="clear-btn" (click)="orderNumber=''"><mat-icon
+                        [matAutocomplete]="auto" (ngModelChange)="this.searchByOrder.next($event)" data-automation-id="input-order-number">
+                    <button matSuffix *ngIf="orderNumber" class="clear-btn" (click)="orderNumber=''" data-automation-id="clear-order-number-button"><mat-icon
                             class="text-20 text-chrome-600">cancel</mat-icon></button>
 
                     <mat-autocomplete #auto="matAutocomplete" (optionSelected)="searchData()">
-                        <mat-option *ngFor="let option of searchAutocompleteOrderNum" [value]="option.orderNumber">
+                        <mat-option *ngFor="let option of searchAutocompleteOrderNum" [value]="option.orderNumber" [attr.data-automation-id]="'option-order-number-' + option.orderNumber">
                             <div>{{option.orderNumber}}</div>
                         </mat-option>
                     </mat-autocomplete>
@@ -52,22 +52,22 @@
 
                 <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline"
                     [floatLabel]="getFloatLabelValueItem()" [hideRequiredMarker]="hideRequiredControlItem.value">
-                    <mat-label>{{ Itemnumber }}</mat-label>
+                    <mat-label [attr.data-automation-id]="'label-' + Itemnumber">{{ Itemnumber }}</mat-label>
                     <input type="text" placeholder="{{Itemnumber}}" aria-label="Number" matInput [(ngModel)]='itemNumber'
                         (focusout)="onFocusOutEvent($event,'item')" maxlength="50" [matAutocomplete]="item"
-                        (ngModelChange)="this.searchByItem.next($event)">
-                    <button matSuffix *ngIf="itemNumber" class="clear-btn" (click)="itemNumber=''"><mat-icon
+                        (ngModelChange)="this.searchByItem.next($event)" [attr.data-automation-id]="'input-' + Itemnumber ">
+                    <button matSuffix *ngIf="itemNumber" class="clear-btn" (click)="itemNumber=''" data-automation-id="clear-button"><mat-icon
                             class="text-20 text-chrome-600">cancel</mat-icon></button>
 
 
                     <mat-autocomplete class="card custom-scroll" #item="matAutocomplete"
                         (optionSelected)="searchData()">
 
-                        <h6 class="card-header matAutoCompHeader "><span class="span-width">{{ Itemnumber }}</span>
-                            <span class="span-width">Description</span>
+                        <h6 class="card-header matAutoCompHeader "><span class="span-width" [attr.data-automation-id]="'label-' + Itemnumber">{{ Itemnumber }}</span>
+                            <span class="span-width" data-automation-id="label-description">Description</span>
                         </h6>
                         <mat-option *ngFor="let option of searchAutocompleteItemNum" [value]="option.itemNumber"
-                            class="matAutoCompTableContent" (click)="$event.stopPropagation()">
+                            class="matAutoCompTableContent" (click)="$event.stopPropagation()" [attr.data-automation-id]="'option-'  + option.itemNumber">
                             <div class="loc_option">
                                 <span class="searchColumn" class="span-width">{{option.itemNumber}}</span> <span
                                     class="searchColumn span-searchColumn" #tooltip="matTooltip"
@@ -85,12 +85,12 @@
             <div class="col-6">
 
 
-                <mat-form-field class="custom-form-field  w-100 mb-3" appearance="outline"><mat-label>Transaction
+                <mat-form-field class="custom-form-field  w-100 mb-3" appearance="outline"><mat-label data-automation-id="label-transaction-type">Transaction
                         Type</mat-label>
-                    <mat-select #matRef class="employees-action" placeholder="Actions" [(ngModel)]="transType">
-                        <mat-option value="Pick">Pick</mat-option>
-                        <mat-option value="Put Away">Put Away</mat-option>
-                        <mat-option value="Count">Count</mat-option>
+                    <mat-select #matRef class="employees-action" placeholder="Actions" [(ngModel)]="transType" data-automation-id="select-transaction-type">
+                        <mat-option value="Pick" data-automation-id="option-transaction-type-pick">Pick</mat-option>
+                        <mat-option value="Put Away" data-automation-id="option-transaction-type-put-away">Put Away</mat-option>
+                        <mat-option value="Count" data-automation-id="option-transaction-type-count">Count</mat-option>
                     </mat-select>
                     <span class="material-symbols-outlined icon-expand-more">
                         expand_more
@@ -101,9 +101,9 @@
             <div class="col-6">
 
                 <mat-form-field class="custom-form-field  w-100 mb-3" appearance="outline">
-                    <mat-label>Set Location by Item Quantity</mat-label>
-                    <mat-select #matRef class="employees-action" placeholder="Actions" [(ngModel)]="inventoryMapID">
-                        <mat-option *ngFor="let item of setLocationByItemList" [value]="item.invMapID">
+                    <mat-label data-automation-id="label-set-location-by-item-quantity">Set Location by Item Quantity</mat-label>
+                    <mat-select #matRef class="employees-action" placeholder="Actions" [(ngModel)]="inventoryMapID" data-automation-id="select-set-location-by-item-quantity">
+                        <mat-option *ngFor="let item of setLocationByItemList" [value]="item.invMapID" [attr.data-automation-id]="'option-set-location-by-item-' + item.invMapID">
                             {{item.select}}
                         </mat-option>
                     </mat-select>
@@ -118,7 +118,7 @@
         <div class="d-flex justify-content-end pt-3">
 
             <button [disabled]=" orderNumber==='' || itemNumber==='' || itemNumber===undefined"
-                (click)="saveTransaction()" mat-flat-button color="primary" class="btn-lg flex-grow-1">Save
+                (click)="saveTransaction()" mat-flat-button color="primary" class="btn-lg flex-grow-1" data-automation-id="save-new-transaction-button">Save
                 New Transaction</button>
         </div>
 

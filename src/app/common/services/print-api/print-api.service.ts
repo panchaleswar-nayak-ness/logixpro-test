@@ -228,6 +228,24 @@ export class PrintApiService implements IPrintApiService {
     return await this.Api.PrintBulkTraveler(payload);
   }
 
+  public async PrintBulkTransactionsTravelerOrder(transIDs: Array<number>) {
+    const payload = {
+      wsid: this.userData.wsid,
+      transIDs: transIDs
+    }
+
+    return await this.Api.PrintBulkTransactionsTravelerOrder(payload);
+  }
+
+  public async PrintOCPItem(transIDs: Array<number>) {
+    const payload = {
+      wsid: this.userData.wsid,
+      transIDs: transIDs
+    }
+
+    return await this.Api.PrintOCPItem(payload);
+  }
+
   public async ProcessPickPrintPickTote(positions: Array<number>, toteIDs: Array<string>, orderNumbers: Array<string>, batchID: string) {
     const payload = {
       wsid: this.userData.wsid,

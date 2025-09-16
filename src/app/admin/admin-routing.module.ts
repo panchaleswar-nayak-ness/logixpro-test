@@ -19,6 +19,7 @@ import { EventLogComponent } from '../order-manager/event-log/event-log.componen
 import { DeAllocateOrdersComponent } from './de-allocate-orders/de-allocate-orders.component';
 import { ReportsComponent } from './reports/reports.component';
 import { UtilizationDashboardComponent } from './reports/utilization-dashboard/utilization-dashboard.component';
+import { AuditFileFieldMappingComponent } from './cycle-counts/audit-file-field-mapping-manager/audit-file-field-mapping-manager.component';
 
 const routes: Routes = [
   { path: '', component: AdminComponent,
@@ -72,6 +73,11 @@ const routes: Routes = [
     canActivate: [AuthGuardGuard],
   },
   {
+    path: 'auditFileFieldMapping',
+    component: AuditFileFieldMappingComponent,
+    canActivate: [AuthGuardGuard],
+  },
+  {
     path: 'locationAssignment',
     component: LocationAssignmentComponent,
     canActivate: [AuthGuardGuard],
@@ -120,8 +126,7 @@ const routes: Routes = [
     path: 'reports/utilizationDashboard',
     component: UtilizationDashboardComponent,
      canActivate: [AuthGuardGuard],
-  },
-  
+  }
 ];
 
 @NgModule({

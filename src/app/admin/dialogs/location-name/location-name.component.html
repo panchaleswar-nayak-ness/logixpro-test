@@ -1,22 +1,22 @@
 <div class="d-flex justify-content-between mb-4 align-items-center">
   <div class="div-width"></div>
   <div class="text-center">
-    <h1 class="m-0 text-22 text-center" mat-dialog-title>
+    <h1 class="m-0 text-22 text-center" mat-dialog-title data-automation-id="locname-title">
       <span>Location Name </span>
     </h1>
   </div>
   <div>
-    <button mat-icon-button class="close-button dialog-close-button-fix" [mat-dialog-close]="false">
-      <mat-icon class="close-icon">close</mat-icon>
+    <button mat-icon-button class="close-button dialog-close-button-fix" [mat-dialog-close]="false" data-automation-id="locname-close-btn">
+      <mat-icon class="close-icon" data-automation-id="locname-close-icon">close</mat-icon>
     </button>
   </div>
 </div>
 <div class="row mt-2 mx-0">
   <div class="d-flex gap-12 justify-content-end">
-    <button mat-stroked-button color="primary" class="btn-regular mb-3" (click)="clearLocationName()">Clear Location
+    <button mat-stroked-button color="primary" class="btn-regular mb-3" (click)="clearLocationName()" data-automation-id="locname-clear-btn">Clear Location
       Name</button>
-    <button mat-flat-button color="primary" class="add-icon-button mb-3" (click)="addNewName()">
-      <span class="material-symbols-outlined" matTooltip="Add New Location Name" matTooltipPosition="above">
+    <button mat-flat-button color="primary" class="add-icon-button mb-3" (click)="addNewName()" data-automation-id="locname-add-btn">
+      <span class="material-symbols-outlined" matTooltip="Add New Location Name" matTooltipPosition="above" data-automation-id="locname-add-icon">
         add
       </span>
     </button>
@@ -24,16 +24,16 @@
   <div class="col-xl-12">
     <div class="card br-14 table-responsive borderless px-0 mb-3">
       <ng-scrollbar class="mat-table-scrollbar ng-scrollbar-height" track="all">
-        <table mat-table [dataSource]="locationNames" class="w-100 table1">
+        <table mat-table [dataSource]="locationNames" class="w-100 table1" data-automation-id="locname-table">
           <ng-container matColumnDef="check">
-            <th mat-header-cell *matHeaderCellDef></th>
+            <th mat-header-cell *matHeaderCellDef data-automation-id="locname-th-check"></th>
             <td mat-cell *matCellDef="let element" width="10%">
-              <mat-radio-button value="1" (click)="selectLocation(element)"
+              <mat-radio-button value="1" (click)="selectLocation(element)" [attr.data-automation-id]="'locname-radio-' + element.currentVal"
                 [disabled]="element.currentVal != element.oldVal"></mat-radio-button>
             </td>
           </ng-container>
           <ng-container matColumnDef="locationName">
-            <th mat-header-cell *matHeaderCellDef class="w-100">Location Name</th>
+            <th mat-header-cell *matHeaderCellDef class="w-100" data-automation-id="locname-th-locationname">Location Name</th>
             <td mat-cell *matCellDef="let element">
               <mat-form-field class="custom-form-field w-100" appearance="outline">
                 <input 
@@ -42,23 +42,23 @@
                 matInput
                 type="text"
                 [(ngModel)]="element.currentVal"
-                [attr.data-id]="element.id">
+                [attr.data-id]="element.id" [attr.data-automation-id]="'locname-input-' + element.currentVal">
               </mat-form-field>
             </td>
           </ng-container>
           <ng-container matColumnDef="actions" stickyEnd>
-            <th mat-header-cell *matHeaderCellDef class="text-center">Actions</th>
+            <th mat-header-cell *matHeaderCellDef class="text-center" data-automation-id="locname-th-actions">Actions</th>
             <td mat-cell *matCellDef="let element; let i = index">
               <div class="d-flex gap-12 cl justify-content-center ps-2">
                 <button (click)="saveLocation(element)" [disabled]="element.currentVal == element.oldVal"
-                  matTooltip="Save" mat-flat-button color="primary" class="xsm-icon-button">
-                  <mat-icon class="material-symbols-outlined">
+                  matTooltip="Save" mat-flat-button color="primary" class="xsm-icon-button" [attr.data-automation-id]="'locname-save-btn-' + element.currentVal">
+                  <mat-icon class="material-symbols-outlined" [attr.data-automation-id]="'locname-save-icon-' + element.currentVal">
                     save
                   </mat-icon>
                 </button>
                 <button (click)="delLocation(element)" matTooltip="Delete" mat-flat-button color="warn"
-                  class="xsm-icon-button">
-                  <mat-icon class="material-symbols-outlined">
+                  class="xsm-icon-button" [attr.data-automation-id]="'locname-delete-btn-' + element.currentVal">
+                  <mat-icon class="material-symbols-outlined" [attr.data-automation-id]="'locname-delete-icon-' + element.currentVal">
                     close
                   </mat-icon>
                 </button>
@@ -66,12 +66,12 @@
             </td>
           </ng-container>
           <tr class="mat-row" *matNoDataRow>
-            <td class="mat-cell" [attr.colspan]="displayedColumns.length">
+            <td class="mat-cell" [attr.colspan]="displayedColumns.length" data-automation-id="locname-nodata-cell">
               <b>No data found.</b>
             </td>
           </tr>
-          <tr mat-header-row *matHeaderRowDef="displayedColumns;sticky:true"></tr>
-          <tr mat-row *matRowDef="let row; columns: displayedColumns; "></tr>
+          <tr mat-header-row *matHeaderRowDef="displayedColumns;sticky:true" data-automation-id="locname-header-row"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns; " [attr.data-automation-id]="'locname-row-' + (row.currentVal || row.id)"></tr>
         </table>
       </ng-scrollbar>
     </div>
