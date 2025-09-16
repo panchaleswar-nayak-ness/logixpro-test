@@ -15,6 +15,7 @@ export class AuthService {
     { icon: 'analytics', title: 'Reports', route: '/admin/reports' ,permission: 'Reports'},
     { icon: 'my_location', title: 'Location Assignment', route: '/admin/locationAssignment' ,permission: 'Location Assignment'},
     { icon: 'low_priority', title: 'Cycle Count', route: '/admin/cycleCounts' ,permission: 'Cycle Count Manager'},
+    { icon: 'low_priority', title: 'Audit File Field Mapping', route: '/admin/auditFileFieldMapping' ,permission: 'Cycle Count Manager'},
     { icon: 'trolley', title: 'Move Items', route: '#' ,permission: 'Move Items'},
     { icon: 'dvr', title: 'Transactions', route: '#' ,permission: 'Transaction Journal'},
     { icon: 'ads_click', title: 'Manual Transactions', route: '#' ,permission: 'Manual Transactions'},

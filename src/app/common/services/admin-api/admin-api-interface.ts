@@ -1,6 +1,9 @@
 import { DevicePreferenceRequest, DevicePreferencesTableRequest } from "../../interface/admin/device-preferences";
 import { UpdateEmergencyRequest } from "../../interface/admin/opentransaction.interfaces";
 import { InventoryMap, UpdateSCReq } from "../../Model/storage-container-management";
+import { AuditTransferFileFormData } from "../../interface/audit-file-field-mapping-manager/import-type-config.interface";
+import { Observable } from "rxjs";
+import { InventoryCompareConfigResponse } from "../../interface/audit-file-field-mapping-manager/inventory-compare-response.interface";
 
 export interface IAdminApiService
 {
@@ -272,4 +275,5 @@ export interface IAdminApiService
   GetBinCellsAsync(layoutId: number);
   GetBinCellAsync(binCellId: number);
   createInventoryMapAsync(body: InventoryMap);
+  UpdateImportType(body: AuditTransferFileFormData): Observable<InventoryCompareConfigResponse | null>;
 }

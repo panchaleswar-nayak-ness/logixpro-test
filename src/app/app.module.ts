@@ -166,6 +166,7 @@ import {OrderDetailsComponent} from './dialogs/order-details/order-details.compo
 import { ZoneGroupsComponent } from './dialogs/zone-groups/zone-groups.component';
 import { ImprefInductionFilterComponent } from './dialogs/impref-induction-filter/impref-induction-filter.component';
 import { ImportCountBatchesComponent } from './admin/cycle-counts/import-count-batches/import-count-batches.component';
+import { AuditTransferFileComponent } from './admin/cycle-counts/dialogs/audit-transfer-file/audit-transfer-file.component';
 import { MatSelectModule } from '@angular/material/select';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 
@@ -178,6 +179,13 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatSliderModule } from '@angular/material/slider';
 import { MatCardModule } from '@angular/material/card';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import {
+  DirectFilterationColumnsService
+} from './common/services/direct-filteration-columns.service';
+import {
+  DirectFilterationColumnsMenuComponent
+} from './common/globalComponents/direct-filteration-columns-menu/direct-filteration-columns-menu.component';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -290,6 +298,8 @@ import { MatTooltipModule } from '@angular/material/tooltip';
     OrderDetailsComponent,
     ZoneGroupsComponent,
     ImprefInductionFilterComponent,
+    DirectFilterationColumnsMenuComponent,  // Add this line
+    AuditTransferFileComponent
   ],
   imports: [
     BrowserModule,

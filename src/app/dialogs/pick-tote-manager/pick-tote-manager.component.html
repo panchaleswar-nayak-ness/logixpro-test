@@ -450,18 +450,20 @@
 
                       <table mat-table #table [dataSource]="filterOrderTransactionSource" matSort data-automation-id="transactions-table">
 
-                        <ng-container *ngFor="let column of filterBatchTransColumns" [cdkColumnDef]="column.columnDef">
-                          <th mat-header-cell *cdkHeaderCellDef mat-sort-header [attr.data-automation-id]="'transactions-table-header-' + column.columnDef">{{ column.header }}</th>
-                          <td mat-cell *cdkCellDef="let row; let i = index"
-                              [matTooltip]="column.cell(row)"
-                              matTooltipPosition="above"
-                              [matTooltipDisabled]="isTooltipDisabled(column.cell(row))"
-                              [attr.data-automation-id]="'transactions-table-row-' + i + '-cell-' + column.columnDef">
-                            {{ column.cell(row) }}
-                          </td>
+                        <ng-container matColumnDef="{{col.columnDef}}" *ngFor="let col of filterBatchTransColumns; let indexOfelement=index;">
+                          <th class="header container-table-header" mat-header-cell  *matHeaderCellDef mat-sort-header >{{ col.header }}</th>
+                          <td class="container-table-data" mat-cell *matCellDef="let element" 
+                          (contextmenu)=" onContextMenu($event, element[col.columnDef], col.columnDef)" >
+                          {{ col.cell(element) }}
+                        </td>
                         </ng-container>
-                        <tr mat-header-row *matHeaderRowDef="displayedTransColumns;sticky:true" data-automation-id="transactions-table-header-row"></tr>
-                        <tr mat-row *matRowDef="let row; columns: displayedTransColumns; index as i" [attr.data-automation-id]="'transactions-table-row-' + i"></tr>
+
+                        <tr class="mat-row" *matNoDataRow (contextmenu)="onContextMenu($event, undefined, '')">
+                          <td class="mat-cell border " [attr.colspan]="displayedTransColumns.length">No data available in table.</td>
+                        </tr>
+
+                        <tr mat-header-row *matHeaderRowDef="displayedTransColumns;sticky:true"></tr>
+                        <tr mat-row *matRowDef="let row; columns: displayedTransColumns;"></tr>
                       </table>
                     </ng-scrollbar>
                   </div>
@@ -690,3 +692,9 @@
       </mat-tab-group>
     </div>
   </ng-template>
+  
+<!-- Add this new component alongside the existing one -->
+<app-direct-filteration-columns-menu
+  [componentName]="'toteTransManager'"
+  (filterationColumnsSelected)="directFilterationColumnsSelected($event)">
+</app-direct-filteration-columns-menu>

@@ -27,7 +27,6 @@ import { DatePipe } from '@angular/common';
 import { ContextMenuFiltersService } from 'src/app/common/init/context-menu-filters.service';
 import { PrintApiService } from 'src/app/common/services/print-api/print-api.service';
 import { UpdateEmergencyRequest } from 'src/app/common/interface/admin/opentransaction.interfaces';
-
 import {TransactionConstants} from 'src/app/common/constants/admin/transaction-constants';
 // Define a strongly typed enum for date types to avoid using magic strings
 enum DateType {
@@ -380,7 +379,7 @@ export class OpenTransactionOnHoldComponent implements OnInit, AfterViewInit {
       searchPayload = {
         query: this.orderNumber,
         tableName: 2,
-        column: 'orderNumber',
+        column: Column.OrderNumber,
       };
     } else {
       searchPayload = {
@@ -436,7 +435,7 @@ onCheckboxToggle(
 }
 
   viewInInventoryMaster(row) {
-    clearTimeout(this.clickTimeout); 
+    clearTimeout(this.clickTimeout);
     localStorage.setItem("prevTab","/admin/transaction");
     if(this.spliUrl[1] == AppNames.OrderManager) this.router.navigate([]).then(() => window.open(`/#/OrderManager/InventoryMaster?itemNumber=${row.itemNumber}`, UniqueConstants._self));
     else if(this.spliUrl[1] == AppNames.InductionManager) window.open(`/#${AppRoutes.InductionManagerAdminInvMap}?itemNumber=${row.itemNumber}`, UniqueConstants._self);
@@ -523,7 +522,7 @@ onCheckboxToggle(
   }
 
   getContentData(isInit: boolean = false) {
-    
+
     this.payload = {
       draw: 0,
       sDate: this.datepipe.transform(this.sDate ?? new Date(TransactionConstants.defaultStartYear, new Date().getMonth(), new Date().getDate()), 'MM/dd/yyyy'),
@@ -773,7 +772,7 @@ setDateOnBlank(event: Date | null, dateType: DateType): void {
     var filter = this.filterString;
 
     this.printApiService.ProcessCycleCountPrint(searchString, searchColumn, filter);
-    
+
     //this.global.Print(`FileName:printCycleCountReport`)
   }
 
@@ -786,7 +785,7 @@ setDateOnBlank(event: Date | null, dateType: DateType): void {
       this.dataSource.filteredData.forEach(element => { if(row != element) element.selected = false; });
       const selectedRow = this.dataSource.filteredData.find((x: any) => x === row);
       if(selectedRow) selectedRow.selected = !selectedRow.selected;
-    }, 250); 
+    }, 250);
   }
 
 }

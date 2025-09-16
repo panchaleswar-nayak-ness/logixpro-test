@@ -77,6 +77,10 @@
         "Permission": "Cycle Count Manager"
     },
     {
+        "path": "/admin/auditFileFieldMapping",
+        "Permission": "Cycle Count Manager"
+    },
+    {
         "path": "/OrderManager/EventLog",
         "Permission": "Event Log Manager"
     },
