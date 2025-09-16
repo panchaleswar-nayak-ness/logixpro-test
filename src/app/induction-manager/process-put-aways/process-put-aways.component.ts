@@ -8,7 +8,7 @@ import { SelectionTransactionForToteComponent } from 'src/app/dialogs/selection-
 import { TotesAddEditComponent } from 'src/app/dialogs/totes-add-edit/totes-add-edit.component';
 import { AuthService } from 'src/app/common/init/auth.service';
 import { ConfirmationDialogComponent } from 'src/app/admin/dialogs/confirmation-dialog/confirmation-dialog.component';
-import { debounceTime, distinctUntilChanged, Subject } from 'rxjs';
+import { debounceTime, distinctUntilChanged, Subject, timer } from 'rxjs';
 import { FloatLabelType } from '@angular/material/form-field';
 import { FormControl } from '@angular/forms';
 import { ToteTransactionViewComponent } from 'src/app/dialogs/tote-transaction-view/tote-transaction-view.component';
@@ -134,6 +134,7 @@ export class ProcessPutAwaysComponent implements OnInit {
 
   searchAutocompleteItemNumbers: Array<{ itemNumber: string; description: string }> = [];
   searchByItemNumber: Subject<string> = new Subject<string>();
+  private isOptionBeingSelected: boolean = false;
 
   /** Whether the number of selected elements matches the total number of rows. */
   isAllSelected() {
@@ -1035,6 +1036,9 @@ async clearBatchData(){
             }
           });
           dialogRef.afterClosed().subscribe((result) => {
+            // Clear autocomplete results and blur input field when modal closes
+            this.clearAutocompleteAndBlur();
+            
             if (result == 'NO') {
               if(this.inputType !=ColumnDef.SerialNumber && this.processPutAwayIndex.imPreference.createItemMaster ){
                 this.ifAllowed=false;
@@ -1124,6 +1128,9 @@ async clearBatchData(){
       });
 
       dialogRef.afterClosed().subscribe((result) => {
+        // Clear autocomplete results and blur input field when modal closes
+        this.clearAutocompleteAndBlur();
+        
         if (result == 'NO') {
           if(this.inputType !=ColumnDef.SerialNumber && this.processPutAwayIndex.imPreference.createItemMaster ){
             this.ifAllowed=false;
@@ -1232,6 +1239,8 @@ async clearBatchData(){
             this.goToNext();
             this.getRow();
             this.inputValue = "";
+            // Clear autocomplete results when filling tote table
+            this.clearAutocompleteAndBlur();
           } else {
             this.global.ShowToastr(ToasterType.Error,ToasterMessages.SomethingWentWrong, ToasterTitle.Error);
             console.log("TotesTable",res.responseMessage);
@@ -1526,8 +1535,36 @@ async clearBatchData(){
   }
 
   onAutocompleteOptionSelected(event: MatAutocompleteSelectedEvent) {
+    this.isOptionBeingSelected = true;
     this.inputValue = event.option.value;
     this.searchAutocompleteItemNumbers = [];
+    // Reset the flag after a short delay
+    timer(100).subscribe(() => {
+      this.isOptionBeingSelected = false;
+    });
+  }
+
+  private clearAutocompleteAndBlur() {
+    this.searchAutocompleteItemNumbers = [];
+    this.isOptionBeingSelected = false;
+    this.inputVal?.nativeElement?.blur();
+  }
+
+  onInputBlur(event: FocusEvent) {
+    const relatedTarget = event.relatedTarget as HTMLElement;
+    if (relatedTarget && relatedTarget.closest('.mat-autocomplete-panel')) {
+      return;
+    }
+    
+    if (!this.isOptionBeingSelected) {
+      this.searchAutocompleteItemNumbers = [];
+    }
+  }
+
+  clearInputValue() {
+    this.inputValue = '';
+    this.searchAutocompleteItemNumbers = [];
+    this.isOptionBeingSelected = false;
   }
 
 

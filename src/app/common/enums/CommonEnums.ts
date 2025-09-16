@@ -118,8 +118,8 @@ export enum FilterType {
     LessThan = 'lessThan',
     LessThanEqual = 'lessThanEqual',
     Range = 'range'
-  }
-  
+}
+
 export enum ErrorCode {
     UnableToPrint = 555
 }

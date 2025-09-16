@@ -29,7 +29,7 @@ export class  ItemCategoryComponent implements OnInit {
     private global:GlobalService,
     private authService: AuthService,
     private renderer: Renderer2,
-    public dialogRef: MatDialogRef<any>, 
+    public dialogRef: MatDialogRef<any>,
     @Inject(MAT_DIALOG_DATA) public data: any,
     public route: Router
     ) { this.iCommonAPI = commonAPI; }
@@ -48,7 +48,7 @@ export class  ItemCategoryComponent implements OnInit {
     }
   }
 
- getCategoryList(){ 
+ getCategoryList(){
     this.iCommonAPI.getCategory().subscribe((res) => {
       this.categoryList = res.data;
       this.enableButton = [];
@@ -101,18 +101,18 @@ export class  ItemCategoryComponent implements OnInit {
 
   saveCategory(category : any, oldCat : any, subCategory : any, oldSubCat : any) {
     let cond = true;
-    if(category){ 
+    if(category){
       this.categoryList.forEach(element => {
         if(element.category?.toLowerCase() == category?.toLowerCase() && element.subCategory?.toLowerCase() == subCategory?.toLowerCase()) {
           cond = false;
           this.global.ShowToastr(ToasterType.Error, 'Category cannot be saved. Category matches another entry. Save any pending changes before attempting to save this entry.', ToasterTitle.Error);
         }
       });
-    } 
+    }
 
     if(cond) {
       if(category || subCategory) {
-        let paylaod = {      
+        let paylaod = {
           "category": category,
           "oldCategory": oldCat.toString(),
           "subCategory": subCategory,
@@ -162,7 +162,7 @@ export class  ItemCategoryComponent implements OnInit {
   clearCategory(){
     this.dialogRef.close(DialogConstants.close);
   }
-  ClearSelection(){ 
+  ClearSelection(){
     this.dialogRef.close({category:'',subCategory:''});
   }
 
