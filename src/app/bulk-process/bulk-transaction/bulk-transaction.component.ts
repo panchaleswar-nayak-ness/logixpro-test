@@ -611,6 +611,7 @@ export class BulkTransactionComponent implements OnInit {
           // Add all order lines to the flat orderLines array
           this.orderLines = this.orderLines.concat(order.orderLines);
         });
+        this.iBulkProcessApiService.updateOpenTransactionsZoneCaseQuantity(this.orderLines);
         this.verifyBulks = !this.verifyBulks;
         localStorage.setItem(localStorageKeys.VerifyBulks, this.verifyBulks.toString());
       }
