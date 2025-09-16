@@ -132,8 +132,6 @@ export const ConfirmationHeadings = {
     PrintBatchOrOrder:"Print Batch Or Order",
     NoOffCarouselPicksFound:"No Off-Carousel Picks Found",
     ResolveToteId: "Resolve Tote ID",
-    ContinueCreatingTransaction: 'Continue Creating Transactions?',
-    AssignLocation: 'Assign Location',
     ChangeFormatType: "Change Format Type"
 }
 export const ConfirmationButtonText = {
@@ -163,9 +161,6 @@ export const ConfirmationMessages = {
     IrreversibleActionWarning :'This action cannot be undone.',
     UpdateAllInterface: 'Click OK to update all devices with Com Port: {{comPort}}',
     UpdateAllInterfaceWithZone: 'Click OK to update all devices with Com Port: {{comPort}} and Zone: {{zone}}',
-    ContinueCreatingTransaction: 'You will now create a “Count” Transaction for each Item Number in the Queue.',
-    InfoText: 'These items will be removed from the Discrepancies List.',
-    ClickYesToAssignLocation: 'Click Yes to close the Cycle Count Manager screen and go the Location Assignment Screen.',
     InconsistentFormat: (fieldName: string, newFormat: string, oldFormat: string) => `An "${fieldName}" was added with ${oldFormat} format. Changing to ${newFormat} will update that entry as well. Do you want to continue?`,
 }
 
@@ -789,13 +784,7 @@ export class ApiErrorMessages {
   static readonly ErrorSubmittingCaseWiseOrders = "Error submitting case-wise orders"
 }
 export const PickToteFilterpreferences = {
-    preferences: "PickToteFilterPrefs"
-}
-export const importFieldMappingDialogSizes  = {
-  CCDiscrepancies : {
-    width: '800px',
-    height: '650px'
-  }
+    preferences: "PickToteFilterPrefs",
 }
 export const FILTRATION_GRID_OPERATION_KEYS = {
     Between: "between",

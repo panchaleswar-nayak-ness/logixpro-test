@@ -261,6 +261,9 @@ export class SrCurrentOrderComponent implements OnInit {
     this.refreshCurrentOrders.subscribe((e) => {
       this.newReplenishmentOrders();
     });
+    this.searchColumnOptions.sort((a, b) =>
+      a.viewValue.localeCompare(b.viewValue)
+    );
   }
 
   ngOnDestroy() {

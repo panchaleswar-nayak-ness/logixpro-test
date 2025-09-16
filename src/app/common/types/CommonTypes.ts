@@ -9,7 +9,8 @@ export interface Operations {
 
 export interface TableHeaderDefinitions {
     colHeader: string,
-    colDef: string
+    colDef: string,
+    colTitle?: string
 }
 
 export type ValidWorkstation = {

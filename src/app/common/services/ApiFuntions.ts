@@ -2125,6 +2125,10 @@ public updateEmergencyReprocessTrans(payload: UpdateEmergencyRequest): Observabl
     return await this.ApiBase.PutAsync('/bulktransactions/taskcomplete', body);
   }
 
+  public async updateOpenTransactionsZoneCaseQuantity(body: OrderLineResource[]) {
+    return await this.ApiBase.PatchAsync('/bulktransactions/zonecasequantities', body);
+  }
+
   public async fullTote(body: any) {
     return await this.ApiBase.PutAsync('/totes/fulltote', body);
   }
@@ -2186,6 +2190,14 @@ public updateEmergencyReprocessTrans(payload: UpdateEmergencyRequest): Observabl
 
   public async PrintBulkTraveler(body: any) {
     return await this.ApiBase.PostAsync(`/print/BulkTransactionsTraveler`, body);
+  }
+
+  public async PrintBulkTransactionsTravelerOrder(body: PrintTransactionPayload) {
+    return await this.ApiBase.PostAsync(`/print/BulkTransactionsTravelerOrder`, body);
+  }
+
+  public async PrintOCPItem(body: PrintTransactionPayload) {
+    return await this.ApiBase.PostAsync(`/print/OCPItem`, body);
   }
 
   public async ProcessPickPrintPickTote(body: any) {

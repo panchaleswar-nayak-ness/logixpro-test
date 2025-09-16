@@ -43,6 +43,7 @@ import { AppRoutes } from "src/app/common/constants/menu.constants";
 import { IConsolidationApi } from "src/app/common/services/consolidation-api/consolidation-api-interface";
 import { FieldMappingService } from "src/app/common/services/field-mapping/field-mapping.service";
 import { SharedService } from 'src/app/common/services/shared.service';
+import { TableHeaderDefinitions } from "src/app/common/types/CommonTypes";
 
 type RouteIDItem = {
   RouteID: string;
@@ -114,6 +115,7 @@ export class RouteidListComponent implements OnInit, OnDestroy {
   // Define column names as an array of strings (Correct Type)
   displayedColumns: { colHeader: string; colDef: string; colTitle: string }[] =
     [];
+  searchDisplayedColumns: TableHeaderDefinitions[];
   public dataSource: MatTableDataSource<{
     RouteID: string;
     StatusDate: string;
@@ -334,6 +336,7 @@ refreshData() {
 
   getColumnsData() {
     this.displayedColumns = this.routeIdListColumn;
+    this.searchDisplayedColumns =this.displayedColumns?.filter(col => !!col.colDef) ?? [];
     this.columnValues = this.columnNames;
     this.columnValues.push(ColumnDef.Actions);
     this.getContentData();

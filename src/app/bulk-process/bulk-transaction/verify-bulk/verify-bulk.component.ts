@@ -15,7 +15,7 @@ import {
   OrderLineWithSelection
 } from 'src/app/common/Model/bulk-transactions';
 import { SetTimeout } from 'src/app/common/constants/numbers.constants';
-import { DialogConstants, Placeholders, ResponseStrings, Style, ToasterMessages, ToasterTitle, ToasterType } from 'src/app/common/constants/strings.constants';
+import { ConfirmationHeadings, ConfirmationMessages, DialogConstants, Placeholders, ResponseStrings, Style, ToasterMessages, ToasterTitle, ToasterType } from 'src/app/common/constants/strings.constants';
 import { IAdminApiService } from 'src/app/common/services/admin-api/admin-api-interface';
 import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.service';
 import { IBulkProcessApiService } from 'src/app/common/services/bulk-process-api/bulk-process-api-interface';
@@ -373,7 +373,7 @@ export class VerifyBulkComponent implements OnInit {
 
         
         let res = await this.iBulkProcessApiService.bulkPickTaskComplete(ordersNew);
-        if (res?.status == HttpStatusCode.Ok) {
+        if (res?.status == HttpStatusCode.Ok) {                              
           if (this.bulkTransactionType == BulkTransactionType.PICK && res?.body.length > 0) {
             await this.TaskCompleteEOB(res?.body);
           }
@@ -545,10 +545,33 @@ export class VerifyBulkComponent implements OnInit {
     this.iAdminApiService.PrintTotes(orderNumber, toteId, transactionType, index);
   }
 
-
   printBulkTraveler() {
-    let transIDs = this.orderLines.filteredData.map(o => o['id']);
-    this.printApiService.PrintBulkTraveler(transIDs);
+    if(this.isSlapperLabelFlow) {
+      this.printBatchOrOrders();      
+    } else {
+      let transIDs = this.orderLines.filteredData.map(o => o['id']);
+      this.printApiService.PrintBulkTraveler(transIDs);
+    }
+  }
+
+  printOffCarouselPickItemLabels() {
+    const dialogRef1 = this.global.OpenDialog(ConfirmationDialogComponent, {
+      height: DialogConstants.auto,
+      width: Style.w560px,
+      autoFocus: DialogConstants.autoFocus,
+      disableClose: true,
+      data: {
+        message: ConfirmationMessages.PrintOffCarouselPickItemLabels,          
+        heading: ConfirmationHeadings.PrintOffCarouselPickItemLabels,
+        buttonFields: true,
+      },
+    });
+    dialogRef1.afterClosed().subscribe(async (res: string) => {
+      if (res == ResponseStrings.Yes) {
+        let transIDs = this.orderLines.filteredData.filter(o => o.isPartialCase).map(o => o.id);
+        this.printApiService.PrintOCPItem(transIDs);
+      }
+    }); 
   }
 
   @ViewChild('tooltip') tooltip: MatTooltip;
