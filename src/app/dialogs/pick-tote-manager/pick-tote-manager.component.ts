@@ -8,7 +8,7 @@ import {
 } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { MatTableDataSource } from '@angular/material/table'; 
+import { MatTableDataSource } from '@angular/material/table';
 import { Observable } from 'rxjs/internal/Observable';
 import { map } from 'rxjs/internal/operators/map';
 import { startWith } from 'rxjs/internal/operators/startWith';
@@ -45,31 +45,31 @@ export interface PeriodicElement {
 })
 export class PickToteManagerComponent implements OnInit {
   selectedOrderValue: string = '';
-  filterString : string = UniqueConstants.OneEqualsOne;
+  filterString: string = UniqueConstants.OneEqualsOne;
 
-fieldMappings = JSON.parse(localStorage.getItem('fieldMappings') ?? '{}');
-ItemNumber: string = this.fieldMappings.itemNumber;
-UnitOfMeasure: string = this.fieldMappings.unitOfMeasure;
-UserField1:string = this.fieldMappings.userField1;
-UserField2:string = this.fieldMappings.userField2;
-UserField3:string = this.fieldMappings.userField3;
-UserField4:string = this.fieldMappings.userField4;
-UserField5:string = this.fieldMappings.userField5;
-UserField6:string = this.fieldMappings.userField6;
-UserField7:string = this.fieldMappings.userField7;
-UserField8:string = this.fieldMappings.userField8;
-UserField9:string = this.fieldMappings.userField9;
-UserField10:string = this.fieldMappings.userField10;
- DATE_FIELDS = new Set<string>([
-  Column.RequiredDate,
-  Column.ImportDate
-]);
+  fieldMappings = JSON.parse(localStorage.getItem('fieldMappings') ?? '{}');
+  ItemNumber: string = this.fieldMappings.itemNumber;
+  UnitOfMeasure: string = this.fieldMappings.unitOfMeasure;
+  UserField1: string = this.fieldMappings.userField1;
+  UserField2: string = this.fieldMappings.userField2;
+  UserField3: string = this.fieldMappings.userField3;
+  UserField4: string = this.fieldMappings.userField4;
+  UserField5: string = this.fieldMappings.userField5;
+  UserField6: string = this.fieldMappings.userField6;
+  UserField7: string = this.fieldMappings.userField7;
+  UserField8: string = this.fieldMappings.userField8;
+  UserField9: string = this.fieldMappings.userField9;
+  UserField10: string = this.fieldMappings.userField10;
+  DATE_FIELDS = new Set<string>([
+    Column.RequiredDate,
+    Column.ImportDate
+  ]);
 
   placeholders = Placeholders;
   ELEMENT_DATA: PeriodicElement[] = [
-    { position: 1, name: 'Hydrogen', weight: 1.0079, symbol: 'H' },
-    { position: 1, name: 'Hydrogen', weight: 1.0079, symbol: 'H' },
-    { position: 1, name: 'Hydrogen', weight: 1.0079, symbol: 'H' },
+    {position: 1, name: 'Hydrogen', weight: 1.0079, symbol: 'H'},
+    {position: 1, name: 'Hydrogen', weight: 1.0079, symbol: 'H'},
+    {position: 1, name: 'Hydrogen', weight: 1.0079, symbol: 'H'},
   ];
 
   @ViewChild('field_focus') field_focus: ElementRef;
@@ -85,7 +85,7 @@ UserField10:string = this.fieldMappings.userField10;
   filterBatchDataZone: any[] = [];
   useDefaultFilter;
   useDefaultZone;
-  batchByZoneData: any[] = []; 
+  batchByZoneData: any[] = [];
   tabIndex: number = 0;
 
   isAllSelected() {
@@ -93,7 +93,7 @@ UserField10:string = this.fieldMappings.userField10;
     const numRows = this.dataSource.data.length;
     return numSelected === numRows;
   }
- 
+
   toggleAllRows() {
     if (this.isAllSelected()) {
       this.selection.clear();
@@ -102,7 +102,7 @@ UserField10:string = this.fieldMappings.userField10;
 
     this.selection.select(...this.dataSource.data);
   }
- 
+
   checkboxLabel(row?: PeriodicElement): string {
     if (!row) {
       return `${this.isAllSelected() ? 'deselect' : UniqueConstants.Select} all`;
@@ -159,8 +159,8 @@ UserField10:string = this.fieldMappings.userField10;
   @ViewChild(MatSort) viewFilterTransSort: MatSort;
   @ViewChild(MatSort) viewZoneTransSort: MatSort;
 
-  displayedColumns2: string[] = ['orderno', 'requireddate','transactionsline',UniqueConstants.Priority];
-  filterBatchOrderColums: string[] = ['orderno', 'requireddate', 'transactionsline',UniqueConstants.Priority];
+  displayedColumns2: string[] = ['orderno', 'requireddate', 'transactionsline', UniqueConstants.Priority];
+  filterBatchOrderColums: string[] = ['orderno', 'requireddate', 'transactionsline', UniqueConstants.Priority];
 
   displayedColumns3: string[] = [
     'orderno',
@@ -334,7 +334,7 @@ UserField10:string = this.fieldMappings.userField10;
       header: TableConstant.HostTransactionID,
       cell: (element: any) => `${element.hostTransactionID}`,
     },
-    { columnDef: 'id', header: 'ID', cell: (element: any) => `${element.id}` },
+    {columnDef: 'id', header: 'ID', cell: (element: any) => `${element.id}`},
     {
       columnDef: TableConstant.zone,
       header: ColumnDef.Zone,
@@ -423,7 +423,7 @@ UserField10:string = this.fieldMappings.userField10;
   ];
 
   displayedTransColumns = this.filterBatchTransColumns.map((c) => c.columnDef);
-filterationColumns : FilterationColumns[] = [];
+  filterationColumns: FilterationColumns[] = [];
   displayedColumns4: string[] = [
     UniqueConstants.Select,
     TableConstant.zone,
@@ -444,14 +444,17 @@ filterationColumns : FilterationColumns[] = [];
   @ViewChild('filterBatchTrans') filterBatchTrans: MatPaginator;
   @ViewChild('zoneBatchOrder') zoneBatchOrder: MatPaginator;
   @ViewChild('zoneBatchTrans') zoneBatchTrans: MatPaginator;
-  @ViewChild('batchByZonePaginator', { static: false })
+
+  @ViewChild('batchByZonePaginator', {static: false})
   set paginator(value: MatPaginator) {
     this.batchByZoneSource.paginator = value;
   }
+
   public iInductionManagerApi: IInductionManagerApiService;
+
   constructor(
     private ngZone: NgZone,
-    private contextMenuService : TableContextMenuService,
+    private contextMenuService: TableContextMenuService,
     private pickToteManagerService: PickToteManagerService,
     private global: GlobalService,
     public inductionManagerApi: InductionManagerApiService,
@@ -475,7 +478,7 @@ filterationColumns : FilterationColumns[] = [];
     } else {
       this.isFilter = TableConstant.zone;
     }
-    
+
     this.allSelectOrders = this.data.allOrders;
   }
 
@@ -498,6 +501,7 @@ filterationColumns : FilterationColumns[] = [];
       this.field_focus.nativeElement.focus();
     }, 500);
   }
+
   getSavedFilters() {
     let paylaod = {
       filter: '',
@@ -508,21 +512,20 @@ filterationColumns : FilterationColumns[] = [];
         if (res.isExecuted && res.data.batchDescriptions) {
           this.savedFilterList = res.data.batchDescriptions;
           this.pickBatchFilter = res.data.pickBatchFilter;
-          this.pickBatchOrder =  res.data.pickBatchOrder;
+          this.pickBatchOrder = res.data.pickBatchOrder;
           this.filterData = [];
           if (Array.isArray(this.pickBatchFilter) && this.pickBatchFilter.length > 0) {
             const description = this.pickBatchFilter[0].description;
             this.savedFilter.patchValue(description);
-            this.onSavedFilterChange({ option: { value: description } });
+            this.onSavedFilterChange({option: {value: description}});
             this.onAddFilter(this.pickBatchFilter);
-          }          
-        this.orderByData = [];
+          }
+          this.orderByData = [];
 
           if (!this.pickBatchOrder) {
             this.onAddOrderBy(this.orderByData);
-          }
-          else{
-              this.onAddOrderBy(this.pickBatchOrder);
+          } else {
+            this.onAddOrderBy(this.pickBatchOrder);
           }
           this.filteredOptions = this.savedFilter.valueChanges.pipe(
             startWith(''),
@@ -557,7 +560,7 @@ filterationColumns : FilterationColumns[] = [];
     if (filterData?.length) {
       const formattedFilters = filterData.map((filter) => {
         const formattedValue = this.normalizeDateField(filter.field, filter.value);
-  
+
         return {
           sequence: filter.sequence,
           field: filter.field,
@@ -569,7 +572,7 @@ filterationColumns : FilterationColumns[] = [];
           format: filter.isNumericFormat ? FormatValues.NUMERIC : FormatValues.ALPHA_NUMERIC, // Set format based on isNumericFormat
         };
       });
-  
+
       this.filterData.push(...formattedFilters);
       this.filterSeq = filterData[filterData.length - 1].sequence;
     } else {
@@ -582,19 +585,19 @@ filterationColumns : FilterationColumns[] = [];
         isSaved: false,
         format: this.getDefaultFormat(ColumnDef.Emergency),
       });
-  
+
       this.isFilterAdd = false;
     }
-  
+
     this.updateDataSource();
   }
-  
+
   /**
    * Normalize date string to 'YYYY-MM-DD' if the field is date-related.
    */
   private normalizeDateField(field: string, value: string): string {
     const dateFields = new Set<string>([Column.RequiredDate, Column.ImportDate]);
-  
+
     if (dateFields.has(field) && value && !/^\d{4}-\d{2}-\d{2}$/.test(value)) {
       const dateParts = value.match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})$/);
       if (dateParts) {
@@ -602,14 +605,14 @@ filterationColumns : FilterationColumns[] = [];
         return `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`;
       }
     }
-  
+
     return value;
   }
-  
+
   private updateDataSource(): void {
     this.dataSource = new MatTableDataSource<FilterData>([...this.filterData]);
   }
-  
+
   onAddOrderBy(filterData?: OrderData[]): void {
     if (filterData) {
       filterData.map((obj) => {
@@ -633,6 +636,7 @@ filterationColumns : FilterationColumns[] = [];
     }
     this.orderBydataSource = new MatTableDataSource<OrderData>(this.orderByData);
   }
+
   /**
    * Validates if the filter element is valid
    * @param element The filter element to validate
@@ -645,7 +649,7 @@ filterationColumns : FilterationColumns[] = [];
         ToasterType.Error,
         ToasterMessages.InvalidInputForFilter,
         ToasterTitle.Error
-    );
+      );
     }
     return isValid;
   }
@@ -712,35 +716,39 @@ filterationColumns : FilterationColumns[] = [];
     if (!this.isValidFilterElement(element)) {
       return;
     }
-  
+
     // Mark element as unsaved
     element.isSaved = false;
-  
+
     // Apply numeric format for disabled fields
     if (this.applyDisabledFieldFormatting(element)) {
       return;
     }
-  
+
     // Find rows with the same field (excluding the current row)
     const sameFieldRows = this.getSameFieldRows(element);
-  
+
     // No related rows, no further action needed
     if (sameFieldRows.length === 0) {
-  return;
-}
+      return;
+    }
 
     // Handle format synchronization
     this.handleFormatSynchronization(element, sameFieldRows);
-}
+  }
+
   clearMatSelectList() {
     this.matRef.options.forEach((data: MatOption) => data.deselect());
   }
+
   orderActionRefresh() {
     this.orderRef.options.forEach((data: MatOption) => data.deselect());
   }
+
   orderActionRefreshZone() {
     this.orderZoneRef.options.forEach((data: MatOption) => data.deselect());
   }
+
   onFilterAction(option: any) {
     if (option.value === 'add_new_filter') {
       const dialogRef: any = this.global.OpenDialog(AddFilterFunction, {
@@ -912,13 +920,14 @@ filterationColumns : FilterationColumns[] = [];
       });
     }
   }
+
   // Assign/map User Fields
-userFields = Array.from({ length: 9 }, (_, i) => ({
-  value: `User Field${i + 1}`,
-  placeholder: this[`UserField${i + 1}`],
-  replacePlaceholder: `placeholders.userField${i + 1}`,
-  fallbackPlaceholder: `placeholders.userField${i + 1}Fallback`
-}));
+  userFields = Array.from({length: 9}, (_, i) => ({
+    value: `User Field${i + 1}`,
+    placeholder: this[`UserField${i + 1}`],
+    replacePlaceholder: `placeholders.userField${i + 1}`,
+    fallbackPlaceholder: `placeholders.userField${i + 1}Fallback`
+  }));
 
   onSavedFilterChange(val: SavedFilterChangeEvent) {
     // Clear the order selection
@@ -933,6 +942,7 @@ userFields = Array.from({ length: 9 }, (_, i) => ({
       this.ordersFilterZoneSelect();
     }
   }
+
   private resetPagination(paginator: MatPaginator) {
     if (paginator) {
       paginator.firstPage();
@@ -958,7 +968,7 @@ userFields = Array.from({ length: 9 }, (_, i) => ({
         .OrdersFilterZoneSelect(payload)
         .subscribe((res) => {
           if (res.isExecuted && res.data) {
-            this.filterBatchData =[];
+            this.filterBatchData = [];
             res.data.map((val) => {
               this.filterBatchData.push({
                 orderNumber: val.orderNumber,
@@ -1051,7 +1061,7 @@ userFields = Array.from({ length: 9 }, (_, i) => ({
   }
 
   onOrderSelect(row: any) {
-    
+
     if (this.selectedOrders.includes(row.orderNumber)) {
       this.filterBatchData.forEach((val) => {
         if (val.orderNumber === row.orderNumber) {
@@ -1089,7 +1099,7 @@ userFields = Array.from({ length: 9 }, (_, i) => ({
         }
       });
       this.isOrderSelect = false;
-      this.selectedOrderValue =row.orderNumber; 
+      this.selectedOrderValue = row.orderNumber;
       const payload: PickToteTransPayload = {
         Draw: PaginationData.Draw,
         OrderNumber: row.orderNumber,
@@ -1098,7 +1108,7 @@ userFields = Array.from({ length: 9 }, (_, i) => ({
         SortColumnNumber: 0,
         SortOrder: UniqueConstants.Asc,
         Filter: UniqueConstants.OneEqualsOne,
-        FiltrationColumns :  this.filterationColumns
+        FiltrationColumns: this.filterationColumns
       };
       this.iInductionManagerApi.PickToteTransDT(payload).subscribe((res) => {
         if (res) {
@@ -1165,7 +1175,7 @@ userFields = Array.from({ length: 9 }, (_, i) => ({
         SortColumnNumber: 0,
         SortOrder: UniqueConstants.Asc,
         Filter: UniqueConstants.OneEqualsOne,
-        FiltrationColumns:[]
+        FiltrationColumns: []
       };
       this.iInductionManagerApi.PickToteTransDT(payload).subscribe((res) => {
         if (res) {
@@ -1184,41 +1194,42 @@ userFields = Array.from({ length: 9 }, (_, i) => ({
       });
     }
   }
+
   pickBatchFilterOrderData(filter: string | null, target: 'filter' | 'order') {
     let payload = {
-        filter: filter,
+      filter: filter,
     };
     this.iInductionManagerApi
-        .PickBatchFilterOrderData(payload)
-        .subscribe((res) => {
-            if (res.isExecuted && res.data) {
-                if (target === 'filter') {
-                    this.filterData = [];
-                    this.pickBatchFilter = res.data.pickBatchFilter;
-                    if (Array.isArray(this.pickBatchFilter) && this.pickBatchFilter.length === 0) {
-                        this.onAddFilter();
-                    } else {
-                        this.onAddFilter(this.pickBatchFilter);
-                    }
-                } else if (target === 'order') {
-                    this.orderByData = [];
-                    this.pickBatchOrder = res.data.pickBatchOrder;
-                    if (Array.isArray(this.pickBatchOrder) && this.pickBatchOrder.length === 0) {
-                      this.onAddOrderBy(this.orderByData);
-                    }
-                    else{
-                        this.onAddOrderBy(this.pickBatchOrder);
-                    }
-                }
+      .PickBatchFilterOrderData(payload)
+      .subscribe((res) => {
+        if (res.isExecuted && res.data) {
+          if (target === 'filter') {
+            this.filterData = [];
+            this.pickBatchFilter = res.data.pickBatchFilter;
+            if (Array.isArray(this.pickBatchFilter) && this.pickBatchFilter.length === 0) {
+              this.onAddFilter();
             } else {
-                this.global.ShowToastr(
-                    ToasterType.Error,
-                    res.responseMessage?? this.global.globalErrorMsg(),
-                    ToasterTitle.Error
-                );
+              this.onAddFilter(this.pickBatchFilter);
             }
-        });
-}
+          } else if (target === 'order') {
+            this.orderByData = [];
+            this.pickBatchOrder = res.data.pickBatchOrder;
+            if (Array.isArray(this.pickBatchOrder) && this.pickBatchOrder.length === 0) {
+              this.onAddOrderBy(this.orderByData);
+            } else {
+              this.onAddOrderBy(this.pickBatchOrder);
+            }
+          }
+        } else {
+          this.global.ShowToastr(
+            ToasterType.Error,
+            res.responseMessage ?? this.global.globalErrorMsg(),
+            ToasterTitle.Error
+          );
+        }
+      });
+  }
+
   savedFilClosed(): void {
     if (!this.savedFilter?.value) {
       this.resetFilterAndOrderData();
@@ -1236,26 +1247,27 @@ userFields = Array.from({ length: 9 }, (_, i) => ({
   }
 
   refreshOrderAndTransactionData() {
-  // Clear the orders table
-  this.filterBatchData = [];
-  this.filterBatchOrders = new MatTableDataSource<FilterOrder>(this.filterBatchData);
+    // Clear the orders table
+    this.filterBatchData = [];
+    this.filterBatchOrders = new MatTableDataSource<FilterOrder>(this.filterBatchData);
 
-  // Clear the transactions tables
-  this.filterOrderTransactionSource = new MatTableDataSource<FilterTransaction>([]);
-  this.zoneOrderTransactionSource = new MatTableDataSource<FilterTransaction>([]);
-}
-clearOrderSelection() {
-  // Clear selection in filterBatchData
-  if (this.filterBatchData && this.filterBatchData.length) {
-    this.filterBatchData.forEach(order => order.isSelected = false);
+    // Clear the transactions tables
+    this.filterOrderTransactionSource = new MatTableDataSource<FilterTransaction>([]);
+    this.zoneOrderTransactionSource = new MatTableDataSource<FilterTransaction>([]);
   }
-  // Clear selection in zone data if needed
-  if (this.filterBatchDataZone && this.filterBatchDataZone.length) {
-    this.filterBatchDataZone.forEach(order => order.isSelected = false);
+
+  clearOrderSelection() {
+    // Clear selection in filterBatchData
+    if (this.filterBatchData && this.filterBatchData.length) {
+      this.filterBatchData.forEach(order => order.isSelected = false);
+    }
+    // Clear selection in zone data if needed
+    if (this.filterBatchDataZone && this.filterBatchDataZone.length) {
+      this.filterBatchDataZone.forEach(order => order.isSelected = false);
+    }
+    // Clear the selectedOrders array
+    this.selectedOrders = [];
   }
-  // Clear the selectedOrders array
-  this.selectedOrders = [];
-}
 
   onChangeOrderAction(option: any) {
     if (option === 'fill_top_orders') {
@@ -1321,6 +1333,7 @@ clearOrderSelection() {
     }
     this.orderActionRefreshZone();
   }
+
   onViewOrderLineZone(event) {
     let orderNum = '';
     this.filterBatchDataZone.forEach((val) => {
@@ -1336,7 +1349,7 @@ clearOrderSelection() {
         SortColumnNumber: 0,
         SortOrder: UniqueConstants.Asc,
         Filter: UniqueConstants.OneEqualsOne,
-        FiltrationColumns : []
+        FiltrationColumns: []
       };
       this.iInductionManagerApi.PickToteTransDT(payload).subscribe((res) => {
         if (res.data.pickToteManTrans?.length > 0) {
@@ -1370,7 +1383,7 @@ clearOrderSelection() {
           SortColumnNumber: 0,
           SortOrder: UniqueConstants.Asc,
           Filter: UniqueConstants.OneEqualsOne,
-          FiltrationColumns:[]
+          FiltrationColumns: []
         };
         this.iInductionManagerApi.PickToteTransDT(payload).subscribe((res) => {
           if (res.data.pickToteManTrans?.length > 0) {
@@ -1392,6 +1405,7 @@ clearOrderSelection() {
       }
     }
   }
+
   onViewOrderLineFilter(event) {
     let orderNum = '';
     this.filterBatchData.forEach((val) => {
@@ -1407,7 +1421,7 @@ clearOrderSelection() {
         SortColumnNumber: 0,
         SortOrder: UniqueConstants.Asc,
         Filter: UniqueConstants.OneEqualsOne,
-        FiltrationColumns:[]
+        FiltrationColumns: []
       };
       this.iInductionManagerApi.PickToteTransDT(payload).subscribe((res) => {
         if (res.data.pickToteManTrans?.length > 0) {
@@ -1466,146 +1480,151 @@ clearOrderSelection() {
 
   onSaveSingleFilter(element: any) {
     if (element.value === '' || element.format === '') {
-        this.global.ShowToastr(
-            ToasterType.Error,
-            ToasterMessages.InvalidInputForFilter,
-            ToasterTitle.Error
-        );
+      this.global.ShowToastr(
+        ToasterType.Error,
+        ToasterMessages.InvalidInputForFilter,
+        ToasterTitle.Error
+      );
     } else {
-        let payload = {
-            Sequence: element.sequence,
-            Field: element.field,
-            IsNumericFormat : element.format == FormatValues.NUMERIC ? true : false,
-            Criteria: element.criteria,
-            Value: element.value,
-            AndOr: element.andOr,
-            Description: this.savedFilter.value,
-        };
-            if (element.is_db) {
-                this.iInductionManagerApi
-                    .PickBatchFilterUpdate(payload)
-                    .subscribe((res) => {
-                        if (res.isExecuted) {
-                            this.isFilterAdd = true;
-                            this.global.ShowToastr(
-                                ToasterType.Success,
-                                labels.alert.update,
-                                ToasterTitle.Success
-                            );
-                            this.filterSeq = element.sequence;
-                            this.refreshFilterDataGrid();
-                            // Update format based on API response
-                            element.format = res.data.isNumericFormat ? FormatValues.NUMERIC : FormatValues.ALPHA_NUMERIC;
-                        } else {
-                            this.global.ShowToastr(
-                                ToasterType.Error,
-                                res.responseMessage?? this.global.globalErrorMsg(),
-                                ToasterTitle.Error
-                            );
-                        }
-                    });
+      let payload = {
+        Sequence: element.sequence,
+        Field: element.field,
+        IsNumericFormat: element.format == FormatValues.NUMERIC ? true : false,
+        Criteria: element.criteria,
+        Value: element.value,
+        AndOr: element.andOr,
+        Description: this.savedFilter.value,
+      };
+      if (element.is_db) {
+        this.iInductionManagerApi
+          .PickBatchFilterUpdate(payload)
+          .subscribe((res) => {
+            if (res.isExecuted) {
+              this.isFilterAdd = true;
+              this.global.ShowToastr(
+                ToasterType.Success,
+                labels.alert.update,
+                ToasterTitle.Success
+              );
+              this.filterSeq = element.sequence;
+              this.refreshFilterDataGrid();
+              // Update format based on API response
+              element.format = res.data.isNumericFormat ? FormatValues.NUMERIC : FormatValues.ALPHA_NUMERIC;
             } else {
-                this.iInductionManagerApi
-                    .PickBatchFilterInsert(payload)
-                    .subscribe((res) => {
-                        if (res.isExecuted) {
-                            this.isFilterAdd = true;
-                            this.global.ShowToastr(
-                                ToasterType.Success,
-                                labels.alert.success,
-                                ToasterTitle.Success
-                            );
-                            this.filterSeq = element.sequence;
-                            this.refreshFilterDataGrid();
-                            // Update format based on API response
-                            element.format = res.data.isNumericFormat ? FormatValues.NUMERIC : FormatValues.ALPHA_NUMERIC;
-                        } else {
-                            this.global.ShowToastr(
-                                ToasterType.Error,
-                                this.global.globalErrorMsg(),
-                                ToasterTitle.Error
-                            );
-                        }
-                    });
-            };
+              this.global.ShowToastr(
+                ToasterType.Error,
+                res.responseMessage ?? this.global.globalErrorMsg(),
+                ToasterTitle.Error
+              );
+            }
+          });
+      } else {
+        this.iInductionManagerApi
+          .PickBatchFilterInsert(payload)
+          .subscribe((res) => {
+            if (res.isExecuted) {
+              this.isFilterAdd = true;
+              this.global.ShowToastr(
+                ToasterType.Success,
+                labels.alert.success,
+                ToasterTitle.Success
+              );
+              this.filterSeq = element.sequence;
+              this.refreshFilterDataGrid();
+              // Update format based on API response
+              element.format = res.data.isNumericFormat ? FormatValues.NUMERIC : FormatValues.ALPHA_NUMERIC;
+            } else {
+              this.global.ShowToastr(
+                ToasterType.Error,
+                this.global.globalErrorMsg(),
+                ToasterTitle.Error
+              );
+            }
+          });
+      }
+      ;
     }
-}
-onSaveSingleOrder(element: any) {
-  if (element.id) {
-      let payload = {
-          id: +element.id,
-          Sequence: element.sequence,
-          Field: element.field,
-          Order: element.sortOrder,
-          Description: this.savedFilter.value,
-      };
-      this.iInductionManagerApi
-          .PickBatchOrderUpdate(payload)
-          .subscribe((res) => {
-              if (res.isExecuted) {
-                  this.isOrderByAdd = true;
-                  this.global.ShowToastr(ToasterType.Success, labels.alert.update, ToasterTitle.Success);
-                  this.refreshOrderDataGrid();
-              } else {
-                  this.global.ShowToastr(
-                      ToasterType.Error,
-                      this.global.globalErrorMsg(),
-                      ToasterTitle.Error
-                  );
-              }
-          });
-  } else {
-      let payload = {
-          Sequence: element.sequence,
-          Field: element.field,
-          Order: element.sortOrder,
-          Description: this.savedFilter.value,
-      };
-      this.iInductionManagerApi
-          .PickBatchOrderInsert(payload)
-          .subscribe((res) => {
-              if (res.isExecuted) {
-                  this.isOrderByAdd = true;
-                  this.global.ShowToastr(ToasterType.Success, labels.alert.success, ToasterTitle.Success);
-                  element.id = res.data;
-                  this.orderBySeq = element.sequence;
-                  this.refreshOrderDataGrid();
-              } else {
-                  this.global.ShowToastr(
-                      ToasterType.Error,
-                      this.global.globalErrorMsg(),
-                      ToasterTitle.Error
-                  );
-              }
-          });
   }
-  this.isUniqueSeq(element);
-}
-isUniqueSeq(element: any) {
-  let res: any[] = [];
-  this.orderBydataSource.filteredData.map((item) => {
+
+  onSaveSingleOrder(element: any) {
+    if (element.id) {
+      let payload = {
+        id: +element.id,
+        Sequence: element.sequence,
+        Field: element.field,
+        Order: element.sortOrder,
+        Description: this.savedFilter.value,
+      };
+      this.iInductionManagerApi
+        .PickBatchOrderUpdate(payload)
+        .subscribe((res) => {
+          if (res.isExecuted) {
+            this.isOrderByAdd = true;
+            this.global.ShowToastr(ToasterType.Success, labels.alert.update, ToasterTitle.Success);
+            this.refreshOrderDataGrid();
+          } else {
+            this.global.ShowToastr(
+              ToasterType.Error,
+              this.global.globalErrorMsg(),
+              ToasterTitle.Error
+            );
+          }
+        });
+    } else {
+      let payload = {
+        Sequence: element.sequence,
+        Field: element.field,
+        Order: element.sortOrder,
+        Description: this.savedFilter.value,
+      };
+      this.iInductionManagerApi
+        .PickBatchOrderInsert(payload)
+        .subscribe((res) => {
+          if (res.isExecuted) {
+            this.isOrderByAdd = true;
+            this.global.ShowToastr(ToasterType.Success, labels.alert.success, ToasterTitle.Success);
+            element.id = res.data;
+            this.orderBySeq = element.sequence;
+            this.refreshOrderDataGrid();
+          } else {
+            this.global.ShowToastr(
+              ToasterType.Error,
+              this.global.globalErrorMsg(),
+              ToasterTitle.Error
+            );
+          }
+        });
+    }
+    this.isUniqueSeq(element);
+  }
+
+  isUniqueSeq(element: any) {
+    let res: any[] = [];
+    this.orderBydataSource.filteredData.map((item) => {
       let existItem = res.find((x: any) => x.sequence == item.sequence);
       if (existItem) {
-          this.global.ShowToastr(
-              ToasterType.Error,
-              "Can't have conflicting sequences within the order rows. A new sequence has been provided",
-              ToasterTitle.Error
-          );
-          element.sequence = +existItem.sequence + 1;
+        this.global.ShowToastr(
+          ToasterType.Error,
+          "Can't have conflicting sequences within the order rows. A new sequence has been provided",
+          ToasterTitle.Error
+        );
+        element.sequence = +existItem.sequence + 1;
       } else {
-          res.push(item);
+        res.push(item);
       }
-  });
-}
-refreshFilterDataGrid() {
-  this.pickBatchFilterOrderData(this.savedFilter.value, 'filter');
-  this.ordersFilterZoneSelect();
-}
+    });
+  }
 
-refreshOrderDataGrid() {
-  this.pickBatchFilterOrderData(this.savedFilter.value, 'order');
-  this.ordersFilterZoneSelect();
-}
+  refreshFilterDataGrid() {
+    this.pickBatchFilterOrderData(this.savedFilter.value, 'filter');
+    this.ordersFilterZoneSelect();
+  }
+
+  refreshOrderDataGrid() {
+    this.pickBatchFilterOrderData(this.savedFilter.value, 'order');
+    this.ordersFilterZoneSelect();
+  }
+
   onDeleteSingleFilter(element: any) {
     const dialogRef: any = this.global.OpenDialog(DeleteConfirmationComponent, {
       height: 'auto',
@@ -1615,7 +1634,7 @@ refreshOrderDataGrid() {
     });
     dialogRef.afterClosed().subscribe((result) => {
       if (result === ResponseStrings.Yes) {
-        if(!element.is_db){
+        if (!element.is_db) {
           this.refreshFilterDataGrid();
           this.isFilterAdd = true;
           return;
@@ -1646,6 +1665,7 @@ refreshOrderDataGrid() {
       }
     });
   }
+
   onDeleteSingleOrder(element: any) {
     const dialogRef: any = this.global.OpenDialog(DeleteConfirmationComponent, {
       height: 'auto',
@@ -1658,7 +1678,7 @@ refreshOrderDataGrid() {
     });
     dialogRef.afterClosed().subscribe((result) => {
       if (result === ResponseStrings.Yes) {
-        if(!element.id){
+        if (!element.id) {
           this.refreshOrderDataGrid();
           this.isOrderByAdd = true;
           return;
@@ -1690,7 +1710,7 @@ refreshOrderDataGrid() {
   }
 
   onClosePickToteManager() {
-    
+
     let selectedObj: any = [];
     let currentObjArr: any = [];
     if (this.isFilter === StringConditions.filter) {
@@ -1732,7 +1752,7 @@ refreshOrderDataGrid() {
   }
 
   onCloseAllPickToteManager() {
-   
+
     this.allSelectOrders = this.selectedOrders;
   }
 
@@ -1767,136 +1787,133 @@ refreshOrderDataGrid() {
           });
       }
     });
-  }  
+  }
 
   onContextMenu(event: MouseEvent, SelectedItem: AllDataTypeValues, FilterColumnName?: string, FilterConditon?: string | undefined, FilterItemType?: AllDataTypeValues) {
     event.preventDefault()
     this.isActiveTrigger = true;
-     this.ngZone.run(() => {
+    this.ngZone.run(() => {
       this.contextMenuService.updateContextMenuState(event, SelectedItem, FilterColumnName, FilterConditon, FilterItemType);
-     });
+    });
   }
 
-  //Determines the appropriate HTML input type (date, number, or text) 
-  // based on the field name and its format in filterData.  
+  //Determines the appropriate HTML input type (date, number, or text)
+  // based on the field name and its format in filterData.
   getInputType(field: string): InputType {
     // Date fields take priority
     if (this.DATE_FIELDS.has(field)) {
       return InputType.Date;
-      }
-      
-      const elementFormat = this.filterData.find(el => el.field === field)?.format;
-      
-      return elementFormat === FormatValues.NUMERIC
+    }
+
+    const elementFormat = this.filterData.find(el => el.field === field)?.format;
+
+    return elementFormat === FormatValues.NUMERIC
       ? InputType.Number
       : InputType.Text;
-      }
-  
+  }
+
   isTooltipDisabled(value: string): boolean {
     return value.length < 25;
-    
+
   }
+
   isFormatDisabled(field: string): boolean {
     // Case-insensitive check for robustness
     return DISABLED_FIELDS.some(f => f.toLowerCase() === (field || '').toLowerCase());
   }
 
   /**
- * Handles format changes for a filter, ensuring consistency across filters with the same field.
- * @param newFormat - The newly selected format value
- * @param element - The filter data being modified
- * @param index - The index of the filter in the filterData array
- */
-onFormatChange(newFormat: string, element: FilterData, index: number): void {
-  // Validate input
-  if (!element || !newFormat) {
-    this.global.ShowToastr(
-      ToasterType.Error,
-      ToasterMessages.InvalidInputForFilter,
-      ToasterTitle.Error
-  );
-    return;
-  }
-
-  // Get related rows with the same field (excluding current)
-  const relatedRows: FilterData[] = this.filterData.filter(
-    (row, idx) => row.field === element.field && idx !== index
-  );
-
-  // If no related rows, apply change and exit
-  if (!relatedRows.length) {
-    this.onChangeFunctionsFields(element);
-    return;
-  }
-
-  const existingFormat = relatedRows[0]?.format;
-
-  // Check for format mismatch
-  if (existingFormat && newFormat !== existingFormat) {
-    this.showFormatMismatchDialog(element, relatedRows, existingFormat);
-    return;
-  }
-
-  // No mismatch, proceed with change
-  this.onChangeFunctionsFields(element);
-}
-  
-/**
- * Displays a confirmation dialog for format mismatch and handles user response.
- * @param element - The filter data with the new format
- * @param relatedRows - Other filters with the same field
- * @param existingFormat - The current format of related filters
- */
-private showFormatMismatchDialog(
-  element: FilterData,
-  relatedRows: FilterData[],
-  existingFormat: string
-): void {
-  // Validate inputs
-  if (!element || !relatedRows || !existingFormat) {
-    this.global.ShowToastr(
-      ToasterType.Error,
-      ToasterMessages.InvalidInputForFilter,
-      ToasterTitle.Error
-  );
-    return;
-  }
-
-  const currentFormat = existingFormat === FormatValues.NUMERIC ? FormatType.NUMERIC : FormatType.ALPHA_NUMERIC;
-  const newFormat = element.format === FormatValues.NUMERIC ? FormatType.NUMERIC : FormatType.ALPHA_NUMERIC;
-
-  const dialogRef = this.global.OpenDialog(ConfirmationDialogComponent, {
-    height: 'auto',
-    autoFocus: DialogConstants.autoFocus,
-    data: {
-      message: ConfirmationMessages.InconsistentFormat(element.field, newFormat, currentFormat),
-      heading : ConfirmationHeadings.ChangeFormatType,
-      customButtonText: true,
-      btn1Text: StringConditions.Yes,
-      btn2Text: StringConditions.No
-    },
-  });
-
-  dialogRef.afterClosed().subscribe((result: string) => {
-    if (result === StringConditions.Yes) {
-      // Update format for the current element and related rows
-      this.onSaveSingleFilter(element);
-      relatedRows.forEach((row) => {
-        row.format = element.format;
-        this.onSaveSingleFilter(row);
-      });
-    } else {
-      // Revert to existing format
-      element.format = existingFormat;
+   * Handles format changes for a filter, ensuring consistency across filters with the same field.
+   * @param newFormat - The newly selected format value
+   * @param element - The filter data being modified
+   * @param index - The index of the filter in the filterData array
+   */
+  onFormatChange(newFormat: string, element: FilterData, index: number): void {
+    // Validate input
+    if (!element || !newFormat) {
+      this.global.ShowToastr(
+        ToasterType.Error,
+        ToasterMessages.InvalidInputForFilter,
+        ToasterTitle.Error
+      );
+      return;
     }
 
-    // Trigger change handling regardless of user choice
+    // Get related rows with the same field (excluding current)
+    const relatedRows: FilterData[] = this.filterData.filter(
+      (row, idx) => row.field === element.field && idx !== index
+    );
+
+    // If no related rows, apply change and exit
+    if (!relatedRows.length) {
+      this.onChangeFunctionsFields(element);
+      return;
+    }
+
+    const existingFormat = relatedRows[0]?.format;
+
+    // Check for format mismatch
+    if (existingFormat && newFormat !== existingFormat) {
+      this.showFormatMismatchDialog(element, relatedRows, existingFormat);
+      return;
+    }
+
+    // No mismatch, proceed with change
     this.onChangeFunctionsFields(element);
-  });
+  }
 
-}
+  /**
+   * Displays a confirmation dialog for format mismatch and handles user response.
+   * @param element - The filter data with the new format
+   * @param relatedRows - Other filters with the same field
+   * @param existingFormat - The current format of related filters
+   */
+  private showFormatMismatchDialog(
+    element: FilterData,
+    relatedRows: FilterData[],
+    existingFormat: string
+  ): void {
+    // Validate inputs
+    if (!element || !relatedRows || !existingFormat) {
+      this.global.ShowToastr(
+        ToasterType.Error,
+        ToasterMessages.InvalidInputForFilter,
+        ToasterTitle.Error
+      );
+      return;
+    }
 
-}
-  
-}
+    const currentFormat = existingFormat === FormatValues.NUMERIC ? FormatType.NUMERIC : FormatType.ALPHA_NUMERIC;
+    const newFormat = element.format === FormatValues.NUMERIC ? FormatType.NUMERIC : FormatType.ALPHA_NUMERIC;
 
+    const dialogRef = this.global.OpenDialog(ConfirmationDialogComponent, {
+      height: 'auto',
+      autoFocus: DialogConstants.autoFocus,
+      data: {
+        message: ConfirmationMessages.InconsistentFormat(element.field, newFormat, currentFormat),
+        heading: ConfirmationHeadings.ChangeFormatType,
+        customButtonText: true,
+        btn1Text: StringConditions.Yes,
+        btn2Text: StringConditions.No
+      },
+    });
+
+    dialogRef.afterClosed().subscribe((result: string) => {
+      if (result === StringConditions.Yes) {
+        // Update format for the current element and related rows
+        this.onSaveSingleFilter(element);
+        relatedRows.forEach((row) => {
+          row.format = element.format;
+          this.onSaveSingleFilter(row);
+        });
+      } else {
+        // Revert to existing format
+        element.format = existingFormat;
+      }
+
+      // Trigger change handling regardless of user choice
+      this.onChangeFunctionsFields(element);
+    });
+
+  }
+}
