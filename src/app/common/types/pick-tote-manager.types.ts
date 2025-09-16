@@ -87,7 +87,7 @@ export type FilterTransaction = {
   exportDate?: string;
   exportedBy?: string;
   statusCode?: string;
-};
+}; 
 
 export interface PickToteTransPayload {
   Draw: number;

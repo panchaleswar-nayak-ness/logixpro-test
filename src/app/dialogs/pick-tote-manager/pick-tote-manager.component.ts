@@ -27,16 +27,12 @@ import { IInductionManagerApiService } from 'src/app/common/services/induction-m
 import { InductionManagerApiService } from 'src/app/common/services/induction-manager-api/induction-manager-api.service';
 import { GlobalService } from 'src/app/common/services/global.service';
 import { PickToteManagerService } from 'src/app/common/services/pick-tote-manager.service'
-import { TableConstant ,ToasterTitle,ResponseStrings,Column,ToasterType,zoneType,DialogConstants,ColumnDef,UniqueConstants,Style,StringConditions, Placeholders, ToasterMessages, FIELDS_DEFAULT_AN, ConfirmationMessages, FormatValues, ConfirmationHeadings, DISABLED_FIELDS, FormatType} from 'src/app/common/constants/strings.constants';
-import { FilterOrder, FilterTransaction, SavedFilterChangeEvent, FilterData, OrderData } from 'src/app/common/types/pick-tote-manager.types';
-import { InputType } from 'src/app/common/enums/CommonEnums';
-
-export interface PeriodicElement {
-  name: string;
-  position: number;
-  weight: number;
-  symbol: string;
-}
+import {  TableConstant ,ToasterTitle,ResponseStrings,Column,ToasterType,zoneType,DialogConstants,ColumnDef,UniqueConstants,Style,StringConditions, Placeholders, ToasterMessages, FormatValues, FIELDS_DEFAULT_AN, ConfirmationMessages, ConfirmationHeadings, DISABLED_FIELDS, FormatType, INPUT_TYPES, DATE_COLUMNS} from 'src/app/common/constants/strings.constants';
+import { FilterOrder, FilterTransaction, SavedFilterChangeEvent, FilterData, OrderData, PickToteTransPayload, AllDataTypeValues } from 'src/app/common/types/pick-tote-manager.types';
+import { TableContextMenuService } from 'src/app/common/globalComponents/table-context-menu-component/table-context-menu.service';
+import { FilterationColumns, PeriodicElement } from 'src/app/common/Model/pick-Tote-Manager';
+import { InputType, PaginationData } from 'src/app/common/enums/CommonEnums';
+import { NgZone } from '@angular/core';
 
 @Component({
   selector: 'app-pick-tote-manager',
@@ -45,25 +41,25 @@ export interface PeriodicElement {
 })
 export class PickToteManagerComponent implements OnInit {
   selectedOrderValue: string = '';
-  filterString: string = UniqueConstants.OneEqualsOne;
+  filterString : string = UniqueConstants.OneEqualsOne;
 
-  fieldMappings = JSON.parse(localStorage.getItem('fieldMappings') ?? '{}');
-  ItemNumber: string = this.fieldMappings.itemNumber;
-  UnitOfMeasure: string = this.fieldMappings.unitOfMeasure;
-  UserField1: string = this.fieldMappings.userField1;
-  UserField2: string = this.fieldMappings.userField2;
-  UserField3: string = this.fieldMappings.userField3;
-  UserField4: string = this.fieldMappings.userField4;
-  UserField5: string = this.fieldMappings.userField5;
-  UserField6: string = this.fieldMappings.userField6;
-  UserField7: string = this.fieldMappings.userField7;
-  UserField8: string = this.fieldMappings.userField8;
-  UserField9: string = this.fieldMappings.userField9;
-  UserField10: string = this.fieldMappings.userField10;
-  DATE_FIELDS = new Set<string>([
-    Column.RequiredDate,
-    Column.ImportDate
-  ]);
+fieldMappings = JSON.parse(localStorage.getItem('fieldMappings') ?? '{}');
+ItemNumber: string = this.fieldMappings.itemNumber;
+UnitOfMeasure: string = this.fieldMappings.unitOfMeasure;
+UserField1:string = this.fieldMappings.userField1;
+UserField2:string = this.fieldMappings.userField2;
+UserField3:string = this.fieldMappings.userField3;
+UserField4:string = this.fieldMappings.userField4;
+UserField5:string = this.fieldMappings.userField5;
+UserField6:string = this.fieldMappings.userField6;
+UserField7:string = this.fieldMappings.userField7;
+UserField8:string = this.fieldMappings.userField8;
+UserField9:string = this.fieldMappings.userField9;
+UserField10:string = this.fieldMappings.userField10;
+ DATE_FIELDS = new Set<string>([
+  Column.RequiredDate,
+  Column.ImportDate
+]);
 
   placeholders = Placeholders;
   ELEMENT_DATA: PeriodicElement[] = [
@@ -87,6 +83,7 @@ export class PickToteManagerComponent implements OnInit {
   useDefaultZone;
   batchByZoneData: any[] = [];
   tabIndex: number = 0;
+  isActiveTrigger:boolean =false;
 
   isAllSelected() {
     const numSelected = this.selection.selected.length;
@@ -423,7 +420,8 @@ export class PickToteManagerComponent implements OnInit {
   ];
 
   displayedTransColumns = this.filterBatchTransColumns.map((c) => c.columnDef);
-  filterationColumns: FilterationColumns[] = [];
+filterationColumns : FilterationColumns[] = [];
+
   displayedColumns4: string[] = [
     UniqueConstants.Select,
     TableConstant.zone,
@@ -454,7 +452,8 @@ export class PickToteManagerComponent implements OnInit {
 
   constructor(
     private ngZone: NgZone,
-    private contextMenuService: TableContextMenuService,
+
+    private contextMenuService : TableContextMenuService,
     private pickToteManagerService: PickToteManagerService,
     private global: GlobalService,
     public inductionManagerApi: InductionManagerApiService,
@@ -1099,7 +1098,8 @@ export class PickToteManagerComponent implements OnInit {
         }
       });
       this.isOrderSelect = false;
-      this.selectedOrderValue = row.orderNumber;
+      this.selectedOrderValue =row.orderNumber; 
+
       const payload: PickToteTransPayload = {
         Draw: PaginationData.Draw,
         OrderNumber: row.orderNumber,
@@ -1108,7 +1108,7 @@ export class PickToteManagerComponent implements OnInit {
         SortColumnNumber: 0,
         SortOrder: UniqueConstants.Asc,
         Filter: UniqueConstants.OneEqualsOne,
-        FiltrationColumns: this.filterationColumns
+        FiltrationColumns :  this.filterationColumns
       };
       this.iInductionManagerApi.PickToteTransDT(payload).subscribe((res) => {
         if (res) {
@@ -1175,7 +1175,8 @@ export class PickToteManagerComponent implements OnInit {
         SortColumnNumber: 0,
         SortOrder: UniqueConstants.Asc,
         Filter: UniqueConstants.OneEqualsOne,
-        FiltrationColumns: []
+        FiltrationColumns:[]
+
       };
       this.iInductionManagerApi.PickToteTransDT(payload).subscribe((res) => {
         if (res) {
@@ -1349,7 +1350,7 @@ export class PickToteManagerComponent implements OnInit {
         SortColumnNumber: 0,
         SortOrder: UniqueConstants.Asc,
         Filter: UniqueConstants.OneEqualsOne,
-        FiltrationColumns: []
+        FiltrationColumns : []
       };
       this.iInductionManagerApi.PickToteTransDT(payload).subscribe((res) => {
         if (res.data.pickToteManTrans?.length > 0) {
@@ -1383,7 +1384,7 @@ export class PickToteManagerComponent implements OnInit {
           SortColumnNumber: 0,
           SortOrder: UniqueConstants.Asc,
           Filter: UniqueConstants.OneEqualsOne,
-          FiltrationColumns: []
+          FiltrationColumns:[]
         };
         this.iInductionManagerApi.PickToteTransDT(payload).subscribe((res) => {
           if (res.data.pickToteManTrans?.length > 0) {
@@ -1421,7 +1422,7 @@ export class PickToteManagerComponent implements OnInit {
         SortColumnNumber: 0,
         SortOrder: UniqueConstants.Asc,
         Filter: UniqueConstants.OneEqualsOne,
-        FiltrationColumns: []
+        FiltrationColumns:[]
       };
       this.iInductionManagerApi.PickToteTransDT(payload).subscribe((res) => {
         if (res.data.pickToteManTrans?.length > 0) {
@@ -1787,18 +1788,59 @@ export class PickToteManagerComponent implements OnInit {
           });
       }
     });
-  }
+  }  
 
   onContextMenu(event: MouseEvent, SelectedItem: AllDataTypeValues, FilterColumnName?: string, FilterConditon?: string | undefined, FilterItemType?: AllDataTypeValues) {
     event.preventDefault()
     this.isActiveTrigger = true;
-    this.ngZone.run(() => {
+     this.ngZone.run(() => {
       this.contextMenuService.updateContextMenuState(event, SelectedItem, FilterColumnName, FilterConditon, FilterItemType);
-    });
+     });
   }
 
-  //Determines the appropriate HTML input type (date, number, or text)
-  // based on the field name and its format in filterData.
+  directFilterationColumnsSelected(filterationColumns: FilterationColumns[]) {
+    // Directly use the FilterationColumns objects
+    this.filterationColumns = filterationColumns;
+    
+    // Call the existing method to get content data
+    this.getContentData();
+    this.isActiveTrigger = false;
+  }
+  getContentData(){
+    if(this.filterString == "")
+    {
+      this.filterString = UniqueConstants.OneEqualsOne
+    }
+      const payload: PickToteTransPayload = {
+      Draw: PaginationData.Draw,
+      OrderNumber: this.selectedOrderValue,
+      SRow: PaginationData.StartRow,
+      ERow: PaginationData.EndRow,
+      SortColumnNumber: 0,
+      SortOrder: UniqueConstants.Asc,
+      Filter: this.filterString,
+      FiltrationColumns :  this.filterationColumns
+    };
+    this.iInductionManagerApi.PickToteTransDT(payload).subscribe((result: { data: { pickToteManTrans?: FilterTransaction[] }; }) => {
+      const pickToteManTrans = result.data.pickToteManTrans ?? [];
+      if (pickToteManTrans.length >= 0) {
+        this.filterOrderTransactionSource = new MatTableDataSource<FilterTransaction>(
+          pickToteManTrans
+        );
+        this.filterOrderTransactionSource.paginator = this.filterBatchTrans;
+        this.filterOrderTransactionSource.sort = this.viewFilterTransSort;
+      } else {
+        this.global.ShowToastr(
+          ToasterType.Error,
+          this.global.globalErrorMsg(),
+          ToasterTitle.Error
+        );
+      }
+    });
+
+   }
+  //Determines the appropriate HTML input type (date, number, or text) 
+  // based on the field name and its format in filterData.  
   getInputType(field: string): InputType {
     // Date fields take priority
     if (this.DATE_FIELDS.has(field)) {
@@ -1917,3 +1959,4 @@ export class PickToteManagerComponent implements OnInit {
 
   }
 }
+
