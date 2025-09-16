@@ -19,6 +19,7 @@ import { GeneralSetup } from 'src/app/common/Model/preferences';
 import { PrintApiService } from 'src/app/common/services/print-api/print-api.service';
 import { IPrintApiService } from 'src/app/common/services/print-api/print-api-interface';
 import { BmSlaperLabelSplitEntryComponent } from 'src/app/admin/dialogs/bm-slaper-label-split-entry/bm-slaper-label-split-entry.component';
+import { LocationZone } from 'src/app/common/interface/admin/location-zones.interface';
 
 @Component({
   selector: 'app-bulk-transaction',
@@ -420,14 +421,15 @@ export class BulkTransactionComponent implements OnInit {
   async Process() {
     if (this.Prefernces?.workstationPreferences) {
       const { pickToTotes, putAwayFromTotes } = this.Prefernces.workstationPreferences;
-      if (pickToTotes && this.bulkTransactionType === BulkTransactionType.PICK) {
-        if(this.view == BulkTransactionView.ORDER && this.checkLocationZoneAndOpenSlapperLabel()) {
+      const shouldOpenSlapperLabel = await this.checkLocationZoneAndOpenSlapperLabel();
+      if (pickToTotes && this.bulkTransactionType === BulkTransactionType.PICK) {      
+        if(this.view == BulkTransactionView.ORDER && shouldOpenSlapperLabel) {
           this.OpenSlaperLabelNextToteId();
         } else {
           this.OpenNextToteId();
         }
       } else if (putAwayFromTotes && this.bulkTransactionType === BulkTransactionType.PUT_AWAY) {
-        if(this.view == BulkTransactionView.ORDER && this.checkLocationZoneAndOpenSlapperLabel()) {
+        if(this.view == BulkTransactionView.ORDER && shouldOpenSlapperLabel) {
           this.OpenSlaperLabelNextToteId();
         } else {
           this.OpenNextToteId();
@@ -438,26 +440,32 @@ export class BulkTransactionComponent implements OnInit {
     }
   }
 
-  private checkLocationZoneAndOpenSlapperLabel(): boolean {
-    let shouldOpenSlapperLabel = false;
-    
+  locationZone: LocationZone[] = [];
+  getLocationZone() {
     this.iAdminApiService.LocationZone().subscribe({
       next: (res) => {
-        if (res?.isExecuted && res.data && Array.isArray(res.data) && res.data.length === 1) {
-          if(res.data[0].caseLabel && res.data[0].caseLabel.trim() !== ''){
-            shouldOpenSlapperLabel = true;
-          }
-        } else {
-          shouldOpenSlapperLabel = false;
+        if (res?.isExecuted && res.data && Array.isArray(res.data) && res.data.length > 0) {
+          this.locationZone = res.data;
         }
-      },
-      error: (err) => {
-        console.error('Failed to fetch location zones:', err);
-        shouldOpenSlapperLabel = false;
       }
     });
-    
-    return shouldOpenSlapperLabel;
+  }
+
+  private async checkLocationZoneAndOpenSlapperLabel(): Promise<boolean> {
+    let shouldOpenSlapperLabel = false;    
+    try {
+      const res: { body: BulkZone[]; status: number } = await this.iBulkProcessApiService.bulkPickBulkZone();      
+      if (res.status == HttpStatusCode.Ok && Array.isArray(res.body) && res.body.length === 1) {
+        const zoneData = this.locationZone.find(x => x.zone === res.body[0].zone);
+        if (zoneData?.caseLabel && zoneData.caseLabel.trim() !== '') {
+          shouldOpenSlapperLabel = true;
+        }
+      }      
+      return shouldOpenSlapperLabel;
+    } catch (error) {
+      console.error('Failed to fetch location zones:', error);
+      return false;
+    }
   }
 
   changeVisibiltyVerifyBulk(event: boolean) {
