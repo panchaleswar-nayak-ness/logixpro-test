@@ -175,13 +175,12 @@
                                 [attr.data-automation-id]="'table-row-' + rowIndex + '-' + col.colDef + '-' + element[col.colHeader]"
                             >
                                 <ng-container *ngIf="col.colDef === 'Emergency'; else textContent">
-                                     <div style="display: flex; justify-content: center; align-items: center;">
-                                          <mat-checkbox [checked]="element[col.colHeader]"
-                                              [disabled]="element['completedBy'] !='' && element['completedDate'] != ''"
-                                              (change)="onCheckboxToggle(element,col.colHeader,$event.checked)"
-                                              class="example-margin" color="primary" >
-                                          </mat-checkbox>
-                                      </div>
+                                           <div style="display: flex; justify-content: center; align-items: center;">
+                                                <mat-checkbox [checked]="element[col.colHeader]"  [disabled]="element['completedBy'] !='' && element['completedDate'] != ''"
+                                                (change)="onCheckboxToggle(element,col.colHeader,$event.checked)"
+                                                class="example-margin" color="primary" >
+                                            </mat-checkbox>
+                                            </div>
                                 </ng-container>
 
                                 <ng-template #textContent>{{ element[col.colHeader] }}</ng-template>
