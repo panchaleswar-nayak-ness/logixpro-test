@@ -129,24 +129,10 @@ export type QuantityFilterTypeUnion =
 | FilterType.GreaterThanEqual
 | FilterType.LessThan
 | FilterType.LessThanEqual
-| FilterType.Range;
-
-export enum FiltrationDataTypes {
-  String = "string",
-  Number = "number",
-  Date = "date",
-  Datetime = "datetime",
-  Integer = "int",
-  Boolean = "boolean"
-}
+| FilterType.Range; 
 
 export enum InputType {
-  Date = 'date',
-  Number = 'number',
-  Text = 'text',
+    Date = 'date',
+    Number = 'number',
+    Text = 'text',
     }
-export enum PaginationData   {
-    StartRow = 1,
-    EndRow = 10,
-    Draw = 0,
-}

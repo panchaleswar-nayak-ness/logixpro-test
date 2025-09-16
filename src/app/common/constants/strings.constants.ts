@@ -132,10 +132,6 @@ export const ConfirmationHeadings = {
     PrintBatchOrOrder:"Print Batch Or Order",
     NoOffCarouselPicksFound:"No Off-Carousel Picks Found",
     ResolveToteId: "Resolve Tote ID",
-    PrintBatchOrOrders: "Print Batch Or Orders?",
-    PrintOffCarouselPickItemLabels: "Print Off-Carousel Pick Item Labels?",
-    ContinueCreatingTransaction: 'Continue Creating Transactions?',
-    AssignLocation: 'Assign Location',
     ChangeFormatType: "Change Format Type"
 }
 export const ConfirmationButtonText = {
@@ -165,12 +161,7 @@ export const ConfirmationMessages = {
     IrreversibleActionWarning :'This action cannot be undone.',
     UpdateAllInterface: 'Click OK to update all devices with Com Port: {{comPort}}',
     UpdateAllInterfaceWithZone: 'Click OK to update all devices with Com Port: {{comPort}} and Zone: {{zone}}',
-    PrintBatchOrOrders: 'Click Yes to print all orders as a batch. Click No to print a page for each order.',
-    PrintOffCarouselPickItemLabels: 'Click Yes to print item labels for all the items in this batch.',
     InconsistentFormat: (fieldName: string, newFormat: string, oldFormat: string) => `An "${fieldName}" was added with ${oldFormat} format. Changing to ${newFormat} will update that entry as well. Do you want to continue?`,
-    ContinueCreatingTransaction: 'You will now create a “Count” Transaction for each Item Number in the Queue.',
-    InfoText: 'These items will be removed from the Discrepancies List.',
-    ClickYesToAssignLocation: 'Click Yes to close the Cycle Count Manager screen and go the Location Assignment Screen.'
 }
 
 export const ToasterMessages = {
@@ -269,9 +260,6 @@ export const ToasterMessages = {
     PrintSuccessfullyCompleted:'Print successfully completed',
     UnableToPrint: 'Unable to print',
     UnableToAssignLocation: "Unable to assign location",
-    CannotAssignMultipleMarkoutFunctions: 'Cannot assign multiple Markout functions to the same group.',
-    OnlyOneMarkoutFunctionAllowed: 'Only one Markout function can be assigned per group.',
-    StaffAlreadyHasMarkoutAssigned: 'Staff has already one markout assigned',
     InvalidInputForFilter: "Some of the inputs are missing values. Cannot add row to filter.",
     ZoneWouldBeADuplicateAndCannotBeAdded: "Zone would be a duplicate and cannot be added.",
     LocationZoneCannotBeDeleted: "Location Zone cannot be deleted because there are allocated quantities in an Inventory Map location matching the zone",
@@ -793,62 +781,8 @@ export class ApiErrorMessages {
   static readonly ErrorSubmittingCaseWiseOrders = "Error submitting case-wise orders"
 }
 export const PickToteFilterpreferences = {
-    preferences: "PickToteFilterPrefs"
+    preferences: "PickToteFilterPrefs",
 }
-export const importFieldMappingDialogSizes  = {
-  CCDiscrepancies : {
-    width: '800px',
-    height: '650px'
-  }
-}
-export const FILTRATION_GRID_OPERATION_KEYS = {
-    Between: "between",
-    Clear: "clear",
-    Clears: "clears",   
-    Equals: "Equals",   
-    And: " and "   
-}
-export const INPUT_TYPES = {
-    Date: "date",
-    Text: "text"
-}
-export const DATE_COLUMNS = new Set([
-      'expirationDate',
-      'putAwayDate',
-      'importDate',
-      'requiredDate',
-      'completedDate',
-      'exportDate',
-      'inductionDate'
-    ]);
-    export const OPERATION_CONDITIONS: Record<string, string> = {
-      'equals to': 'Equals',
-      'is not equals to': 'NotEquals',
-      'is greater than or equal to': 'GreaterThanOrEqual',
-      'is less than or equal to': 'LessThanOrEqual',
-      'is greater than': 'GreaterThan',
-      'is less than': 'LessThan',
-      'is like': 'Like',
-      'contains': 'Contains',
-      'is not like': 'NotLike',
-      'does not contains': 'DoesNotContain',
-      'begins with': 'Begins',
-      'does not begins with': 'DoesNotBegin',
-      'ends with': 'EndsWith',
-      'does not ends with': 'DoesNotEndWith',
-      'is between': 'Between',
-      'between': 'Between'
-    };
-
-export const MarkoutFunctions = {
-    MarkoutProcess: 'Markout Process',
-    RGTPMarkout: 'RGTP Markout'
-} as const;
-
-export const MarkoutFunctionsList = [
-    MarkoutFunctions.MarkoutProcess,
-    MarkoutFunctions.RGTPMarkout
-] as const;
 
 export const DISABLED_FIELDS = [
     'priority',
