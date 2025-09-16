@@ -11,7 +11,7 @@
           <div class="header-filter-bar" data-automation-id="filter-bar">
             <div class="header-filter-options w-100 d-xl-flex d-lg-block align-items-center justify-content-between filter" data-automation-id="filter-options">
                 <app-column-filter-component 
-                    [tableColumns]="displayedColumns" 
+                    [tableColumns]="searchDisplayedColumns" 
                     [searchCol]="columnSearch.searchColumn.colDef"
                     (selectionChangeEvent)="onSelectionChange(filterCmp.searchCol)"
                     (colKeyUpEnterEvent)="searchColumn()"

@@ -5,12 +5,14 @@ import {AuthService} from 'src/app/common/init/auth.service';
 import {IAdminApiService} from 'src/app/common/services/admin-api/admin-api-interface';
 import {AdminApiService} from 'src/app/common/services/admin-api/admin-api.service';
 import {GlobalService} from 'src/app/common/services/global.service';
-import {DialogConstants, Style, ToasterMessages, ToasterTitle, ToasterType} from 'src/app/common/constants/strings.constants';
+import {DialogConstants, Style, ToasterMessages, ToasterTitle, ToasterType, ApiErrorMessages} from 'src/app/common/constants/strings.constants';
 import {IBulkProcessApiService} from 'src/app/common/services/bulk-process-api/bulk-process-api-interface';
 import {BulkProcessApiService} from 'src/app/common/services/bulk-process-api/bulk-process-api.service';
 import {HttpStatusCode} from '@angular/common/http';
-import {AssignToteToOrderDto} from "../../../common/Model/bulk-transactions";
+import {AssignToteToOrderDto, RemoveOrderLinesRequest, RemoveOrderLinesResponse, SelectedOrderItem} from "../../../common/Model/bulk-transactions";
 import { PrintApiService } from 'src/app/common/services/print-api/print-api.service';
+import { ApiResult } from 'src/app/common/types/CommonTypes';
+import { PartialToteIdResponse } from 'src/app/common/Model/bulk-transactions';
 
 @Component({
   selector: 'app-bm-toteid-entry',
@@ -18,7 +20,7 @@ import { PrintApiService } from 'src/app/common/services/print-api/print-api.ser
   styleUrls: ['./bm-toeid-entry.component.scss'],
 })
 export class BmToteidEntryComponent implements OnInit {
-  selectedList: any;
+  selectedList: SelectedOrderItem[];
   nextToteID: any;
   preferences: any;
   userData: any;
@@ -50,8 +52,14 @@ export class BmToteidEntryComponent implements OnInit {
   ngOnInit(): void {
     this.userData = this.authService.userData();
     if (this.view == 'tote') {
-      this.selectedList.forEach((x: any) => { x.toteId = x.toteId });
+      this.selectedList.forEach((x: SelectedOrderItem) => { x.toteId = x.toteId });
     }
+    
+    // Assign sequential tote numbers (1, 2, 3, etc.) to each item
+    this.selectedList.forEach((item: SelectedOrderItem, index: number) => {
+      item.toteNumber = index + 1;
+    });
+    
     this.companyInfo();
   }
 
@@ -66,15 +74,15 @@ export class BmToteidEntryComponent implements OnInit {
 
   clearAll() {
     if(this.view != 'batch' && this.view != 'tote'){
-      this.selectedList.forEach((element, i) => {
-        this.selectedList[i]['toteId'] = undefined;
+      this.selectedList.forEach((element: SelectedOrderItem, i) => {
+        this.selectedList[i].toteId = undefined;
       });
     }
   }
   printAllToteLabels() {
-    let orderNumbers = this.selectedList.map(o =>o['orderNumber']);
-    let toteIds = this.selectedList.map(o => o['toteId']);
-    let positions = this.selectedList.map(o => o['toteNumber']);
+    let orderNumbers = this.selectedList.map(o => o.orderNumber);
+    let toteIds = this.selectedList.map(o => String(o.toteId!));
+    let positions = this.selectedList.map(o => o.toteNumber!);
 
     if (this.view == 'batchmanager') {
       this.printApiService.PrintBatchManagerToteLabel(positions, toteIds, orderNumbers, this.batchid);
@@ -83,10 +91,10 @@ export class BmToteidEntryComponent implements OnInit {
     }
 
   }
-  printTote(index) {
-    let orderNumber = [this.selectedList[index]['orderNumber']];
-    let toteId = [this.selectedList[index]['toteId']];
-    let position = [this.selectedList[index]['toteNumber']];
+  printTote(index: number) {
+    let orderNumber = [this.selectedList[index].orderNumber];
+    let toteId = [String(this.selectedList[index].toteId!)];
+    let position = [this.selectedList[index].toteNumber!];
 
     if (this.view == 'batchmanager') {
       this.printApiService.PrintBatchManagerToteLabel(position, toteId, orderNumber, this.batchid);
@@ -95,9 +103,9 @@ export class BmToteidEntryComponent implements OnInit {
     }
 
   }
-  removeToteID(index) {
+  removeToteID(index: number) {
     if(this.view != 'batch' && this.view != 'tote'){
-      this.selectedList[index]['toteId'] = undefined;
+      this.selectedList[index].toteId = undefined;
     }
   }
 
@@ -108,15 +116,21 @@ export class BmToteidEntryComponent implements OnInit {
 
     this.bulkProcessApiService.BatchNextTote(this.selectedList.length).then((res) => {
       this.nextToteID = res.body?.nextId;
-      this.selectedList.forEach((element, i) => {
+      this.selectedList.forEach((element: SelectedOrderItem, i) => {
         this.selectedList[i].IsTote = false;
         this.selectedList[i].IsError = false;
-        this.selectedList[i]['toteId'] = i == 0 ? parseInt(this.nextToteID) : parseInt(this.nextToteID) + i;
+        this.selectedList[i].toteId = i == 0 ? parseInt(this.nextToteID) : parseInt(this.nextToteID) + i;
       });
     });
   }
 
   submitOrder() {
+    if(this.data.rawOrderList != null){
+      this.submitCaseWiseOrders().catch(error => {
+        this.global.ShowToastr(ToasterType.Error, ApiErrorMessages.ErrorSubmittingCaseWiseOrders, ToasterTitle.Error);
+      });
+      return;
+    }
     if (this.selectedList.find(x => x.IsTote == true)) {
       const dialogRef: any = this.global.OpenDialog(AlertConfirmationComponent, {
         height: 'auto',
@@ -154,16 +168,84 @@ export class BmToteidEntryComponent implements OnInit {
     }
   }
 
+  async removeOrderLinesFromTote(): Promise<boolean> {
+    try {
+      const uniqueOrderNumbers = [...new Set(this.data.rawOrderList.map((item: any) => item.orderNumber))].filter((orderNumber): orderNumber is string => typeof orderNumber === 'string');
+      const request: RemoveOrderLinesRequest = {
+        orderNumbers: uniqueOrderNumbers
+      };
+      const result: RemoveOrderLinesResponse = await this.iBulkProcessApiService.RemoveOrderLinesFromTote(request);
+      if (result.isSuccess) {
+        return true;
+      } else {
+        // Display all error messages or fallback to default message
+        const errorMessage = result.errorMessages && result.errorMessages.length > 0 
+          ? result.errorMessages.join(', ') 
+          : ApiErrorMessages.FailedToRemoveOrderLinesFromTote;
+        this.global.ShowToastr(ToasterType.Error, errorMessage, ToasterTitle.Error);
+        return false;
+      }
+    } catch (error) {
+      this.global.ShowToastr(ToasterType.Error, ApiErrorMessages.ErrorRemovingOrderLinesFromTote, ToasterTitle.Error);
+      return false;
+    }
+  }
+
+  async submitCaseWiseOrders() {
+    // Ensure rawOrderList is valid before proceeding
+    if (!this.data.rawOrderList || !Array.isArray(this.data.rawOrderList) || this.data.rawOrderList.length === 0) {
+      this.global.ShowToastr(ToasterType.Error, 'No valid order data to submit', ToasterTitle.Error);
+      return;
+    }
+
+    
+    this.iBulkProcessApiService.SubmitCaseWiseOrders(this.data.rawOrderList)
+      .then((result: ApiResult<PartialToteIdResponse[]>) => {
+        if (result.isSuccess) {
+          this.global.ShowToastr(ToasterType.Success, ToasterMessages.RecordUpdatedSuccessful, ToasterTitle.Success);
+          const apiResponseData = result.value || [];
+          const orderGroups = new Map();
+          apiResponseData.forEach(item => {
+            const orderNumber = item.orderNumber;
+            if (!orderGroups.has(orderNumber)) {
+              orderGroups.set(orderNumber, {
+                orderNumber: orderNumber,
+                toteId: item.toteID, // Use toteID from API response
+                toteNumber: 1, // Default tote number
+                orderLines: []
+              });
+            }
+            orderGroups.get(orderNumber).orderLines.push({
+              ...item // This should include the correct id from API response
+            });
+          });
+          const transformedData = Array.from(orderGroups.values());
+          this.dialogRef.close(transformedData);
+          // Now, remove order lines from tote
+          const removeSuccess = this.removeOrderLinesFromTote();
+          if (!removeSuccess) {
+            return; // Stop execution if removal failed
+          }
+        } else {
+          this.global.ShowToastr(ToasterType.Error, result.errorMessage || ToasterMessages.SomethingWentWrong, ToasterTitle.Error);
+        }
+      })
+      .catch((error) => {
+        this.global.ShowToastr(ToasterType.Error, ToasterMessages.SomethingWentWrong, ToasterTitle.Error);
+    });
+    
+  }
+
   ClosePopup() {
     this.dialogRef.close(false);
   }
 
   updateToteID() {
     let orders: AssignToteToOrderDto[] = [];
-    this.selectedList.forEach((element, i) => {
+    this.selectedList.forEach((element: SelectedOrderItem, i) => {
       let order: AssignToteToOrderDto = {
         orderNumber: element.orderNumber,
-        toteId: element.toteId,
+        toteId: String(element.toteId),
         type: this.data.type
       };
       orders.push(order);

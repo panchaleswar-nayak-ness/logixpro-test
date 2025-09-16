@@ -77,6 +77,7 @@ export const StringConditions = {
     False: 'False',
     clear: 'clear',
     filter: 'filter',
+    Filter: 'Filter',
     MoveTo: 'MoveTo',
     edit: 'edit',
     MoveFrom: 'MoveFrom',
@@ -130,7 +131,8 @@ export const ConfirmationHeadings = {
     CreateBatchNow: "Create Batch Now?",
     PrintBatchOrOrder:"Print Batch Or Order",
     NoOffCarouselPicksFound:"No Off-Carousel Picks Found",
-    ResolveToteId: "Resolve Tote ID"
+    ResolveToteId: "Resolve Tote ID",
+    ChangeFormatType: "Change Format Type"
 }
 export const ConfirmationButtonText = {
     ResetPassword: 'Reset Password Now',
@@ -149,16 +151,17 @@ export const ConfirmationMessages = {
     ConfirmationToClearAllInventoryMap : "Click OK to clear all Inventory Map records matching Location Number (Zone + Carousal + Row + Shelf + Bin) Criteria!",
     ClearWholeLocationPutAwayQuantity:"Clear Whole Location cannot proceed because the Allocated Pick or Allocated Put Away quantity is greater than zero.",
     DeleteLicenseConfirmation:"Are you sure you want to delete this License?",
-    TouchYesToPrintlabelForItemInBatch: "Touch 'Yes' to print a label for each item in this batch",
-    TouchYesToPrintAllAsBatch:"Touch 'Yes' to print all orders as a batch",
+    TouchYesToPrintlabelForItemInBatch: "Touch ‘Yes’ to print a label for each item in this batch",
+    TouchYesToPrintAllAsBatch:"Touch ‘Yes’ to print all orders as a batch",
     TouchNoToPrintEachOrder: "Touch 'No' to print a page for each order.",
     AssignOrdersToBatch: (batchId: string | number) =>
-        `Touch 'Yes' to Assign the Selected Orders to Batch ID ${batchId}. Touch 'No' to Cancel Batching.`,
+        `Touch ‘Yes’ to Assign the Selected Orders to Batch ID ${batchId}. Touch ‘No’ to Cancel Batching.`,
     NoOffCarouselPicks:"There are no off-carousel picks for the order(s) selected.",    
     ResolvedToteConfirmation:"Are you sure you want to mark this Tote ID as resolved? This will remove this Tote ID from the Markout.",
     IrreversibleActionWarning :'This action cannot be undone.',
     UpdateAllInterface: 'Click OK to update all devices with Com Port: {{comPort}}',
-    UpdateAllInterfaceWithZone: 'Click OK to update all devices with Com Port: {{comPort}} and Zone: {{zone}}'
+    UpdateAllInterfaceWithZone: 'Click OK to update all devices with Com Port: {{comPort}} and Zone: {{zone}}',
+    InconsistentFormat: (fieldName: string, newFormat: string, oldFormat: string) => `An "${fieldName}" was added with ${oldFormat} format. Changing to ${newFormat} will update that entry as well. Do you want to continue?`,
 }
 
 export const ToasterMessages = {
@@ -230,7 +233,7 @@ export const ToasterMessages = {
     LocationDeleted: 'Location deleted successfully',
     DeleteFailed:"Delete Failed",
     FieldEmptyDefault:"Field cannot be empty. Default value has been applied.",
-    ZoneAndLocationNameNeedToBeSet: 'Zone and Location Name need to be set via the Preferences - Location Zones screen in order to save.',
+    ZoneAndLocationNameNeedToBeSet:" “Zone and Location Name need to be set via the Preferences - Location Zones screen in order to save”",
     Consolidationzones:"Failed to load consolidation zones.",
     Consolidationstatuscount:"Failed to load consolidation status count.",
     RouteidCount:"Failed to load route id status count.",
@@ -256,10 +259,21 @@ export const ToasterMessages = {
     EnterValidPositiveQuantity: 'Please enter a valid positive number for the quantity.',
     PrintSuccessfullyCompleted:'Print successfully completed',
     UnableToPrint: 'Unable to print',
-    UnableToAssignLocation: "Unable to assign location"
+    UnableToAssignLocation: "Unable to assign location",
+    InvalidInputForFilter: "Some of the inputs are missing values. Cannot add row to filter.",
+    ZoneWouldBeADuplicateAndCannotBeAdded: "Zone would be a duplicate and cannot be added.",
+    LocationZoneCannotBeDeleted: "Location Zone cannot be deleted because there are allocated quantities in an Inventory Map location matching the zone",
+    CannotInsertDuplicateZone: "Cannot insert duplicate Zone",
+    AddedInQueueSuccess:"Added in Queue",
+    AddedInQueueFailed:"Added in Queue failed",
+    RemoveFromQueueSuccess:"Remove from Queue",
+    RemoveFromQueueFailed:"Remove from Queue failed",
+    CountQueueActionTypeError:"Unhandled action type",
+    ConfigurationUpdateSuccess: 'Configuration updated successfully',
+    ConfigurationUpdateFailed: 'Failed to update configuration',
+    FieldRequiresBothStartPositionAndFieldLength: (fieldName: string) => `${fieldName} requires both Start Position and Field Length values`,
+    FieldHasInvalidValues: (fieldName: string) => `${fieldName} has invalid values. Please check the minimum requirements.`
 }
-
-
 
 export const LiveAnnouncerMessage = {
     SortingCleared: 'Sorting cleared'
@@ -338,7 +352,8 @@ export const KeyboardKeys = {
 export const zoneType = {
     carousel: 'carousel',
     cartonFlow: 'cartonFlow',
-    includePick: 'includePick'
+    includePick: 'includePick',
+    includeCFCarouselPick: 'includeCFCarouselPick'
 }
 
 export const alertMessage = {
@@ -527,8 +542,9 @@ export const Style = {
     w786px: '786px',
     w402px: '402px',
     w1080px: '1080px',
+    w990px: '990px',
     auto:'auto',
-    w990px: '990px'
+    w56vw: '56vw'
 }
 
 export const FilterColumnName = {
@@ -713,7 +729,7 @@ export const defaultWorkstationSetup: WorkStationSetup = {
         pfSetting: ""
       }
     ]
-};
+}
 
 export const defaultEmployeeAccessLevels: EmployeeAccessLevel ={
     lastRefreshedDateTime : new Date(),
@@ -753,9 +769,50 @@ export class PrintReports {
 }
 
 export class ConsoleErrorMessages {
-    static readonly ErrorPrintingReprocessReport = "Error occurred while printing reprocess report after allocation:"
-    static readonly ErrorFindingAssignedOrderLines = "Error occurred while finding order lines assigned locations:"
+  static readonly ErrorPrintingReprocessReport = "Error occurred while printing reprocess report after allocation:"
+  static readonly ErrorFindingAssignedOrderLines = "Error occurred while finding order lines assigned locations:"
+}
+
+export class ApiErrorMessages {
+  static readonly UnexpectedResponseStatus = "Unexpected response status"
+  static readonly FailedToRemoveOrderLines = "Failed to remove order lines"
+  static readonly FailedToRemoveOrderLinesFromTote = "Failed to remove order lines from tote"
+  static readonly ErrorRemovingOrderLinesFromTote = "Error removing order lines from tote"
+  static readonly ErrorSubmittingCaseWiseOrders = "Error submitting case-wise orders"
 }
 export const PickToteFilterpreferences = {
     preferences: "PickToteFilterPrefs",
 }
+
+export const DISABLED_FIELDS = [
+    'priority',
+    'Required Date',
+    'Emergency',
+    'Import Date'
+  ];
+  
+  export const FIELDS_DEFAULT_AN = new Set<string>([
+    'userField1',
+    'userField2',
+    'userField3',
+    'userField4',
+    'userField5',
+    'userField6',
+    'userField7',
+    'userField8',
+    'userField9',
+    'userField10',
+    'Emergency',
+    'Zone',
+    'expirationDate',
+    'Warehouse',
+    'requiredDate'
+  ]);
+  export const FormatValues = {
+    NUMERIC : '123',
+    ALPHA_NUMERIC : 'A+N',
+  }
+  export const FormatType = {
+    NUMERIC : 'Numeric',
+    ALPHA_NUMERIC : 'Alphanumeric',
+  }

@@ -1,5 +1,6 @@
 import { Observable } from "rxjs";
 import { AddPickToteInductionFilter } from "src/app/induction-manager/models/PickToteInductionModel";
+import { PickToteTransPayload } from "../../types/pick-tote-manager.types";
 
 export interface IInductionManagerApiService {
   getPickBatchTransactionTable(payload: any);
@@ -56,7 +57,7 @@ export interface IInductionManagerApiService {
 
   OrdersFilterZoneSelect(payload: any);
 
-  PickToteTransDT(payload: any);
+  PickToteTransDT(payload: PickToteTransPayload);
 
   PickBatchFilterOrderData(payload: any);
 

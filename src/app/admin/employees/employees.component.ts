@@ -20,14 +20,14 @@ import { EmployeesLookupComponent } from './employees-lookup/employees-lookup.co
 import { GlobalService } from 'src/app/common/services/global.service';
 import { IAdminApiService } from 'src/app/common/services/admin-api/admin-api-interface';
 import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.service';
-import { ToasterTitle, ToasterType ,DialogConstants,Style,UniqueConstants,StringConditions,ColumnDef} from 'src/app/common/constants/strings.constants';
+import { ToasterTitle, ToasterType, ToasterMessages, DialogConstants,Style,UniqueConstants,StringConditions,ColumnDef, MarkoutFunctions, MarkoutFunctionsList} from 'src/app/common/constants/strings.constants';
+import { AdminLevelChange, ButtonAccessItem, MarkoutFunction } from './employee-interfaces';
 
 export interface Location {
   start_location: string;
   end_location: string;
   delete_location: string;
 }
-
 @Component({
   selector: 'app-employees',
   templateUrl: './employees.component.html',
@@ -210,18 +210,82 @@ export class EmployeesComponent implements OnInit {
   }
 
   addPermission(event:any){
-    if(typeof( event.function) == 'string'){
-      this.unassignedFunctions = this.unassignedFunctions.filter(name => name !== event.function);
-      this.assignedFunctions.unshift(event.function);
-    }
-    else{
-      event.function.map((func => {
+    const validFuncs = this.getValidMarkoutAssignments(event.function);
+
+      if (!validFuncs || validFuncs.length === 0) {
+        return;
+      }
+    
+    if (typeof validFuncs === 'string') {
+      this.unassignedFunctions = this.unassignedFunctions.filter(name => name !== validFuncs);
+      this.assignedFunctions.unshift(validFuncs);
+    } else {
+      validFuncs.forEach(func => {
         this.unassignedFunctions = this.unassignedFunctions.filter(name => name !== func);
         this.assignedFunctions.unshift(func);
-      }));
-
+      });
     }
   }
+
+private getValidMarkoutAssignments(funcOrFuncs: string | string[]): string | string[] | null {
+  const existingMarkoutFunctions = this.getExistingMarkoutFunctions();
+  const hasExistingMarkout = existingMarkoutFunctions.length > 0;
+
+  if (Array.isArray(funcOrFuncs)) {
+    return this.validateMultipleMarkoutAssignments(funcOrFuncs, hasExistingMarkout);
+  } else {
+    return this.validateSingleMarkoutAssignment(funcOrFuncs, hasExistingMarkout);
+  }
+
+}
+
+private getExistingMarkoutFunctions(): string[] {
+  return this.assignedFunctions.filter(func => MarkoutFunctionsList.includes(func));
+}
+
+private validateMultipleMarkoutAssignments(functions: string[], hasExistingMarkout: boolean): string[] | null {
+  let markoutAssigned = hasExistingMarkout;
+
+  const filtered = functions.filter(func => {
+    if (this.isMarkoutFunction(func)) {
+      if (!markoutAssigned) {
+        markoutAssigned = true;
+        return true;
+      } else {
+        this.showMarkoutSkippedToast(func);
+        return false;
+      }
+    }
+    return true;
+  });
+
+  return filtered.length > 0 ? filtered : null;
+}
+
+private validateSingleMarkoutAssignment(func: string, hasExistingMarkout: boolean): string | null {
+  if (this.isMarkoutFunction(func) && hasExistingMarkout) {
+    this.global.ShowToastr(
+      ToasterType.Info,
+      ToasterMessages.CannotAssignMultipleMarkoutFunctions,
+      ToasterTitle.Warning
+    );
+    return null;
+  }
+  return func;
+}
+
+private isMarkoutFunction(func: string): boolean {
+  return MarkoutFunctionsList.includes(func as any);
+}
+
+private showMarkoutSkippedToast(func: string): void {
+  this.global.ShowToastr(
+    ToasterType.Info,
+    `Skipping "${func}" because a Markout function is already assigned.`,
+    ToasterTitle.Warning
+  );
+}
+
 
   removePermission(event:any){ 
     if(typeof(event.function) == 'string'){
@@ -237,27 +301,53 @@ export class EmployeesComponent implements OnInit {
     }
   }
 
-  saveAssignedFunc(){
-
-    let assignFunc = {
-      "GroupName":this.grpData.groupName,
-      "controls": this.assignedFunctions
+  saveAssignedFunc(): void {
+    if (!this.validateMarkoutFunctionsBeforeSave()) {
+      return;
     }
+
+    const assignFunc = {
+      GroupName: this.grpData.groupName,
+      controls: this.assignedFunctions
+    };
+
     this.iAdminApiService.insertGroupFunctions(assignFunc)
       .subscribe((res: any) => {
-        this.assignedFunctions =[];
-        this.unassignedFunctions =[];
-        this.isGroupLookUp = false;
-        if(res.isExecuted){
-          this.global.ShowToastr(ToasterType.Success,labels.alert.update, ToasterTitle.Success);
+        this.resetGroupFunctionState();
+        
+        if (res.isExecuted) {
+          this.global.ShowToastr(ToasterType.Success, labels.alert.update, ToasterTitle.Success);
           this.updateGrpLookUp();
+        } else {
+          this.global.ShowToastr(ToasterType.Error, res.responseMessage, ToasterTitle.Error);
+          console.log("insertGroupFunctions", res.responseMessage);
         }
-        else{
-          this.global.ShowToastr(ToasterType.Error,res.responseMessage, ToasterTitle.Error);
-          console.log("insertGroupFunctions",res.responseMessage);
-        }
-
       });
+  }
+
+  private validateMarkoutFunctionsBeforeSave(): boolean {
+    const assignedMarkouts = this.getAssignedMarkoutFunctions();
+    
+    if (assignedMarkouts.length > 1) {
+      this.global.ShowToastr(
+        ToasterType.Info,
+        ToasterMessages.OnlyOneMarkoutFunctionAllowed,
+        ToasterTitle.Warning
+      );
+      return false;
+    }
+    
+    return true;
+  }
+
+  private getAssignedMarkoutFunctions(): string[] {
+    return this.assignedFunctions.filter(func => this.isMarkoutFunction(func));
+  }
+
+  private resetGroupFunctionState(): void {
+    this.assignedFunctions = [];
+    this.unassignedFunctions = [];
+    this.isGroupLookUp = false;
   }
 
   updateGrpLookUp(event?: any) {
@@ -532,7 +622,14 @@ export class EmployeesComponent implements OnInit {
   }
  
   ChangeAdminLevel(levelresponse:any){
-  let item =  {
+  const typedResponse = levelresponse as AdminLevelChange;
+
+    const handled = this.handleAdminLevelChange(typedResponse);
+    if (handled) {
+      return;
+    }
+   
+    let item =  {
       "controlName": levelresponse.controlName,
       "newValue": levelresponse.adminLevel
     }
@@ -549,6 +646,50 @@ export class EmployeesComponent implements OnInit {
       
     });
   }
+
+private handleAdminLevelChange(levelresponse: AdminLevelChange): boolean {
+  const markoutProcess = this.ButtonAccessList.data.find(
+    x => x.controlName === MarkoutFunctions.MarkoutProcess
+  );
+  const rgtpMarkout = this.ButtonAccessList.data.find(
+    x => x.controlName === MarkoutFunctions.RGTPMarkout
+  );
+
+  const rules: Record<MarkoutFunction, ButtonAccessItem> = {
+    [MarkoutFunctions.RGTPMarkout]: markoutProcess,
+    [MarkoutFunctions.MarkoutProcess]: rgtpMarkout
+  };
+
+  const dependentControl = rules[levelresponse.controlName];
+
+  if (
+    !levelresponse.adminLevel &&
+    dependentControl &&
+    !dependentControl.adminLevel
+  ) {
+    this.global.ShowToastr(
+      ToasterType.Info,
+      ToasterMessages.StaffAlreadyHasMarkoutAssigned,
+      ToasterTitle.Warning
+    );
+
+    this.updateAdminLevel(levelresponse.controlName, true);
+    return true;
+  }
+
+  return false;
+}
+
+  private updateAdminLevel(controlName: string, value: boolean) {
+  const idx = this.ButtonAccessList.data.findIndex(x => x.controlName === controlName);
+  if (idx > -1) {
+    this.ButtonAccessList.data = [
+      ...this.ButtonAccessList.data.slice(0, idx),
+      { ...this.ButtonAccessList.data[idx], adminLevel: value },
+      ...this.ButtonAccessList.data.slice(idx + 1)
+    ];
+  }
+}
 
   printEmpList(){
     this.global.Print(`FileName:printEmployees`)

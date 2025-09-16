@@ -16,6 +16,7 @@ import { DialogConstants, StringConditions, ToasterMessages, ToasterTitle, Toast
 import { AppNames } from 'src/app/common/constants/menu.constants';
 import { TableContextMenuService } from 'src/app/common/globalComponents/table-context-menu-component/table-context-menu.service';
 import { ContextMenuFiltersService } from 'src/app/common/init/context-menu-filters.service';
+import { MatDialogRef } from '@angular/material/dialog';
 
 
 @Component({
@@ -132,17 +133,25 @@ export class DetailComponent implements OnInit {
   }
 
   public openCategoryDialog() {
-    let dialogRef:any = this.global.OpenDialog(ItemCategoryComponent, {
+    let dialogRef = this.global.OpenDialog(ItemCategoryComponent, {
       height: DialogConstants.auto,
       width: '860px',
       autoFocus: DialogConstants.autoFocus,
-      disableClose:true,
+      disableClose: true,
       data: {
         mode: '',
-        category:this.details.controls['category'].value,
-        subCategory:this.details.controls['subCategory'].value
+        category: this.details.controls['category'].value,
+        subCategory: this.details.controls['subCategory'].value
       }
-    });
+    }) as MatDialogRef<ItemCategoryComponent>;
+
+    // Listen for selectionCleared event from the dialog component instance
+    if (dialogRef.componentInstance && dialogRef.componentInstance.selectionCleared) {
+      dialogRef.componentInstance.selectionCleared.subscribe(() => {
+        this.clearCategoryFields();
+        this.sharedService.updateInvMasterState({ category: '', subCategory: '' }, true);
+      });
+    }
 
     dialogRef.afterClosed().subscribe(result => {
       if (result && result != true) {
@@ -150,6 +159,9 @@ export class DetailComponent implements OnInit {
           'category': result.category,
           'subCategory': result.subCategory
         });
+      } else if (result === DialogConstants.close) {
+        // If dialog was closed without selection, clear the category fields
+        this.clearCategoryFields();
       }
       this.sharedService.updateInvMasterState(result, true)
     })
@@ -166,6 +178,14 @@ export class DetailComponent implements OnInit {
       this.contextMenuService.updateContextMenuState(event, event.target.value, FilterColumnName, FilterConditon, FilterItemType);
     }, 100);
   }
+
+  private clearCategoryFields() {
+    this.details.patchValue({
+      category: '',
+      subCategory: ''
+    });
+  }
+
   public openUmDialog() {
     let dialogRef:any = this.global.OpenDialog(UnitMeasureComponent, {
       height: DialogConstants.auto,

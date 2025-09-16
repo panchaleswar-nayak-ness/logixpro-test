@@ -22,7 +22,7 @@
                 <div class="col-xl-3">
                     <mat-form-field class="custom-form-field w-100 __grab_cursor mb-3" appearance="outline">
                         <mat-label data-automation-id="label-end-date">Select End Date</mat-label>
-                        <input matInput [(ngModel)]="eDate" [matDatepicker]="end" (dateChange)="onEndDateChange($event.value)" [attr.data-automation-id]="'input-end-date-' + eDate">
+                        <input matInput [(ngModel)]="eDate" [disabled]="!sDate" [min]="sDate" [matDatepicker]="end" (dateChange)="onEndDateChange($event.value)" [attr.data-automation-id]="'input-end-date-' + eDate">
                         <mat-datepicker-toggle matSuffix [for]="end" ngDefaultControl></mat-datepicker-toggle>
                         <mat-datepicker #end></mat-datepicker>
                     </mat-form-field>
@@ -168,13 +168,12 @@
                         <ng-container class="d-table-row"[matColumnDef]="col.colDef" *ngFor="let col of displayedColumns; let indexOfelement=index;">
                             <th class="header" mat-header-cell *matHeaderCellDef mat-sort-header (sortActionDescription)="indexOfelement" [attr.data-automation-id]="'table-header-' + col.colDef">{{ col.colTitle }} </th>
                             <td *matCellDef="let element; let rowIndex = index"
-                            (dblclick)="col.colDef == 'Item Number' && viewInInventoryMaster(element)"
+                                (dblclick)="col.colDef == 'Item Number' && viewInInventoryMaster(element)"
                                 (contextmenu)="onContextMenu($event, element[col.colHeader], col.colDef)" mat-cell class="table-cell-style"
-                                 #tooltip="matTooltip" matTooltipPosition="above"
+                                #tooltip="matTooltip" matTooltipPosition="above"
                                 [matTooltip]="element[col.colHeader]" [matTooltipDisabled]="element[col.colHeader] && element[col.colHeader].length > 19 ? false : true"
-                                 [attr.data-automation-id]="'table-row-' + rowIndex + '-' + col.colDef + '-' + element[col.colHeader]"
-                          >
-
+                                [attr.data-automation-id]="'table-row-' + rowIndex + '-' + col.colDef + '-' + element[col.colHeader]"
+                            >
                                 <ng-container *ngIf="col.colDef === 'Emergency'; else textContent">
                                            <div style="display: flex; justify-content: center; align-items: center;">
                                                 <mat-checkbox [checked]="element[col.colHeader]"  [disabled]="element['completedBy'] !='' && element['completedDate'] != ''"
@@ -184,9 +183,7 @@
                                             </div>
                                 </ng-container>
 
-                                <ng-template #textContent>
-                                    {{ element[col.colHeader] }}
-                                </ng-template>
+                                <ng-template #textContent>{{ element[col.colHeader] }}</ng-template>
                             </td>
                         </ng-container>
 
