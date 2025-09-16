@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/internal/Observable';
 import { BaseService } from './base-service.service';
 import { AuthService } from '../init/auth.service';
-import { AssignToteToOrderDto, NextToteId } from '../Model/bulk-transactions';
+import { AssignToteToOrderDto, NextToteId, OrderLineResource, PartialToteIdRequest, PartialToteIdResponse, RemoveOrderLinesRequest, RemoveOrderLinesResponse } from '../Model/bulk-transactions';
 import {
   MarkoutBlossomTotenRequest,
   MarkoutCompleteTransactionRequest,
@@ -11,13 +11,15 @@ import {
 } from 'src/app/consolidation-manager/cm-markout/models/markout-model';
 import { AddPickToteInductionFilter } from 'src/app/induction-manager/models/PickToteInductionModel';
 import { InventoryMap, UpdateSCReq } from '../Model/storage-container-management';
-import {IQueryParams} from '../../app/../consolidation-manager/cm-route-id-management/routeid-list/routeid-IQueryParams'
+import {IQueryParams} from 'src/app/consolidation-manager/cm-route-id-management/routeid-list/routeid-IQueryParams'
 import { MarkoutAuditResponse, MarkoutPickLinesResponse, MarkoutResponse } from 'src/app/consolidation-manager/cm-markout-new/models/cm-markout-new-models';
 import { ZoneListPayload } from 'src/app/bulk-process/preferences/preference.models';
 import { DevicePreferenceRequest, DevicePreferencesTableRequest } from '../interface/admin/device-preferences';
 import { UpdateEmergencyRequest } from '../interface/admin/opentransaction.interfaces';
-import { ApiResponse, ApiResponseData } from '../types/CommonTypes';
-import { PrintOrdersPayload } from '../interface/bulk-transactions/bulk-pick';
+import { ApiResponse, ApiResponseData, ApiResult } from '../types/CommonTypes';
+import { PrintOrdersPayload, PrintTransactionPayload } from '../interface/bulk-transactions/bulk-pick';
+import { ApiErrorMessages } from '../constants/strings.constants';
+import { PickToteTransPayload, PickToteTransResponse } from '../types/pick-tote-manager.types';
 import { ImportTypeConfig } from '../interface/audit-file-field-mapping-manager/import-type-config.interface';
 import { InventoryCompareConfigResponse } from '../interface/audit-file-field-mapping-manager/inventory-compare-response.interface';
 import { InventoryCompareConfigPayload } from '../interface/audit-file-field-mapping-manager/inventory-compare.interface';
@@ -847,10 +849,9 @@ export class ApiFuntions {
     return this.ApiBase.Get('/Induction/ordersfilterzone', body);
   }
 
-  public PickToteTransDT(body: any): Observable<any> {
-    return this.ApiBase.Get('/Induction/picktotetransdt', body);
+  public PickToteTransDT(body: PickToteTransPayload): Observable<PickToteTransPayload | null> {
+    return this.ApiBase.Post<PickToteTransPayload>('/Induction/picktotetransdt', body);
   }
-
   public PickBatchFilterOrderData(body: any): Observable<any> {
     return this.ApiBase.Get('/Induction/pickbatchfilterorderdata', body);
   }
@@ -2124,6 +2125,10 @@ public updateEmergencyReprocessTrans(payload: UpdateEmergencyRequest): Observabl
     return await this.ApiBase.PutAsync('/bulktransactions/taskcomplete', body);
   }
 
+  public async updateOpenTransactionsZoneCaseQuantity(body: OrderLineResource[]) {
+    return await this.ApiBase.PatchAsync('/bulktransactions/zonecasequantities', body);
+  }
+
   public async fullTote(body: any) {
     return await this.ApiBase.PutAsync('/totes/fulltote', body);
   }
@@ -2185,6 +2190,14 @@ public updateEmergencyReprocessTrans(payload: UpdateEmergencyRequest): Observabl
 
   public async PrintBulkTraveler(body: any) {
     return await this.ApiBase.PostAsync(`/print/BulkTransactionsTraveler`, body);
+  }
+
+  public async PrintBulkTransactionsTravelerOrder(body: PrintTransactionPayload) {
+    return await this.ApiBase.PostAsync(`/print/BulkTransactionsTravelerOrder`, body);
+  }
+
+  public async PrintOCPItem(body: PrintTransactionPayload) {
+    return await this.ApiBase.PostAsync(`/print/OCPItem`, body);
   }
 
   public async ProcessPickPrintPickTote(body: any) {
@@ -2442,6 +2455,38 @@ public ResolveMarkoutTote(toteId: number) {
     );
   }
 
+  public async GetNextToteIdForSlapperLabelAsync(request: PartialToteIdRequest[]): Promise<PartialToteIdResponse[]> {
+    const response = await this.ApiBase.PutAsync<PartialToteIdRequest[]>('/totes/nexttoteforslapperlable', request);
+    return response.body as PartialToteIdResponse[] || [];
+  }
+
+  public async SubmitCaseWiseOrders(request: PartialToteIdResponse[]): Promise<ApiResult<PartialToteIdResponse[]>> {
+    const response = await this.ApiBase.PostAsync<PartialToteIdResponse[]>('/totes/submitcasewiseorders', request);
+    return (response.body as unknown as ApiResult<PartialToteIdResponse[]>) || { isSuccess: false, value: null, errorMessage: 'No response received' };
+  }
+
+  public async RemoveOrderLinesFromTote(request: RemoveOrderLinesRequest): Promise<RemoveOrderLinesResponse> {
+    try {
+      // Convert the request to query parameters
+      const orderNumbersString = request.orderNumbers.join(',');
+      const response = await this.ApiBase.DeleteAsync(`/totes/removeorderlines?orderNumbers=${encodeURIComponent(orderNumbersString)}`);
+      
+      // 204 No Content means success for DELETE operations
+      if (response.status === 204 || response.status === 200) {
+        return { isSuccess: true, errorMessages: [] };
+      }
+      // For any other status, treat as error
+      return { isSuccess: false, errorMessages: [ApiErrorMessages.UnexpectedResponseStatus] };
+    } catch (error: any) {
+      // If error has structured error messages, use them
+      if (error?.error?.errorMessages && Array.isArray(error.error.errorMessages)) {
+        return { isSuccess: false, errorMessages: error.error.errorMessages };
+      }
+      // Fallback error message
+      return { isSuccess: false, errorMessages: [ApiErrorMessages.FailedToRemoveOrderLines] };
+    }
+  }
+
   public updateImportType(payload: ImportTypeConfig): Observable<InventoryCompareConfigResponse | null> {
     return this.ApiBase.Post('/ImportConfig/UpdateImportType', payload) as Observable<InventoryCompareConfigResponse | null>;
   }
@@ -2454,5 +2499,4 @@ public ResolveMarkoutTote(toteId: number) {
   public updateInventoryCompareConfig(payload: InventoryCompareConfigPayload): Observable<InventoryCompareConfigResponse | null> {
     return this.ApiBase.Post('/InventoryCompare/UpdateInventoryCompareConfig', payload) as Observable<InventoryCompareConfigResponse | null>;
   }
-  
 }
