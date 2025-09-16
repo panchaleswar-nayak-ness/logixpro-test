@@ -93,8 +93,7 @@ export class ReprocessTransactionComponent implements OnInit {
     { colHeader: 'reasonMessage', colDef: 'Reason Message', colTitle: 'Reason Message' },
     { colHeader: 'dateStamp', colDef: 'Date Stamp', colTitle: 'Date Stamp' },
     { colHeader: 'reason', colDef: 'Reason', colTitle: 'Reason' },
-    { colHeader: 'nameStamp', colDef: 'Name Stamp', colTitle: 'Name Stamp' },
-    { colHeader: 'blank', colDef: 'blank', colTitle: 'blank' }
+    { colHeader: 'nameStamp', colDef: 'Name Stamp', colTitle: 'Name Stamp' }
 ];
 
   

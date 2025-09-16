@@ -130,4 +130,16 @@ export class BulkProcessApiService implements IBulkProcessApiService {
     return await this.Api.RemoveOrderLinesFromTote(request);
   }
 
+  public async GetNextToteIdForSlapperLabelAsync(request: PartialToteIdRequest[]): Promise<PartialToteIdResponse[]> {
+    return await this.Api.GetNextToteIdForSlapperLabelAsync(request);
+  }
+
+  public async SubmitCaseWiseOrders(request: PartialToteIdResponse[]): Promise<ApiResult<PartialToteIdResponse[]>> {
+    return await this.Api.SubmitCaseWiseOrders(request);
+  }
+
+  public async RemoveOrderLinesFromTote(request: RemoveOrderLinesRequest): Promise<RemoveOrderLinesResponse> {
+    return await this.Api.RemoveOrderLinesFromTote(request);
+  }
+
 }

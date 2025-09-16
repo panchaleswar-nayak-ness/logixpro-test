@@ -533,37 +533,11 @@ export class VerifyBulkComponent implements OnInit {
     }
   }
   printAllToteLabels() {
-    if(this.isSlapperLabelFlow) {
-      this.printOffCarouselPickItemLabels();
-    } else {
-      if (this.bulkTransactionType != BulkTransactionType.COUNT) {
-        let orderNumbers = this.orderLines.filteredData.map(o => o['orderNumber']);
-        let toteIds = this.orderLines.filteredData.map(o => o['toteId']);
-        this.iAdminApiService.PrintTotes(orderNumbers, toteIds, this.bulkTransactionType);
-      }
+    if (this.bulkTransactionType != BulkTransactionType.COUNT) {
+      let orderNumbers = this.orderLines.filteredData.map(o => o.orderNumber).filter((num): num is string => num != null);
+      let toteIds = this.orderLines.filteredData.map(o => o.toteId).filter((id): id is string => id != null);
+      this.iAdminApiService.PrintTotes(orderNumbers, toteIds, this.bulkTransactionType);
     }
-  }
-
-  printBatchOrOrders() {
-    const dialogRef1 = this.global.OpenDialog(ConfirmationDialogComponent, {
-      height: DialogConstants.auto,
-      width: Style.w560px,
-      autoFocus: DialogConstants.autoFocus,
-      disableClose: true,
-      data: {
-        message: ConfirmationMessages.PrintBatchOrOrders,          
-        heading: ConfirmationHeadings.PrintBatchOrOrders,
-        buttonFields: true,
-        threeButtons: true
-      },
-    });
-    dialogRef1.afterClosed().subscribe(async (res: string) => {
-      if(res){
-        let transIDs = this.orderLines.filteredData.filter(o => !o.isPartialCase).map(o => o.id);
-        if (res == ResponseStrings.Yes) this.printApiService.PrintBulkTraveler(transIDs);
-        else if (res == ResponseStrings.No) this.printApiService.PrintBulkTransactionsTravelerOrder(transIDs);
-      }
-    });
   }
 
   printTote(index: number) {

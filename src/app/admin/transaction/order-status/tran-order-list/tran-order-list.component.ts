@@ -90,7 +90,7 @@ export class TranOrderListComponent implements OnInit, AfterViewInit {
       colHeader: ColumnDef.TransactionQuantity,
       colDef: TableConstant.TransactionQuantity,
     },
-    { colHeader: 'itemNumber', colDef: Column.ItemNumber },
+    { colHeader: 'itemNumber', colDef: Column.ItemNumber, colTitle: this.getColTitle('itemNumber') },
     { colHeader: TableConstant.LineNumber, colDef: 'Line Number' },
     { colHeader: ColumnDef.RequiredDate, colDef: 'Required Date' },
     { colHeader: UniqueConstants.Description, colDef: Column.Description },
@@ -104,6 +104,7 @@ export class TranOrderListComponent implements OnInit, AfterViewInit {
     {
       colHeader: ColumnDef.UnitOfMeasure,
       colDef: FilterColumnName.unitOfMeasure,
+      colTitle: this.fieldMappings?.unitOfMeasure || this.placeholders.unitOfMeasureFallback
     },
     { colHeader: TableConstant.LotNumber, colDef: Column.LotNumber },
     {
@@ -115,16 +116,16 @@ export class TranOrderListComponent implements OnInit, AfterViewInit {
     { colHeader: 'wareHouse', colDef: ColumnDef.Warehouse },
     { colHeader: TableConstant.ImportDate, colDef: 'Import Date' },
     { colHeader: TableConstant.BatchPickID, colDef: ColumnDef.BatchPickID },
-    { colHeader: ColumnDef.userField1, colDef: TableConstant.UserField1 },
-    { colHeader: ColumnDef.userField2, colDef: TableConstant.UserField2 },
-    { colHeader: ColumnDef.userField3, colDef: 'User Field3' },
-    { colHeader: ColumnDef.userField4, colDef: 'User Field4' },
-    { colHeader: ColumnDef.userField5, colDef: 'User Field5' },
-    { colHeader: ColumnDef.userField6, colDef: 'User Field6' },
-    { colHeader: ColumnDef.userField7, colDef: 'User Field7' },
-    { colHeader: ColumnDef.userField8, colDef: 'User Field8' },
-    { colHeader: ColumnDef.userField9, colDef: 'User Field9' },
-    { colHeader: ColumnDef.userField10, colDef: 'User Field10' },
+    { colHeader: ColumnDef.userField1, colDef: TableConstant.UserField1, colTitle: this.getColTitle(ColumnDef.userField1) },
+    { colHeader: ColumnDef.userField2, colDef: TableConstant.UserField2, colTitle: this.getColTitle(ColumnDef.userField2) },
+    { colHeader: ColumnDef.userField3, colDef: 'User Field3', colTitle: this.getColTitle(ColumnDef.userField3) },
+    { colHeader: ColumnDef.userField4, colDef: 'User Field4', colTitle: this.getColTitle(ColumnDef.userField4) },
+    { colHeader: ColumnDef.userField5, colDef: 'User Field5', colTitle: this.getColTitle(ColumnDef.userField5) },
+    { colHeader: ColumnDef.userField6, colDef: 'User Field6', colTitle: this.getColTitle(ColumnDef.userField6) },
+    { colHeader: ColumnDef.userField7, colDef: 'User Field7', colTitle: this.getColTitle(ColumnDef.userField7) },
+    { colHeader: ColumnDef.userField8, colDef: 'User Field8', colTitle: this.getColTitle(ColumnDef.userField8) },
+    { colHeader: ColumnDef.userField9, colDef: 'User Field9', colTitle: this.getColTitle(ColumnDef.userField9) },
+    { colHeader: ColumnDef.userField10, colDef: 'User Field10', colTitle: this.getColTitle(ColumnDef.userField10) },
     { colHeader: 'toteNumber', colDef: 'Tote Number' },
     { colHeader: Column.cell, colDef: TableConstant.Cell },
     {
@@ -138,10 +139,10 @@ export class TranOrderListComponent implements OnInit, AfterViewInit {
     { colHeader: 'fileFrom', colDef: 'filefrom' },
     { colHeader: UniqueConstants.OrderNumber, colDef: Column.OrderNumber },
     { colHeader: TableConstant.LineSequence, colDef: 'Line Sequence' },
-    { colHeader: zoneType.carousel, colDef: TableConstant.Carousel },
-    { colHeader: Column.Row, colDef: TableConstant.Row },
-    { colHeader: TableConstant.shelf, colDef: TableConstant.shelf },
-    { colHeader: ColumnDef.Bin, colDef: TableConstant.Bin },
+    { colHeader: zoneType.carousel, colDef: TableConstant.Carousel, colTitle: this.getColTitle(zoneType.carousel) },
+    { colHeader: Column.Row, colDef: TableConstant.Row, colTitle: this.getColTitle(Column.Row) },
+    { colHeader: TableConstant.shelf, colDef: TableConstant.shelf, colTitle: this.getColTitle(TableConstant.shelf) },
+    { colHeader: ColumnDef.Bin, colDef: TableConstant.Bin, colTitle: this.getColTitle(ColumnDef.Bin) },
     { colHeader: 'invMapID', colDef: 'Inv Map ID' },
     { colHeader: TableConstant.Notes, colDef: 'Notes' },
     { colHeader: 'exportFileName', colDef: 'Export File Name' },
@@ -155,6 +156,10 @@ export class TranOrderListComponent implements OnInit, AfterViewInit {
     { colHeader: TableConstant.label, colDef: 'Label' },
     { colHeader: 'inProcess', colDef: 'In Process' },
   ];
+
+  private getColTitle(field: string): string {
+    return this.fieldMappings?.[field] || this.placeholders?.[`${field}Fallback`];
+  }
 
   public displayedColumns: string[] = [
     'status',

@@ -132,10 +132,6 @@ export const ConfirmationHeadings = {
     PrintBatchOrOrder:"Print Batch Or Order",
     NoOffCarouselPicksFound:"No Off-Carousel Picks Found",
     ResolveToteId: "Resolve Tote ID",
-    PrintBatchOrOrders: "Print Batch Or Orders?",
-    PrintOffCarouselPickItemLabels: "Print Off-Carousel Pick Item Labels?",
-    ContinueCreatingTransaction: 'Continue Creating Transactions?',
-    AssignLocation: 'Assign Location',
     ChangeFormatType: "Change Format Type"
 }
 export const ConfirmationButtonText = {
@@ -165,12 +161,7 @@ export const ConfirmationMessages = {
     IrreversibleActionWarning :'This action cannot be undone.',
     UpdateAllInterface: 'Click OK to update all devices with Com Port: {{comPort}}',
     UpdateAllInterfaceWithZone: 'Click OK to update all devices with Com Port: {{comPort}} and Zone: {{zone}}',
-    PrintBatchOrOrders: 'Click Yes to print all orders as a batch. Click No to print a page for each order.',
-    PrintOffCarouselPickItemLabels: 'Click Yes to print item labels for all the items in this batch.',
     InconsistentFormat: (fieldName: string, newFormat: string, oldFormat: string) => `An "${fieldName}" was added with ${oldFormat} format. Changing to ${newFormat} will update that entry as well. Do you want to continue?`,
-    ContinueCreatingTransaction: 'You will now create a “Count” Transaction for each Item Number in the Queue.',
-    InfoText: 'These items will be removed from the Discrepancies List.',
-    ClickYesToAssignLocation: 'Click Yes to close the Cycle Count Manager screen and go the Location Assignment Screen.'
 }
 
 export const ToasterMessages = {
@@ -793,13 +784,7 @@ export class ApiErrorMessages {
   static readonly ErrorSubmittingCaseWiseOrders = "Error submitting case-wise orders"
 }
 export const PickToteFilterpreferences = {
-    preferences: "PickToteFilterPrefs"
-}
-export const importFieldMappingDialogSizes  = {
-  CCDiscrepancies : {
-    width: '800px',
-    height: '650px'
-  }
+    preferences: "PickToteFilterPrefs",
 }
 export const FILTRATION_GRID_OPERATION_KEYS = {
     Between: "between",
