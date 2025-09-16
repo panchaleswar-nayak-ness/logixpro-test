@@ -63,10 +63,10 @@ export class VerifyBulkComponent implements OnInit {
   backCount: number = 0;
   batchId:string="";
   workstationPreferences: WorkStationSetupResponse;
-  @Input() isBatchIdGenerationEnabled:boolean; 
+  @Input() isBatchIdGenerationEnabled:boolean;
   public iBulkProcessApiService: IBulkProcessApiService;
   public iAdminApiService: IAdminApiService;
- public commonApiService: CommonApiService;
+  public commonApiService: CommonApiService;
 
   @ViewChild('openAction') openAction: MatSelect;
   @ViewChild('autoFocusField') searchBoxField: ElementRef;
@@ -142,7 +142,7 @@ export class VerifyBulkComponent implements OnInit {
 
   private flattenOrderLines(): OrderLineResource[] {
     let flatOrderLines: OrderLineResource[] = [];
-    
+
     if (this.orderLines && this.orderLines.length > 0 && this.orderLines[0].orderLines) {
       // Nested structure - flatten the orderLines arrays
       this.orderLines.forEach((order: { orderLines?: OrderLineResource[] }) => {
@@ -154,7 +154,7 @@ export class VerifyBulkComponent implements OnInit {
       // Flat structure - use as is
       flatOrderLines = this.orderLines;
     }
-    
+
     return flatOrderLines;
   }
 
@@ -358,7 +358,7 @@ export class VerifyBulkComponent implements OnInit {
       },
     });
     dialogRef1.afterClosed().subscribe(async (resp: string) => {
-      if (resp == ResponseStrings.Yes) {        
+      if (resp == ResponseStrings.Yes) {
         const batchId = this.isBatchIdGenerationEnabled ? await this.getNextBatchID() : null;
         let ordersNew: TaskCompleteNewRequest[] = new Array();
         orderLines.forEach((orderLine: OrderLineResource) => {
@@ -367,15 +367,15 @@ export class VerifyBulkComponent implements OnInit {
             record.completedQty =orderLine.completedQuantity;
             // Only assign BatchID if generateBatchID is true and batchId is valid
             if (this.isBatchIdGenerationEnabled && batchId) {
-            record.BatchID = batchId;
-          }
+              record.BatchID = batchId;
+            }
             ordersNew.push(record);
           }
         });
 
-        
+
         let res = await this.iBulkProcessApiService.bulkPickTaskComplete(ordersNew);
-        if (res?.status == HttpStatusCode.Ok) {                              
+        if (res?.status == HttpStatusCode.Ok) {
           if (this.bulkTransactionType == BulkTransactionType.PICK && res?.body.length > 0) {
             await this.TaskCompleteEOB(res?.body);
           }
@@ -387,30 +387,30 @@ export class VerifyBulkComponent implements OnInit {
     });
   }
 
-  
+
   getNextBatchID(): Promise<string> {
-  return firstValueFrom(this.commonApiService.NextBatchID())
-    .then((res: ApiResponse<string>) => {
-      if (res?.data && res?.isExecuted) {
-        return res.data;
-      } else {
+    return firstValueFrom(this.commonApiService.NextBatchID())
+      .then((res: ApiResponse<string>) => {
+        if (res?.data && res?.isExecuted) {
+          return res.data;
+        } else {
+          this.global.ShowToastr(
+            ToasterType.Error,
+            ToasterMessages.SomethingWentWrong,
+            ToasterTitle.Error
+          );
+          return ''; // fallback if response is invalid
+        }
+      })
+      .catch((error) => {
         this.global.ShowToastr(
           ToasterType.Error,
           ToasterMessages.SomethingWentWrong,
           ToasterTitle.Error
         );
-        return ''; // fallback if response is invalid
-      }
-    })
-    .catch((error) => {
-      this.global.ShowToastr(
-        ToasterType.Error,
-        ToasterMessages.SomethingWentWrong,
-        ToasterTitle.Error
-      );
-      return ''; // fallback if observable throws
-    });
-}
+        return ''; // fallback if observable throws
+      });
+  }
 
 
   async validateTaskComplete() {
@@ -533,11 +533,37 @@ export class VerifyBulkComponent implements OnInit {
     }
   }
   printAllToteLabels() {
-    if (this.bulkTransactionType != BulkTransactionType.COUNT) {
-      let orderNumbers = this.orderLines.filteredData.map(o => o.orderNumber).filter((num): num is string => num != null);
-      let toteIds = this.orderLines.filteredData.map(o => o.toteId).filter((id): id is string => id != null);
-      this.iAdminApiService.PrintTotes(orderNumbers, toteIds, this.bulkTransactionType);
+    if(this.isSlapperLabelFlow) {
+      this.printOffCarouselPickItemLabels();
+    } else {
+      if (this.bulkTransactionType != BulkTransactionType.COUNT) {
+        let orderNumbers = this.orderLines.filteredData.map(o => o['orderNumber']);
+        let toteIds = this.orderLines.filteredData.map(o => o['toteId']);
+        this.iAdminApiService.PrintTotes(orderNumbers, toteIds, this.bulkTransactionType);
+      }
     }
+  }
+
+  printBatchOrOrders() {
+    const dialogRef1 = this.global.OpenDialog(ConfirmationDialogComponent, {
+      height: DialogConstants.auto,
+      width: Style.w560px,
+      autoFocus: DialogConstants.autoFocus,
+      disableClose: true,
+      data: {
+        message: ConfirmationMessages.PrintBatchOrOrders,
+        heading: ConfirmationHeadings.PrintBatchOrOrders,
+        buttonFields: true,
+        threeButtons: true
+      },
+    });
+    dialogRef1.afterClosed().subscribe(async (res: string) => {
+      if(res){
+        let transIDs = this.orderLines.filteredData.filter(o => !o.isPartialCase).map(o => o.id);
+        if (res == ResponseStrings.Yes) this.printApiService.PrintBulkTraveler(transIDs);
+        else if (res == ResponseStrings.No) this.printApiService.PrintBulkTransactionsTravelerOrder(transIDs);
+      }
+    });
   }
 
   printTote(index: number) {
@@ -549,7 +575,7 @@ export class VerifyBulkComponent implements OnInit {
 
   printBulkTraveler() {
     if(this.isSlapperLabelFlow) {
-      this.printBatchOrOrders();      
+      this.printBatchOrOrders();
     } else {
       let transIDs = this.orderLines.filteredData.map(o => o['id']);
       this.printApiService.PrintBulkTraveler(transIDs);
@@ -563,7 +589,7 @@ export class VerifyBulkComponent implements OnInit {
       autoFocus: DialogConstants.autoFocus,
       disableClose: true,
       data: {
-        message: ConfirmationMessages.PrintOffCarouselPickItemLabels,          
+        message: ConfirmationMessages.PrintOffCarouselPickItemLabels,
         heading: ConfirmationHeadings.PrintOffCarouselPickItemLabels,
         buttonFields: true,
       },
@@ -573,7 +599,7 @@ export class VerifyBulkComponent implements OnInit {
         let transIDs = this.orderLines.filteredData.filter(o => o.isPartialCase).map(o => o.id);
         this.printApiService.PrintOCPItem(transIDs);
       }
-    }); 
+    });
   }
 
   @ViewChild('tooltip') tooltip: MatTooltip;
