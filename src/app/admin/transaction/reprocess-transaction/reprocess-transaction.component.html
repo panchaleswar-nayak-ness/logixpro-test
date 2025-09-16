@@ -1,5 +1,6 @@
 <div class="container-fluid p-0 mt-2">
     <div class="row row-flex">
+        
         <div class="mb-4" [ngClass]="isHistory === true ? 'col-xl-8' : 'col-xl-8'">
             <app-tran-in-reprocess (reprocessSelectionEvent)="getProcessSelection($event)"
                 (reasonFilterEvent)="reasonFilterEvent($event)" (selectedOrderNumber)="selectedOrderNumber($event)"
@@ -132,10 +133,22 @@
                                         (dblclick)="col.colDef == 'Item Number' && viewInInventoryMaster(element)"
                                         #tooltip="matTooltip" [matTooltip]="element[col.colHeader]"
                                         matTooltipPosition="above"
-
                                         [matTooltipDisabled]="element[col.colHeader] && element[col.colHeader].length>=25?false:true"
                                         [attr.data-automation-id]="'table-row-' + i "
-                                    >{{ element[col.colHeader] }}</td>
+                                    >
+                                        <ng-container *ngIf="col.colDef === 'Emergency'; else textContent">
+                                            <div style="display: flex; justify-content: center; align-items: center;">
+                                                <mat-checkbox [checked]="element[col.colHeader]" [disabled]="isHistory"
+                                                    (change)="onCheckboxToggle(element,col.colHeader,$event.checked)"
+                                                    class="example-margin" color="primary">
+                                                </mat-checkbox>
+                                            </div>
+                                        </ng-container>
+
+                                        <ng-template #textContent>
+                                            {{ element[col.colHeader] }}
+                                        </ng-template>
+                                    </td>
                                 </ng-container>
 
                                 <ng-container matColumnDef="actions" stickyEnd>

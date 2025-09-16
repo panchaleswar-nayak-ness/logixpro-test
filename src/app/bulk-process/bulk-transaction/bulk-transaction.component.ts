@@ -3,7 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { BmToteidEntryComponent } from 'src/app/admin/dialogs/bm-toteid-entry/bm-toteid-entry.component';
 import { ConfirmationDialogComponent } from 'src/app/admin/dialogs/confirmation-dialog/confirmation-dialog.component';
-import { BatchesRequest, BatchesResponse, BulkPreferences, CreateBatchRequest, OrderBatchToteQtyResponse, OrderLineResource, OrderResponse, OrdersRequest, QuickPickOrdersRequest, TotesRequest, TotesResponse } from 'src/app/common/Model/bulk-transactions';
+import { BatchesRequest, BatchesResponse, BulkPreferences, BulkZone, CreateBatchRequest, OrderBatchToteQtyResponse, OrderLineResource, OrderResponse, OrdersRequest, QuickPickOrdersRequest, TotesRequest, TotesResponse } from 'src/app/common/Model/bulk-transactions';
 import { ConfirmationHeadings, ConfirmationMessages, DialogConstants, localStorageKeys, PrintReports, ResponseStrings, Style, ToasterMessages, ToasterType, ToasterTitle, ConsoleErrorMessages} from 'src/app/common/constants/strings.constants';
 import { IBulkProcessApiService } from 'src/app/common/services/bulk-process-api/bulk-process-api-interface';
 import { BulkProcessApiService } from 'src/app/common/services/bulk-process-api/bulk-process-api.service';
@@ -18,6 +18,8 @@ import { ApiResponse } from 'src/app/common/types/CommonTypes';
 import { GeneralSetup } from 'src/app/common/Model/preferences';
 import { PrintApiService } from 'src/app/common/services/print-api/print-api.service';
 import { IPrintApiService } from 'src/app/common/services/print-api/print-api-interface';
+import { BmSlaperLabelSplitEntryComponent } from 'src/app/admin/dialogs/bm-slaper-label-split-entry/bm-slaper-label-split-entry.component';
+import { LocationZone } from 'src/app/common/interface/admin/location-zones.interface';
 
 @Component({
   selector: 'app-bulk-transaction',
@@ -48,6 +50,7 @@ export class BulkTransactionComponent implements OnInit {
   isZoneSelected: boolean = false;
   generalSetupInfo: GeneralSetup;
   isBatchIdGenerationEnabled:boolean=false;
+  isSlapperLabelFlow: boolean = false; // Track when we're in slapper label flow
   public iBulkProcessApiService: IBulkProcessApiService;
   public iAdminApiService: IAdminApiService;
   public iPrintApiService: IPrintApiService;
@@ -77,6 +80,7 @@ export class BulkTransactionComponent implements OnInit {
       this.bulkOrderBatchToteQty();
     }
     this.getworkstationbulkzone();
+    this.getLocationZone();
     localStorage.removeItem(localStorageKeys.VerifyBulks);
   }
 
@@ -414,16 +418,53 @@ export class BulkTransactionComponent implements OnInit {
     return this.iBulkProcessApiService.bulkPickOrders(payload);
   }
 
-  Process() {
+  async Process() {
     if (this.Prefernces?.workstationPreferences) {
       const { pickToTotes, putAwayFromTotes } = this.Prefernces.workstationPreferences;
-      if (pickToTotes && this.bulkTransactionType === BulkTransactionType.PICK) {
+      const shouldOpenSlapperLabel = await this.checkLocationZoneAndOpenSlapperLabel();
+      if (pickToTotes && this.bulkTransactionType === BulkTransactionType.PICK) {      
+        if(this.view == BulkTransactionView.ORDER && shouldOpenSlapperLabel) {
+          this.OpenSlaperLabelNextToteId();
+        } else {
           this.OpenNextToteId();
+        }
       } else if (putAwayFromTotes && this.bulkTransactionType === BulkTransactionType.PUT_AWAY) {
+        if(this.view == BulkTransactionView.ORDER && shouldOpenSlapperLabel) {
+          this.OpenSlaperLabelNextToteId();
+        } else {
           this.OpenNextToteId();
+        }
       } else {
           this.changeVisibiltyVerifyBulk(false);
       }
+    }
+  }
+
+  locationZone: LocationZone[] = [];
+  getLocationZone() {
+    this.iAdminApiService.LocationZone().subscribe({
+      next: (res) => {
+        if (res?.isExecuted && res.data && Array.isArray(res.data) && res.data.length > 0) {
+          this.locationZone = res.data;
+        }
+      }
+    });
+  }
+
+  private async checkLocationZoneAndOpenSlapperLabel(): Promise<boolean> {
+    let shouldOpenSlapperLabel = false;    
+    try {
+      const res: { body: BulkZone[]; status: number } = await this.iBulkProcessApiService.bulkPickBulkZone();      
+      if (res.status == HttpStatusCode.Ok && Array.isArray(res.body) && res.body.length === 1) {
+        const zoneData = this.locationZone.find(x => x.zone === res.body[0].zone);
+        if (zoneData?.caseLabel && zoneData.caseLabel.trim() !== '') {
+          shouldOpenSlapperLabel = true;
+        }
+      }      
+      return shouldOpenSlapperLabel;
+    } catch (error) {
+      console.error('Failed to fetch location zones:', error);
+      return false;
     }
   }
 
@@ -436,6 +477,8 @@ export class BulkTransactionComponent implements OnInit {
         this.bulkOrderBatchToteQty();
       }
       localStorage.removeItem(localStorageKeys.VerifyBulks);
+      // Reset the slapper label flow flag when closing verify-bulk
+      this.isSlapperLabelFlow = false;
     }
     this.verifyBulks = !this.verifyBulks;
     localStorage.setItem(localStorageKeys.VerifyBulks, this.verifyBulks.toString());
@@ -445,6 +488,8 @@ export class BulkTransactionComponent implements OnInit {
     this.view = event;
     this.selectedOrders = [];
     this.status.orderLinesCount = 0;
+    // Reset slapper label flow flag when view changes
+    this.isSlapperLabelFlow = false;
     if (event == BulkTransactionView.BATCH) {
       this.bulkBatchesObservable().subscribe((res) => this.orders = res);
       this.displayedColumns = BATCH_DISPLAYED_COLUMNS;
@@ -472,6 +517,8 @@ export class BulkTransactionComponent implements OnInit {
   selectOrder(event) {
     event.toteNumber = this.selectedOrders.length + 1;
     this.orderLines = [];
+    // Reset slapper label flow flag when new orders are selected
+    this.isSlapperLabelFlow = false;
     if (this.view == BulkTransactionView.BATCH) {
       this.selectedOrders = event.orders;
       this.orders = this.orders.filter((element) => element.batchId != event.batchId);
@@ -536,8 +583,45 @@ export class BulkTransactionComponent implements OnInit {
     });
   }
 
+  OpenSlaperLabelNextToteId() {
+    this.isSlapperLabelFlow = true; // Set flag to indicate we're in slapper label flow
+    const dialogRefTote = this.global.OpenDialog(BmSlaperLabelSplitEntryComponent, {
+      height: DialogConstants.auto,
+      width: Style.w990px,
+      autoFocus: DialogConstants.autoFocus,
+      disableClose: true,
+      data: {
+        selectedOrderList: this.selectedOrders,
+        nextToteID: this.NextToteID,
+        BulkProcess: true,
+        autoPrintPickToteLabels: this.Prefernces?.workstationPreferences?.autoPrintPickToteLabels,
+        view: this.view,
+        type: this.bulkTransactionType
+      }
+    });
+    dialogRefTote.afterClosed().subscribe((result) => {
+      if (result && result.length > 0) {
+        this.selectedOrders = result;
+        // Clear orderLines and rebuild it from the nested structure
+        this.orderLines = [];
+        this.selectedOrders.forEach((order) => {
+          order.orderLines.forEach((orderLine) => {
+            orderLine.toteId = orderLine.toteId;
+          });
+          // Add all order lines to the flat orderLines array
+          this.orderLines = this.orderLines.concat(order.orderLines);
+        });
+        this.iBulkProcessApiService.updateOpenTransactionsZoneCaseQuantity(this.orderLines);
+        this.verifyBulks = !this.verifyBulks;
+        localStorage.setItem(localStorageKeys.VerifyBulks, this.verifyBulks.toString());
+      }
+    });
+  }
+
   removeOrder(event: OrderResponse | TotesResponse | BatchesResponse) {
     this.orderLines = [];
+    // Reset slapper label flow flag when orders are removed
+    this.isSlapperLabelFlow = false;
   
     const index = this.originalOrders.findIndex(x => x === event);
     this.orders.splice(index, 0, event);
@@ -577,6 +661,8 @@ export class BulkTransactionComponent implements OnInit {
     this.selectedOrders.forEach((element, index) => { element.toteNumber = index + 1; this.status.orderLinesCount = this.status.orderLinesCount + element.lineCount; this.orderLines = this.orderLines.concat(element.orderLines); });
     this.orderLines = this.sortByLocation(this.orderLines);
     this.orders = [];
+    // Reset slapper label flow flag when new orders are appended
+    this.isSlapperLabelFlow = false;
   }
 
   getworkstationbulkzone() {
@@ -597,6 +683,8 @@ export class BulkTransactionComponent implements OnInit {
     this.batchSeleted = false;
     this.status.orderLinesCount = 0;
     this.orderLines = [];
+    // Reset slapper label flow flag when all orders are removed
+    this.isSlapperLabelFlow = false;
   }
 
   async printDetailList() {

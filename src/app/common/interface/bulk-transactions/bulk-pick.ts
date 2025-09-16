@@ -7,3 +7,8 @@ export interface PrintOrdersPayload {
   printerLabelName: string | null;
   orderNumbers: string[];
 }
+
+export interface PrintTransactionPayload {
+  wsid: string;
+  transIDs: number[];
+}

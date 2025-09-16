@@ -3,8 +3,8 @@
     <mat-label>Select</mat-label>
     <mat-select class="employees-action" [(ngModel)]="this.searchCol" (selectionChange)="selectionChange($event.value)" (keyup.enter)="colKeyUpEnter($event)" [attr.data-automation-id]="'column-filter-select-' + searchCol">
       <mat-option value="" data-automation-id="column-filter-option-empty"></mat-option>
-      <mat-option *ngFor="let colDef of filteredTableColumns; let i = index" [value]="colDef" [attr.data-automation-id]="'column-filter-option-' + colDef">
-        {{ colDef }}
+      <mat-option *ngFor="let item of sortedColumns; let i = index" [value]="item.colDef" [attr.data-automation-id]="'column-filter-option-' + item.colDef" replacePlaceholder>
+        {{ item.colDef }}
       </mat-option>
     </mat-select>
     <span class="material-symbols-outlined icon-expand-more">expand_more</span>
