@@ -136,8 +136,6 @@ export class VerifyBulkComponent implements OnInit {
   private processStandardFlow() {
     // Preserve existing functionality - use orderLines as is
     this.OldSelectedList = this.orderLines;
-    this.orderLines = new MatTableDataSource(this.orderLines);
-    this.orderLines.paginator = this.paginator;
   }
 
   private flattenOrderLines(): OrderLineResource[] {
@@ -241,8 +239,8 @@ export class VerifyBulkComponent implements OnInit {
           btn2Text: 'Leave Anyway'
         },
       });
-      dialogRef1.afterClosed().subscribe(async (resp: string) => {
-        if (resp != ResponseStrings.Yes) {
+      dialogRef1.afterClosed().subscribe(async (resp: DialogResponse) => {
+        if (resp.type != ResponseStrings.Yes) {
           this.back.emit(this.taskCompleted);
         }
         this.backCount = 0;
@@ -357,8 +355,8 @@ export class VerifyBulkComponent implements OnInit {
         buttonFields: true,
       },
     });
-    dialogRef1.afterClosed().subscribe(async (resp: string) => {
-      if (resp == ResponseStrings.Yes) {        
+    dialogRef1.afterClosed().subscribe(async (resp: DialogResponse) => {
+      if (resp.type == ResponseStrings.Yes) {
         const batchId = this.isBatchIdGenerationEnabled ? await this.getNextBatchID() : null;
         let ordersNew: TaskCompleteNewRequest[] = new Array();
         orderLines.forEach((orderLine: OrderLineResource) => {
@@ -434,9 +432,9 @@ export class VerifyBulkComponent implements OnInit {
           threeButtons: true
         },
       });
-      dialogRef1.afterClosed().subscribe(async (res: string) => {
-        if (res == ResponseStrings.Yes) await this.taskComplete(this.orderLines.filteredData.filter((x: OrderLineResource) => x.completedQuantity > 0));
-        else if (res == ResponseStrings.No) await this.taskComplete(this.orderLines.filteredData);
+      dialogRef1.afterClosed().subscribe(async (res: DialogResponse) => {
+        if (res.type == ResponseStrings.Yes) await this.taskComplete(this.orderLines.filteredData.filter((x: OrderLineResource) => x.completedQuantity > 0));
+        else if (res.type == ResponseStrings.No) await this.taskComplete(this.orderLines.filteredData);
       });
     }
     else await this.taskComplete(this.orderLines.filteredData);
@@ -512,8 +510,8 @@ export class VerifyBulkComponent implements OnInit {
         singleButton: true
       },
     });
-    dialogRef1.afterClosed().subscribe(async (resp: string) => {
-      if (resp == ResponseStrings.Yes) this.back.emit(this.taskCompleted);
+    dialogRef1.afterClosed().subscribe(async (resp: DialogResponse) => {
+      if (resp.type == ResponseStrings.Yes) this.back.emit(this.taskCompleted);
     });
   }
 
@@ -538,28 +536,6 @@ export class VerifyBulkComponent implements OnInit {
       let toteIds = this.orderLines.filteredData.map(o => o.toteId).filter((id): id is string => id != null);
       this.iAdminApiService.PrintTotes(orderNumbers, toteIds, this.bulkTransactionType);
     }
-  }
-
-  printBatchOrOrders() {
-    const dialogRef1 = this.global.OpenDialog(ConfirmationDialogComponent, {
-      height: DialogConstants.auto,
-      width: Style.w560px,
-      autoFocus: DialogConstants.autoFocus,
-      disableClose: true,
-      data: {
-        message: ConfirmationMessages.PrintBatchOrOrders,          
-        heading: ConfirmationHeadings.PrintBatchOrOrders,
-        buttonFields: true,
-        threeButtons: true
-      },
-    });
-    dialogRef1.afterClosed().subscribe(async (res: string) => {
-      if(res){
-        let transIDs = this.orderLines.filteredData.filter(o => !o.isPartialCase).map(o => o.id);
-        if (res == ResponseStrings.Yes) this.printApiService.PrintBulkTraveler(transIDs);
-        else if (res == ResponseStrings.No) this.printApiService.PrintBulkTransactionsTravelerOrder(transIDs);
-      }
-    });
   }
 
   printTote(index: number) {
