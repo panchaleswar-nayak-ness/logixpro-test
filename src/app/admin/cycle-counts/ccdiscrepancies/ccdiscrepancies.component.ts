@@ -27,10 +27,11 @@ import { SelectedDiscrepancy } from '../../../common/interface/admin/ISelectedDi
 import { ConfirmationDialogComponent } from '../../dialogs/confirmation-dialog/confirmation-dialog.component';
 import { MatOption } from '@angular/material/core';
 import { Router } from '@angular/router';
-import {ActionType} from '../../../common/enums/admin/cc-discrepancies-ActionType';  
-import {CustomPagination} from '../../../common/types/CommonTypes';
+import { ActionType } from '../../../common/enums/admin/cc-discrepancies-ActionType';  
+import { CustomPagination } from '../../../common/types/CommonTypes';
 import { AppRoutes } from '../../../common/constants/menu.constants'; 
-import { MOCK_DISCREPANCIES } from './ccdiscrepancies-mock-data';
+import { CycleCountDataService } from '../cycle-count-data.service';
+import { CompareItem } from '../../../common/interface/ccdiscrepancies/CompareItem';
 // Enum for supported action types in dropdown
 
 
@@ -82,37 +83,87 @@ customPagination: CustomPagination = {
     private global: GlobalService,
     private dialog: MatDialog,
     private contextMenuService: TableContextMenuService,
-    private router: Router
+    private router: Router,
+    private cycleCountDataService: CycleCountDataService
   ) {}
 
   ngOnInit() {
     this.initializeTableConfig();
+    this.loadData(); // Ensure data is loaded when component initializes
   }
 
   /**
    * Initializes the table with mock data for testing/demo purposes.
    */
   private initializeTableConfig(): void {
-    this.dataSource.data = MOCK_DISCREPANCIES;
-    this.customPagination.total = this.dataSource.data.length;
     this.columnValues = [...this.columnNames];
+  }
+
+  private async loadData(): Promise<void> {
+    const pagingRequest = {
+      page: this.params.page,
+      pageSize: this.params.pageSize,
+      sortColumn: this.params.sortColumn,
+      sortOrder: this.params.sortOrder
+    };
+
+    try {
+      const response = await this.cycleCountDataService.getComparedInventoryItems(pagingRequest);
+      if (!response) {
+        this.global.ShowToastr(
+          ToasterType.Error,
+          ToasterMessages.APIErrorMessage,
+          ToasterTitle.Error
+        );
+        return;
+      }
+
+      if (response.isSuccess && response.value) {
+        const discrepancies: SelectedDiscrepancy[] = response.value.map(item => ({
+          id: item.id,
+          itemNumber: item.itemNumber,
+          qtyDifference: item.quantityDifference,
+          warehouse: item.warehouse,
+          lotNo: item.lotNumber,
+          expirationDate: item.expirationDate,
+          serialNo: item.serialNumber
+        }));
+        
+        this.dataSource.data = discrepancies;
+        this.customPagination.total = discrepancies.length;
+        this.cycleCountDataService.updateDiscrepancies(discrepancies);
+      } else {
+        this.global.ShowToastr(
+          ToasterType.Error,
+          response.errorMessage || ToasterMessages.APIErrorMessage,
+          ToasterTitle.Error
+        );
+      }
+    } catch (error) {
+      this.global.ShowToastr(
+        ToasterType.Error,
+        ToasterMessages.APIErrorMessage,
+        ToasterTitle.Error
+      );
+    }
   }
 
   /**
    * Appends all discrepancy IDs (placeholder for future logic).
    */
   AppendAll(): void {
-    const Ids = this.dataSource.data.map(item => item.id);
+    this.cycleCountDataService.moveAllToQueue();
+    this.dataSource.data = [];
+    this.customPagination.total = 0;
   }
 
   /**
    * Adds a single discrepancy to queue (placeholder for API integration).
    */
   AddInQueue(event: SelectedDiscrepancy) {
-    const firstColumnKey = Object.keys(event)[0];
-    const id = event[firstColumnKey];
-    const payload = { id: id };
-    this.initializeTableConfig(); // Refresh mock data
+    this.cycleCountDataService.moveToQueue(event);
+    this.dataSource.data = this.dataSource.data.filter(item => item.id !== event.id);
+    this.customPagination.total = this.dataSource.data.length;
   }
 
   /**
@@ -127,6 +178,7 @@ customPagination: CustomPagination = {
       startIndex: e.pageIndex * e.pageSize + 1,
       endIndex: Math.min((e.pageIndex + 1) * e.pageSize, this.customPagination.total || 0),
     };
+    this.loadData();
   }
 
   /**
@@ -173,6 +225,9 @@ customPagination: CustomPagination = {
       break;
     case ActionType.SetMapping:
       this.importFieldMapping();
+      break;
+    case ActionType.ImportDiscrepancies:
+      this.router.navigate(['admin/cycleCount']);
       break;
     default:
       this.global.ShowToastr(
@@ -303,7 +358,14 @@ customPagination: CustomPagination = {
   /**
    * Placeholder for sort change logic (for accessibility).
    */
-  announceSortChange(e: Sort): void {}
+  announceSortChange(e: Sort): void {
+    this.params = {
+      ...this.params,
+      sortColumn: e.active,
+      sortOrder: e.direction
+    };
+    this.loadData();
+  }
 
   /**
    * Copies selected text to clipboard on Ctrl+C.
@@ -316,4 +378,5 @@ customPagination: CustomPagination = {
       event.preventDefault();
     }
   }
+
 }

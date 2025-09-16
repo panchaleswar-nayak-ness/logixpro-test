@@ -22,6 +22,8 @@ import { MatTableDataSource } from '@angular/material/table';
 import { SelectedCountQueue } from '../../../common/interface/admin/ISelectedCountQueue';
 import {CustomPagination} from '../../../common/types/CommonTypes';
 import { take } from 'rxjs/operators'; 
+import { CycleCountDataService } from '../cycle-count-data.service';
+import { CCDiscrepanciesApiService } from '../../../common/services/ccdiscrepancies/ccdiscrepancies-api.service';
 
 @Component({
   selector: 'app-cccount-queue',
@@ -68,11 +70,20 @@ export class CCCountQueueComponent implements OnInit {
     private dialog: MatDialog,
     private contextMenuService: TableContextMenuService,
     private router: Router,
-    private ngZone: NgZone
+    private ngZone: NgZone,
+    private cycleCountDataService: CycleCountDataService,
+    private ccDiscrepanciesApiService: CCDiscrepanciesApiService
   ) {}
 
   ngOnInit() {
     this.initializeTableConfig();
+    
+    // Subscribe to count queue updates
+    this.cycleCountDataService.countQueue$.subscribe(data => {
+      this.dataSource.data = data;
+      this.customPagination.total = this.dataSource.data.length;
+      this.TotalLocation = this.dataSource.data.reduce((sum, item) => sum + item.qtyLocation, 0);
+    });
   }
 
   /**
@@ -80,40 +91,54 @@ export class CCCountQueueComponent implements OnInit {
    * Also calculates the total quantity across locations.
    */
   private initializeTableConfig(): void {
-    const mockData: SelectedCountQueue[] = Array.from({ length: 20 }).map((_, i) => ({
-      id: `${i + 1}`,
-      itemNumber: `ITM-100${i + 1}`,
-      qtyLocation: Math.floor(Math.random() * 10 + 5),
-      warehouse: `WH-B${i + 1}`,
-      lotNo: `LOT-20250${i + 1}`,
-      expirationDate: `2026-1${i % 2 + 1}-30`,
-      serialNo: `SN-XYZ-00${i + 1}`
-    }));
-
-    this.dataSource.data = mockData;
-    this.customPagination.total = this.dataSource.data.length;
     this.columnValues = [...this.columnNames];
-    this.TotalLocation = this.dataSource.data.reduce((sum, item) => sum + item.qtyLocation, 0);
+    this.cycleCountDataService.updateCountQueue([]);
   }
 
   /**
    * Removes all records from the queue (placeholder for future logic).
    */
-  RemoveAll(): void {
-    const Ids = this.dataSource.data.map(item => item.id);
+  async RemoveAll(): Promise<void> {
+    const ids = this.dataSource.data.map(item => item.id);
+    if (ids.length === 0) {
+      this.global.ShowToastr(ToasterType.Info, ToasterMessages.NoRecordFound, ToasterTitle.Info);
+      return;
+    }
+
+    try {
+      const result = await this.ccDiscrepanciesApiService.deleteComparedItems(ids);
+      if (result.isSuccess && result.value?.success) {
+        this.global.ShowToastr(ToasterType.Success, ToasterMessages.DeleteAllSuccess, ToasterTitle.Success);
+        this.initializeTableConfig();
+      } else {
+        this.global.ShowToastr(ToasterType.Error, result.value?.message || result.errorMessage || ToasterMessages.APIErrorMessage, ToasterTitle.Error);
+      }
+    } catch (error) {
+      this.global.ShowToastr(ToasterType.Error, ToasterMessages.APIErrorMessage, ToasterTitle.Error);
+    }
   }
 
   /**
    * Removes a specific record from the queue (placeholder for API integration).
    * @param event Selected count queue item.
    */
-  RemoveFromQueue(event: SelectedCountQueue) {
-    const firstColumnKey = Object.keys(event)[0];
-    const id = event[firstColumnKey];
-    const payload = { id: id };
+  async RemoveFromQueue(event: SelectedCountQueue): Promise<void> {
+    if (!event.id) {
+      this.global.ShowToastr(ToasterType.Error, ToasterMessages.APIErrorMessage, ToasterTitle.Error);
+      return;
+    }
 
-
-    this.initializeTableConfig(); // Refresh mock data after removal
+    try {
+      const result = await this.ccDiscrepanciesApiService.deleteComparedItems([event.id]);
+      if (result.isSuccess && result.value?.success) {
+        this.global.ShowToastr(ToasterType.Success, ToasterMessages.RemoveFromQueueSuccess, ToasterTitle.Success);
+        this.initializeTableConfig();
+      } else {
+        this.global.ShowToastr(ToasterType.Error, result.value?.message || result.errorMessage || ToasterMessages.RemoveFromQueueFailed, ToasterTitle.Error);
+      }
+    } catch (error) {
+      this.global.ShowToastr(ToasterType.Error, ToasterMessages.RemoveFromQueueFailed, ToasterTitle.Error);
+    }
   }
 
   /**

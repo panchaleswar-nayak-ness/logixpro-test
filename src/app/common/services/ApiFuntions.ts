@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/internal/Observable';
+import { map } from 'rxjs/operators';
 import { BaseService } from './base-service.service';
 import { AuthService } from '../init/auth.service';
 import { AssignToteToOrderDto, NextToteId, OrderLineResource, PartialToteIdRequest, PartialToteIdResponse, RemoveOrderLinesRequest, RemoveOrderLinesResponse } from '../Model/bulk-transactions';
@@ -23,6 +24,9 @@ import { ImportTypeConfig } from '../interface/audit-file-field-mapping-manager/
 import { InventoryCompareConfigResponse } from '../interface/audit-file-field-mapping-manager/inventory-compare-response.interface';
 import { InventoryCompareConfigPayload } from '../interface/audit-file-field-mapping-manager/inventory-compare.interface';
 import { ApiResponse, ApiResponseData, ApiResult } from '../types/CommonTypes';
+import { PagingRequest } from '../interface/ccdiscrepancies/PagingRequest';
+import { CompareItem } from '../interface/ccdiscrepancies/CompareItem';
+import { DeleteCompareItemsResponse } from '../interface/ccdiscrepancies/DeleteCompareItemsResponse';
 
 
 
@@ -2458,6 +2462,22 @@ public ResolveMarkoutTote(toteId: number) {
   public async GetNextToteIdForSlapperLabelAsync(request: PartialToteIdRequest[]): Promise<PartialToteIdResponse[]> {
     const response = await this.ApiBase.PutAsync<PartialToteIdRequest[]>('/totes/nexttoteforslapperlable', request);
     return response.body as PartialToteIdResponse[] || [];
+  }
+
+  public GetCompairedInventoryItems(pagingRequest: PagingRequest): Observable<ApiResult<CompareItem[]>> {
+    return this.ApiBase.Get<ApiResult<CompareItem[]>>('/inventorycompare/GetCompairedInventoryItems', pagingRequest);
+  }
+
+  public async DeleteComparedItems(ids: string[]): Promise<ApiResult<DeleteCompareItemsResponse>> {
+    try {
+      const response = await this.ApiBase.BulkDeleteAsync('/inventorycompare/DeleteComparedItems', ids);
+      if (response.status === 200 && response.body) {
+        return response.body as unknown as ApiResult<DeleteCompareItemsResponse>;
+      }
+      return { isSuccess: false, value: null, errorMessage: ApiErrorMessages.UnexpectedResponseStatus };
+    } catch (error) {
+      return { isSuccess: false, value: null, errorMessage: ApiErrorMessages.UnexpectedResponseStatus };
+    }
   }
 
   public async SubmitCaseWiseOrders(request: PartialToteIdResponse[]): Promise<ApiResult<PartialToteIdResponse[]>> {
