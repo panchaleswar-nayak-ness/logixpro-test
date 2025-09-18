@@ -114,7 +114,7 @@ export class BulkTransactionComponent implements OnInit {
   quickPickOrders() {
     let payload: QuickPickOrdersRequest = new QuickPickOrdersRequest();
     payload.start = 0;
-    payload.size = 5000;
+    payload.size = 500000;
     this.iBulkProcessApiService.bulkPickOrdersQuickpick(payload).subscribe((res: OrderResponse[]) => {
       this.selectedOrders = [];
       this.status.batchCount = 0;
@@ -391,7 +391,7 @@ export class BulkTransactionComponent implements OnInit {
   ): T {
     payload.type = this.bulkTransactionTypeAllCaps;
     payload.start = 0;
-    payload.size = 5000;
+    payload.size = 500000;
     return Object.assign(payload, overrides);
   }
 
