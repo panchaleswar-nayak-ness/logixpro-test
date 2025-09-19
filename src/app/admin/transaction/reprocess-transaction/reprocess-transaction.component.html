@@ -138,7 +138,7 @@
                                     >
                                         <ng-container *ngIf="col.colDef === 'Emergency'; else textContent">
                                             <div style="display: flex; justify-content: center; align-items: center;">
-                                                <mat-checkbox [checked]="element[col.colHeader]" [disabled]="isHistory"
+                                                <mat-checkbox [checked]="element[col.colHeader]" [disabled]="isHistory || isDisabled(element)"
                                                     (change)="onCheckboxToggle(element,col.colHeader,$event.checked)"
                                                     class="example-margin" color="primary">
                                                 </mat-checkbox>

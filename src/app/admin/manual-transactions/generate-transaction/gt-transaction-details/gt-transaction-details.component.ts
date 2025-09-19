@@ -1,6 +1,7 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { MatCheckboxChange } from '@angular/material/checkbox';
 import { WarehouseComponent } from 'src/app/admin/dialogs/warehouse/warehouse.component';
-import { DialogConstants, StringConditions, ToasterType,ToasterTitle,ToasterMessages } from 'src/app/common/constants/strings.constants';
+import { DialogConstants, StringConditions, ToasterType,ToasterTitle,ToasterMessages, TransactionType } from 'src/app/common/constants/strings.constants';
 import { GlobalService } from 'src/app/common/services/global.service';
 import { IInductionManagerApiService } from 'src/app/common/services/induction-manager-api/induction-manager-api-interface';
 import { InductionManagerApiService } from 'src/app/common/services/induction-manager-api/induction-manager-api.service';
@@ -104,5 +105,28 @@ export class GtTransactionDetailsComponent {
         }
       });
     }
+  }
+
+  onEmergencyChange(event: MatCheckboxChange) {    
+    // Update the emergency value
+    this.emergency = event.checked;
+    
+    // Call the existing field change logic
+    this.onFieldChange('emergency');
+    
+    // Add any additional logic you need here
+  }
+
+  onTransTypeChange(newTransType: string) {
+    // If transType is not 'Pick', turn off emergency checkbox
+    if (newTransType !== TransactionType.Pick && this.emergency) {
+      this.emergency = false;
+    }
+    
+    // Update the transType value
+    this.transType = newTransType;
+    
+    // Call the existing field change logic
+    this.onFieldChange('transType');
   }
 }

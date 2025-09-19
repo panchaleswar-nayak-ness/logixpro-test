@@ -1,4 +1,4 @@
 export interface UpdateEmergencyRequest {
-  id: number;
+  orderNumber: string;
   emergency: boolean;
 }
