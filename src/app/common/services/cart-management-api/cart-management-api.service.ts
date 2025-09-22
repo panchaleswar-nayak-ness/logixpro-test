@@ -1,22 +1,21 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { map, take } from 'rxjs/operators';
-import { BaseService } from '../base-service.service';
 import { ICartManagementApiService, CartListResponse } from './cart-management-api.interface';
 import { GlobalService } from '../global.service';
 import { ApiFuntions } from '../ApiFuntions';
-import { AuthService } from 'src/app/common/init/auth.service';
 import { RemoveCartContentRequest, ValidateToteRequest, ValidationRequest, ViewDetailsResponse, CompleteCartResponse, ValidateToteResponse, CartSearchRequest, CartStatusCountsDto, CartStatusSummary } from 'src/app/induction-manager/cart-management/interfaces/cart-management.interface';
 
 
 @Injectable({
   providedIn: 'root'
 })
-export class CartManagementApiService extends BaseService implements ICartManagementApiService {
+export class CartManagementApiService implements ICartManagementApiService {
 
 
-  constructor(private global: GlobalService, private Api: ApiFuntions, private authService: AuthService) {
-    super(null!, null!, null!);
+  constructor(
+    private global: GlobalService, 
+    private Api: ApiFuntions) {
   }
 
   getCarts(request: CartSearchRequest): Observable<CartListResponse> {
