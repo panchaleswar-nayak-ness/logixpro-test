@@ -273,13 +273,13 @@ export class BuildNewCartComponent implements OnInit {
         }
         else{
           this.currentCartIdInput = '';
-          this.global.ShowToastr(ToasterType.Error, ToasterMessages.SomethingWentWrong, ToasterTitle.Error);
+          this.global.ShowToastr(ToasterType.Error, ToasterMessages.InvalidCartID, ToasterTitle.Error);
         }
     }
     else{
       this.currentCartIdInput = '';
       this.cartForm.get('cartId')?.setValue("");
-      this.global.ShowMultipleToastMessages(ToasterType.Error, res?.body?.errors, ToasterTitle.Error);
+      this.global.ShowToastr(ToasterType.Error, ToasterMessages.InvalidCartID, ToasterTitle.Error);
     }
   }
 
@@ -670,7 +670,7 @@ export class BuildNewCartComponent implements OnInit {
         }
         this.toteIdInput = "";
       }
-      this.global.ShowMultipleToastMessages(ToasterType.Error, [res?.message || 'Tote validation failed'], ToasterTitle.Error);
+      this.global.ShowToastr(ToasterType.Error, ToasterMessages.InvalidToteID, ToasterTitle.Error);
       return false;
     }
 

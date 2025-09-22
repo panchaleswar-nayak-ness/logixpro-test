@@ -291,7 +291,9 @@ export const ToasterMessages = {
     ConfigurationUpdateSuccess: 'Configuration updated successfully',
     ConfigurationUpdateFailed: 'Failed to update configuration',
     FieldRequiresBothStartPositionAndFieldLength: (fieldName: string) => `${fieldName} requires both Start Position and Field Length values`,
-    FieldHasInvalidValues: (fieldName: string) => `${fieldName} has invalid values. Please check the minimum requirements.`
+    FieldHasInvalidValues: (fieldName: string) => `${fieldName} has invalid values. Please check the minimum requirements.`,
+    InvalidCartID: "Invalid Cart ID, please try again",
+    InvalidToteID: "Invalid Tote ID, please enter again"
 }
 
 export const LiveAnnouncerMessage = {
