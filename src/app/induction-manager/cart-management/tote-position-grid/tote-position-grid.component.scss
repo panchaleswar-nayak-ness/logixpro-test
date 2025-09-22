@@ -1,0 +1,135 @@
+// Base tote position grid styles
+.tote-position-grid {
+  .grid-container-4x3 {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: repeat(3, 1fr);
+    gap: 10px;
+  }
+
+  .grid-container-3x3 {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(3, 1fr);
+    gap: 10px;
+  }
+
+  .grid-container-1x3 {
+    display: grid;
+    grid-template-columns: repeat(1, 1fr);
+    grid-template-rows: repeat(3, 1fr);
+    gap: 10px;
+  }
+
+  // Common button styles for all grid layouts
+  .position-button {
+    height: 50px;
+    border-radius: 8px;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 8px;
+
+    &:hover:not(:disabled):not(.position-selected) {
+      background: rgba(var(--clr-primary-rgb-500), 0.1);
+    }
+
+    &:focus {
+      outline: none;
+      box-shadow: 0 0 0 2px rgba(var(--clr-primary-rgb-500), 0.2);
+    }
+
+    &:disabled {
+      cursor: not-allowed;
+      opacity: 0.6;
+    }
+  }
+
+  .position-content {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    width: 100%;
+    justify-content: center;
+    padding: 0 8px;
+
+    &.has-tote {
+      justify-content: flex-start;
+    }
+  }
+
+  .position-number,
+  .tote-id {
+    font-weight: 600;
+  }
+
+  .tote-id {
+    max-width: 60px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .position-empty {
+    color: var(--clr-chrome-600);
+  }
+
+  .position-selected {
+    color: var(--clr-pure-white);
+
+    .tote-id {
+      color: var(--clr-pure-white);
+    }
+  }
+
+  .position-filled {
+    background: var(--clr-primary-50);
+    color: var(--clr-tertiary-900);
+
+    .tote-id {
+      color: var(--clr-tertiary-900);
+    }
+  }
+
+  .position-disabled {
+    background: var(--clr-chrome-50);
+    color: var(--clr-chrome-300);
+    cursor: not-allowed;
+
+    .tote-id {
+      color: var(--clr-chrome-300);
+    }
+  }
+}
+
+// Grid layout variations
+// These classes will be applied dynamically based on backend dimensions
+// TODO: TypeScript integration will handle dynamic class application
+
+.tote-position-grid-4x3 {
+  .grid-container {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: repeat(3, 1fr);
+    gap: 10px;
+  }
+}
+
+.tote-position-grid-3x3 {
+  .grid-container {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(3, 1fr);
+    gap: 10px;
+  }
+}
+
+.tote-position-grid-1x3 {
+  .grid-container {
+    display: grid;
+    grid-template-columns: repeat(1, 1fr);
+    grid-template-rows: repeat(3, 1fr);
+    gap: 10px;
+  }
+}

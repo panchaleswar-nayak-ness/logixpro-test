@@ -81,7 +81,8 @@ export const StringConditions = {
     MoveTo: 'MoveTo',
     edit: 'edit',
     MoveFrom: 'MoveFrom',
-    Short: 'Short'
+    Short: 'Short',
+    Confirm:'confirm'
 }
 
 export const ResponseStrings = {
@@ -132,6 +133,9 @@ export const ConfirmationHeadings = {
     PrintBatchOrOrder:"Print Batch Or Order",
     NoOffCarouselPicksFound:"No Off-Carousel Picks Found",
     ResolveToteId: "Resolve Tote ID",
+    ClearAll: "Clear All?",
+    CancelCartCreation: "Cancel Cart Creation",
+    CancelCartUpdate: "Discard Changes?",
     PrintBatchOrOrders: "Print Batch Or Orders?",
     PrintOffCarouselPickItemLabels: "Print Off-Carousel Pick Item Labels?",
     ContinueCreatingTransaction: 'Continue Creating Transactions?',
@@ -163,6 +167,9 @@ export const ConfirmationMessages = {
     NoOffCarouselPicks:"There are no off-carousel picks for the order(s) selected.",    
     ResolvedToteConfirmation:"Are you sure you want to mark this Tote ID as resolved? This will remove this Tote ID from the Markout.",
     IrreversibleActionWarning :'This action cannot be undone.',
+    ClearAllTotesMessage: "Are you sure you want to remove all the empty totes from this cart?",
+    CancelCartCreationMessage: "Are you sure you want to close this screen? All entered data will be lost.",
+    CancelCartUpdateMessage:"Are you sure you want to close? All the information you’ve entered will be lost.",
     UpdateAllInterface: 'Click OK to update all devices with Com Port: {{comPort}}',
     UpdateAllInterfaceWithZone: 'Click OK to update all devices with Com Port: {{comPort}} and Zone: {{zone}}',
     PrintBatchOrOrders: 'Click Yes to print all orders as a batch. Click No to print a page for each order.',
@@ -781,8 +788,8 @@ export class PrintReports {
 }
 
 export class ConsoleErrorMessages {
-  static readonly ErrorPrintingReprocessReport = "Error occurred while printing reprocess report after allocation:"
-  static readonly ErrorFindingAssignedOrderLines = "Error occurred while finding order lines assigned locations:"
+    static readonly ErrorPrintingReprocessReport = "Error occurred while printing reprocess report after allocation:"
+    static readonly ErrorFindingAssignedOrderLines = "Error occurred while finding order lines assigned locations:"
 }
 
 export class ApiErrorMessages {
@@ -881,4 +888,9 @@ export const DISABLED_FIELDS = [
   export const FormatType = {
     NUMERIC : 'Numeric',
     ALPHA_NUMERIC : 'Alphanumeric',
+  }
+
+
+export const InventoryMapActionValues = {
+    Cart_Management : 'cart_management',
   }

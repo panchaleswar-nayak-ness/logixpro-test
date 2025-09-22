@@ -2524,6 +2524,14 @@ button.active-btn{
 
   //-------------- ACCORDIAN-CLASSES ----END-------------------
 
+// Cart Management Status Tooltip - Specific styling for multiline tooltip in cart-management component
+// This style is specifically designed for the status information tooltip in the cart management page
+// where status definitions need to be displayed with line breaks for better readability
+// DO NOT reuse this class for other tooltips - create specific classes for other components
+.cart-management-status-multiline-tooltip {
+  max-width: 400px !important;
+  white-space: pre-line !important;
+}
 
   // input{
   //   -webkit-user-select:all !important;

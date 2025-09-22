@@ -70,6 +70,7 @@ export class SideNavComponent implements OnInit {
     { icon: 'line_style', title: 'Super Batch', route: '/InductionManager/SuperBatch', permission: 'Induction Super Batch' },
     { icon: 'library_add_check', title: 'Complete Pick Batch', route: '/InductionManager/CompletePickBatch', permission: AppPermissions.InductionManager },
     { icon: 'conveyor_belt', title: 'Pick Tote Induction', route: '/InductionManager/PickToteInduction', permission: 'Pick Tote Induction'  },
+    { icon: 'shelves', title: 'Cart Management', route: '/InductionManager/CartManagement', permission: 'Cart Management'  },
   ];
   consolidationMenus: any = [
     { icon: 'arrow_back', title: AppPermissions.ConsolidationManager, route: '/ConsolidationManager', class: UniqueConstants.backClass, permission: AppPermissions.ConsolidationManager },

@@ -40,6 +40,10 @@
         "Permission": "Inventory Map"
     },
     {
+        "path": "/InductionManager/cartManagement",
+        "Permission": "Cart Management"
+    },
+    {
         "path": "/admin/locationAssignment",
         "Permission": "Location Assignment"
     },

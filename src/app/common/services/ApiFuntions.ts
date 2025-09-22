@@ -16,6 +16,7 @@ import {IQueryParams} from 'src/app/consolidation-manager/cm-route-id-management
 import { MarkoutAuditResponse, MarkoutPickLinesResponse, MarkoutResponse } from 'src/app/consolidation-manager/cm-markout-new/models/cm-markout-new-models';
 import { ZoneListPayload } from 'src/app/bulk-process/preferences/preference.models';
 import { DevicePreferenceRequest, DevicePreferencesTableRequest } from '../interface/admin/device-preferences';
+import { RemoveCartContentRequest, ValidateToteRequest, ValidationRequest, ViewDetailsResponse, CartApiResponse, ValidateToteResponse, CompleteCartResponse, CartListResponse, CartSearchRequest, CartStatusCountsDto } from 'src/app/induction-manager/cart-management/interfaces/cart-management.interface';
 import { UpdateEmergencyRequest } from '../interface/admin/opentransaction.interfaces';
 import { PrintOrdersPayload, PrintTransactionPayload } from '../interface/bulk-transactions/bulk-pick';
 import { ApiErrorMessages } from '../constants/strings.constants';
@@ -27,8 +28,6 @@ import { ApiResponse, ApiResponseData, ApiResult } from '../types/CommonTypes';
 import { PagingRequest } from '../interface/ccdiscrepancies/PagingRequest';
 import { CompareItem } from '../interface/ccdiscrepancies/CompareItem';
 import { DeleteCompareItemsResponse } from '../interface/ccdiscrepancies/DeleteCompareItemsResponse';
-
-
 
 @Injectable({
   providedIn: 'root',
@@ -2447,6 +2446,14 @@ public ResolveMarkoutTote(toteId: number) {
     return await this.ApiBase.PatchAsync(`/Consolidation/Route/${routeId}/RequestRelease`,null);
   }
 
+  public GetCartListWithParams(request: CartSearchRequest): Observable<CartListResponse> {
+    return this.ApiBase.Get<CartListResponse>('/cart/cartList', request);
+  }
+
+  public GetCartStatuses(): Observable<CartStatusCountsDto> {
+    return this.ApiBase.Get<CartStatusCountsDto>('/cart/statuses');
+  }
+
   public async printSelectedOrdersReport(
     body: PrintOrdersPayload,
     showLoader: boolean = true
@@ -2459,6 +2466,38 @@ public ResolveMarkoutTote(toteId: number) {
     );
   }
 
+  public async validateCart(body: ValidationRequest) {
+    return await this.ApiBase.PostAsync(`/Cart/ValidateCart`,body);
+  }
+
+  public async viewCartDetails(request: ValidationRequest): Promise<ViewDetailsResponse> {
+    const response = await this.ApiBase.GetAsync<CartApiResponse<ViewDetailsResponse>>('/cart/viewCartDetails', request);
+    if (!response.body || !response.body.value) {
+      throw new Error('No response body or value received from viewCartDetails API');
+    }
+    return response.body.value;
+  }
+
+  public async removeCartContent(request: RemoveCartContentRequest){
+    return await this.ApiBase.PutAsync('/cart/removeCartContent', request);
+  }
+
+  public async validateTotes(request: ValidateToteRequest): Promise<ValidateToteResponse> {
+    const response = await this.ApiBase.PostAsync('/cart/validateTotes', request);
+    if (!response.body) {
+      throw new Error('No response body received from validateTotes API');
+    }
+    return response.body as unknown as ValidateToteResponse;
+  }
+
+  public async completeCart(cartId: string): Promise<CompleteCartResponse> {
+    const response = await this.ApiBase.PostAsync(`/cart/completeCart?cartId=${cartId}`, null);
+    if (!response.body) {
+      throw new Error('No response body received from completeCart API');
+    }
+    return response.body as unknown as CompleteCartResponse;
+  }
+  
   public async GetNextToteIdForSlapperLabelAsync(request: PartialToteIdRequest[]): Promise<PartialToteIdResponse[]> {
     const response = await this.ApiBase.PutAsync<PartialToteIdRequest[]>('/totes/nexttoteforslapperlable', request);
     return response.body as PartialToteIdResponse[] || [];

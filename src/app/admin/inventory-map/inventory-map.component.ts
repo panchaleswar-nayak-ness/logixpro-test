@@ -25,7 +25,7 @@ import { CurrentTabDataService } from '../inventory-master/current-tab-data-serv
 import { IAdminApiService } from 'src/app/common/services/admin-api/admin-api-interface';
 import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.service';
 import { TableContextMenuService } from 'src/app/common/globalComponents/table-context-menu-component/table-context-menu.service';
-import { DialogConstants, StringConditions, ToasterMessages, ToasterTitle, ToasterType, ColumnDef, Style, UniqueConstants, defaultWorkstationSetup, AccessLevel } from 'src/app/common/constants/strings.constants';
+import { DialogConstants, StringConditions, ToasterMessages, ToasterTitle, ToasterType, ColumnDef, Style, UniqueConstants, defaultWorkstationSetup, AccessLevel, InventoryMapActionValues } from 'src/app/common/constants/strings.constants';
 import { RouteUpdateMenu } from 'src/app/common/constants/menu.constants';
 import { AppNames, AppRoutes, } from 'src/app/common/constants/menu.constants';
 import { ContextMenuFiltersService } from 'src/app/common/init/context-menu-filters.service';
@@ -385,6 +385,8 @@ export class InventoryMapComponent implements OnInit {
             this.getColumnsData();
           }
         });
+    } else if (actionEvent.value === InventoryMapActionValues.Cart_Management) {
+      this.router.navigate(['/admin/inventoryMap/cartManagement']);
     }
   }
 
