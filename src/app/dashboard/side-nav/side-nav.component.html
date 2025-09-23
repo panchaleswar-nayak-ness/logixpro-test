@@ -25,7 +25,7 @@
       <mat-list-item *ngIf="childMenu.route.includes('/BulkTransactions')"
         class="{{ (childMenu.route != '/BulkTransactions' && childMenu.route != '/InductionManager' && childMenu.route != '/InductionManager/Admin' && childMenu.route != '/OrderManager' && childMenu.route != '/FlowrackReplenish' && childMenu.route != '/ConsolidationManager'  && childMenu.route != '/admin'&& childMenu.route != '/MarkoutProcess') && router.url == childMenu.route ? 'active':''}}" 
         (click)="isMenuHide ? redirect() : loadMenus(childMenu)"
-        [disabled]="childMenu.permission != true ? (isAuthorized(childMenu.permission) || childMenu.route === '#') : false">
+        [disabled]="childMenu.permission != true ? (isAuthorized(childMenu.permission) || childMenu.route === '#') : false" [attr.data-automation-id]="'child-menu-' + childMenu.title">
         <span mat-list-icon class="material-symbols-outlined">
           {{childMenu.icon}}
         </span>
@@ -44,7 +44,7 @@
 <div *ngIf="isConfigUser">
   <mat-nav-list *ngIf="isChildMenu && childMenus.length > 0">
     <ng-container *ngFor="let childMenu of childMenus;">
-      <mat-list-item [attr.data-automation-id]="'child-menu-' + childMenu.title" routerLinkActive="active"  [queryParams]="{tabIndex: 0}" [disabled]="childMenu.route === '#'" routerLink="{{childMenu.route}}" (click)="isMenuHide ? redirect() : loadMenus(childMenu)">
+      <mat-list-item  routerLinkActive="active"  [queryParams]="{tabIndex: 0}" [disabled]="childMenu.route === '#'" routerLink="{{childMenu.route}}" (click)="isMenuHide ? redirect() : loadMenus(childMenu)">
         <span mat-list-icon class="material-symbols-outlined">
           {{childMenu.icon}}
         </span>
