@@ -628,7 +628,13 @@ export class BuildNewCartComponent implements OnInit {
   }
 
   getAssignedToteCount(): number {
-    return this.positions.filter(p => p.status !== ToteStatuses.Closed && !!p.toteId).length;
+    if (!this.positions || this.positions.length === 0) {
+      return 0;
+    }
+
+    return this.positions.filter(
+      p => p != null && !p.hasError && p.status !== ToteStatuses.Closed && !!p.toteId
+    ).length;
   }
 
   private getAssignments(): Record<number, string> {
