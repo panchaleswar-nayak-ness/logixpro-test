@@ -12,7 +12,7 @@ import {
   UpdateQuantityRequest
 } from 'src/app/consolidation-manager/cm-markout/models/markout-model';
 import { AddPickToteInductionFilter } from 'src/app/induction-manager/models/PickToteInductionModel';
-import { InventoryMap, UpdateSCReq } from '../Model/storage-container-management';
+import { InventoryMap, InventoryMapRecordsDto, UpdateSCReq } from '../Model/storage-container-management';
 import {IQueryParams} from 'src/app/consolidation-manager/cm-route-id-management/routeid-list/routeid-IQueryParams'
 import { MarkoutAuditResponse, MarkoutPickLinesResponse, MarkoutResponse } from 'src/app/consolidation-manager/cm-markout-new/models/cm-markout-new-models';
 import { ZoneListPayload } from 'src/app/bulk-process/preferences/preference.models';
@@ -21,11 +21,11 @@ import { RemoveCartContentRequest, ValidateToteRequest, ValidationRequest, ViewD
 import { UpdateEmergencyRequest } from '../interface/admin/opentransaction.interfaces';
 import { PrintOrdersPayload, PrintTransactionPayload } from '../interface/bulk-transactions/bulk-pick';
 import { ApiErrorMessages } from '../constants/strings.constants';
-import { PickToteTransPayload, PickToteTransResponse } from '../types/pick-tote-manager.types';
+import { PickToteTransPayload } from '../types/pick-tote-manager.types';
 import { ImportTypeConfig } from '../interface/audit-file-field-mapping-manager/import-type-config.interface';
 import { InventoryCompareConfigResponse } from '../interface/audit-file-field-mapping-manager/inventory-compare-response.interface';
 import { InventoryCompareConfigPayload } from '../interface/audit-file-field-mapping-manager/inventory-compare.interface';
-import { ApiResponse, ApiResponseData, ApiResult } from '../types/CommonTypes';
+import { ApiResponse, ApiResponseData, ApiResult, ExitOk } from '../types/CommonTypes';
 import { PrintToteLabelsPayload } from '../interface/induction-manager/print-lable/print-lable.interface';
 import { PagingRequest } from '../interface/ccdiscrepancies/PagingRequest';
 import { CompareItem } from '../interface/ccdiscrepancies/CompareItem';
@@ -162,6 +162,10 @@ export class ApiFuntions {
 
   public GetInventory(body: any): Observable<any> {
     return this.ApiBase.Get('/Admin/inventory', body);
+  }
+  
+  public GetInventoryMapRecordsForBin(binId: string, zone: string): Observable<InventoryMapRecordsDto> {
+    return this.ApiBase.Get<InventoryMapRecordsDto>(`/storagecontainer/inventoryrecords/bin/${binId}/zone/${zone}`);
   }
 
   public GetInventoryItemNumber(body: any): Observable<any> {
@@ -2404,6 +2408,11 @@ public ResolveMarkoutTote(toteId: number) {
     return await this.ApiBase.HttpPutAsync(`/layouts/container/${containerId}`,body);
   }
 
+// API base stays as-is (json). We'll reshape here:
+public storageBinsExit(binId: string, zone: string): Observable<ExitOk> {
+  return this.ApiBase.Post<ExitOk>(`/StorageContainer/storagebins/${binId}/zone/${zone}/exit`, { success: true, message: '' })
+    .pipe(map(res => res ?? { success: true, message: 'OK' } as ExitOk));
+}
   public async GetContainerLayoutsAsync() {
     return await this.ApiBase.GetAsync(`/layouts`);
   }

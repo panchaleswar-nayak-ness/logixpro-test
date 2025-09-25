@@ -89,7 +89,7 @@
                       <button mat-menu-item (click)="duplicate(seletedRecord)" *ngIf="inventoryRoute && this.userData.accessLevel.toLowerCase() == accessLevel.Administrator" data-automation-id="duplicate-button">Duplicate</button>
                       <button mat-menu-item (click)="viewInInventoryMaster(seletedRecord)" data-automation-id="view-in-inventory-master-button">View item in Inventory Master</button>
                       <button mat-menu-item (click)="viewLocationHistory(seletedRecord)" data-automation-id="view-location-history-button">View Location History</button>
-                      <button mat-menu-item disabled data-automation-id="send-to-outbound-port-button">Send to Outbound Port</button>
+                      <button mat-menu-item (click)="sendToOutboundPort(seletedRecord)" [disabled]="seletedRecord.locationID <= 0" data-automation-id="send-to-outbound-port-button">Send to Outbound Port</button>
                     </mat-menu>
                   </td>
  

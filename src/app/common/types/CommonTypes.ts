@@ -361,3 +361,5 @@ export interface ApiResponseData {
   value?: string | null;
   errors?: string[] | null;
 }
+export interface ExitOk { success: true; message: string; }
+export type ExitResult = ExitOk;

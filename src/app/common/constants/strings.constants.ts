@@ -126,6 +126,7 @@ export const ToasterTitle = {
 
 export const ConfirmationHeadings = {
     BatchManager: 'Batch Manager',
+    OutboundPort: 'Outbound Port',
     MoveNow: "Continue Move Now?",
     PasswordExpiryAlert: "Password Expiry Alert",
     PrintItemLabelsNow: "Print Item Labels Now?",
@@ -177,7 +178,8 @@ export const ConfirmationMessages = {
     InconsistentFormat: (fieldName: string, newFormat: string, oldFormat: string) => `An "${fieldName}" was added with ${oldFormat} format. Changing to ${newFormat} will update that entry as well. Do you want to continue?`,
     ContinueCreatingTransaction: 'You will now create a “Count” Transaction for each Item Number in the Queue.',
     InfoText: 'These items will be removed from the Discrepancies List.',
-    ClickYesToAssignLocation: 'Click Yes to close the Cycle Count Manager screen and go the Location Assignment Screen.'
+    ClickYesToAssignLocation: 'Click Yes to close the Cycle Count Manager screen and go the Location Assignment Screen.',
+    ClickOkToOutboundPort: (totalRecordsToRemove: number, binId: string) => `Proceeding will remove ${totalRecordsToRemove} record(s) of Storage Container  ${binId} from inventory map. Do you want to continue?`,
 }
 
 export const ToasterMessages = {
@@ -198,6 +200,7 @@ export const ToasterMessages = {
     ItemNotInOrder: 'Item not in order or has already been consolidated',
     NoUnverfiedItems: 'There are no unverfied items',
     SomethingWentWrong: 'Something went wrong',
+    FailedToRequestStorageBinExit: 'Failed to request storage bin exit',
     DefaultSuperBatchSizeError: 'Default Super Batch Size must be greater than 1',
     NoOpenTransactionsBatch: "No open transactions for the entered batch",
     NoOpenTranscationTote: "No open transaction for that tote in the batch",
@@ -291,9 +294,11 @@ export const ToasterMessages = {
     CountQueueActionTypeError:"Unhandled action type",
     ConfigurationUpdateSuccess: 'Configuration updated successfully',
     ConfigurationUpdateFailed: 'Failed to update configuration',
+    UnableToConnectToServer: "Unable to connect to the server. Please make sure the service is running and try again.",
     TransactionCreatedSuccess: 'Transactions created successfully',
     FieldRequiresBothStartPositionAndFieldLength: (fieldName: string) => `${fieldName} requires both Start Position and Field Length values`,
     FieldHasInvalidValues: (fieldName: string) => `${fieldName} has invalid values. Please check the minimum requirements.`,
+    SendToOutboundPort: 'Send to Outbound Port',
     NoTotesAvailableToAdd: 'No totes available to add',
     NoTotesSelected: 'No totes selected',
     PrintQueueIsEmpty: 'Print queue is empty',
@@ -305,7 +310,8 @@ export const ToasterMessages = {
     PrintingLabelsFromQueue: (count: number) => `Printing ${count} label(s) from queue`,
     LabelsDataPrintedSuccessfully: 'Labels printed successfully',
     InvalidCartID: "Invalid Cart ID, please try again",
-    InvalidToteID: "Invalid Tote ID, please enter again"
+    InvalidToteID: "Invalid Tote ID, please enter again",
+    StorageBinExitSuccessful: 'Storage Container has been sent to Outbound Port.',
 }
 
 export const LiveAnnouncerMessage = {
@@ -812,6 +818,9 @@ export class ApiErrorMessages {
   static readonly FailedToRemoveOrderLinesFromTote = "Failed to remove order lines from tote"
   static readonly ErrorRemovingOrderLinesFromTote = "Error removing order lines from tote"
   static readonly ErrorSubmittingCaseWiseOrders = "Error submitting case-wise orders"
+  static readonly ErrorLoadingContainerLayout = "Error loading container layout"
+  static readonly ErrorLoadingInventoryData = "Error loading inventory data"
+  static readonly ValidationError = "Validation error"
 }
 export const PickToteFilterpreferences = {
     preferences: "PickToteFilterPrefs"
@@ -904,7 +913,17 @@ export const DISABLED_FIELDS = [
     NUMERIC : 'Numeric',
     ALPHA_NUMERIC : 'Alphanumeric',
   }
-
+  export const storageContainerDisabledFields = {
+    SENDTOOUTBOUNDPORT: 'sendToOutboundPort',
+    CAROUSELZONE: 'carouselZone',
+    TRAY: 'tray',
+    CONTAINERTYPE: 'containerType',
+    SAVE: 'save',
+  };
+  
+export const DialogTitles = {
+    STORAGE_CONTAINER : 'Storage Container'
+}
   export const LabelPrintingModes = {
     NewTotes: 'New Totes',
     PrintedHistory: 'Printed Totes'
@@ -913,3 +932,4 @@ export const DISABLED_FIELDS = [
   export const InventoryMapActionValues = {
     Cart_Management : 'cart_management',
   }
+

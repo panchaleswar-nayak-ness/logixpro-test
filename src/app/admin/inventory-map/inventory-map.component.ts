@@ -25,13 +25,14 @@ import { CurrentTabDataService } from '../inventory-master/current-tab-data-serv
 import { IAdminApiService } from 'src/app/common/services/admin-api/admin-api-interface';
 import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.service';
 import { TableContextMenuService } from 'src/app/common/globalComponents/table-context-menu-component/table-context-menu.service';
-import { DialogConstants, StringConditions, ToasterMessages, ToasterTitle, ToasterType, ColumnDef, Style, UniqueConstants, defaultWorkstationSetup, AccessLevel, InventoryMapActionValues } from 'src/app/common/constants/strings.constants';
+import { DialogConstants, StringConditions, ToasterMessages, ToasterTitle, ToasterType, ColumnDef, Style, UniqueConstants, defaultWorkstationSetup, AccessLevel, ConfirmationMessages, ConfirmationHeadings, ResponseStrings, DialogTitles, InventoryMapActionValues } from 'src/app/common/constants/strings.constants';
 import { RouteUpdateMenu } from 'src/app/common/constants/menu.constants';
 import { AppNames, AppRoutes, } from 'src/app/common/constants/menu.constants';
 import { ContextMenuFiltersService } from 'src/app/common/init/context-menu-filters.service';
 import { Placeholders } from 'src/app/common/constants/strings.constants';
 import { StorageContainerManagementModalComponent } from '../dialogs/storage-container-management/storage-container-management.component';
 import { ApiResponse, EmployeeAccessLevel, UserSession, WorkStationSetup } from 'src/app/common/types/CommonTypes';
+import { BinRowDto } from 'src/app/common/Model/storage-container-management';
 @Component({
   selector: 'app-inventory-map',
   templateUrl: './inventory-map.component.html',
@@ -599,7 +600,23 @@ export class InventoryMapComponent implements OnInit {
 
    
   }
-
+  sendToOutboundPort(row: { row: string; zone: string; locationNumber?: string }): void {
+    const binId: string = row.row;
+    const dialogRef = this.global.OpenDialog(StorageContainerManagementModalComponent, {
+      height: DialogConstants.auto,
+      width: Style.w786px,
+      autoFocus: DialogConstants.autoFocus,
+      data: {
+        rowFieldAlias: this.fieldMappings?.row || DialogTitles.STORAGE_CONTAINER,
+        sendToOutboundPort: true,
+        binId: binId,
+        zone: row.zone
+      }
+    });
+    dialogRef.afterClosed().pipe(takeUntil(this.onDestroy$)).subscribe(() => {
+      this.getContentData();
+    });
+  }
   autoCompleteSearchColumn(){
     let searchPayload = {
       "columnName": this.columnSearch.searchColumn.colDef,

@@ -12,6 +12,7 @@ export class BinCellLayout {
     binLayoutID: number;
     column: number;
     row: number;
+    bin: string;
     binID: string;
     cellSize: string;
     commandString: string;
@@ -115,3 +116,47 @@ export class InventoryMap {
     locationID:string = "";
     altLight: number;
 }
+export class BinRowDto { Bin: string; Row: string; }
+
+// Interfaces for better type safety
+export class InventoryRecord {
+    bin: string;
+    row: string;
+    zone: string;
+    itemNumber: string;
+    itemQuantity: number;
+    quantityAllocatedPick: number;
+    quantityAllocatedPutAway: number;
+    dedicated: boolean;
+    cellId: string;
+    location: string;
+    containerType: string;
+    cellSize?: string;
+    constraintViolations?: string[];
+    hasConstraints?: boolean;
+  }
+  export class InventoryMapRecordsDto  {
+    errors: string[];
+    isSuccess: boolean;
+    status: number;
+    value: InventoryMapRecordsResponse;
+  }
+export class InventoryMapRecordsResponse {
+    records: InventoryRecord[];
+    totalRecords: number;
+    recordsWithConstraints: number;
+    canProceedWithRemoval: boolean;
+    globalConstraintViolations: string[];
+    
+    constructor() {
+        this.records = [];
+        this.totalRecords = 0;
+        this.recordsWithConstraints = 0;
+        this.canProceedWithRemoval = true;
+        this.globalConstraintViolations = [];
+    }
+}
+ export class ConstraintViolations {
+    [cellId: string]: string[];
+  }
+
