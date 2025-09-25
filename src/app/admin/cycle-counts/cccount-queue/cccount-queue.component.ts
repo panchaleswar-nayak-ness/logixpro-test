@@ -24,6 +24,9 @@ import {CustomPagination} from '../../../common/types/CommonTypes';
 import { take } from 'rxjs/operators'; 
 import { CycleCountDataService } from '../cycle-count-data.service';
 import { CCDiscrepanciesApiService } from '../../../common/services/ccdiscrepancies/ccdiscrepancies-api.service';
+import { CompareLineState } from '../../../common/interface/ccdiscrepancies/CompareLineState';
+import { CompareItem } from '../../../common/interface/ccdiscrepancies/CompareItem';
+import { CountQueueMapper } from '../../../common/services/ccdiscrepancies/count-queue.mapper';
 
 @Component({
   selector: 'app-cccount-queue',
@@ -72,11 +75,13 @@ export class CCCountQueueComponent implements OnInit {
     private router: Router,
     private ngZone: NgZone,
     private cycleCountDataService: CycleCountDataService,
-    private ccDiscrepanciesApiService: CCDiscrepanciesApiService
+    private ccDiscrepanciesApiService: CCDiscrepanciesApiService,
+    private countQueueMapper: CountQueueMapper
   ) {}
 
   ngOnInit() {
     this.initializeTableConfig();
+    this.loadData(); // Load initial data from API
     
     // Subscribe to count queue updates
     this.cycleCountDataService.countQueue$.subscribe(data => {
@@ -84,6 +89,46 @@ export class CCCountQueueComponent implements OnInit {
       this.customPagination.total = this.dataSource.data.length;
       this.TotalLocation = this.dataSource.data.reduce((sum, item) => sum + item.qtyLocation, 0);
     });
+  }
+
+  private async loadData(): Promise<void> {
+    const pagingRequest = {
+      page: this.params.page,
+      pageSize: this.params.pageSize,
+      sortColumn: this.params.sortColumn,
+      sortOrder: this.params.sortOrder
+    };
+
+    try {
+      const response = await this.ccDiscrepanciesApiService.getCountQueue(pagingRequest);
+      if (!response) {
+        this.global.ShowToastr(
+          ToasterType.Error,
+          ToasterMessages.APIErrorMessage,
+          ToasterTitle.Error
+        );
+        return;
+      }
+
+      if (response.isSuccess && response.value) {
+        const countQueueDtos: CompareItem[] = response.value;
+        const countQueue: SelectedCountQueue[] = this.countQueueMapper.mapToSelectedCountQueueArray(countQueueDtos);
+        
+        this.cycleCountDataService.updateCountQueue(countQueue);
+      } else {
+        this.global.ShowToastr(
+          ToasterType.Error,
+          response.errorMessage || ToasterMessages.APIErrorMessage,
+          ToasterTitle.Error
+        );
+      }
+    } catch (error) {
+      this.global.ShowToastr(
+        ToasterType.Error,
+        ToasterMessages.APIErrorMessage,
+        ToasterTitle.Error
+      );
+    }
   }
 
   /**
@@ -98,20 +143,24 @@ export class CCCountQueueComponent implements OnInit {
   /**
    * Removes all records from the queue (placeholder for future logic).
    */
+  /**
+   * Removes all records from the queue and moves them back to discrepancies.
+   */
   async RemoveAll(): Promise<void> {
-    const ids = this.dataSource.data.map(item => item.id);
-    if (ids.length === 0) {
+    if (this.dataSource.data.length === 0) {
       this.global.ShowToastr(ToasterType.Info, ToasterMessages.NoRecordFound, ToasterTitle.Info);
       return;
     }
 
     try {
-      const result = await this.ccDiscrepanciesApiService.deleteComparedItems(ids);
-      if (result.isSuccess && result.value?.success) {
+      const ids = this.dataSource.data.map(item => item.id);
+      const result = await this.ccDiscrepanciesApiService.changeCompareItemsState(ids, CompareLineState.Processed);
+      if (result.isSuccess) {
+        this.cycleCountDataService.moveAllBackToDiscrepancies();
         this.global.ShowToastr(ToasterType.Success, ToasterMessages.DeleteAllSuccess, ToasterTitle.Success);
         this.initializeTableConfig();
       } else {
-        this.global.ShowToastr(ToasterType.Error, result.value?.message || result.errorMessage || ToasterMessages.APIErrorMessage, ToasterTitle.Error);
+        this.global.ShowToastr(ToasterType.Error, result.errorMessage || ToasterMessages.APIErrorMessage, ToasterTitle.Error);
       }
     } catch (error) {
       this.global.ShowToastr(ToasterType.Error, ToasterMessages.APIErrorMessage, ToasterTitle.Error);
@@ -119,7 +168,7 @@ export class CCCountQueueComponent implements OnInit {
   }
 
   /**
-   * Removes a specific record from the queue (placeholder for API integration).
+   * Removes a specific record from the queue and moves it back to discrepancies.
    * @param event Selected count queue item.
    */
   async RemoveFromQueue(event: SelectedCountQueue): Promise<void> {
@@ -129,15 +178,15 @@ export class CCCountQueueComponent implements OnInit {
     }
 
     try {
-      const result = await this.ccDiscrepanciesApiService.deleteComparedItems([event.id]);
-      if (result.isSuccess && result.value?.success) {
+      const result = await this.ccDiscrepanciesApiService.changeCompareItemsState([event.id], CompareLineState.Processed);
+      if (result.isSuccess) {
+        this.cycleCountDataService.moveBackToDiscrepancies(event);
         this.global.ShowToastr(ToasterType.Success, ToasterMessages.RemoveFromQueueSuccess, ToasterTitle.Success);
-        this.initializeTableConfig();
       } else {
-        this.global.ShowToastr(ToasterType.Error, result.value?.message || result.errorMessage || ToasterMessages.RemoveFromQueueFailed, ToasterTitle.Error);
+        this.global.ShowToastr(ToasterType.Error, result.errorMessage || ToasterMessages.APIErrorMessage, ToasterTitle.Error);
       }
     } catch (error) {
-      this.global.ShowToastr(ToasterType.Error, ToasterMessages.RemoveFromQueueFailed, ToasterTitle.Error);
+      this.global.ShowToastr(ToasterType.Error, ToasterMessages.APIErrorMessage, ToasterTitle.Error);
     }
   }
 
@@ -154,6 +203,7 @@ export class CCCountQueueComponent implements OnInit {
       startIndex: e.pageIndex * e.pageSize + 1,
       endIndex: Math.min((e.pageIndex + 1) * e.pageSize, this.customPagination.total || 0),
     };
+    this.loadData();
   }
 
   /**

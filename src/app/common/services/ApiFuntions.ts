@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/internal/Observable';
-import { map } from 'rxjs/operators';
+import { of } from 'rxjs';
+import { map, catchError } from 'rxjs/operators';
 import { BaseService } from './base-service.service';
 import { AuthService } from '../init/auth.service';
 import { AssignToteToOrderDto, NextToteId, OrderLineResource, PartialToteIdRequest, PartialToteIdResponse, RemoveOrderLinesRequest, RemoveOrderLinesResponse } from '../Model/bulk-transactions';
@@ -28,6 +29,10 @@ import { ApiResponse, ApiResponseData, ApiResult } from '../types/CommonTypes';
 import { PagingRequest } from '../interface/ccdiscrepancies/PagingRequest';
 import { CompareItem } from '../interface/ccdiscrepancies/CompareItem';
 import { DeleteCompareItemsResponse } from '../interface/ccdiscrepancies/DeleteCompareItemsResponse';
+import { ChangeCompareItemsStateResponse } from '../interface/ccdiscrepancies/ChangeCompareItemsStateResponse';
+import { CompareLineState } from '../interface/ccdiscrepancies/CompareLineState';
+import { CycleCountTransactionRequest } from '../interface/ccdiscrepancies/CycleCountTransactionRequest';
+import { RequestResult } from '../interface/ccdiscrepancies/RequestResult';
 
 @Injectable({
   providedIn: 'root',
@@ -2507,6 +2512,10 @@ public ResolveMarkoutTote(toteId: number) {
     return this.ApiBase.Get<ApiResult<CompareItem[]>>('/inventorycompare/GetCompairedInventoryItems', pagingRequest);
   }
 
+  public GetCountQueue(pagingRequest: PagingRequest): Observable<ApiResult<CompareItem[]>> {
+    return this.ApiBase.Get<ApiResult<CompareItem[]>>('/inventorycompare/GetCountQueue', pagingRequest);
+  }
+
   public async DeleteComparedItems(ids: string[]): Promise<ApiResult<DeleteCompareItemsResponse>> {
     try {
       const response = await this.ApiBase.BulkDeleteAsync('/inventorycompare/DeleteComparedItems', ids);
@@ -2517,6 +2526,31 @@ public ResolveMarkoutTote(toteId: number) {
     } catch (error) {
       return { isSuccess: false, value: null, errorMessage: ApiErrorMessages.UnexpectedResponseStatus };
     }
+  }
+
+  public async ChangeCompareItemsState(ids: string[], newState: CompareLineState): Promise<ApiResult<ChangeCompareItemsStateResponse>> {
+    try {
+      const response = await this.ApiBase.PatchAsync<string[]>(`/inventorycompare/ChangeCompareItemsState/${newState}`, ids);
+      if (response.status === 200 && response.body) {
+        const result = response.body as unknown as ApiResult<ChangeCompareItemsStateResponse>;
+        if (result.value?.success) {
+          return { isSuccess: true, value: result.value, errorMessage: undefined };
+        }
+        return { isSuccess: false, value: null, errorMessage: result.value?.message || ApiErrorMessages.UnexpectedResponseStatus };
+      }
+      return { isSuccess: false, value: null, errorMessage: ApiErrorMessages.UnexpectedResponseStatus };
+    } catch (error) {
+      return { isSuccess: false, value: null, errorMessage: ApiErrorMessages.UnexpectedResponseStatus };
+    }
+  }
+
+  public CreateCycleCountTransaction(request: CycleCountTransactionRequest): Observable<ApiResult<RequestResult>> {
+    return this.ApiBase.Post<CycleCountTransactionRequest>('/admin/cyclecounttransaction', request).pipe(
+      map(response => (response as unknown as ApiResult<RequestResult>) || { isSuccess: false, value: null, errorMessage: ApiErrorMessages.UnexpectedResponseStatus }),
+      catchError(error => {
+        return of({ isSuccess: false, value: null, errorMessage: ApiErrorMessages.UnexpectedResponseStatus });
+      })
+    );
   }
 
   public async SubmitCaseWiseOrders(request: PartialToteIdResponse[]): Promise<ApiResult<PartialToteIdResponse[]>> {

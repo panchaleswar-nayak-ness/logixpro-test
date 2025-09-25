@@ -24,7 +24,7 @@
             class="employees-action"
             (selectionChange)="onActionChange($event)" data-automation-id="actions-select"
           >
-          <mat-option [value]="ActionType.CreateTransaction" data-automation-id="option-create-transactions">Create Transactions</mat-option>
+          <mat-option [value]="ActionType.CreateTransaction" [disabled]="!hasCountQueueData" data-automation-id="option-create-transactions">Create Transactions</mat-option>
           <mat-option [value]="ActionType.AssignLocation" data-automation-id="option-location-assignment">Location Assignment</mat-option>
           <mat-option [value]="ActionType.ImportBatches" data-automation-id="option-import-count-batches">Import Count Batches</mat-option>
           <mat-option [value]="ActionType.ImportDiscrepancies" data-automation-id="option-import-discrepancies">Import Discrepancies</mat-option>
@@ -38,8 +38,18 @@
     </div>
 
     <div class="d-xl-flex justify-content-end align-items-center mb-2 mt-2">
+        <div class="d-xl-flex gap-12">
+          <button
+            type="submit"
+            mat-stroked-button
+            class="m-1 m-xl-0 button-remove-all-w-stroke mb-2"
+            color="warn"
+            (click)="removeAll()"
+          >
+            Clear Discrepancies Queue
+          </button>
+        </div>
       <div class="d-xl-flex gap-12">
-       
         <button
           type="submit"
           mat-stroked-button
@@ -50,6 +60,7 @@
           Append All
         </button>
       </div>
+      
     </div>
    <div class="card br-14 table-responsive my-3"  *ngIf="hasValidColumns"
             >
