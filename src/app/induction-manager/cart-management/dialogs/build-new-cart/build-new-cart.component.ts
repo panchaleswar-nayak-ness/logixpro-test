@@ -387,6 +387,9 @@ export class BuildNewCartComponent implements OnInit {
         this.onPositionClear(currentPosition);
         this.onPositionSelect(currentPosition);
         this.cartUpdated.emit();
+        if(this.existingAssignments.length == 0 && this.isEditMode){
+          this.dialogRef.close();
+        }
       }
     }
     else{
@@ -397,6 +400,12 @@ export class BuildNewCartComponent implements OnInit {
   onBackspaceCheck() {
     if ((this.toteIdInput ?? '').trim().length === 0) {
       this.onClearToteInput();
+    }
+  }
+
+  async onCartIDBackspaceCheck(){
+    if (this.cartForm.get('cartId')?.value.trim().length === 0) {
+      await this.onClearCartId();
     }
   }
 
@@ -482,15 +491,11 @@ export class BuildNewCartComponent implements OnInit {
     this.emitToteQuantityChange();
   }
 
-  getUpdateStatus() {
-    if(this.existingAssignments?.length == 0) return true;
-    const hasClosed = this.existingAssignments?.some(i => i.status === 'Closed') ?? false;
-    if(hasClosed){
-      return false;
-    }
-    else{
-      return true;
-    }
+  getUpdateStatus(isClearAll:boolean = false): boolean {
+    const assignments = this.existingAssignments ?? [];
+    if (assignments.length === 0) return true;
+    if (assignments.some(i => i.status === ToteStatuses.Closed)) return false;
+    return assignments.length === 1 || (this.isEditMode && isClearAll);
   }
 
   async onClearAll() {
@@ -507,8 +512,9 @@ export class BuildNewCartComponent implements OnInit {
         const toteIds = this.existingAssignments
           .filter(({ status }) => status !== ToteStatuses.Closed)
           .map(({ toteId }) => toteId);
-        const cartContentRemoved = await this.removeCartContent(toteIds,this.isCreateMode ? false : this.getUpdateStatus());
+        const cartContentRemoved = await this.removeCartContent(toteIds,this.isCreateMode ? false : this.getUpdateStatus(true));
         if(cartContentRemoved){
+          this.existingAssignments = this.existingAssignments.filter(({ status }) => status === ToteStatuses.Closed);
           this.clearAllPositions();
           this.selectedPosition = 0;
           this.toteIdInput = '';
@@ -519,6 +525,9 @@ export class BuildNewCartComponent implements OnInit {
             this.onPositionSelect(firstAvailablePosition);
           }
           this.cartUpdated.emit();
+          if(this.existingAssignments.length == 0 && this.isEditMode){
+            this.dialogRef.close();
+          }
         }
       }
     });
