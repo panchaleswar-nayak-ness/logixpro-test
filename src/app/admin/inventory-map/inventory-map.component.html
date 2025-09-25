@@ -63,7 +63,7 @@
 
                 <ng-container matColumnDef="{{col.colDef}}" *ngFor="let col of displayedColumns; let indexOfelement=index;">
                   <th class="header container-table-header" mat-header-cell  *matHeaderCellDef mat-sort-header [attr.data-automation-id]="'table-header-' + col.colDef">{{ col.colTitle }}</th>
-                  <td class="container-table-data" mat-cell *matCellDef="let element; let i = index"
+                  <td class="container-table-data" mat-cell *matCellDef="let element; let i = index"  [matTooltip]="element[col.colHeader]" [matTooltipDisabled]="!(cell.scrollWidth > cell.clientWidth)" matTooltipPosition="above"  #cell
                   (dblclick)="col.colDef == 'Item Number' && viewInInventoryMaster(element)"
                   (contextmenu)=" onContextMenu($event,  element[col.colHeader], col.colDef)"  
                   [ngClass]="{'quarantineColor': element.warehouse.includes('Quarantine')}" [attr.data-automation-id]="'table-data-' + col.colDef + '-' + i">{{ element[col.colHeader] }}</td>

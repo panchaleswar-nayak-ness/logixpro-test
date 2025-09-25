@@ -133,9 +133,9 @@
                                         (dblclick)="col.colDef == 'Item Number' && viewInInventoryMaster(element)"
                                         #tooltip="matTooltip" [matTooltip]="element[col.colHeader]"
                                         matTooltipPosition="above"
-                                        [matTooltipDisabled]="element[col.colHeader] && element[col.colHeader].length>=25?false:true"
+                                        [matTooltipDisabled]="!(cell.scrollWidth > cell.clientWidth)"
                                         [attr.data-automation-id]="'table-data-' + col.colDef  + '-' + element[col.colHeader] "
-                                    >
+                                    #cell>
                                         <ng-container *ngIf="col.colDef === 'Emergency'; else textContent">
                                             <div style="display: flex; justify-content: center; align-items: center;">
                                                 <mat-checkbox [checked]="element[col.colHeader]" [disabled]="isHistory || isDisabled(element)"
