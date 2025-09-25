@@ -3,6 +3,7 @@ import {ApiFuntions} from "../ApiFuntions";
 import {AuthService} from "../../init/auth.service";
 import {IPrintApiService} from "./print-api-interface";
 import { PrintOrdersPayload } from '../../interface/bulk-transactions/bulk-pick';
+import { PrintToteLabelsPayload } from '../../interface/induction-manager/print-lable/print-lable.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -395,5 +396,13 @@ export class PrintApiService implements IPrintApiService {
 
   public async printSelectedOrdersReport(payload:PrintOrdersPayload,showLoader:boolean) {
     return await this.Api.printSelectedOrdersReport(payload,showLoader);
+  }
+
+  public async printToteLabels(payloadParams: string[]) {
+    const payload = {
+      wsid: this.userData.wsid,
+      toteIds: payloadParams,
+    };
+    return await this.Api.printToteLabels(payload);
   }
 }

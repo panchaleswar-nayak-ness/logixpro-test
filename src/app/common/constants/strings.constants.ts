@@ -294,6 +294,16 @@ export const ToasterMessages = {
     TransactionCreatedSuccess: 'Transactions created successfully',
     FieldRequiresBothStartPositionAndFieldLength: (fieldName: string) => `${fieldName} requires both Start Position and Field Length values`,
     FieldHasInvalidValues: (fieldName: string) => `${fieldName} has invalid values. Please check the minimum requirements.`,
+    NoTotesAvailableToAdd: 'No totes available to add',
+    NoTotesSelected: 'No totes selected',
+    PrintQueueIsEmpty: 'Print queue is empty',
+    NoItemsSelected: 'No items selected',
+    ToteAddedToQueue: (toteId: string) => `Tote ${toteId} added to print queue`,
+    TotesAddedToQueue: (count: number) => `${count} tote(s) added to print queue`,
+    ToteMovedBackToAvailable: (toteId: string) => `Tote ${toteId} moved back to available totes`,
+    ItemsMovedBackToAvailable: (count: number) => `${count} item(s) moved back to available totes`,
+    PrintingLabelsFromQueue: (count: number) => `Printing ${count} label(s) from queue`,
+    LabelsDataPrintedSuccessfully: 'Labels printed successfully',
     InvalidCartID: "Invalid Cart ID, please try again",
     InvalidToteID: "Invalid Tote ID, please enter again"
 }
@@ -889,12 +899,17 @@ export const DISABLED_FIELDS = [
     NUMERIC : '123',
     ALPHA_NUMERIC : 'A+N',
   }
+  
   export const FormatType = {
     NUMERIC : 'Numeric',
     ALPHA_NUMERIC : 'Alphanumeric',
   }
 
+  export const LabelPrintingModes = {
+    NewTotes: 'New Totes',
+    PrintedHistory: 'Printed Totes'
+  }
 
-export const InventoryMapActionValues = {
+  export const InventoryMapActionValues = {
     Cart_Management : 'cart_management',
   }

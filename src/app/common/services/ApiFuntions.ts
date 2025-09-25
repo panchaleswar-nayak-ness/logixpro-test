@@ -26,6 +26,7 @@ import { ImportTypeConfig } from '../interface/audit-file-field-mapping-manager/
 import { InventoryCompareConfigResponse } from '../interface/audit-file-field-mapping-manager/inventory-compare-response.interface';
 import { InventoryCompareConfigPayload } from '../interface/audit-file-field-mapping-manager/inventory-compare.interface';
 import { ApiResponse, ApiResponseData, ApiResult } from '../types/CommonTypes';
+import { PrintToteLabelsPayload } from '../interface/induction-manager/print-lable/print-lable.interface';
 import { PagingRequest } from '../interface/ccdiscrepancies/PagingRequest';
 import { CompareItem } from '../interface/ccdiscrepancies/CompareItem';
 import { DeleteCompareItemsResponse } from '../interface/ccdiscrepancies/DeleteCompareItemsResponse';
@@ -2591,5 +2592,23 @@ public ResolveMarkoutTote(toteId: number) {
 
   public updateInventoryCompareConfig(payload: InventoryCompareConfigPayload): Observable<InventoryCompareConfigResponse | null> {
     return this.ApiBase.Post('/InventoryCompare/UpdateInventoryCompareConfig', payload) as Observable<InventoryCompareConfigResponse | null>;
+  }
+
+  // Totes endpoints
+  public getAvailableTotes() {
+    return this.ApiBase.Get('/totes/available');
+  }
+
+  public getPrintedTotes() {
+    return this.ApiBase.Get('/totes/printed');
+  }
+
+  public addPrintedTotes(payload: string[]): Observable<ApiResult<string[]> | null> {
+    return this.ApiBase.Post('/totes/printed', payload) as Observable<ApiResult<string[]> | null>;
+  }
+
+  // Print endpoints
+  public async printToteLabels(payload: PrintToteLabelsPayload) {
+    return await this.ApiBase.PostAsync(`/print/totelabels`, payload);
   }
 }
