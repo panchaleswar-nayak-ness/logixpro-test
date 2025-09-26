@@ -146,7 +146,7 @@ export class DeleteConfirmationComponent implements OnInit {
         })
       },
       [Mode.DeleteWorkstation]: {
-        method: () => this.globalConfigApi.WorkStationDelete()
+        method: () => this.globalConfigApi.WorkStationDelete(this.data.wsid)
       },
       [Mode.DeleteCategory]: {
         method: () => this.commonAPI.CategoryDelete({

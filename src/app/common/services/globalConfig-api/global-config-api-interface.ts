@@ -6,7 +6,7 @@ export interface IGlobalConfigApi
     DeleteAppLicense(appName: string);
     getWorkstationapp (paylaod: any);
     workstationapp (paylaod: any);
-    WorkStationDelete();
+    WorkStationDelete(workstationID: string);
     WorkStationDefaultAppAdd(paylaod :any);
     WorkStationDefaultAppAddDefault(paylaod :any);
     WorkStationAppDelete(paylaod :any); 
