@@ -1,26 +1,26 @@
-<mat-tab-group dynamicHeight [(selectedIndex)]="tabIndex" (selectedTabChange)="onTabChanged($event);">
-    <mat-tab label="Order Status">
+<mat-tab-group dynamicHeight [(selectedIndex)]="tabIndex" (selectedTabChange)="onTabChanged($event);" data-automation-id="transaction-tabs">
+    <mat-tab label="Order Status" data-automation-id="order-status-tab">
         <app-order-status [fieldNames]="fieldNames"
             [tabIndex]="tabIndex">
         </app-order-status>
     </mat-tab>
     <ng-container *ngIf="authService.UserPermissonByFuncName('Transaction Journal') || authService.UserPermissonByFuncName('Admin Transaction Journal')">
-        <mat-tab label="Open Transactions" *ngIf="!isOrderStatus" >
+        <mat-tab label="Open Transactions" *ngIf="!isOrderStatus" data-automation-id="open-transactions-tab">
             <app-open-transaction 
                 [tabIndex]="tabIndex" 
                 [fieldNames]="fieldNames"
                 (emitOrderTab)="switchToOrder()">
             </app-open-transaction>
         </mat-tab>
-        <mat-tab label="Transaction History" *ngIf="!isOrderStatus">
+        <mat-tab label="Transaction History" *ngIf="!isOrderStatus" data-automation-id="transaction-history-tab">
             <app-transaction-history 
                 [tabIndex]="tabIndex">
             </app-transaction-history>
         </mat-tab>
-        <mat-tab label="Reprocess Transactions" *ngIf="!showReprocess && !isOrderStatus">
+        <mat-tab label="Reprocess Transactions" *ngIf="!showReprocess && !isOrderStatus" data-automation-id="reprocess-transactions-tab">
             <app-reprocess-transaction></app-reprocess-transaction >
         </mat-tab> 
-        <mat-tab label="Reprocessed Transactions" *ngIf="!showReprocessed && !isOrderStatus">
+        <mat-tab label="Reprocessed Transactions" *ngIf="!showReprocessed && !isOrderStatus" data-automation-id="reprocessed-transactions-tab">
             <app-reprocessed-transaction></app-reprocessed-transaction>
         </mat-tab>
     </ng-container>

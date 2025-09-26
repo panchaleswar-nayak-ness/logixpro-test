@@ -9,8 +9,8 @@
             <ng-scrollbar class="mat-table-scrollbar h-550px" track="all">
                 <table mat-table [dataSource]="displayedColumns" class="w-100 table1" data-automation-id="bulk-zones-table">
                     <ng-container matColumnDef="transType">
-                        <th mat-header-cell *matHeaderCellDef class="w-50" data-automation-id="label-zones">Zones</th>
-                        <td mat-cell *matCellDef="let element" [attr.data-automation-id]="'bulk-zones-cell-zones-' + element.totalTransactions">
+                        <th mat-header-cell *matHeaderCellDef class="w-50" data-automation-id="table-header-Zones">Zones</th>
+                        <td mat-cell *matCellDef="let element" [attr.data-automation-id]="'table-data-Zones-' + (element.totalTransactions ? element.totalTransactions : ' ')">
                             <mat-form-field class="custom-form-field w-100" appearance="outline" data-automation-id="bulk-zones-form-field-zones">
                                 <input matInput type="text" value="{{element.totalTransactions}}" data-automation-id="input-zones" />
                             </mat-form-field>
@@ -19,8 +19,8 @@
                     </ng-container>
 
                     <ng-container matColumnDef="scanSequence">
-                        <th mat-header-cell *matHeaderCellDef class="w-50" data-automation-id="label-location-name">Location Name</th>
-                        <td mat-cell *matCellDef="let element" [attr.data-automation-id]="'bulk-zones-cell-locationname-' + element.totalTransactions">
+                        <th mat-header-cell *matHeaderCellDef class="w-50" data-automation-id="table-header-Location Name">Location Name</th>
+                        <td mat-cell *matCellDef="let element" [attr.data-automation-id]="'table-data-Location Name-' + (element.totalTransactions ? element.totalTransactions : ' ')">
                             <mat-form-field class="custom-form-field w-100" appearance="outline" data-automation-id="bulk-zones-form-field-locationname">
                                 <input matInput type="text" value="{{element.totalTransactions}}" data-automation-id="input-location-name" />
                             </mat-form-field>
@@ -28,15 +28,15 @@
                     </ng-container>
 
                     <ng-container matColumnDef="actions" stickyEnd>
-                        <th mat-header-cell *matHeaderCellDef class="ps-2 text-center" data-automation-id="label-bulk-zone">Bulk Zone</th>
-                        <td mat-cell *matCellDef="let element; let i = index" class="ps-2" [attr.data-automation-id]="'bulk-zones-cell-bulkzone-' + element.totalTransactions">
+                        <th mat-header-cell *matHeaderCellDef class="ps-2 text-center" data-automation-id="table-header-Bulk Zone">Bulk Zone</th>
+                        <td mat-cell *matCellDef="let element; let i = index" class="ps-2" [attr.data-automation-id]="'table-data-Bulk Zone-' + (element.totalTransactions ? element.totalTransactions : ' ')">
                             <div class="text-center">
                             <mat-slide-toggle color="primary" data-automation-id="toggle-bulk-zone"></mat-slide-toggle>
                         </div>
                         </td>
                     </ng-container>
-                    <tr class="mat-row" *matNoDataRow data-automation-id="bulk-zones-no-data-row">
-                        <td class="mat-cell" [attr.colspan]="displayedColumns.length">
+                    <tr class="mat-row" *matNoDataRow data-automation-id="no-data-row">
+                        <td class="mat-cell" [attr.colspan]="displayedColumns.length" data-automation-id="no-data-cell">
                             <b>No data found.</b>
                         </td>
                     </tr>

@@ -198,8 +198,8 @@
                     
                     <app-icon-heading-component class="card-header-title mb-4 d-flex align-items-center" heading="Selected Orders" icon="filter_frames" data-automation-id="selected-orders-heading"></app-icon-heading-component>
                     <div class="pb-5 mb-3">
-                        <mat-tab-group dynamicHeight>
-                            <mat-tab label="Reprocess ({{orders.reprocess}})">
+                        <mat-tab-group dynamicHeight data-automation-id="selected-orders-tabs">
+                            <mat-tab label="Reprocess ({{orders.reprocess}})" data-automation-id="reprocess-tab">
                                 <div class="d-flex gap-12 my-2">
                                     <button mat-stroked-button color="primary" [disabled]="this.orders.reprocess<=0"
                                         class="button-add-all w-100" (click)="deleteOrder(0,'reprocess')" data-automation-id="mark-all-reprocess-button">
@@ -235,7 +235,7 @@
                                     </ng-scrollbar>
                                 </div>
                             </mat-tab>
-                            <mat-tab label="Complete ({{orders.complete}})">
+                            <mat-tab label="Complete ({{orders.complete}})" data-automation-id="complete-tab">
                                 <div class="d-flex gap-12 my-2">
                                     <button mat-stroked-button color="primary" [disabled]="this.orders.complete<=0"
                                         class="button-add-all w-100" (click)="deleteOrder(0,'complete')" data-automation-id="mark-all-complete-button">
@@ -270,7 +270,7 @@
                                     </ng-scrollbar>
                                 </div>
                             </mat-tab>
-                            <mat-tab label="History ({{orders.history}})">
+                            <mat-tab label="History ({{orders.history}})" data-automation-id="history-tab">
                                 <div class="d-flex gap-12 my-2">
                                     <button mat-stroked-button color="primary" [disabled]="this.orders.history<=0"
                                         class="button-add-all w-100" (click)="deleteOrder(0,'history')" data-automation-id="mark-all-history-button">

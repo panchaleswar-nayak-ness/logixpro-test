@@ -40,7 +40,7 @@
   
             <ng-container matColumnDef="actions" *ngIf="view != 'batch'" stickyEnd>
               <th width="10%" class="text-center px-2" mat-header-cell *matHeaderCellDef data-automation-id="table-header-Actions">Action</th>
-              <td class="pe-0" mat-cell *matCellDef="let element; let i = index" width="10%" [attr.data-automation-id]="'table-data-Actions-' + (element.orderNumber ? element.orderNumber : ' ')">
+              <td class="pe-0" mat-cell *matCellDef="let element; let i = index" width="10%" [attr.data-automation-id]="'table-data-Actions-' + i">
                 <button class="mx-auto xsm-icon-button" mat-flat-button aria-label="Delete" matTooltip="Remove"
                   matTooltipPosition="above" color="warn" data-automation-id="selected-orders-remove-order-button">
                   <mat-icon (click)="removeOrder(element)" data-automation-id="selected-orders-remove-order-icon">close</mat-icon>

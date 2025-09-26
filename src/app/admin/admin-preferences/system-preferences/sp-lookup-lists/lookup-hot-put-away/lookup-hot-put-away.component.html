@@ -16,8 +16,8 @@
       <table class="w-100 table-borderless" mat-table #matSort3="matSort" matSort [dataSource]="tableData">
   
         <ng-container matColumnDef="statuscode">
-          <th mat-header-cell *matHeaderCellDef data-automation-id="label-status-code"> Status Code </th>
-          <td mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'hot-put-away-cell-statuscode-' + element.valueName">
+          <th mat-header-cell *matHeaderCellDef data-automation-id="table-header-Status Code"> Status Code </th>
+          <td mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'table-data-Status Code-' + (element.valueName ? element.valueName : ' ')">
             <mat-form-field class="custom-form-field w-100 pr-15px" appearance="outline" data-automation-id="hot-put-away-form-field-statuscode">
               <input matInput type="text" [(ngModel)]="element.valueName" data-automation-id="input-status-code">
             </mat-form-field>
@@ -26,8 +26,8 @@
 
   
         <ng-container matColumnDef="codeValue">
-          <th mat-header-cell *matHeaderCellDef data-automation-id="label-code-value"> Code Value </th>
-          <td mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'hot-put-away-cell-codevalue-' + element.value">
+          <th mat-header-cell *matHeaderCellDef data-automation-id="table-header-Code Value"> Code Value </th>
+          <td mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'table-data-Code Value-' + (element.value ? element.value : ' ')">
             <mat-form-field class="custom-form-field w-100 pr-15px" appearance="outline" data-automation-id="hot-put-away-form-field-codevalue">
               <input matInput type="text" [(ngModel)]="element.value" data-automation-id="input-code-value">
             </mat-form-field>
@@ -35,8 +35,8 @@
         </ng-container>
   
         <ng-container matColumnDef="displaySequence">
-          <th mat-header-cell *matHeaderCellDef data-automation-id="label-display-sequence"> Display Sequence </th>
-          <td mat-cell *matCellDef="let element" [attr.data-automation-id]="'hot-put-away-cell-displaysequence-' + element.sequence">
+          <th mat-header-cell *matHeaderCellDef data-automation-id="table-header-Display Sequence"> Display Sequence </th>
+          <td mat-cell *matCellDef="let element" [attr.data-automation-id]="'table-data-Display Sequence-' + (element.sequence ? element.sequence : ' ')">
             <mat-form-field class="custom-form-field w-100 pr-15px" appearance="outline" data-automation-id="hot-put-away-form-field-displaysequence">
               <input matInput type="number" [(ngModel)]="element.sequence" data-automation-id="input-display-sequence">
             </mat-form-field>
@@ -44,8 +44,8 @@
         </ng-container>
   
         <ng-container matColumnDef="actions" stickyEnd>
-          <th width="10%" mat-header-cell *matHeaderCellDef class="px-2" data-automation-id="label-actions"> Actions </th>
-          <td width="10%" mat-cell *matCellDef="let element; let i=index" class="px-2" [attr.data-automation-id]="'hot-put-away-cell-actions-' + element.value">
+          <th width="10%" mat-header-cell *matHeaderCellDef class="px-2" data-automation-id="table-header-Actions"> Actions </th>
+          <td width="10%" mat-cell *matCellDef="let element; let i=index" class="px-2" [attr.data-automation-id]="'table-data-Actions-' + (element.value ? element.value : ' ')">
             <div class="d-flex gap-12 align-items-center">
               <button mat-flat-button color="primary"  class="xsm-icon-button" (click)="savePutAway(element, i)" [disabled]="((OldtableData.length > i && OldtableData[i].sequence === element.sequence && OldtableData[i].value === element.value && OldtableData[i].valueName === element.valueName) || element.IsDisabled || (element.value === ''))" data-automation-id="button-save">
                 <mat-icon class="material-symbols-outlined" data-automation-id="hot-put-away-save-icon">save</mat-icon>
@@ -57,8 +57,8 @@
           </td>
         </ng-container>
   
-        <tr class="mat-row" *matNoDataRow data-automation-id="hot-put-away-no-data-row">
-          <td class="mat-cell" [attr.colspan]="displayedColumns.length">
+        <tr class="mat-row" *matNoDataRow data-automation-id="no-data-row">
+          <td class="mat-cell" [attr.colspan]="displayedColumns.length" data-automation-id="no-data-cell">
             No data available in table.
           </td>
         </tr>

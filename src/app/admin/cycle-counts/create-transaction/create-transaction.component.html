@@ -1,12 +1,12 @@
 <div class="container-fluid p-0">
     <div class="row">
       <div class="col-12">
-        <mat-tab-group [(selectedIndex)]="selectedIndex" (selectedIndexChange)="onTabChange($event)">
-          <mat-tab label="Create Count">
+        <mat-tab-group [(selectedIndex)]="selectedIndex" (selectedIndexChange)="onTabChange($event)" data-automation-id="create-transaction-tabs">
+          <mat-tab label="Create Count" data-automation-id="create-count-tab">
                 <app-create-counts data-automation-id="ct-create-counts-component"></app-create-counts>
             </mat-tab>
 
-            <mat-tab label="Count Queue">
+            <mat-tab label="Count Queue" data-automation-id="count-queue-tab">
                 <app-count-queue data-automation-id="ct-count-queue-component"></app-count-queue>
             </mat-tab>
         </mat-tab-group>
