@@ -14,7 +14,7 @@ export class CartSearchComponent implements OnDestroy {
   @Input() searchTerm: string = '';
   @Output() searchChange = new EventEmitter<{searchTerm: string, column: string}>();
 
-  selectedColumn: string = 'cartID';
+  selectedColumn: string = '';
   private searchSubject = new Subject<string>();
   private searchSubscription: Subscription;
 
@@ -50,10 +50,12 @@ export class CartSearchComponent implements OnDestroy {
   }
 
   onColumnChange(event: MatSelectChange): void {
+    this.searchTerm = "";
     this.selectedColumn = event.value;
-    // Emit current search term with new column
-    if (this.searchTerm) {
-      this.searchChange.emit({searchTerm: this.searchTerm, column: this.selectedColumn});
-    }
+    this.searchChange.emit({searchTerm: this.searchTerm, column: this.selectedColumn});
+  }
+
+  isSearchDisabled(){
+    return this.selectedColumn == "";
   }
 }

@@ -387,9 +387,7 @@ export class BuildNewCartComponent implements OnInit {
         this.onPositionClear(currentPosition);
         this.onPositionSelect(currentPosition);
         this.cartUpdated.emit();
-        if(this.existingAssignments.length == 0 && this.isEditMode){
-          this.dialogRef.close();
-        }
+        this.isCartAvailable();
       }
     }
     else{
@@ -518,16 +516,13 @@ export class BuildNewCartComponent implements OnInit {
           this.clearAllPositions();
           this.selectedPosition = 0;
           this.toteIdInput = '';
-          this.global.ShowToastr(ToasterType.Success, 'All tote assignments cleared', ToasterTitle.Success);
           this.emitToteQuantityChange();
           const firstAvailablePosition = this.findFirstAvailablePosition();
           if (firstAvailablePosition) {
             this.onPositionSelect(firstAvailablePosition);
           }
           this.cartUpdated.emit();
-          if(this.existingAssignments.length == 0 && this.isEditMode){
-            this.dialogRef.close();
-          }
+          this.isCartAvailable();
         }
       }
     });
@@ -574,7 +569,7 @@ export class BuildNewCartComponent implements OnInit {
           this.cartUpdated.emit(result);
           
           this.dialogRef.close(result);
-          this.global.ShowToastr(ToasterType.Success, this.isCreateMode ? 'Cart completed successfully' : 'Cart updated successfully', ToasterTitle.Success);
+          this.global.ShowToastr(ToasterType.Success, this.isCreateMode ? ToasterMessages.CartInducted : 'Cart updated successfully', ToasterTitle.Success);
         } else {
           this.global.ShowToastr(ToasterType.Error, 'Failed to complete cart', ToasterTitle.Error);
         }
@@ -755,6 +750,13 @@ export class BuildNewCartComponent implements OnInit {
     if (!this.isViewMode) {
       event.preventDefault();
       event.returnValue = '';
+    }
+  }
+
+  isCartAvailable(){
+    if(this.existingAssignments.length == 0 && this.isEditMode){
+      this.dialogRef.close();
+      this.global.ShowToastr(ToasterType.Success, ToasterMessages.CartAvailableAgain, ToasterTitle.Success);
     }
   }
 }

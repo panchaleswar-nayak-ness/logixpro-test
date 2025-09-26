@@ -312,6 +312,8 @@ export const ToasterMessages = {
     InvalidCartID: "Invalid Cart ID, please try again",
     InvalidToteID: "Invalid Tote ID, please enter again",
     StorageBinExitSuccessful: 'Storage Container has been sent to Outbound Port.',
+    CartAvailableAgain: 'All totes removed. Cart is now available again.',
+    CartInducted: 'Cart has been Inducted'
 }
 
 export const LiveAnnouncerMessage = {

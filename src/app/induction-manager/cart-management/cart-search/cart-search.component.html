@@ -1,10 +1,11 @@
 <div class="p-3 br-14 bg-light-blue align-items-center h-100 d-flex container">
-  <div class="row flex-grow-1 align-items-center">
+  <div class="d-xl-flex row flex-grow-1 align-items-center">
     <div class="col-xxl-4">
       <div class="d-flex align-items-center">
         <mat-form-field class="w-100 custom-form-field-bg-white" appearance="outline">
           <mat-label>Select</mat-label>
           <mat-select [(ngModel)]="selectedColumn" (selectionChange)="onColumnChange($event)">
+            <mat-option value=""></mat-option>
             <mat-option value="cartID">Cart ID</mat-option>
             <mat-option value="cartStatus">Status</mat-option>
             <mat-option value="toteQty">Tote Quantity</mat-option>
@@ -19,14 +20,15 @@
       <span class="text-chrome-600 d-xxl-block d-none">-</span>
     </div>
 
-    <div class="col">
-      <mat-form-field class="w-100 custom-form-field-bg-white __grab_cursor" appearance="outline">
-        <mat-icon matPrefix class="text-20 text-chrome-600">search</mat-icon>
+    <div class="col g-mini-search-box">
+      <mat-form-field class="w-100 bg-white br-8" appearance="fill">
+        <span class="material-symbols-outlined icon-search">Search</span>
         <input type="text" 
                matInput 
                [ngModel]="searchTerm" 
                (input)="onSearchInput($event)"
                (keyup)="onSearchKeyUp($event)"
+               [disabled]="isSearchDisabled()"
                placeholder="Search">
       </mat-form-field>
     </div>

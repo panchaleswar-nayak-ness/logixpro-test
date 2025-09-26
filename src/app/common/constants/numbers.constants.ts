@@ -4,7 +4,7 @@ export const SetTimeout = {
 }
 
 export const CartManagementGridDefaults = {
-    DefaultPageSize: 10,
+    DefaultPageSize: 20,
     DefaultPageIndex: 0,
     SearchDebounceTime: 400,
     TableRefreshDelay: 100
