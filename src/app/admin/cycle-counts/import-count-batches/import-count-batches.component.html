@@ -27,7 +27,7 @@
       <mat-label data-automation-id="label-filter-by">Filter By</mat-label>
       <mat-select [(value)]="selectedFilterBy" [disabled]="!selectedImportType" [attr.data-automation-id]="'select-filter-by-' + (selectedFilterBy || '')">
         <mat-option (click)="onFilterByChange(fileInput)" value="Spreadsheet" data-automation-id="option-filter-by-spreadsheet">Spreadsheet</mat-option>
-        <mat-option (click)="onFilterByChange(fileInput)" data-automation-id="option-filter-by-dependval">{{dependVal}}</mat-option>
+        <mat-option (click)="onFilterByChange(fileInput)" data-automation-id="option-filter-by-location">{{dependVal}}</mat-option>
       </mat-select>
       <span class="material-symbols-outlined icon-expand-more">expand_more</span>
     </mat-form-field>

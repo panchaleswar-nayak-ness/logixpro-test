@@ -98,8 +98,8 @@
                 </ng-container>
 
                 <ng-container matColumnDef="LineNo">
-                  <th mat-header-cell *matHeaderCellDef data-automation-id="table-header-Line No">Line No.</th>
-                  <td mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'table-data-Line No-' + (element.lineNumber ? element.lineNumber : ' ')">{{ element.lineNumber }}</td>
+                  <th mat-header-cell *matHeaderCellDef data-automation-id="table-header-Line No.">Line No.</th>
+                  <td mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'table-data-Line No.-' + (element.lineNumber ? element.lineNumber : ' ')">{{ element.lineNumber }}</td>
                 </ng-container>
 
                 <ng-container matColumnDef="Whse">
