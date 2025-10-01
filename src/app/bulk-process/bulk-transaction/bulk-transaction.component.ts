@@ -14,7 +14,7 @@ import { IAdminApiService } from 'src/app/common/services/admin-api/admin-api-in
 import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.service';
 import { SpinnerService } from 'src/app/common/init/spinner.service';
 import { BATCH_DISPLAYED_COLUMNS, BulkTransactionType, BulkTransactionView, ORDER_DISPLAYED_COLUMNS, SELECTED_BATCH_DISPLAYED_COLUMNS, SELECTED_ORDER_DISPLAYED_COLUMNS, SELECTED_TOTE_DISPLAYED_COLUMNS, TOTE_DISPLAYED_COLUMNS } from 'src/app/common/constants/bulk-process/bulk-transactions';
-import { ApiResponse } from 'src/app/common/types/CommonTypes';
+import { ApiResponse, ApiResult } from 'src/app/common/types/CommonTypes';
 import { GeneralSetup } from 'src/app/common/Model/preferences';
 import { PrintApiService } from 'src/app/common/services/print-api/print-api.service';
 import { IPrintApiService } from 'src/app/common/services/print-api/print-api-interface';
@@ -115,15 +115,15 @@ export class BulkTransactionComponent implements OnInit {
     let payload: QuickPickOrdersRequest = new QuickPickOrdersRequest();
     payload.start = 0;
     payload.size = 500000;
-    this.iBulkProcessApiService.bulkPickOrdersQuickpick(payload).subscribe((res: OrderResponse[]) => {
+    this.iBulkProcessApiService.bulkPickOrdersQuickpick(payload).subscribe((res: ApiResult<OrderResponse[]>) => {
       this.selectedOrders = [];
       this.status.batchCount = 0;
       this.status.toteCount = 0;
       this.status.orderCount = 0;
       this.status.orderLinesCount = 0;
-      this.orders = res;
-      this.originalOrders = res;
-      this.status.orderCount = res.length;
+      this.orders = res.value ?? [];
+      this.originalOrders = res.value ?? [];
+      this.status.orderCount = res.value?.length ?? 0;
       this.view = BulkTransactionView.ORDER;
       this.displayedColumns = ORDER_DISPLAYED_COLUMNS;
       this.selectedDisplayedColumns = SELECTED_ORDER_DISPLAYED_COLUMNS;
@@ -339,50 +339,47 @@ export class BulkTransactionComponent implements OnInit {
     this.spinnerService.assigningLocations = false;
   }
 
-  bulkOrderBatchToteQty() {
+  async bulkOrderBatchToteQty() {
     this.batchSeleted = false;
+
     forkJoin([
-      this.bulkBatchesObservable(),
-      this.bulkTotesObservable(),
-      this.bulkOrdersObservable()
+      this.bulkBatchesCountApi(),
+      this.bulkTotesCountApi(),
+      this.bulkOrdersCountApi()
     ]).subscribe({
-      next: ([batchesResult, totesResult, ordersResult]) => {
-        this.selectedOrders = [];
-        this.status.batchCount = batchesResult.length;
-        this.status.toteCount = totesResult.length;
-        this.status.orderCount = ordersResult.length;
-        if (this.status.batchCount > 0) {
-          this.orders = batchesResult;
-          this.originalOrders = batchesResult;
-          this.view = BulkTransactionView.BATCH
-          this.displayedColumns = BATCH_DISPLAYED_COLUMNS;
-          this.selectedDisplayedColumns = SELECTED_BATCH_DISPLAYED_COLUMNS;
-           // We don't need to create a batch id manually as it is already created for batches
-           this.isBatchIdGenerationEnabled=false;
+      next: ([batchesCount, totesCount, ordersCount]) => {
+        if (batchesCount > 0) {
+          this.changeView(BulkTransactionView.BATCH);
         }
-        else if (this.status.toteCount > 0) {
-          this.orders = totesResult;
-          this.originalOrders = totesResult;
-          this.view = BulkTransactionView.TOTE;
-          this.displayedColumns = TOTE_DISPLAYED_COLUMNS;
-          this.selectedDisplayedColumns = SELECTED_TOTE_DISPLAYED_COLUMNS;
-           // We don't need to create a batch id manually for totes
-           this.isBatchIdGenerationEnabled=false;
+        else if (totesCount > 0) {
+          this.changeView(BulkTransactionView.TOTE);
         }
         else {
-          this.orders = ordersResult;
-          this.originalOrders = ordersResult;
-          this.view = BulkTransactionView.ORDER;
-          this.displayedColumns = ORDER_DISPLAYED_COLUMNS;
-          this.selectedDisplayedColumns = SELECTED_ORDER_DISPLAYED_COLUMNS;
-          // We need to create a batch id manually for orders
-          this.isBatchIdGenerationEnabled=true;
+          this.changeView(BulkTransactionView.ORDER);
         }
-      },
-      error: (error) => {
-        console.error(error);
       }
-    });
+    });    
+  }
+
+  async bulkOrdersCountApi(): Promise<number> {
+    const payload = this.buildBulkTransactionPayload(new OrdersRequest(), {});
+    const ordersCount = await this.iBulkProcessApiService.bulkPickOrdersCount(payload);
+    this.status.orderCount = ordersCount.value ?? 0;
+    return ordersCount.value ?? 0;
+  }
+
+  async bulkTotesCountApi(): Promise<number> {
+    const payload = this.buildBulkTransactionPayload(new TotesRequest(), {});
+    const totesCount = await this.iBulkProcessApiService.bulkPickTotesCount(payload);
+    this.status.toteCount = totesCount.value ?? 0;
+    return totesCount.value ?? 0;
+  }
+  
+  async bulkBatchesCountApi(): Promise<number> {
+    const payload = this.buildBulkTransactionPayload(new BatchesRequest(), {});
+    const batchesCount = await this.iBulkProcessApiService.bulkPickBatchesCount(payload);
+    this.status.batchCount = batchesCount.value ?? 0;
+    return batchesCount.value ?? 0;
   }
 
   private buildBulkTransactionPayload<T extends { type: string; start: number; size: number }>(
@@ -395,14 +392,14 @@ export class BulkTransactionComponent implements OnInit {
     return Object.assign(payload, overrides);
   }
 
-  bulkBatchesObservable(): Observable<BatchesResponse[]> {
+  bulkBatchesObservable(): Observable<ApiResult<BatchesResponse[]>> {
     const payload = this.buildBulkTransactionPayload(new BatchesRequest(), {
       includeChildren: "false"
     });
     return this.iBulkProcessApiService.bulkPickBatches(payload);
   }
 
-  bulkTotesObservable(): Observable<TotesResponse[]> {
+  bulkTotesObservable(): Observable<ApiResult<TotesResponse[]>> {
     const payload = this.buildBulkTransactionPayload(new TotesRequest(), {
       status: "open",
       area: " "
@@ -410,7 +407,7 @@ export class BulkTransactionComponent implements OnInit {
     return this.iBulkProcessApiService.bulkPickTotes(payload);
   }
 
-  bulkOrdersObservable(): Observable<OrderResponse[]> {
+  bulkOrdersObservable(): Observable<ApiResult<OrderResponse[]>> {
     const payload = this.buildBulkTransactionPayload(new OrdersRequest(), {
       status: "open",
       area: " "
@@ -491,21 +488,21 @@ export class BulkTransactionComponent implements OnInit {
     // Reset slapper label flow flag when view changes
     this.isSlapperLabelFlow = false;
     if (event == BulkTransactionView.BATCH) {
-      this.bulkBatchesObservable().subscribe((res) => this.orders = res);
+      this.bulkBatchesObservable().subscribe((res) => this.orders = res.value ?? []);
       this.displayedColumns = BATCH_DISPLAYED_COLUMNS;
       this.selectedDisplayedColumns = SELECTED_BATCH_DISPLAYED_COLUMNS;
       // We don't need to create a batch id manually as it is already created for batches
       this.isBatchIdGenerationEnabled=false;
     }
     else if (event == BulkTransactionView.TOTE) {
-      this.bulkTotesObservable().subscribe((res) => this.orders = res);
+      this.bulkTotesObservable().subscribe((res) => this.orders = res.value ?? []);
       this.displayedColumns = TOTE_DISPLAYED_COLUMNS;
       this.selectedDisplayedColumns = SELECTED_TOTE_DISPLAYED_COLUMNS;
       // We don't need to create a batch id manually for totes
       this.isBatchIdGenerationEnabled=false;   
     }
     else if (event == BulkTransactionView.ORDER) {
-      this.bulkOrdersObservable().subscribe((res) => this.orders = res);
+      this.bulkOrdersObservable().subscribe((res) => this.orders = res.value ?? []);
       this.displayedColumns = ORDER_DISPLAYED_COLUMNS;
       this.selectedDisplayedColumns = SELECTED_ORDER_DISPLAYED_COLUMNS;
        // We need to create a batch id manually for orders
@@ -672,7 +669,7 @@ export class BulkTransactionComponent implements OnInit {
   removeAll() {
     if (this.view == BulkTransactionView.BATCH) {
       this.bulkBatchesObservable().subscribe((res) => {
-        this.orders = res;
+        this.orders = res.value ?? [];
         this.selectedOrders = [];
       })
     }

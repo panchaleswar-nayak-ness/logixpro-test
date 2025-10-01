@@ -4,7 +4,7 @@ import { of } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
 import { BaseService } from './base-service.service';
 import { AuthService } from '../init/auth.service';
-import { AssignToteToOrderDto, NextToteId, OrderLineResource, PartialToteIdRequest, PartialToteIdResponse, RemoveOrderLinesRequest, RemoveOrderLinesResponse } from '../Model/bulk-transactions';
+import { AssignToteToOrderDto, BatchesRequest, NextToteId, OrderLineResource, OrdersRequest, PartialToteIdRequest, PartialToteIdResponse, RemoveOrderLinesRequest, RemoveOrderLinesResponse, TotesRequest } from '../Model/bulk-transactions';
 import {
   MarkoutBlossomTotenRequest,
   MarkoutCompleteTransactionRequest,
@@ -2603,6 +2603,17 @@ public storageBinsExit(binId: string, zone: string): Observable<ExitOk> {
     return this.ApiBase.Post('/InventoryCompare/UpdateInventoryCompareConfig', payload) as Observable<InventoryCompareConfigResponse | null>;
   }
 
+  public async bulkPickBatchesCount(payload: BatchesRequest): Promise<ApiResult<number>> {
+    return (await this.ApiBase.GetAsync('/batches/count', payload)).body as ApiResult<number>;
+  }
+
+  public async bulkPickOrdersCount(payload: OrdersRequest): Promise<ApiResult<number>> {
+    return (await this.ApiBase.GetAsync('/orders/count', payload)).body as ApiResult<number>;
+  }
+
+  public async bulkPickTotesCount(payload: TotesRequest): Promise<ApiResult<number>> {
+    return (await this.ApiBase.GetAsync('/totes/count', payload)).body as ApiResult<number>;
+  }
   // Totes endpoints
   public getAvailableTotes() {
     return this.ApiBase.Get('/totes/available');
