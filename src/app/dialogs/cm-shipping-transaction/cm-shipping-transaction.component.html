@@ -69,7 +69,7 @@
 
             <div class="card br-14 borderless mb-3 overflow-auto">
                 <ng-scrollbar track="all" class="mat-table-scrollbar h-220px">
-                    <table class="w-100 table-borderless" mat-table [dataSource]="tableData" matSort (matSortChange)="announceSortChange($event)">
+                    <table class="w-100 table-borderless" mat-table [dataSource]="tableData" matSort (matSortChange)="announceSortChange($event)" data-automation-id="PackingTable">
 
                         <ng-container matColumnDef="itemNumber">
                             <th mat-header-cell *matHeaderCellDef mat-sort-header replacePlaceholder [replacePlaceHolder]="placeholders.itemNumber" [fallbackPlaceHolder]="placeholders.itemNumberFallback" data-automation-id="table-header-Item Number"> {{ItemNumber}} </th>
