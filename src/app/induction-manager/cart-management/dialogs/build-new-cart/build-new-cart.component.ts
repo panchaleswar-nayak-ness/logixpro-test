@@ -25,6 +25,7 @@ export class BuildNewCartComponent implements OnInit {
   isLoading: boolean = false;
   cartIdEntered: boolean = false;
   showToteGrid: boolean = false;
+  cartValidatedSuccessfully: boolean = false;
   // keep a private handle; setter fires when the element is created/destroyed
   private _toteInputFocus?: ElementRef<HTMLInputElement>;
   private _cartInputFocus?: ElementRef<HTMLInputElement>;
@@ -266,6 +267,7 @@ export class BuildNewCartComponent implements OnInit {
           
           // Show the tote grid only after successful validation
           this.showToteGrid = true;
+          this.cartValidatedSuccessfully = true;
           
           this.cartDraftCreated.emit();
           this.emitToteQuantityChange();
@@ -273,11 +275,13 @@ export class BuildNewCartComponent implements OnInit {
         }
         else{
           this.currentCartIdInput = '';
+          this.cartValidatedSuccessfully = false;
           this.global.ShowToastr(ToasterType.Error, ToasterMessages.InvalidCartID, ToasterTitle.Error);
         }
     }
     else{
       this.currentCartIdInput = '';
+      this.cartValidatedSuccessfully = false;
       this.cartForm.get('cartId')?.setValue("");
       this.global.ShowToastr(ToasterType.Error, ToasterMessages.InvalidCartID, ToasterTitle.Error);
     }
@@ -402,7 +406,25 @@ export class BuildNewCartComponent implements OnInit {
   }
 
   async onCartIDBackspaceCheck(){
-    if (this.cartForm.get('cartId')?.value.trim().length === 0) {
+    const currentValue = this.cartForm.get('cartId')?.value.trim() || '';
+    
+    // If cart was validated successfully and user is now modifying the cart ID
+    if (this.cartValidatedSuccessfully && currentValue !== this.currentCartIdInput) {
+      await this.onClearCartId();
+      return;
+    }
+    
+    // Original logic: if cart ID becomes empty, clear cart
+    if (currentValue.length === 0) {
+      await this.onClearCartId();
+    }
+  }
+
+  async onCartIDChange(){
+    const currentValue = this.cartForm.get('cartId')?.value.trim() || '';
+    
+    // If cart was validated successfully and user is now modifying the cart ID
+    if (this.cartValidatedSuccessfully && currentValue !== this.currentCartIdInput) {
       await this.onClearCartId();
     }
   }
@@ -417,6 +439,7 @@ export class BuildNewCartComponent implements OnInit {
       this.toteIdInput = '';
       this.cartIdEntered = false;
       this.showToteGrid = false; 
+      this.cartValidatedSuccessfully = false;
       this.currentCartIdInput = '';
       if (this.cartInputFocus?.nativeElement) {
         this.cartInputFocus.nativeElement.value = '';

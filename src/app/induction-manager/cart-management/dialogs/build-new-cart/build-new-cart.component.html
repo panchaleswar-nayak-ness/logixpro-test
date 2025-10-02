@@ -22,6 +22,7 @@
                  maxlength="50" 
                  (keyup.enter)="onCartIdEnter()"
                  (keyup.backspace)="onCartIDBackspaceCheck()"
+                 (keyup)="onCartIDChange()"
                  data-automation-id="cart-id-input">
           <button matSuffix 
                   *ngIf="cartIdEntered && isCreateMode" 
