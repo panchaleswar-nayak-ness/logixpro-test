@@ -19,7 +19,7 @@ import { ZoneListPayload } from 'src/app/bulk-process/preferences/preference.mod
 import { DevicePreferenceRequest, DevicePreferencesTableRequest } from '../interface/admin/device-preferences';
 import { RemoveCartContentRequest, ValidateToteRequest, ValidationRequest, ViewDetailsResponse, CartApiResponse, ValidateToteResponse, CompleteCartResponse, CartListResponse, CartSearchRequest, CartStatusCountsDto } from 'src/app/induction-manager/cart-management/interfaces/cart-management.interface';
 import { UpdateEmergencyRequest } from '../interface/admin/opentransaction.interfaces';
-import { ApiResponse, ApiResponseData, ApiResult } from '../types/CommonTypes';
+import { ApiResponse, ApiResponseData, ApiResult, ExitOk } from '../types/CommonTypes';
 import {PrintOrdersPayload, PrintTransactionPayload} from '../interface/bulk-transactions/bulk-pick';
 import { ApiErrorMessages } from '../constants/strings.constants';
 import { PickToteTransPayload } from '../types/pick-tote-manager.types';
