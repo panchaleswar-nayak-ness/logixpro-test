@@ -114,11 +114,11 @@ export class BulkProcessApiService implements IBulkProcessApiService {
   public AssignToteToOrder(orders: AssignToteToOrderDto[]) {
     return this.Api.AssignToteToOrder(orders);
   }
-  
+
   public updateOpenTransactionsZoneCaseQuantity(body: OrderLineResource[]) {
     return this.Api.updateOpenTransactionsZoneCaseQuantity(body);
   }
-  
+
   public async GetNextToteIdForSlapperLabelAsync(request: PartialToteIdRequest[]): Promise<PartialToteIdResponse[]> {
     return await this.Api.GetNextToteIdForSlapperLabelAsync(request);
   }

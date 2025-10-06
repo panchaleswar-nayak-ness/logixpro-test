@@ -1,31 +1,31 @@
 import { EmployeeAccessLevel, WorkStationSetup } from "../types/CommonTypes";
 
 export const StringAssignments = {
-    WorkstationNotAssignedToZone: 'This workstation is not assigned to a zone',
+  WorkstationNotAssignedToZone: 'This workstation is not assigned to a zone',
 };
 
 export const localStorageKeys = {
-    UserRights: 'userRights',
-    TransactionTabIndex: 'TransactionTabIndex',
-    VerifyBulks: "verifyBulks",
-    SelectedReportPrinter: "SelectedReportPrinter",
-    SelectedLabelPrinter: "SelectedLabelPrinter"
+  UserRights: 'userRights',
+  TransactionTabIndex: 'TransactionTabIndex',
+  VerifyBulks: "verifyBulks",
+  SelectedReportPrinter: "SelectedReportPrinter",
+  SelectedLabelPrinter: "SelectedLabelPrinter"
 }
 
 export const TransactionType = {
-    Pick: 'Pick',
-    PutAway: 'Put Away',
-    Count: 'Count'
+  Pick: 'Pick',
+  PutAway: 'Put Away',
+  Count: 'Count'
 }
 
 export const DialogConstants = {
-    auto: 'auto',
-    close: 'close',
-    autoFocus: '__non_existing_element__'
+  auto: 'auto',
+  close: 'close',
+  autoFocus: '__non_existing_element__'
 }
 
 export const DialogsCloseMessage = {
-    Yes: 'Yes',
+  Yes: 'Yes',
 }
 
 export const StringConditions = {
@@ -86,42 +86,42 @@ export const StringConditions = {
 }
 
 export const ResponseStrings = {
-    No: 'No',
-    Yes: 'Yes',
-    Cancel: 'Cancel',
-    Empty: '',
-    Null: null,
-    DNE: 'DNE',
-    Conflict: 'Conflict',
-    Error: 'Error',
-    All: 'all',
-    AllCaps: 'All',
-    Modal: 'modal',
-    DNENP: 'DNENP',
-    Fail: 'Fail',
-    INVALID: 'INVALID',
-    Redirect: 'Redirect',
-    Resolved: 'Resolved'
+  No: 'No',
+  Yes: 'Yes',
+  Cancel: 'Cancel',
+  Empty: '',
+  Null: null,
+  DNE: 'DNE',
+  Conflict: 'Conflict',
+  Error: 'Error',
+  All: 'all',
+  AllCaps: 'All',
+  Modal: 'modal',
+  DNENP: 'DNENP',
+  Fail: 'Fail',
+  INVALID: 'INVALID',
+  Redirect: 'Redirect',
+  Resolved: 'Resolved'
 }
 
 export const ToasterType = {
-    Error: 'error',
-    Success: 'success',
-    Info: 'info'
+  Error: 'error',
+  Success: 'success',
+  Info: 'info'
 }
 
 export const ToasterTitle = {
-    Error: 'Error!',
-    Success: 'Success!',
-    Alert: 'Alert!',
-    Warning: 'Warning!',
-    Consolidation: 'Consolidation!',
-    Staging: 'Staging!',
-    NoRows: 'No Rows',
-    BatchFilled: 'Batch is Filled.',
-    Update: 'Update!',
-    Info:'Info!',
-    InvalidTote: 'Invalid Tote'
+  Error: 'Error!',
+  Success: 'Success!',
+  Alert: 'Alert!',
+  Warning: 'Warning!',
+  Consolidation: 'Consolidation!',
+  Staging: 'Staging!',
+  NoRows: 'No Rows',
+  BatchFilled: 'Batch is Filled.',
+  Update: 'Update!',
+  Info:'Info!',
+  InvalidTote: 'Invalid Tote'
 }
 
 export const ConfirmationHeadings = {
@@ -144,8 +144,8 @@ export const ConfirmationHeadings = {
     ChangeFormatType: "Change Format Type"
 }
 export const ConfirmationButtonText = {
-    ResetPassword: 'Reset Password Now',
-    RemindMeLater: 'Remind Me Later'
+  ResetPassword: 'Reset Password Now',
+  RemindMeLater: 'Remind Me Later'
 }
 
 
@@ -317,496 +317,496 @@ export const ToasterMessages = {
 }
 
 export const LiveAnnouncerMessage = {
-    SortingCleared: 'Sorting cleared'
+  SortingCleared: 'Sorting cleared'
 }
 
 export const CMConsolidationPreferences = {
-    DefPackList: 'defPackList',
-    BlindVerify: 'blindVerify',
-    VerifyEach: 'verifyEach',
-    PackingList: 'packingList',
-    PrintUnVerified: 'printUnVerified',
-    PrintVerified: 'printVerified',
-    DefLookType: 'defLookType',
-    BackOrders: 'backOrders',
-    NonPickPro: 'nonPickpro',
-    EmailPackSlip: 'emailPackSlip',
-    ValidateStaingLocs: 'validateStaingLocs'
+  DefPackList: 'defPackList',
+  BlindVerify: 'blindVerify',
+  VerifyEach: 'verifyEach',
+  PackingList: 'packingList',
+  PrintUnVerified: 'printUnVerified',
+  PrintVerified: 'printVerified',
+  DefLookType: 'defLookType',
+  BackOrders: 'backOrders',
+  NonPickPro: 'nonPickpro',
+  EmailPackSlip: 'emailPackSlip',
+  ValidateStaingLocs: 'validateStaingLocs'
 }
 
 export const CMShippingPreferences = {
-    AllowShip: 'allowShip',
-    AllowPack: 'allowPack',
-    PrintCont: 'printCont',
-    PrintOrd: 'printOrd',
-    PrintContLabel: 'printContLabel',
-    ContIDText: 'contIDText',
-    ContID: 'contID',
-    ConfirmPack: 'confirmPack',
-    ConfirmQTY: 'confirmQTY',
-    Freight: 'freight',
-    Freight1: 'freight1',
-    Freight2: 'freight2',
-    Weight: 'weight',
-    Length: 'length',
-    Width: 'width',
-    Height: 'height',
-    Cube: 'cube',
-    userField1: 'userField1',
-    userField2: 'userField2',
-    userField3: 'userField3',
-    userField4: 'userField4',
-    userField5: 'userField5',
-    userField6: 'userField6',
-    userField7: 'userField7',
-    userField_1_Alias: 'userField_1_Alias',
-    userField_2_Alias: 'userField_2_Alias',
-    userField_3_Alias: 'userField_3_Alias',
-    userField_4_Alias: 'userField_4_Alias',
-    userField_5_Alias: 'userField_5_Alias',
-    userField_6_Alias: 'userField_6_Alias',
-    userField_7_Alias: 'userField_7_Alias',
+  AllowShip: 'allowShip',
+  AllowPack: 'allowPack',
+  PrintCont: 'printCont',
+  PrintOrd: 'printOrd',
+  PrintContLabel: 'printContLabel',
+  ContIDText: 'contIDText',
+  ContID: 'contID',
+  ConfirmPack: 'confirmPack',
+  ConfirmQTY: 'confirmQTY',
+  Freight: 'freight',
+  Freight1: 'freight1',
+  Freight2: 'freight2',
+  Weight: 'weight',
+  Length: 'length',
+  Width: 'width',
+  Height: 'height',
+  Cube: 'cube',
+  userField1: 'userField1',
+  userField2: 'userField2',
+  userField3: 'userField3',
+  userField4: 'userField4',
+  userField5: 'userField5',
+  userField6: 'userField6',
+  userField7: 'userField7',
+  userField_1_Alias: 'userField_1_Alias',
+  userField_2_Alias: 'userField_2_Alias',
+  userField_3_Alias: 'userField_3_Alias',
+  userField_4_Alias: 'userField_4_Alias',
+  userField_5_Alias: 'userField_5_Alias',
+  userField_6_Alias: 'userField_6_Alias',
+  userField_7_Alias: 'userField_7_Alias',
 }
 
 export const ApiEndpoints = {
-    IMSytemSettings: '/Induction/imsytemsettings',
-    RTSUserData: '/Induction/rtsuserdata',
-    IMMIScSetup: '/Induction/immiscsetup',
-    IMPrintSettings: '/Induction/imprintsettings'
+  IMSytemSettings: '/Induction/imsytemsettings',
+  RTSUserData: '/Induction/rtsuserdata',
+  IMMIScSetup: '/Induction/immiscsetup',
+  IMPrintSettings: '/Induction/imprintsettings'
 }
 
 export const superBatchFilterListName = {
-    ToteID: 'Tote ID',
-    OrderNo: 'Order Number'
+  ToteID: 'Tote ID',
+  OrderNo: 'Order Number'
 }
 
 export const KeyboardKeys = {
-    A: 'a',
-    B: 'b',
-    C: 'c',
-    D: 'd',
-    E: 'e',
-    R: 'r',
-    Enter: 'Enter'
+  A: 'a',
+  B: 'b',
+  C: 'c',
+  D: 'd',
+  E: 'e',
+  R: 'r',
+  Enter: 'Enter'
 }
 
 export const zoneType = {
-    carousel: 'carousel',
-    cartonFlow: 'cartonFlow',
-    includePick: 'includePick',
-    includeCFCarouselPick: 'includeCFCarouselPick'
+  carousel: 'carousel',
+  cartonFlow: 'cartonFlow',
+  includePick: 'includePick',
+  includeCFCarouselPick: 'includeCFCarouselPick'
 }
 
 export const alertMessage = {
-    SerialNoNotExistsMsg: 'Serial Number Does Not Exist',
-    ErrorValidatingSerialNoMsg: 'There was an error validating serial number',
-    EnterSerialNo: 'Please enter a serial number',
-    SerialNoAlreadyScan: 'Serial Number already scanned',
-    DeleteMessage: 'You are about to mark the scanned reels as empty. This will delete ALL current open transactions associated with the scanned reels.',
-    ZoneCannotBeLeftBlank:'Zone cannot be left blank.',
-    DeviceTypeCannotBeLeftBlank:'Device Type cannot be left blank.',
-    DeviceNumberCannotBeLeftBlank:'Device Number cannot be left blank.'
+  SerialNoNotExistsMsg: 'Serial Number Does Not Exist',
+  ErrorValidatingSerialNoMsg: 'There was an error validating serial number',
+  EnterSerialNo: 'Please enter a serial number',
+  SerialNoAlreadyScan: 'Serial Number already scanned',
+  DeleteMessage: 'You are about to mark the scanned reels as empty. This will delete ALL current open transactions associated with the scanned reels.',
+  ZoneCannotBeLeftBlank:'Zone cannot be left blank.',
+  DeviceTypeCannotBeLeftBlank:'Device Type cannot be left blank.',
+  DeviceNumberCannotBeLeftBlank:'Device Number cannot be left blank.'
 }
 
 export const showNotificationHeading = {
-    FieldsMissing: 'Fields Missing',
-    InvalidQuantity: 'Invalid Quantity',
-    InvalidItemEntered: 'Invalid Item Entered',
-    InvalidToteEntered: 'Invalid Tote Entered'
+  FieldsMissing: 'Fields Missing',
+  InvalidQuantity: 'Invalid Quantity',
+  InvalidItemEntered: 'Invalid Item Entered',
+  InvalidToteEntered: 'Invalid Tote Entered'
 }
 
 export const showNotificationMessage = {
-    FieldsFill: 'Not all the fields were filled out. Please fill them out',
-    InvalidQuantity: 'An invalid quantity was entered. Please enter a quantity greater than 0',
-    ItemNotExists: 'This item does not exist in Inventory',
-    ToteAlreadyExists: 'This tote id already exists in Open Transactions'
+  FieldsFill: 'Not all the fields were filled out. Please fill them out',
+  InvalidQuantity: 'An invalid quantity was entered. Please enter a quantity greater than 0',
+  ItemNotExists: 'This item does not exist in Inventory',
+  ToteAlreadyExists: 'This tote id already exists in Open Transactions'
 }
 
 export const FieldName = {
-    EventLocation: 'Event Location',
-    Message: 'Message',
-    Username: 'Username',
-    EventCode: 'Event Code',
-    EventType: 'Event Type'
+  EventLocation: 'Event Location',
+  Message: 'Message',
+  Username: 'Username',
+  EventCode: 'Event Code',
+  EventType: 'Event Type'
 }
 
 export const Column = {
-    ImportDate: 'Import Date',
-    RequiredDate: 'Required Date',
-    Priority: 'Priority',
-    OrderNumber: 'Order Number',
-    ItemNumber: 'Item Number',
-    ToteID: 'Tote ID',
-    LineNumber: 'Line Number',
-    LotNumber: 'Lot Number',
-    Location: 'Location',
-    Description: 'Description',
-    TransType: 'transType',
-    Action: 'action',
-    cell: 'cell',
-    Row: 'row'
+  ImportDate: 'Import Date',
+  RequiredDate: 'Required Date',
+  Priority: 'Priority',
+  OrderNumber: 'Order Number',
+  ItemNumber: 'Item Number',
+  ToteID: 'Tote ID',
+  LineNumber: 'Line Number',
+  LotNumber: 'Lot Number',
+  Location: 'Location',
+  Description: 'Description',
+  TransType: 'transType',
+  Action: 'action',
+  cell: 'cell',
+  Row: 'row'
 }
 export const ColumnDef = {
-    userField1: 'userField1',
-    userField2: 'userField2',
-    userField3: 'userField3',
-    userField4: 'userField4',
-    userField5: 'userField5',
-    userField6: 'userField6',
-    userField7: 'userField7',
-    userField8: 'userField8',
-    userField9: 'userField9',
-    userField10: 'userField10',
-    Emergency: 'Emergency',
-    HostTransactionId: 'hostTransactionID',
-    Zone: 'Zone',
-    BatchPickID: 'Batch Pick ID',
-    Revision: 'revision',
-    ExpirationDate: 'expirationDate',
-    Actions: 'actions',
-    Action: 'action',
-    ToteID: 'toteID',
-    TransactionQuantity: 'transactionQuantity',
-    UnitOfMeasure: 'unitOfMeasure',
-    SerialNumber: 'Serial Number',
-    Bin: 'bin',
-    Warehouse: 'Warehouse',
-    RequiredDate: 'requiredDate',
-    actions: 'actions'
+  userField1: 'userField1',
+  userField2: 'userField2',
+  userField3: 'userField3',
+  userField4: 'userField4',
+  userField5: 'userField5',
+  userField6: 'userField6',
+  userField7: 'userField7',
+  userField8: 'userField8',
+  userField9: 'userField9',
+  userField10: 'userField10',
+  Emergency: 'Emergency',
+  HostTransactionId: 'hostTransactionID',
+  Zone: 'Zone',
+  BatchPickID: 'Batch Pick ID',
+  Revision: 'revision',
+  ExpirationDate: 'expirationDate',
+  Actions: 'actions',
+  Action: 'action',
+  ToteID: 'toteID',
+  TransactionQuantity: 'transactionQuantity',
+  UnitOfMeasure: 'unitOfMeasure',
+  SerialNumber: 'Serial Number',
+  Bin: 'bin',
+  Warehouse: 'Warehouse',
+  RequiredDate: 'requiredDate',
+  actions: 'actions'
 }
 
 export const Case = {
-    Like: 'Like'
+  Like: 'Like'
 }
 
 export const Mode = {
-    HoldTransactions: 'hold-trans',
-    DeleteTransaction: 'delete-transaction',
-    DeleteZone: 'delete-zone',
-    DeletePickLevel: 'delete-picklevel',
-    DeleteLocation: 'delete-location',
-    DeleteConnectionString: 'delete-connection-string',
-    DeleteGroup: 'delete-group',
-    DeleteAllowedGroup: 'delete-allowed-group',
-    DeleteAllowedFunction: 'delete-allowed-funcation',
-    DeleteInvMap: 'delete-inventory-map',
-    DeleteEmp: 'delete-emp',
-    DeleteGrpAllowed: 'delete-grpallowed',
-    DeleteWarehouse: 'delete-warehouse',
-    DeleteVelocity: 'delete-velocity',
-    DeleteOrderStatus: 'delete-order-status',
-    DeleteCarrier: 'delete-carrier',
-    DeleteWorkstation: 'delete_workstation',
-    DeleteCategory: 'delete-category',
-    DeleteTrans: 'delete-trans',
-    DeleteOrder: 'delete-order',
-    DeleteManualTransaction: 'delete-manual-transaction'
+  HoldTransactions: 'hold-trans',
+  DeleteTransaction: 'delete-transaction',
+  DeleteZone: 'delete-zone',
+  DeletePickLevel: 'delete-picklevel',
+  DeleteLocation: 'delete-location',
+  DeleteConnectionString: 'delete-connection-string',
+  DeleteGroup: 'delete-group',
+  DeleteAllowedGroup: 'delete-allowed-group',
+  DeleteAllowedFunction: 'delete-allowed-funcation',
+  DeleteInvMap: 'delete-inventory-map',
+  DeleteEmp: 'delete-emp',
+  DeleteGrpAllowed: 'delete-grpallowed',
+  DeleteWarehouse: 'delete-warehouse',
+  DeleteVelocity: 'delete-velocity',
+  DeleteOrderStatus: 'delete-order-status',
+  DeleteCarrier: 'delete-carrier',
+  DeleteWorkstation: 'delete_workstation',
+  DeleteCategory: 'delete-category',
+  DeleteTrans: 'delete-trans',
+  DeleteOrder: 'delete-order',
+  DeleteManualTransaction: 'delete-manual-transaction'
 }
 
 export const TableName = {
-    OpenTransactions: 'Open Transactions',
-    OpenTransactionsTemp: 'Open Transactions Temp',
-    ReProcessed: 'ReProcessed',
-    TransactionHistory: 'Transaction History',
-    BatchSelectionList: "Batch Selection List",
-    ToteSelectionList: "Tote Selection List",
-    OrderSelectionList: "Order Selection List",
-    SelectedOrders: "Selected Orders",
-    SelectedTotes: "Selected Totes",
+  OpenTransactions: 'Open Transactions',
+  OpenTransactionsTemp: 'Open Transactions Temp',
+  ReProcessed: 'ReProcessed',
+  TransactionHistory: 'Transaction History',
+  BatchSelectionList: "Batch Selection List",
+  ToteSelectionList: "Tote Selection List",
+  OrderSelectionList: "Order Selection List",
+  SelectedOrders: "Selected Orders",
+  SelectedTotes: "Selected Totes",
 }
 export const TableConstant = {
-    CompletedDate: 'Completed Date',
-    HostTransactionID: 'Host Transaction ID',
-    LineSequence: 'lineSequence',
-    UserField1: 'User Field1',
-    UserField2: 'User Field2',
-    Revision: 'Revision',
-    ExpirationDate: 'Expiration Date',
-    ImportBy: 'importBy',
-    Cell: 'Cell',
-    TransactionQuantity: 'Transaction Quantity',
-    ImportDate: 'importDate',
-    zone: 'zone',
-    TransactionType: 'Transaction Type',
-    Row: 'Row',
-    shelf: 'shelf',
-    Shelf: 'Shelf',
-    Bin: 'Bin',
-    Carousel: 'Carousel',
-    Notes: 'notes',
-    label: 'label',
-    completedQuantity: 'completedQuantity',
-    transactionType: 'transactionType',
-    BatchPickID: 'batchPickID',
-    Location: 'location',
-    LineNumber: 'lineNumber',
-    WareHouse: 'warehouse',
-    SerialNumber: 'serialNumber',
-    LotNumber: 'lotNumber',
+  CompletedDate: 'Completed Date',
+  HostTransactionID: 'Host Transaction ID',
+  LineSequence: 'lineSequence',
+  UserField1: 'User Field1',
+  UserField2: 'User Field2',
+  Revision: 'Revision',
+  ExpirationDate: 'Expiration Date',
+  ImportBy: 'importBy',
+  Cell: 'Cell',
+  TransactionQuantity: 'Transaction Quantity',
+  ImportDate: 'importDate',
+  zone: 'zone',
+  TransactionType: 'Transaction Type',
+  Row: 'Row',
+  shelf: 'shelf',
+  Shelf: 'Shelf',
+  Bin: 'Bin',
+  Carousel: 'Carousel',
+  Notes: 'notes',
+  label: 'label',
+  completedQuantity: 'completedQuantity',
+  transactionType: 'transactionType',
+  BatchPickID: 'batchPickID',
+  Location: 'location',
+  LineNumber: 'lineNumber',
+  WareHouse: 'warehouse',
+  SerialNumber: 'serialNumber',
+  LotNumber: 'lotNumber',
 
 }
 export const UniqueConstants = {
-    backClass: 'back-class',
-    _blank: '_blank',
-    position: 'position',
-    goldenZone: 'goldenZone',
-    searchValue: 'searchValue',
-    event: '$event',
-    delete: 'delete',
-    Asc: 'asc',
-    Desc: 'desc',
-    Description: "description",
-    Priority: 'priority',
-    constantDate: "12/14/2022",
-    Select: 'select',
-    emergency: 'emergency',
-    _self: '_self',
-    cellSize: 'cellSize',
-    item: 'item',
-    itemCount: 'itemCount',
-    OneEqualsOne: '1 = 1',
-    Lizard: 'Lizard',
-    Lindsay: 'Lindsay',
-    Blue: 'Blue',
-    Ibl: 'lbl',
-    OrderNumber: 'orderNumber',
-    Regx: "^[0-9]*$",
+  backClass: 'back-class',
+  _blank: '_blank',
+  position: 'position',
+  goldenZone: 'goldenZone',
+  searchValue: 'searchValue',
+  event: '$event',
+  delete: 'delete',
+  Asc: 'asc',
+  Desc: 'desc',
+  Description: "description",
+  Priority: 'priority',
+  constantDate: "12/14/2022",
+  Select: 'select',
+  emergency: 'emergency',
+  _self: '_self',
+  cellSize: 'cellSize',
+  item: 'item',
+  itemCount: 'itemCount',
+  OneEqualsOne: '1 = 1',
+  Lizard: 'Lizard',
+  Lindsay: 'Lindsay',
+  Blue: 'Blue',
+  Ibl: 'lbl',
+  OrderNumber: 'orderNumber',
+  Regx: "^[0-9]*$",
 
 }
 export const Style = {
-    w560px: '560px',
-    w100vw: '100vw',
-    w50vw: '50vw',
-    w96vw:'96vw',
-    w480px: '480px',
-    w600px: '600px',
-    w786px: '786px',
-    w402px: '402px',
-    w1080px: '1080px',
-    w990px: '990px',
-    auto:'auto',
-    w56vw: '56vw'
+  w560px: '560px',
+  w100vw: '100vw',
+  w50vw: '50vw',
+  w96vw:'96vw',
+  w480px: '480px',
+  w600px: '600px',
+  w786px: '786px',
+  w402px: '402px',
+  w1080px: '1080px',
+  w990px: '990px',
+  auto:'auto',
+  w56vw: '56vw'
 }
 
 export const FilterColumnName = {
-    unitOfMeasure: 'Unit of Measure'
+  unitOfMeasure: 'Unit of Measure'
 }
 export const markoutdisplayedColumns = {
-    Status: 'status',
-    ToteID: 'toteId',
-    ItemNumber: 'itemNumber',
-    Location: 'location',
-    TransQty: 'transQty',
-    CompQty: 'compQty',
-    ShortQty: 'shortQty',
-    ToteQty: 'toteQty',
-    actions: 'actions',
-    CompletedDate:'completedDate',
-    TotalQty: 'totalQty'
+  Status: 'status',
+  ToteID: 'toteId',
+  ItemNumber: 'itemNumber',
+  Location: 'location',
+  TransQty: 'transQty',
+  CompQty: 'compQty',
+  ShortQty: 'shortQty',
+  ToteQty: 'toteQty',
+  actions: 'actions',
+  CompletedDate:'completedDate',
+  TotalQty: 'totalQty'
 }
 
 export const SpecificFilters = {
-    ColumnNames: 'ColumnNames',
-    SelectedFilters: 'SelectedFilters',
-    SelectedFilter: 'SelectedFilter',
+  ColumnNames: 'ColumnNames',
+  SelectedFilters: 'SelectedFilters',
+  SelectedFilter: 'SelectedFilter',
 };
 
 export const BlossomType = {
-    Blossom: 'Blossom',
-    BlossomComplete: 'BlossomComplete',
+  Blossom: 'Blossom',
+  BlossomComplete: 'BlossomComplete',
 }
 
 export const Placeholders = {
-    itemNumber: '{{itemNumber}}',
-    itemNumberFallback: 'Item Number',
+  itemNumber: '{{itemNumber}}',
+  itemNumberFallback: 'Item Number',
 
-    unitOfMeasure: '{{unitOfMeasure}}',
-    unitOfMeasureFallback: 'Unit Of Measure',
+  unitOfMeasure: '{{unitOfMeasure}}',
+  unitOfMeasureFallback: 'Unit Of Measure',
 
-    userField1: '{{userField1}}',
-    userField1Fallback: 'User Field 1',
+  userField1: '{{userField1}}',
+  userField1Fallback: 'User Field 1',
 
-    userField2: '{{userField2}}',
-    userField2Fallback: 'User Field 2',
+  userField2: '{{userField2}}',
+  userField2Fallback: 'User Field 2',
 
-    userField3: '{{userField3}}',
-    userField3Fallback: 'User Field 3',
+  userField3: '{{userField3}}',
+  userField3Fallback: 'User Field 3',
 
-    userField4: '{{userField4}}',
-    userField4Fallback: 'User Field 4',
+  userField4: '{{userField4}}',
+  userField4Fallback: 'User Field 4',
 
-    userField5: '{{userField5}}',
-    userField5Fallback: 'User Field 5',
+  userField5: '{{userField5}}',
+  userField5Fallback: 'User Field 5',
 
-    userField6: '{{userField6}}',
-    userField6Fallback: 'User Field 6',
+  userField6: '{{userField6}}',
+  userField6Fallback: 'User Field 6',
 
-    userField7: '{{userField7}}',
-    userField7Fallback: 'User Field 7',
+  userField7: '{{userField7}}',
+  userField7Fallback: 'User Field 7',
 
-    userField8: '{{userField8}}',
-    userField8Fallback: 'User Field 8',
+  userField8: '{{userField8}}',
+  userField8Fallback: 'User Field 8',
 
-    userField9: '{{userField9}}',
-    userField9Fallback: 'User Field 9',
+  userField9: '{{userField9}}',
+  userField9Fallback: 'User Field 9',
 
-    userField10: '{{userField10}}',
-    userField10Fallback: 'User Field 10',
+  userField10: '{{userField10}}',
+  userField10Fallback: 'User Field 10',
 
-    bin: '{{bin}}',
-    binFallback: 'Bin',
+  bin: '{{bin}}',
+  binFallback: 'Bin',
 
-    shelf: '{{shelf}}',
-    shelfFallback: 'Shelf',
+  shelf: '{{shelf}}',
+  shelfFallback: 'Shelf',
 
-    row: '{{rin}}',
-    rowFallback: 'Row',
+  row: '{{rin}}',
+  rowFallback: 'Row',
 
-    carousel: '{{carousel}}',
-    carouselFallback: 'Carousel',
+  carousel: '{{carousel}}',
+  carouselFallback: 'Carousel',
 
-  };
+};
 
 export const MarkoutNewPickTotesKeys = {
-    ToteID: 'toteId',
-    MarkoutStatus: 'markoutStatus',
-    StatusDate: 'statusDate',
-    RouteId: 'routeId',
-    DivertReason: 'divertReason',
-    Location: 'location',
-    Destination: 'destination',
-    Details: 'details'
+  ToteID: 'toteId',
+  MarkoutStatus: 'markoutStatus',
+  StatusDate: 'statusDate',
+  RouteId: 'routeId',
+  DivertReason: 'divertReason',
+  Location: 'location',
+  Destination: 'destination',
+  Details: 'details'
 }
 
 export const MarkoutNewPickTotesDC = {
-    ToteID: 'Tote ID',
-    MarkoutStatus: 'Status',
-    StatusDate: 'Status Date',
-    RouteId: 'Route Id',
-    DivertReason: 'Divert Reason',
-    Location: 'Location',
-    Destination: 'Destination',
-    Details: 'Details',
+  ToteID: 'Tote ID',
+  MarkoutStatus: 'Status',
+  StatusDate: 'Status Date',
+  RouteId: 'Route Id',
+  DivertReason: 'Divert Reason',
+  Location: 'Location',
+  Destination: 'Destination',
+  Details: 'Details',
 }
 
 
 export const MarkoutNewPickLinesKeys = {
-    Item: 'itemNumber',
-    Quantity: 'quantity',
-    LocationID: 'locationId',
-    Status: 'status',
-    StatusDate: 'statusDate',
-    CompletedQuantity: 'completedQuantity',
-    CompletedBy: 'completedBy',
-    ShortReason: 'shortReason'
+  Item: 'itemNumber',
+  Quantity: 'quantity',
+  LocationID: 'locationId',
+  Status: 'status',
+  StatusDate: 'statusDate',
+  CompletedQuantity: 'completedQuantity',
+  CompletedBy: 'completedBy',
+  ShortReason: 'shortReason'
 }
 
 export const MarkoutNewPickLinesDC = {
-    Item: 'Item Number',
-    Quantity: 'Quantity',
-    LocationID: 'Location ID',
-    Status: 'Status',
-    StatusDate: 'Status Date',
-    CompletedQuantity: 'Completed Quantity',
-    CompletedBy: 'Completed by',
-    ShortReason: 'Short Reason'
+  Item: 'Item Number',
+  Quantity: 'Quantity',
+  LocationID: 'Location ID',
+  Status: 'Status',
+  StatusDate: 'Status Date',
+  CompletedQuantity: 'Completed Quantity',
+  CompletedBy: 'Completed by',
+  ShortReason: 'Short Reason'
 }
 
 export const MarkoutNewToteAuditKeys = {
-    Time: 'timeStamp',
-    Type: 'type',
-    Scanner: 'scanner',
-    Divert: 'divert',
-    Location: 'location',
-    Status: 'status',
-    StatusDate: 'statusDate',
-    DivertReason: 'divertReason'
+  Time: 'timeStamp',
+  Type: 'type',
+  Scanner: 'scanner',
+  Divert: 'divert',
+  Location: 'location',
+  Status: 'status',
+  StatusDate: 'statusDate',
+  DivertReason: 'divertReason'
 }
 
 export const MarkoutNewToteAuditDC = {
-    Time: 'Time',
-    Type: 'Type',
-    Scanner: 'Scanner',
-    Divert: 'Divert',
-    Location: 'Location',
-    Status: 'Status',
-    StatusDate: 'Status Date',
-    DivertReason: 'Divert Reason'
+  Time: 'Time',
+  Type: 'Type',
+  Scanner: 'Scanner',
+  Divert: 'Divert',
+  Location: 'Location',
+  Status: 'Status',
+  StatusDate: 'Status Date',
+  DivertReason: 'Divert Reason'
 }
 
 export const defaultWorkstationSetup: WorkStationSetup = {
-    podID: "No",
-    scanVerifyPicks: false,
-    scanVerifyCounts: false,
-    scanVerifyPutAways: false,
-    printReportLocation: "No Printer",
-    printLabelLocation: "No Printer",
-    cartonFlowID: null,
-    pickToTotes: false,
-    putAwayFromTotes: false,
-    autoPrintPickToteLabels: false,
-    batchPutAway: false,
-    storageContainer: false,
-    locationControl: false,
-    locAssOrderSelection: false,
-    printReprocessReport: false,
-    printPickLabel: false,
-    printPickLabelBatch: false,
-    pfSettings: [
-      {
-        pfName: "",
-        pfSetting: ""
-      }
-    ],
-    pfSettingsII: [
-      {
-        pfName: "",
-        pfSetting: ""
-      }
-    ],
-    pfSettingsIII: [
-      {
-        pfName: "",
-        pfSetting: ""
-      }
-    ]
+  podID: "No",
+  scanVerifyPicks: false,
+  scanVerifyCounts: false,
+  scanVerifyPutAways: false,
+  printReportLocation: "No Printer",
+  printLabelLocation: "No Printer",
+  cartonFlowID: null,
+  pickToTotes: false,
+  putAwayFromTotes: false,
+  autoPrintPickToteLabels: false,
+  batchPutAway: false,
+  storageContainer: false,
+  locationControl: false,
+  locAssOrderSelection: false,
+  printReprocessReport: false,
+  printPickLabel: false,
+  printPickLabelBatch: false,
+  pfSettings: [
+    {
+      pfName: "",
+      pfSetting: ""
+    }
+  ],
+  pfSettingsII: [
+    {
+      pfName: "",
+      pfSetting: ""
+    }
+  ],
+  pfSettingsIII: [
+    {
+      pfName: "",
+      pfSetting: ""
+    }
+  ]
 }
 
 export const defaultEmployeeAccessLevels: EmployeeAccessLevel ={
-    lastRefreshedDateTime : new Date(),
-    accessStorageContainer : false,
-    accessClearWholeLocation : false,
-    accessAddInvMapLocation: false
+  lastRefreshedDateTime : new Date(),
+  accessStorageContainer : false,
+  accessClearWholeLocation : false,
+  accessAddInvMapLocation: false
 }
 
 export const AccessLevel = {
-    Administrator: "administrator",
-    StaffMember: "staff_member"
+  Administrator: "administrator",
+  StaffMember: "staff_member"
 }
 
 export const AppLicensingDisplayedColumns = {
-    AppName: 'appname',
-    DisplayName: 'displayname',
-    License: 'license',
-    NumLicense: 'numlicense',
-    Status: 'status',
-    AppURL: 'appurl',
-    Save: 'save',
+  AppName: 'appname',
+  DisplayName: 'displayname',
+  License: 'license',
+  NumLicense: 'numlicense',
+  Status: 'status',
+  AppURL: 'appurl',
+  Save: 'save',
 };
 
 export const LocalStorageCacheKeys = {
-    EmployeeAccessLevels: 'employeeAccessLevels',
+  EmployeeAccessLevels: 'employeeAccessLevels',
 }
 
 export const RouteIdManagement = {
-    RouteIdStatus: 'In Consolidation',
+  RouteIdStatus: 'In Consolidation',
 }
 
 export const REPORT_REPOSITORY_ID = 'BCAEC8B2-9D16-4ACD-94EC-74932157BF82';
 
 export class PrintReports {
-    static readonly REPROCESS_TRANSACTIONS = "ReprocessTransactions-lst";
-    static readonly LOC_ASS_PICK_SHORTAGE = "LocAssPickShortage-lst";
+  static readonly REPROCESS_TRANSACTIONS = "ReprocessTransactions-lst";
+  static readonly LOC_ASS_PICK_SHORTAGE = "LocAssPickShortage-lst";
 }
 
 export class ConsoleErrorMessages {
@@ -825,7 +825,7 @@ export class ApiErrorMessages {
   static readonly ValidationError = "Validation error"
 }
 export const PickToteFilterpreferences = {
-    preferences: "PickToteFilterPrefs"
+  preferences: "PickToteFilterPrefs"
 }
 export const importFieldMappingDialogSizes  = {
   CCDiscrepancies : {
@@ -834,52 +834,52 @@ export const importFieldMappingDialogSizes  = {
   }
 }
 export const FILTRATION_GRID_OPERATION_KEYS = {
-    Between: "between",
-    Clear: "clear",
-    Clears: "clears",   
-    Equals: "Equals",   
-    And: " and "   
+  Between: "between",
+  Clear: "clear",
+  Clears: "clears",
+  Equals: "Equals",
+  And: " and "
 }
 export const INPUT_TYPES = {
-    Date: "date",
-    Text: "text"
+  Date: "date",
+  Text: "text"
 }
 export const DATE_COLUMNS = new Set([
-      'expirationDate',
-      'putAwayDate',
-      'importDate',
-      'requiredDate',
-      'completedDate',
-      'exportDate',
-      'inductionDate'
-    ]);
-    export const OPERATION_CONDITIONS: Record<string, string> = {
-      'equals to': 'Equals',
-      'is not equals to': 'NotEquals',
-      'is greater than or equal to': 'GreaterThanOrEqual',
-      'is less than or equal to': 'LessThanOrEqual',
-      'is greater than': 'GreaterThan',
-      'is less than': 'LessThan',
-      'is like': 'Like',
-      'contains': 'Contains',
-      'is not like': 'NotLike',
-      'does not contains': 'DoesNotContain',
-      'begins with': 'Begins',
-      'does not begins with': 'DoesNotBegin',
-      'ends with': 'EndsWith',
-      'does not ends with': 'DoesNotEndWith',
-      'is between': 'Between',
-      'between': 'Between'
-    };
+  'expirationDate',
+  'putAwayDate',
+  'importDate',
+  'requiredDate',
+  'completedDate',
+  'exportDate',
+  'inductionDate'
+]);
+export const OPERATION_CONDITIONS: Record<string, string> = {
+  'equals to': 'Equals',
+  'is not equals to': 'NotEquals',
+  'is greater than or equal to': 'GreaterThanOrEqual',
+  'is less than or equal to': 'LessThanOrEqual',
+  'is greater than': 'GreaterThan',
+  'is less than': 'LessThan',
+  'is like': 'Like',
+  'contains': 'Contains',
+  'is not like': 'NotLike',
+  'does not contains': 'DoesNotContain',
+  'begins with': 'Begins',
+  'does not begins with': 'DoesNotBegin',
+  'ends with': 'EndsWith',
+  'does not ends with': 'DoesNotEndWith',
+  'is between': 'Between',
+  'between': 'Between'
+};
 
 export const MarkoutFunctions = {
-    MarkoutProcess: 'Markout Process',
-    RGTPMarkout: 'RGTP Markout'
+  MarkoutProcess: 'Markout Process',
+  RGTPMarkout: 'RGTP Markout'
 } as const;
 
 export const MarkoutFunctionsList = [
-    MarkoutFunctions.MarkoutProcess,
-    MarkoutFunctions.RGTPMarkout
+  MarkoutFunctions.MarkoutProcess,
+  MarkoutFunctions.RGTPMarkout
 ] as const;
 
 export const DISABLED_FIELDS = [

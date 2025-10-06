@@ -19,7 +19,8 @@ import { ZoneListPayload } from 'src/app/bulk-process/preferences/preference.mod
 import { DevicePreferenceRequest, DevicePreferencesTableRequest } from '../interface/admin/device-preferences';
 import { RemoveCartContentRequest, ValidateToteRequest, ValidationRequest, ViewDetailsResponse, CartApiResponse, ValidateToteResponse, CompleteCartResponse, CartListResponse, CartSearchRequest, CartStatusCountsDto } from 'src/app/induction-manager/cart-management/interfaces/cart-management.interface';
 import { UpdateEmergencyRequest } from '../interface/admin/opentransaction.interfaces';
-import { PrintOrdersPayload, PrintTransactionPayload } from '../interface/bulk-transactions/bulk-pick';
+import { ApiResponse, ApiResponseData, ApiResult } from '../types/CommonTypes';
+import {PrintOrdersPayload, PrintTransactionPayload} from '../interface/bulk-transactions/bulk-pick';
 import { ApiErrorMessages } from '../constants/strings.constants';
 import { PickToteTransPayload } from '../types/pick-tote-manager.types';
 import { ImportTypeConfig } from '../interface/audit-file-field-mapping-manager/import-type-config.interface';
@@ -2087,7 +2088,7 @@ public updateEmergencyReprocessTrans(payload: UpdateEmergencyRequest): Observabl
   public WorkstationSetupInfo(): Observable<any> {
     return this.ApiBase.Get('/Admin/WorkstationSetup');
   }
-  
+
   public AccessLevelByGroupFunctions(): Observable<any> {
     return this.ApiBase.Get('/Admin/AccessLevelByGroupFunctions');
   }
@@ -2438,7 +2439,7 @@ public storageBinsExit(binId: string, zone: string): Observable<ExitOk> {
   }
 
   public async GetSelectedConZoneData(ConZone: string) {
-    return await this.ApiBase.GetAsync(`/Consolidation/ZoneStatus/${ConZone}`, null, false, false); // pass false to hide loader and spinner 
+    return await this.ApiBase.GetAsync(`/Consolidation/ZoneStatus/${ConZone}`, null, false, false); // pass false to hide loader and spinner
   }
 
   public async GetSelectedConZoneRouteIDCount(ConZone: string) {
@@ -2456,7 +2457,7 @@ public storageBinsExit(binId: string, zone: string): Observable<ExitOk> {
   public async GetRouteIDDetailsData(RouteID: string) {
     return await this.ApiBase.GetAsync(`/Consolidation/Route/${RouteID}`);
   }
- 
+
   public async ConHeadersRequestRelease(routeId: string) {
     return await this.ApiBase.PatchAsync(`/Consolidation/Route/${routeId}/RequestRelease`,null);
   }
@@ -2573,7 +2574,7 @@ public storageBinsExit(binId: string, zone: string): Observable<ExitOk> {
       // Convert the request to query parameters
       const orderNumbersString = request.orderNumbers.join(',');
       const response = await this.ApiBase.DeleteAsync(`/totes/removeorderlines?orderNumbers=${encodeURIComponent(orderNumbersString)}`);
-      
+
       // 204 No Content means success for DELETE operations
       if (response.status === 204 || response.status === 200) {
         return { isSuccess: true, errorMessages: [] };
