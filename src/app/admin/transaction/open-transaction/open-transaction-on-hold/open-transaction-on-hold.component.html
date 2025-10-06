@@ -202,10 +202,12 @@
                             </td>
                         </ng-container>
 
-                        <tr class="mat-row d-flex w-100 justify-content-center position-absolute" (contextmenu)="onContextMenu($event, undefined, '')" *matNoDataRow [attr.colspan]="displayedColumns && displayedColumns.length">
-                            <div class="p-3">
-                                No data available in table.
-                            </div>
+                        <tr class="mat-row" (contextmenu)="onContextMenu($event, undefined, '')" *matNoDataRow [attr.colspan]="displayedColumns && displayedColumns.length">
+                            <td class="mat-cell no-data-cell" [attr.colspan]="displayedColumns && displayedColumns.length">
+                               <div class="no-data-message">
+                                   No data available in table.
+                               </div>
+                            </td>
                         </tr>
                         <mat-header-row *matHeaderRowDef="columnValues; sticky: true"></mat-header-row>
                         <mat-row *matRowDef="let row; columns: columnValues;" (click)="selectRow(row)"></mat-row>
