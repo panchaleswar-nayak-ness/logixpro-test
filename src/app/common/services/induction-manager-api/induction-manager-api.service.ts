@@ -5,6 +5,7 @@ import {IInductionManagerApiService} from './induction-manager-api-interface';
 import {AddPickToteInductionFilter} from 'src/app/induction-manager/models/PickToteInductionModel';
 import {Observable} from 'rxjs';
 import { PickToteTransPayload } from '../../types/pick-tote-manager.types';
+import { ApiResult } from '../../types/CommonTypes';
 
 @Injectable({
   providedIn: 'root',
@@ -724,5 +725,16 @@ export class InductionManagerApiService implements IInductionManagerApiService {
     return this.Api.DeletePickToteInductionFilter(paramname);
   }
 
+  public getAvailableTotes() {
+    return this.Api.getAvailableTotes();
+  }
+
+  public getPrintedTotes() {
+    return this.Api.getPrintedTotes();
+  }
+
+  public addPrintedTotes(payload: string[]): Observable<ApiResult<string[]> | null> {
+    return this.Api.addPrintedTotes(payload);
+  }
 
 }

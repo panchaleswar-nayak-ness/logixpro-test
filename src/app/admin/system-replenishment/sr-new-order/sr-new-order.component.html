@@ -11,9 +11,9 @@
                 <div class="d-xl-flex gap-12 align-items-center flex-wrap">
                     <mat-form-field class="action-dropdown d-xl-flex d-block mb-3 mb-xl-0" appearance="outline" data-automation-id="search-column-dropdown">
                         <mat-label data-automation-id="search-label">Search</mat-label>
-                        <mat-select class="employees-action" (selectionChange)="searchChange($event.value)" [(ngModel)]="tablePayloadObj.searchColumn">
+                        <mat-select class="employees-action" (selectionChange)="searchChange($event.value)" [(ngModel)]="tablePayloadObj.searchColumn" data-automation-id="select-Search">
                             <mat-option value="" data-automation-id="search-option-empty"></mat-option>
-                            <mat-option *ngFor="let option of searchColumnOptions" [value]="option.value" data-automation-id="search-option-{{option.value}}">{{option.viewValue}}</mat-option>
+                            <mat-option *ngFor="let option of searchColumnOptions" [value]="option.value" [attr.data-automation-id]="'search-option-' + option.value">{{option.viewValue}}</mat-option>
                         </mat-select>
                         <span class="material-symbols-outlined icon-expand-more" data-automation-id="search-expand-icon">expand_more</span>
                     </mat-form-field>
@@ -21,9 +21,9 @@
                     <span class="v-br d-none d-xl-block">-</span>
 
                     <div class="d-xl-flex g-mini-search-box mb-3 mb-xl-0 col-xl-3 searchBoxDiv-style">
-                        <mat-form-field class="w-100 bg-white br-8" appearance="fill" [floatLabel]="getFloatLabelValue()" [hideRequiredMarker]="hideRequiredControl.value" (keyup.enter)="closeautoMenu()" data-automation-id="search-input-field">
+                        <mat-form-field class="w-100 bg-white br-8" appearance="fill" [floatLabel]="getFloatLabelValue()" [hideRequiredMarker]="hideRequiredControl.value" (keyup.enter)="closeautoMenu()">
                             <span class="material-symbols-outlined icon-search" data-automation-id="search-icon">Search</span>
-                            <input type="text" placeholder="Search" aria-label="Search" matInput [disabled]="tablePayloadObj.searchColumn.length < 1" [matAutocomplete]="auto" [(ngModel)]="tablePayloadObj.searchString" (keyup.enter)="search(); getSearchOptions()" (keyup)="autocompleteSearchColumn()" (focus)="getSearchOptions(true)">
+                            <input data-automation-id="search-input-field" type="text" placeholder="Search" aria-label="Search" matInput [disabled]="tablePayloadObj.searchColumn.length < 1" [matAutocomplete]="auto" [(ngModel)]="tablePayloadObj.searchString" (keyup.enter)="search(); getSearchOptions()" (keyup)="autocompleteSearchColumn()" (focus)="getSearchOptions(true)">
                             <button matSuffix *ngIf="tablePayloadObj.searchString" class="clear-btn"  (click)=" tablePayloadObj.searchString = '';newReplenishmentOrders()" data-automation-id="clear-search-btn"><mat-icon class="text-20 text-chrome-600">cancel</mat-icon></button>
                             <mat-autocomplete #auto="matAutocomplete" (optionSelected)="search()" #autocompleteInventory>
                                 <mat-option *ngFor="let option of searchAutocompleteList" [value]="option" data-automation-id="autocomplete-option-{{option}}">{{option}}</mat-option>
@@ -34,9 +34,9 @@
 
                     <mat-form-field class="action-dropdown d-xl-flex d-block  mb-3 mb-xl-0" appearance="outline" data-automation-id="show-dropdown">
                         <mat-label data-automation-id="show-label">Show</mat-label>
-                        <mat-select class="employees-action" (selectionChange)="showChange($event.value)"  >
-                            <mat-option value="1" data-automation-id="show-option-1">All</mat-option>
-                            <mat-option value="2" data-automation-id="show-option-2">Reorder</mat-option>
+                        <mat-select class="employees-action" (selectionChange)="showChange($event.value)" data-automation-id="Select-Show" >
+                            <mat-option value="1" data-automation-id="show-option-All">All</mat-option>
+                            <mat-option value="2" data-automation-id="show-option-Reorder">Reorder</mat-option>
                         </mat-select>
                         <span class="material-symbols-outlined icon-expand-more" data-automation-id="show-expand-icon">expand_more</span>
                     </mat-form-field>
@@ -45,13 +45,13 @@
             <div class="col-xl-5 d-xl-flex flex-row-reverse">
                 <mat-form-field class="action-dropdown d-xl-flex d-block w-30" appearance="outline" data-automation-id="actions-dropdown">
                     <mat-label data-automation-id="actions-label">Action</mat-label>
-                    <mat-select #openActionDropDown class="employees-action" (selectionChange)="openAction($event)">
-                        <mat-option value="1" data-automation-id="actions-option-1">{{itemNumber}}</mat-option>
-                        <mat-option value="2" (click)="actionChange('2')" data-automation-id="actions-option-2">Print</mat-option>
-                        <mat-option value="3" [disabled]="!this.newOrderListCreated" (click)="viewAllItems()" data-automation-id="actions-option-3">View All Items</mat-option>
-                        <mat-option value="4" [disabled]="!this.newOrderListCreated" (click)="viewSelectedItems()" data-automation-id="actions-option-4">View Selected Items</mat-option>
-                        <mat-option value="5" [disabled]="tableData.length == 0" (click)="actionChange('5')" data-automation-id="actions-option-5">Select All</mat-option>
-                        <mat-option value="6" [disabled]="tableData.length == 0 || numberSelectedRep == 0" (click)="actionChange('6')" data-automation-id="actions-option-6">Unselect All</mat-option>
+                    <mat-select #openActionDropDown class="employees-action" (selectionChange)="openAction($event)" data-automation-id="select-action">
+                        <mat-option value="1" data-automation-id="actions-option-Item Number">{{itemNumber}}</mat-option>
+                        <mat-option value="2" (click)="actionChange('2')" data-automation-id="actions-option-Print">Print</mat-option>
+                        <mat-option value="3" [disabled]="!this.newOrderListCreated" (click)="viewAllItems()" data-automation-id="actions-option-View All Item">View All Items</mat-option>
+                        <mat-option value="4" [disabled]="!this.newOrderListCreated" (click)="viewSelectedItems()" data-automation-id="actions-option-View Selected Items">View Selected Items</mat-option>
+                        <mat-option value="5" [disabled]="tableData.length == 0" (click)="actionChange('5')" data-automation-id="actions-option-Select All">Select All</mat-option>
+                        <mat-option value="6" [disabled]="tableData.length == 0 || numberSelectedRep == 0" (click)="actionChange('6')" data-automation-id="actions-option-Unselect All">Unselect All</mat-option>
                     </mat-select>
                     <span class="material-symbols-outlined icon-expand-more" data-automation-id="actions-expand-icon">
                         expand_more
@@ -66,56 +66,56 @@
                 <table class="w-100 table-borderless" mat-table [dataSource]="filteredTableData" matSort (matSortChange)="announceSortChange($event)" data-automation-id="new-orders-table">
 
                     <ng-container matColumnDef="Item Number">
-                        <th mat-header-cell mat-sort-header *matHeaderCellDef > {{itemNumber}}</th>
-                        <td (dblclick)="viewItemInInventoryMaster(seletedRecord)" mat-cell *matCellDef="let seletedRecord" (contextmenu)="onContextMenu($event, seletedRecord.itemNumber, 'Item Number')"> {{seletedRecord.itemNumber}} </td>
+                        <th mat-header-cell mat-sort-header *matHeaderCellDef data-automation-id="table-header-Item Number"> {{itemNumber}}</th>
+                        <td (dblclick)="viewItemInInventoryMaster(seletedRecord)" mat-cell *matCellDef="let seletedRecord" (contextmenu)="onContextMenu($event, seletedRecord.itemNumber, 'Item Number')" [attr.data-automation-id]="'table-data-Item Number-' +seletedRecord.itemNumber"> {{seletedRecord.itemNumber}} </td>
                     </ng-container>
 
                     <ng-container matColumnDef="Description">
-                        <th mat-header-cell *matHeaderCellDef mat-sort-header> Description </th>
-                        <td #tooltip="matTooltip" [matTooltip]="seletedRecord.description"   matTooltipPosition="right"
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header data-automation-id="table-header-Description"> Description </th>
+                        <td [attr.data-automation-id]="'table-data-Description-' + seletedRecord.description" #tooltip="matTooltip" [matTooltip]="seletedRecord.description"   matTooltipPosition="right"
                         (dblclick)="viewItemInInventoryMaster(seletedRecord)" mat-cell *matCellDef="let seletedRecord" (contextmenu)="onContextMenu($event, seletedRecord.description, 'Description')"> {{seletedRecord.description}} </td>
                     </ng-container>
 
                     <ng-container matColumnDef="Warehouse">
-                        <th mat-header-cell *matHeaderCellDef mat-sort-header> Warehouse </th>
-                        <td (dblclick)="viewItemInInventoryMaster(seletedRecord)" mat-cell *matCellDef="let seletedRecord" (contextmenu)="onContextMenu($event, seletedRecord.warehouse, 'Warehouse')"> {{seletedRecord.warehouse}} </td>
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header data-automation-id="table-header-Warehouse"> Warehouse </th>
+                        <td [attr.data-automation-id]="'table-data-Warehouse-' + seletedRecord.warehouse" (dblclick)="viewItemInInventoryMaster(seletedRecord)" mat-cell *matCellDef="let seletedRecord" (contextmenu)="onContextMenu($event, seletedRecord.warehouse, 'Warehouse')"> {{seletedRecord.warehouse}} </td>
                     </ng-container>
 
                     <ng-container matColumnDef="Stock Qty">
-                        <th mat-header-cell *matHeaderCellDef mat-sort-header> Stock Qty </th>
-                        <td (dblclick)="viewItemInInventoryMaster(seletedRecord)" mat-cell *matCellDef="let seletedRecord" (contextmenu)="onContextMenu($event, seletedRecord.stockQuantity, 'Stock Qty')"> {{seletedRecord.stockQuantity}} </td>
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header  data-automation-id="table-header-Stock Qty"> Stock Qty </th>
+                        <td [attr.data-automation-id]="'table-data-Stock Qty-' + seletedRecord.stockQuantity" (dblclick)="viewItemInInventoryMaster(seletedRecord)" mat-cell *matCellDef="let seletedRecord" (contextmenu)="onContextMenu($event, seletedRecord.stockQuantity, 'Stock Qty')"> {{seletedRecord.stockQuantity}} </td>
                     </ng-container>
 
                     <ng-container matColumnDef="Replenishment Point">
-                        <th mat-header-cell *matHeaderCellDef mat-sort-header> Replen Point </th>
-                        <td (dblclick)="viewItemInInventoryMaster(seletedRecord)" mat-cell *matCellDef="let seletedRecord" (contextmenu)="onContextMenu($event, seletedRecord.replenishmentPoint, 'Replenishment Point')"> {{seletedRecord.replenishmentPoint}} </td>
+                        <th data-automation-id="table-header-Replen Point" mat-header-cell *matHeaderCellDef mat-sort-header> Replen Point </th>
+                        <td [attr.data-automation-id]="'table-data-Replen Point-' + seletedRecord.replenishmentPoint" (dblclick)="viewItemInInventoryMaster(seletedRecord)" mat-cell *matCellDef="let seletedRecord" (contextmenu)="onContextMenu($event, seletedRecord.replenishmentPoint, 'Replenishment Point')"> {{seletedRecord.replenishmentPoint}} </td>
                     </ng-container>
 
                     <ng-container matColumnDef="Replenishment Level">
-                        <th mat-header-cell *matHeaderCellDef mat-sort-header> Replen Level </th>
-                        <td (dblclick)="viewItemInInventoryMaster(seletedRecord)" mat-cell *matCellDef="let seletedRecord" (contextmenu)="onContextMenu($event, seletedRecord.replenishmentLevel, 'Replenishment Level')"> {{seletedRecord.replenishmentLevel}} </td>
+                        <th data-automation-id="table-header-Replen Level" mat-header-cell *matHeaderCellDef mat-sort-header> Replen Level </th>
+                        <td [attr.data-automation-id]="'table-data-Replen Level-' + seletedRecord.replenishmentLevel" (dblclick)="viewItemInInventoryMaster(seletedRecord)" mat-cell *matCellDef="let seletedRecord" (contextmenu)="onContextMenu($event, seletedRecord.replenishmentLevel, 'Replenishment Level')"> {{seletedRecord.replenishmentLevel}} </td>
                     </ng-container>
 
                     <ng-container matColumnDef="Available Qty">
-                        <th mat-header-cell *matHeaderCellDef mat-sort-header> Avail Qty </th>
-                        <td (dblclick)="viewItemInInventoryMaster(seletedRecord)" mat-cell *matCellDef="let seletedRecord" (contextmenu)="onContextMenu($event, seletedRecord.availableQuantity, 'Available Qty')"> {{seletedRecord.availableQuantity}} </td>
+                        <th data-automation-id="table-header-Avail Qty" mat-header-cell *matHeaderCellDef mat-sort-header> Avail Qty </th>
+                        <td [attr.data-automation-id]="'table-data-Avail Qty-' + seletedRecord.availableQuantity" (dblclick)="viewItemInInventoryMaster(seletedRecord)" mat-cell *matCellDef="let seletedRecord" (contextmenu)="onContextMenu($event, seletedRecord.availableQuantity, 'Available Qty')"> {{seletedRecord.availableQuantity}} </td>
                     </ng-container>
 
                     <ng-container matColumnDef="Replenishment Qty">
-                        <th mat-header-cell *matHeaderCellDef mat-sort-header> Replen Qty </th>
-                        <td (dblclick)="viewItemInInventoryMaster(seletedRecord)" mat-cell *matCellDef="let seletedRecord" (contextmenu)="onContextMenu($event, seletedRecord.replenishmentQuantity, 'Replenishment Qty')"> {{seletedRecord.replenishmentQuantity}} </td>
+                        <th  data-automation-id="table-header-Replen Qty" mat-header-cell *matHeaderCellDef mat-sort-header> Replen Qty </th>
+                        <td [attr.data-automation-id]="'table-data-Replen Qty-' + seletedRecord.replenishmentQuantity" (dblclick)="viewItemInInventoryMaster(seletedRecord)" mat-cell *matCellDef="let seletedRecord" (contextmenu)="onContextMenu($event, seletedRecord.replenishmentQuantity, 'Replenishment Qty')"> {{seletedRecord.replenishmentQuantity}} </td>
                     </ng-container>
 
                     <ng-container matColumnDef="Case Qty">
-                        <th mat-header-cell *matHeaderCellDef mat-sort-header> Case Qty </th>
-                        <td (dblclick)="viewItemInInventoryMaster(seletedRecord)" mat-cell *matCellDef="let seletedRecord" (contextmenu)="onContextMenu($event, seletedRecord.caseQuantity, 'Case Qty')"> {{seletedRecord.caseQuantity}} </td>
+                        <th data-automation-id="table-header-Case Qty" mat-header-cell *matHeaderCellDef mat-sort-header> Case Qty </th>
+                        <td [attr.data-automation-id]="'table-data-Case Qty-' + seletedRecord.caseQuantity" (dblclick)="viewItemInInventoryMaster(seletedRecord)" mat-cell *matCellDef="let seletedRecord" (contextmenu)="onContextMenu($event, seletedRecord.caseQuantity, 'Case Qty')"> {{seletedRecord.caseQuantity}} </td>
                     </ng-container>
 
                     <ng-container matColumnDef="Transaction Qty">
-                        <th mat-header-cell *matHeaderCellDef mat-sort-header> Trans Qty </th>
-                        <td (dblclick)="viewItemInInventoryMaster(seletedRecord)" mat-cell *matCellDef="let seletedRecord" (contextmenu)="onContextMenu($event, seletedRecord.transactionQuantity, 'Transaction Qty')">
+                        <th data-automation-id="table-header-Trans Qty" mat-header-cell *matHeaderCellDef mat-sort-header> Trans Qty </th>
+                        <td (dblclick)="viewItemInInventoryMaster(seletedRecord)" mat-cell *matCellDef="let seletedRecord; let i=index" (contextmenu)="onContextMenu($event, seletedRecord.transactionQuantity, 'Transaction Qty')" [attr.data-automation-id]="'table-data-Trans Qty-' +seletedRecord.transactionQuantity">
                             <mat-form-field class="custom-form-field w-100 __grab_cursor" appearance="outline" (click)="editTransDialog(seletedRecord)" >
-                                <input matInput type="text" maxlength="50" readonly="true" value="000000" [ngModel]="seletedRecord.transactionQuantity">
+                                <input matInput type="text" maxlength="50" readonly="true" value="000000" [ngModel]="seletedRecord.transactionQuantity" [attr.data-automation-id]="'trans-qty-input-' + i">
                                 <span matSuffix>
                                     <mat-icon class="matIcon-style">unfold_more</mat-icon>
                                 </span>
@@ -124,10 +124,10 @@
                     </ng-container>
 
                     <ng-container matColumnDef="Replenish">
-                        <th mat-header-cell *matHeaderCellDef mat-sort-header> Replen </th>
-                        <td (dblclick)="viewItemInInventoryMaster(seletedRecord)" mat-cell *matCellDef="let seletedRecord">
+                        <th data-automation-id="table-header-Replen" mat-header-cell *matHeaderCellDef mat-sort-header> Replen </th>
+                        <td (dblclick)="viewItemInInventoryMaster(seletedRecord)" mat-cell *matCellDef="let seletedRecord; let i = index" [attr.data-automation-id]="'table-data-Replen-' + i" >
                             <div class="text-center">
-                                <mat-checkbox color="primary" matTooltip="Check" matTooltipPosition="above" [disabled]="seletedRecord.availableQuantity == 0 ||  seletedRecord.transactionQuantity == 0 || seletedRecord.replenishExists"
+                                <mat-checkbox [attr.data-automation-id]="'replen-checkbox-' + i"   color="primary" matTooltip="Check" matTooltipPosition="above" [disabled]="seletedRecord.availableQuantity == 0 ||  seletedRecord.transactionQuantity == 0 || seletedRecord.replenishExists"
                                     [checked]="seletedRecord.replenish" [(ngModel)]="seletedRecord.replenish" (change)="changeReplenish(seletedRecord,$event)">
                                 </mat-checkbox>
                             </div>
@@ -135,10 +135,10 @@
                     </ng-container>
                     
                     <ng-container matColumnDef="Replenish Exists">
-                        <th mat-header-cell *matHeaderCellDef mat-sort-header> Exists </th>
-                        <td (dblclick)="viewItemInInventoryMaster(seletedRecord)" mat-cell *matCellDef="let seletedRecord">
+                        <th data-automation-id="table-header-Exists" mat-header-cell *matHeaderCellDef mat-sort-header> Exists </th>
+                        <td (dblclick)="viewItemInInventoryMaster(seletedRecord)" mat-cell *matCellDef="let seletedRecord; let i=index" [attr.data-automation-id]="'table-data-Exists-' + i">
                             <div class="text-center">
-                                <mat-checkbox color="primary" matTooltip="Check" matTooltipPosition="above" disabled
+                                <mat-checkbox [attr.data-automation-id]="'Exists-checkbox-' + i" color="primary" matTooltip="Check" matTooltipPosition="above" disabled
                                     [checked]="seletedRecord.replenishExists">
                                 </mat-checkbox>
                             </div>
@@ -146,43 +146,43 @@
                     </ng-container>
 
                     <ng-container matColumnDef="Alloc Pick">
-                        <th mat-header-cell *matHeaderCellDef mat-sort-header> Allocated Pick </th>
-                        <td (dblclick)="viewItemInInventoryMaster(seletedRecord)" mat-cell *matCellDef="let seletedRecord" (contextmenu)="onContextMenu($event, seletedRecord.allocPick, 'Alloc Pick')"> {{seletedRecord.allocPick}} </td>
+                        <th data-automation-id="table-header-Allocated Pick" mat-header-cell *matHeaderCellDef mat-sort-header> Allocated Pick </th>
+                        <td [attr.data-automation-id]="'table-data-Allocated Pick-' + seletedRecord.allocPick" (dblclick)="viewItemInInventoryMaster(seletedRecord)" mat-cell *matCellDef="let seletedRecord" (contextmenu)="onContextMenu($event, seletedRecord.allocPick, 'Alloc Pick')"> {{seletedRecord.allocPick}} </td>
                     </ng-container>
 
                     <ng-container matColumnDef="Alloc Put">
-                        <th mat-header-cell *matHeaderCellDef mat-sort-header> Allocated Put </th>
-                        <td (dblclick)="viewItemInInventoryMaster(seletedRecord)" mat-cell *matCellDef="let seletedRecord" (contextmenu)="onContextMenu($event, seletedRecord.allocPut, 'Alloc Put')"> {{seletedRecord.allocPut}} </td>
+                        <th data-automation-id="table-header-Allocated Put" mat-header-cell *matHeaderCellDef mat-sort-header> Allocated Put </th>
+                        <td [attr.data-automation-id]="'table-data-Allocated Put-' + seletedRecord.allocPut" (dblclick)="viewItemInInventoryMaster(seletedRecord)" mat-cell *matCellDef="let seletedRecord" (contextmenu)="onContextMenu($event, seletedRecord.allocPut, 'Alloc Put')"> {{seletedRecord.allocPut}} </td>
                     </ng-container>
 
                     <!-- Action Column -->
-                    <ng-container matColumnDef="action" stickyEnd>
+                    <ng-container matColumnDef="action"; let index i; stickyEnd>
 
-                        <th class="matHeaderCellDef-style" mat-header-cell *matHeaderCellDef >
+                        <th class="matHeaderCellDef-style" mat-header-cell *matHeaderCellDef data-automation-id="table-header-action" >
                         </th>
 
-                        <td class="matCellDef-style" mat-cell *matCellDef="let seletedRecord">
+                        <td class="matCellDef-style" mat-cell *matCellDef="let seletedRecord; let i = index"  [attr.data-automation-id]="'table-data-action-' + i">
 
-                            <button mat-icon-button [matMenuTriggerFor]="appMenu" aria-label="a" [ngClass]="{'active-btn':seletedRecord.selected}" class="circle-icon-o active-btn" appearance="outline">
+                            <button [attr.data-automation-id]="'row-action-menu-btn-'+ i" mat-icon-button [matMenuTriggerFor]="appMenu" aria-label="a" [ngClass]="{'active-btn':seletedRecord.selected}" class="circle-icon-o active-btn" appearance="outline">
                                 <mat-icon>more_horiz</mat-icon>
                             </button>
 
                             <mat-menu #appMenu="matMenu">
-                                <button mat-menu-item (click)="viewItemInInventoryMaster(seletedRecord)">View Item in Inventory Master</button>
+                                <button mat-menu-item (click)="viewItemInInventoryMaster(seletedRecord)" [attr.data-automation-id]="'menu-view-item-'+ i">View Item in Inventory Master</button>
                             </mat-menu>
 
                         </td>
 
                     </ng-container>
                     
-                    <tr class="mat-row" *matNoDataRow (contextmenu)="onContextMenu($event, undefined, '')">
+                    <tr data-automation-id="new-orders-no-data-row" class="mat-row" *matNoDataRow (contextmenu)="onContextMenu($event, undefined, '')">
                         <td class="mat-cell " [attr.colspan]="displayedColumns.length">
                           No data available in table.
                         </td>
                     </tr>
 
                     <tr class="matHeaderRowDef-style" mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
-                    <tr mat-row *matRowDef="let row; columns: displayedColumns;" (click)="selectRow(row)"></tr>
+                    <tr mat-row *matRowDef="let row; columns: displayedColumns;" (click)="selectRow(row)" [attr.data-automation-id]="'table-row-' + row.itemNumber"></tr>
                 </table>
             </ng-scrollbar>
         </div>

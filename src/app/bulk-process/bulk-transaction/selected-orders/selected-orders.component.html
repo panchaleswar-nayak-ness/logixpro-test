@@ -19,28 +19,28 @@
             (matSortChange)="announceSortChange($event)">
   
             <ng-container matColumnDef="batchPickId">
-              <th mat-header-cell mat-sort-header *matHeaderCellDef data-automation-id="selected-orders-th-batch-pick-id">Batch ID</th>
-              <td mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'selected-orders-td-batch-pick-id-' + i">{{ element.batchPickId }}</td>
+              <th mat-header-cell mat-sort-header *matHeaderCellDef data-automation-id="table-header-Batch ID">Batch ID</th>
+              <td mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'table-data-Batch ID-' + (element.batchPickId ? element.batchPickId : ' ')">{{ element.batchPickId }}</td>
             </ng-container>
   
             <ng-container matColumnDef="toteId">
-              <th mat-header-cell mat-sort-header *matHeaderCellDef data-automation-id="selected-orders-th-tote-id"> Tote ID</th>
-              <td mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'selected-orders-td-tote-id-' + i">{{ element.toteId }}</td>
+              <th mat-header-cell mat-sort-header *matHeaderCellDef data-automation-id="table-header-Tote ID"> Tote ID</th>
+              <td mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'table-data-Tote ID-' + (element.toteId ? element.toteId : ' ')">{{ element.toteId }}</td>
             </ng-container>
   
             <ng-container matColumnDef="orderNumber">
-              <th mat-header-cell mat-sort-header width="{{view == 'batch' ? '50%':'auto'}}" *matHeaderCellDef data-automation-id="selected-orders-th-order-number">Order Number</th>
-              <td mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'selected-orders-td-order-number-' + i">{{ element.orderNumber }}</td>
+              <th mat-header-cell mat-sort-header width="{{view == 'batch' ? '50%':'auto'}}" *matHeaderCellDef data-automation-id="table-header-Order Number">Order Number</th>
+              <td mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'table-data-Order Number-' + (element.orderNumber ? element.orderNumber : ' ')">{{ element.orderNumber }}</td>
             </ng-container>
   
             <ng-container matColumnDef="toteNumber">
-              <th mat-header-cell mat-sort-header *matHeaderCellDef width="{{view == 'batch'? '50%':'auto'}}" data-automation-id="selected-orders-th-tote-number">Tote Number</th>
-              <td mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'selected-orders-td-tote-number-' + i">{{ element.toteNumber }}</td>
+              <th mat-header-cell mat-sort-header *matHeaderCellDef width="{{view == 'batch'? '50%':'auto'}}" data-automation-id="table-header-Tote Number">Tote Number</th>
+              <td mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'table-data-Tote Number-' + (element.toteNumber ? element.toteNumber : ' ')">{{ element.toteNumber }}</td>
             </ng-container>
   
             <ng-container matColumnDef="actions" *ngIf="view != 'batch'" stickyEnd>
-              <th width="10%" class="text-center px-2" mat-header-cell *matHeaderCellDef data-automation-id="selected-orders-th-action">Action</th>
-              <td class="pe-0" mat-cell *matCellDef="let element; let i = index" width="10%" [attr.data-automation-id]="'selected-orders-td-action-' + i">
+              <th width="10%" class="text-center px-2" mat-header-cell *matHeaderCellDef data-automation-id="table-header-Actions">Action</th>
+              <td class="pe-0" mat-cell *matCellDef="let element; let i = index" width="10%" [attr.data-automation-id]="'table-data-Actions-' + i">
                 <button class="mx-auto xsm-icon-button" mat-flat-button aria-label="Delete" matTooltip="Remove"
                   matTooltipPosition="above" color="warn" data-automation-id="selected-orders-remove-order-button">
                   <mat-icon (click)="removeOrder(element)" data-automation-id="selected-orders-remove-order-icon">close</mat-icon>
@@ -55,7 +55,7 @@
       </div>
       <div class="table-pagination d-flex justify-content-start">
         <mat-paginator [pageSize]="10" #paginator1 [length]="datasource.filteredData.length"
-          [pageSizeOptions]="[10, 20, 100]" showFirstLastButtons [pageSizeOptions]="[10, 20, 100]"></mat-paginator>
+          [pageSizeOptions]="[10, 20, 100]" showFirstLastButtons [pageSizeOptions]="[10, 20, 100]" data-automation-id="table-paginator"></mat-paginator>
       </div>
     </mat-card-content>
   </mat-card>

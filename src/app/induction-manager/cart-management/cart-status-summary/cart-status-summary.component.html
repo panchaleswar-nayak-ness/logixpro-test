@@ -1,0 +1,27 @@
+<div class="card px-3 pt-3 pb-2 w-100">
+  <div class="d-flex align-items-center mb-3">
+    <h2 class="card-header-title mb-0 d-flex align-items-center">
+      <span>Status</span>
+      <mat-icon class="material-symbols-outlined ms-2" 
+                [matTooltip]="statusTooltipText"
+                matTooltipClass="cart-management-status-multiline-tooltip"
+                matTooltipPosition="below">
+        info_outline
+      </mat-icon>
+    </h2>
+  </div>
+  <div class="row g-2">
+    <div class="col-xl-3 col-lg-6">
+      <app-info-card-component title="Inducting" [value]="getStatusValue('inducting')" colorClass="label-purple"></app-info-card-component>
+    </div>
+    <div class="col-xl-3 col-lg-6">
+      <app-info-card-component title="Inducted" [value]="getStatusValue('inducted')" colorClass="label-yellow"></app-info-card-component>
+    </div>
+    <div class="col-xl-3 col-lg-6">
+      <app-info-card-component title="In Progress" [value]="getStatusValue('inProgress')" colorClass="label-blue2"></app-info-card-component>
+    </div>
+    <div class="col-xl-3 col-lg-6">
+      <app-info-card-component title="Available" [value]="getStatusValue('available')" colorClass="label-green"></app-info-card-component>
+    </div>
+  </div>
+</div>

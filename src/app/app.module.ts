@@ -14,6 +14,7 @@ import {HeaderInterceptor} from './common/init/header-interceptor.interceptor';
 import {GlobalConfigModule} from './global-config/global-config.module';
 import {SelectZonesComponent} from './dialogs/select-zones/select-zones.component';
 import {TotesAddEditComponent} from './dialogs/totes-add-edit/totes-add-edit.component';
+import {ImLabelPrintingComponent} from './induction-manager/im-label-printing/im-label-printing.component';
 import {GeneralModule} from './gen-module';
 import {PickToteManagerComponent} from './dialogs/pick-tote-manager/pick-tote-manager.component';
 import {ViewOrdersComponent} from './dialogs/view-orders/view-orders.component';
@@ -182,9 +183,6 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import {
   DirectFilterationColumnsService
 } from './common/services/direct-filteration-columns.service';
-import {
-  DirectFilterationColumnsMenuComponent
-} from './common/globalComponents/direct-filteration-columns-menu/direct-filteration-columns-menu.component';
 
 @NgModule({
   declarations: [
@@ -194,6 +192,7 @@ import {
     ChangePasswordComponent,
     SelectZonesComponent,
     TotesAddEditComponent,
+    ImLabelPrintingComponent,
     PickToteManagerComponent,
     ViewOrdersComponent,
     BlossomToteComponent,
@@ -298,7 +297,6 @@ import {
     OrderDetailsComponent,
     ZoneGroupsComponent,
     ImprefInductionFilterComponent,
-    DirectFilterationColumnsMenuComponent,  // Add this line
     AuditTransferFileComponent
   ],
   imports: [

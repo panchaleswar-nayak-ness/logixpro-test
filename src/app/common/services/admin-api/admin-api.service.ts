@@ -3,7 +3,7 @@ import {ApiFuntions} from '../ApiFuntions';
 import {AuthService} from 'src/app/common/init/auth.service';
 import {IAdminApiService} from './admin-api-interface'
 import { UserSession } from '../../types/CommonTypes';
-import { InventoryMap, UpdateSCReq } from '../../Model/storage-container-management';
+import { InventoryMap, InventoryMapRecordsDto, UpdateSCReq } from '../../Model/storage-container-management';
 import { UserAccessLevels } from '../user-access-levels/user-access-levels';
 import { DevicePreferenceRequest, DevicePreferencesTableRequest } from '../../interface/admin/device-preferences';
 import { UpdateEmergencyRequest } from '../../interface/admin/opentransaction.interfaces';
@@ -2120,9 +2120,6 @@ export class AdminApiService implements IAdminApiService {
       return this.Api.deleteLookupTableData(body);
     }
 
-
-    // Storage Container Management Functions
-
     public getCarouselZones() {
       return this.Api.getCarouselZones();
     }
@@ -2141,6 +2138,13 @@ export class AdminApiService implements IAdminApiService {
     
     public updateStorageContainerLayout(containerId: string,body:UpdateSCReq) {
       return this.Api.updateStorageContainerLayout(containerId,body);
+    }
+
+    public storageBinsExit(binId: string, zone: string) {
+      return this.Api.storageBinsExit(binId, zone);
+    }
+    public GetInventoryMapRecordsForBin(binId: string, zone: string): Observable<InventoryMapRecordsDto> {
+      return this.Api.GetInventoryMapRecordsForBin(binId, zone);
     }
 
     public GetContainerLayoutsAsync() {

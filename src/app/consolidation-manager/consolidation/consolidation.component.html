@@ -67,30 +67,30 @@
                     <ng-scrollbar track="all" class="mat-table-scrollbar h-260" data-automation-id="staging-table-scrollbar">
                         <table class="w-100 table-borderless" mat-table #stageSort="matSort" matSort [dataSource]="stageTable" (matSortChange)="announceSortChangeStage($event)" data-automation-id="staging-table">
                             <ng-container matColumnDef="toteID">
-                                <th mat-header-cell *matHeaderCellDef mat-sort-header data-automation-id="table-header-tote-id"> Tote ID </th>
-                                <td mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'table-row-' + i + '-' + element.toteID + '-tote-id-cell'">{{element.toteID}}</td>
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header data-automation-id="table-header-Tote ID"> Tote ID </th>
+                                <td mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'table-data-Tote ID-' + (element.toteID ? element.toteID : ' ')">{{element.toteID}}</td>
                             </ng-container>
 
                             <ng-container matColumnDef="complete">
-                                <th class="" mat-header-cell *matHeaderCellDef mat-sort-header data-automation-id="table-header-status">Status</th>
-                                <td mat-cell *matCellDef="let element; let i = index" class="" [attr.data-automation-id]="'table-row-' + i + '-' + element.toteID + '-status-cell'">
+                                <th class="" mat-header-cell *matHeaderCellDef mat-sort-header data-automation-id="table-header-Status">Status</th>
+                                <td mat-cell *matCellDef="let element; let i = index" class="" [attr.data-automation-id]="'table-data-Status-' + (element.complete ? element.complete : ' ')">
                                     <div class="label label-green px-2" data-automation-id="status-complete">{{element.complete}}</div>
                                 </td>
                             </ng-container>
 
                             <ng-container matColumnDef="stagingLocation">
-                                <th mat-header-cell *matHeaderCellDef mat-sort-header data-automation-id="table-header-staging-location"> Staging Location </th>
-                                <td mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'table-row-' + i + '-' + element.toteID + '-staging-location-cell'">{{element.stagingLocation}}</td>
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header data-automation-id="table-header-Staging Location"> Staging Location </th>
+                                <td mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'table-data-Staging Location-' + (element.stagingLocation ? element.stagingLocation : ' ')">{{element.stagingLocation}}</td>
                             </ng-container>
 
                             <ng-container matColumnDef="stagedBy">
-                                <th mat-header-cell *matHeaderCellDef mat-sort-header data-automation-id="table-header-staged-by"> Staged By </th>
-                                <td mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'table-row-' + i + '-' + element.toteID + '-staged-by-cell'">{{element.stagedBy}}</td>
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header data-automation-id="table-header-Staged By"> Staged By </th>
+                                <td mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'table-data-Staged By-' + (element.stagedBy ? element.stagedBy : ' ')">{{element.stagedBy}}</td>
                             </ng-container>
 
                             <ng-container matColumnDef="stagedDate">
-                                <th mat-header-cell *matHeaderCellDef mat-sort-header data-automation-id="table-header-staged-date"> Staged Date </th>
-                                <td mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'table-row-' + i + '-' + element.toteID + '-staged-date-cell'">{{element.stagedDate}}</td>
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header data-automation-id="table-header-Staged Date"> Staged Date </th>
+                                <td mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'table-data-Staged Date-' + (element.stagedDate ? element.stagedDate : ' ')">{{element.stagedDate}}</td>
                             </ng-container>
 
                             <tr class="mat-row" *matNoDataRow data-automation-id="table-no-data-row">
@@ -104,7 +104,7 @@
                     </ng-scrollbar>
                 </div>
                 <div class="d-flex justify-content-between bg-white" data-automation-id="staging-paginator">
-                    <mat-paginator #stagePaginator showFirstLastButtons [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons> </mat-paginator>
+                    <mat-paginator #stagePaginator showFirstLastButtons [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons data-automation-id="table-paginator"> </mat-paginator>
                 </div>
             </div>
         </div>

@@ -403,34 +403,79 @@ export class OpenTransactionOnHoldComponent implements OnInit, AfterViewInit {
     });
   }
 
+isDisabled(element): boolean {
+  const hasCompletion =
+    element['completedBy'] !== '' && element['completedDate'] !== '';
+    const notPick = element['transactionType']?.toLowerCase() !== 'pick';
+
+  return hasCompletion || notPick;
+}
+
   //Toggles the emergency flag and updates the backend, showing success or error feedback based on the response.
 onCheckboxToggle(
   element: Record<string, boolean | string | number>,
   column: string,
   isChecked: boolean
 ): void {
-  const previousValue = element[column];
-  element[column] = isChecked;
+  const orderNumber = element['orderNumber'] as string;
+  const previousValue = !isChecked;
+
+  // Optimistically update the UI first
+  const setAll = (value: boolean) => {
+    if (!this.dataSource?.data) return;
+
+    this.dataSource.data.forEach((transaction) => {
+      if (
+        transaction.orderNumber === orderNumber &&
+        !transaction.completedDate &&
+        (transaction.transactionType || '').toLowerCase() ===
+          TransactionType.Pick.toLowerCase()
+      ) {
+        transaction[column] = value;
+      }
+    });
+
+    element[column] = value;
+    this.dataSource.data = [...this.dataSource.data];
+  };
+
+  // Set optimistic value first
+  setAll(isChecked);
 
   const payload: UpdateEmergencyRequest = {
-    id: element['id'] as number,
-    emergency: isChecked
+    orderNumber,
+    emergency: isChecked,
   };
 
   this.iAdminApiService.UpdateEmergencyOpenTrans(payload).subscribe({
     next: (response) => {
-      if (!response || !response.isExecuted) {
-        element[column] = previousValue;
-        this.global.ShowToastr(ToasterType.Error, ToasterMessages.RecordUpdateFailed, ToasterTitle.Error);
+      if (!response?.isExecuted) {
+        // Revert on failure
+        setAll(previousValue);
+        this.global.ShowToastr(
+          ToasterType.Error,
+          ToasterMessages.RecordUpdateFailed,
+          ToasterTitle.Error
+        );
       } else {
-        this.global.ShowToastr(ToasterType.Success, ToasterMessages.RecordUpdatedSuccessful, ToasterTitle.Success);
+        // Success - value is already set optimistically
+        this.global.ShowToastr(
+          ToasterType.Success,
+          ToasterMessages.RecordUpdatedSuccessful,
+          ToasterTitle.Success
+        );
       }
     },
     error: (err) => {
-      element[column] = previousValue;
       console.error('UpdateEmergency API error:', err);
-      this.global.ShowToastr(ToasterType.Error, this.global.globalErrorMsg(), ToasterTitle.Error);
-    }
+      // Revert on error
+      setAll(previousValue);
+      this.global.ShowToastr(
+        ToasterType.Error,
+        this.global.globalErrorMsg(),
+        ToasterTitle.Error
+      );
+    },
   });
 }
 

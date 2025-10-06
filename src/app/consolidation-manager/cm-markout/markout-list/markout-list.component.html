@@ -19,8 +19,8 @@
               class="custom-table g-card-table employee-location-table w-100"
               (matSortChange)="announceSortChange($event)" data-automation-id="transactions-table">
               <ng-container matColumnDef="status">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header data-automation-id="table-header-status">Status</th>
-                <td mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'table-row-' + i + '-' + element.itemNumber + '-status-cell'">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header data-automation-id="table-header-Status">Status</th>
+                <td mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'table-data-Status-' + (element.status ? element.status : ' ')">
                   <div class="d-flex align-items-center ">
                     <span [ngClass]="{
                       'label-yellow' : element.status == 'Short' ,
@@ -34,51 +34,51 @@
               </ng-container>
 
               <ng-container matColumnDef="toteId">
-                <th mat-header-cell mat-sort-header *matHeaderCellDef data-automation-id="table-header-tote-id">Tote ID</th>
-                <td mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'table-row-' + i + '-' + element.itemNumber + '-tote-id-cell'">{{ element?.toteId }}</td>
+                <th mat-header-cell mat-sort-header *matHeaderCellDef data-automation-id="table-header-Tote ID">Tote ID</th>
+                <td mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'table-data-Tote ID-' + (element.toteId ? element.toteId : ' ')">{{ element?.toteId }}</td>
               </ng-container>
 
               <ng-container matColumnDef="itemNumber">
-                <th mat-header-cell mat-sort-header *matHeaderCellDef replacePlaceholder [replacePlaceHolder]="placeholders.itemNumber" [fallbackPlaceHolder]="placeholders.itemNumberFallback" data-automation-id="table-header-item-number">{{ItemNumber}}</th>
-                <td mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'table-row-' + i + '-' + element.itemNumber + '-item-number-cell'">{{ element?.itemNumber }}</td>
+                <th mat-header-cell mat-sort-header *matHeaderCellDef replacePlaceholder [replacePlaceHolder]="placeholders.itemNumber" [fallbackPlaceHolder]="placeholders.itemNumberFallback" data-automation-id="table-header-Item Number">{{ItemNumber}}</th>
+                <td mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'table-data-Item Number-' + (element.itemNumber ? element.itemNumber : ' ')">{{ element?.itemNumber }}</td>
               </ng-container>
 
               <ng-container matColumnDef="location">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header data-automation-id="table-header-location">Location</th>
+                <th mat-header-cell *matHeaderCellDef mat-sort-header data-automation-id="table-header-Location">Location</th>
                 <td mat-cell *matCellDef="let element; let i = index" 
                 #tooltip="matTooltip" matTooltipPosition="above"
                 [matTooltip]="element.location" 
-                [attr.data-automation-id]="'table-row-' + i + '-' + element.itemNumber + '-location-cell'">{{ element?.location }}</td>
+                [attr.data-automation-id]="'table-data-Location-' + (element.location ? element.location : ' ')">{{ element?.location }}</td>
               </ng-container>
 
               <ng-container matColumnDef="compQty">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header data-automation-id="table-header-picked-qty">Picked Qty</th>
-                <td mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'table-row-' + i + '-' + element.itemNumber + '-picked-qty-cell'">{{ element?.compQty }}</td>
+                <th mat-header-cell *matHeaderCellDef mat-sort-header data-automation-id="table-header-Picked Qty">Picked Qty</th>
+                <td mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'table-data-Picked Qty-' + (element.compQty !== null && element.compQty !== undefined ? element.compQty : ' ')">{{ element?.compQty }}</td>
               </ng-container>
 
               <ng-container matColumnDef="completedDate">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header data-automation-id="table-header-completed-date">Completed Date</th>
-                <td mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'table-row-' + i + '-' + element.itemNumber + '-completed-date-cell'">{{ element?.completedDate| date:'M/d/yyyy h:mm:ss a' }}</td>
+                <th mat-header-cell *matHeaderCellDef mat-sort-header data-automation-id="table-header-Completed Date">Completed Date</th>
+                <td mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'table-data-Completed Date-' + (element.completedDate ? element.completedDate : ' ')">{{ element?.completedDate| date:'M/d/yyyy h:mm:ss a' }}</td>
               </ng-container>
 
               <ng-container matColumnDef="transQty">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header data-automation-id="table-header-trans-qty">Trans Qty</th>
-                <td mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'table-row-' + i + '-' + element.itemNumber + '-trans-qty-cell'">{{ element?.transQty }}</td>
+                <th mat-header-cell *matHeaderCellDef mat-sort-header data-automation-id="table-header-Trans Qty">Trans Qty</th>
+                <td mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'table-data-Trans Qty-' + (element.transQty ? element.transQty : ' ')">{{ element?.transQty }}</td>
               </ng-container>
 
               <ng-container matColumnDef="shortQty">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header data-automation-id="table-header-short-qty">Short Qty</th>
-                <td mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'table-row-' + i + '-' + element.itemNumber + '-short-qty-cell'">{{ element?.shortQty }}</td>
+                <th mat-header-cell *matHeaderCellDef mat-sort-header data-automation-id="table-header-Short Qty">Short Qty</th>
+                <td mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'table-data-Short Qty-' + (element.shortQty ? element.shortQty : ' ')">{{ element?.shortQty }}</td>
               </ng-container>
 
               <ng-container matColumnDef="actions" stickyEnd>
-                <th mat-header-cell *matHeaderCellDef data-automation-id="table-header-actions"></th>
-                <td mat-cell *matCellDef="let element; let i = index" class="custom-cell" [attr.data-automation-id]="'table-row-' + i + '-' + element.itemNumber + '-actions-cell'">
+                <th mat-header-cell *matHeaderCellDef data-automation-id="table-header-Actions"></th>
+                <td mat-cell *matCellDef="let element; let i = index" class="custom-cell" [attr.data-automation-id]="'table-data-Actions-' + i">
                   <button mat-icon-button [matMenuTriggerFor]="appMenu" aria-label=""
-                    [ngClass]="{'active-btn':element.selected}" class="circle-icon-o active-btn" appearance="outline" [attr.data-automation-id]="'actions-button-' + element.itemNumber">
+                    [ngClass]="{'active-btn':element.selected}" class="circle-icon-o active-btn" appearance="outline" [attr.data-automation-id]="'actions-button-' + (element.itemNumber ? element.itemNumber : ' ')">
                     <mat-icon>more_horiz</mat-icon>
                   </button>
-                  <mat-menu #appMenu="matMenu" [attr.data-automation-id]="'actions-menu-' + element.itemNumber">
+                  <mat-menu #appMenu="matMenu" [attr.data-automation-id]="'actions-menu-' + (element.itemNumber ? element.itemNumber : ' ')">
                     <button [disabled]="element.status == 'Complete' ||element.status == 'Ship Short' || element.status == 'Not Inducted'"  mat-menu-item (click)="completeTrans(element)" data-automation-id="complete-menu-item">Complete</button>
                     <button [disabled]="element.status == 'Complete' || element.status == 'Ship Short' || element.status == 'Not Inducted'" mat-menu-item (click)="shipShort(element)" data-automation-id="ship-short-menu-item">Ship Short</button>
                     <button [disabled]="element.status == 'Complete' || element.status == 'Ship Short' || element.status == 'Not Inducted'" mat-menu-item (click)="showUpdateQTY(element)" data-automation-id="update-quantity-menu-item">Update Quantity</button>
@@ -88,13 +88,13 @@
                 </td>
               </ng-container>
 
-              <tr class="mat-row " *matNoDataRow data-automation-id="table-no-data-row">
-                <td class="mat-cell text-center" [attr.colspan]="displayedColumns.length">
+              <tr class="mat-row " *matNoDataRow data-automation-id="no-data-row">
+                <td class="mat-cell text-center" [attr.colspan]="displayedColumns.length" data-automation-id="no-data-cell">
                   No data matching the filter.
                 </td>
               </tr>
               <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky:true" data-automation-id="transactions-table-header-row"></tr>
-              <tr mat-row class="table-row" tabindex="1" (click)="selectRow(row)" *matRowDef="let row; columns: displayedColumns;" [attr.data-automation-id]="'transactions-table-row-' + row.itemNumber"></tr>
+              <tr mat-row class="table-row" tabindex="1" (click)="selectRow(row)" *matRowDef="let row; columns: displayedColumns;" [attr.data-automation-id]="'transactions-table-row-' + (row.itemNumber ? row.itemNumber : ' ')"></tr>
 
             </table>
           </ng-scrollbar>
@@ -102,7 +102,7 @@
         </div>
         <div class="table-pagination d-flex justify-content-start" *ngIf="displayedColumns && markoutlistdataSource" data-automation-id="transactions-paginator">
           <mat-paginator [pageSize]="10" #paginator [length]="markoutlistdataSource.filteredData.length"
-          [pageSizeOptions]="[10, 20, 100]" showFirstLastButtons [pageSizeOptions]="[10, 20, 100]">
+          [pageSizeOptions]="[10, 20, 100]" showFirstLastButtons [pageSizeOptions]="[10, 20, 100]" data-automation-id="table-paginator">
         </mat-paginator>
         </div>
       </div>

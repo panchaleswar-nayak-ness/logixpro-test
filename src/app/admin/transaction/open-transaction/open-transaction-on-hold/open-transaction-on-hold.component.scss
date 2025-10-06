@@ -82,3 +82,22 @@ mat-row, mat-header-row, mat-footer-row{
 .table-cell-style{
   padding: 10px 12px; border: 0; text-overflow: ellipsis; overflow: hidden; max-width: 22ch; white-space: nowrap;
 }
+
+.no-data-cell {
+  position: relative;
+  height: 60px;
+  padding: 0;
+  border: 0;
+}
+
+.no-data-message {
+  position: sticky;
+  top: 50%;
+  width: 500px;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  font-size: 16px;
+  white-space: nowrap;
+  z-index: 1;
+}

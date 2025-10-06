@@ -29,7 +29,7 @@
             <table class="w-100 table-borderless" mat-table matSort [dataSource]="tableData" data-automation-id="mapping-table">
                 <ng-container matColumnDef="open_transaction">
                     <th mat-header-cell *matHeaderCellDef mat-sort-header data-automation-id="table-header-open-transaction"> Open Transaction Column </th>
-                    <td mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'table-row-' + i + '-open-transaction-cell'">
+                    <td mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'table-data-' + i + '-open-transaction-cell'">
                         <mat-form-field class="custom-form-field w-100 pe-2 mt-3" appearance="outline" [attr.data-automation-id]="'open-transaction-field-' + i">
                           <input #opcolFocus matInput type="text" value="00000" [attr.data-automation-id]="'open-transaction-input-' + i" />
                       </mat-form-field>
@@ -49,7 +49,7 @@
           <ng-container matColumnDef="field_type">
             <th mat-header-cell *matHeaderCellDef mat-sort-header data-automation-id="table-header-field-type"> Field Type
             </th>
-            <td mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'table-row-' + i + '-field-type-cell'">
+            <td mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'table-data-' + i + '-field-type-cell'">
               <mat-form-field class="custom-form-field w-100 pe-2 mt-3" appearance="outline" [attr.data-automation-id]="'field-type-field-' + i">
                 <input matInput type="text" value="00000" [attr.data-automation-id]="'field-type-input-' + i" />
             </mat-form-field>
@@ -71,7 +71,7 @@
                 </div>
             </td>
           </ng-container>
-          <tr class="mat-row" *matNoDataRow data-automation-id="table-no-data-row">
+          <tr class="mat-row" *matNoDataRow data-automation-id="no-data-row">
             <td class="mat-cell " [attr.colspan]="displayedColumns.length">
                 No data available in table.
             </td>

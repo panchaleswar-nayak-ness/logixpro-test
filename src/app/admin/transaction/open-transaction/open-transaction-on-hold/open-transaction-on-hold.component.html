@@ -148,11 +148,11 @@
                     <div class="d-block d-lg-flex d-flex w-100 justify-content-end">
                         <mat-form-field class="action-dropdown mb-3 flex-grow-1" appearance="outline">
                             <mat-label data-automation-id="label-action">Action</mat-label>
-                            <mat-select [(value)]="selectedVariable" class="employees-action" (openedChange)="actionDialog($event)" [attr.data-automation-id]="'select-action-' + (selectedVariable || '')">
-                                <mat-option value="set_column_sq" data-automation-id="option-action-set_column_sq">Set Column Sequence</mat-option>
-                                <mat-option (click)="printCycleCountReport()" data-automation-id="option-action-print_cycle_count_report">Print Cycle Count Report</mat-option>
-                                <mat-option (click)="previewFiftyPagesOnly()" data-automation-id="option-action-preview_50_pages_only">Preview 50 Pages Only</mat-option>
-                                <mat-option (click)="sendCompletedToHistory()" *ngIf="authService.UserPermissonByFuncName('Transaction Journal Send To History') && !throughOrderManager" data-automation-id="option-action-send_completed_to_history">Send Completed to History</mat-option>
+                            <mat-select [(value)]="selectedVariable" class="employees-action" (openedChange)="actionDialog($event)" [attr.data-automation-id]="'select-action' +'-'+ (selectedVariable || '')">
+                                <mat-option value="set_column_sq" data-automation-id="option-action-Set Column Sequence">Set Column Sequence</mat-option>
+                                <mat-option (click)="printCycleCountReport()" data-automation-id="option-action-Print Cycle Count Report">Print Cycle Count Report</mat-option>
+                                <mat-option (click)="previewFiftyPagesOnly()" data-automation-id="option-action-Preview 50 Pages Only">Preview 50 Pages Only</mat-option>
+                                <mat-option (click)="sendCompletedToHistory()" *ngIf="authService.UserPermissonByFuncName('Transaction Journal Send To History') && !throughOrderManager" data-automation-id="option-action-Send Completed to History">Send Completed to History</mat-option>
                             </mat-select>
                             <span class="material-symbols-outlined icon-expand-more">
                                 expand_more
@@ -172,12 +172,12 @@
                                 (contextmenu)="onContextMenu($event, element[col.colHeader], col.colDef)" mat-cell class="table-cell-style"
                                 #tooltip="matTooltip" matTooltipPosition="above"
                                 [matTooltip]="element[col.colHeader]" [matTooltipDisabled]="element[col.colHeader] && element[col.colHeader].length > 19 ? false : true"
-                                [attr.data-automation-id]="'table-row-' + rowIndex + '-' + col.colDef + '-' + element[col.colHeader]"
+                                [attr.data-automation-id]="'table-data-' + col.colDef + '-' + element[col.colHeader]"
                             >
                                 <ng-container *ngIf="col.colDef === 'Emergency'; else textContent">
                                      <div style="display: flex; justify-content: center; align-items: center;">
                                           <mat-checkbox [checked]="element[col.colHeader]"
-                                              [disabled]="element['completedBy'] !='' && element['completedDate'] != ''"
+                                              [disabled]="isDisabled(element)"
                                               (change)="onCheckboxToggle(element,col.colHeader,$event.checked)"
                                               class="example-margin" color="primary" >
                                           </mat-checkbox>
@@ -190,22 +190,24 @@
 
                         <ng-container matColumnDef="actions" stickyEnd>
                             <th mat-header-cell *matHeaderCellDef class="custom-header-cell" data-automation-id="table-header-actions"></th>
-                            <td mat-cell *matCellDef="let seletedRecord; let rowIndex = index" class="custom-cell" [attr.data-automation-id]="'table-row-actions-' + rowIndex + '-' + seletedRecord.id">
-                                <button mat-icon-button [matMenuTriggerFor]="appMenu" [ngClass]="{'active-btn':seletedRecord.selected}" class="circle-icon-o active-btn" appearance="outline" [attr.data-automation-id]="'actions-menu-button-' + rowIndex + '-' + seletedRecord.id">
+                            <td mat-cell *matCellDef="let seletedRecord; let rowIndex = index" class="custom-cell" [attr.data-automation-id]="'table-data-actions-' + rowIndex">
+                                <button mat-icon-button [matMenuTriggerFor]="appMenu" [ngClass]="{'active-btn':seletedRecord.selected}" class="circle-icon-o active-btn" appearance="outline" [attr.data-automation-id]="'actions-menu-button-' + rowIndex">
                                     <mat-icon>more_horiz</mat-icon>
                                 </button>
                                 <mat-menu #appMenu="matMenu">
-                                    <button mat-menu-item (click)="viewInInventoryMaster(seletedRecord)" [attr.data-automation-id]="'actions-menu-view-inventory-' + rowIndex + '-' + seletedRecord.id">View Item in Inventory Master</button>
-                                    <button mat-menu-item (click)="viewOrderInOrder(seletedRecord)" [attr.data-automation-id]="'actions-menu-view-order-' + rowIndex + '-' + seletedRecord.id">View Order in Order Status</button>
-                                    <button mat-menu-item *ngIf="!hideDelete && !throughOrderManager && authService.UserPermissonByFuncName('Transaction Journal Delete') " (click)="deleteItem(seletedRecord)" [attr.data-automation-id]="'actions-menu-delete-transaction-' + rowIndex + '-' + seletedRecord.id">Delete Transaction</button>
+                                    <button mat-menu-item (click)="viewInInventoryMaster(seletedRecord)" [attr.data-automation-id]="'actions-menu-view-inventory-' + rowIndex">View Item in Inventory Master</button>
+                                    <button mat-menu-item (click)="viewOrderInOrder(seletedRecord)" [attr.data-automation-id]="'actions-menu-view-order-' + rowIndex ">View Order in Order Status</button>
+                                    <button mat-menu-item *ngIf="!hideDelete && !throughOrderManager && authService.UserPermissonByFuncName('Transaction Journal Delete') " (click)="deleteItem(seletedRecord)" [attr.data-automation-id]="'actions-menu-delete-transaction-' + rowIndex">Delete Transaction</button>
                                 </mat-menu>
                             </td>
                         </ng-container>
 
-                        <tr class="mat-row d-flex w-100 justify-content-center position-absolute" (contextmenu)="onContextMenu($event, undefined, '')" *matNoDataRow [attr.colspan]="displayedColumns && displayedColumns.length">
-                            <div class="p-3">
-                                No data available in table.
-                            </div>
+                        <tr class="mat-row" (contextmenu)="onContextMenu($event, undefined, '')" *matNoDataRow [attr.colspan]="displayedColumns && displayedColumns.length">
+                            <td class="mat-cell no-data-cell" [attr.colspan]="displayedColumns && displayedColumns.length">
+                               <div class="no-data-message">
+                                   No data available in table.
+                               </div>
+                            </td>
                         </tr>
                         <mat-header-row *matHeaderRowDef="columnValues; sticky: true"></mat-header-row>
                         <mat-row *matRowDef="let row; columns: columnValues;" (click)="selectRow(row)"></mat-row>

@@ -6,10 +6,10 @@
           <div class="mat-icon-wrap me-3">
             <span class="material-symbols-outlined"> filter_frames </span>
           </div>
-          <span>Select Order</span>
+          <span data-automation-id="select-order-heading">Select Order</span>
         </h2>
-        <span class="label label-gray px-2 mb-xl-0 mb-1 mx-2 text-16" matTooltipPosition="above" [matTooltip]="displayOrderNumber">Order No.:&nbsp;<b class="badge-ch-limit">{{ displayOrderNumber || "-" }}</b></span>
-        <span class="label label-gray px-2 mb-xl-0 mb-1 mx-2 text-16" matTooltipPosition="above" [matTooltip]="displayToteID">Tote ID:&nbsp;<b class="badge-ch-limit">{{ displayToteID || "-" }}</b></span>
+        <span class="label label-gray px-2 mb-xl-0 mb-1 mx-2 text-16" matTooltipPosition="above" [matTooltip]="displayOrderNumber"  [attr.data-automation-id]="'order-number-display'+ '-' + displayOrderNumber">Order No.:&nbsp;<b class="badge-ch-limit">{{ displayOrderNumber || "-" }}</b></span>
+        <span class="label label-gray px-2 mb-xl-0 mb-1 mx-2 text-16" matTooltipPosition="above" [matTooltip]="displayToteID" [attr.data-automation-id]="'tote-id-display'+'-' + displayToteID">Tote ID:&nbsp;<b class="badge-ch-limit">{{ displayToteID || "-" }}</b></span>
       </div>
       <div>
         <button
@@ -47,8 +47,8 @@
               (selectionChange)="onSelectionChange($event.value)"
                [attr.data-automation-id]="'select-' + columnSelect"
             >
-              <mat-option selected value="Order Number" data-automation-id="option-order-number"> Order No. </mat-option>
-              <mat-option value="Tote ID" data-automation-id="option-tote-id"> Tote ID </mat-option>
+              <mat-option selected value="Order Number" data-automation-id="option-order-Order No."> Order No. </mat-option>
+              <mat-option value="Tote ID" data-automation-id="option-Tote ID"> Tote ID </mat-option>
             </mat-select>
             <span class="material-symbols-outlined icon-expand-more">
               expand_more
@@ -78,7 +78,7 @@
                 [disabled]="!columnSelect"
                 [(ngModel)]="searchField"
                 [matAutocomplete]="auto"
-                [attr.data-automation-id]="'search-input-' + searchField"
+                [attr.data-automation-id]= "'search-input' + (searchField ? '-'+ searchField : '' )"
               />
               <button
                 matSuffix

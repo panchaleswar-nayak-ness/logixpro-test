@@ -8,8 +8,8 @@
                 <div class="d-block d-lg-flex d-flex w-100 justify-content-end">
                 <mat-form-field class="action-dropdown flex-grow-1" appearance="outline">
                     <mat-label data-automation-id="label-action">Action</mat-label>
-                    <mat-select  #matRef  class="employees-action" (openedChange)="actionDialog($event)" [(value)]="selectedVariable" placeholder="Actions" [attr.data-automation-id]="'select-action-' + (selectedVariable || '')">
-                        <mat-option value="set_column_sq" data-automation-id="option-action-set_column_sq">Set Column Sequence</mat-option>
+                    <mat-select  #matRef  class="employees-action" (openedChange)="actionDialog($event)" [(value)]="selectedVariable" placeholder="Actions" [attr.data-automation-id]="'select-action'+'-' + (selectedVariable || '')">
+                        <mat-option value="set_column_sq" data-automation-id="option-action-Set Column Sequence">Set Column Sequence</mat-option>
                     </mat-select>
                     <span class="material-symbols-outlined icon-expand-more">expand_more</span>
                 </mat-form-field>
@@ -47,7 +47,7 @@
 
                         <td *matCellDef="let element; let rowIndex = index"  mat-cell class="reprocessed-cell-custom" #tooltip="matTooltip"
                             [matTooltip]="element[col.colHeader]" matTooltipPosition="above" [matTooltipDisabled]="element[col.colHeader] && element[col.colHeader].length>=20?false:true" 
-                            [attr.data-automation-id]="'table-row-' + rowIndex"
+                            [attr.data-automation-id]="'table-data-' + col.colDef + '-' + element[col.colHeader]"
                         >{{ element[col.colHeader] }}</td>
 
                     </ng-container>

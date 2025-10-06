@@ -9,8 +9,8 @@
             <ng-scrollbar class="mat-table-scrollbar h-450px" track="all">
                 <table mat-table [dataSource]="displayedColumns" class="w-100 table1">
                     <ng-container matColumnDef="transType">
-                        <th mat-header-cell *matHeaderCellDef class="w-50" data-automation-id="th-zones">Zones</th>
-                        <td mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'pod-setup-cell-zones-' + element.totalTransactions">
+                        <th mat-header-cell *matHeaderCellDef class="w-50" data-automation-id="table-header-Zones">Zones</th>
+                        <td mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'table-data-Zones-' + (element.totalTransactions ? element.totalTransactions : ' ')">
                             <mat-form-field class="custom-form-field w-100" appearance="outline" data-automation-id="pod-setup-form-field-zones">
                                 <input matInput type="text" value="{{element.totalTransactions}}" [attr.data-automation-id]="'input-pod-zone-' + element.totalTransactions" />
                             </mat-form-field>
@@ -19,8 +19,8 @@
                     </ng-container>
 
                     <ng-container matColumnDef="scanSequence">
-                        <th mat-header-cell *matHeaderCellDef class="w-50" data-automation-id="th-locationname">Location Name</th>
-                        <td mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'pod-setup-cell-locationname-' + element.totalTransactions">
+                        <th mat-header-cell *matHeaderCellDef class="w-50" data-automation-id="table-header-Location Name">Location Name</th>
+                        <td mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'table-data-Location Name-' + (element.totalTransactions ? element.totalTransactions : ' ')">
                             <mat-form-field class="custom-form-field w-100" appearance="outline" data-automation-id="pod-setup-form-field-locationname">
                                 <input matInput type="text" value="{{element.totalTransactions}}" [attr.data-automation-id]="'input-pod-location-name-' + element.totalTransactions" />
                             </mat-form-field>
@@ -28,15 +28,15 @@
                     </ng-container>
 
                     <ng-container matColumnDef="actions" stickyEnd>
-                        <th mat-header-cell *matHeaderCellDef class="ps-2 text-center" data-automation-id="th-bulkzone">Bulk Zone</th>
-                        <td mat-cell *matCellDef="let element; let i = index" class="ps-2" [attr.data-automation-id]="'pod-setup-cell-bulkzone-' + element.totalTransactions">
+                        <th mat-header-cell *matHeaderCellDef class="ps-2 text-center" data-automation-id="table-header-Bulk Zone">Bulk Zone</th>
+                        <td mat-cell *matCellDef="let element; let i = index" class="ps-2" [attr.data-automation-id]="'table-data-Bulk Zone-' + (element.totalTransactions ? element.totalTransactions : ' ')">
                             <div class="text-center">
                             <mat-slide-toggle color="primary" [attr.data-automation-id]="'toggle-bulk-zone-' + element.totalTransactions"></mat-slide-toggle>
                         </div>
                         </td>
                     </ng-container>
-                    <tr class="mat-row" *matNoDataRow data-automation-id="pod-setup-no-data-row">
-                        <td class="mat-cell" [attr.colspan]="displayedColumns.length">
+                    <tr class="mat-row" *matNoDataRow data-automation-id="no-data-row">
+                        <td class="mat-cell" [attr.colspan]="displayedColumns.length" data-automation-id="no-data-cell">
                             <b>No data found.</b>
                         </td>
                     </tr>

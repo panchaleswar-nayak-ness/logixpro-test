@@ -4,7 +4,7 @@
       <mat-card class="mat-elevation-z g-card" data-automation-id="route-id-list-card">
         <mat-card-content>
           <div class="row">
-            <app-icon-heading-component heading="{{headingRouteIDList}}" icon="format_list_bulleted" [automationId]="'route-id-list-heading'">
+            <app-icon-heading-component heading="{{headingRouteIDList}}" icon="format_list_bulleted" data-automation-id="route-id-list-heading">
             </app-icon-heading-component>
           </div>
 
@@ -33,7 +33,7 @@
                      (matSortChange)="announceSortChange($event)" data-automation-id="route-id-table">
 
                 <ng-container matColumnDef="{{col.colHeader}}" *ngFor="let col of displayedColumns; let indexOfelement=index;">
-                  <th class="header container-table-header" mat-header-cell *matHeaderCellDef mat-sort-header [attr.data-automation-id]="'table-header-' + col.colHeader">
+                  <th class="header container-table-header" mat-header-cell *matHeaderCellDef mat-sort-header [attr.data-automation-id]="'table-header-' + col.colTitle">
                     {{ col.colTitle }}
                   </th>
                   <td class="container-table-data" mat-cell *matCellDef="let element; let i = index"
@@ -75,7 +75,7 @@
 
           <div class="table-pagination d-flex justify-content-start align-items-center" data-automation-id="route-id-paginator"
             >
-            <mat-paginator [length]="this.customPagination.total" [pageSize]="10" showFirstLastButtons [pageSizeOptions]="[10, 20, 100]" (page)="handlePageEvent($event)"></mat-paginator>
+            <mat-paginator [length]="this.customPagination.total" [pageSize]="10" showFirstLastButtons [pageSizeOptions]="[10, 20, 100]" (page)="handlePageEvent($event)" data-automation-id="table-paginator"></mat-paginator>
           </div>
 
         </mat-card-content>

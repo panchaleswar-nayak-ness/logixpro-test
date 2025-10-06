@@ -662,4 +662,15 @@ formatSearchDateTimeValue(dateStr: string): string | null {
   return false;
 }
 
+
+/**
+ * Displays multiple toast notifications of the given type.
+ * Loops through the provided messages and shows each one as a toast.
+ */
+ShowMultipleToastMessages(type: string, msgs: string[], title?: string) {
+  msgs.forEach(msg => {
+    this.ShowToastr(type, msg, title);
+  });
+}
+
 }

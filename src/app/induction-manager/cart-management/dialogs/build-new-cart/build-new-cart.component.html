@@ -1,0 +1,113 @@
+<div class="cart-management-dialog">
+  <div class="d-flex justify-content-between mb-4 align-items-center">
+    <div class="w-48px"></div>
+    <h1 class="m-0" mat-dialog-title data-automation-id="cart-dialog-title">{{ dialogTitle }}</h1>
+    <button mat-icon-button 
+            class="close-button dialog-close-button-fix" 
+            (click)="onClose()" 
+            data-automation-id="cart-dialog-close-btn">
+      <mat-icon class="close-icon">close</mat-icon>
+    </button>
+  </div>
+
+  <form [formGroup]="cartForm" mat-dialog-content>
+    <div class="cart-content">
+      <div class="cart-id-section mb-4">
+        <mat-form-field class="d-block w-100" appearance="outline" data-automation-id="cart-id-field">
+          <mat-label data-automation-id="cart-id-label">Cart ID</mat-label>
+          <input matInput 
+                 #cartInputFocus
+                 formControlName="cartId"
+                 placeholder="Type / Scan Cart ID" 
+                 maxlength="50" 
+                 (keyup.enter)="onCartIdEnter()"
+                 (keyup.backspace)="onCartIDBackspaceCheck()"
+                 (keyup)="onCartIDChange()"
+                 data-automation-id="cart-id-input">
+          <button matSuffix 
+                  *ngIf="cartIdEntered && isCreateMode" 
+                  class="clear-btn" 
+                  (click)="onClearCartId()" 
+                  data-automation-id="cart-id-clear-btn">
+            <mat-icon class="text-20 text-chrome-600">cancel</mat-icon>
+          </button>
+          
+          <mat-error *ngIf="cartForm.get('cartId')?.hasError('maxlength')" data-automation-id="cart-id-maxlength-error">
+            Cart ID cannot exceed 50 characters
+          </mat-error>
+        </mat-form-field>
+      </div>
+
+      <div class="instruction-section mb-4" *ngIf="!isViewMode && currentCartIdInput">
+        <div class="d-flex align-items-center gap-2">
+          <mat-icon class="text-tertiary-800">info_outline</mat-icon>
+          <span class="text-tertiary-800 text-14" data-automation-id="cart-instruction-text">{{ getInstructionText() }}</span>
+        </div>
+      </div>
+
+      <div class="tote-grid-section mb-4" *ngIf="showToteGrid">
+        <app-tote-position-grid
+          [positions]="positions"
+          [selectedPosition]="selectedPosition"
+          [readonly]="isReadonly || isGridDisabled"
+          [cols]="cols"
+          [rows]="rows"
+          (positionSelect)="onPositionSelect($event)"
+          (selectTote)="onSelectTote($event)"
+          (generateStorageLocationId)="generateStorageLocationId($event)"
+          (positionClear)="onPositionClear($event)"
+          data-automation-id="tote-position-grid">
+        </app-tote-position-grid>
+      </div>
+
+      <div class="tote-input-section mb-4" *ngIf="showToteInput">
+        <div class="d-flex align-items-end gap-3">
+          <mat-form-field class="flex-grow-1 tote-input-field" appearance="outline" data-automation-id="tote-id-field">
+            <input matInput 
+                   #toteInputFocus
+                   [(ngModel)]="toteIdInput" 
+                   placeholder="Type / Scan Tote ID" 
+                   maxlength="50"
+                   [ngModelOptions]="{standalone: true}"
+                   (keydown.enter)="onSaveTote(); $event.preventDefault()"
+                   (keyup.backspace)="onBackspaceCheck()"
+                   data-automation-id="tote-id-input">
+            <button matSuffix 
+                    *ngIf="toteIdInput" 
+                    class="clear-btn" 
+                    (click)="onClearToteInput()" 
+                    data-automation-id="tote-id-clear-btn">
+              <mat-icon class="text-20 text-chrome-600">cancel</mat-icon>
+            </button>
+          </mat-form-field>
+        </div>
+      </div>
+    </div>
+  </form>
+
+  <mat-dialog-actions class="d-flex gap-12 w-100">
+    <button
+      type="button"
+      mat-stroked-button
+      color="warn"
+      class="btn-lg"
+      (click)="onClearAll()"
+      *ngIf="showClearAllButton"
+      [disabled]="getAssignedToteCount() === 0"
+      data-automation-id="clear-all-btn">
+      {{ clearButtonText }}
+    </button>
+
+    <button
+      type="button"
+      mat-flat-button
+      class="btn-lg flex-grow-1 flex-basis-0"
+      color="primary"
+      (click)="onPrimaryAction()"
+      [disabled]="getDisabledState()"
+      [matTooltip]="isLoading ? 'Processing...' : ''"
+      data-automation-id="primary-action-btn">
+      {{ primaryButtonText }}
+    </button>
+  </mat-dialog-actions>
+</div>

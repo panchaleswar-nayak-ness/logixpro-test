@@ -1,4 +1,4 @@
-import { HttpClient, HttpResponse, HttpErrorResponse, HttpHeaders, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpResponse, HttpErrorResponse, HttpHeaders, HttpParams, HttpBackend } from '@angular/common/http';
 import { Injectable, Injector } from '@angular/core';
 import { environment } from '../../../environments/environment';
 import { Observable, lastValueFrom, observable } from 'rxjs';
@@ -34,7 +34,7 @@ export class BaseService {
   constructor(
     private http: HttpClient,
     private injector: Injector,
-    private spinnerService: SpinnerService
+    private spinnerService: SpinnerService,
   )
   {
     this.initializeApiUrl();
@@ -110,7 +110,6 @@ export class BaseService {
       })
     );
   }
-  
 
   public GetEndpoint(rel: string, links: Link[]): string {
     let endpoint = "";
@@ -192,7 +191,7 @@ export class BaseService {
       map(response => response.body)
     );
   }
-
+  
   public Put<T>(endPoint: string, reqPayload: unknown): Observable<T | null> {
     return this.request<unknown>('PUT', endPoint, { body: reqPayload }).pipe(
         map(response => response.body as T || null) // Cast `response.body` to T and ensure null handling

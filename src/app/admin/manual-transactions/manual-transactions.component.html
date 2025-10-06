@@ -1,8 +1,8 @@
-<mat-tab-group dynamicHeight [(selectedIndex)]="selectedIndex" >
-    <mat-tab label="Generate Transaction">
+<mat-tab-group dynamicHeight [(selectedIndex)]="selectedIndex" data-automation-id="manual-transactions-tabs">
+    <mat-tab label="Generate Transaction" data-automation-id="generate-transaction-tab">
         <app-generate-transaction></app-generate-transaction>
     </mat-tab>
-    <mat-tab label="Generate Order">
+    <mat-tab label="Generate Order" data-automation-id="generate-order-tab">
         <app-generate-order [tab]="selectedIndex"></app-generate-order>
     </mat-tab>
 </mat-tab-group>

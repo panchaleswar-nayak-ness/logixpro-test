@@ -16,10 +16,10 @@
                 <div class="d-xl-flex gap-12 align-items-center flex-wrap">
                     <mat-form-field class="action-dropdown d-xl-flex d-block mb-3 mb-xl-0" appearance="outline" data-automation-id="search-column-dropdown">
                         <mat-label data-automation-id="search-label">Search</mat-label>
-                        <mat-select class="employees-action" (selectionChange)="searchChange($event.value)">
+                        <mat-select class="employees-action" (selectionChange)="searchChange($event.value)"  data-automation-id="select-search">
                             <mat-option value="" data-automation-id="search-option-empty"></mat-option>
                             <mat-option *ngFor="let option of searchColumnOptions"
-                                [value]="option.value" data-automation-id="search-option-{{option.value}}">{{option.viewValue}}</mat-option>
+                                [value]="option.value" [attr.data-automation-id]="'search-option-' + option.value">{{option.viewValue}}</mat-option>
                         </mat-select>
                         <span class="material-symbols-outlined icon-expand-more" data-automation-id="search-expand-icon">
                             expand_more
@@ -43,10 +43,10 @@
                                     class="text-20 text-chrome-600">cancel</mat-icon></button>
                             <mat-autocomplete #auto="matAutocomplete" (optionSelected)="search()"
                                 #autocompleteInventory>
-                                <mat-option *ngFor="let option of searchAutocompleteList" [value]="option">
+                                <mat-option *ngFor="let option of searchAutocompleteList" [value]="option" [attr.data-automation-id]="'search-autocomplete-option-' + option.value">
                                     {{option}}
                                 </mat-option>
-                                <mat-option *ngIf="searchAutocompleteList?.length ==0" disabled>
+                                <mat-option *ngIf="searchAutocompleteList?.length ==0" disabled data-automation-id="search-autocomplete-no-data">
                                     No data found
                                 </mat-option>
                             </mat-autocomplete>
@@ -54,7 +54,7 @@
                     </div>
                     <mat-form-field class="action-dropdown d-xl-flex d-block  mb-3 mb-xl-0 " appearance="outline" data-automation-id="show-dropdown">
                         <mat-label data-automation-id="show-label">Show</mat-label>
-                        <mat-select class="employees-action" (selectionChange)="showChange($event.value)">
+                        <mat-select class="employees-action" (selectionChange)="showChange($event.value)" data-automation-id="show-select">
                             <mat-option value="All" data-automation-id="show-option-All">All</mat-option>
                             <mat-option value="Open" data-automation-id="show-option-Open">Open</mat-option>
                             <mat-option value="Completed" data-automation-id="show-option-Completed">Completed</mat-option>
@@ -68,7 +68,7 @@
             <div class="col-xl-5 d-xl-flex flex-row-reverse">
                 <mat-form-field class="action-dropdown d-xl-flex d-block w-30" appearance="outline" data-automation-id="actions-dropdown">
                     <mat-label data-automation-id="actions-label">Actions</mat-label>
-                    <mat-select #openActionDropDown class="employees-action" (selectionChange)="openAction($event)">
+                    <mat-select #openActionDropDown class="employees-action" (selectionChange)="openAction($event)" data-automation-id="action-select">
                         <mat-option value="Print Orders" (click)="actionChange('Print Orders')" data-automation-id="actions-option-PrintOrders">Print
                             Orders</mat-option>
                         <mat-option value="Print Labels" (click)="actionChange('Print Labels')" data-automation-id="actions-option-PrintLabels">Print
@@ -97,8 +97,9 @@
                     (matSortChange)="announceSortChange($event)" data-automation-id="current-orders-table">
                     
                     <ng-container matColumnDef={{coloumn.defination}}  *ngFor="let coloumn of coloumnTable">
-                        <th mat-header-cell *matHeaderCellDef mat-sort-header>{{coloumn.label}}</th>
-                        <td mat-cell *matCellDef="let seletedRecord"
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header [attr.data-automation-id]="'table-header-' + coloumn.label">{{coloumn.label}}</th>
+                        <td mat-cell *matCellDef="let seletedRecord" [attr.data-automation-id]="'table-data-' + coloumn.label + '-' + seletedRecord[coloumn.value]"
+
                         (contextmenu)="onContextMenu($event, seletedRecord[coloumn.value], coloumn.filterProperty)"
                         [class.selected]="seletedRecord.rowNumber == selectedOrder.rowNumber"
                         > {{seletedRecord[coloumn.value]}}
@@ -107,26 +108,26 @@
 
                     <!-- Action Column -->
                     <ng-container matColumnDef="action" stickyEnd>
-                        <th class="matHeaderCellDef-style" mat-header-cell *matHeaderCellDef></th>
-                        <td class="matCellDef-style" mat-cell *matCellDef="let seletedRecord">
-                            <button mat-icon-button [matMenuTriggerFor]="appMenu" aria-label="" [ngClass]="{'active-btn':seletedRecord.selected}" class="circle-icon-o active-btn" appearance="outline" data-automation-id="row-action-menu-btn">
+                        <th class="matHeaderCellDef-style" mat-header-cell *matHeaderCellDef data-automation-id="table-header-action"></th>
+                        <td class="matCellDef-style" mat-cell *matCellDef="let seletedRecord" [attr.data-automation-id]="'table-data-action-' + seletedRecord.orderNumber">
+                            <button mat-icon-button [matMenuTriggerFor]="appMenu" aria-label="" [ngClass]="{'active-btn':seletedRecord.selected}" class="circle-icon-o active-btn" appearance="outline" [attr.data-automation-id]="'row-action-menu-btn-' + seletedRecord.orderNumber">
                                 <mat-icon>more_horiz</mat-icon>
                             </button>
                             <mat-menu #appMenu="matMenu">
                                 <button mat-menu-item
-                                    (click)="this.selectedOrder = seletedRecord;deleteSelectedOrder();" data-automation-id="delete-order-menu-btn">Delete
+                                    (click)="this.selectedOrder = seletedRecord;deleteSelectedOrder();" [attr.data-automation-id]="'delete-order-menu-btn-' + seletedRecord.orderNumber">Delete
                                     Orders</button>
                             </mat-menu>
                         </td>
                     </ng-container>
 
                     <tr class="mat-row" *matNoDataRow (contextmenu)="onContextMenu($event, undefined, '')">
-                        <td class="mat-cell " [attr.colspan]="displayedColumns2.length">
+                        <td class="mat-cell " [attr.colspan]="displayedColumns2.length" data-automation-id="no-data-row">
                             No data available in table.
                         </td>
                     </tr>
                     <tr class="matHeaderRowDef-style" mat-header-row *matHeaderRowDef="displayedColumns2; sticky: true"></tr>
-                    <tr mat-row *matRowDef="let row; columns: displayedColumns2;" (click)="selectRow(row)"></tr>
+                    <tr mat-row *matRowDef="let row; columns: displayedColumns2;" [attr.data-automation-id]="'table-row-' + row.orderNumber" (click)="selectRow(row)"></tr>
                 </table>
 
 
@@ -147,7 +148,7 @@
         <mat-dialog-content>
             <div class="prompt-wrap">
                 <div class="d-flex justify-content-center prompt-icon-wrap">
-                    <span #cancel class="material-symbols-outlined prompt-icon-delete mb-4">
+                    <span #cancel class="material-symbols-outlined prompt-icon-delete mb-4" data-automation-id="delete-order-icon">
                         delete
                     </span>
                 </div>

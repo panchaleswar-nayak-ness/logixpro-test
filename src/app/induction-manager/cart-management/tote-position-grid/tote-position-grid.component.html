@@ -1,0 +1,27 @@
+<div class="tote-position-grid w-100">
+  <div [ngClass]="['grid-container-' + cols + 'x' + rows]" [style.grid-template-columns]="'repeat(' + cols + ', 1fr)'">
+    <ng-container *ngIf="positions && positions.length">
+      <button 
+        *ngFor="let position of positions" 
+        class="position-button"
+        [ngClass]="getPositionClass(position)"
+        (click)="onPositionClick(position.position); onClickTote(position)"
+        [disabled]="readonly || isPositionDisabled(position.position)"
+        [attr.data-automation-id]="'tote-position-' + position.position">
+        
+        <div class="position-content" [ngClass]="{'has-tote': position.toteId}">
+          <span class="position-number bold" [ngClass]="getPositionNumberClass(position)">{{ position.position }}</span>
+          <span 
+            *ngIf="position.toteId" 
+            class="tote-id"
+            #tooltip="matTooltip" 
+            matTooltipPosition="above" 
+            [matTooltip]="position.toteId"
+            [matTooltipDisabled]="position.toteId && position.toteId.length > 5 ? false : true">
+            {{ position.toteId }}
+          </span>
+        </div>
+      </button>
+    </ng-container>
+  </div>
+</div>

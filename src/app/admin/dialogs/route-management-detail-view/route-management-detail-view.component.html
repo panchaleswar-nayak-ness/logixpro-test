@@ -69,20 +69,20 @@
                             (matSortChange)="announceSortChange($event)">
                             <!-- Order ID Column -->
                             <ng-container matColumnDef="OrderID">
-                              <th mat-header-cell *matHeaderCellDef mat-sort-header data-automation-id="order-id-header"> Order ID </th>
-                              <td mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'order-id-cell-' + i">{{ element.OrderID }}</td>
+                              <th mat-header-cell *matHeaderCellDef mat-sort-header data-automation-id="table-header-Order ID"> Order ID </th>
+                              <td mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'table-data-Order ID-' + (element.OrderID ? element.OrderID : ' ')">{{ element.OrderID }}</td>
                             </ng-container>
                           
                             <!-- Tote ID Column -->
                             <ng-container matColumnDef="ToteID">
-                              <th mat-header-cell *matHeaderCellDef mat-sort-header data-automation-id="tote-id-header"> Tote ID </th>
-                              <td mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'tote-id-cell-' + i">{{ element.ToteID }}</td>
+                              <th mat-header-cell *matHeaderCellDef mat-sort-header data-automation-id="table-header-Tote ID"> Tote ID </th>
+                              <td mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'table-data-Tote ID-' + (element.ToteID ? element.ToteID : ' ')">{{ element.ToteID }}</td>
                             </ng-container>
                           
                             <!-- Tote Status Column -->
                             <ng-container matColumnDef="ToteStatus">
-                              <th mat-header-cell *matHeaderCellDef mat-sort-header data-automation-id="tote-status-header"> Tote Status </th>
-                              <td mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'tote-status-cell-' + i">{{ element.ToteStatus }}</td>
+                              <th mat-header-cell *matHeaderCellDef mat-sort-header data-automation-id="table-header-Tote Status"> Tote Status </th>
+                              <td mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'table-data-Tote Status-' + (element.ToteStatus ? element.ToteStatus : ' ')">{{ element.ToteStatus }}</td>
                             </ng-container>
                           
                             <!-- Table Header & Rows -->

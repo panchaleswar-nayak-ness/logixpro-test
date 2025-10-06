@@ -2,9 +2,10 @@ import { Injectable } from '@angular/core';
 import { ApiFuntions } from '../ApiFuntions';
 import { AuthService } from 'src/app/common/init/auth.service';
 import { IBulkProcessApiService } from './bulk-process-api-interface'
-import { AssignToteToOrderDto, NextToteId, OrderLineResource, PartialToteIdRequest, PartialToteIdResponse, RemoveOrderLinesRequest, RemoveOrderLinesResponse } from "../../Model/bulk-transactions";
+import { AssignToteToOrderDto, BatchesRequest, BatchesResponse, NextToteId, OrderLineResource, OrderResponse, OrdersRequest, PartialToteIdRequest, PartialToteIdResponse, QuickPickOrdersRequest, RemoveOrderLinesRequest, RemoveOrderLinesResponse, TotesRequest, TotesResponse } from "../../Model/bulk-transactions";
 import { ZoneListPayload } from 'src/app/bulk-process/preferences/preference.models';
 import { ApiResult } from '../../types/CommonTypes';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -21,20 +22,20 @@ export class BulkProcessApiService implements IBulkProcessApiService {
   public bulkPickoOrderBatchToteQty(body: any) {
     return this.Api.bulkPickoOrderBatchToteQty(body);
   }
-  public bulkPickBatches(body: any) {
+  public bulkPickBatches(body: BatchesRequest) : Observable<ApiResult<BatchesResponse[]>> {
     return this.Api.bulkPickBatches(body);
   }
   public bulkPickBatchId(body: any) {
     return this.Api.bulkPickBatchId(body);
   }
 
-  public bulkPickOrders(body: any) {
+  public bulkPickOrders(body: OrdersRequest) : Observable<ApiResult<OrderResponse[]>> {
     return this.Api.bulkPickOrders(body);
   }
-  public bulkPickTotes(body: any) {
+  public bulkPickTotes(body: TotesRequest) : Observable<ApiResult<TotesResponse[]>> {
     return this.Api.bulkPickTotes(body);
   }
-  public bulkPickOrdersQuickpick(body: any) {
+  public bulkPickOrdersQuickpick(body: QuickPickOrdersRequest) : Observable<ApiResult<OrderResponse[]>> {
     return this.Api.bulkPickOrdersQuickpick(body);
   }
   public bulkPickOrdersLocationAssignment(body: any) {
@@ -129,4 +130,17 @@ export class BulkProcessApiService implements IBulkProcessApiService {
   public async RemoveOrderLinesFromTote(request: RemoveOrderLinesRequest): Promise<RemoveOrderLinesResponse> {
     return await this.Api.RemoveOrderLinesFromTote(request);
   }
+
+  public async bulkPickBatchesCount(payload: BatchesRequest): Promise<ApiResult<number>> {
+    return await this.Api.bulkPickBatchesCount(payload);
+  }
+
+  public async bulkPickOrdersCount(payload: OrdersRequest): Promise<ApiResult<number>> {
+    return await this.Api.bulkPickOrdersCount(payload);
+  }
+
+  public async bulkPickTotesCount(payload: TotesRequest): Promise<ApiResult<number>> {
+    return await this.Api.bulkPickTotesCount(payload);
+  }
+
 }

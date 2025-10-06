@@ -10,6 +10,8 @@ import { SortPipe } from 'src/app/common/init/sort.pipe';
 import { StatsCircleComponent } from './stats-circle/stats-circle.component';
 import { ReplacePlaceholderDirective } from '../init/replace-placeholder/replace-placeholder.directive';
 import { MatAutocompleteScrollDirective } from '../init/mat-autoscroll.directive';
+import { TotePositionGridComponent } from '../../induction-manager/cart-management/tote-position-grid/tote-position-grid.component';
+import { DirectFilterationColumnsMenuComponent } from './direct-filteration-columns-menu/direct-filteration-columns-menu.component';
 
 
 @NgModule({
@@ -22,7 +24,9 @@ import { MatAutocompleteScrollDirective } from '../init/mat-autoscroll.directive
     IconHeadingComponentComponent,
     ColumnFilterComponentComponent,
     SortPipe,
-    StatsCircleComponent
+    StatsCircleComponent,
+    TotePositionGridComponent,
+    DirectFilterationColumnsMenuComponent
   ],
   exports: [
     ReplacePlaceholderDirective,
@@ -32,7 +36,9 @@ import { MatAutocompleteScrollDirective } from '../init/mat-autoscroll.directive
     StatsCircleComponent,
     InfoCardComponentComponent,
     ColumnFilterComponentComponent,
-    SortPipe
+    SortPipe,
+    TotePositionGridComponent,
+    DirectFilterationColumnsMenuComponent
   ],
   imports: [
     CommonModule,
