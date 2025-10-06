@@ -1,4 +1,4 @@
-import { HttpClient, HttpResponse, HttpErrorResponse, HttpHeaders, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpResponse, HttpErrorResponse, HttpHeaders, HttpParams, HttpBackend } from '@angular/common/http';
 import { Injectable, Injector } from '@angular/core';
 import { environment } from '../../../environments/environment';
 import { Observable, lastValueFrom, observable } from 'rxjs';
@@ -10,6 +10,7 @@ import { catchError, shareReplay, take, switchMap, map ,finalize} from 'rxjs/ope
 import { throwError } from 'rxjs';
 import { SpinnerService } from "../../common/init/spinner.service";
 import { ZoneListPayload } from 'src/app/bulk-process/preferences/preference.models';
+import { ErrorCode} from '../enums/CommonEnums';
 import { HeaderInterceptor } from '../init/header-interceptor.interceptor';
 
 type Method = 'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH';
@@ -80,19 +81,35 @@ export class BaseService {
               this.spinnerService.hide();
             }
           }),
-          catchError(error => {
-            // Don't show API request failed toast if we're handling session timeout
-            // But still throw the error so HeaderInterceptor can handle 401 errors
-            if (!HeaderInterceptor.getSessionTimeout()) {
-              this.injector.get(GlobalService).ShowToastr(ToasterType.Error, ToasterMessages.APIErrorMessage, ToasterTitle.Error);
-            }
-            return throwError(() => error);
-          })
+  catchError(err => {
+  const error = err as HttpErrorResponse;
+
+  // Only show toasts if it's not a session timeout
+  if (!HeaderInterceptor.getSessionTimeout()) {
+    if (error?.error?.messageCode === ErrorCode.UnableToPrint) {
+      // Specific error handling for UnableToPrint
+      this.injector.get(GlobalService).ShowToastr(
+        ToasterType.Error,
+        error?.error.error,
+        ToasterTitle.Error
+      );
+    } else {
+      // Generic API error toast
+      this.injector.get(GlobalService).ShowToastr(
+        ToasterType.Error,
+        ToasterMessages.APIErrorMessage,
+        ToasterTitle.Error
+      );
+    }
+  }
+
+  return throwError(() => error);
+})
+
         );
       })
     );
   }
-  
 
   public GetEndpoint(rel: string, links: Link[]): string {
     let endpoint = "";
@@ -174,7 +191,7 @@ export class BaseService {
       map(response => response.body)
     );
   }
-
+  
   public Put<T>(endPoint: string, reqPayload: unknown): Observable<T | null> {
     return this.request<unknown>('PUT', endPoint, { body: reqPayload }).pipe(
         map(response => response.body as T || null) // Cast `response.body` to T and ensure null handling

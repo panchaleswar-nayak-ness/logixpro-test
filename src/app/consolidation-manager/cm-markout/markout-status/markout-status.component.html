@@ -29,9 +29,9 @@
 <mat-card class="mat-elevation-z g-card h-100">
     <mat-card-content>
         <div class="row d-block d-xl-flex justify-content-between align-items-center flex-wrap">
-            <h2 class="col card-header-title d-flex align-items-center mb-3">
+            <h2 class="col card-header-title d-flex align-items-center mb-3" data-automation-id="markout-status-header">
                 <div class="mat-icon-wrap me-3">
-                    <span class="material-symbols-outlined">
+                    <span class="material-symbols-outlined" data-automation-id="markout-status-icon">
                         browse_activity
                     </span>
                 </div>
@@ -42,11 +42,11 @@
             <div class="d-flex gap-12">
                 <div class="d-flex">
                 <div class="d-md-flex gap-12 d-block card px-3 pt-3 pb-2">
-                    <div class="d-flex gap-12 align-items-center flex-wrap"><h6 class="text-tertiary-900 m-0"><b>Tote Status</b></h6><span *ngIf="isBlossomed" class="label label-gray px-2 f-14"><b>Blossomed</b></span></div>
+                    <div class="d-flex gap-12 align-items-center flex-wrap"><h6 class="text-tertiary-900 m-0" data-automation-id="tote-status-label"><b>Tote Status</b></h6><span *ngIf="isBlossomed" class="label label-gray px-2 f-14" data-automation-id="tote-status-blossomed-label"><b>Blossomed</b></span></div>
                     <div class="row g-2">
                     <!-- <div *ngFor="let info of info" class="w-100 col pb-xl-0"> -->
                         <app-info-card-component title={{this.info[0].title}} value={{this.info[0].value}}
-                            colorClass={{this.info[0].colorClass}} class="custom-markout-style"></app-info-card-component>
+                            colorClass={{this.info[0].colorClass}} class="custom-markout-style" [attr.data-automation-id]="'info-card-' + this.info[0].title"></app-info-card-component>
                     <!-- </div> -->
                 </div>
                 </div>
@@ -54,7 +54,7 @@
             <div class="d-flex w-100 flex-1">
                 <div class="d-md-flex gap-12 d-block card px-3 pt-3 pb-2 w-100">
                     
-                    <div class="d-flex gap-12 align-items-center flex-wrap"><h6 class="text-tertiary-900 m-0"><b>Transaction Status</b></h6></div>
+                    <div class="d-flex gap-12 align-items-center flex-wrap"><h6 class="text-tertiary-900 m-0" data-automation-id="transaction-status-heading"><b>Transaction Status</b></h6></div>
                     <div class="row g-2">
                         <div *ngFor="let info of info | slice:1" class="w-100 col pb-xl-0">
                             <app-info-card-component 
@@ -68,7 +68,7 @@
                                     'custom-style-complete': isGreaterThanZero(info.value),
                                     'custom-style-notincluded': isGreaterThanZero(info.value),
                                     'custom-style-shipsort': isGreaterThanZero(info.value)
-                                }">
+                                }" [attr.data-automation-id]="'info-card-' + info.title">
                             </app-info-card-component>
                         </div>
                 </div>

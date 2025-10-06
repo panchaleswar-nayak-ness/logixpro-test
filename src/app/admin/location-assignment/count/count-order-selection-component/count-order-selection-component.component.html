@@ -1,7 +1,7 @@
 <mat-card class="mat-elevation-z g-card mb-2">
   <mat-card-content>
     <div class="d-flex justify-content-between align-items-center mb-3">
-      <app-icon-heading-component heading="Count Order Selection" icon="format_list_numbered">
+      <app-icon-heading-component heading="Count Order Selection" icon="format_list_numbered" [automationId]="'count-order-selection-heading'">
       </app-icon-heading-component>
     </div>
     <div class="row">
@@ -12,8 +12,8 @@
             <span class="material-symbols-outlined icon-search">
               search
             </span>
-            <input #alertInput type="text" placeholder="Search" aria-label="Search" matInput maxlength="50" [(ngModel)]="searchOrderLeft" (ngModelChange)="applyFilter()" #autoFocusField>
-            <button *ngIf="searchOrderLeft != ''" matSuffix class="clear-btn" (click)="searchOrderLeft = ''; this.leftTable.filter = searchOrderLeft;"><mat-icon class="text-20 text-chrome-600">cancel</mat-icon></button>
+            <input #alertInput type="text" placeholder="Search" aria-label="Search" matInput maxlength="50" [(ngModel)]="searchOrderLeft" (ngModelChange)="applyFilter()" #autoFocusField data-automation-id="order-search-input">
+            <button *ngIf="searchOrderLeft != ''" matSuffix class="clear-btn" (click)="searchOrderLeft = ''; this.leftTable.filter = searchOrderLeft;" data-automation-id="clear-search-button"><mat-icon class="text-20 text-chrome-600">cancel</mat-icon></button>
           </mat-form-field>
           
         </div>
@@ -22,7 +22,7 @@
 
       <div class="col-xl-6">
        <div class="d-xl-block d-flex justify-content-end">
-        <button mat-stroked-button color="primary" class="button-add-all mb-3 float-end count-primary-button" (click)="addOrdereDialog()">
+        <button mat-stroked-button color="primary" class="button-add-all mb-3 float-end count-primary-button" (click)="addOrdereDialog()" data-automation-id="add-all-button">
           Add All
         </button>
       </div>
@@ -38,35 +38,35 @@
 
         <!-- Position Column -->
         <ng-container matColumnDef="orderNumber">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by number"> Order no.
+          <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by number" data-automation-id="order-number-header"> Order no.
           </th>
-          <td mat-cell *matCellDef="let element"> {{element.orderNumber}} </td>
+          <td mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'order-number-cell-' + i "> {{element.orderNumber}} </td>
         </ng-container>
 
         <!-- Name Column -->
         <ng-container matColumnDef="itemCount">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by name"> Quantity </th>
-          <td mat-cell *matCellDef="let element"> {{element.itemCount}} </td>
+          <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by name" data-automation-id="quantity-header"> Quantity </th>
+          <td mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'quantity-cell-' + i "> {{element.itemCount}} </td>
         </ng-container>
 
         <!-- Weight Column -->
         <ng-container matColumnDef="priority">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by weight"> Priority
+          <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by weight" data-automation-id="priority-header"> Priority
           </th>
-          <td mat-cell *matCellDef="let element"> {{element.priority}} </td>
+          <td mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'priority-cell-' + i "> {{element.priority}} </td>
         </ng-container>
 
         <!-- Symbol Column -->
         <ng-container matColumnDef="requiredDate">
-          <th mat-header-cell mat-sort-header *matHeaderCellDef> Required Date </th>
-          <td mat-cell *matCellDef="let element"> {{element.requiredDate}} </td>
+          <th mat-header-cell mat-sort-header *matHeaderCellDef data-automation-id="required-date-header"> Required Date </th>
+          <td mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'required-date-cell-' + i "> {{element.requiredDate}} </td>
         </ng-container>
 
         <ng-container matColumnDef="actions" stickyEnd>
-          <th width="10%" class="text-center px-2" mat-header-cell *matHeaderCellDef>Action</th>
+          <th width="10%" class="text-center px-2" mat-header-cell *matHeaderCellDef data-automation-id="actions-header">Action</th>
           <td class="pe-0" mat-cell *matCellDef="let element; let i = index" width="10%">
               <button class="mx-auto xsm-icon-button" mat-flat-button aria-label="Delete"
-                  matTooltip="Add" matTooltipPosition="above" color="primary" (click)="add(element)">
+                  matTooltip="Add" matTooltipPosition="above" color="primary" (click)="add(element)" [attr.data-automation-id]="'add-button-' + i ">
                   <mat-icon>add</mat-icon>
               </button>
           </td>
@@ -84,7 +84,7 @@
     </ng-scrollbar>
   </div>
       <mat-paginator class="d-flex justify-content-start" showFirstLastButtons [pageSizeOptions]="[10, 20]" [pageSize]="10"
-        aria-label="Select page of periodic elements" #paginator>
+        aria-label="Select page of periodic elements" #paginator data-automation-id="orders-paginator">
       </mat-paginator>
     
   </mat-card-content>

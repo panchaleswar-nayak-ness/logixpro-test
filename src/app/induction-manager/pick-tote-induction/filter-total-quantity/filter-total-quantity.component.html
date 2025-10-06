@@ -1,12 +1,12 @@
 <div class="d-flex justify-content-between mb-4 align-items-center">
     <div class="w-48px"></div>
-    <h1 class="m-0" mat-dialog-title>Filter Total Quantity</h1>
+    <h1 class="m-0" mat-dialog-title data-automation-id="heading-filter-total-quantity">Filter Total Quantity</h1>
   
     <button
       mat-icon-button
       class="close-button dialog-close-button-fix"
       [mat-dialog-close]="true"
-      (click)="close()"
+      (click)="close()" data-automation-id="button-close"
     >
       <mat-icon class="close-icon">close</mat-icon>
     </button>
@@ -24,51 +24,51 @@
       <div class="row">
         <!-- Radio Buttons -->
         <div class="d-flex align-items-center mb-4">
-          <mat-radio-group [(ngModel)]="filterType" color="primary" class="d-flex flex-column align-items-left gap-12 flex-wrap" (change)="onFilterTypeChange()">
-            <mat-radio-button value="equals">Total Quantity Equals To</mat-radio-button>
-            <mat-radio-button value="greaterThan">Total Quantity Greater Than</mat-radio-button>
-            <mat-radio-button value="greaterThanEqual">Total Quantity Greater And Equal Than</mat-radio-button>
-            <mat-radio-button value="lessThan">Total Quantity Less Than</mat-radio-button>
-            <mat-radio-button value="lessThanEqual">Total Quantity Less And Equal Than</mat-radio-button>
-            <mat-radio-button value="range">Total Quantity in Range</mat-radio-button>
+          <mat-radio-group [(ngModel)]="filterType" color="primary" class="d-flex flex-column align-items-left gap-12 flex-wrap" (change)="onFilterTypeChange()" data-automation-id="radio-group-filter-total-quantity">
+            <mat-radio-button value="equals" data-automation-id="radio-total-quantity-equals">Total Quantity Equals To</mat-radio-button>
+            <mat-radio-button value="greaterThan" data-automation-id="radio-total-quantity-greater-than">Total Quantity Greater Than</mat-radio-button>
+            <mat-radio-button value="greaterThanEqual" data-automation-id="radio-total-quantity-greater-than-equal">Total Quantity Greater And Equal Than</mat-radio-button>
+            <mat-radio-button value="lessThan" data-automation-id="radio-total-quantity-less-than">Total Quantity Less Than</mat-radio-button>
+            <mat-radio-button value="lessThanEqual" data-automation-id="radio-total-quantity-less-than-equal">Total Quantity Less And Equal Than</mat-radio-button>
+            <mat-radio-button value="range" data-automation-id="radio-total-quantity-range">Total Quantity in Range</mat-radio-button>
           </mat-radio-group>
         </div>
   
         <!-- Single Value Input for non-range filters -->
         <div *ngIf="filterType !== 'range'" class="w-100">
-          <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline">
-            <mat-label>Enter Quantity Value</mat-label>
+          <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline" data-automation-id="form-field-total-quantity-value">
+            <mat-label data-automation-id="label-total-quantity-value">Enter Quantity Value</mat-label>
             <input
               #quantityInput
               matInput
               type="number"
               min="0"
               [(ngModel)]="quantityValue"
-              placeholder="Enter quantity value"
+              placeholder="Enter quantity value" [attr.data-automation-id]="'input-total-quantity-value-' + quantityValue"
             />
           </mat-form-field>
         </div>
   
         <!-- Range Inputs for range filter -->
         <div *ngIf="filterType === 'range'" class="d-flex gap-2 w-100">
-          <mat-form-field class="custom-form-field w-50 mb-3" appearance="outline">
-            <mat-label>Lower Bound</mat-label>
+          <mat-form-field class="custom-form-field w-50 mb-3" appearance="outline" data-automation-id="form-field-lower-bound">
+            <mat-label data-automation-id="label-lower-bound">Lower Bound</mat-label>
             <input 
               matInput 
               type="number"
               min="0"
               [(ngModel)]="quantityRange.lowerBound" 
-              placeholder="Min quantity"
+              placeholder="Min quantity" [attr.data-automation-id]="'input-lower-bound-' + quantityRange.lowerBound"
             />
           </mat-form-field>
-          <mat-form-field class="custom-form-field w-50 mb-3" appearance="outline">
-            <mat-label>Upper Bound</mat-label>
+          <mat-form-field class="custom-form-field w-50 mb-3" appearance="outline" data-automation-id="form-field-upper-bound">
+            <mat-label data-automation-id="label-upper-bound">Upper Bound</mat-label>
             <input 
               matInput 
               type="number"
               min="0"
               [(ngModel)]="quantityRange.upperBound" 
-              placeholder="Max quantity"
+              placeholder="Max quantity" [attr.data-automation-id]="'input-upper-bound-' + quantityRange.upperBound"
             />
           </mat-form-field>
         </div>
@@ -81,7 +81,7 @@
       mat-flat-button
       class="button-remove-all-w-stroke bg-white"
       color="primary"
-      (click)="clearFilters()"
+      (click)="clearFilters()" data-automation-id="button-clear-filter-total-quantity"
     >
       Clear Filter
     </button>
@@ -90,7 +90,7 @@
       mat-flat-button
       class="form-button-submit btn-lg flex-grow-1"
       color="primary"
-      (click)="applyFilter()"
+      (click)="applyFilter()" data-automation-id="button-apply-filter-total-quantity"
     >
       Apply Filter
     </button>

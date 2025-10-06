@@ -2,7 +2,7 @@
     <div color="warn" class="circle-icon circle-66 circle-primary mb-4 text-primary-900">
         <mat-icon class="material-symbols-outlined" color="primary">info</mat-icon>
     </div>
-    <h1 class="mat-card-title text-primary-900">{{ dialogHeading }}</h1>
+    <h1 class="mat-card-title text-primary-900" [attr.data-automation-id]="'heading-' + dialogHeading">{{ dialogHeading }}</h1>
 
     <!-- Static introductory message -->
     <p *ngIf="!isJustNotFound" class="text-center">
@@ -39,7 +39,7 @@
     <!-- Fixed button at the bottom -->
     <div class="button-container">
         <button mat-stroked-button color="primary" class="w-100 btn-lg mb-2 prompt-action-accent-button"
-            (click)="confirmOK()">
+            (click)="confirmOK()" data-automation-id="ok-button">
             Ok
         </button>
     </div>

@@ -1,8 +1,8 @@
-import { Component, ElementRef, EventEmitter, Input, NgZone, Output, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, EventEmitter, Input, NgZone, OnDestroy, Output, ViewChild } from '@angular/core';
 import { MatOption } from '@angular/material/core';
 import { MatSelect } from '@angular/material/select';
 import { MatTooltip } from '@angular/material/tooltip';
-import { take, timer } from 'rxjs';
+import { debounceTime, Subject, take, takeUntil, timer } from 'rxjs';
 import { BulkTransactionType, BulkTransactionView } from 'src/app/common/constants/bulk-process/bulk-transactions';
 import { PrintReports } from 'src/app/common/constants/strings.constants';
 import { BatchesResponse, OrderBatchToteQtyResponse, OrderResponse, TotesResponse } from 'src/app/common/Model/bulk-transactions';
@@ -13,7 +13,7 @@ import { GlobalService } from 'src/app/common/services/global.service';
   templateUrl: './search-bar.component.html',
   styleUrls: ['./search-bar.component.scss']
 })
-export class SearchBarComponent {
+export class SearchBarComponent implements OnDestroy, AfterViewInit {
 
   @Input() view: string;
   @Input() orders: (OrderResponse | TotesResponse | BatchesResponse)[];
@@ -36,7 +36,20 @@ export class SearchBarComponent {
   BulkTransactionType = BulkTransactionType;
   @ViewChild('quickPickTooltip') quickPickTooltip!: MatTooltip;
 
-  constructor(private ngZone: NgZone,private global: GlobalService) {}
+  // Debounce related properties
+  private readonly searchSubject = new Subject<string>();
+  private readonly destroy$ = new Subject<void>();
+  private readonly SEARCH_DEBOUNCE_TIME = 500;
+
+  constructor(private readonly ngZone: NgZone, private readonly global: GlobalService) {
+    // Setup debounced search
+    this.searchSubject.pipe(
+      debounceTime(this.SEARCH_DEBOUNCE_TIME),
+      takeUntil(this.destroy$)
+    ).subscribe(searchTerm => {
+      this.performSearch(searchTerm);
+    });
+  }
 
   changeQuickPick(event) {
     this.isQuickPick = event.checked;
@@ -72,7 +85,13 @@ export class SearchBarComponent {
     this.changeViewEmitter.emit(event.value);
   }
 
+  // This method will be called from template - triggers debounced search
   search(event: string) {
+    this.searchSubject.next(event);
+  }
+
+  // Actual search implementation with debounce
+  private performSearch(event: string) {
     if (!event) {
       this.filteredOrders = [];
       return;
@@ -150,6 +169,11 @@ export class SearchBarComponent {
 
       await this.global.printReportForSelectedOrders(orders, PrintReports.LOC_ASS_PICK_SHORTAGE,true);
     }
+  }
+
+  ngOnDestroy() {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
 }

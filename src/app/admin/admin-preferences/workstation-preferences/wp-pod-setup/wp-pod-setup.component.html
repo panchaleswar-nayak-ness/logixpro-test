@@ -9,40 +9,40 @@
             <ng-scrollbar class="mat-table-scrollbar h-450px" track="all">
                 <table mat-table [dataSource]="displayedColumns" class="w-100 table1">
                     <ng-container matColumnDef="transType">
-                        <th mat-header-cell *matHeaderCellDef class="w-50">Zones</th>
-                        <td mat-cell *matCellDef="let element; let i = index">
-                            <mat-form-field class="custom-form-field w-100" appearance="outline">
-                                <input matInput type="text" value="{{element.totalTransactions}}" data-automation-id="input-pod-zone-{{i}}" />
+                        <th mat-header-cell *matHeaderCellDef class="w-50" data-automation-id="table-header-Zones">Zones</th>
+                        <td mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'table-data-Zones-' + (element.totalTransactions ? element.totalTransactions : ' ')">
+                            <mat-form-field class="custom-form-field w-100" appearance="outline" data-automation-id="pod-setup-form-field-zones">
+                                <input matInput type="text" value="{{element.totalTransactions}}" [attr.data-automation-id]="'input-pod-zone-' + element.totalTransactions" />
                             </mat-form-field>
                         </td>
 
                     </ng-container>
 
                     <ng-container matColumnDef="scanSequence">
-                        <th mat-header-cell *matHeaderCellDef class="w-50">Location Name</th>
-                        <td mat-cell *matCellDef="let element; let i = index">
-                            <mat-form-field class="custom-form-field w-100" appearance="outline">
-                                <input matInput type="text" value="{{element.totalTransactions}}" data-automation-id="input-pod-location-name-{{i}}" />
+                        <th mat-header-cell *matHeaderCellDef class="w-50" data-automation-id="table-header-Location Name">Location Name</th>
+                        <td mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'table-data-Location Name-' + (element.totalTransactions ? element.totalTransactions : ' ')">
+                            <mat-form-field class="custom-form-field w-100" appearance="outline" data-automation-id="pod-setup-form-field-locationname">
+                                <input matInput type="text" value="{{element.totalTransactions}}" [attr.data-automation-id]="'input-pod-location-name-' + element.totalTransactions" />
                             </mat-form-field>
                         </td>
                     </ng-container>
 
                     <ng-container matColumnDef="actions" stickyEnd>
-                        <th mat-header-cell *matHeaderCellDef class="ps-2 text-center">Bulk Zone</th>
-                        <td mat-cell *matCellDef="let element; let i = index" class="ps-2">
+                        <th mat-header-cell *matHeaderCellDef class="ps-2 text-center" data-automation-id="table-header-Bulk Zone">Bulk Zone</th>
+                        <td mat-cell *matCellDef="let element; let i = index" class="ps-2" [attr.data-automation-id]="'table-data-Bulk Zone-' + (element.totalTransactions ? element.totalTransactions : ' ')">
                             <div class="text-center">
-                            <mat-slide-toggle color="primary" data-automation-id="toggle-bulk-zone-{{i}}"></mat-slide-toggle>
+                            <mat-slide-toggle color="primary" [attr.data-automation-id]="'toggle-bulk-zone-' + element.totalTransactions"></mat-slide-toggle>
                         </div>
                         </td>
                     </ng-container>
-                    <tr class="mat-row" *matNoDataRow>
-                        <td class="mat-cell" [attr.colspan]="displayedColumns.length">
+                    <tr class="mat-row" *matNoDataRow data-automation-id="no-data-row">
+                        <td class="mat-cell" [attr.colspan]="displayedColumns.length" data-automation-id="no-data-cell">
                             <b>No data found.</b>
                         </td>
                     </tr>
 
-                    <tr mat-header-row *matHeaderRowDef="displayedColumns;sticky:true"></tr>
-                    <tr mat-row *matRowDef="let row; columns: displayedColumns; "></tr>
+                    <tr mat-header-row *matHeaderRowDef="displayedColumns;sticky:true" data-automation-id="pod-setup-header-row"></tr>
+                    <tr mat-row *matRowDef="let row; columns: displayedColumns; " [attr.data-automation-id]="'pod-setup-row-' + row.totalTransactions"></tr>
                 </table>
             </ng-scrollbar>
         </div>
@@ -54,22 +54,22 @@
         </div>
         <div class="card p-3">
             <mat-form-field class="action-dropdown custom-form-field-bg-white w-100 mb-3" appearance="outline">
-                <mat-label>Choose Carousel Spin Sort</mat-label>
+                <mat-label data-automation-id="pod-ref-label-carousel-spin-sort">Choose Carousel Spin Sort</mat-label>
                 <mat-select class="employees-action" value="pick" data-automation-id="select-carousel-spin-sort">
-                    <mat-option value="123456">123456</mat-option>
-                    <mat-option value="987654">987654</mat-option>
-                    <mat-option value="147852">147852</mat-option>
+                    <mat-option value="123456" data-automation-id="pod-ref-option-carousel-spin-sort-123456">123456</mat-option>
+                    <mat-option value="987654" data-automation-id="pod-ref-option-carousel-spin-sort-987654">987654</mat-option>
+                    <mat-option value="147852" data-automation-id="pod-ref-option-carousel-spin-sort-147852">147852</mat-option>
                 </mat-select>
                 <span class="material-symbols-outlined icon-expand-more">
                     expand_more
                 </span>
             </mat-form-field>
             <mat-form-field class="action-dropdown custom-form-field-bg-white w-100 mb-3" appearance="outline">
-                <mat-label>Carton Flow Sequence</mat-label>
+                <mat-label data-automation-id="pod-ref-label-carton-flow-sequence">Carton Flow Sequence</mat-label>
                 <mat-select class="employees-action" value="pick" data-automation-id="select-carton-flow-sequence">
-                    <mat-option value="123456">123456</mat-option>
-                    <mat-option value="987654">987654</mat-option>
-                    <mat-option value="147852">147852</mat-option>
+                    <mat-option value="123456" data-automation-id="pod-ref-option-carton-flow-sequence-123456">123456</mat-option>
+                    <mat-option value="987654" data-automation-id="pod-ref-option-carton-flow-sequence-987654">987654</mat-option>
+                    <mat-option value="147852" data-automation-id="pod-ref-option-carton-flow-sequence-147852">147852</mat-option>
                 </mat-select>
                 <span class="material-symbols-outlined icon-expand-more">
                     expand_more

@@ -30,11 +30,11 @@
 
                     <input type="text" placeholder="Search" aria-label="Search" matInput [matAutocomplete]="auto1"
                         [(ngModel)]="message" maxlength="255" (keyup)="autocompleteSearchColumn('Message',message)"
-                        (focus)="eventLogTypeAhead('Message',message,true)" data-automation-id="message-input">
+                        (focus)="eventLogTypeAhead('Message',message,true)"  [attr.data-automation-id]="'message-input' + (message ? '-' + message : '')">
                         <button matSuffix *ngIf="message" class="clear-btn"  (click)=" message = '';clear('Message')" data-automation-id="clear-message-btn"><mat-icon class="text-20 text-chrome-600">cancel</mat-icon></button>
                     <mat-autocomplete #auto1="matAutocomplete" (optionSelected)="search($event,'message')"
                         #autocompleteMesaage data-automation-id="message-autocomplete">
-                        <mat-option *ngFor="let option of searchAutocompleteList; let i = index" [value]="option" [attr.data-automation-id]="'message-option-' + i">
+                        <mat-option *ngFor="let option of searchAutocompleteList; let i = index" [value]="option" [attr.data-automation-id]="'message-option-' + option">
                             {{option}}
                         </mat-option>
                         <mat-option *ngIf="searchAutocompleteList?.length ==0" disabled data-automation-id="message-no-data-option">
@@ -52,11 +52,11 @@
                     <input type="text" placeholder="Search" aria-label="Search" matInput [matAutocomplete]="auto2"
                         [(ngModel)]="eventLocation" maxlength="255"
                         (keyup)="autocompleteSearchColumn('Event Location',eventLocation)"
-                        (focus)="eventLogTypeAhead('Event Location',eventLocation,true)" data-automation-id="event-location-input">
+                        (focus)="eventLogTypeAhead('Event Location',eventLocation,true)"         [attr.data-automation-id]="'event-location-input' + (eventLocation ? '-' + eventLocation : '')">
                         <button matSuffix *ngIf="eventLocation" class="clear-btn"  (click)=" eventLocation = '';clear('Event Location')" data-automation-id="clear-event-location-btn"><mat-icon class="text-20 text-chrome-600">cancel</mat-icon></button>
                     <mat-autocomplete #auto2="matAutocomplete" (optionSelected)="search($event,'eventLocation')"
                         #autocompleteEventLocation data-automation-id="event-location-autocomplete">
-                        <mat-option *ngFor="let option of searchAutocompleteList; let i = index" [value]="option" [attr.data-automation-id]="'event-location-option-' + i">
+                        <mat-option *ngFor="let option of searchAutocompleteList; let i = index" [value]="option" [attr.data-automation-id]="'event-location-option-' + option">
                             {{option}}
                         </mat-option>
                         <mat-option *ngIf="searchAutocompleteList?.length ==0" disabled data-automation-id="event-location-no-data-option">
@@ -77,11 +77,11 @@
                     <input type="text" placeholder="Search" aria-label="Search" matInput [matAutocomplete]="auto3"
                         [(ngModel)]="eventCode" maxlength="255"
                         (keyup)="autocompleteSearchColumn('Event Code',eventCode)"
-                        (focus)="eventLogTypeAhead('Event Code',eventCode,true)" data-automation-id="event-code-input">
+                        (focus)="eventLogTypeAhead('Event Code',eventCode,true)"  [attr.data-automation-id]="'event-code-input' + (eventCode ? '-' + eventCode : '')">
                         <button matSuffix *ngIf="eventCode" class="clear-btn"  (click)=" eventCode = '';clear('Event Code')" data-automation-id="clear-event-code-btn"><mat-icon class="text-20 text-chrome-600">cancel</mat-icon></button>
                     <mat-autocomplete #auto3="matAutocomplete" (optionSelected)="search($event,'eventCode')"
                         #autocompleteEventCode data-automation-id="event-code-autocomplete">
-                        <mat-option *ngFor="let option of searchAutocompleteList; let i = index" [value]="option" [attr.data-automation-id]="'event-code-option-' + i">
+                        <mat-option *ngFor="let option of searchAutocompleteList; let i = index" [value]="option" [attr.data-automation-id]="'event-code-option-' + option">
                             {{option}}
                         </mat-option>
                         <mat-option *ngIf="searchAutocompleteList?.length ==0" disabled data-automation-id="event-code-no-data-option">
@@ -98,11 +98,11 @@
                     <input type="text" placeholder="Search" aria-label="Search" matInput [matAutocomplete]="auto4"
                         [(ngModel)]="eventType" maxlength="255"
                         (keyup)="autocompleteSearchColumn('Event Type',eventType)"
-                        (focus)="eventLogTypeAhead('Event Type',eventType,true)" data-automation-id="event-type-input">
+                        (focus)="eventLogTypeAhead('Event Type',eventType,true)" [attr.data-automation-id]="'event-type-input' + (eventType ? '-' + eventType : '')">
                         <button matSuffix *ngIf="eventType" class="clear-btn"  (click)=" eventType = '';clear('Event Type')" data-automation-id="clear-event-type-btn"><mat-icon class="text-20 text-chrome-600">cancel</mat-icon></button>
                     <mat-autocomplete #auto4="matAutocomplete" (optionSelected)="search($event,'eventType')"
                         #autocompleteEventType data-automation-id="event-type-autocomplete">
-                        <mat-option *ngFor="let option of searchAutocompleteList; let i = index" [value]="option" [attr.data-automation-id]="'event-type-option-' + i">
+                        <mat-option *ngFor="let option of searchAutocompleteList; let i = index" [value]="option" [attr.data-automation-id]="'event-type-option-' + option">
                             {{option}}
                         </mat-option>
                         <mat-option *ngIf="searchAutocompleteList?.length ==0" disabled data-automation-id="event-type-no-data-option">
@@ -118,12 +118,12 @@
 
                     <input type="text" placeholder="Search" aria-label="Search" matInput [matAutocomplete]="auto5"
                         [(ngModel)]="userName" maxlength="255" (keyup)="autocompleteSearchColumn('Name Stamp',userName)"
-                        (focus)="eventLogTypeAhead('Name Stamp',userName,true)" data-automation-id="username-input">
+                        (focus)="eventLogTypeAhead('Name Stamp',userName,true)" [attr.data-automation-id]="'username-input' + (userName ? '-' + userName : '')">
 
                         <button matSuffix *ngIf="userName" class="clear-btn"  (click)=" userName = '';clear('Username')"><mat-icon class="text-20 text-chrome-600" data-automation-id="btn-cancel">cancel</mat-icon></button>
                     <mat-autocomplete #auto5="matAutocomplete" (optionSelected)="search($event,'userName')"
                         #autocompleteUsername data-automation-id="username-autocomplete">
-                        <mat-option *ngFor="let option of searchAutocompleteList; let i = index" [value]="option" [attr.data-automation-id]="'username-option-' + i">
+                        <mat-option *ngFor="let option of searchAutocompleteList; let i = index" [value]="option" [attr.data-automation-id]="'username-option-' + option">
                             {{option}}
                         </mat-option>
                         <mat-option *ngIf="searchAutocompleteList?.length ==0" disabled data-automation-id="username-no-data-option">

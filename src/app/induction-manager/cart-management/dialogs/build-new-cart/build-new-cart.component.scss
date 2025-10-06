@@ -1,0 +1,34 @@
+.cart-management-dialog {
+  .w-48px {
+    width: 48px;
+  }
+  
+  .cart-content {
+    max-height: 90vh;
+    overflow-y: visible;
+  }
+
+  .clear-btn {
+    &:hover {
+      background: rgba(var(--clr-tertiary-rgb-900), 0.04);
+    }
+  }
+
+  @media (max-width: 768px) {
+    .tote-input-section {
+      .d-flex {
+        flex-direction: column;
+        gap: 16px !important;
+      }
+    }
+
+    [mat-dialog-actions] {
+      flex-direction: column;
+      gap: 12px !important;
+
+      button {
+        width: 100%;
+      }
+    }
+  }
+}

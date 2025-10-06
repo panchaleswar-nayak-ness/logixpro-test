@@ -15,8 +15,8 @@
             <ng-scrollbar track="all" class="mat-table-scrollbar h-600px">
                 <table mat-table [dataSource]="dataSource" matSort (matSortChange)="sortChange($event)" class="min-h-150px" data-automation-id="device-preferences-table">
                     <ng-container matColumnDef="zone">
-                        <th mat-header-cell mat-sort-header *matHeaderCellDef> Zone </th>
-                        <td mat-cell *matCellDef="let seletedRecord">
+                        <th mat-header-cell mat-sort-header *matHeaderCellDef data-automation-id="table-header-Zone"> Zone </th>
+                        <td mat-cell *matCellDef="let seletedRecord" [attr.data-automation-id]="'table-data-Zone-' + (seletedRecord.zone ? seletedRecord.zone : ' ')">
                             <div class="d-flex align-items-center ">
 
                                 <span class="br-14  label pe-3 f-16">{{seletedRecord.zone}}</span>
@@ -26,71 +26,71 @@
                     </ng-container>
 
                     <ng-container matColumnDef="deviceType">
-                        <th mat-header-cell mat-sort-header *matHeaderCellDef> Device Type </th>
-                        <td mat-cell *matCellDef="let seletedRecord"> {{seletedRecord.deviceType}} </td>
+                        <th mat-header-cell mat-sort-header *matHeaderCellDef data-automation-id="table-header-Device Type"> Device Type </th>
+                        <td mat-cell *matCellDef="let seletedRecord" [attr.data-automation-id]="'table-data-Device Type-' + (seletedRecord.deviceType ? seletedRecord.deviceType : ' ')"> {{seletedRecord.deviceType}} </td>
                     </ng-container>
 
                     <ng-container matColumnDef="device">
-                        <th mat-header-cell mat-sort-header *matHeaderCellDef> Device Number</th>
-                        <td mat-cell *matCellDef="let seletedRecord"> {{seletedRecord.deviceNumber}} </td>
+                        <th mat-header-cell mat-sort-header *matHeaderCellDef data-automation-id="table-header-Device Number"> Device Number</th>
+                        <td mat-cell *matCellDef="let seletedRecord" [attr.data-automation-id]="'table-data-Device Number-' + (seletedRecord.deviceNumber ? seletedRecord.deviceNumber : ' ')"> {{seletedRecord.deviceNumber}} </td>
                     </ng-container>
 
                     <ng-container matColumnDef="deviceModel">
-                        <th mat-header-cell mat-sort-header *matHeaderCellDef> Device Model </th>
-                        <td mat-cell *matCellDef="let seletedRecord"> {{seletedRecord.deviceModel}} </td>
+                        <th mat-header-cell mat-sort-header *matHeaderCellDef data-automation-id="table-header-Device Model"> Device Model </th>
+                        <td mat-cell *matCellDef="let seletedRecord" [attr.data-automation-id]="'table-data-Device Model-' + (seletedRecord.deviceModel ? seletedRecord.deviceModel : ' ')"> {{seletedRecord.deviceModel}} </td>
                     </ng-container>
 
                     <ng-container matColumnDef="controllerType">
-                        <th mat-header-cell mat-sort-header *matHeaderCellDef> Controller Type</th>
-                        <td mat-cell *matCellDef="let seletedRecord"> {{seletedRecord.controllerType}} </td>
+                        <th mat-header-cell mat-sort-header *matHeaderCellDef data-automation-id="table-header-Controller Type"> Controller Type</th>
+                        <td mat-cell *matCellDef="let seletedRecord" [attr.data-automation-id]="'table-data-Controller Type-' + (seletedRecord.controllerType ? seletedRecord.controllerType : ' ')"> {{seletedRecord.controllerType}} </td>
                     </ng-container>
 
                     <ng-container matColumnDef="controllerTermPort">
-                        <th mat-header-cell mat-sort-header *matHeaderCellDef> Controller Term Port</th>
-                        <td mat-cell *matCellDef="let seletedRecord"> {{seletedRecord.controllerTermPort}} </td>
+                        <th mat-header-cell mat-sort-header *matHeaderCellDef data-automation-id="table-header-Controller Term Port"> Controller Term Port</th>
+                        <td mat-cell *matCellDef="let seletedRecord" [attr.data-automation-id]="'table-data-Controller Term Port-' + (seletedRecord.controllerTermPort ? seletedRecord.controllerTermPort : ' ')"> {{seletedRecord.controllerTermPort}} </td>
                     </ng-container>
 
                     <ng-container matColumnDef="arrowDirection">
-                        <th mat-header-cell mat-sort-header *matHeaderCellDef> Arrow Direction</th>
-                        <td mat-cell *matCellDef="let seletedRecord"> {{seletedRecord.arrowDirection}} </td>
+                        <th mat-header-cell mat-sort-header *matHeaderCellDef data-automation-id="table-header-Arrow Direction"> Arrow Direction</th>
+                        <td mat-cell *matCellDef="let seletedRecord" [attr.data-automation-id]="'table-data-Arrow Direction-' + (seletedRecord.arrowDirection ? seletedRecord.arrowDirection : ' ')"> {{seletedRecord.arrowDirection}} </td>
                     </ng-container>
 
                     <ng-container matColumnDef="lightDirection">
-                        <th mat-header-cell mat-sort-header *matHeaderCellDef>Light Direction</th>
-                        <td mat-cell *matCellDef="let seletedRecord"> {{seletedRecord.lightDirection}} </td>
+                        <th mat-header-cell mat-sort-header *matHeaderCellDef data-automation-id="table-header-Light Direction">Light Direction</th>
+                        <td mat-cell *matCellDef="let seletedRecord" [attr.data-automation-id]="'table-data-Light Direction-' + (seletedRecord.lightDirection ? seletedRecord.lightDirection : ' ')"> {{seletedRecord.lightDirection}} </td>
                     </ng-container>
 
                     <ng-container matColumnDef="userLaserPointer">
-                        <th mat-header-cell mat-sort-header *matHeaderCellDef> User Laser Pointer</th>
-                        <td mat-cell *matCellDef="let seletedRecord"> {{seletedRecord.laserPointer}} </td>
+                        <th mat-header-cell mat-sort-header *matHeaderCellDef data-automation-id="table-header-User Laser Pointer"> User Laser Pointer</th>
+                        <td mat-cell *matCellDef="let seletedRecord" [attr.data-automation-id]="'table-data-User Laser Pointer-' + (seletedRecord.laserPointer ? seletedRecord.laserPointer : ' ')"> {{seletedRecord.laserPointer}} </td>
                     </ng-container>
 
                     <ng-container matColumnDef="useLightTree">
-                        <th mat-header-cell mat-sort-header *matHeaderCellDef> Use Light Tree</th>
-                        <td mat-cell *matCellDef="let seletedRecord"> {{seletedRecord.lightTreeNumber}} </td>
+                        <th mat-header-cell mat-sort-header *matHeaderCellDef data-automation-id="table-header-Use Light Tree"> Use Light Tree</th>
+                        <td mat-cell *matCellDef="let seletedRecord" [attr.data-automation-id]="'table-data-Use Light Tree-' + (seletedRecord.lightTreeNumber ? seletedRecord.lightTreeNumber : ' ')"> {{seletedRecord.lightTreeNumber}} </td>
                     </ng-container>
 
                     <ng-container matColumnDef="firstAddress">
-                        <th mat-header-cell mat-sort-header *matHeaderCellDef>First Address</th>
-                        <td mat-cell *matCellDef="let seletedRecord"> {{seletedRecord.beginAddress}} </td>
+                        <th mat-header-cell mat-sort-header *matHeaderCellDef data-automation-id="table-header-First Address">First Address</th>
+                        <td mat-cell *matCellDef="let seletedRecord" [attr.data-automation-id]="'table-data-First Address-' + (seletedRecord.beginAddress ? seletedRecord.beginAddress : ' ')"> {{seletedRecord.beginAddress}} </td>
                     </ng-container>
 
                     <ng-container matColumnDef="positions">
-                        <th mat-header-cell mat-sort-header *matHeaderCellDef>Positions</th>
-                        <td mat-cell *matCellDef="let seletedRecord"> {{seletedRecord.displayPositions}} </td>
+                        <th mat-header-cell mat-sort-header *matHeaderCellDef data-automation-id="table-header-Positions">Positions</th>
+                        <td mat-cell *matCellDef="let seletedRecord" [attr.data-automation-id]="'table-data-Positions-' + (seletedRecord.displayPositions ? seletedRecord.displayPositions : ' ')"> {{seletedRecord.displayPositions}} </td>
                     </ng-container>
 
                     <ng-container matColumnDef="displayCharacters">
-                        <th mat-header-cell mat-sort-header *matHeaderCellDef>Display Characters</th>
-                        <td mat-cell *matCellDef="let seletedRecord"> {{seletedRecord.displayCharacters}} </td>
+                        <th mat-header-cell mat-sort-header *matHeaderCellDef data-automation-id="table-header-Display Characters">Display Characters</th>
+                        <td mat-cell *matCellDef="let seletedRecord" [attr.data-automation-id]="'table-data-Display Characters-' + (seletedRecord.displayCharacters ? seletedRecord.displayCharacters : ' ')"> {{seletedRecord.displayCharacters}} </td>
                     </ng-container>
 
 
                     <ng-container matColumnDef="actions" stickyEnd>
-                        <th mat-header-cell *matHeaderCellDef>
+                        <th mat-header-cell *matHeaderCellDef data-automation-id="table-header-Actions">
                             Actions </th>
 
-                        <td mat-cell *matCellDef="let seletedRecord">
+                        <td mat-cell *matCellDef="let seletedRecord" [attr.data-automation-id]="'table-data-Actions-' + (seletedRecord.deviceID ? seletedRecord.deviceID : ' ')">
                            
                                 <button mat-icon-button [matMenuTriggerFor]="appMenu" aria-label="" 
                                 [ngClass]="{'active-btn':seletedRecord.selected}" class="circle-icon-o active-btn ms-auto" 
@@ -113,7 +113,7 @@
                     </tr>
 
                     <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
-                    <tr mat-row *matRowDef="let row; columns: displayedColumns;" (click)="selectRow(row)"></tr>
+                    <tr mat-row *matRowDef="let row; columns: displayedColumns;" (click)="selectRow(row)" [attr.data-automation-id]="'device-row-' + row.deviceID"></tr>
                     
                 </table>
             </ng-scrollbar>

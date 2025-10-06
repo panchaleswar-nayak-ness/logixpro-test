@@ -1,38 +1,38 @@
-<mat-card class="mat-elevation-z g-card mb-3 mt-2 h-100">
+<mat-card class="mat-elevation-z g-card mb-3 mt-2 h-100" data-automation-id="consolidation-card">
     <mat-card-content>
-        <div class="d-xl-flex d-block justify-content-between">
+        <div class="d-xl-flex d-block justify-content-between" data-automation-id="header-section">
 
-            <app-icon-heading-component class="card-header-title mb-3 d-flex align-items-center" heading="Order" icon="filter_frames"></app-icon-heading-component>
+            <app-icon-heading-component class="card-header-title mb-3 d-flex align-items-center" heading="Order" icon="filter_frames" [automationId]="'consolidation-heading'"></app-icon-heading-component>
 
-            <div>
-                <mat-form-field class="action-dropdown w-100 mb-3" appearance="outline">
-                    <mat-label>Actions</mat-label>
-                    <mat-select #matRef class="employees-action" placeholder="Actions" (selectionChange)="openAction()">
-                        <mat-option value="0" [disabled]="stagingBtn" (click)="!stagingBtn && this.stageTable.data.length > 0 ? openCmOrderNumber() : ''"> Staging Location</mat-option>
-                        <mat-option value="1" [disabled]="packingBtn" (click)="!packingBtn ? openPacking() : ''">Packing</mat-option>
-                        <mat-option value="2" [disabled]="shippingBtn" (click)="!shippingBtn ? openCmShipping() : ''">Shipping</mat-option>
-                        <mat-option value="3" (click)="navigateToOrder()">Order Status</mat-option>
-                        <mat-option value="4" [disabled]="printButtons" (click)="printPreviewPackList()">Print Packaging List</mat-option>
-                        <mat-option value="5" [disabled]="printButtons" (click)="printPreviewPackList(false)">Preview Packaging List</mat-option>
-                        <mat-option value="6" [disabled]="printButtons" (click)="printPreviewNonVerified()">Print Not Verified List</mat-option>
-                        <mat-option value="7" [disabled]="printButtons" (click)="printPreviewNonVerified(false)">Preview Not Verified List</mat-option>
+            <div data-automation-id="actions-section">
+                <mat-form-field class="action-dropdown w-100 mb-3" appearance="outline" data-automation-id="actions-dropdown-field">
+                    <mat-label data-automation-id="actions-dropdown-label">Actions</mat-label>
+                    <mat-select #matRef class="employees-action" placeholder="Actions" (selectionChange)="openAction()" data-automation-id="actions-dropdown-select">
+                        <mat-option value="0" [disabled]="stagingBtn" (click)="!stagingBtn && this.stageTable.data.length > 0 ? openCmOrderNumber() : ''" data-automation-id="staging-location-option"> Staging Location</mat-option>
+                        <mat-option value="1" [disabled]="packingBtn" (click)="!packingBtn ? openPacking() : ''" data-automation-id="packing-option">Packing</mat-option>
+                        <mat-option value="2" [disabled]="shippingBtn" (click)="!shippingBtn ? openCmShipping() : ''" data-automation-id="shipping-option">Shipping</mat-option>
+                        <mat-option value="3" (click)="navigateToOrder()" data-automation-id="order-status-option">Order Status</mat-option>
+                        <mat-option value="4" [disabled]="printButtons" (click)="printPreviewPackList()" data-automation-id="print-packaging-list-option">Print Packaging List</mat-option>
+                        <mat-option value="5" [disabled]="printButtons" (click)="printPreviewPackList(false)" data-automation-id="preview-packaging-list-option">Preview Packaging List</mat-option>
+                        <mat-option value="6" [disabled]="printButtons" (click)="printPreviewNonVerified()" data-automation-id="print-not-verified-list-option">Print Not Verified List</mat-option>
+                        <mat-option value="7" [disabled]="printButtons" (click)="printPreviewNonVerified(false)" data-automation-id="preview-not-verified-list-option">Preview Not Verified List</mat-option>
                     </mat-select>
-                    <span class="material-symbols-outlined icon-expand-more">
+                    <span class="material-symbols-outlined icon-expand-more" data-automation-id="actions-dropdown-expand-icon">
                         expand_more
                     </span>
                 </mat-form-field>
             </div>
         </div>
-        <div class="row">
+        <div class="row" data-automation-id="order-input-section">
             <div class="col-xl-9">
-                <div class="d-xl-flex d-block align-items-center gap-12">
+                <div class="d-xl-flex d-block align-items-center gap-12" data-automation-id="order-input-row">
                     <div class="d-flex flex-wrap">
-                        <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline">
-                            <mat-label class="pe-2">Order Number/Tote ID</mat-label>
+                        <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline" data-automation-id="order-input-field">
+                            <mat-label class="pe-2" data-automation-id="order-input-label">Order Number/Tote ID</mat-label>
                             <input #autoFocusField (keyup)="enterOrderID($event)" [(ngModel)]="typeValue" class=""
                                    matInput
-                                   maxlength="50" type="text">
-                          <button (click)="resetScreen()" *ngIf="typeValue" class="clear-btn" matSuffix>
+                                   maxlength="50" type="text" data-automation-id="order-input">
+                          <button (click)="resetScreen()" *ngIf="typeValue" class="clear-btn" matSuffix data-automation-id="clear-order-input-button">
                             <mat-icon class="text-20 text-chrome-600">cancel</mat-icon>
                           </button>
                         </mat-form-field>
@@ -40,7 +40,7 @@
                     <div class="d-flex flex-wrap">
                       <button (click)="resetScreen()" [disabled]="nextOrderbtn" class="mb-3 btn-regular w-100"
                               color="primary"
-                              mat-flat-button type="button">Next Order
+                              mat-flat-button type="button" data-automation-id="next-order-button">Next Order
                       </button>
                     </div>
                 </div>
@@ -48,63 +48,63 @@
             <div class="col-xl-3 d-xl-flex d-block align-items-end justify-content-end">
                 <div class="mx-auto mx-xl-0">
                 <button type="button" mat-flat-button color="secondary" class="secondary-btn btn-regular mb-3 px-0 w-100 text-primary-500"
-                     (click)="clickToHide()"> {{ firstTable == true ? 'Hide Order Detail' : 'Show Order Detail' }}</button>
+                     (click)="clickToHide()" data-automation-id="toggle-order-detail-button"> {{ firstTable == true ? 'Hide Order Detail' : 'Show Order Detail' }}</button>
                 </div>
             </div>
         </div>
 
-        <div class="row d-flex justify-content-between align-items-top" *ngIf="hideRow">
-            <div class="col-lg-2">
+        <div class="row d-flex justify-content-between align-items-top" *ngIf="hideRow" data-automation-id="order-detail-section">
+            <div class="col-lg-2" data-automation-id="order-stats-section">
                 <div class="">
-                    <app-info-card-component value="{{open}}" title="Open Lines" colorClass="label-yellow"></app-info-card-component>
-                    <app-info-card-component value="{{completed}}" title="Completed Lines" colorClass="label-green"></app-info-card-component>
-                    <app-info-card-component value="{{backOrder}}" title="Backorder Lines" colorClass="label-red"></app-info-card-component>
+                    <app-info-card-component value="{{open}}" title="Open Lines" colorClass="label-yellow" data-automation-id="open-lines-card"></app-info-card-component>
+                    <app-info-card-component value="{{completed}}" title="Completed Lines" colorClass="label-green" data-automation-id="completed-lines-card"></app-info-card-component>
+                    <app-info-card-component value="{{backOrder}}" title="Backorder Lines" colorClass="label-red" data-automation-id="backorder-lines-card"></app-info-card-component>
                 </div>
             </div>
 
-            <div class="col-lg-10">
-                <div class="card br-14 borderless px-0 overflow-x-auto">
-                    <ng-scrollbar track="all" class="mat-table-scrollbar h-260">
-                        <table class="w-100 table-borderless" mat-table #stageSort="matSort" matSort [dataSource]="stageTable" (matSortChange)="announceSortChangeStage($event)">
+            <div class="col-lg-10" data-automation-id="staging-table-section">
+                <div class="card br-14 borderless px-0 overflow-x-auto" data-automation-id="staging-table-container">
+                    <ng-scrollbar track="all" class="mat-table-scrollbar h-260" data-automation-id="staging-table-scrollbar">
+                        <table class="w-100 table-borderless" mat-table #stageSort="matSort" matSort [dataSource]="stageTable" (matSortChange)="announceSortChangeStage($event)" data-automation-id="staging-table">
                             <ng-container matColumnDef="toteID">
-                                <th mat-header-cell *matHeaderCellDef mat-sort-header> Tote ID </th>
-                                <td mat-cell *matCellDef="let element">{{element.toteID}}</td>
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header data-automation-id="table-header-Tote ID"> Tote ID </th>
+                                <td mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'table-data-Tote ID-' + (element.toteID ? element.toteID : ' ')">{{element.toteID}}</td>
                             </ng-container>
 
                             <ng-container matColumnDef="complete">
-                                <th class="" mat-header-cell *matHeaderCellDef mat-sort-header>Status</th>
-                                <td mat-cell *matCellDef="let element" class="">
-                                    <div class="label label-green px-2">{{element.complete}}</div>
+                                <th class="" mat-header-cell *matHeaderCellDef mat-sort-header data-automation-id="table-header-Status">Status</th>
+                                <td mat-cell *matCellDef="let element; let i = index" class="" [attr.data-automation-id]="'table-data-Status-' + (element.complete ? element.complete : ' ')">
+                                    <div class="label label-green px-2" data-automation-id="status-complete">{{element.complete}}</div>
                                 </td>
                             </ng-container>
 
                             <ng-container matColumnDef="stagingLocation">
-                                <th mat-header-cell *matHeaderCellDef mat-sort-header> Staging Location </th>
-                                <td mat-cell *matCellDef="let element">{{element.stagingLocation}}</td>
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header data-automation-id="table-header-Staging Location"> Staging Location </th>
+                                <td mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'table-data-Staging Location-' + (element.stagingLocation ? element.stagingLocation : ' ')">{{element.stagingLocation}}</td>
                             </ng-container>
 
                             <ng-container matColumnDef="stagedBy">
-                                <th mat-header-cell *matHeaderCellDef mat-sort-header> Staged By </th>
-                                <td mat-cell *matCellDef="let element">{{element.stagedBy}}</td>
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header data-automation-id="table-header-Staged By"> Staged By </th>
+                                <td mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'table-data-Staged By-' + (element.stagedBy ? element.stagedBy : ' ')">{{element.stagedBy}}</td>
                             </ng-container>
 
                             <ng-container matColumnDef="stagedDate">
-                                <th mat-header-cell *matHeaderCellDef mat-sort-header> Staged Date </th>
-                                <td mat-cell *matCellDef="let element">{{element.stagedDate}}</td>
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header data-automation-id="table-header-Staged Date"> Staged Date </th>
+                                <td mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'table-data-Staged Date-' + (element.stagedDate ? element.stagedDate : ' ')">{{element.stagedDate}}</td>
                             </ng-container>
 
-                            <tr class="mat-row" *matNoDataRow>
+                            <tr class="mat-row" *matNoDataRow data-automation-id="table-no-data-row">
                                 <td class="mat-cell" [attr.colspan]="stageColumns.length">No data available in table.</td>
                             </tr>
 
 
-                            <tr mat-header-row *matHeaderRowDef="stageColumns; sticky: true" class="table-header-clr"></tr>
-                            <tr mat-row *matRowDef="let row; columns: stageColumns;"></tr>
+                            <tr mat-header-row *matHeaderRowDef="stageColumns; sticky: true" class="table-header-clr" data-automation-id="staging-table-header-row"></tr>
+                            <tr mat-row *matRowDef="let row; columns: stageColumns;" [attr.data-automation-id]="'staging-table-row-' + row.toteID"></tr>
                         </table>
                     </ng-scrollbar>
                 </div>
-                <div class="d-flex justify-content-between bg-white">
-                    <mat-paginator #stagePaginator showFirstLastButtons [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons> </mat-paginator>
+                <div class="d-flex justify-content-between bg-white" data-automation-id="staging-paginator">
+                    <mat-paginator #stagePaginator showFirstLastButtons [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons data-automation-id="table-paginator"> </mat-paginator>
                 </div>
             </div>
         </div>
@@ -112,8 +112,8 @@
 </mat-card>
 
 
-<div class="row">
-  <div class="col-lg-6">
+<div class="row" data-automation-id="consolidation-components-row">
+  <div class="col-lg-6" data-automation-id="unverified-item-section">
     <app-unverified-item
       (autoComplete)="autoCompleteSearchColumnItem($event)"
       (filterVal)="getFilterValue($event)"
@@ -131,17 +131,19 @@
       [unverifiedItemsColumns]="unverifiedItemsColumns"
       [unverifiedItems]="unverifiedItems"
       [verifyBtn]="verifyBtn"
-      [focusOnSearch]="focusOnSearch">
+      [focusOnSearch]="focusOnSearch"
+      data-automation-id="unverified-item-component">
     </app-unverified-item>
   </div>
 
-  <div class="col-lg-6">
+  <div class="col-lg-6" data-automation-id="verified-item-section">
     <app-verified-item
       (unverify)="unverifyLine($event)"
       (unverifyAllEmit)="unverifyAll()"
       [unverifyBtn]="unverifyBtn"
       [verifiedItemsColumns]="verifiedItemsColumns"
-      [verifiedItems]="verifiedItems">
+      [verifiedItems]="verifiedItems"
+      data-automation-id="verified-item-component">
     </app-verified-item>
   </div>
 </div>

@@ -3,9 +3,14 @@ import {ApiFuntions} from '../ApiFuntions';
 import {AuthService} from 'src/app/common/init/auth.service';
 import {IAdminApiService} from './admin-api-interface'
 import { UserSession } from '../../types/CommonTypes';
-import { InventoryMap, UpdateSCReq } from '../../Model/storage-container-management';
+import { InventoryMap, InventoryMapRecordsDto, UpdateSCReq } from '../../Model/storage-container-management';
 import { UserAccessLevels } from '../user-access-levels/user-access-levels';
 import { DevicePreferenceRequest, DevicePreferencesTableRequest } from '../../interface/admin/device-preferences';
+import { UpdateEmergencyRequest } from '../../interface/admin/opentransaction.interfaces';
+import { ImportTypeConfig, AuditTransferFileFormData } from '../../interface/audit-file-field-mapping-manager/import-type-config.interface';
+import { Observable } from 'rxjs';
+import { InventoryCompareConfigResponse } from '../../interface/audit-file-field-mapping-manager/inventory-compare-response.interface';
+
 
 @Injectable({
   providedIn: 'root'
@@ -1320,6 +1325,14 @@ export class AdminApiService implements IAdminApiService {
     return this.Api.OpenTransactionTable(payload);
   }
 
+  public UpdateEmergencyOpenTrans(payload: UpdateEmergencyRequest) {
+    return this.Api.updateEmergencyOpenTrans(payload);
+  }
+
+  public UpdateEmergencyReprocessTrans(payload: UpdateEmergencyRequest) {
+    return this.Api.updateEmergencyReprocessTrans(payload);
+  }
+
   public HoldTransactionsData(body: any) {
     const payload = {
       username: this.userData.userName,
@@ -2107,9 +2120,6 @@ export class AdminApiService implements IAdminApiService {
       return this.Api.deleteLookupTableData(body);
     }
 
-
-    // Storage Container Management Functions
-
     public getCarouselZones() {
       return this.Api.getCarouselZones();
     }
@@ -2130,6 +2140,13 @@ export class AdminApiService implements IAdminApiService {
       return this.Api.updateStorageContainerLayout(containerId,body);
     }
 
+    public storageBinsExit(binId: string, zone: string) {
+      return this.Api.storageBinsExit(binId, zone);
+    }
+    public GetInventoryMapRecordsForBin(binId: string, zone: string): Observable<InventoryMapRecordsDto> {
+      return this.Api.GetInventoryMapRecordsForBin(binId, zone);
+    }
+
     public GetContainerLayoutsAsync() {
       return this.Api.GetContainerLayoutsAsync();
     }
@@ -2148,6 +2165,17 @@ export class AdminApiService implements IAdminApiService {
 
     public createInventoryMapAsync(body: InventoryMap) {
       return this.Api.createInventoryMapAsync(body);
+    }
+
+    public UpdateImportType(body: AuditTransferFileFormData): Observable<InventoryCompareConfigResponse | null> {
+      const payload: ImportTypeConfig = {
+        importTypeName: 'InventoryCompare',
+        importPath: body.importFilePath,
+        archivePath: body.backupFilePath,
+        fileExtension: body.extensionImportFile,
+        isActive: body.active
+      };
+      return this.Api.updateImportType(payload);
     }
   }
 

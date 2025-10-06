@@ -1,4 +1,4 @@
-<div class="col-12">
+<div class="col-12" data-automation-id="statistics-lookup-wrapper">
   <mat-card class="mat-elevation-z g-card">
     <mat-card-content>
       <div class="d-flex justify-content-between align-items-center">
@@ -16,7 +16,7 @@
           <div class="col">
             <mat-form-field class="action-dropdown" appearance="fill">
               <mat-label data-automation-id="label-actions">Actions</mat-label>
-              <mat-select class="employees-action">
+              <mat-select class="employees-action" data-automation-id="statistics-actions-select">
                 <mat-option value="delete" data-automation-id="button-delete">Delete</mat-option>
                 <mat-option value="back" data-automation-id="button-back">Back</mat-option>
               </mat-select>
@@ -26,7 +26,7 @@
       </div>
       <div class="groups-details details-wrap g-details-wrap">
         <ng-scrollbar class="ng-scrollbar-height">
-          <table mat-table [dataSource]="dataSource" matSortDirection="asc" matSortActive="carbs">
+          <table mat-table [dataSource]="dataSource" matSortDirection="asc" matSortActive="carbs" data-automation-id="statistics-table">
             <ng-container matColumnDef="work_done_by">
               <th class="header" mat-header-cell *matHeaderCellDef>
                 <h6 data-automation-id="label-work-done-by"><strong> Work Done By</strong></h6>
@@ -35,7 +35,7 @@
                   <input matInput type="text" [formControl]="workDoneByFilter">
                 </mat-form-field>
               </th>
-              <td mat-cell *matCellDef="let work_done_by">{{work_done_by.name}}</td>
+              <td mat-cell *matCellDef="let work_done_by" [attr.data-automation-id]="'statistics-cell-workdoneby-' + work_done_by.name">{{work_done_by.name}}</td>
             </ng-container>
             <ng-container matColumnDef="start_time">
               <th class="header" mat-header-cell *matHeaderCellDef>
@@ -45,7 +45,7 @@
                   <input matInput type="text" [formControl]="idFilter">
                 </mat-form-field>
               </th>
-              <td mat-cell *matCellDef="let person">{{person.id}}</td>
+              <td mat-cell *matCellDef="let person" [attr.data-automation-id]="'statistics-cell-starttime-' + person.id">{{person.id}}</td>
             </ng-container>
             <ng-container matColumnDef="end_time">
               <th class="header" mat-header-cell *matHeaderCellDef>
@@ -55,7 +55,7 @@
                   <input matInput type="text" [formControl]="colourFilter">
                 </mat-form-field>
               </th>
-              <td mat-cell *matCellDef="let person">{{person.colour}}</td>
+              <td mat-cell *matCellDef="let person" [attr.data-automation-id]="'statistics-cell-endtime-' + person.colour">{{person.colour}}</td>
             </ng-container>
             <ng-container matColumnDef="mins_worked">
               <th class="header" mat-header-cell *matHeaderCellDef>
@@ -65,7 +65,7 @@
                   <input matInput type="text" [formControl]="petFilter">
                 </mat-form-field>
               </th>
-              <td mat-cell *matCellDef="let person">{{person.pet}}</td>
+              <td mat-cell *matCellDef="let person" [attr.data-automation-id]="'statistics-cell-minsworked-' + person.pet">{{person.pet}}</td>
             </ng-container>
             <ng-container matColumnDef="picks">
               <th class="header" mat-header-cell *matHeaderCellDef>
@@ -75,7 +75,7 @@
                   <input matInput type="text" [formControl]="petFilter">
                 </mat-form-field>
               </th>
-              <td mat-cell *matCellDef="let person">{{person.pet}}</td>
+              <td mat-cell *matCellDef="let person" [attr.data-automation-id]="'statistics-cell-picks-' + person.pet">{{person.pet}}</td>
             </ng-container>
             <ng-container matColumnDef="puts">
               <th class="header" mat-header-cell *matHeaderCellDef>
@@ -85,7 +85,7 @@
                   <input matInput type="text" [formControl]="petFilter">
                 </mat-form-field>
               </th>
-              <td mat-cell *matCellDef="let person">{{person.pet}}</td>
+              <td mat-cell *matCellDef="let person" [attr.data-automation-id]="'statistics-cell-puts-' + person.pet">{{person.pet}}</td>
             </ng-container>
             <ng-container matColumnDef="counts">
               <th class="header" mat-header-cell *matHeaderCellDef>
@@ -95,10 +95,10 @@
                   <input matInput type="text" [formControl]="petFilter">
                 </mat-form-field>
               </th>
-              <td mat-cell *matCellDef="let person">{{person.pet}}</td>
+              <td mat-cell *matCellDef="let person" [attr.data-automation-id]="'statistics-cell-counts-' + person.pet">{{person.pet}}</td>
             </ng-container>
             <tr mat-header-row *matHeaderRowDef="columnsToDisplay; sticky: true"></tr>
-            <tr mat-row *matRowDef="let person; columns: columnsToDisplay"></tr>
+            <tr mat-row *matRowDef="let person; columns: columnsToDisplay" [attr.data-automation-id]="'statistics-row-' + (person.id || person.work_done_by?.name)"></tr>
           </table>
         </ng-scrollbar>
       </div>

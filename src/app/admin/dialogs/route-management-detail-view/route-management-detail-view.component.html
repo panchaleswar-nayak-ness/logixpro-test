@@ -1,14 +1,14 @@
 <div class="d-flex justify-content-between mb-2 align-items-center">
     <div class="divWithClass"></div>
-<h1 class="m-0" mat-dialog-title>Route ID Details</h1>
-<button mat-icon-button class="close-button dialog-close-button-fix" [mat-dialog-close]="true" (click)="dialogClose()">
+<h1 class="m-0" mat-dialog-title data-automation-id="route-id-details-header">Route ID Details</h1>
+<button mat-icon-button class="close-button dialog-close-button-fix" [mat-dialog-close]="true" (click)="dialogClose()" data-automation-id="close-button">
     <mat-icon class="close-icon">close</mat-icon>
 </button>
 </div>
 <div mat-dialog-content>
     <div class="d-flex align-items-center justify-content-center flex-wrap px-0 gap-12 mb-3">
-        <div class="text-center"> <span class="label label-gray px-2 f-14 mb-1">{{HeadingconsolidationStatus}}:&nbsp;<b>{{ConsolidationStatus}}</b></span></div>
-        <div class="text-center"> <span class="label label-gray px-2 f-14 mb-1">{{HeadingrouteIDStatus}}:&nbsp;<b>{{RouteIDStatus}}</b></span></div>
+        <div class="text-center"> <span class="label label-gray px-2 f-14 mb-1" data-automation-id="consolidation-status-label">{{HeadingconsolidationStatus}}:&nbsp;<b>{{ConsolidationStatus}}</b></span></div>
+        <div class="text-center"> <span class="label label-gray px-2 f-14 mb-1" data-automation-id="route-id-status-label">{{HeadingrouteIDStatus}}:&nbsp;<b>{{RouteIDStatus}}</b></span></div>
   
     </div>
    <div class="container-fluid p-0">
@@ -18,14 +18,14 @@
                     <div class="row g-3">
                         <div class="col-md-6">
                             <mat-form-field class="d-block w-100 " appearance="outline">
-                                <mat-label>{{HeadingRouteID}}</mat-label>
-                                <input matInput disabled  value="{{RouteID}}">
+                                <mat-label data-automation-id="route-id-label">{{HeadingRouteID}}</mat-label>
+                                <input matInput disabled  value="{{RouteID}}" data-automation-id="route-id-input">
                             </mat-form-field>
                         </div>
                         <div class="col-md-6">
                             <mat-form-field class="d-block w-100 " appearance="outline">
-                                <mat-label>{{HeadingstatusDate}}</mat-label>
-                                <input matInput disabled value="{{StatusDate}}">
+                                <mat-label data-automation-id="status-date-label">{{HeadingstatusDate}}</mat-label>
+                                <input matInput disabled value="{{StatusDate}}" data-automation-id="status-date-input">
                             </mat-form-field>
                         </div>
                     </div>
@@ -35,14 +35,14 @@
             
                 <div class="d-md-flex gap-12 d-block card px-3 pt-3 pb-3">
                   <div class="d-flex gap-12 align-items-center flex-wrap mb-2">
-                    <h6 class="text-tertiary-900 m-0"><b>{{HeadingconsolidationStatus}}</b></h6>
+                    <h6 class="text-tertiary-900 m-0" data-automation-id="consolidation-header"><b>{{HeadingconsolidationStatus}}</b></h6>
                   </div>
                   <div class="row g-3">
-                      <div class="progress-container mb-2">
+                      <div class="progress-container mb-2" data-automation-id="progress-container">
                           <mat-progress-bar mode="determinate" [value]="Percentage" 
                           [ngClass]="getStyling(Percentage).class"
-                          ></mat-progress-bar>
-                          <div class="progress-text mb-3" [ngStyle]="{'color': getStyling(Percentage).color}">
+                          data-automation-id="progress-bar"></mat-progress-bar>
+                          <div class="progress-text mb-3" [ngStyle]="{'color': getStyling(Percentage).color}" data-automation-id="progress-text">
                             {{ progressPercentage }}
                           </div>
                         </div>
@@ -53,8 +53,8 @@
                 <div class="d-md-flex gap-12 d-block card px-3 pt-1 pb-1">
                   <div>
                     <div class="d-flex align-items-center justify-content-center custom">
-                      <div class="customer text-center">
-                        <app-stats-circle class="bold" value="{{progressFraction}}" title="Total Consolidation"></app-stats-circle>
+                      <div class="customer text-center" data-automation-id="stats-circle-container">
+                        <app-stats-circle class="bold" value="{{progressFraction}}" title="Total Consolidation" data-automation-id="stats-circle"></app-stats-circle>
                       </div>
                     </div>
                   </div>
@@ -69,20 +69,20 @@
                             (matSortChange)="announceSortChange($event)">
                             <!-- Order ID Column -->
                             <ng-container matColumnDef="OrderID">
-                              <th mat-header-cell *matHeaderCellDef mat-sort-header> Order ID </th>
-                              <td mat-cell *matCellDef="let element"> {{ element.OrderID }} </td>
+                              <th mat-header-cell *matHeaderCellDef mat-sort-header data-automation-id="table-header-Order ID"> Order ID </th>
+                              <td mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'table-data-Order ID-' + (element.OrderID ? element.OrderID : ' ')">{{ element.OrderID }}</td>
                             </ng-container>
                           
                             <!-- Tote ID Column -->
                             <ng-container matColumnDef="ToteID">
-                              <th mat-header-cell *matHeaderCellDef mat-sort-header> Tote ID </th>
-                              <td mat-cell *matCellDef="let element"> {{ element.ToteID }} </td>
+                              <th mat-header-cell *matHeaderCellDef mat-sort-header data-automation-id="table-header-Tote ID"> Tote ID </th>
+                              <td mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'table-data-Tote ID-' + (element.ToteID ? element.ToteID : ' ')">{{ element.ToteID }}</td>
                             </ng-container>
                           
                             <!-- Tote Status Column -->
                             <ng-container matColumnDef="ToteStatus">
-                              <th mat-header-cell *matHeaderCellDef mat-sort-header> Tote Status </th>
-                              <td mat-cell *matCellDef="let element"> {{ element.ToteStatus }} </td>
+                              <th mat-header-cell *matHeaderCellDef mat-sort-header data-automation-id="table-header-Tote Status"> Tote Status </th>
+                              <td mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'table-data-Tote Status-' + (element.ToteStatus ? element.ToteStatus : ' ')">{{ element.ToteStatus }}</td>
                             </ng-container>
                           
                             <!-- Table Header & Rows -->
@@ -106,7 +106,7 @@
           mat-flat-button
           class="form-button-submit btn-lg flex-grow-1 flex-basis-0"
           color="primary"
-          (click)="dialogClose()"
+          (click)="dialogClose()" data-automation-id="done-button"
          >
           Done
         </button>

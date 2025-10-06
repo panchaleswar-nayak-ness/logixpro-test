@@ -1,6 +1,6 @@
 <div class="d-block d-xl-flex justify-content-between align-items-center w-100 gap-12 mt-3">
     <div class="label-blue3 p-3 d-flex br-8 mb-3">
-        <mat-icon class="material-symbols-outlined">info</mat-icon>
+        <mat-icon class="material-symbols-outlined" data-automation-id="tote-setup-info-icon">info</mat-icon>
         <span class="ps-2 w-100">Tote Management can be configured by adding, deleting or modifying the pre-existing totes from your facility. If configured, the system will check Tote ID entries against this list for validation. </span>
     </div>
 
@@ -23,43 +23,43 @@
         <table class="w-100 table-borderless" mat-table #matSort3="matSort" matSort [dataSource]="tableData">
 
             <ng-container matColumnDef="tote_id"> 
-                <th mat-header-cell *matHeaderCellDef data-automation-id="label-tote-id"> Tote ID </th>
-                <td mat-cell *matCellDef="let element; let i = index">
-                    <mat-form-field class="custom-form-field w-100 pr-15px" appearance="outline">
+                <th mat-header-cell *matHeaderCellDef data-automation-id="table-header-Tote ID"> Tote ID </th>
+                <td mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'table-data-Tote ID-' + (element.toteID ? element.toteID : ' ')">
+                    <mat-form-field class="custom-form-field w-100 pr-15px" appearance="outline" data-automation-id="tote-setup-form-field-toteid">
                         <input matInput type="text" [(ngModel)]="element.toteID" (keyup)="check(element.toteID,i)" data-automation-id="input-tote-id">
                     </mat-form-field>
                 </td>
             </ng-container>
             <ng-container matColumnDef="cells"> 
-                <th mat-header-cell *matHeaderCellDef data-automation-id="label-cells"> Cells </th>
-                <td mat-cell *matCellDef="let element; let i = index">
-                    <mat-form-field class="custom-form-field w-100 pr-15px" appearance="outline">
+                <th mat-header-cell *matHeaderCellDef data-automation-id="table-header-Cells"> Cells </th>
+                <td mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'table-data-Cells-' + (element.cells ? element.cells : ' ')">
+                    <mat-form-field class="custom-form-field w-100 pr-15px" appearance="outline" data-automation-id="tote-setup-form-field-cells">
                         <input matInput type="number" [(ngModel)]="element.cells" data-automation-id="input-cells">
                     </mat-form-field>
                 </td>
             </ng-container>
             <ng-container matColumnDef="actions" stickyEnd>
-                <th width="10%" mat-header-cell *matHeaderCellDef class="px-2" data-automation-id="label-actions"> Actions </th>
-                <td width="10%" mat-cell *matCellDef="let element;let i=index" class="px-2">
+                <th width="10%" mat-header-cell *matHeaderCellDef class="px-2" data-automation-id="table-header-Actions"> Actions </th>
+                <td width="10%" mat-cell *matCellDef="let element;let i=index" class="px-2" [attr.data-automation-id]="'table-data-Actions-' + (element.toteID ? element.toteID : ' ')">
                     <div class="d-flex gap-12 align-items-center">
                         <!-- {{OldtableData[i].toteID}}{{element.toteID}} -->
                         <button mat-flat-button color="primary" data-automation-id="button-save" [disabled]="((OldtableData.length > i && OldtableData[i].toteID==element.toteID) || element.IsDisabled || (element.toteID == ''))" class="xsm-icon-button"  
                             (click)="saveTotes(element,i)">
-                            <mat-icon class="material-symbols-outlined">save</mat-icon>
+                            <mat-icon class="material-symbols-outlined" data-automation-id="tote-setup-save-icon">save</mat-icon>
                         </button>
                         <button mat-flat-button color="warn" class="xsm-icon-button" (click)="deleteTote(element)" data-automation-id="button-delete">
-                            <mat-icon class="material-symbols-outlined">close</mat-icon>
+                            <mat-icon class="material-symbols-outlined" data-automation-id="tote-setup-delete-icon">close</mat-icon>
                         </button>
                     </div>
                 </td>
             </ng-container>
-            <tr class="mat-row" *matNoDataRow>
-                <td class="mat-cell " [attr.colspan]="displayedColumns.length">
+            <tr class="mat-row" *matNoDataRow data-automation-id="no-data-row">
+                <td class="mat-cell " [attr.colspan]="displayedColumns.length" data-automation-id="no-data-cell">
                     No data available in table.
                 </td>
             </tr>
-            <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true" class="table-header-clr"></tr>
-            <tr mat-row *matRowDef="let row; columns: displayedColumns;" class="border-0"></tr>
+            <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true" class="table-header-clr" data-automation-id="tote-setup-header-row"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;" class="border-0" [attr.data-automation-id]="'tote-setup-row-' + row.toteID"></tr>
         </table>
     </ng-scrollbar>
 </div>

@@ -1,14 +1,14 @@
 <div class="d-flex justify-content-between mb-4 align-items-center" mat-dialog-title>
     <div class="w-48px"></div>
-    <h1 class="m-0" mat-dialog-title>User Fields - Edit</h1>
-    <button mat-icon-button class="close-button dialog-close-button-fix" [mat-dialog-close]="true">
+    <h1 class="m-0" mat-dialog-title data-automation-id="user-fields-edit-heading">User Fields - Edit</h1>
+    <button mat-icon-button class="close-button dialog-close-button-fix" [mat-dialog-close]="true" data-automation-id="close-dialog-button">
         <mat-icon class="close-icon">close</mat-icon>
     </button>
 </div>
 <div mat-dialog-content>
     <div class="card p-3">
         <div class="d-flex justify-content-between align-items-center mb-4">
-            <app-icon-heading-component heading="User Fields" icon="table_rows_narrow">
+            <app-icon-heading-component heading="User Fields" icon="table_rows_narrow" [automationId]="'user-fields-heading'">
             </app-icon-heading-component>
         </div>
 
@@ -18,14 +18,14 @@
 
                 <mat-form-field class="custom-form-field  w-100 mb-2" appearance="outline"
                     [floatLabel]="getFloatLabelValue()" [hideRequiredMarker]="hideRequiredControl.value">
-                    <mat-label>{{fieldNames.userField1}}</mat-label>
+                    <mat-label data-automation-id="user-field-1-label">{{fieldNames.userField1}}</mat-label>
                     <input #ship_via type="text" placeholder="Search" aria-label="Number" matInput [(ngModel)]='shipVia'
-                        maxlength="255" [matAutocomplete]="auto" (ngModelChange)="this.searchByShipVia.next($event)">
-                    <button matSuffix *ngIf="shipVia" class="clear-btn" (click)="shipVia=''"><mat-icon
+                        maxlength="255" [matAutocomplete]="auto" (ngModelChange)="this.searchByShipVia.next($event)" data-automation-id="user-field-1-input">
+                    <button matSuffix *ngIf="shipVia" class="clear-btn" (click)="shipVia=''" data-automation-id="clear-user-field-1-button"><mat-icon
                             class="text-20 text-chrome-600">cancel</mat-icon></button>
 
                     <mat-autocomplete #auto="matAutocomplete">
-                        <mat-option *ngFor="let option of searchAutoCompleteShipVia" [value]="option">
+                        <mat-option *ngFor="let option of searchAutoCompleteShipVia" [value]="option" [attr.data-automation-id]="'user-field-1-option-'  + option">
                             <div>{{option}}</div>
                         </mat-option>
                     </mat-autocomplete>
@@ -34,15 +34,15 @@
             <div class="col-xl-6">
                 <mat-form-field class="custom-form-field  w-100 mb-2" appearance="outline"
                     [floatLabel]="getFloatLabelValueItem()" [hideRequiredMarker]="hideRequiredControlShipName.value">
-                    <mat-label>{{fieldNames.userField2}}</mat-label>
+                    <mat-label data-automation-id="user-field-2-label">{{fieldNames.userField2}}</mat-label>
                     <input type="text" placeholder="Search" aria-label="Number" matInput [(ngModel)]='shipToName'
                         maxlength="255" [matAutocomplete]="shipName"
-                        (ngModelChange)="this.searchByShipName.next($event)">
-                    <button matSuffix *ngIf="shipToName" class="clear-btn" (click)="shipToName=''"><mat-icon
+                        (ngModelChange)="this.searchByShipName.next($event)" data-automation-id="user-field-2-input">
+                    <button matSuffix *ngIf="shipToName" class="clear-btn" (click)="shipToName=''" data-automation-id="clear-user-field-2-button"><mat-icon
                             class="text-20 text-chrome-600">cancel</mat-icon></button>
 
                     <mat-autocomplete #shipName="matAutocomplete">
-                        <mat-option *ngFor="let option of searchAutoCompleteShipVia" [value]="option">
+                        <mat-option *ngFor="let option of searchAutoCompleteShipVia" [value]="option" [attr.data-automation-id]="'user-field-2-option-'  + option">
                             <div>{{option}}</div>
                         </mat-option>
                     </mat-autocomplete>
@@ -52,64 +52,64 @@
         <div class="row">
             <div class="col-xl-6">
                 <mat-form-field class="custom-form-field  w-100 mb-2" appearance="outline">
-                    <mat-label>{{fieldNames.userField3}}</mat-label>
+                    <mat-label data-automation-id="user-field-3-label">{{fieldNames.userField3}}</mat-label>
                     <textarea [(ngModel)]="shipToState" matInput type="text" maxlength="255" value="Value"
-                       class="min-h-20px"></textarea>
+                       class="min-h-20px" data-automation-id="user-field-3-input"></textarea>
                 </mat-form-field>
             </div>
             <div class="col-xl-6">
                 <mat-form-field class="custom-form-field  w-100 mb-2" appearance="outline">
-                    <mat-label>{{fieldNames.userField4}}</mat-label>
+                    <mat-label data-automation-id="user-field-4-label">{{fieldNames.userField4}}</mat-label>
                     <textarea [(ngModel)]="shipToZip" matInput type="text" maxlength="255" value="Value"
-                    class="min-h-20px"></textarea>
+                    class="min-h-20px" data-automation-id="user-field-4-input"></textarea>
                 </mat-form-field>
             </div>
         </div>
         <div class="row">
             <div class="col-xl-6">
                 <mat-form-field class="custom-form-field  w-100 mb-2" appearance="outline">
-                    <mat-label>{{fieldNames.userField5}}</mat-label>
+                    <mat-label data-automation-id="user-field-5-label">{{fieldNames.userField5}}</mat-label>
                     <textarea [(ngModel)]="promisedDate" matInput type="text" maxlength="255" value="Value"
-                    class="min-h-20px"></textarea>
+                    class="min-h-20px" data-automation-id="user-field-5-input"></textarea>
                 </mat-form-field>
             </div>
             <div class="col-xl-6">
                 <mat-form-field class="custom-form-field  w-100 mb-2" appearance="outline">
-                    <mat-label>{{fieldNames.userField6}}</mat-label>
+                    <mat-label data-automation-id="user-field-6-label">{{fieldNames.userField6}}</mat-label>
                     <textarea [(ngModel)]="isCancel" matInput type="text" maxlength="255" value="Value"
-                    class="min-h-20px"></textarea>
+                    class="min-h-20px" data-automation-id="user-field-6-input"></textarea>
                 </mat-form-field>
             </div>
         </div>
         <div class="row">
             <div class="col-xl-6">
                 <mat-form-field class="custom-form-field  w-100 mb-2" appearance="outline">
-                    <mat-label>{{fieldNames.userField7}}</mat-label>
+                    <mat-label data-automation-id="user-field-7-label">{{fieldNames.userField7}}</mat-label>
                     <textarea [(ngModel)]="shipToCountry" matInput type="text" maxlength="255" value="Value"
-                    class="min-h-20px"></textarea>
+                    class="min-h-20px" data-automation-id="user-field-7-input"></textarea>
                 </mat-form-field>
             </div>
             <div class="col-xl-6">
                 <mat-form-field class="custom-form-field  w-100 mb-2" appearance="outline">
-                    <mat-label>{{fieldNames.userField8}}</mat-label>
+                    <mat-label data-automation-id="user-field-8-label">{{fieldNames.userField8}}</mat-label>
                     <textarea [(ngModel)]="shipToLine1" matInput type="text" maxlength="255" value="Value"
-                        class="min-h-20px"></textarea>
+                        class="min-h-20px" data-automation-id="user-field-8-input"></textarea>
                 </mat-form-field>
             </div>
         </div>
         <div class="row">
             <div class="col-xl-6">
                 <mat-form-field class="custom-form-field  w-100 mb-2" appearance="outline">
-                    <mat-label>{{fieldNames.userField9}}</mat-label>
+                    <mat-label data-automation-id="user-field-9-label">{{fieldNames.userField9}}</mat-label>
                     <textarea matInput [(ngModel)]="userField9" type="text" maxlength="255" value="Value"
-                        class="min-h-20px"></textarea>
+                        class="min-h-20px" data-automation-id="user-field-9-input"></textarea>
                 </mat-form-field>
             </div>
             <div class="col-xl-6">
                 <mat-form-field class="custom-form-field  w-100 mb-2" appearance="outline">
-                    <mat-label>{{fieldNames.userField10}}</mat-label>
+                    <mat-label data-automation-id="user-field-10-label">{{fieldNames.userField10}}</mat-label>
                     <textarea matInput [(ngModel)]="userField10" type="text" maxlength="255" value="Value"
-                        class="min-h-20px"></textarea>
+                        class="min-h-20px" data-automation-id="user-field-10-input"></textarea>
                 </mat-form-field>
             </div>
         </div>
@@ -119,7 +119,7 @@
 <div class="row" mat-dialog-actions>
     <div class="d-flex pt-3 gap-12 flex-wrap">
         <button mat-stroked-button color="primary" class="col-xl-6 col-12 btn-lg" cdkFocusInitial
-            [mat-dialog-close]="true">Close</button>
+            [mat-dialog-close]="true" data-automation-id="close-button">Close</button>
         <button (click)="saveUserFields()" mat-flat-button color="primary" class="col-xl-6 col-12 btn-lg flex-grow-1 flex-basis-0"
-            cdkFocusInitial>Save and Close</button>
+            cdkFocusInitial data-automation-id="save-button">Save and Close</button>
     </div>

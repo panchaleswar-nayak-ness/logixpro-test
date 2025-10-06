@@ -1,12 +1,12 @@
 <div class="d-flex justify-content-between mb-4 align-items-center">
   <div class="w-48px"></div>
-  <h1 class="m-0" mat-dialog-title>Filter Order Number</h1>
+  <h1 class="m-0" mat-dialog-title data-automation-id="heading-filter-order-number">Filter Order Number</h1>
 
   <button
     mat-icon-button
     class="close-button dialog-close-button-fix"
     [mat-dialog-close]="true"
-    (click)="close()"
+    (click)="close()" data-automation-id="button-close"
   >
     <mat-icon class="close-icon">close</mat-icon>
   </button>
@@ -23,35 +23,35 @@
     <div class="row">
       <!-- Radio Buttons -->
       <div class="d-flex align-items-center mb-4">
-        <mat-radio-group [(ngModel)]="isFilterByOrderNumbers" color="primary" class="d-flex align-items-center gap-12 flex-wrap">
-          <mat-radio-button [value]="true">Filter by Order Numbers</mat-radio-button>
-          <mat-radio-button [value]="false">Filter by Order Range</mat-radio-button>
+        <mat-radio-group [(ngModel)]="isFilterByOrderNumbers" color="primary" class="d-flex align-items-center gap-12 flex-wrap" data-automation-id="radio-group-filter-type">
+          <mat-radio-button [value]="true" data-automation-id="radio-filter-by-order-numbers">Filter by Order Numbers</mat-radio-button>
+          <mat-radio-button [value]="false" data-automation-id="radio-filter-by-order-range">Filter by Order Range</mat-radio-button>
         </mat-radio-group>
       </div>
 
       <!-- Filter by Order Numbers (Textarea) -->
       <div *ngIf="isFilterByOrderNumbers">
-        <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline">
-          <mat-label>Paste Order here</mat-label>
+        <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline" data-automation-id="form-field-paste-order">
+          <mat-label data-automation-id="label-paste-order">Paste Order here</mat-label>
           <textarea
             matInput
             class="h-120px"
             (paste)="onPaste($event)"
             (input)="onInput(myText.value)"
-            #myText
+            #myText [attr.data-automation-id]="'input-paste-order-' + myText.value"
           ></textarea>
         </mat-form-field>
       </div>
 
       <!-- Filter by Order Range (Two Inputs) -->
       <div *ngIf="!isFilterByOrderNumbers" class="d-flex gap-2">
-        <mat-form-field class="custom-form-field w-50 mb-3" appearance="outline">
-          <mat-label>Lower Bound</mat-label>
-          <input matInput [(ngModel)]="orderRange.lowerBound" />
+        <mat-form-field class="custom-form-field w-50 mb-3" appearance="outline" data-automation-id="form-field-lower-bound">
+          <mat-label data-automation-id="label-lower-bound">Lower Bound</mat-label>
+          <input matInput [(ngModel)]="orderRange.lowerBound" [attr.data-automation-id]="'input-lower-bound-' + orderRange.lowerBound" />
         </mat-form-field>
-        <mat-form-field class="custom-form-field w-50 mb-3" appearance="outline">
-          <mat-label>Upper Bound</mat-label>
-          <input matInput [(ngModel)]="orderRange.upperBound" />
+        <mat-form-field class="custom-form-field w-50 mb-3" appearance="outline" data-automation-id="form-field-upper-bound">
+          <mat-label data-automation-id="label-upper-bound">Upper Bound</mat-label>
+          <input matInput [(ngModel)]="orderRange.upperBound" [attr.data-automation-id]="'input-upper-bound-' + orderRange.upperBound" />
         </mat-form-field>
       </div>
     </div>
@@ -63,7 +63,7 @@
     mat-flat-button
     class="button-remove-all-w-stroke bg-white"
     color="primary"
-    (click)="clearFilters()"
+    (click)="clearFilters()" data-automation-id="button-clear-filter-order-number"
   >
     {{ isFilterByOrderNumbers ? 'Clear By Order Number' : 'Clear By Order Range' }}
   </button>
@@ -72,7 +72,7 @@
     mat-flat-button
     class="form-button-submit btn-lg flex-grow-1"
     color="primary"
-    (click)="applyFilter()"
+    (click)="applyFilter()"  data-automation-id="button-apply-filter-order-number"
   >
     Apply Filter
   </button>

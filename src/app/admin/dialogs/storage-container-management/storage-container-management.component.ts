@@ -1,20 +1,27 @@
-import { Component, ElementRef, Inject, OnInit, ViewChild } from '@angular/core';
-import {MAT_DIALOG_DATA, MatDialog} from '@angular/material/dialog';
-import {ConfirmationDialogComponent} from '../confirmation-dialog/confirmation-dialog.component';
-import {MatSelect} from '@angular/material/select';
-import {IAdminApiService} from 'src/app/common/services/admin-api/admin-api-interface';
-import {AdminApiService} from 'src/app/common/services/admin-api/admin-api.service';
-import {GlobalService} from 'src/app/common/services/global.service';
-import {ToasterTitle, ToasterType} from 'src/app/common/constants/strings.constants';
-import {HttpStatusCode} from '@angular/common/http';
-import { BinCellLayout, CarouselZone, ContainerTypes, InventoryMap, StorageContainerLayout, ValidationErrorCodes } from 'src/app/common/Model/storage-container-management';
+import { Component, ElementRef, Inject, OnInit, OnDestroy, ViewChild } from '@angular/core';
+import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { MatSelect } from '@angular/material/select';
+import { HttpStatusCode } from '@angular/common/http';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
+
+import { ConfirmationDialogComponent } from '../confirmation-dialog/confirmation-dialog.component';
+import { IAdminApiService } from 'src/app/common/services/admin-api/admin-api-interface';
+import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.service';
+import { GlobalService } from 'src/app/common/services/global.service';
+import { ApiErrorMessages,ConfirmationMessages, DialogConstants, ResponseStrings, storageContainerDisabledFields, StringConditions, Style, ToasterMessages, ToasterTitle, ToasterType } from 'src/app/common/constants/strings.constants';
+import { BinCellLayout, CarouselZone, ContainerTypes, InventoryMap, InventoryRecord,InventoryMapRecordsResponse, StorageContainerLayout, ValidationErrorCodes, ConstraintViolations, InventoryMapRecordsDto} from 'src/app/common/Model/storage-container-management';
 
 @Component({
   selector: 'app-storage-container-management-modal',
   templateUrl: './storage-container-management.component.html',
   styleUrls: ['./storage-container-management.component.scss']
 })
-export class StorageContainerManagementModalComponent implements OnInit {
+export class StorageContainerManagementModalComponent implements OnInit, OnDestroy {
+  private readonly destroy$ = new Subject<void>();
+  
+  // Constants
+  private readonly CONTAINER_ID_MAX_LENGTH = 5;
   scm = {
     carouselZone: new CarouselZone(),
     tray: "",
@@ -33,6 +40,16 @@ export class StorageContainerManagementModalComponent implements OnInit {
   isExistingContainer: boolean = false;
   fromCells: number = 0;
   rowFieldAlias: string;
+  sendToOutboundPort: boolean = false;
+  binId: string;
+  zone: string;
+
+  // New properties for enhanced removal flow
+  inventoryMapData: InventoryRecord[] = [];
+  inventoryResponse: InventoryMapRecordsResponse = new InventoryMapRecordsResponse();
+  constraintViolations: ConstraintViolations = {};
+  isReadOnlyMode: boolean = false;
+  totalRecordsToRemove: number = 0;
 
   @ViewChild('zone') zoneSelect!: MatSelect;
   @ViewChild('containerTypeDropdown') containerTypeSelect!: MatSelect;
@@ -45,17 +62,279 @@ export class StorageContainerManagementModalComponent implements OnInit {
     private readonly dialog: MatDialog,
     public adminApiService: AdminApiService,
     private readonly global: GlobalService,
+    private readonly dialogRef: MatDialogRef<StorageContainerManagementModalComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {
     this.iAdminApiService = adminApiService;
     this.rowFieldAlias = data?.rowFieldAlias ?? '';
+    this.sendToOutboundPort = data?.sendToOutboundPort ?? false;
+    this.binId = data?.binId ?? '';
+    this.zone = data?.zone ?? '';
   }
 
   async ngOnInit(): Promise<void> {
-    await this.getCarouselZones();
-    await this.GetContainerLayoutsAsync();
+    if(this.sendToOutboundPort){
+      // Set to read-only mode and load inventory data
+      this.isReadOnlyMode = true;
+      
+      // Load container types for fallback display
+      await this.GetContainerLayoutsAsync();
+      
+      // Load inventory data for the bin
+      await this.loadInventoryDataForBin();
+    }else{
+      await this.getCarouselZones();
+      await this.GetContainerLayoutsAsync();
+    }
   }
 
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
+  async loadInventoryDataForBin(): Promise<void> {
+    try {
+      // Get inventory map records with full validation from backend
+      this.inventoryResponse = await this.getInventoryMapRecordsForBin(this.binId, this.zone);
+      this.inventoryMapData = this.inventoryResponse.records;
+      this.totalRecordsToRemove = this.inventoryResponse.totalRecords;
+      
+      // Use backend validation results directly (no duplicate validation on frontend)
+      this.buildConstraintViolationsFromBackend();
+      
+      // Set container info for display
+      this.scm.carouselZone = { zone: this.zone, zoneName: this.zone };
+      this.scm.tray = this.binId;
+      
+      // Get the existing container layout to build the table matrix (using existing pattern)
+      await this.loadExistingContainerLayoutForReadOnlyMode();
+      
+    } catch (error: any) {
+      this.handleStorageBinExitError(error);
+    }
+  }
+  
+  private mapInventoryRecord(record: any, binId: string, zone: string): InventoryRecord {
+    return {
+      bin: record.bin || binId,
+      row: record.row || binId,
+      zone: record.zone || zone,
+      itemNumber: record.itemNumber || '',
+      itemQuantity: record.itemQuantity || 0,
+      quantityAllocatedPick: record.quantityAllocatedPick || 0,
+      quantityAllocatedPutAway: record.quantityAllocatedPutAway || 0,
+      dedicated: record.dedicated || false,
+      cellId: record.cellId || `${record.bin || binId}-${record.row || binId}`,
+      location: record.location || `${zone}-${record.row || binId}-${record.bin || binId}`,
+      containerType: record.containerType || 'Unknown',
+      cellSize: record.cellSize || '',
+      constraintViolations: record.constraintViolations || [],
+      hasConstraints: record.hasConstraints || false
+    };
+  }
+
+  private async getInventoryMapRecordsForBin(binId: string, zone: string): Promise<InventoryMapRecordsResponse> {
+    return new Promise((resolve, reject) => {
+      this.iAdminApiService.GetInventoryMapRecordsForBin(binId, zone)
+        .pipe(takeUntil(this.destroy$))
+        .subscribe(
+        (response: InventoryMapRecordsDto ) => {
+          // Backend now returns a complete InventoryMapRecordsResponse with validation
+          if (response && response.value.records && Array.isArray(response.value.records)) {
+            const inventoryResponse = new InventoryMapRecordsResponse();
+            inventoryResponse.records = response.value.records.map((record: any) => this.mapInventoryRecord(record, binId, zone));
+            inventoryResponse.totalRecords = response.value.totalRecords || response.value.records.length;
+            inventoryResponse.recordsWithConstraints = response.value.recordsWithConstraints || 0;
+            inventoryResponse.canProceedWithRemoval = response.value.canProceedWithRemoval !== undefined ? response.value.canProceedWithRemoval : true;
+            inventoryResponse.globalConstraintViolations = response.value.globalConstraintViolations || [];
+            resolve(inventoryResponse);
+          } else if (response && (response as any).hasError) {
+            reject(response);
+          } else {
+            // Return empty response for no data case
+            resolve(new InventoryMapRecordsResponse());
+          }
+        },
+        (error) => reject(error)
+      );
+    });
+  }
+  
+  private async loadExistingContainerLayoutForReadOnlyMode(): Promise<void> {
+    try {
+      // Use the existing API pattern to get container layout
+      const res = await this.iAdminApiService.getStorageContainerLayout(this.scm.tray, this.scm.carouselZone.zone);
+      if (res?.status == HttpStatusCode.Ok && res?.body?.resource) {
+        this.storageContainerLayout = res.body.resource;
+        
+        // Set container type info for display
+        this.scm.containerType = this.storageContainerLayout.binLayout.id;
+        
+        // Use the existing createTableMatrix method with binCellLayouts
+        if (this.storageContainerLayout.binLayout.binCellLayouts && this.storageContainerLayout.binLayout.binCellLayouts.length > 0) {
+          this.createTableMatrix(this.storageContainerLayout.binLayout.binCellLayouts);
+          this.scm.numberOfCells = this.storageContainerLayout.binLayout.binCellLayouts.length;
+        }
+      }
+    } catch (error: unknown) {
+      this.handleError(ApiErrorMessages.ErrorLoadingContainerLayout, error);
+      // If we can't get the layout, create a simple matrix based on inventory data
+      this.buildSimpleTableMatrixFallback();
+    }
+  }
+  
+  private buildSimpleTableMatrixFallback(): void {
+    // Fallback method if we can't get the proper layout
+    if (this.inventoryMapData.length === 0) {
+      this.tableMatrix = [];
+      return;
+    }
+    
+    // Create a simple single row matrix with cell identifiers
+    const cells = this.inventoryMapData.map(record => record.cellId || `${record.bin}-${record.row}`);
+    this.tableMatrix = [cells];
+    this.scm.numberOfCells = this.inventoryMapData.length;
+  }
+
+  private handleError(message: string, error: unknown): void {
+    const errorMessage = error instanceof Error ? error.message : 'Unknown error occurred';
+    this.global.ShowToastr(ToasterType.Error, `${message}: ${errorMessage}`, ToasterTitle.Error);
+  }
+  
+  /**
+   * Build constraint violations map from backend response
+   * No duplicate validation logic - backend handles all validation
+   */
+  private buildConstraintViolationsFromBackend(): void {
+    this.constraintViolations = {};
+    
+    // Simply use the validated constraint data from backend
+    this.inventoryMapData.forEach(record => {
+      if (record.hasConstraints && record.constraintViolations && record.constraintViolations.length > 0) {
+        this.constraintViolations[record.cellId] = record.constraintViolations;
+      }
+    });
+  }
+
+  getContainerTypeName(): string {
+    if (this.storageContainerLayout?.binLayout?.description) {
+      return this.storageContainerLayout.binLayout.description;
+    }
+    
+    // Fallback to container types array if available
+    if (this.scm.containerType && this.containerTypes.length > 0) {
+      const containerType = this.containerTypes.find(ct => ct.id === this.scm.containerType);
+      return containerType?.name || 'Unknown';
+    }
+    
+    return 'Unknown';
+  }
+  
+  getCellConstraintsTooltip(cellId: string): string {
+    const constraints = this.getCellConstraints(cellId);
+    // Use \n for proper line breaks (matTooltip supports this)
+    return constraints.length > 0 ? constraints.join('\n') : '';
+  }
+  
+  getCellConstraints(cellId: string): string[] {
+    // First try direct match
+    if (this.constraintViolations[cellId]) {
+      return this.constraintViolations[cellId];
+    }
+    
+    // Try to find a matching inventory record by bin/cell name
+    const matchingRecord = this.inventoryMapData.find(record => 
+      record.bin === cellId || 
+      record.cellId === cellId ||
+      record.cellId?.endsWith(cellId) ||
+      record.location?.includes(cellId)
+    );
+    
+    if (matchingRecord && this.constraintViolations[matchingRecord.cellId]) {
+      return this.constraintViolations[matchingRecord.cellId];
+    }
+    
+    return [];
+  }
+  
+  hasCellConstraints(cellId: string): boolean {
+    const constraints = this.getCellConstraints(cellId);
+    return constraints.length > 0;
+  }
+  
+  canProceedWithRemoval(): boolean {
+    // Use backend validation result directly
+    return this.inventoryResponse.canProceedWithRemoval;
+  }
+  
+  proceedToRemovalConfirmation() {
+    if (!this.canProceedWithRemoval()) {
+      this.showConstraintViolationToasts();
+      return;
+    }
+    
+// Show deletion confirmation modal matching OT table style
+            const dialogRef = this.global.OpenDialog(ConfirmationDialogComponent, {
+              autoFocus: DialogConstants.autoFocus,
+              height: DialogConstants.auto,
+              width: Style.w560px,
+              data: {
+      message: ConfirmationMessages.ClickOkToOutboundPort(this.totalRecordsToRemove, this.binId),
+      heading: ToasterMessages.SendToOutboundPort,
+      checkBox: true,
+                customButtonText: true,
+                btn1Text: StringConditions.Yes,
+                btn2Text: StringConditions.No
+              },
+            });
+    
+            dialogRef.afterClosed().subscribe((res) => {
+              if (res === ResponseStrings.Yes) {
+        this.requestStorageBinExit(this.binId, this.zone);
+        }
+      });
+  }
+  
+  private showConstraintViolationToasts(): void {
+    // Use the global constraint violations from backend response
+    // Backend already provides user-friendly error messages
+    const firstMessage = this.inventoryResponse.globalConstraintViolations[0];
+    this.global.ShowToastr(ToasterType.Error, firstMessage, ToasterTitle.Error);
+  }
+
+  // Triggers the storage bin exit API call and subscribes for local success/error handling.
+  private requestStorageBinExit(binId: string, zone: string): void {
+    this.iAdminApiService.storageBinsExit(binId, zone)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(
+      (result) => this.handleStorageBinExitSuccess(result),
+      (error) => this.handleStorageBinExitError(error)
+    );
+  }
+
+  // On success, shows a success toast and closes the dialog; otherwise shows a failure toast.
+  private handleStorageBinExitSuccess(result: { isSuccess: boolean, status?: number }) {
+    if (result?.isSuccess) {
+      this.global.ShowToastr(ToasterType.Success, ToasterMessages.StorageBinExitSuccessful, ToasterTitle.Success);
+      // Close the dialog so the parent component can refresh data
+      this.dialogRef.close(true);
+    } else if (!result?.isSuccess && result?.status === 6) {
+      this.global.ShowToastr(ToasterType.Error, ToasterMessages.UnableToConnectToServer, ToasterTitle.Error);
+    } else {
+      this.global.ShowToastr(ToasterType.Error, ToasterMessages.FailedToRequestStorageBinExit, ToasterTitle.Error);
+    }
+  }
+
+  // Maps HTTP errors to user-friendly toasts (500, 400, and generic fallback).
+  private handleStorageBinExitError(error: { status?: number; error?: [] | string }) {
+    if (error?.status === 500) {
+      this.global.ShowToastr(ToasterType.Error, ToasterMessages.UnableToConnectToServer, ToasterTitle.Error);
+    } else if (error?.status === 400) {
+      this.global.ShowToastr(ToasterType.Error, error.error as string, ToasterTitle.Error);
+    } else {
+      this.global.ShowToastr(ToasterType.Error, ToasterMessages.FailedToRequestStorageBinExit, ToasterTitle.Error);
+    }
+  }
 
   handleEnter() {
     this.validateScannedContainer();
@@ -83,10 +362,10 @@ export class StorageContainerManagementModalComponent implements OnInit {
     }
   }
 
-  async validateScannedContainer() {
+  async validateScannedContainer(): Promise<void> {
     this.scm.tray = this.scm.tray.replace(/^[A-Za-z]+/, '');
-    if (this.scm.tray.length > 5) {
-      this.scm.tray = this.scm.tray.substring(0, 5);
+    if (this.scm.tray.length > this.CONTAINER_ID_MAX_LENGTH) {
+      this.scm.tray = this.scm.tray.substring(0, this.CONTAINER_ID_MAX_LENGTH);
     }
     this.tableMatrix = [];
     this.scm.containerType = 0;
@@ -181,7 +460,7 @@ export class StorageContainerManagementModalComponent implements OnInit {
     binCellLayouts.forEach(item => {
       const posList = this.extractPositions(item.commandString);
       posList.forEach(pos => {
-        positions.push({row: pos[0], col: pos[1], binID: item.binID});
+        positions.push({row: pos[0], col: pos[1], binID: item.binID ?? item.bin});
       });
     });
 
@@ -296,11 +575,16 @@ export class StorageContainerManagementModalComponent implements OnInit {
   }
 
   checkDisabled(field: string): boolean {
+    // In read-only mode (sendToOutboundPort), disable all input fields except the proceed button
+    if (this.isReadOnlyMode) {
+      return field !== storageContainerDisabledFields.SENDTOOUTBOUNDPORT;
+    }
+    
     const dependencies: { [key: string]: string[] } = {
       carouselZone: [],
-      tray: ['carouselZone'],
-      containerType: ['carouselZone', 'tray'],
-      save: ['carouselZone', 'tray', 'containerType'],
+      tray: [storageContainerDisabledFields.CAROUSELZONE],
+      containerType: [storageContainerDisabledFields.CAROUSELZONE, storageContainerDisabledFields.TRAY],
+      save: [storageContainerDisabledFields.CAROUSELZONE, storageContainerDisabledFields.TRAY, storageContainerDisabledFields.CONTAINERTYPE],
     };
 
     const requiredFields = dependencies[field] || [];
@@ -309,8 +593,6 @@ export class StorageContainerManagementModalComponent implements OnInit {
       const value = dep === 'carouselZone' ? this.scm.carouselZone?.zone : this.scm[dep];
       return !value || value === 0 || value === '';
     });
-
-
   }
 
   async addInventoryMapRecord() {

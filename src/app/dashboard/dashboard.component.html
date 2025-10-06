@@ -1,19 +1,19 @@
 <div class="f-container">
-<app-header (toggleSidebarForMe)="sideBarToggler()" [ngClass]="{'d-none' : isMenuHide}">
+<app-header (toggleSidebarForMe)="sideBarToggler()" [ngClass]="{'d-none' : isMenuHide}" [automationId]="'header-component'">
 </app-header>
 <mat-sidenav-container class="main-container">
-  <mat-sidenav #sidenav mode="side" disableClose="true" [opened]="sideBarOpen">
-    <app-side-nav [sideBarOpen]="sideBarOpen" [ngClass]="{'d-none' : isMenuHide}"></app-side-nav>
+  <mat-sidenav #sidenav mode="side" disableClose="true" [opened]="sideBarOpen" data-automation-id="side-nav-container">
+    <app-side-nav [sideBarOpen]="sideBarOpen" [ngClass]="{'d-none' : isMenuHide}" data-automation-id="side-nav-component"></app-side-nav>
   </mat-sidenav>
  
-  <mat-sidenav-content [ngClass]="{'default-margin' : sideBarOpen}">
-    <div [ngClass]="{'side-bar-opened' : sideBarOpen, 'dashboard-section' : !isMenuHide}">
-      <div class="breadcrumb-menu">
+  <mat-sidenav-content [ngClass]="{'default-margin' : sideBarOpen}" data-automation-id="main-content-container">
+    <div [ngClass]="{'side-bar-opened' : sideBarOpen, 'dashboard-section' : !isMenuHide}" data-automation-id="dashboard-section">
+      <div class="breadcrumb-menu" data-automation-id="breadcrumb-container">
    
-        <nav aria-label="breadcrumb" class="breadcrumb" [ngClass]="{'d-none' : isMenuHide}">
+        <nav aria-label="breadcrumb" class="breadcrumb" [ngClass]="{'d-none' : isMenuHide}" data-automation-id="breadcrumb-nav">
         </nav>
       </div>
-      <router-outlet></router-outlet>
+      <router-outlet data-automation-id="router-outlet"></router-outlet>
     </div>
   </mat-sidenav-content>
 </mat-sidenav-container>

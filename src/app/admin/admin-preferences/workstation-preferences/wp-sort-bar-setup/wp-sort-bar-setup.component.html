@@ -20,8 +20,8 @@
                             Tote {{item}}
                         </div>
                     </div>
-                    <mat-form-field class="custom-form-field mb-3 mb-xl-0" appearance="outline">
-                        <input matInput type="text" value="12" data-automation-id="input-tote-1-{{i}}" />
+                    <mat-form-field class="custom-form-field mb-3 mb-xl-0" appearance="outline" [attr.data-automation-id]="'form-field-tote-1-' + item">
+                        <input matInput type="text" value="12" [attr.data-automation-id]="'input-tote-1-' + item" />
                     </mat-form-field>
                 </div>
             </div> 
@@ -32,11 +32,10 @@
                             Tote {{item}}
                         </div>
                     </div>
-                    <mat-form-field class="custom-form-field mb-3 mb-xl-0" appearance="outline">
-                        <input matInput type="text" value="12" data-automation-id="input-tote-2-{{i}}" />
+                    <mat-form-field class="custom-form-field mb-3 mb-xl-0" appearance="outline" [attr.data-automation-id]="'form-field-tote-2-' + item">
+                        <input matInput type="text" value="12" [attr.data-automation-id]="'input-tote-2-' + item" />
                     </mat-form-field>
                 </div>
             </div> 
         </div>
     </div>
-</div>

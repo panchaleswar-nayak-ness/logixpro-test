@@ -328,28 +328,7 @@ export class WorkstationComponent implements OnInit {
       }
     }
   }
-  deleteWorkStation() {
-    if (!this.wsid) return;
-    let payload = {
-     
-    };
-    this.iGlobalConfigApi.WorkStationDelete().subscribe(
-        {next: (res: any) => {
-          if (res.isExecuted) {
-            this.global.ShowToastr(ToasterType.Success,labels.alert.success, ToasterTitle.Success);
-          }
-          else {
-            this.global.ShowToastr(ToasterType.Error, this.global.globalErrorMsg(), ToasterTitle.Error);
-            console.log("WorkStationDelete",res.responseMessage);
-          }
-          this.getMenuData();
-          this.wsid = null;
-        },
-        error: (error) => {
-          this.global.ShowToastr(ToasterType.Error,labels.alert.went_worng, ToasterTitle.Error);
-        }}
-      );
-  }
+
   clearDefaultApp() {
     this.licAppObj.map((itm) => {
       if (itm.defaultApp) {

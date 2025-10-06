@@ -1,3 +1,5 @@
+import { FilterationColumns } from "../Model/pick-Tote-Manager";
+
 export type SavedFilterChangeEvent = {
   option: {
     value: string;
@@ -7,11 +9,13 @@ export type SavedFilterChangeEvent = {
 export type FilterData = {
   sequence: number;
   field: string;
+  format: string;
   criteria: string;
   value: string;
   andOr: string;
   isSaved: boolean;
   is_db?: boolean;
+  isNumericFormat?: boolean;
 };
 
 export type OrderData = {
@@ -29,6 +33,7 @@ export type FilterOrder = {
   otLines: number | string;
   isSelected: boolean;
 };
+export type AllDataTypeValues = string | number | boolean | Date | null | undefined;
 
 export type FilterTransaction = {
   orderNumber: string;
@@ -83,3 +88,20 @@ export type FilterTransaction = {
   exportedBy?: string;
   statusCode?: string;
 }; 
+
+export interface PickToteTransPayload {
+  Draw: number;
+  OrderNumber: string | number | null; // adjust based on your actual type
+  SRow: number;
+  ERow: number;
+  SortColumnNumber: number;
+  SortOrder: string | number; // depends on UniqueConstants.Asc type
+  Filter: string;
+  FiltrationColumns: FilterationColumns[]; // replace 'any' with proper type if you know structure
+}
+export interface PickToteTransResponse {
+  TotalRecords: number;
+  FilteredRecords: number,
+  Draw: number;
+  PickToteManTrans: FilterTransaction[]; 
+}

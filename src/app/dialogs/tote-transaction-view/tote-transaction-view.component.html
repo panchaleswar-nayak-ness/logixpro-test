@@ -1,16 +1,16 @@
 <div class="d-flex justify-content-between align-items-center" mat-dialog-title>
     <div class="w-48px"></div>
-    <h1 class="m-0" mat-dialog-title>Tote Transaction view</h1>
-    <button mat-icon-button class="close-button dialog-close-button-fix" [mat-dialog-close]="true">
+    <h1 class="m-0" mat-dialog-title data-automation-id="tote-transaction-view-heading">Tote Transaction view</h1>
+    <button mat-icon-button class="close-button dialog-close-button-fix" [mat-dialog-close]="true" data-automation-id="close-button">
         <mat-icon class="close-icon">close</mat-icon>
     </button>
 </div>
 
 <div mat-dialog-content>
-    <div class="card p-3 mb-3">
+    <div class="card p-3 mb-3" data-automation-id="tote-info-card">
         <div class="d-flex justify-content-between align-items-center mb-3">
             <div class="d-flex align-items-center">
-                <h2 class="card-header-title mb-0 d-flex align-items-center me-3">
+                <h2 class="card-header-title mb-0 d-flex align-items-center me-3" data-automation-id="tote-info-heading">
                     <div class="mat-icon-wrap me-lg-3">
                         <span class="material-symbols-outlined">
                             inbox
@@ -19,17 +19,17 @@
                     <span>Tote Info</span>
                 </h2>
             </div>
-            <mat-form-field class="action-dropdown" appearance="outline">
-                <mat-label>Actions</mat-label>
+            <mat-form-field class="action-dropdown" appearance="outline" data-automation-id="actions-dropdown">
+                <mat-label data-automation-id="actions-label">Actions</mat-label>
                 <mat-select class="employees-action" [(ngModel)]="selectedOption" #actionRef
-                    (openedChange)="actionDialog($event)">
-                    <mat-option value="clearTote">Clear Tote</mat-option>
-                    <mat-option value="fullTote">Full Tote</mat-option>
-                    <mat-option value="printToteLabel" (click)="print('tote-label')">Print Tote Label</mat-option>
-                    <mat-option value="printItemLabel" (click)="print('item-label')">Print Item Label</mat-option>
-                    <mat-option value="printToteContent" (click)="print('tote-contents')">Print Tote Contents</mat-option>
+                    (openedChange)="actionDialog($event)" [attr.data-automation-id]="'actions-select-' + (actionRef.value || '')">
+                    <mat-option value="clearTote" data-automation-id="clear-tote-option">Clear Tote</mat-option>
+                    <mat-option value="fullTote" data-automation-id="full-tote-option">Full Tote</mat-option>
+                    <mat-option value="printToteLabel" (click)="print('tote-label')" data-automation-id="print-tote-label-option">Print Tote Label</mat-option>
+                    <mat-option value="printItemLabel" (click)="print('item-label')" data-automation-id="print-item-label-option">Print Item Label</mat-option>
+                    <mat-option value="printToteContent" (click)="print('tote-contents')" data-automation-id="print-tote-content-option">Print Tote Contents</mat-option>
                 </mat-select>
-                <span class="material-symbols-outlined icon-expand-more">
+                <span class="material-symbols-outlined icon-expand-more" data-automation-id="actions-expand-icon">
                     expand_more
                 </span>
             </mat-form-field>
@@ -38,35 +38,35 @@
             <div class="row">
                 <div class="col-xl-4">
                     <mat-form-field class="custom-form-field custom-form-field-bg-white w-100 mb-2"
-                        appearance="outline">
-                        <mat-label>Batch ID</mat-label>
+                        appearance="outline" data-automation-id="batch-id-field">
+                        <mat-label data-automation-id="batch-id-label">Batch ID</mat-label>
                         <input (keydown.shift.enter)="$event.preventDefault()" matInput type="text" [value]="batchID"
-                            disabled>
+                            disabled data-automation-id="batch-id-input">
                     </mat-form-field>
                 </div>
                 <div class="col-xl-4">
                     <mat-form-field class="custom-form-field custom-form-field-bg-white w-100 mb-2"
-                        appearance="outline">
-                        <mat-label>Tote</mat-label>
+                        appearance="outline" data-automation-id="tote-field">
+                        <mat-label data-automation-id="tote-label">Tote</mat-label>
                         <input (keydown.shift.enter)="$event.preventDefault()" matInput type="text" [value]="tote"
-                            disabled>
+                            disabled data-automation-id="tote-input">
                     </mat-form-field>
                 </div>
                 <div class="col-xl-4">
                     <mat-form-field class="custom-form-field custom-form-field-bg-white w-100 mb-2"
-                        appearance="outline">
-                        <mat-label>Tote ID</mat-label>
+                        appearance="outline" data-automation-id="tote-id-field">
+                        <mat-label data-automation-id="tote-id-label">Tote ID</mat-label>
                         <input (keydown.shift.enter)="$event.preventDefault()" matInput type="text" [value]="toteID"
-                            disabled>
+                            disabled data-automation-id="tote-id-input">
                     </mat-form-field>
                 </div>
             </div>
         </div>
     </div>
-    <div class="card p-3 mb-3">
+    <div class="card p-3 mb-3" data-automation-id="items-card">
         <div class="d-flex justify-content-between align-items-center mb-3">
             <div class="d-flex align-items-center">
-                <h2 class="card-header-title mb-0 d-flex align-items-center me-3">
+                <h2 class="card-header-title mb-0 d-flex align-items-center me-3" data-automation-id="items-heading">
                     <div class="mat-icon-wrap me-lg-3">
                         <span class="material-symbols-outlined">
                             category
@@ -78,22 +78,22 @@
         </div>
         <div class="row">
             <div class="col-xl-4">
-                <mat-form-field class="custom-form-field custom-form-field-bg-white w-100 mb-2" appearance="outline">
-                    <mat-label>Number Of Copies</mat-label>
-                    <input #fieldFocus (keydown.shift.enter)="$event.preventDefault()" matInput type="text" value="25">
+                <mat-form-field class="custom-form-field custom-form-field-bg-white w-100 mb-2" appearance="outline" data-automation-id="number-of-copies-field">
+                    <mat-label data-automation-id="number-of-copies-label">Number Of Copies</mat-label>
+                    <input #fieldFocus (keydown.shift.enter)="$event.preventDefault()" matInput type="text" value="25" data-automation-id="number-of-copies-input">
                 </mat-form-field>
             </div>
         </div>
 
-        <div class="card br-14 table-responsive borderless px-0 mb-3">
-            <ng-scrollbar track="all" class="mat-table-scrollbar h-400">
+        <div class="card br-14 table-responsive borderless px-0 mb-3" data-automation-id="items-table-container">
+            <ng-scrollbar track="all" class="mat-table-scrollbar h-400" data-automation-id="items-table-scrollbar">
                 <table mat-table [dataSource]="dataSource" class="w-100" matSort class="table-w100-h150"  
-                    (matSortChange)="sortChange($event)">
+                    (matSortChange)="sortChange($event)" data-automation-id="items-table">
 
                     <!-- Position Column -->
                     <ng-container matColumnDef="cell">
-                        <th class="w-200" mat-header-cell mat-sort-header *matHeaderCellDef> Cell </th>
-                        <td mat-cell *matCellDef="let element">
+                        <th class="w-200" mat-header-cell mat-sort-header *matHeaderCellDef data-automation-id="table-header-cell"> Cell </th>
+                        <td mat-cell *matCellDef="let element" [attr.data-automation-id]="'table-row-' + element.cell + '-cell-cell'">
                             <div class="d-flex align-items-center ">
                                 {{element.cell}}
                             </div>
@@ -102,9 +102,9 @@
 
                     <!-- Name Column -->
                     <ng-container matColumnDef="itemNumber">
-                        <th class="w-200" mat-header-cell mat-sort-header *matHeaderCellDef> {{itemNumber}}
+                        <th class="w-200" mat-header-cell mat-sort-header *matHeaderCellDef data-automation-id="table-header-item-number"> {{itemNumber}}
                         </th>
-                        <td mat-cell *matCellDef="let element; let i = index;">
+                        <td mat-cell *matCellDef="let element; let i = index;" [attr.data-automation-id]="'table-row-' + element.itemNumber + '-item-number-cell'">
                             <div class="d-flex align-items-center ">
                                 {{element.itemNumber}}
                             </div>
@@ -113,9 +113,9 @@
 
                     <!-- Name Column -->
                     <ng-container matColumnDef="transactionQuantity">
-                        <th class="w-200" mat-header-cell mat-sort-header *matHeaderCellDef> Transaction
+                        <th class="w-200" mat-header-cell mat-sort-header *matHeaderCellDef data-automation-id="table-header-transaction-quantity"> Transaction
                             Quantity </th>
-                        <td mat-cell *matCellDef="let element">
+                        <td mat-cell *matCellDef="let element" [attr.data-automation-id]="'table-row-' + element.itemNumber + '-transaction-quantity-cell'">
                             <div class="d-flex align-items-center">
                                 {{element.transactionQuantity}}
 
@@ -124,9 +124,9 @@
                     </ng-container>
                     <!-- Name Column -->
                     <ng-container matColumnDef="itemLocation">
-                        <th class="w-200" mat-header-cell mat-sort-header *matHeaderCellDef> Location
+                        <th class="w-200" mat-header-cell mat-sort-header *matHeaderCellDef data-automation-id="table-header-item-location"> Location
                         </th>
-                        <td mat-cell *matCellDef="let element">
+                        <td mat-cell *matCellDef="let element" [attr.data-automation-id]="'table-row-' + element.itemNumber + '-item-location-cell'">
                             <div class="d-flex align-items-center">
                                 {{element.itemLocation}}
                             </div>
@@ -134,9 +134,9 @@
                     </ng-container>
                     <!-- Name Column -->
                     <ng-container matColumnDef="hostTransactionID">
-                        <th class="w-200" mat-header-cell mat-sort-header *matHeaderCellDef> Host
+                        <th class="w-200" mat-header-cell mat-sort-header *matHeaderCellDef data-automation-id="table-header-host-transaction-id"> Host
                             Transaction ID </th>
-                        <td mat-cell *matCellDef="let element">
+                        <td mat-cell *matCellDef="let element" [attr.data-automation-id]="'table-row-' + element.itemNumber + '-host-transaction-id-cell'">
                             <div class="d-flex align-items-center">
                                 {{element.hostTransactionID}}
 
@@ -145,41 +145,41 @@
                     </ng-container>
 
                     <ng-container matColumnDef="other">
-                        <th class="w-200" mat-header-cell *matHeaderCellDef></th>
-                        <td mat-cell *matCellDef="let element; let i = index;">
+                        <th class="w-200" mat-header-cell *matHeaderCellDef data-automation-id="table-header-actions"></th>
+                        <td mat-cell *matCellDef="let element; let i = index;" [attr.data-automation-id]="'table-row-' + element.itemNumber + '-actions-cell'">
                             <div class="d-flex justify-content-end">
                                 <button mat-icon-button [matMenuTriggerFor]="appMenu" aria-label=""
-                                [ngClass]="{'active-btn':element.selected}" class="circle-icon-o active-btn" appearance="outline">
+                                [ngClass]="{'active-btn':element.selected}" class="circle-icon-o active-btn" appearance="outline" [attr.data-automation-id]="'actions-button-' + element.itemNumber">
                                     <mat-icon>more_horiz</mat-icon>
                                 </button>
 
-                                <mat-menu #appMenu="matMenu">
-                                    <button mat-menu-item (click)="clear('clear',element)"><b
+                                <mat-menu #appMenu="matMenu" [attr.data-automation-id]="'actions-menu-' + element.itemNumber">
+                                    <button mat-menu-item (click)="clear('clear',element)" data-automation-id="clear-menu-item"><b
                                             class="text-tertiary-900">Clear</b></button>
-                                    <button mat-menu-item (click)="clear('clearAndDeallocate',element)">Clear &
+                                    <button mat-menu-item (click)="clear('clearAndDeallocate',element)" data-automation-id="clear-and-deallocate-menu-item">Clear &
                                         Deallocate</button>
-                                    <button mat-menu-item (click)="printToteLabel()">Print Tote Label</button>
-                                    <button mat-menu-item (click)="printItemLabel()">Print Item Label</button>
+                                    <button mat-menu-item (click)="printToteLabel()" data-automation-id="print-tote-label-menu-item">Print Tote Label</button>
+                                    <button mat-menu-item (click)="printItemLabel()" data-automation-id="print-item-label-menu-item">Print Item Label</button>
                                 </mat-menu>
                             </div>
                         </td>
                     </ng-container>
 
 
-                    <tr class="mat-row" *matNoDataRow>
+                    <tr class="mat-row" *matNoDataRow data-automation-id="table-no-data-row">
                         <td class="mat-cell " [attr.colspan]="displayedColumns.length">
                             No data available in table.
                         </td>
                     </tr>
 
-                    <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky:true"></tr>
-                    <tr mat-row *matRowDef="let row; columns: displayedColumns;" (click)="selectRow(row)">
+                    <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky:true" data-automation-id="items-table-header-row"></tr>
+                    <tr mat-row *matRowDef="let row; columns: displayedColumns;" (click)="selectRow(row)" [attr.data-automation-id]="'items-table-row-' + row.itemNumber">
                     </tr>
                 </table>
             </ng-scrollbar>
         </div>
         <div class="table-pagination d-flex justify-content-start"
-            *ngIf=" displayedColumns && dataSource">
+            *ngIf=" displayedColumns && dataSource" data-automation-id="items-paginator">
             <mat-paginator [length]="this.customPagination.total" [pageSize]="10" showFirstLastButtons [pageSizeOptions]="[10, 20, 100]"
                 (page)="handlePageEvent($event)"></mat-paginator>
 

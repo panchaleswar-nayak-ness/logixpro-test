@@ -63,11 +63,10 @@ export class GlobalConfigApiService implements IGlobalConfigApi {
 		return this.Api.workstationapp(payload);
 	}
 
-  WorkStationDelete() {
+  WorkStationDelete(workstationID: string) {
     this.userData = this.authService.userData();
 		const payload = {
-			username: this.userData.username,
-      		wsid: this.userData.wsid,
+      		workstationid: workstationID,
 		}
 		return this.Api.WorkStationDelete(payload);
 	}

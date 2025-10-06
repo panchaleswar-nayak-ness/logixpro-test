@@ -42,6 +42,7 @@ export class OrderResponse {
     exportBatchId?: string | null;
     toteNumber: number;
     orderLines: OrderLineResource[];
+    isSlapperLabel? : boolean;
 }
 
 export class TotesResponse {
@@ -84,6 +85,7 @@ export class OrderLineResource {
     warehouse?: string | null;
     location?: string | null;
     assignedUser?: string | null;
+    isPartialCase?: boolean;
 }
 
 export class TotesRequest {
@@ -384,4 +386,116 @@ export interface OrderLine {
 export class BulkZone {
     wsid: string;
     zone: string;
+}
+
+export class PartialToteIdRequest {
+    orderNumber?: string;
+    toteNumber?: string;
+    toteID?: string;
+    partialToteID?: string;
+}
+
+export class PartialToteIdResponse {
+    orderNumber: string;
+    toteNumber: string;
+    toteID: string;
+    partialToteID: string;
+    orderLines: OrderLineResource[];
+}
+export interface SlapperLabelResponse {
+    id: number;
+    orderNumber: string;
+    itemNumber: string;
+    description: string;
+    lineNumber: number;
+    batchId: string | null;
+    toteId: string;
+    transactionQuantity: number;
+    zone: string;
+    completedBy: string | null;
+    completedDate: string | null;
+    completedQuantity: number;
+    transactionType: string;
+    unitOfMeasure: string;
+    lotNumber: string;
+    expirationDate: string | null;
+    serialNumber: string;
+    statusCode: string | null;
+    warehouse: string | null;
+    location: string;
+    assignedUser: string | null;
+    isPartialCase: boolean;
+}
+
+// Extended interface for consolidated records
+export interface ConsolidatedSlapperLabelResponse extends SlapperLabelResponse {
+    isConsolidated: boolean;
+    originalPartialRecords: SlapperLabelResponse[];
+    consolidatedToteCount: number;
+}
+
+// Minimal interfaces for verify-bulk component
+export interface DialogResponse {
+    type?: string;
+    newQuantity?: number;
+    SelectedItem?: string;
+}
+
+export interface FullToteResponse {
+    NewToteID: string;
+    NewToteQTY: number;
+    Id: number;
+}
+
+export interface OrderLineWithSelection extends OrderLineResource {
+    selected?: boolean;
+    NextToteID?: number;
+}
+
+export interface MatTableOrderLine extends OrderLineResource {
+    selected?: boolean;
+    NextToteID?: number;
+}
+
+export class RemoveOrderLinesRequest {
+    orderNumbers: string[];
+}
+
+export interface RemoveOrderLinesResponse {
+    isSuccess: boolean;
+    errorMessages: string[];
+}
+
+// Interface for the dialog data in BmSlaperLabelSplitEntryComponent
+export interface DialogData {
+    selectedOrderList: SlapperLabelResponse[];
+    nextToteID: string;
+    BulkProcess: boolean;
+    view: string;
+    autoPrintPickToteLabels: boolean;
+    batchid: string;
+    type: string;
+}
+
+// Interface for the dialog data in BmToteidEntryComponent
+export interface BmToteidEntryDialogData extends DialogData {
+    rawOrderList?: PartialToteIdResponse[];
+}
+
+// Interface for items in selectedList with additional properties
+export interface SelectedListItem extends Omit<SlapperLabelResponse, 'toteId'> {
+    toteId?: string;
+    partialToteId?: string;
+    toteNumber?: number;
+    IsTote?: boolean;
+    IsError?: boolean;
+}
+
+// Interface for selected order items in BmToteidEntry component
+export interface SelectedOrderItem {
+    orderNumber: string;
+    toteId?: string | number;
+    toteNumber?: number;
+    IsTote?: boolean;
+    IsError?: boolean;
 }

@@ -1,4 +1,4 @@
-<div class="main-section-options">
+<div class="main-section-options" data-automation-id="main-section-options">
     <div class="container-fluid">
       <div class="row g-4">
         <!-- Main Section Option (Import Export) -->
@@ -9,15 +9,15 @@
           [matRippleColor]="tab_hover_color" 
           class="main-section-option" 
           routerLink="/InductionManager/ProcessPutAways"
-          (click)="updateMenu('induction', '/InductionManager/ProcessPutAways')"
+          (click)="updateMenu('induction', '/InductionManager/ProcessPutAways')" data-automation-id="process-put-aways-option"
           >
-            <a class="main-section-option-link" href="#"></a>
-            <div class="main-section-icon">
+            <a class="main-section-option-link" href="#" data-automation-id="process-put-aways-link"></a>
+            <div class="main-section-icon" data-automation-id="process-put-aways-icon">
               <span class="material-symbols-outlined">
                 dashboard
               </span>
             </div>
-            <h4 class="main-section-title">Process Put Aways</h4>
+            <h4 class="main-section-title" data-automation-id="process-put-aways-title">Process Put Aways</h4>
           </div>
         </div>
   
@@ -28,13 +28,13 @@
             [matRippleColor]="tab_hover_color" 
             class="main-section-option" 
             routerLink="/InductionManager/ProcessPicks" 
-            (click)="updateMenu('induction', '/InductionManager/ProcessPicks')">
-            <div class="main-section-icon">
+            (click)="updateMenu('induction', '/InductionManager/ProcessPicks')" data-automation-id="process-picks-option">
+            <div class="main-section-icon" data-automation-id="process-picks-icon">
               <span class="material-symbols-outlined">
                 directions_alt 
               </span>
             </div>
-            <h4 class="main-section-title">Process Picks</h4>
+            <h4 class="main-section-title" data-automation-id="process-picks-title">Process Picks</h4>
           </div>
         </div>
   
@@ -45,13 +45,13 @@
             [matRippleColor]="tab_hover_color" 
             class="main-section-option" 
             (click)="updateMenu('induction', '/InductionManager/SuperBatch')"
-            routerLink="/InductionManager/SuperBatch">
-            <div class="main-section-icon">
+            routerLink="/InductionManager/SuperBatch" data-automation-id="super-batch-option">
+            <div class="main-section-icon" data-automation-id="super-batch-icon">
               <span class="material-symbols-outlined">
                 line_style
               </span>
             </div>
-            <h4 class="main-section-title">Super Batch</h4>
+            <h4 class="main-section-title" data-automation-id="super-batch-title">Super Batch</h4>
           </div>
         </div>
   
@@ -64,14 +64,14 @@
             [matRippleColor]="tab_hover_color" 
             class="main-section-option" 
             (click)="updateMenu('induction', '/InductionManager/PalletReceiving')"
-            routerLink="/InductionManager/PalletReceiving">
-            <div class="main-section-icon">
+            routerLink="/InductionManager/PalletReceiving"  data-automation-id="pallet-receiving-option">
+            <div class="main-section-icon" data-automation-id="pallet-receiving-icon">
               <span class="material-symbols-outlined">
                 linear_scale
 
               </span>
             </div>
-            <h4 class="main-section-title">Pallet Receiving</h4>
+            <h4 class="main-section-title" data-automation-id="pallet-receiving-title">Pallet Receiving</h4>
           </div>
         </div>
   
@@ -85,26 +85,26 @@
             [matRippleColor]="tab_hover_color" 
             class="main-section-option" 
             (click)="updateMenu('induction', '/InductionManager/MarkEmptyReels')"
-            routerLink="/InductionManager/MarkEmptyReels">
-            <div class="main-section-icon">
+            routerLink="/InductionManager/MarkEmptyReels" data-automation-id="mark-empty-reels-option">
+            <div class="main-section-icon" data-automation-id="mark-empty-reels-icon">
               <span class="material-symbols-outlined">
                 edit_attributes
               </span>
             </div>
-            <h4 class="main-section-title">Mark Empty Reels</h4>
+            <h4 class="main-section-title" data-automation-id="mark-empty-reels-title">Mark Empty Reels</h4>
           </div>
         </div>
   
         <!-- Main Section Option (Order Manager) -->
         <div class="col-xl-3 col-lg-6" routerLink="Admin" (click)="updateMenu('transaction-admin')" [ngClass]="isAuthorized('Tote Admin Menu') ? 'isDivDisabled' : ''">
-          <div matRipple [matRippleColor]="tab_hover_color" class="main-section-option">
-            <a class="main-section-option-link" href="#"></a>
-            <div class="main-section-icon">
+          <div matRipple [matRippleColor]="tab_hover_color" class="main-section-option" data-automation-id="admin-option">
+            <a class="main-section-option-link" href="#" data-automation-id="admin-link"></a>
+            <div class="main-section-icon" data-automation-id="admin-icon">
               <span class="material-symbols-outlined">
                 manage_accounts
               </span>
             </div>
-            <h4 class="main-section-title">Admin</h4>
+            <h4 class="main-section-title" data-automation-id="admin-title">Admin</h4>
           </div>
         </div>
 
@@ -116,15 +116,15 @@
           class="main-section-option" 
           routerLink="/InductionManager/CompletePickBatch"
           [ngClass]="isAuthorized('Induction Manager') || !useInZonePickScreen ? 'isDivDisabled' : ''"
-          (click)="updateMenu('induction', '/InductionManager/CompletePickBatch')"
+          (click)="updateMenu('induction', '/InductionManager/CompletePickBatch')" data-automation-id="complete-pick-batch-option"
           >
-            <a class="main-section-option-link" href="#"></a>
-            <div class="main-section-icon">
+            <a class="main-section-option-link" href="#" data-automation-id="complete-pick-batch-link"></a>
+            <div class="main-section-icon" data-automation-id="complete-pick-batch-icon">
               <span class="material-symbols-outlined">
                 library_add_check 
               </span>
             </div>
-            <h4 class="main-section-title">Complete Pick Batch</h4>
+            <h4 class="main-section-title" data-automation-id="complete-pick-batch-title">Complete Pick Batch</h4>
           </div>
         </div>
 
@@ -136,13 +136,30 @@
                  [matRippleColor]="tab_hover_color" 
                  class="main-section-option" 
                  (click)="updateMenu('induction', '/InductionManager/PickToteInduction')"
-                 routerLink="/InductionManager/PickToteInduction">
-                 <div class="main-section-icon">
+                 routerLink="/InductionManager/PickToteInduction" data-automation-id="pick-tote-induction-option">
+                 <div class="main-section-icon" data-automation-id="pick-tote-induction-icon">
                    <span class="material-symbols-outlined">
                     conveyor_belt
                    </span>
                  </div>
-                 <h4 class="main-section-title">Pick Tote Induction</h4>
+                 <h4 class="main-section-title" data-automation-id="pick-tote-induction-title">Pick Tote Induction</h4>
+               </div>
+             </div>
+
+             <!-- Main Section Option (Cart Management) -->
+             <div class="col-xl-3 col-lg-6"
+             [ngClass]="isAuthorized('Cart Management') ? 'isDivDisabled' : ''">
+               <div matRipple 
+                 [matRippleColor]="tab_hover_color" 
+                 class="main-section-option" 
+                 (click)="updateMenu('induction', '/InductionManager/CartManagement')"
+                 routerLink="/InductionManager/CartManagement">
+                 <div class="main-section-icon">
+                   <span class="material-symbols-outlined">
+                    shelves
+                   </span>
+                 </div>
+                 <h4 class="main-section-title">Cart Management</h4>
                </div>
              </div>
 

@@ -1,13 +1,15 @@
 import { ZoneListPayload } from "src/app/bulk-process/preferences/preference.models";
-import {AssignToteToOrderDto, NextToteId} from "../../Model/bulk-transactions";
+import { AssignToteToOrderDto, BatchesRequest, BatchesResponse, OrderLineResource, OrderResponse, OrdersRequest, PartialToteIdRequest, PartialToteIdResponse, QuickPickOrdersRequest, RemoveOrderLinesRequest, RemoveOrderLinesResponse, TotesRequest, TotesResponse } from "../../Model/bulk-transactions";
+import { ApiResult } from "../../types/CommonTypes";
+import { Observable } from "rxjs";
 
 export interface IBulkProcessApiService {
   bulkPickoOrderBatchToteQty(payload: any);
-  bulkPickBatches(paylaod:any);
+  bulkPickBatches(paylaod: BatchesRequest) : Observable<ApiResult<BatchesResponse[]>>;
   bulkPickBatchId(paylaod:any);
-  bulkPickOrders(paylaod:any);
-  bulkPickTotes(paylaod:any);
-  bulkPickOrdersQuickpick(paylaod:any);
+  bulkPickOrders(paylaod: OrdersRequest) : Observable<ApiResult<OrderResponse[]>>;
+  bulkPickTotes(paylaod: TotesRequest) : Observable<ApiResult<TotesResponse[]>>;
+  bulkPickOrdersQuickpick(paylaod: QuickPickOrdersRequest) : Observable<ApiResult<OrderResponse[]>>;
   bulkPickOrdersLocationAssignment(paylaod:any);
   bulkPickOrdersCheckLocationAssignment(paylaod:string[]);
   bulkPickOrdersCheckOffCarouselPicks(paylaod:string[]);
@@ -29,4 +31,11 @@ export interface IBulkProcessApiService {
   bulkPickTaskComplete(body:any);
   fullTote(body:any);
   AssignToteToOrder(orders: AssignToteToOrderDto[]);
+  updateOpenTransactionsZoneCaseQuantity(body: OrderLineResource[]);
+  GetNextToteIdForSlapperLabelAsync(request: PartialToteIdRequest[]): Promise<PartialToteIdResponse[]>;
+  SubmitCaseWiseOrders(request: PartialToteIdResponse[]): Promise<ApiResult<PartialToteIdResponse[]>>;
+  RemoveOrderLinesFromTote(request: RemoveOrderLinesRequest): Promise<RemoveOrderLinesResponse>;
+  bulkPickBatchesCount(payload:BatchesRequest) : Promise<ApiResult<number>>;
+  bulkPickOrdersCount(payload:OrdersRequest) : Promise<ApiResult<number>>;
+  bulkPickTotesCount(payload:TotesRequest) : Promise<ApiResult<number>>;
 }

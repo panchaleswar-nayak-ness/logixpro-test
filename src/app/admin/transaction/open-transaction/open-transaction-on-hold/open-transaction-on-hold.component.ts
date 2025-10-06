@@ -26,6 +26,7 @@ import { AppNames, AppRoutes, RouteNames} from 'src/app/common/constants/menu.co
 import { DatePipe } from '@angular/common';
 import { ContextMenuFiltersService } from 'src/app/common/init/context-menu-filters.service';
 import { PrintApiService } from 'src/app/common/services/print-api/print-api.service';
+import { UpdateEmergencyRequest } from 'src/app/common/interface/admin/opentransaction.interfaces';
 import {TransactionConstants} from 'src/app/common/constants/admin/transaction-constants';
 // Define a strongly typed enum for date types to avoid using magic strings
 enum DateType {
@@ -378,7 +379,7 @@ export class OpenTransactionOnHoldComponent implements OnInit, AfterViewInit {
       searchPayload = {
         query: this.orderNumber,
         tableName: 2,
-        column: 'orderNumber',
+        column: Column.OrderNumber,
       };
     } else {
       searchPayload = {
@@ -402,8 +403,84 @@ export class OpenTransactionOnHoldComponent implements OnInit, AfterViewInit {
     });
   }
 
+isDisabled(element): boolean {
+  const hasCompletion =
+    element['completedBy'] !== '' && element['completedDate'] !== '';
+    const notPick = element['transactionType']?.toLowerCase() !== 'pick';
+
+  return hasCompletion || notPick;
+}
+
+  //Toggles the emergency flag and updates the backend, showing success or error feedback based on the response.
+onCheckboxToggle(
+  element: Record<string, boolean | string | number>,
+  column: string,
+  isChecked: boolean
+): void {
+  const orderNumber = element['orderNumber'] as string;
+  const previousValue = !isChecked;
+
+  // Optimistically update the UI first
+  const setAll = (value: boolean) => {
+    if (!this.dataSource?.data) return;
+
+    this.dataSource.data.forEach((transaction) => {
+      if (
+        transaction.orderNumber === orderNumber &&
+        !transaction.completedDate &&
+        (transaction.transactionType || '').toLowerCase() ===
+          TransactionType.Pick.toLowerCase()
+      ) {
+        transaction[column] = value;
+      }
+    });
+
+    element[column] = value;
+    this.dataSource.data = [...this.dataSource.data];
+  };
+
+  // Set optimistic value first
+  setAll(isChecked);
+
+  const payload: UpdateEmergencyRequest = {
+    orderNumber,
+    emergency: isChecked,
+  };
+
+  this.iAdminApiService.UpdateEmergencyOpenTrans(payload).subscribe({
+    next: (response) => {
+      if (!response?.isExecuted) {
+        // Revert on failure
+        setAll(previousValue);
+        this.global.ShowToastr(
+          ToasterType.Error,
+          ToasterMessages.RecordUpdateFailed,
+          ToasterTitle.Error
+        );
+      } else {
+        // Success - value is already set optimistically
+        this.global.ShowToastr(
+          ToasterType.Success,
+          ToasterMessages.RecordUpdatedSuccessful,
+          ToasterTitle.Success
+        );
+      }
+    },
+    error: (err) => {
+      console.error('UpdateEmergency API error:', err);
+      // Revert on error
+      setAll(previousValue);
+      this.global.ShowToastr(
+        ToasterType.Error,
+        this.global.globalErrorMsg(),
+        ToasterTitle.Error
+      );
+    },
+  });
+}
+
   viewInInventoryMaster(row) {
-    clearTimeout(this.clickTimeout); 
+    clearTimeout(this.clickTimeout);
     localStorage.setItem("prevTab","/admin/transaction");
     if(this.spliUrl[1] == AppNames.OrderManager) this.router.navigate([]).then(() => window.open(`/#/OrderManager/InventoryMaster?itemNumber=${row.itemNumber}`, UniqueConstants._self));
     else if(this.spliUrl[1] == AppNames.InductionManager) window.open(`/#${AppRoutes.InductionManagerAdminInvMap}?itemNumber=${row.itemNumber}`, UniqueConstants._self);
@@ -490,7 +567,7 @@ export class OpenTransactionOnHoldComponent implements OnInit, AfterViewInit {
   }
 
   getContentData(isInit: boolean = false) {
-    
+
     this.payload = {
       draw: 0,
       sDate: this.datepipe.transform(this.sDate ?? new Date(TransactionConstants.defaultStartYear, new Date().getMonth(), new Date().getDate()), 'MM/dd/yyyy'),
@@ -740,7 +817,7 @@ setDateOnBlank(event: Date | null, dateType: DateType): void {
     var filter = this.filterString;
 
     this.printApiService.ProcessCycleCountPrint(searchString, searchColumn, filter);
-    
+
     //this.global.Print(`FileName:printCycleCountReport`)
   }
 
@@ -753,7 +830,7 @@ setDateOnBlank(event: Date | null, dateType: DateType): void {
       this.dataSource.filteredData.forEach(element => { if(row != element) element.selected = false; });
       const selectedRow = this.dataSource.filteredData.find((x: any) => x === row);
       if(selectedRow) selectedRow.selected = !selectedRow.selected;
-    }, 250); 
+    }, 250);
   }
 
 }

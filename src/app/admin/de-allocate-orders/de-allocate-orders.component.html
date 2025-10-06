@@ -3,7 +3,7 @@
         <mat-card-content>
             <div class="d-flex justify-content-between align-items-center mb-4">
                 <div>
-                    <app-icon-heading-component heading="Filters" icon=" filter_list">
+                    <app-icon-heading-component heading="Filters" icon=" filter_list" [automationId]="'de-allocate-orders-heading-filters'">
                     </app-icon-heading-component>
                 </div>
             </div>
@@ -12,7 +12,7 @@
                 <div class="col-xl-6">
                     <div class="d-flex justify-content-between align-items-center ">
                         <div>
-                            <h2 class="f-16 bold mb-3 d-flex align-items-center">
+                            <h2 class="f-16 bold mb-3 d-flex align-items-center" data-automation-id="de-allocate-orders-heading-view-transaction-types">
                                 <span>View Transaction Types</span>
                             </h2>
                         </div>
@@ -23,14 +23,14 @@
                             <mat-radio-group class="d-flex align-items-center gap-12 flex-wrap"
                                 aria-label="Select an option" [(ngModel)]="transactionType"
                                 (change)="!isOrderSelected?orderItemTable($event,true):''"
-                                (change)="getAllOrder($event)">
-                                <mat-radio-button color="primary" value="All" [checked]="true">
+                                (change)="getAllOrder($event)" data-automation-id="transaction-type-radio-group">
+                                <mat-radio-button color="primary" value="All" [checked]="true" data-automation-id="transaction-type-radio-All">
                                     All Trans. Type
                                 </mat-radio-button>
-                                <mat-radio-button color="primary" value="Pick">
+                                <mat-radio-button color="primary" value="Pick" data-automation-id="transaction-type-radio-Picks">
                                     Picks
                                 </mat-radio-button>
-                                <mat-radio-button color="primary" value="Put Aways">
+                                <mat-radio-button color="primary" value="Put Aways" data-automation-id="transaction-type-radio-Put Away">
                                     Put Aways
                                 </mat-radio-button>
                             </mat-radio-group>
@@ -41,7 +41,7 @@
                 <div class="col-xl-6">
                     <div class="d-flex justify-content-between align-items-center ">
                         <div>
-                            <h2 class="f-16 bold mb-3 d-flex align-items-center">
+                            <h2 class="f-16 bold mb-3 d-flex align-items-center" data-automation-id="de-allocate-orders-heading-order-view-options">
                                 <span>Order View Options</span>
                             </h2>
                         </div>
@@ -50,11 +50,11 @@
                     <div class="mb-3">
                         <div>
                             <mat-radio-group class="d-flex align-items-center gap-12 flex-wrap"
-                                aria-label="Select an option" (change)="dataChange($event)">
-                                <mat-radio-button color="primary" (click)="step='order'" value="spec" [checked]="true">
+                                aria-label="Select an option" (change)="dataChange($event)" data-automation-id="order-view-radio-group">
+                                <mat-radio-button color="primary" (click)="step='order'" value="spec" [checked]="true" data-automation-id="order-view-radio-Orders">
                                     Orders
                                 </mat-radio-button>
-                                <mat-radio-button color="primary" (click)="step='transaction'" value="All">
+                                <mat-radio-button color="primary" (click)="step='transaction'" value="All" data-automation-id="order-view-radio-Transactions">
                                     Transactions
                                 </mat-radio-button>
                             </mat-radio-group>
@@ -73,20 +73,20 @@
         <mat-card-content>
             <div class="d-flex justify-content-between align-items-center mb-3">
                 <div >
-                    <app-icon-heading-component heading="Order Information" icon="call_to_action">
+                    <app-icon-heading-component heading="Order Information" icon="call_to_action" [automationId]="'order-information-heading'">
                     </app-icon-heading-component>    
                 </div>
                 <div>
                     <div class="d-block d-lg-flex d-flex w-100 justify-content-end">
-                        <mat-form-field class="action-dropdown matFormFeild2" appearance="outline">
-                            <mat-label>Action</mat-label>
+                        <mat-form-field class="action-dropdown matFormFeild2" appearance="outline" data-automation-id="action-dropdown">
+                            <mat-label data-automation-id="action-label">Action</mat-label>
                             <mat-select class="employees-action" #matRefAction [(ngModel)]="actions"
-                                (selectionChange)="deAllocAction($event)">
-                                <mat-option value="pagesNumber" (click)="deAllocateAll()">De-allocate All</mat-option>
+                                (selectionChange)="deAllocAction($event)" data-automation-id="action-select">
+                                <mat-option value="pagesNumber" (click)="deAllocateAll()" data-automation-id="action-option-De-Allocate All">De-allocate All</mat-option>
                                 <mat-option value="set_column_sq" [disabled]="deallocateSelectedBtn"
-                                    (click)="deAllocateOrder()">De-Allocate Selected</mat-option>
+                                    (click)="deAllocateOrder()" data-automation-id="action-option-De-Allocate Selected">De-Allocate Selected</mat-option>
                             </mat-select>
-                            <span class="material-symbols-outlined icon-expand-more">
+                            <span class="material-symbols-outlined icon-expand-more" data-automation-id="action-expand-icon">
                                 expand_more
                             </span>
                         </mat-form-field>
@@ -98,42 +98,42 @@
             <div class="row">
                 <div  [hidden]="step == 'transaction'" class="col-xl-5">
                     <div class="d-block d-xl-flex gap-12 align-items-center ">
-                        <mat-form-field class="action-dropdown w-100 mb-3 matFormFeild1" appearance="outline">
-                            <mat-label>{{chooseSearchType}}</mat-label>
+                        <mat-form-field class="action-dropdown w-100 mb-3 matFormFeild1" appearance="outline" data-automation-id="search-type-dropdown">
+                            <mat-label data-automation-id="search-type-label">{{chooseSearchType}}</mat-label>
                             <mat-select class="employees-action" [(ngModel)]="chooseSearchType"
-                                (ngModelChange)="check($event)" [disabled]="step == 'transaction'">
-                                <mat-option value={{itemNumber}}>{{itemNumber}}</mat-option>
-                                <mat-option value="Order Number">Order No.</mat-option>
-                                <mat-option value="Tote ID">Tote ID</mat-option>
+                                (ngModelChange)="check($event)" [disabled]="step == 'transaction'" data-automation-id="search-type-select">
+                                <mat-option value={{itemNumber}} data-automation-id="search-type-option-ItemNumber">{{itemNumber}}</mat-option>
+                                <mat-option value="Order Number" data-automation-id="search-type-option-Order No.">Order No.</mat-option>
+                                <mat-option value="Tote ID" data-automation-id="search-type-option-Tote ID">Tote ID</mat-option>
                             </mat-select>
-                            <span class="material-symbols-outlined icon-expand-more">
+                            <span class="material-symbols-outlined icon-expand-more" data-automation-id="search-type-expand-icon">
                                 expand_more
                             </span>
                         </mat-form-field>
 
-                        <span class="v-br d-none d-xl-flex mb-3">-</span>
+                        <span class="v-br d-none d-xl-flex mb-3" data-automation-id="search-separator">-</span>
                         <div class="d-flex g-mini-search-box w-100 mb-3">
-                            <mat-form-field class="w-100 bg-white br-8" appearance="fill">
-                                <span class="material-symbols-outlined icon-search">
+                            <mat-form-field class="w-100 bg-white br-8" appearance="fill" data-automation-id="search-input-field">
+                                <span class="material-symbols-outlined icon-search" data-automation-id="search-icon">
                                     Search
                                 </span>
 
                                 <input type="text" [disabled]="step == 'transaction'" [(ngModel)]="TypeValue"
                                     placeholder="Search" aria-label="Search" [matAutocomplete]="item" matInput
-                                    (ngModelChange)="this.searchByItem.next($event)">
-                                <button matSuffix *ngIf="TypeValue" class="clear-btn" (click)="clear()"><mat-icon
-                                        class="text-20 text-chrome-600">cancel</mat-icon></button>
+                                    (ngModelChange)="this.searchByItem.next($event)" data-automation-id="search-input">
+                                <button matSuffix *ngIf="TypeValue" class="clear-btn" (click)="clear()" data-automation-id="clear-search-btn"><mat-icon
+                                        class="text-20 text-chrome-600" data-automation-id="clear-search-icon">cancel</mat-icon></button>
                                 <mat-autocomplete class="card custom-scroll" #item="matAutocomplete"
-                                    (optionSelected)="optionSelect($event)">
+                                    (optionSelected)="optionSelect($event)" data-automation-id="search-autocomplete">
                                     <h6 class="card-header matAutoCompHeader chooseSearchType-style">
-                                        <span >{{chooseSearchType}}</span>
+                                        <span data-automation-id="search-autocomplete-header">{{chooseSearchType}}</span>
 
                                     </h6>
                                     <ng-scrollbar class="height-350">
                                         <mat-option [value]="option" *ngFor="let option of searchedItemOrder"
-                                            class="matAutoCompTableContent searchedItemOrder">
+                                            class="matAutoCompTableContent searchedItemOrder" [attr.data-automation-id]="'search-autocomplete-option-' + option">
                                             <div class="loc_option">
-                                                <span class="searchColumn width-140">{{option}}</span>
+                                                <span class="searchColumn width-140" data-automation-id="search-option-text">{{option}}</span>
                                             </div>
                                         </mat-option>
                                     </ng-scrollbar>
@@ -149,40 +149,40 @@
                 <div class="col-xl-3" *ngIf="step !='transaction'">
 
                     <div class="card br-14  borderless mb-4 mb-xl-0 cardbr-style">
-                        <ng-scrollbar class="mat-table-scrollbar  scrollbar-hover-padding height-550" track="all">
+                        <ng-scrollbar class="mat-table-scrollbar  scrollbar-hover-padding height-550" track="all" data-automation-id="order-list-table">
                             <table mat-table [dataSource]="orderNameList" class="w-100 "
                                 [ngClass]="orderNameList.data.length>0  ? 'custom-action-clickable-table' : ''" matSort
                                 #matSort="matSort">
 
                                 <ng-container matColumnDef="select">
-                                    <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription> Select
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription data-automation-id="table-header-Select"> Select
                                     </th>
-                                    <td mat-cell *matCellDef="let element" [class.selected]="element.isRowSelected">
+                                    <td mat-cell *matCellDef="let element; let i = index" [class.selected]="element.isRowSelected" [attr.data-automation-id]="'table-data-Select-' + i">
                                         <mat-checkbox (change)="checked($event,element.name)" color="primary"
-                                            [(ngModel)]="element.isChecked">
+                                            [(ngModel)]="element.isChecked" [attr.data-automation-id]="'table-checkbox-' + i + '-' + element.name">
                                         </mat-checkbox>
                                     </td>
                                 </ng-container>
 
 
                                 <ng-container matColumnDef="order_no">
-                                    <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription> Order
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription data-automation-id="table-header-Order No."> Order
                                         No.
                                     </th>
                                     <td mat-cell *matCellDef="let element; index as i; "
-                                        [class.selected]="element.isRowSelected" (click)="ordertransaction(element,i)">
+                                        [class.selected]="element.isRowSelected" (click)="ordertransaction(element,i)" [attr.data-automation-id]="'table-data-Order No.-' + (element.name ? element.name : ' ')">
                                         {{element.name}} </td>
                                 </ng-container>
 
-                                <tr class="mat-row" *matNoDataRow>
+                                <tr class="mat-row" *matNoDataRow data-automation-id="no-data-row">
                                     <td class="mat-cell " [attr.colspan]="displayedColumns.length">
                                         No data available in table.
                                     </td>
                                 </tr>
 
                                 <tr mat-header-row *matHeaderRowDef="displayedColumns_1 ;sticky: true"
-                                    class="table-header-clr"></tr>
-                                <tr mat-row *matRowDef="let row; columns: displayedColumns_1; index as i"></tr>
+                                    class="table-header-clr" data-automation-id="order-list-header-row"></tr>
+                                <tr mat-row *matRowDef="let row; columns: displayedColumns_1; index as i" [attr.data-automation-id]="'table-row-' + i"></tr>
                             </table>
                         </ng-scrollbar>
                     </div>
@@ -191,93 +191,93 @@
                 <div class="col-xl-9" [ngClass]="step == 'transaction' ? 'col-xl-12' : 'col-xl-9'">
 
                     <div class="card br-14 borderless cardbr-style">
-                        <ng-scrollbar class="mat-table-scrollbar  scrollbar-hover-padding height-550" track="all">
+                        <ng-scrollbar class="mat-table-scrollbar  scrollbar-hover-padding height-550" track="all" data-automation-id="order-item-transactions-table">
                             <table mat-table [dataSource]="orderItemTransactions" class="w-100" #matSort1="matSort"
                                 matSort (matSortChange)="sortChange($event)">
                                 <ng-container matColumnDef="order_no">
-                                    <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription> Order
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription data-automation-id="table-header-Order Number"> Order
                                         Number
                                     </th>
-                                    <td mat-cell *matCellDef="let element"
-                                        (contextmenu)="onContextMenu($event, element.orderNumber, 'Order Number')">
+                                    <td mat-cell *matCellDef="let element; let i = index"
+                                        (contextmenu)="onContextMenu($event, element.orderNumber, 'Order Number')" [attr.data-automation-id]="'table-data-Order Number-' + (element.orderNumber ? element.orderNumber : ' ')">
                                         {{element.orderNumber}} </td>
                                 </ng-container>
 
                                 <ng-container matColumnDef="tote_id">
-                                    <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription> Tote ID
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription data-automation-id="table-header-Tote ID"> Tote ID
                                     </th>
-                                    <td mat-cell *matCellDef="let element"
-                                        (contextmenu)="onContextMenu($event, element.orderNumber, 'Tote ID')">
+                                    <td mat-cell *matCellDef="let element; let i = index"
+                                        (contextmenu)="onContextMenu($event, element.orderNumber, 'Tote ID')" [attr.data-automation-id]="'table-data-Tote ID-' + (element.toteID ? element.toteID : ' ')">
                                         {{element.toteID}} </td>
                                 </ng-container>
 
                                 <ng-container matColumnDef="item_no">
-                                    <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription> {{itemNumber}}</th>
-                                    <td mat-cell *matCellDef="let element"
-                                        (contextmenu)="onContextMenu($event, element.itemNumber, 'Item Number')">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription data-automation-id="table-header-Item Number"> {{itemNumber}}</th>
+                                    <td mat-cell *matCellDef="let element; let i = index"
+                                        (contextmenu)="onContextMenu($event, element.itemNumber, 'Item Number')" [attr.data-automation-id]="'table-data-Item Number-' + (element.itemNumber ? element.itemNumber : ' ')">
                                         {{element.itemNumber}} </td>
                                 </ng-container>
 
                                 <ng-container matColumnDef="description">
-                                    <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription>
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription data-automation-id="table-header-Description">
                                         Description
                                     </th>
-                                    <td mat-cell *matCellDef="let element"
-                                        (contextmenu)="onContextMenu($event, element.description, 'Description')">
+                                    <td mat-cell *matCellDef="let element; let i = index"
+                                        (contextmenu)="onContextMenu($event, element.description, 'Description')" [attr.data-automation-id]="'table-data-Description-' + (element.description ? element.description : ' ')">
                                         {{element.description}} </td>
                                 </ng-container>
 
                                 <ng-container matColumnDef="priority">
-                                    <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription>
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription data-automation-id="table-header-Priority">
                                         Priority
                                     </th>
-                                    <td mat-cell *matCellDef="let element"
-                                        (contextmenu)="onContextMenu($event, element.priority, 'Priority')">
+                                    <td mat-cell *matCellDef="let element; let i = index"
+                                        (contextmenu)="onContextMenu($event, element.priority, 'Priority')" [attr.data-automation-id]="'table-data-Priority-' + (element.priority ? element.priority : ' ')">
                                         {{element.priority}} </td>
                                 </ng-container>
 
                                 <ng-container matColumnDef="transactionQuantity">
-                                    <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription>
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription data-automation-id="table-header-Transaction Quantity">
                                         Transaction Quantity
                                     </th>
-                                    <td mat-cell *matCellDef="let element"
-                                        (contextmenu)="onContextMenu($event, element.transactionQuantity, 'Transaction Quantity')">
+                                    <td mat-cell *matCellDef="let element; let i = index"
+                                        (contextmenu)="onContextMenu($event, element.transactionQuantity, 'Transaction Quantity')" [attr.data-automation-id]="'table-data-Transaction Quantity-' + (element.transactionQuantity ? element.transactionQuantity : ' ')">
                                         {{element.transactionQuantity}} </td>
                                 </ng-container>
 
                                 <ng-container matColumnDef="unitOfMeasure">
-                                    <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription replacePlaceholder [replacePlaceHolder]="placeholders.unitOfMeasure" [fallbackPlaceHolder]="placeholders.unitOfMeasureFallback"> {{UnitOfMeasure}} </th>
-                                    <td mat-cell *matCellDef="let element"
-                                        (contextmenu)="onContextMenu($event, element.unitOfMeasure, 'Unit of Measure')">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription replacePlaceholder [replacePlaceHolder]="placeholders.unitOfMeasure" [fallbackPlaceHolder]="placeholders.unitOfMeasureFallback" data-automation-id="table-header-Unit Of Measure"> {{UnitOfMeasure}} </th>
+                                    <td mat-cell *matCellDef="let element; let i = index"
+                                        (contextmenu)="onContextMenu($event, element.unitOfMeasure, 'Unit of Measure')" [attr.data-automation-id]="'table-data-Unit Of Measure-' + (element.unitOfMeasure ? element.unitOfMeasure : ' ')">
                                         {{element.unitOfMeasure}} </td>
                                 </ng-container>
 
                                 <ng-container matColumnDef="batchPickID">
-                                    <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription> Batch
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription data-automation-id="table-header-Batch ID"> Batch
                                         ID
                                     </th>
-                                    <td mat-cell *matCellDef="let element"
-                                        (contextmenu)="onContextMenu($event, element.batchPickID, 'Batch Pick ID')">
+                                    <td mat-cell *matCellDef="let element; let i = index"
+                                        (contextmenu)="onContextMenu($event, element.batchPickID, 'Batch Pick ID')" [attr.data-automation-id]="'table-data-Batch ID-' + (element.batchPickID ? element.batchPickID : ' ')">
                                         {{element.batchPickID}} </td>
                                 </ng-container>
 
                                 <ng-container matColumnDef="trans_type">
-                                    <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription> Trans
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription data-automation-id="table-header-Trans Type"> Trans
                                         Type
                                     </th>
-                                    <td mat-cell *matCellDef="let element"
-                                        (contextmenu)="onContextMenu($event, element.transactionType, 'Transaction Type')">
+                                    <td mat-cell *matCellDef="let element; let i = index"
+                                        (contextmenu)="onContextMenu($event, element.transactionType, 'Transaction Type')" [attr.data-automation-id]="'table-data-Trans Type-' + (element.transactionType ? element.transactionType : ' ')">
                                         {{element.transactionType}} </td>
                                 </ng-container>
 
                                 <ng-container matColumnDef="deallocate">
-                                    <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription>
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription data-automation-id="table-header-De-Allocate">
                                         De-Allocate
                                     </th>
-                                    <td mat-cell *matCellDef="let element">
+                                    <td mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'table-data-De-Allocate-' +i">
 
                                         <mat-checkbox (change)="checked($event,element.orderNumber)" color="primary"
-                                            [(ngModel)]="element.isDeallocate" [disabled]="onViewOrder">
+                                            [(ngModel)]="element.isDeallocate" [disabled]="onViewOrder" [attr.data-automation-id]="'table-checkbox-' + i + '-' + element.orderNumber">
                                         </mat-checkbox>
                                     </td>
                                 </ng-container>
@@ -287,14 +287,14 @@
 
 
 
-                                <tr class="mat-row" *matNoDataRow (contextmenu)="onContextMenu($event, undefined, '')">
+                                <tr class="mat-row" *matNoDataRow (contextmenu)="onContextMenu($event, undefined, '')" data-automation-id="no-data-row">
                                     <td class="mat-cell " [attr.colspan]="displayedColumns.length">
                                         No data available in table.
                                     </td>
                                 </tr>
 
-                                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-                                <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                                <tr mat-header-row *matHeaderRowDef="displayedColumns" data-automation-id="table-header-row"></tr>
+                                <tr mat-row *matRowDef="let row; columns: displayedColumns; index as i" [attr.data-automation-id]="'table-row-' + i"></tr>
 
 
                             </table>
@@ -302,11 +302,11 @@
                     </div>
                     <ng-container *ngIf="onViewOrder; else transaction">
                         <mat-paginator [pageSize]="10" [pageSizeOptions]="[10, 20, 100]" #paginator showFirstLastButtons
-                            [length]="pageLength" (page)="handlePageEventTo($event)"></mat-paginator>
+                            [length]="pageLength" (page)="handlePageEventTo($event)" data-automation-id="order-item-paginator"></mat-paginator>
                     </ng-container>
                     <ng-template #transaction>
                         <mat-paginator [pageSize]="10" [pageSizeOptions]="[10, 20, 100]" #paginator showFirstLastButtons
-                            [length]="pageLength" (page)="handlePageEventTansaction($event)"></mat-paginator>
+                            [length]="pageLength" (page)="handlePageEventTansaction($event)" data-automation-id="order-item-transaction-paginator"></mat-paginator>
                     </ng-template>
                     <div class="table-pagination d-flex justify-content-start">
 
@@ -321,4 +321,4 @@
 
 
 <app-table-context-menu-component *ngIf="isActiveTrigger" (optionSelected)="optionSelected($event)"
-    [componentName]="'deAllOrd'"></app-table-context-menu-component>
+    [componentName]="'deAllOrd'" data-automation-id="de-allocate-orders-context-menu"></app-table-context-menu-component>

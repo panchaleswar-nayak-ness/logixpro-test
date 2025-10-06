@@ -27,7 +27,11 @@ import { PickToteInFilterComponent } from './pick-tote-induction/pick-tote-in-fi
 import { PickToteInductionComponent } from './pick-tote-induction/pick-tote-induction.component';
 import { NonSuperBatchOrdersComponent } from './pick-tote-induction/non-super-batch-orders/non-super-batch-orders.component';
 import { SuperBatchOrdersComponent } from './pick-tote-induction/super-batch-orders/super-batch-orders.component';
-
+import { CartManagementComponent } from './cart-management/cart-management.component';
+import { BuildNewCartComponent } from './cart-management/dialogs/build-new-cart/build-new-cart.component';
+import { CartSearchComponent } from './cart-management/cart-search/cart-search.component';
+import { CartStatusSummaryComponent } from './cart-management/cart-status-summary/cart-status-summary.component';
+import { CartGridComponent } from './cart-management/cart-grid/cart-grid.component';
 
 @NgModule({
     declarations: [
@@ -52,7 +56,12 @@ import { SuperBatchOrdersComponent } from './pick-tote-induction/super-batch-ord
         PickToteInFilterComponent,
         PickToteInductionComponent,
         NonSuperBatchOrdersComponent,
-        SuperBatchOrdersComponent
+        SuperBatchOrdersComponent,
+        CartManagementComponent,
+        BuildNewCartComponent,
+        CartSearchComponent,
+        CartStatusSummaryComponent,
+        CartGridComponent
     ],
     imports: [
         CommonModule,

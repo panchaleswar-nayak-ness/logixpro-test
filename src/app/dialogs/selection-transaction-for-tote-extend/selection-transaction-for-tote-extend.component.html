@@ -1,7 +1,7 @@
 <div class="d-flex justify-content-between align-items-center" mat-dialog-title>
   <div class="w-48px"></div>
-  <h1 class="m-0" mat-dialog-title>Select Transaction For Tote</h1>
-  <button mat-icon-button class="close-button dialog-close-button-fix" [mat-dialog-close]="true">
+  <h1 class="m-0" mat-dialog-title data-automation-id="select-transaction-header">Select Transaction For Tote</h1>
+  <button mat-icon-button class="close-button dialog-close-button-fix" [mat-dialog-close]="true" data-automation-id="close-button">
     <mat-icon class="close-icon">close</mat-icon>
   </button>
 </div>
@@ -12,15 +12,15 @@
     <div class="row">
       <div class="col-xl-6 offset-xl-3">
         <div class="d-flex align-items-center justify-content-center flex-wrap gap-12 mb-3">
-          <div class="text-center"> <span class="label label-gray px-2 f-14 mb-1">{{ItemNumber}}
+          <div class="text-center"> <span class="label label-gray px-2 f-14 mb-1" data-automation-id="item-number-label">{{ItemNumber}}
               &nbsp;<b>{{toteForm.value.itemNumber}}</b></span></div>
-          <div class="text-center"> <span class="label label-gray px-2 f-14 mb-1">Batch
+          <div class="text-center"> <span class="label label-gray px-2 f-14 mb-1" data-automation-id="batch-id-label">Batch
               ID:&nbsp;<b>{{toteForm.value.batchID}}</b></span></div>
           <div class="text-center"> <span
-              class="label label-gray px-2 f-14 mb-1">Zones:&nbsp;<b>{{toteForm.value.zones.replace("Zones:","")}}</b></span>
+              class="label label-gray px-2 f-14 mb-1" data-automation-id="zones-label">Zones:&nbsp;<b>{{toteForm.value.zones.replace("Zones:","")}}</b></span>
           </div>
           <div class="text-center"> <span
-              class="label label-gray px-2 f-14 mb-1">Description:&nbsp;<b>{{toteForm.value.description}}</b></span>
+              class="label label-gray px-2 f-14 mb-1" data-automation-id="description-label">Description:&nbsp;<b>{{toteForm.value.description}}</b></span>
           </div>
         </div>
       </div>
@@ -30,7 +30,7 @@
 
       <div class="d-flex justify-content-between align-items-center mb-3">
         <div class="d-flex align-items-center">
-          <h2 class="card-header-title mb-0 d-flex align-items-center me-3">
+          <h2 class="card-header-title mb-0 d-flex align-items-center me-3" data-automation-id="transaction-info-header">
             <div class="mat-icon-wrap me-lg-3">
               <span class="material-symbols-outlined">
                 backup_table
@@ -38,9 +38,9 @@
             </div>
             <span>Transaction Info</span>
           </h2>
-          <mat-checkbox formControlName="returnToStock" color="primary">Return to stock?</mat-checkbox>
+          <mat-checkbox formControlName="returnToStock" color="primary" data-automation-id="return-to-stock-checkbox">Return to stock?</mat-checkbox>
         </div>
-        <button mat-flat-button color="warn" class="btn-regular" (click)="clearTransInfo()">
+        <button mat-flat-button color="warn" class="btn-regular" (click)="clearTransInfo()" data-automation-id="clear-button">
           Clear
         </button>
       </div>
@@ -48,68 +48,68 @@
       <div class="row">
         <div class="col-xl-3">
           <mat-form-field class="custom-form-field w-100 mb-2" appearance="outline" [class.mat-form-field-disabled]="orderNum">
-            <mat-label>Order Number</mat-label>
+            <mat-label data-automation-id="order-number-label">Order Number</mat-label>
             <input formControlName="orderNumber" (keydown.shift.enter)="$event.preventDefault()" matInput type="text"
-              [readOnly]="orderNum ? true : false">
+              [readOnly]="orderNum ? true : false" data-automation-id="order-number-input">
           </mat-form-field>
         </div>
         <div class="col-xl-3">
           <mat-form-field class="custom-form-field w-100 mb-2 mat-form-field-disabled" appearance="outline">
-            <mat-label>Category</mat-label>
+            <mat-label data-automation-id="category-label">Category</mat-label>
             <input formControlName="category" (keydown.shift.enter)="$event.preventDefault()" matInput type="text"
-              readonly>
+              readonly data-automation-id="category-input">
           </mat-form-field>
         </div>
         <div class="col-xl-3">
           <mat-form-field class="custom-form-field w-100 mb-2 mat-form-field-disabled" appearance="outline">
-            <mat-label>Sub-Category</mat-label>
+            <mat-label data-automation-id="sub-category-label">Sub-Category</mat-label>
             <input formControlName="subCategory" (keydown.shift.enter)="$event.preventDefault()" matInput type="text"
-              readonly>
+              readonly data-automation-id="sub-category-input">
           </mat-form-field>
         </div>
         <div class="col-xl-3">
           <mat-form-field class="custom-form-field w-100 mb-2" appearance="outline">
-            <mat-label>{{fieldNames?.userField1}}</mat-label>
-            <input formControlName="userField1" (keydown.shift.enter)="$event.preventDefault()" matInput type="text">
+            <mat-label data-automation-id="user-field-1-label">{{fieldNames?.userField1}}</mat-label>
+            <input formControlName="userField1" (keydown.shift.enter)="$event.preventDefault()" matInput type="text" data-automation-id="user-field-1-input">
           </mat-form-field>
         </div>
         <div class="col-xl-3">
           <mat-form-field class="custom-form-field w-100 mb-2" appearance="outline">
-            <mat-label>{{fieldNames?.userField2}}</mat-label>
-            <input formControlName="userField2" (keydown.shift.enter)="$event.preventDefault()" matInput type="text">
+            <mat-label data-automation-id="user-field-2-label">{{fieldNames?.userField2}}</mat-label>
+            <input formControlName="userField2" (keydown.shift.enter)="$event.preventDefault()" matInput type="text" data-automation-id="user-field-2-input">
           </mat-form-field>
         </div>
         <div class="col-xl-3">
           <mat-form-field class="custom-form-field w-100 mb-2" appearance="outline">
-            <mat-label>Lot Number</mat-label>
-            <input formControlName="lotNumber" (keydown.shift.enter)="$event.preventDefault()" matInput type="text">
+            <mat-label data-automation-id="lot-number-label">Lot Number</mat-label>
+            <input formControlName="lotNumber" (keydown.shift.enter)="$event.preventDefault()" matInput type="text" data-automation-id="lot-number-input">
           </mat-form-field>
         </div>
         <div class="col-xl-3">
           <mat-form-field class="custom-form-field w-100 mb-2" appearance="outline">
-            <mat-label>Expiration Date</mat-label>
+            <mat-label data-automation-id="expiration-date-label">Expiration Date</mat-label>
             <input formControlName="expirationDate" (keydown.shift.enter)="$event.preventDefault()" matInput
-              type="date">
+              type="date" data-automation-id="expiration-date-input">
           </mat-form-field>
         </div>
         <div class="col-xl-3">
           <mat-form-field class="custom-form-field w-100 mb-2" appearance="outline">
-            <mat-label>Serial Number</mat-label>
-            <input formControlName="serialNumber" (keydown.shift.enter)="$event.preventDefault()" matInput type="text">
+            <mat-label data-automation-id="serial-number-label">Serial Number</mat-label>
+            <input formControlName="serialNumber" (keydown.shift.enter)="$event.preventDefault()" matInput type="text" data-automation-id="serial-number-input">
           </mat-form-field>
         </div>
         <div class="col-xl-3">
           <mat-form-field class="custom-form-field w-100 mb-2 mat-form-field-disabled" appearance="outline">
-            <mat-label>Current Transaction Quantity</mat-label>
+            <mat-label data-automation-id="transaction-quantity-label">Current Transaction Quantity</mat-label>
             <input formControlName="transactionQuantity" (keydown.shift.enter)="$event.preventDefault()" matInput
-              type="text" readonly>
+              type="text" readonly data-automation-id="transaction-quantity-input">
           </mat-form-field>
         </div>
         <div class="col-xl-3">
           <mat-form-field class="custom-form-field w-100 mb-2"  [class.mat-form-field-disabled]="!isWarehouseSensitive"  appearance="outline" (click)="toteForm.getRawValue().warehouseSensitive ? openWareHouse() : false">
-            <mat-label>Warehouse</mat-label>
+            <mat-label data-automation-id="warehouse-label">Warehouse</mat-label>
             <input formControlName="warehouse" (keydown.shift.enter)="$event.preventDefault()" matInput type="text"
-              readonly>
+              readonly data-automation-id="warehouse-input">
             <span matSuffix>
               <mat-icon class="mat-icon-transaction">unfold_more</mat-icon>
             </span>
@@ -117,9 +117,9 @@
         </div>
         <div class="col-xl-3" *ngIf="blindInductionReason">
           <mat-form-field class="w-100 action-dropdown" appearance="outline">
-            <mat-label>Blind Induction Reason</mat-label>
-            <mat-select formControlName="blindInduct" class="employees-action">
-              <mat-option *ngFor="let option of blindInductOptions" [value]="option.value">
+            <mat-label data-automation-id="blind-induction-label">Blind Induction Reason</mat-label>
+            <mat-select formControlName="blindInduct" class="employees-action" data-automation-id="blind-induction-select">
+              <mat-option *ngFor="let option of blindInductOptions" [value]="option.value" [attr.data-automation-id]="'blind-induction-option-' + option.value">
                 {{ option.valueName }}
               </mat-option>
             </mat-select>
@@ -135,7 +135,7 @@
       <div class="d-flex justify-content-between align-items-center mb-4">
         <div class="d-flex align-items-center">
 
-          <h2 class="card-header-title mb-0 d-flex align-items-center me-3">
+          <h2 class="card-header-title mb-0 d-flex align-items-center me-3" data-automation-id="item-info-header">
             <div class="mat-icon-wrap me-lg-3">
               <span class="material-symbols-outlined">
                 category
@@ -145,18 +145,18 @@
           </h2>
 
           <div class="d-flex gap-12">
-            <mat-checkbox formControlName="warehouseSensitive" color="primary">Warehouse Sensitive</mat-checkbox>
-            <mat-checkbox formControlName="dateSensitive" color="primary">Date Sensitive</mat-checkbox>
-            <mat-checkbox formControlName="fifo" color="primary">FIFO</mat-checkbox>
+            <mat-checkbox formControlName="warehouseSensitive" color="primary" data-automation-id="warehouse-sensitive-checkbox">Warehouse Sensitive</mat-checkbox>
+            <mat-checkbox formControlName="dateSensitive" color="primary" data-automation-id="date-sensitive-checkbox">Date Sensitive</mat-checkbox>
+            <mat-checkbox formControlName="fifo" color="primary" data-automation-id="fifo-checkbox">FIFO</mat-checkbox>
           </div>
 
         </div>
 
         <div class="d-flex gap-12">
-          <button mat-flat-button color="primary" class="btn-regular" (click)="onViewItemDetail(itemNum.value)">
+          <button mat-flat-button color="primary" class="btn-regular" (click)="onViewItemDetail(itemNum.value)" data-automation-id="view-item-detail-button">
             View Item Detail
           </button>
-          <button mat-flat-button color="primary" class="btn-regular" (click)="updateItemInfo()">
+          <button mat-flat-button color="primary" class="btn-regular" (click)="updateItemInfo()" data-automation-id="update-item-info-button">
             Update Item Info
           </button>
         </div>
@@ -166,45 +166,45 @@
       <div class="row">
         <div class="col-xl-3">
           <mat-form-field class="custom-form-field w-100 mb-2 mat-form-field-disabled" appearance="outline">
-            <mat-label replacePlaceholder [replacePlaceHolder]="placeholders.itemNumber" [fallbackPlaceHolder]="placeholders.itemNumberFallback">{{ItemNumber}}</mat-label>
+            <mat-label replacePlaceholder [replacePlaceHolder]="placeholders.itemNumber" [fallbackPlaceHolder]="placeholders.itemNumberFallback" data-automation-id="item-number-label">{{ItemNumber}}</mat-label>
             <input formControlName="itemNumber" #itemNum (keydown.shift.enter)="$event.preventDefault()" matInput
-              type="text" readonly>
+              type="text" readonly data-automation-id="item-number-input">
           </mat-form-field>
         </div>
         <div class="col-xl-3">
           <mat-form-field class="custom-form-field w-100 mb-2 mat-form-field-disabled" appearance="outline">
-            <mat-label>Supplier Item ID</mat-label>
+            <mat-label data-automation-id="supplier-item-id-label">Supplier Item ID</mat-label>
             <input formControlName="supplierItemID" (keydown.shift.enter)="$event.preventDefault()" matInput type="text"
-              readonly>
+              readonly data-automation-id="supplier-item-id-input">
           </mat-form-field>
         </div>
         <div class="col-xl-3">
           <mat-form-field class="custom-form-field w-100 mb-2 mat-form-field-disabled" appearance="outline">
-            <mat-label>Description</mat-label>
+            <mat-label data-automation-id="description-label">Description</mat-label>
             <input formControlName="description" (keydown.shift.enter)="$event.preventDefault()" matInput type="text"
-              readonly>
+              readonly data-automation-id="description-input">
           </mat-form-field>
         </div>
         <div class="col-xl-3">
           <mat-form-field class="custom-form-field w-100 mb-2 mat-form-field-disabled" appearance="outline">
-            <mat-label replacePlaceholder [replacePlaceHolder]="placeholders.unitOfMeasure" [fallbackPlaceHolder]="placeholders.unitOfMeasureFallback"> {{UnitOfMeasure}} </mat-label>
+            <mat-label replacePlaceholder [replacePlaceHolder]="placeholders.unitOfMeasure" [fallbackPlaceHolder]="placeholders.unitOfMeasureFallback" data-automation-id="unit-of-measure-label"> {{UnitOfMeasure}} </mat-label>
             <input formControlName="unitOfMeasure" (keydown.shift.enter)="$event.preventDefault()" matInput type="text"
-              readonly>
+              readonly data-automation-id="unit-of-measure-input">
           </mat-form-field>
         </div>
         <div class="col-xl-3">
           <div class="d-flex align-items-center gap-12 mb-2">
             <mat-form-field class="w-100 action-dropdown" appearance="outline">
-              <mat-label>{{this.fieldMappings?.carousel || this.placeholders.carouselFallback}} cell size</mat-label>
-              <mat-select formControlName="carouselCellSize" class="employees-action">
-                <mat-option value="{{cell.cells}}" *ngFor="let cell of cellSizeList">{{cell.cells}}</mat-option>
+              <mat-label data-automation-id="carousel-cell-size-label">{{this.fieldMappings?.carousel || this.placeholders.carouselFallback}} cell size</mat-label>
+              <mat-select formControlName="carouselCellSize" class="employees-action" data-automation-id="carousel-cell-size-select">
+                <mat-option value="{{cell.cells}}" *ngFor="let cell of cellSizeList" [attr.data-automation-id]="'carousel-cell-size-option-' + cell.cells">{{cell.cells}}</mat-option>
               </mat-select>
               <span class="material-symbols-outlined icon-expand-more">
                 expand_more
               </span>
             </mat-form-field>
             <button mat-mini-fab color="Default" class="button-default-i icon-button-8br"
-              (click)="openCellSizeDialog('cellSize')">
+              (click)="openCellSizeDialog('cellSize')" data-automation-id="carousel-cell-size-button">
               <mat-icon class="transform-rotate">unfold_more</mat-icon>
             </button>
           </div>
@@ -212,16 +212,16 @@
         <div class="col-xl-3">
           <div class="d-flex align-items-center gap-12 mb-2">
             <mat-form-field class="w-100 action-dropdown" appearance="outline">
-              <mat-label>Bulk cell size</mat-label>
-              <mat-select formControlName="bulkCellSize" class="employees-action">
-                <mat-option value="{{cell.cells}}" *ngFor="let cell of cellSizeList">{{cell.cells}}</mat-option>
+              <mat-label data-automation-id="bulk-cell-size-label">Bulk cell size</mat-label>
+              <mat-select formControlName="bulkCellSize" class="employees-action" data-automation-id="bulk-cell-size-se lect">
+                <mat-option value="{{cell.cells}}" *ngFor="let cell of cellSizeList" [attr.data-automation-id]="'bulk-cell-size-option-' + cell.cells">{{cell.cells}}</mat-option>
               </mat-select>
               <span class="material-symbols-outlined icon-expand-more">
                 expand_more
               </span>
             </mat-form-field>
             <button mat-mini-fab color="Default" class="button-default-i icon-button-8br"
-              (click)="openCellSizeDialog('bulkCellSize')">
+              (click)="openCellSizeDialog('bulkCellSize')" data-automation-id="bulk-cell-size-button">
               <mat-icon class="transform-rotate">unfold_more</mat-icon>
             </button>
           </div>
@@ -229,16 +229,16 @@
         <div class="col-xl-3">
           <div class="d-flex align-items-center gap-12 mb-2">
             <mat-form-field class="w-100 action-dropdown" appearance="outline">
-              <mat-label>Flow rack cell size</mat-label>
-              <mat-select formControlName="cfCellSize" class="employees-action">
-                <mat-option value="{{cell.cells}}" *ngFor="let cell of cellSizeList">{{cell.cells}}</mat-option>
+              <mat-label data-automation-id="flow-rack-cell-size-label">Flow rack cell size</mat-label>
+              <mat-select formControlName="cfCellSize" class="employees-action" data-automation-id="flow-rack-cell-size-select">
+                <mat-option value="{{cell.cells}}" *ngFor="let cell of cellSizeList" [attr.data-automation-id]="'flow-rack-cell-size-option-' + cell.cells">{{cell.cells}}</mat-option>
               </mat-select>
               <span class="material-symbols-outlined icon-expand-more">
                 expand_more
               </span>
             </mat-form-field>
             <button mat-mini-fab color="Default" class="button-default-i icon-button-8br"
-              (click)="openCellSizeDialog('cfCellSize')">
+              (click)="openCellSizeDialog('cfCellSize')" data-automation-id="flow-rack-cell-size-button">
               <mat-icon class="transform-rotate">unfold_more</mat-icon>
             </button>
           </div>
@@ -246,12 +246,12 @@
         <div class="col-xl-3">
           <div class="d-flex align-items-center mb-2">
             <mat-form-field class="w-100 action-dropdown" appearance="outline">
-              <mat-label>Primary Zone</mat-label>
-              <mat-select formControlName="primaryPickZone" class="employees-action">
-                <mat-option value=""></mat-option>
-                <mat-option value="carousel">{{this.fieldMappings?.carousel || this.placeholders.carouselFallback}}</mat-option>
-                <mat-option value="bulk">Bulk</mat-option>
-                <mat-option value="carton flow">Carton Flow</mat-option>
+              <mat-label data-automation-id="primary-zone-label">Primary Zone</mat-label>
+              <mat-select formControlName="primaryPickZone" class="employees-action" data-automation-id="primary-zone-select">
+                <mat-option value="" data-automation-id="primary-zone-empty-option"></mat-option>
+                <mat-option value="carousel" data-automation-id="primary-zone-carousel-option">{{this.fieldMappings?.carousel || this.placeholders.carouselFallback}}</mat-option>
+                <mat-option value="bulk" data-automation-id="primary-zone-bulk-option">Bulk</mat-option>
+                <mat-option value="carton flow" data-automation-id="primary-zone-carton-flow-option">Carton Flow</mat-option>
               </mat-select>
               <span class="material-symbols-outlined icon-expand-more">
                 expand_more
@@ -263,16 +263,16 @@
         <div class="col-xl-3">
           <div class="d-flex align-items-center gap-12 mb-2">
             <mat-form-field class="w-100 action-dropdown" appearance="outline">
-              <mat-label>{{this.fieldMappings?.carousel || this.placeholders.carouselFallback}} velocity</mat-label>
-              <mat-select formControlName="carouselVelocity" class="employees-action">
-                <mat-option value="{{velocity}}" *ngFor="let velocity of velocityCodeList">{{velocity}}</mat-option>
+              <mat-label data-automation-id="carousel-velocity-label">{{this.fieldMappings?.carousel || this.placeholders.carouselFallback}} velocity</mat-label>
+              <mat-select formControlName="carouselVelocity" class="employees-action" data-automation-id="carousel-velocity-select">
+                <mat-option value="{{velocity}}" *ngFor="let velocity of velocityCodeList" [attr.data-automation-id]="'carousel-velocity-option-' + velocity">{{velocity}}</mat-option>
               </mat-select>
               <span class="material-symbols-outlined icon-expand-more">
                 expand_more
               </span>
             </mat-form-field>
             <button mat-mini-fab color="Default" class="button-default-i icon-button-8br"
-              (click)="openVelocityCodeDialog('goldenZone')">
+              (click)="openVelocityCodeDialog('goldenZone')" data-automation-id="carousel-velocity-button">
               <mat-icon class="transform-rotate">unfold_more</mat-icon>
             </button>
           </div>
@@ -280,16 +280,16 @@
         <div class="col-xl-3">
           <div class="d-flex align-items-center gap-12 mb-2">
             <mat-form-field class="w-100 action-dropdown" appearance="outline">
-              <mat-label>Bulk velocity</mat-label>
-              <mat-select formControlName="bulkVelocity" class="employees-action">
-                <mat-option value="{{velocity}}" *ngFor="let velocity of velocityCodeList">{{velocity}}</mat-option>
+              <mat-label data-automation-id="bulk-velocity-label">Bulk velocity</mat-label>
+              <mat-select formControlName="bulkVelocity" class="employees-action" data-automation-id="bulk-velocity-select">
+                <mat-option value="{{velocity}}" *ngFor="let velocity of velocityCodeList" [attr.data-automation-id]="'bulk-velocity-option-' + velocity">{{velocity}}</mat-option>
               </mat-select>
               <span class="material-symbols-outlined icon-expand-more">
                 expand_more
               </span>
             </mat-form-field>
             <button mat-mini-fab color="Default" class="button-default-i icon-button-8br"
-              (click)="openVelocityCodeDialog('bulkVelocity')">
+              (click)="openVelocityCodeDialog('bulkVelocity')" data-automation-id="bulk-velocity-button">
               <mat-icon class="transform-rotate">unfold_more</mat-icon>
             </button>
           </div>
@@ -297,16 +297,16 @@
         <div class="col-xl-3">
           <div class="d-flex align-items-center gap-12 mb-2">
             <mat-form-field class="w-100 action-dropdown" appearance="outline">
-              <mat-label>Flow rack velocity</mat-label>
-              <mat-select formControlName="cfVelocity" class="employees-action">
-                <mat-option value="{{velocity}}" *ngFor="let velocity of velocityCodeList">{{velocity}}</mat-option>
+              <mat-label data-automation-id="flow-rack-velocity-label">Flow rack velocity</mat-label>
+              <mat-select formControlName="cfVelocity" class="employees-action" data-automation-id="flow-rack-velocity-select">
+                <mat-option value="{{velocity}}" *ngFor="let velocity of velocityCodeList" [attr.data-automation-id]="'flow-rack-velocity-option-' + velocity">{{velocity}}</mat-option>
               </mat-select>
               <span class="material-symbols-outlined icon-expand-more">
                 expand_more
               </span>
             </mat-form-field>
             <button mat-mini-fab color="Default" class="button-default-i icon-button-8br"
-              (click)="openVelocityCodeDialog('cfVelocity')">
+              (click)="openVelocityCodeDialog('cfVelocity')" data-automation-id="flow-rack-velocity-button">
               <mat-icon class="transform-rotate">unfold_more</mat-icon>
             </button>
           </div>
@@ -315,12 +315,12 @@
         <div class="col-xl-3">
           <div class="d-flex align-items-center mb-2">
             <mat-form-field class="w-100 action-dropdown" appearance="outline">
-              <mat-label>Secondary zone</mat-label>
-              <mat-select formControlName="secondaryPickZone" class="employees-action">
-                <mat-option value=""></mat-option>
-                <mat-option value="carousel">{{this.fieldMappings?.carousel || this.placeholders.carouselFallback}}</mat-option>
-                <mat-option value="bulk">Bulk</mat-option>
-                <mat-option value="carton flow">Carton Flow</mat-option>
+              <mat-label data-automation-id="secondary-zone-label">Secondary zone</mat-label>
+              <mat-select formControlName="secondaryPickZone" class="employees-action" data-automation-id="secondary-zone-select">
+                <mat-option value="" data-automation-id="secondary-zone-empty-option"></mat-option>
+                <mat-option value="carousel" data-automation-id="secondary-zone-carousel-option">{{this.fieldMappings?.carousel || this.placeholders.carouselFallback}}</mat-option>
+                <mat-option value="bulk" data-automation-id="secondary-zone-bulk-option">Bulk</mat-option>
+                <mat-option value="carton flow" data-automation-id="secondary-zone-carton-flow-option">Carton Flow</mat-option>
               </mat-select>
               <span class="material-symbols-outlined icon-expand-more">
                 expand_more
@@ -337,7 +337,7 @@
       <div class="d-flex justify-content-between align-items-center mb-4">
 
         <div class="d-flex align-items-center">
-          <h2 class="card-header-title mb-0 d-flex align-items-center me-3">
+          <h2 class="card-header-title mb-0 d-flex align-items-center me-3" data-automation-id="location-info-header">
             <div class="mat-icon-wrap me-lg-3">
               <span class="material-symbols-outlined">
                 pin_drop
@@ -348,10 +348,10 @@
         </div>
 
         <div class="d-flex gap-12">
-          <button mat-flat-button color="primary" class="btn-regular" (click)="openChooseLocation()">
+          <button mat-flat-button color="primary" class="btn-regular" (click)="openChooseLocation()" data-automation-id="choose-location-button">
             Choose Location
           </button>
-          <button mat-flat-button color="primary" class="btn-regular" (click)="checkRepenishment()">
+          <button mat-flat-button color="primary" class="btn-regular" (click)="checkRepenishment()" data-automation-id="find-location-button">
             Find Location
           </button>
         </div>
@@ -361,76 +361,76 @@
       <div class="row">
         <div class="col-xl-3">
           <mat-form-field class="custom-form-field w-100 mb-2 mat-form-field-disabled" appearance="outline">
-            <mat-label>Zone</mat-label>
-            <input formControlName="zone" (keydown.shift.enter)="$event.preventDefault()" matInput type="text" readonly>
+            <mat-label data-automation-id="zone-label">Zone</mat-label>
+            <input formControlName="zone" (keydown.shift.enter)="$event.preventDefault()" matInput type="text" readonly data-automation-id="zone-input">
           </mat-form-field>
         </div>
         <div class="col-xl-3">
           <mat-form-field class="custom-form-field w-100 mb-2 mat-form-field-disabled" appearance="outline">
-            <mat-label>{{this.fieldMappings?.carousel || this.placeholders.carouselFallback}}</mat-label>
+            <mat-label data-automation-id="carousel-label">{{this.fieldMappings?.carousel || this.placeholders.carouselFallback}}</mat-label>
             <input formControlName="carousel" (keydown.shift.enter)="$event.preventDefault()" matInput type="text"
-              readonly>
+              readonly data-automation-id="carousel-input">
           </mat-form-field>
         </div>
         <div class="col-xl-3">
           <mat-form-field class="custom-form-field w-100 mb-2 mat-form-field-disabled" appearance="outline">
-            <mat-label>{{this.fieldMappings?.row || this.placeholders.rowFallback}}</mat-label>
-            <input formControlName="row" (keydown.shift.enter)="$event.preventDefault()" matInput type="text" readonly>
+            <mat-label data-automation-id="row-label">{{this.fieldMappings?.row || this.placeholders.rowFallback}}</mat-label>
+            <input formControlName="row" (keydown.shift.enter)="$event.preventDefault()" matInput type="text" readonly data-automation-id="row-input">
           </mat-form-field>
         </div>
         <div class="col-xl-3">
           <mat-form-field class="custom-form-field w-100 mb-2 mat-form-field-disabled" appearance="outline">
-            <mat-label>{{this.fieldMappings?.shelf || this.placeholders.shelfFallback }}</mat-label>
+            <mat-label data-automation-id="shelf-label">{{this.fieldMappings?.shelf || this.placeholders.shelfFallback }}</mat-label>
             <input formControlName="shelf" (keydown.shift.enter)="$event.preventDefault()" matInput type="text"
-              readonly>
+              readonly data-automation-id="shelf-input">
           </mat-form-field>
         </div>
         <div class="col-xl-3">
           <mat-form-field class="custom-form-field w-100 mb-2 mat-form-field-disabled" appearance="outline">
-            <mat-label>{{this.fieldMappings?.bin || this.placeholders.binFallback}}</mat-label>
-            <input formControlName="bin" (keydown.shift.enter)="$event.preventDefault()" matInput type="text" readonly>
+            <mat-label data-automation-id="bin-label">{{this.fieldMappings?.bin || this.placeholders.binFallback}}</mat-label>
+            <input formControlName="bin" (keydown.shift.enter)="$event.preventDefault()" matInput type="text" readonly data-automation-id="bin-input">
           </mat-form-field>
         </div>
         <div class="col-xl-3">
           <mat-form-field class="custom-form-field w-100 mb-2 mat-form-field-disabled" appearance="outline">
-            <mat-label>Location cell size</mat-label>
+            <mat-label data-automation-id="cell-size-label">Location cell size</mat-label>
             <input formControlName="cellSize" (keydown.shift.enter)="$event.preventDefault()" matInput type="text"
-              readonly>
+              readonly data-automation-id="cell-size-input">
           </mat-form-field>
         </div>
         <div class="col-xl-3">
           <mat-form-field class="custom-form-field w-100 mb-2 mat-form-field-disabled" appearance="outline">
-            <mat-label>Location velocity code</mat-label>
+            <mat-label data-automation-id="velocity-code-label">Location velocity code</mat-label>
             <input formControlName="velocityCode" (keydown.shift.enter)="$event.preventDefault()" matInput type="text"
-              readonly>
+              readonly data-automation-id="velocity-code-input">
           </mat-form-field>
         </div>
         <div class="col-xl-3">
           <mat-form-field class="custom-form-field w-100 mb-2 mat-form-field-disabled" appearance="outline">
-            <mat-label>Location quantity</mat-label>
+            <mat-label data-automation-id="item-quantity-label">Location quantity</mat-label>
             <input formControlName="itemQuantity" (keydown.shift.enter)="$event.preventDefault()" matInput type="text"
-              readonly>
+              readonly data-automation-id="item-quantity-input">
           </mat-form-field>
         </div>
         <div class="col-xl-3">
           <mat-form-field class="custom-form-field w-100 mb-2 mat-form-field-disabled" appearance="outline">
-            <mat-label>Max quantity</mat-label>
+            <mat-label data-automation-id="max-quantity-label">Max quantity</mat-label>
             <input formControlName="maximumQuantity" (keydown.shift.enter)="$event.preventDefault()" matInput
-              type="text" readonly>
+              type="text" readonly data-automation-id="max-quantity-input">
           </mat-form-field>
         </div>
         <div class="col-xl-3">
           <mat-form-field class="custom-form-field w-100 mb-2 mat-form-field-disabled" appearance="outline">
-            <mat-label>Quantity allocated</mat-label>
+            <mat-label data-automation-id="quantity-allocated-label">Quantity allocated</mat-label>
             <input formControlName="quantityAllocatedPutAway" (keydown.shift.enter)="$event.preventDefault()" matInput
-              type="text" readonly>
+              type="text" readonly data-automation-id="quantity-allocated-input">
           </mat-form-field>
         </div>
         <div class="col-xl-3" *ngIf="toteForm.value.replenishment">
           <mat-form-field class="custom-form-field w-100 mb-2 mat-form-field-disabled" appearance="outline">
-            <mat-label>Replenishment Needed</mat-label>
+            <mat-label data-automation-id="replenishment-label">Replenishment Needed</mat-label>
             <input formControlName="replenishment" (keydown.shift.enter)="$event.preventDefault()" matInput
-              type="text" readonly>
+              type="text" readonly data-automation-id="replenishment-input">
           </mat-form-field>
         </div>
       </div>
@@ -442,9 +442,9 @@
         <div class="col-xl-3">
           <div class="d-flex align-items-center mb-2">
             <mat-form-field class="w-100 action-dropdown custom-form-field-bg-white" appearance="outline">
-              <mat-label>Tote ID</mat-label>
-              <mat-select formControlName="toteID" class="employees-action" (selectionChange)="selectTotePosOrID('toteID', $event.value)">
-                <mat-option *ngFor="let tote of totes" value="{{tote.toteID}}">{{tote.toteID}}</mat-option>
+              <mat-label data-automation-id="tote-id-label">Tote ID</mat-label>
+              <mat-select formControlName="toteID" class="employees-action" (selectionChange)="selectTotePosOrID('toteID', $event.value)" data-automation-id="tote-id-select">
+                <mat-option *ngFor="let tote of totes" value="{{tote.toteID}}" [attr.data-automation-id]="'tote-id-option-' + tote.toteID">{{tote.toteID}}</mat-option>
               </mat-select>
               <span class="material-symbols-outlined icon-expand-more">
                 expand_more
@@ -455,9 +455,9 @@
         <div class="col-xl-3">
           <div class="d-flex align-items-center mb-2">
             <mat-form-field class="w-100 action-dropdown custom-form-field-bg-white" appearance="outline">
-              <mat-label>Tote Position</mat-label>
-              <mat-select formControlName="totePos" class="employees-action" (selectionChange)="selectTotePosOrID('totesPosition', $event.value)">
-                <mat-option *ngFor="let tote of totes" value="{{tote.totesPosition}}">{{tote.totesPosition}}</mat-option>
+              <mat-label data-automation-id="tote-position-label">Tote Position</mat-label>
+              <mat-select formControlName="totePos" class="employees-action" (selectionChange)="selectTotePosOrID('totesPosition', $event.value)" data-automation-id="tote-position-select">
+                <mat-option *ngFor="let tote of totes" value="{{tote.totesPosition}}" [attr.data-automation-id]="'tote-position-option-' + tote.totesPosition">{{tote.totesPosition}}</mat-option>
               </mat-select>
               <span class="material-symbols-outlined icon-expand-more">
                 expand_more
@@ -467,14 +467,14 @@
         </div>
         <div class="col-xl-3">
           <mat-form-field class="custom-form-field custom-form-field-bg-white w-100 mb-2" appearance="outline">
-            <mat-label>Available Cells In Tote </mat-label>
-            <input formControlName="toteCells" (keydown.shift.enter)="$event.preventDefault()" matInput type="number">
+            <mat-label data-automation-id="available-cells-label">Available Cells In Tote </mat-label>
+            <input formControlName="toteCells" (keydown.shift.enter)="$event.preventDefault()" matInput type="number" data-automation-id="available-cells-input">
           </mat-form-field>
         </div>
         <div class="col-xl-3">
           <mat-form-field class="custom-form-field custom-form-field-bg-white w-100 mb-2" [color]="QtyToAssignFieldColor" appearance="outline" [matTooltipDisabled]="!imPreferences.dontAllowOverReceipt" [matTooltip]="toolTipMsgForTransQty" [matTooltipHideDelay]="tooltipShowDelay" matTooltipPosition="above" #tooltip="matTooltip">
-            <mat-label>Quantity To Assign</mat-label>
-            <input (focus)="imPreferences.dontAllowOverReceipt ? tooltip.show() : false" formControlName="toteQty" #inputToteQty matInput type="number" min="1" oninput="this.value = !!this.value && Math.abs(this.value) > 0 ? Math.abs(this.value) : ''" (input)="QtyToAssignFieldColor = 'primary'" >
+            <mat-label data-automation-id="quantity-to-assign-label">Quantity To Assign</mat-label>
+            <input (focus)="imPreferences.dontAllowOverReceipt ? tooltip.show() : false" formControlName="toteQty" #inputToteQty matInput type="number" min="1" oninput="this.value = !!this.value && Math.abs(this.value) > 0 ? Math.abs(this.value) : ''" (input)="QtyToAssignFieldColor = 'primary'" data-automation-id="quantity-to-assign-input">
           </mat-form-field>
         </div>
       </div>
@@ -485,13 +485,13 @@
 </div>
 
 <div class="d-flex gap-12 mb-1" mat-dialog-actions>
-  <button mat-stroked-button color="primary" class="btn-lg" (click)="onNoClick()">
+  <button mat-stroked-button color="primary" class="btn-lg" (click)="onNoClick()" data-automation-id="different-transaction-button">
     Choose a Different Transaction
   </button>
-  <button mat-stroked-button color="primary" class="btn-lg" (click)="forSameSKU()" *ngIf="!data.imPreference.purchaseOrderRequired">
+  <button mat-stroked-button color="primary" class="btn-lg" (click)="forSameSKU()" *ngIf="!data.imPreference.purchaseOrderRequired" data-automation-id="same-sku-button">
     New Put Away For Same SKU
   </button>
-  <button mat-flat-button color="primary" class="btn-lg flex-grow-1" (click)="completeTransaction()">
+  <button mat-flat-button color="primary" class="btn-lg flex-grow-1" (click)="completeTransaction()" data-automation-id="complete-transaction-button">
     Complete Transaction
   </button>
 </div>

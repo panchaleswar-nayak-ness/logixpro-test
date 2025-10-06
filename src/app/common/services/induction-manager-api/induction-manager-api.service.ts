@@ -4,6 +4,8 @@ import {AuthService} from 'src/app/common/init/auth.service';
 import {IInductionManagerApiService} from './induction-manager-api-interface';
 import {AddPickToteInductionFilter} from 'src/app/induction-manager/models/PickToteInductionModel';
 import {Observable} from 'rxjs';
+import { PickToteTransPayload } from '../../types/pick-tote-manager.types';
+import { ApiResult } from '../../types/CommonTypes';
 
 @Injectable({
   providedIn: 'root',
@@ -204,13 +206,8 @@ export class InductionManagerApiService implements IInductionManagerApiService {
     return this.Api.OrdersFilterZoneSelect(payload);
   }
 
-  public PickToteTransDT(payloadParams: any) {
-    const payload = {
-      username: this.userData.username,
-      wsid: this.userData.wsid,
-      ...payloadParams,
-    };
-    return this.Api.PickToteTransDT(payload);
+  public PickToteTransDT(payloadParams: PickToteTransPayload) {
+    return this.Api.PickToteTransDT(payloadParams);
   }
 
   public PickBatchFilterOrderData(payloadParams: any) {
@@ -728,5 +725,16 @@ export class InductionManagerApiService implements IInductionManagerApiService {
     return this.Api.DeletePickToteInductionFilter(paramname);
   }
 
+  public getAvailableTotes() {
+    return this.Api.getAvailableTotes();
+  }
+
+  public getPrintedTotes() {
+    return this.Api.getPrintedTotes();
+  }
+
+  public addPrintedTotes(payload: string[]): Observable<ApiResult<string[]> | null> {
+    return this.Api.addPrintedTotes(payload);
+  }
 
 }

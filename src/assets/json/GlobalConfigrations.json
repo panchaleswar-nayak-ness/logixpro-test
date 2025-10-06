@@ -40,6 +40,10 @@
         "Permission": "Inventory Map"
     },
     {
+        "path": "/InductionManager/cartManagement",
+        "Permission": "Cart Management"
+    },
+    {
         "path": "/admin/locationAssignment",
         "Permission": "Location Assignment"
     },
@@ -74,6 +78,10 @@
     },
     {
         "path": "/admin/createCountBatches",
+        "Permission": "Cycle Count Manager"
+    },
+    {
+        "path": "/admin/auditFileFieldMapping",
         "Permission": "Cycle Count Manager"
     },
     {
@@ -244,6 +252,10 @@
     {
         "path": "/ConsolidationManager/Markout",
         "Permission": "Markout Process"
+    },
+    {
+        "path": "/ConsolidationManager/RGTPMarkout",
+        "Permission": "RGTP Markout"
     },
     {
         "path": "/ConsolidationManager/RouteIDM",

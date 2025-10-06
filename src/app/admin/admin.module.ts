@@ -116,6 +116,7 @@ import { CreateCountBatchesComponent } from './cycle-counts/create-count-batches
 import { BatchManagerDetailViewComponent } from './dialogs/batch-manager-detail-view/batch-manager-detail-view.component';
 import { InputSpacesPreventDirective } from '../common/init/input-spaces-prevent.directive';
 import { BmToteidEntryComponent } from './dialogs/bm-toteid-entry/bm-toteid-entry.component';
+import { BmSlaperLabelSplitEntryComponent } from './dialogs/bm-slaper-label-split-entry/bm-slaper-label-split-entry.component';
 import { SystemReplenishmentComponent } from './system-replenishment/system-replenishment.component';
 import { SrNewOrderComponent } from './system-replenishment/sr-new-order/sr-new-order.component';
 import { FilterItemNumbersComponent } from './dialogs/filter-item-numbers/filter-item-numbers.component';
@@ -196,6 +197,7 @@ import { StorageContainerManagementComponent } from './admin-preferences/worksta
 import { StorageContainerManagementModalComponent } from './dialogs/storage-container-management/storage-container-management.component';
 import { RouteManagementDetailViewComponent } from './dialogs/route-management-detail-view/route-management-detail-view.component';
 import { CycleCountConfirmMessageDialogComponent } from './dialogs/cycle-count-confirm-message-dialog/cycle-count-confirm-message-dialog.component';
+import { AuditFileFieldMappingComponent } from './cycle-counts/audit-file-field-mapping-manager/audit-file-field-mapping-manager.component';
 
 export function initializeApp(authService: AuthService, fieldMappingService: FieldMappingService) {
     return (): Promise<any> => {
@@ -326,6 +328,7 @@ export function initializeApp(authService: AuthService, fieldMappingService: Fie
         BatchManagerDetailViewComponent,
         InputSpacesPreventDirective,
         BmToteidEntryComponent,
+        BmSlaperLabelSplitEntryComponent,
         SystemReplenishmentComponent,
         SrNewOrderComponent,
         FilterItemNumbersComponent,
@@ -399,7 +402,8 @@ export function initializeApp(authService: AuthService, fieldMappingService: Fie
         StorageContainerManagementComponent,
         StorageContainerManagementModalComponent,
         RouteManagementDetailViewComponent,
-        CycleCountConfirmMessageDialogComponent
+        CycleCountConfirmMessageDialogComponent,
+        AuditFileFieldMappingComponent
     ],
     imports: [
         CommonModule,

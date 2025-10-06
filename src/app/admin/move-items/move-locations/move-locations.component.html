@@ -1,6 +1,6 @@
 <mat-card-content>
     <div class="d-flex justify-content-between align-items-center mb-3">
-        <app-icon-heading-component heading="Move Locations" icon="blur_short" data-automation-id="heading-move-locations">
+        <app-icon-heading-component heading="Move Locations" icon="blur_short" [automationId]="'heading-move-locations'">
         </app-icon-heading-component>
     </div>
     <div class="label-yellow p-3 d-flex br-8 mb-3" *ngIf="!itemSelected">
@@ -19,7 +19,7 @@
                         <span class="material-symbols-outlined icon-search"> search </span>
                         <input type="text" aria-label="Number" matInput placeholder={{itemNumber}}
                             [(ngModel)]='itemNo' maxlength="255" [matAutocomplete]="auto"
-                            (ngModelChange)="itemNumberSearch()" data-automation-id="input-item-number-search">
+                            (ngModelChange)="itemNumberSearch()" [attr.data-automation-id]="'input-item-number-search-' + itemNo">
 
                         <button matSuffix *ngIf="itemNo != ''" class="clear-btn" (click)="clearItemNum()" data-automation-id="clear-button"><mat-icon class="text-20 text-chrome-600">cancel</mat-icon></button>
                         <mat-autocomplete class="card custom-scroll panel-custom-scroll" #auto="matAutocomplete"
@@ -39,7 +39,7 @@
             <div class="col-xl-6">
                 <mat-form-field class="action-dropdown w-100 mb-3 mb-xl-0" appearance="outline" *ngIf="!isViewAll" data-automation-id="form-field-warehouse">
                     <mat-label data-automation-id="label-warehouse">Warehouse</mat-label>
-                    <mat-select class="employees-action" [(value)]="selectedWarehouse"  (selectionChange)="onWarehouseSelect($event.value)" data-automation-id="select-warehouse">
+                    <mat-select class="employees-action" [(value)]="selectedWarehouse"  (selectionChange)="onWarehouseSelect($event.value)" [attr.data-automation-id]="'select-warehouse-' + selectedWarehouse">
                         <mat-option *ngFor="let item of warehouses; let i = index" [value]="item" [attr.data-automation-id]="'option-warehouse-' + i">
                             {{item}}
                         </mat-option>
@@ -60,132 +60,132 @@
                         <table class=" g-card-table table1 employee-location-table custom-action-clickable-table" mat-table [dataSource]="dataSource" matSort
                             (matSortChange)="sortChange($event)">
                             <ng-container matColumnDef="warehouse">
-                                <th mat-header-cell mat-sort-header *matHeaderCellDef data-automation-id="table-header-warehouse">Warehouse </th>
+                                <th mat-header-cell mat-sort-header *matHeaderCellDef data-automation-id="table-header-Warehouse">Warehouse </th>
                                 <td (contextmenu)="onContextMenu($event, element.warehouse, 'Warehouse')" mat-cell *matCellDef="let element; let i = index" [class.selected]="element.isSelected"
-                                    [ngClass]="{ 'highlight': isQuantityGreater(element.quantityAllocatedPick) }" [attr.data-automation-id]="'table-data-warehouse-' + i ">
+                                    [ngClass]="{ 'highlight': isQuantityGreater(element.quantityAllocatedPick) }" [attr.data-automation-id]="'table-data-Warehouse-' + (element.warehouse ? element.warehouse : ' ')">
                                     {{element.warehouse}}</td>
                             </ng-container>
                     
                             <ng-container matColumnDef="locationNumber">
-                                <th class="" mat-header-cell mat-sort-header *matHeaderCellDef data-automation-id="table-header-location-number">Location
+                                <th class="" mat-header-cell mat-sort-header *matHeaderCellDef data-automation-id="table-header-Location Number">Location
                                     Number</th>
-                                <td (contextmenu)="onContextMenu($event, element.locationNumber, 'Location Number')"  [class.selected]="element.isSelected" mat-cell *matCellDef="let element; let i = index" class="" [attr.data-automation-id]="'table-data-location-number-' + i">{{element.locationNumber}}
+                                <td (contextmenu)="onContextMenu($event, element.locationNumber, 'Location Number')"  [class.selected]="element.isSelected" mat-cell *matCellDef="let element; let i = index" class="" [attr.data-automation-id]="'table-data-Location Number-' + (element.locationNumber ? element.locationNumber : ' ')">{{element.locationNumber}}
                                 </td>
                             </ng-container>
                             <ng-container matColumnDef="goldenZone">
-                                <th mat-header-cell mat-sort-header *matHeaderCellDef data-automation-id="table-header-velocity-code"> Velocity Code </th>
-                                <td  (contextmenu)="onContextMenu($event, element.goldenZone, 'Velocity Code')"  [class.selected]="element.isSelected" mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'table-data-velocity-code-' + i">{{element.goldenZone}}</td>
+                                <th mat-header-cell mat-sort-header *matHeaderCellDef data-automation-id="table-header-Velocity Code"> Velocity Code </th>
+                                <td  (contextmenu)="onContextMenu($event, element.goldenZone, 'Velocity Code')"  [class.selected]="element.isSelected" mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'table-data-Velocity Code-' + (element.goldenZone ? element.goldenZone : ' ')">{{element.goldenZone}}</td>
                             </ng-container>
                             <ng-container matColumnDef="itemNumber">
-                                <th mat-header-cell mat-sort-header *matHeaderCellDef data-automation-id="table-header-item-number"> {{itemNumber}}</th>
-                                <td (contextmenu)="onContextMenu($event, element.itemNumber, 'Item Number')"  [class.selected]="element.isSelected" mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'table-data-item-number-' + i">{{element.itemNumber}}</td>
+                                <th mat-header-cell mat-sort-header *matHeaderCellDef data-automation-id="table-header-Item Number"> {{itemNumber}}</th>
+                                <td (contextmenu)="onContextMenu($event, element.itemNumber, 'Item Number')"  [class.selected]="element.isSelected" mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'table-data-Item Number-' + (element.itemNumber ? element.itemNumber : ' ')">{{element.itemNumber}}</td>
                             </ng-container>
                             <ng-container matColumnDef="description">
-                                <th mat-header-cell mat-sort-header *matHeaderCellDef data-automation-id="table-header-description"> Description </th>
-                                <td class="toolTipConf" (contextmenu)="onContextMenu($event, element.description, 'Description')" [class.selected]="element.isSelected" mat-cell *matCellDef="let element; let i = index"   [matTooltip]="element.description"   matTooltipPosition="above"  [matTooltipDisabled]="element.description && element.description.length>25?false:true"  [attr.data-automation-id]="'table-data-description-' + i">{{element.description}}</td>
+                                <th mat-header-cell mat-sort-header *matHeaderCellDef data-automation-id="table-header-Description"> Description </th>
+                                <td class="toolTipConf" (contextmenu)="onContextMenu($event, element.description, 'Description')" [class.selected]="element.isSelected" mat-cell *matCellDef="let element; let i = index"   [matTooltip]="element.description"   matTooltipPosition="above"  [matTooltipDisabled]="element.description && element.description.length>25?false:true"  [attr.data-automation-id]="'table-data-Description-' + (element.description ? element.description : ' ')">{{element.description}}</td>
                             </ng-container>
 
                             <ng-container matColumnDef="itemQuantity">
-                                <th mat-header-cell mat-sort-header *matHeaderCellDef data-automation-id="table-header-item-quantity">Item Quantity </th>
-                                <td (contextmenu)="onContextMenu($event, element.itemQuantity, 'Item Quantity')" [class.selected]="element.isSelected" mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'table-data-item-quantity-' + i">{{element.itemQuantity}}</td>
+                                <th mat-header-cell mat-sort-header *matHeaderCellDef data-automation-id="table-header-Item Quantity">Item Quantity </th>
+                                <td (contextmenu)="onContextMenu($event, element.itemQuantity, 'Item Quantity')" [class.selected]="element.isSelected" mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'table-data-Item Quantity-' + (element.itemQuantity ? element.itemQuantity : ' ')">{{element.itemQuantity}}</td>
                             </ng-container>
                             <ng-container matColumnDef="quantityAllocatedPick">
-                                <th mat-header-cell mat-sort-header *matHeaderCellDef data-automation-id="table-header-quantity-allocated-pick"> Quantity Allocated
+                                <th mat-header-cell mat-sort-header *matHeaderCellDef data-automation-id="table-header-Quantity Allocated Pick"> Quantity Allocated
                                     Pick </th>
-                                <td  (contextmenu)="onContextMenu($event, element.quantityAllocatedPick, 'Quantity Allocated Pick')" [class.selected]="element.isSelected" mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'table-data-quantity-allocated-pick-' + i ">{{element.quantityAllocatedPick}}
+                                <td  (contextmenu)="onContextMenu($event, element.quantityAllocatedPick, 'Quantity Allocated Pick')" [class.selected]="element.isSelected" mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'table-data-Quantity Allocated Pick-' + (element.quantityAllocatedPick ? element.quantityAllocatedPick : ' ')">{{element.quantityAllocatedPick}}
                                 </td>
                             </ng-container>
                             <ng-container matColumnDef="quantityAllocatedPutAway">
-                                <th mat-header-cell mat-sort-header *matHeaderCellDef data-automation-id="table-header-quantity-allocated-put-away"> Quantity Allocated
+                                <th mat-header-cell mat-sort-header *matHeaderCellDef data-automation-id="table-header-Quantity Allocated Put Away"> Quantity Allocated
                                     Put Away</th>
-                                <td (contextmenu)="onContextMenu($event, element.quantityAllocatedPutAway, 'Quantity Allocated Put Away')" [class.selected]="element.isSelected" mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'table-data-quantity-allocated-put-away-' + i">{{element.quantityAllocatedPutAway}}
+                                <td (contextmenu)="onContextMenu($event, element.quantityAllocatedPutAway, 'Quantity Allocated Put Away')" [class.selected]="element.isSelected" mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'table-data-Quantity Allocated Put Away-' + (element.quantityAllocatedPutAway ? element.quantityAllocatedPutAway : ' ')">{{element.quantityAllocatedPutAway}}
                                 </td>
                             </ng-container>
                             <ng-container matColumnDef="zone">
-                                <th mat-header-cell mat-sort-header *matHeaderCellDef data-automation-id="table-header-zone">Zone </th>
-                                <td (contextmenu)="onContextMenu($event, element.zone, 'Zone')" [class.selected]="element.isSelected" mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'table-data-zone-' + i ">{{element.zone}}</td>
+                                <th mat-header-cell mat-sort-header *matHeaderCellDef data-automation-id="table-header-Zone">Zone </th>
+                                <td (contextmenu)="onContextMenu($event, element.zone, 'Zone')" [class.selected]="element.isSelected" mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'table-data-Zone-' + (element.zone ? element.zone : ' ')">{{element.zone}}</td>
                             </ng-container>
                             <ng-container matColumnDef="carousel">
-                                <th mat-header-cell mat-sort-header *matHeaderCellDef data-automation-id="table-header-carousel">{{fieldMappings.carousel}} </th>
-                                <td (contextmenu)="onContextMenu($event, element.carousel, 'Carousel')" [class.selected]="element.isSelected"  mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'table-data-carousel-' + i">{{element.carousel}}</td>
+                                <th mat-header-cell mat-sort-header *matHeaderCellDef data-automation-id="table-header-Carousel">{{fieldMappings.carousel}} </th>
+                                <td (contextmenu)="onContextMenu($event, element.carousel, 'Carousel')" [class.selected]="element.isSelected"  mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'table-data-Carousel-' + (element.carousel ? element.carousel : ' ')">{{element.carousel}}</td>
                             </ng-container>
                             <ng-container matColumnDef="row">
-                                <th mat-header-cell mat-sort-header *matHeaderCellDef data-automation-id="table-header-row"> {{fieldMappings.row}} </th>
-                                <td (contextmenu)="onContextMenu($event, element.row, 'Row')" [class.selected]="element.isSelected" mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'table-data-row-' + i">{{element.row}}</td>
+                                <th mat-header-cell mat-sort-header *matHeaderCellDef data-automation-id="table-header-Row"> {{fieldMappings.row}} </th>
+                                <td (contextmenu)="onContextMenu($event, element.row, 'Row')" [class.selected]="element.isSelected" mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'table-data-Row-' + (element.row ? element.row : ' ')">{{element.row}}</td>
                             </ng-container>
                             <ng-container matColumnDef="shelf">
-                                <th mat-header-cell mat-sort-header *matHeaderCellDef data-automation-id="table-header-shelf"> {{fieldMappings.shelf}}</th>
-                                <td (contextmenu)="onContextMenu($event, element.shelf, 'Shelf')" [class.selected]="element.isSelected" mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'table-data-shelf-' + i">{{element.shelf}}</td>
+                                <th mat-header-cell mat-sort-header *matHeaderCellDef data-automation-id="table-header-Shelf"> {{fieldMappings.shelf}}</th>
+                                <td (contextmenu)="onContextMenu($event, element.shelf, 'Shelf')" [class.selected]="element.isSelected" mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'table-data-Shelf-' + (element.shelf ? element.shelf : ' ')">{{element.shelf}}</td>
                             </ng-container>
                             <ng-container matColumnDef="bin">
-                                <th mat-header-cell mat-sort-header *matHeaderCellDef data-automation-id="table-header-bin"> {{fieldMappings.bin}}</th>
-                                <td (contextmenu)="onContextMenu($event, element.bin, 'Bin')" [class.selected]="element.isSelected" mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'table-data-bin-' + i">{{element.bin}}</td>
+                                <th mat-header-cell mat-sort-header *matHeaderCellDef data-automation-id="table-header-Bin"> {{fieldMappings.bin}}</th>
+                                <td (contextmenu)="onContextMenu($event, element.bin, 'Bin')" [class.selected]="element.isSelected" mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'table-data-Bin-' + (element.bin ? element.bin : ' ')">{{element.bin}}</td>
                             </ng-container>
                             <ng-container matColumnDef="cellSize">
-                                <th mat-header-cell mat-sort-header *matHeaderCellDef data-automation-id="table-header-cell-size"> Cell Size</th>
+                                <th mat-header-cell mat-sort-header *matHeaderCellDef data-automation-id="table-header-Cell Size"> Cell Size</th>
                                 <td (contextmenu)="onContextMenu($event, element.cellSize, 'Cell Size')" [class.selected]="element.isSelected" mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'table-data-cell-size-' + i">{{element.cellSize}}</td>
                             </ng-container>
                             <ng-container matColumnDef="lotNumber">
-                                <th mat-header-cell mat-sort-header *matHeaderCellDef data-automation-id="table-header-lot-number">Lot Number </th>
-                                <td (contextmenu)="onContextMenu($event, element.lotNumber, 'Lot Number')" [class.selected]="element.isSelected" mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'table-data-lot-number-' + i ">{{element.lotNumber}}</td>
+                                <th mat-header-cell mat-sort-header *matHeaderCellDef data-automation-id="table-header-Lot Number">Lot Number </th>
+                                <td (contextmenu)="onContextMenu($event, element.lotNumber, 'Lot Number')" [class.selected]="element.isSelected" mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'table-data-Lot Number-' + (element.lotNumber ? element.lotNumber : ' ')">{{element.lotNumber}}</td>
                             </ng-container>
                             <ng-container matColumnDef="serialNumber">
-                                <th mat-header-cell mat-sort-header *matHeaderCellDef data-automation-id="table-header-serial-number">Serial Number </th>
-                                <td (contextmenu)="onContextMenu($event, element.serialNumber, 'Serial Number')" [class.selected]="element.isSelected" mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'table-data-serial-number-' + i">{{element.serialNumber}}</td>
+                                <th mat-header-cell mat-sort-header *matHeaderCellDef data-automation-id="table-header-Serial Number">Serial Number </th>
+                                <td (contextmenu)="onContextMenu($event, element.serialNumber, 'Serial Number')" [class.selected]="element.isSelected" mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'table-data-Serial Number-' + (element.serialNumber ? element.serialNumber : ' ')">{{element.serialNumber}}</td>
                             </ng-container>
                             <ng-container matColumnDef="expirationDate">
-                                <th mat-header-cell mat-sort-header *matHeaderCellDef data-automation-id="table-header-expiration-date">Expiration Date </th>
-                                <td (contextmenu)="onContextMenu($event, element.expirationDate, 'Expiration Date')" [class.selected]="element.isSelected" mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'table-data-expiration-date-' + i">{{element.expirationDate}}</td>
+                                <th mat-header-cell mat-sort-header *matHeaderCellDef data-automation-id="table-header-Expiration Date">Expiration Date </th>
+                                <td (contextmenu)="onContextMenu($event, element.expirationDate, 'Expiration Date')" [class.selected]="element.isSelected" mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'table-data-Expiration Date-' + (element.expirationDate ? element.expirationDate : ' ')">{{element.expirationDate}}</td>
                             </ng-container>
                             <ng-container matColumnDef="revision">
-                                <th mat-header-cell mat-sort-header *matHeaderCellDef data-automation-id="table-header-revision"> Revision </th>
-                                <td (contextmenu)="onContextMenu($event, element.revision, 'Revision')" [class.selected]="element.isSelected" mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'table-data-revision-' + i">{{element.revision}}</td>
+                                <th mat-header-cell mat-sort-header *matHeaderCellDef data-automation-id="table-header-Revision"> Revision </th>
+                                <td (contextmenu)="onContextMenu($event, element.revision, 'Revision')" [class.selected]="element.isSelected" mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'table-data-Revision-' + (element.revision ? element.revision : ' ')">{{element.revision}}</td>
                             </ng-container>
                             <ng-container matColumnDef="unitOfMeasure">
-                                <th mat-header-cell mat-sort-header *matHeaderCellDef replacePlaceholder [replacePlaceHolder]="placeholders.unitOfMeasure" [fallbackPlaceHolder]="placeholders.unitOfMeasureFallback" data-automation-id="table-header-unit-of-measure"> {{UnitOfMeasure}}</th>
-                                <td (contextmenu)="onContextMenu($event, element.unitOfMeasure, 'Unit of Measure')" [class.selected]="element.isSelected" mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'table-data-unit-of-measure-' + i">{{element.unitOfMeasure}}</td>
+                                <th mat-header-cell mat-sort-header *matHeaderCellDef replacePlaceholder [replacePlaceHolder]="placeholders.unitOfMeasure" [fallbackPlaceHolder]="placeholders.unitOfMeasureFallback" data-automation-id="table-header-Unit Of Measure"> {{UnitOfMeasure}}</th>
+                                <td (contextmenu)="onContextMenu($event, element.unitOfMeasure, 'Unit of Measure')" [class.selected]="element.isSelected" mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'table-data-Unit Of Measure-' + (element.unitOfMeasure ? element.unitOfMeasure : ' ')">{{element.unitOfMeasure}}</td>
                             </ng-container>
                             <ng-container matColumnDef="maximumQuantity">
-                                <th mat-header-cell mat-sort-header *matHeaderCellDef data-automation-id="table-header-maximum-quantity"> Maximum Quantity
+                                <th mat-header-cell mat-sort-header *matHeaderCellDef data-automation-id="table-header-Maximum Quantity"> Maximum Quantity
                                 </th>
-                                <td (contextmenu)="onContextMenu($event, element.maximumQuantity, 'Maximum Quantity')" [class.selected]="element.isSelected" mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'table-data-maximum-quantity-' + i ">{{element.maximumQuantity}}</td>
+                                <td (contextmenu)="onContextMenu($event, element.maximumQuantity, 'Maximum Quantity')" [class.selected]="element.isSelected" mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'table-data-Maximum Quantity-' + (element.maximumQuantity ? element.maximumQuantity : ' ')">{{element.maximumQuantity}}</td>
                             </ng-container>
                             <ng-container matColumnDef="putAwayDate">
-                                <th mat-header-cell mat-sort-header *matHeaderCellDef data-automation-id="table-header-put-away-date"> Put Away Date </th>
-                                <td (contextmenu)="onContextMenu($event, element.putAwayDate, 'Put Away Date')" [class.selected]="element.isSelected" mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'table-data-put-away-date-' + i">{{element.putAwayDate}}</td>
+                                <th mat-header-cell mat-sort-header *matHeaderCellDef data-automation-id="table-header-Put Away Date"> Put Away Date </th>
+                                <td (contextmenu)="onContextMenu($event, element.putAwayDate, 'Put Away Date')" [class.selected]="element.isSelected" mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'table-data-Put Away Date-' + (element.putAwayDate ? element.putAwayDate : ' ')">{{element.putAwayDate}}</td>
                             </ng-container>
                             <ng-container matColumnDef="userField1">
-                                <th mat-header-cell mat-sort-header *matHeaderCellDef  replacePlaceholder [replacePlaceHolder]="placeholders.userField1" [fallbackPlaceHolder]="placeholders.userField1Fallback" data-automation-id="table-header-user-field-1"> {{UserField1}}</th>
-                                <td (contextmenu)="onContextMenu($event, element.userField1, 'User Field1')" [class.selected]="element.isSelected" mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'table-data-user-field-1-' + i">{{element.userField1}}</td>
+                                <th mat-header-cell mat-sort-header *matHeaderCellDef  replacePlaceholder [replacePlaceHolder]="placeholders.userField1" [fallbackPlaceHolder]="placeholders.userField1Fallback" data-automation-id="table-header-User Field1"> {{UserField1}}</th>
+                                <td (contextmenu)="onContextMenu($event, element.userField1, 'User Field1')" [class.selected]="element.isSelected" mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'table-data-User Field1-' + (element.userField1 ? element.userField1 : ' ')">{{element.userField1}}</td>
                             </ng-container>
                             <ng-container matColumnDef="userField2">
-                                <th mat-header-cell mat-sort-header *matHeaderCellDef replacePlaceholder [replacePlaceHolder]="placeholders.userField2" [fallbackPlaceHolder]="placeholders.userField2Fallback" data-automation-id="table-header-user-field-2"> {{UserField2}}</th>
-                                <td (contextmenu)="onContextMenu($event, element.userField2, 'User Field2')" [class.selected]="element.isSelected" mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'table-data-user-field-2-' + i">{{element.userField2}}</td>
+                                <th mat-header-cell mat-sort-header *matHeaderCellDef replacePlaceholder [replacePlaceHolder]="placeholders.userField2" [fallbackPlaceHolder]="placeholders.userField2Fallback" data-automation-id="table-header-User Field2"> {{UserField2}}</th>
+                                <td (contextmenu)="onContextMenu($event, element.userField2, 'User Field2')" [class.selected]="element.isSelected" mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'table-data-User Field2-' + (element.userField2 ? element.userField2 : ' ')">{{element.userField2}}</td>
                             </ng-container>
                             <ng-container matColumnDef="masterLocation">
-                                <th mat-header-cell mat-sort-header *matHeaderCellDef data-automation-id="table-header-master-location"> Master Location </th>
-                                <td (contextmenu)="onContextMenu($event, element.masterLocation, 'Master Location')" [class.selected]="element.isSelected" mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'table-data-master-location-' + i">{{element.masterLocation}}</td>
+                                <th mat-header-cell mat-sort-header *matHeaderCellDef data-automation-id="table-header-Master Location"> Master Location </th>
+                                <td (contextmenu)="onContextMenu($event, element.masterLocation, 'Master Location')" [class.selected]="element.isSelected" mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'table-data-Master Location-' + (element.masterLocation ? element.masterLocation : ' ')">{{element.masterLocation}}</td>
                             </ng-container>
                             <ng-container matColumnDef="dateSensitive">
-                                <th mat-header-cell mat-sort-header *matHeaderCellDef data-automation-id="table-header-date-sensitive"> Date Sensitive</th>
-                                <td (contextmenu)="onContextMenu($event, element.dateSensitive, 'Date Sensitive')" [class.selected]="element.isSelected" mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'table-data-date-sensitive-' + i">{{element.dateSensitive}}</td>
+                                <th mat-header-cell mat-sort-header *matHeaderCellDef data-automation-id="table-header-Date Sensitive"> Date Sensitive</th>
+                                <td (contextmenu)="onContextMenu($event, element.dateSensitive, 'Date Sensitive')" [class.selected]="element.isSelected" mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'table-data-Date Sensitive-' + (element.dateSensitive ? element.dateSensitive : ' ')">{{element.dateSensitive}}</td>
                             </ng-container>
                             <ng-container matColumnDef="dedicated">
-                                <th mat-header-cell mat-sort-header *matHeaderCellDef data-automation-id="table-header-dedicated"> Dedicated </th>
-                                <td (contextmenu)="onContextMenu($event, element.dedicated, 'Dedicated')" [class.selected]="element.isSelected" mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'table-data-dedicated-' + i">{{element.dedicated}}</td>
+                                <th mat-header-cell mat-sort-header *matHeaderCellDef data-automation-id="table-header-Dedicated"> Dedicated </th>
+                                <td (contextmenu)="onContextMenu($event, element.dedicated, 'Dedicated')" [class.selected]="element.isSelected" mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'table-data-Dedicated-' + (element.dedicated ? element.dedicated : ' ')">{{element.dedicated}}</td>
                             </ng-container>
                             <ng-container matColumnDef="masterInvMapID">
-                                <th mat-header-cell mat-sort-header *matHeaderCellDef data-automation-id="table-header-master-inv-map-id"> Master Inv Map ID
+                                <th mat-header-cell mat-sort-header *matHeaderCellDef data-automation-id="table-header-Master Inv Map ID"> Master Inv Map ID
                                 </th>
-                                <td (contextmenu)="onContextMenu($event, element.masterInvMapID, 'Master Inv Map ID')" [class.selected]="element.isSelected" mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'table-data-master-inv-map-id-' + i">{{element.masterInvMapID}}</td>
+                                <td (contextmenu)="onContextMenu($event, element.masterInvMapID, 'Master Inv Map ID')" [class.selected]="element.isSelected" mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'table-data-Master Inv Map ID-' + (element.masterInvMapID ? element.masterInvMapID : ' ')">{{element.masterInvMapID}}</td>
                             </ng-container>
                             <ng-container matColumnDef="minQuantity">
-                                <th mat-header-cell mat-sort-header *matHeaderCellDef data-automation-id="table-header-min-quantity">Min Quantity </th>
-                                <td (contextmenu)="onContextMenu($event, element.minQuantity, 'Min Quantity')" [class.selected]="element.isSelected" mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'table-data-min-quantity-' + i">{{element.minQuantity}}</td>
+                                <th mat-header-cell mat-sort-header *matHeaderCellDef data-automation-id="table-header-Min Quantity">Min Quantity </th>
+                                <td (contextmenu)="onContextMenu($event, element.minQuantity, 'Min Quantity')" [class.selected]="element.isSelected" mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'table-data-Min Quantity-' + (element.minQuantity ? element.minQuantity : ' ')">{{element.minQuantity}}</td>
                             </ng-container>
                             <ng-container matColumnDef="invMapID">
-                                <th mat-header-cell mat-sort-header *matHeaderCellDef data-automation-id="table-header-inv-map-id"> Inv Map ID </th>
-                                <td (contextmenu)="onContextMenu($event, element.invMapID, 'Inv Map ID')" [class.selected]="element.isSelected" mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'table-data-inv-map-id-' + i">{{element.invMapID}}</td>
+                                <th mat-header-cell mat-sort-header *matHeaderCellDef data-automation-id="table-header-Inv Map ID"> Inv Map ID </th>
+                                <td (contextmenu)="onContextMenu($event, element.invMapID, 'Inv Map ID')" [class.selected]="element.isSelected" mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'table-data-Inv Map ID-' + (element.invMapID ? element.invMapID : ' ')">{{element.invMapID}}</td>
                             </ng-container>
                             
 
@@ -218,130 +218,130 @@
                         <table class=" g-card-table table1 employee-location-table custom-action-clickable-table" mat-table [dataSource]="moveToDatasource" matSort
                             (matSortChange)="sortChangeToItems($event)">
                             <ng-container matColumnDef="warehouse">
-                                <th mat-header-cell mat-sort-header *matHeaderCellDef data-automation-id="table-header-warehouse">Warehouse </th>
+                                <th mat-header-cell mat-sort-header *matHeaderCellDef data-automation-id="table-header-Warehouse">Warehouse </th>
                                 <td (contextmenu)="onContextMenu($event, element.warehouse, 'Warehouse')" mat-cell *matCellDef="let element; let i = index" [class.selected]="element.isSelected"
-                                    [ngClass]="{ 'highlight': isQuantityGreater(element.quantityAllocatedPick) }" [attr.data-automation-id]="'table-data-warehouse-' + i ">
+                                    [ngClass]="{ 'highlight': isQuantityGreater(element.quantityAllocatedPick) }" [attr.data-automation-id]="'table-data-Warehouse-' + (element.warehouse ? element.warehouse : ' ')">
                                     {{element.warehouse}}</td>
                             </ng-container>
                             <ng-container matColumnDef="locationNumber">
-                                <th class="" mat-header-cell mat-sort-header *matHeaderCellDef data-automation-id="table-header-location-number">Location
+                                <th class="" mat-header-cell mat-sort-header *matHeaderCellDef data-automation-id="table-header-Location Number">Location
                                     Number</th>
-                                <td (contextmenu)="onContextMenu($event, element.locationNumber, 'Location Number')" [class.selected]="element.isSelected" mat-cell *matCellDef="let element; let i = index" class="" [attr.data-automation-id]="'table-data-location-number-' + i">{{element.locationNumber}}
+                                <td (contextmenu)="onContextMenu($event, element.locationNumber, 'Location Number')" [class.selected]="element.isSelected" mat-cell *matCellDef="let element; let i = index" class="" [attr.data-automation-id]="'table-data-Location Number-' + (element.locationNumber ? element.locationNumber : ' ')">{{element.locationNumber}}
                                 </td>
                             </ng-container>
                             <ng-container matColumnDef="goldenZone">
-                                <th mat-header-cell mat-sort-header *matHeaderCellDef data-automation-id="table-header-velocity-code"> Velocity Code </th>
-                                <td (contextmenu)="onContextMenu($event, element.goldenZone, 'Velocity Code')" [class.selected]="element.isSelected" mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'table-data-velocity-code-' + i">{{element.goldenZone}}</td>
+                                <th mat-header-cell mat-sort-header *matHeaderCellDef data-automation-id="table-header-Velocity Code"> Velocity Code </th>
+                                <td (contextmenu)="onContextMenu($event, element.goldenZone, 'Velocity Code')" [class.selected]="element.isSelected" mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'table-data-Velocity Code-' + (element.goldenZone ? element.goldenZone : ' ')">{{element.goldenZone}}</td>
                             </ng-container>
                             <ng-container matColumnDef="itemNumber">
-                                <th mat-header-cell mat-sort-header *matHeaderCellDef data-automation-id="table-header-item-number"> {{itemNumber}} </th>
-                                <td (contextmenu)="onContextMenu($event, element.itemNumber, 'Item Number')" [class.selected]="element.isSelected" mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'table-data-item-number-' + i">{{element.itemNumber}}</td>
+                                <th mat-header-cell mat-sort-header *matHeaderCellDef data-automation-id="table-header-Item Number"> {{itemNumber}} </th>
+                                <td (contextmenu)="onContextMenu($event, element.itemNumber, 'Item Number')" [class.selected]="element.isSelected" mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'table-data-Item Number-' + (element.itemNumber ? element.itemNumber : ' ')">{{element.itemNumber}}</td>
                             </ng-container>
                             <ng-container matColumnDef="description">
-                                <th mat-header-cell mat-sort-header *matHeaderCellDef data-automation-id="table-header-description"> Description </th>
-                                <td (contextmenu)="onContextMenu($event, element.description, 'Description')" [class.selected]="element.isSelected" mat-cell *matCellDef="let element; let i = index"  [matTooltip]="element.description"   matTooltipPosition="above"  [matTooltipDisabled]="element.description && element.description.length>25?false:true" [attr.data-automation-id]="'table-data-description-' + i">{{element.description}}</td>
+                                <th mat-header-cell mat-sort-header *matHeaderCellDef data-automation-id="table-header-Description"> Description </th>
+                                <td (contextmenu)="onContextMenu($event, element.description, 'Description')" [class.selected]="element.isSelected" mat-cell *matCellDef="let element; let i = index"  [matTooltip]="element.description"   matTooltipPosition="above"  [matTooltipDisabled]="element.description && element.description.length>25?false:true" [attr.data-automation-id]="'table-data-Description-' + (element.description ? element.description : ' ')">{{element.description}}</td>
                             </ng-container>
                             <ng-container matColumnDef="itemQuantity">
-                                <th mat-header-cell mat-sort-header *matHeaderCellDef data-automation-id="table-header-item-quantity">Item Quantity </th>
-                                <td (contextmenu)="onContextMenu($event, element.itemQuantity, 'Item Quantity')" [class.selected]="element.isSelected" mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'table-data-item-quantity-' + i">{{element.itemQuantity}}</td>
+                                <th mat-header-cell mat-sort-header *matHeaderCellDef data-automation-id="table-header-Item Quantity">Item Quantity </th>
+                                <td (contextmenu)="onContextMenu($event, element.itemQuantity, 'Item Quantity')" [class.selected]="element.isSelected" mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'table-data-Item Quantity-' + (element.itemQuantity ? element.itemQuantity : ' ')">{{element.itemQuantity}}</td>
                             </ng-container>
                             <ng-container matColumnDef="quantityAllocatedPick">
-                                <th mat-header-cell mat-sort-header *matHeaderCellDef data-automation-id="table-header-quantity-allocated-pick"> Quantity Allocated
+                                <th mat-header-cell mat-sort-header *matHeaderCellDef data-automation-id="table-header-Quantity Allocated Pick"> Quantity Allocated
                                     Pick </th>
-                                <td (contextmenu)="onContextMenu($event, element.quantityAllocatedPick, 'Quantity Allocated Pick')" [class.selected]="element.isSelected" mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'table-data-quantity-allocated-pick-' + i ">{{element.quantityAllocatedPick}}
+                                <td (contextmenu)="onContextMenu($event, element.quantityAllocatedPick, 'Quantity Allocated Pick')" [class.selected]="element.isSelected" mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'table-data-Quantity Allocated Pick-' + (element.quantityAllocatedPick ? element.quantityAllocatedPick : ' ')">{{element.quantityAllocatedPick}}
                                 </td>
                             </ng-container>
                             <ng-container matColumnDef="quantityAllocatedPutAway">
-                                <th mat-header-cell mat-sort-header *matHeaderCellDef data-automation-id="table-header-quantity-allocated-put-away"> Quantity Allocated
+                                <th mat-header-cell mat-sort-header *matHeaderCellDef data-automation-id="table-header-Quantity Allocated Put Away"> Quantity Allocated
                                     Put Away</th>
-                                <td (contextmenu)="onContextMenu($event, element.quantityAllocatedPutAway, 'Quantity Allocated Put Away')" [class.selected]="element.isSelected" mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'table-data-quantity-allocated-put-away-' + i">{{element.quantityAllocatedPutAway}}
+                                <td (contextmenu)="onContextMenu($event, element.quantityAllocatedPutAway, 'Quantity Allocated Put Away')" [class.selected]="element.isSelected" mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'table-data-Quantity Allocated Put Away-' + (element.quantityAllocatedPutAway ? element.quantityAllocatedPutAway : ' ')">{{element.quantityAllocatedPutAway}}
                                 </td>
                             </ng-container>
                             <ng-container matColumnDef="zone">
-                                <th mat-header-cell mat-sort-header *matHeaderCellDef data-automation-id="table-header-zone">Zone </th>
+                                <th mat-header-cell mat-sort-header *matHeaderCellDef data-automation-id="table-header-Zone">Zone </th>
                                 <td (contextmenu)="onContextMenu($event, element.zone, 'Zone')" [class.selected]="element.isSelected" mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'table-data-zone-' + i">{{element.zone}}</td>
                             </ng-container>
                             <ng-container matColumnDef="carousel">
-                                <th mat-header-cell mat-sort-header *matHeaderCellDef data-automation-id="table-header-carousel">{{fieldMappings.carousel}} </th>
-                                <td (contextmenu)="onContextMenu($event, element.carousel, 'Carousel')" [class.selected]="element.isSelected"  mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'table-data-carousel-' + i">{{element.carousel}}</td>
+                                <th mat-header-cell mat-sort-header *matHeaderCellDef data-automation-id="table-header-Carousel">{{fieldMappings.carousel}} </th>
+                                <td (contextmenu)="onContextMenu($event, element.carousel, 'Carousel')" [class.selected]="element.isSelected"  mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'table-data-Carousel-' + (element.carousel ? element.carousel : ' ')">{{element.carousel}}</td>
                             </ng-container>
                             <ng-container matColumnDef="row">
-                                <th mat-header-cell mat-sort-header *matHeaderCellDef data-automation-id="table-header-row"> {{fieldMappings.row}} </th>
-                                <td (contextmenu)="onContextMenu($event, element.row, 'Row')" [class.selected]="element.isSelected" mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'table-data-row-' + i">{{element.row}}</td>
+                                <th mat-header-cell mat-sort-header *matHeaderCellDef data-automation-id="table-header-Row"> {{fieldMappings.row}} </th>
+                                <td (contextmenu)="onContextMenu($event, element.row, 'Row')" [class.selected]="element.isSelected" mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'table-data-Row-' + (element.row ? element.row : ' ')">{{element.row}}</td>
                             </ng-container>
                             <ng-container matColumnDef="shelf">
-                                <th mat-header-cell mat-sort-header *matHeaderCellDef data-automation-id="table-header-shelf"> {{fieldMappings.shelf}}</th>
-                                <td  (contextmenu)="onContextMenu($event, element.shelf, 'Shelf')" [class.selected]="element.isSelected" mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'table-data-shelf-' + i">{{element.shelf}}</td>
+                                <th mat-header-cell mat-sort-header *matHeaderCellDef data-automation-id="table-header-Shelf"> {{fieldMappings.shelf}}</th>
+                                <td  (contextmenu)="onContextMenu($event, element.shelf, 'Shelf')" [class.selected]="element.isSelected" mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'table-data-Shelf-' + (element.shelf ? element.shelf : ' ')">{{element.shelf}}</td>
                             </ng-container>
                             <ng-container matColumnDef="bin">
-                                <th mat-header-cell mat-sort-header *matHeaderCellDef data-automation-id="table-header-bin"> {{fieldMappings.bin}}</th>
-                                <td (contextmenu)="onContextMenu($event, element.bin, 'Bin')" [class.selected]="element.isSelected" mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'table-data-bin-' + i">{{element.bin}}</td>
+                                <th mat-header-cell mat-sort-header *matHeaderCellDef data-automation-id="table-header-Bin"> {{fieldMappings.bin}}</th>
+                                <td (contextmenu)="onContextMenu($event, element.bin, 'Bin')" [class.selected]="element.isSelected" mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'table-data-Bin-' + (element.bin ? element.bin : ' ')">{{element.bin}}</td>
                             </ng-container>
                             <ng-container matColumnDef="cellSize">
-                                <th mat-header-cell mat-sort-header *matHeaderCellDef data-automation-id="table-header-cell-size"> Cell Size</th>
-                                <td (contextmenu)="onContextMenu($event, element.cellSize, 'Cell Size')" [class.selected]="element.isSelected" mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'table-data-cell-size-' + i ">{{element.cellSize}}</td>
+                                <th mat-header-cell mat-sort-header *matHeaderCellDef data-automation-id="table-header-Cell Size"> Cell Size</th>
+                                <td (contextmenu)="onContextMenu($event, element.cellSize, 'Cell Size')" [class.selected]="element.isSelected" mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'table-data-Cell Size-' + (element.cellSize ? element.cellSize : ' ')">{{element.cellSize}}</td>
                             </ng-container>
                             <ng-container matColumnDef="lotNumber">
-                                <th mat-header-cell mat-sort-header *matHeaderCellDef data-automation-id="table-header-lot-number">Lot Number </th>
+                                <th mat-header-cell mat-sort-header *matHeaderCellDef data-automation-id="table-header-Lot Number">Lot Number </th>
                                 <td (contextmenu)="onContextMenu($event, element.lotNumber, 'Lot Number')" [class.selected]="element.isSelected" mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'table-data-lot-number-' + i">{{element.lotNumber}}</td>
                             </ng-container>
                             <ng-container matColumnDef="serialNumber">
-                                <th mat-header-cell mat-sort-header *matHeaderCellDef data-automation-id="table-header-serial-number">Serial Number </th>
-                                <td (contextmenu)="onContextMenu($event, element.serialNumber, 'Serial Number')" [class.selected]="element.isSelected" mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'table-data-serial-number-' + i">{{element.serialNumber}}</td>
+                                <th mat-header-cell mat-sort-header *matHeaderCellDef data-automation-id="table-header-Serial Number">Serial Number </th>
+                                <td (contextmenu)="onContextMenu($event, element.serialNumber, 'Serial Number')" [class.selected]="element.isSelected" mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'table-data-Serial Number-' + (element.serialNumber ? element.serialNumber : ' ')">{{element.serialNumber}}</td>
                             </ng-container>
                             <ng-container matColumnDef="expirationDate">
-                                <th mat-header-cell mat-sort-header *matHeaderCellDef data-automation-id="table-header-expiration-date">Expiration Date </th>
-                                <td (contextmenu)="onContextMenu($event, element.expirationDate, 'Expiration Date')" [class.selected]="element.isSelected" mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'table-data-expiration-date-' + i">{{element.expirationDate}}</td>
+                                <th mat-header-cell mat-sort-header *matHeaderCellDef data-automation-id="table-header-Expiration Date">Expiration Date </th>
+                                <td (contextmenu)="onContextMenu($event, element.expirationDate, 'Expiration Date')" [class.selected]="element.isSelected" mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'table-data-Expiration Date-' + (element.expirationDate ? element.expirationDate : ' ')">{{element.expirationDate}}</td>
                             </ng-container>
                             <ng-container matColumnDef="revision">
-                                <th mat-header-cell mat-sort-header *matHeaderCellDef data-automation-id="table-header-revision"> Revision </th>
-                                <td (contextmenu)="onContextMenu($event, element.revision, 'Revision')" [class.selected]="element.isSelected" mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'table-data-revision-' + i">{{element.revision}}</td>
+                                <th mat-header-cell mat-sort-header *matHeaderCellDef data-automation-id="table-header-Revision"> Revision </th>
+                                <td (contextmenu)="onContextMenu($event, element.revision, 'Revision')" [class.selected]="element.isSelected" mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'table-data-Revision-' + (element.revision ? element.revision : ' ')">{{element.revision}}</td>
                             </ng-container>
                             <ng-container matColumnDef="unitOfMeasure">
-                                <th mat-header-cell mat-sort-header *matHeaderCellDef replacePlaceholder [replacePlaceHolder]="placeholders.unitOfMeasure" [fallbackPlaceHolder]="placeholders.unitOfMeasureFallback" data-automation-id="table-header-unit-of-measure"> {{UnitOfMeasure}} </th>
-                                <td (contextmenu)="onContextMenu($event, element.unitOfMeasure, 'Unit of Measure')" [class.selected]="element.isSelected" mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'table-data-unit-of-measure-' + i">{{element.unitOfMeasure}}</td>
+                                <th mat-header-cell mat-sort-header *matHeaderCellDef replacePlaceholder [replacePlaceHolder]="placeholders.unitOfMeasure" [fallbackPlaceHolder]="placeholders.unitOfMeasureFallback" data-automation-id="table-header-Unit Of Measure"> {{UnitOfMeasure}} </th>
+                                <td (contextmenu)="onContextMenu($event, element.unitOfMeasure, 'Unit of Measure')" [class.selected]="element.isSelected" mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'table-data-Unit Of Measure-' + (element.unitOfMeasure ? element.unitOfMeasure : ' ')">{{element.unitOfMeasure}}</td>
                             </ng-container>
                             <ng-container matColumnDef="maximumQuantity">
-                                <th mat-header-cell mat-sort-header *matHeaderCellDef data-automation-id="table-header-maximum-quantity"> Maximum Quantity
+                                <th mat-header-cell mat-sort-header *matHeaderCellDef data-automation-id="table-header-Maximum Quantity"> Maximum Quantity
                                 </th>
                                 <td (contextmenu)="onContextMenu($event, element.maximumQuantity, 'Maximum Quantity')" [class.selected]="element.isSelected" mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'table-data-maximum-quantity-' + i">{{element.maximumQuantity}}</td>
                             </ng-container>
                             <ng-container matColumnDef="putAwayDate">
-                                <th mat-header-cell mat-sort-header *matHeaderCellDef data-automation-id="table-header-put-away-date"> Put Away Date </th>
-                                <td (contextmenu)="onContextMenu($event, element.putAwayDate, 'Put Away Date')" [class.selected]="element.isSelected" mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'table-data-put-away-date-' + i">{{element.putAwayDate}}</td>
+                                <th mat-header-cell mat-sort-header *matHeaderCellDef data-automation-id="table-header-Put Away Date"> Put Away Date </th>
+                                <td (contextmenu)="onContextMenu($event, element.putAwayDate, 'Put Away Date')" [class.selected]="element.isSelected" mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'table-data-Put Away Date-' + (element.putAwayDate ? element.putAwayDate : ' ')">{{element.putAwayDate}}</td>
                             </ng-container>
                             <ng-container matColumnDef="userField1">
-                                <th mat-header-cell mat-sort-header *matHeaderCellDef replacePlaceholder [replacePlaceHolder]="placeholders.userField1" [fallbackPlaceHolder]="placeholders.userField1Fallback" data-automation-id="table-header-user-field-1"> {{UserField1}} </th>
-                                <td (contextmenu)="onContextMenu($event, element.userField1, 'User Field1')" [class.selected]="element.isSelected" mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'table-data-user-field-1-' + i">{{element.userField1}}</td>
+                                <th mat-header-cell mat-sort-header *matHeaderCellDef replacePlaceholder [replacePlaceHolder]="placeholders.userField1" [fallbackPlaceHolder]="placeholders.userField1Fallback" data-automation-id="table-header-User Field 1"> {{UserField1}} </th>
+                                <td (contextmenu)="onContextMenu($event, element.userField1, 'User Field1')" [class.selected]="element.isSelected" mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'table-data-User Field 1-' + (element.userField1 ? element.userField1 : ' ')">{{element.userField1}}</td>
                             </ng-container>
                             <ng-container matColumnDef="userField2">
-                                <th mat-header-cell mat-sort-header *matHeaderCellDef replacePlaceholder [replacePlaceHolder]="placeholders.userField2" [fallbackPlaceHolder]="placeholders.userField2Fallback" data-automation-id="table-header-user-field-2"> {{UserField2}} </th>
-                                <td (contextmenu)="onContextMenu($event, element.userField2, 'User Field2')" [class.selected]="element.isSelected" mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'table-data-user-field-2-' + i">{{element.userField2}}</td>
+                                <th mat-header-cell mat-sort-header *matHeaderCellDef replacePlaceholder [replacePlaceHolder]="placeholders.userField2" [fallbackPlaceHolder]="placeholders.userField2Fallback" data-automation-id="table-header-User Field 2"> {{UserField2}} </th>
+                                <td (contextmenu)="onContextMenu($event, element.userField2, 'User Field2')" [class.selected]="element.isSelected" mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'table-data-User Field 2-' + (element.userField2 ? element.userField2 : ' ')">{{element.userField2}}</td>
                             </ng-container>
                             <ng-container matColumnDef="masterLocation">
-                                <th mat-header-cell mat-sort-header *matHeaderCellDef data-automation-id="table-header-master-location"> Master Location </th>
-                                <td (contextmenu)="onContextMenu($event, element.masterLocation, 'Master Location')" [class.selected]="element.isSelected" mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'table-data-master-location-' + i">{{element.masterLocation}}</td>
+                                <th mat-header-cell mat-sort-header *matHeaderCellDef data-automation-id="table-header-Master Location"> Master Location </th>
+                                <td (contextmenu)="onContextMenu($event, element.masterLocation, 'Master Location')" [class.selected]="element.isSelected" mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'table-data-Master Location-' + (element.masterLocation ? element.masterLocation : ' ')">{{element.masterLocation}}</td>
                             </ng-container>
                             <ng-container matColumnDef="dateSensitive">
-                                <th mat-header-cell mat-sort-header *matHeaderCellDef data-automation-id="table-header-date-sensitive"> Date Sensitive</th>
-                                <td (contextmenu)="onContextMenu($event, element.dateSensitive, 'Date Sensitive')" [class.selected]="element.isSelected" mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'table-data-date-sensitive-' + i">{{element.dateSensitive}}</td>
+                                <th mat-header-cell mat-sort-header *matHeaderCellDef data-automation-id="table-header-Date Sensitive"> Date Sensitive</th>
+                                <td (contextmenu)="onContextMenu($event, element.dateSensitive, 'Date Sensitive')" [class.selected]="element.isSelected" mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'table-data-Date Sensitive-' + (element.dateSensitive ? element.dateSensitive : ' ')">{{element.dateSensitive}}</td>
                             </ng-container>
                             <ng-container matColumnDef="dedicated">
-                                <th mat-header-cell mat-sort-header *matHeaderCellDef data-automation-id="table-header-dedicated"> Dedicated </th>
-                                <td (contextmenu)="onContextMenu($event, element.dedicated, 'Dedicated')" [class.selected]="element.isSelected" mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'table-data-dedicated-' + i">{{element.dedicated}}</td>
+                                <th mat-header-cell mat-sort-header *matHeaderCellDef data-automation-id="table-header-Dedicated"> Dedicated </th>
+                                <td (contextmenu)="onContextMenu($event, element.dedicated, 'Dedicated')" [class.selected]="element.isSelected" mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'table-data-Dedicated-' + (element.dedicated ? element.dedicated : ' ')">{{element.dedicated}}</td>
                             </ng-container>
                             <ng-container matColumnDef="masterInvMapID">
-                                <th mat-header-cell mat-sort-header *matHeaderCellDef data-automation-id="table-header-master-inv-map-id"> Master Inv Map ID
+                                <th mat-header-cell mat-sort-header *matHeaderCellDef data-automation-id="table-header-Master Inv Map ID"> Master Inv Map ID
                                 </th>
-                                <td (contextmenu)="onContextMenu($event, element.masterInvMapID, 'Master Inv Map ID')" [class.selected]="element.isSelected" mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'table-data-master-inv-map-id-' + i">{{element.masterInvMapID}}</td>
+                                <td (contextmenu)="onContextMenu($event, element.masterInvMapID, 'Master Inv Map ID')" [class.selected]="element.isSelected" mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'table-data-Master Inv Map ID-' + (element.masterInvMapID ? element.masterInvMapID : ' ')">{{element.masterInvMapID}}</td>
                             </ng-container>
                             <ng-container matColumnDef="minQuantity">
-                                <th mat-header-cell mat-sort-header *matHeaderCellDef data-automation-id="table-header-min-quantity">Min Quantity </th>
-                                <td (contextmenu)="onContextMenu($event, element.minQuantity, 'Min Quantity')" [class.selected]="element.isSelected" mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'table-data-min-quantity-' + i">{{element.minQuantity}}</td>
+                                <th mat-header-cell mat-sort-header *matHeaderCellDef data-automation-id="table-header-Min Quantity">Min Quantity </th>
+                                <td (contextmenu)="onContextMenu($event, element.minQuantity, 'Min Quantity')" [class.selected]="element.isSelected" mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'table-data-Min Quantity-' + (element.minQuantity ? element.minQuantity : ' ')">{{element.minQuantity}}</td>
                             </ng-container>
                             <ng-container matColumnDef="invMapID">
-                                <th mat-header-cell mat-sort-header *matHeaderCellDef data-automation-id="table-header-inv-map-id"> Inv Map ID </th>
-                                <td (contextmenu)="onContextMenu($event, element.invMapID, 'Inv Map ID')" [class.selected]="element.isSelected" mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'table-data-inv-map-id-' + i">{{element.invMapID}}</td>
+                                <th mat-header-cell mat-sort-header *matHeaderCellDef data-automation-id="table-header-Inv Map ID"> Inv Map ID </th>
+                                <td (contextmenu)="onContextMenu($event, element.invMapID, 'Inv Map ID')" [class.selected]="element.isSelected" mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'table-data-Inv Map ID-' + (element.invMapID ? element.invMapID : ' ')">{{element.invMapID}}</td>
                             </ng-container>
 
 

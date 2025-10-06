@@ -20,6 +20,7 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { CompletePickBatchComponent } from './complete-pick-batch/complete-pick-batch.component';
 import { ReportsComponent } from '../admin/reports/reports.component';
 import { PickToteInductionComponent } from './pick-tote-induction/pick-tote-induction.component';
+import { CartManagementComponent } from './cart-management/cart-management.component';
 
 const routes: Routes = [
   { path: '', component: InductionManagerComponent,
@@ -65,6 +66,11 @@ const routes: Routes = [
   {
     path: 'PickToteInduction',
     component: PickToteInductionComponent,
+    canActivate: [AuthGuardGuard],
+  },
+  {
+    path: 'CartManagement',
+    component: CartManagementComponent,
     canActivate: [AuthGuardGuard],
   },
 

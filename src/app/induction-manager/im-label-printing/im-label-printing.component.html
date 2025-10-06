@@ -1,0 +1,258 @@
+
+<mat-card class="mat-elevation-z g-card">
+  <!-- Header Section -->
+      <mat-card-content>
+        <!-- Header Row -->
+        <div class="row flex-row align-items-center mb-2">
+          <div class="col mb-3 mb-xl-0 d-flex align-items-center">
+            <app-icon-heading-component heading="Label Printing" icon="print" [automationId]="'label-printing-heading'">
+            </app-icon-heading-component>
+          </div>
+        </div>
+        <div class="card br-14 p-3 mb-3">
+          <div class="row row-flex align-items-center">
+            <div class="col-xl-3">
+          <mat-form-field class="action-dropdown mb-3 mb-xl-0 w-100" appearance="outline">
+            <mat-label>Mode Selector</mat-label>
+            <mat-select [(ngModel)]="selectedMode" (ngModelChange)="onModeChange()" 
+                        [disableOptionCentering]="true" 
+                        data-automation-id="mode-selector-dropdown">
+              <mat-option *ngFor="let mode of modeOptions" [value]="mode" 
+                          [attr.data-automation-id]="'mode-option-' + mode.replace(' ', '-').toLowerCase()">
+                {{ mode }}
+              </mat-option>
+            </mat-select>
+            <span class="material-symbols-outlined icon-expand-more">expand_more</span>
+          </mat-form-field>
+          </div>
+          <div class="col-xl-2 offset-xl-7">
+          <button mat-flat-button color="primary" class="primary-button btn-regular w-100" 
+                      (click)="onRefresh()" data-automation-id="refresh-btn">
+                Refresh
+              </button>
+              </div>
+        </div>
+        </div>
+      </mat-card-content>
+ </mat-card>
+
+<div class="container-fluid px-0">
+  <div class="row">
+    <div class="col-xl-6">
+      <mat-card class="mat-elevation-z g-card mb-3 mt-3 mb-xl-0">
+        <mat-card-content>
+          <div class="row mb-2">
+            <div class="col">
+              <app-icon-heading-component heading="Available Totes" icon="inbox"
+                [automationId]="'available-totes-heading'">
+              </app-icon-heading-component>
+            </div>
+          </div>
+          <!-- Search Bar with Dropdown -->
+          <div class="bg-light-blue bg-50 br-none px-3 py-3 br-20 mb-2">
+            <div class="d-xl-flex d-block justify-content-between align-items-center gap-12 w-100">
+              <mat-form-field class="action-dropdown w-100 mb-3 mb-xl-0" appearance="outline">
+                <mat-select [(ngModel)]="selectedSearchColumn" [disableOptionCentering]="true"
+                  data-automation-id="tote-search-column-select">
+                  <mat-option *ngFor="let column of availableTotesDisplayedColumns.slice(0, -1)" [value]="column"
+                    [attr.data-automation-id]="'search-column-option-' + column">
+                    {{ getColumnDisplayName(column) }}
+                  </mat-option>
+                </mat-select>
+                <span class="material-symbols-outlined icon-expand-more">expand_more</span>
+              </mat-form-field>
+
+              <span class="v-br d-xl-block d-none mb-3 mb-xl-0">-</span>
+
+              <mat-form-field class="w-100 br-14 custom-form-field-bg-white" appearance="outline">
+                <span class="material-symbols-outlined text-20 icon-search pe-2">search</span>
+                <input type="text" class="suggest" matInput [(ngModel)]="searchText" (ngModelChange)="applyFilter()"
+                  (keyup.enter)="applyFilter()" data-automation-id="tote-search-input" />
+                <button matSuffix class="clear-btn" (click)="clearSearch()" *ngIf="searchText && searchText.length > 0"
+                  data-automation-id="clear-search-button">
+                  <mat-icon class="text-22 text-chrome-600 d-flex align-items-center">cancel</mat-icon>
+                </button>
+              </mat-form-field>
+            </div>
+          </div>
+          <div class="row px-3">
+            <button mat-stroked-button color="primary" class="button-add-all mb-3 float-end count-primary-button"
+              (click)="addAllToQueue()" data-automation-id="add-all-btn">
+              Add All
+            </button>
+          </div>
+
+          <!-- Available Totes Table -->
+          <div class="card br-14 table-responsive borderless">
+            <ng-scrollbar class="mat-table-scrollbar scrollbar-hover-padding count-table-scrollbar" track="all">
+              <table mat-table [dataSource]="availableTotesDataSource" class="custom-table table-fix" matSort
+                (matSortChange)="announceSortChange($event)" #availableSort="matSort" data-automation-id="available-totes-table">
+
+                <!-- Tote ID Column -->
+                <ng-container matColumnDef="toteId">
+                  <th mat-header-cell *matHeaderCellDef mat-sort-header
+                    data-automation-id="available-totes-header-tote-id">
+                    Tote ID
+                  </th>
+                  <td mat-cell *matCellDef="let element; let i = index"
+                    data-automation-id="available-totes-cell-tote-id">
+                    {{ element.toteId }}
+                  </td>
+                </ng-container>
+
+                <!-- Priority Column -->
+                <ng-container matColumnDef="priority">
+                  <th mat-header-cell *matHeaderCellDef mat-sort-header
+                    data-automation-id="available-totes-header-priority">
+                    Priority
+                  </th>
+                  <td mat-cell *matCellDef="let element; let i = index"
+                    data-automation-id="available-totes-cell-priority">
+                    {{ element.priority }}
+                  </td>
+                </ng-container>
+
+                <!-- Required Date Column -->
+                <ng-container matColumnDef="requiredDate">
+                  <th mat-header-cell *matHeaderCellDef mat-sort-header
+                    data-automation-id="available-totes-header-required-date">
+                    Required Date
+                  </th>
+                  <td mat-cell *matCellDef="let element; let i = index"
+                    data-automation-id="available-totes-cell-required-date">
+                    {{ element.requiredDate | date :'MM/dd/yyyy' }}
+                  </td>
+                </ng-container>
+
+                <!-- Actions Column -->
+                <ng-container matColumnDef="actions">
+                  <th mat-header-cell *matHeaderCellDef data-automation-id="available-totes-header-actions">
+                    Actions
+                  </th>
+                  <td mat-cell *matCellDef="let element; let i = index"
+                    data-automation-id="available-totes-cell-actions">
+                    <button mat-flat-button color="primary" class="mx-auto xsm-icon-button" matTooltip="Add to Queue"
+                      (click)="addSingleToteToQueue(element)"
+                      [attr.data-automation-id]="'add-tote-btn-' + element.toteId">
+                      <mat-icon>add</mat-icon>
+                    </button>
+                  </td>
+                </ng-container>
+
+                <tr class="mat-row" *matNoDataRow>
+                  <td class="mat-cell " [attr.colspan]="availableTotesDisplayedColumns.length" data-automation-id="No data found">
+                    No data available in table.
+                  </td>
+                </tr>
+
+                <tr mat-header-row *matHeaderRowDef="availableTotesDisplayedColumns; sticky: true"></tr>
+                <tr mat-row *matRowDef="let row; columns: availableTotesDisplayedColumns;"></tr>
+              </table>
+            </ng-scrollbar>
+          </div>
+          <div class="table-pagination d-flex justify-content-start">
+            <mat-paginator #availablePaginator [pageSize]="10" [length]="availableTotesDataSource.filteredData.length"
+              [pageSizeOptions]="[10, 20, 100]" showFirstLastButtons data-automation-id="available-totes-paginator">
+            </mat-paginator>
+          </div>
+        </mat-card-content>
+      </mat-card>
+    </div>
+    <div class="col-xl-6">
+      <mat-card class="mat-elevation-z g-card mb-3 mb-xl-0 mt-3">
+        <mat-card-content>
+          <div class="row mb-2">
+            <div class="col">
+              <app-icon-heading-component heading="Print Queue" icon="queue" [automationId]="'print-queue-heading'">
+              </app-icon-heading-component>
+            </div>
+          </div>
+          <div class="px-3">
+            <div class="d-flex gap-12 mb-3">
+              <button mat-stroked-button color="primary" class="flex-grow-1" (click)="printLabelsFromQueue()"
+                data-automation-id="print-labels-btn">
+                Print Labels
+              </button>
+              <button mat-stroked-button color="warn" class="flex-grow-1" (click)="removeAllFromQueue()"
+                data-automation-id="remove-all-btn">
+                Remove All
+              </button>
+            </div>
+          </div>
+
+          <!-- Print Queue Table -->
+          <div class="card br-14 table-responsive borderless">
+            <ng-scrollbar class="mat-table-scrollbar scrollbar-hover-padding count-table-scrollbar-1" track="all">
+              <table mat-table [dataSource]="printQueueDataSource" class="custom-table table-fix" matSort
+                (matSortChange)="announceSortChange($event)" #printQueueSort="matSort" data-automation-id="print-queue-table">
+
+                <!-- Tote ID Column -->
+                <ng-container matColumnDef="toteId">
+                  <th mat-header-cell *matHeaderCellDef mat-sort-header data-automation-id="print-queue-header-tote-id">
+                    Tote ID
+                  </th>
+                  <td mat-cell *matCellDef="let element; let i = index" data-automation-id="print-queue-cell-tote-id">
+                    {{ element.toteId }}
+                  </td>
+                </ng-container>
+
+                <!-- Priority Column -->
+                <ng-container matColumnDef="priority">
+                  <th mat-header-cell *matHeaderCellDef mat-sort-header
+                    data-automation-id="print-queue-header-priority">
+                    Priority
+                  </th>
+                  <td mat-cell *matCellDef="let element; let i = index" data-automation-id="print-queue-cell-priority">
+                    {{ element.priority }}
+                  </td>
+                </ng-container>
+
+                <!-- Required Date Column -->
+                <ng-container matColumnDef="requiredDate">
+                  <th mat-header-cell *matHeaderCellDef mat-sort-header
+                    data-automation-id="print-queue-header-required-date">
+                    Required Date
+                  </th>
+                  <td mat-cell *matCellDef="let element; let i = index"
+                    data-automation-id="print-queue-cell-required-date">
+                    {{ element.requiredDate | date :'MM/dd/yyyy' }}
+                  </td>
+                </ng-container>
+               
+                <!-- Actions Column -->
+                <ng-container matColumnDef="actions">
+                  <th mat-header-cell *matHeaderCellDef data-automation-id="print-queue-header-actions">
+                    Actions
+                  </th>
+                  <td mat-cell *matCellDef="let element; let i = index" data-automation-id="print-queue-cell-actions">
+                    <button mat-flat-button color="warn" class="mx-auto xsm-icon-button" matTooltip="Remove from Queue"
+                      (click)="removeSingleFromQueue(element)"
+                      [attr.data-automation-id]="'remove-item-btn-' + element.toteId">
+                      <mat-icon>close</mat-icon>
+                    </button>
+                  </td>
+                </ng-container>
+
+                <tr class="mat-row" *matNoDataRow>
+                  <td class="mat-cell " [attr.colspan]="printQueueDisplayedColumns.length" data-automation-id="No data found">
+                    No data available in table.
+                  </td>
+                </tr>
+
+                <tr mat-header-row *matHeaderRowDef="printQueueDisplayedColumns; sticky: true"></tr>
+                <tr mat-row *matRowDef="let row; columns: printQueueDisplayedColumns;"></tr>
+              </table>
+            </ng-scrollbar>
+          </div>
+          <div class="table-pagination d-flex justify-content-start">
+            <mat-paginator #printQueuePaginator [pageSize]="10" [length]="printQueueDataSource.filteredData.length"
+              [pageSizeOptions]="[10, 20, 100]" showFirstLastButtons data-automation-id="print-queue-paginator">
+            </mat-paginator>
+          </div>
+        </mat-card-content>
+      </mat-card>
+    </div>
+  </div>
+</div>
+
+

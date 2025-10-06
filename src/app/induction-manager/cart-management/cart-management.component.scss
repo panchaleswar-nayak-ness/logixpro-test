@@ -1,0 +1,55 @@
+.cursor-pointer {
+  cursor: pointer;
+}
+
+.scroll-bar {
+  height: 400px;
+}
+
+.table-pagination {
+  margin-top: 16px;
+}
+
+// Table styles targeting HTML elements directly
+table {
+  tr,
+  th,
+  td {
+    vertical-align: middle;
+    border-bottom: 1px solid var(--clr-pure-white);
+  }
+
+  tr {
+    min-height: 40px;
+    display: table-row !important;
+    white-space: nowrap;
+
+    th:first-child,
+    td:first-child {
+      padding-left: 28px !important;
+    }
+  }
+
+  th {
+    padding: 5px 12px;
+  }
+
+  td {
+    padding: 10px 12px;
+    text-overflow: ellipsis;
+    max-width: 20ch;
+    overflow: hidden;
+  }
+
+  // Actions column styling
+  th:last-child {
+    height: 66px;
+    padding-left: 65px;
+    width: 88px;
+  }
+
+  td:last-child {
+    padding-left: 24px;
+    background: var(--clr-pure-white);
+  }
+}

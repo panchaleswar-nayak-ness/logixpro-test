@@ -70,6 +70,7 @@ export class SideNavComponent implements OnInit {
     { icon: 'line_style', title: 'Super Batch', route: '/InductionManager/SuperBatch', permission: 'Induction Super Batch' },
     { icon: 'library_add_check', title: 'Complete Pick Batch', route: '/InductionManager/CompletePickBatch', permission: AppPermissions.InductionManager },
     { icon: 'conveyor_belt', title: 'Pick Tote Induction', route: '/InductionManager/PickToteInduction', permission: 'Pick Tote Induction'  },
+    { icon: 'shelves', title: 'Cart Management', route: '/InductionManager/CartManagement', permission: 'Cart Management'  },
   ];
   consolidationMenus: any = [
     { icon: 'arrow_back', title: AppPermissions.ConsolidationManager, route: '/ConsolidationManager', class: UniqueConstants.backClass, permission: AppPermissions.ConsolidationManager },
@@ -81,6 +82,7 @@ export class SideNavComponent implements OnInit {
     { icon: 'analytics', title: 'Reporting ', route: '/ConsolidationManager/Reports', permission: 'Consolidation Mgr Admin' },
     { icon: 'view_module', title: 'Order Status', route: '/ConsolidationManager/OrderStatus', paramsObj: { IsOrderStatus: true }, permission: 'Consolidation Order Status' },
     { icon: 'schema', title: 'Markout', route: '/ConsolidationManager/Markout', permission: 'Markout Process' },
+    { icon: 'schema', title: 'RGTP Markout', route: '/ConsolidationManager/RGTPMarkout', permission: 'RGTP Markout' },
     { icon: 'dns', title: 'Route ID Management', route: '/ConsolidationManager/RouteIDM', permission: 'RouteID Management' }
     //  flex_wrap
   ];

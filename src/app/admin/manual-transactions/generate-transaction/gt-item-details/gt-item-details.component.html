@@ -2,7 +2,7 @@
     <mat-card-content>
         <div class="row">
         
-             <app-icon-heading-component class="col card-header-title mb-3 d-flex align-items-center" heading="Item Details" icon="category" data-automation-id="heading-item-details">
+             <app-icon-heading-component class="col card-header-title mb-3 d-flex align-items-center" heading="Item Details" icon="category" [automationId]="'heading-item-details'">
 
             </app-icon-heading-component> 
             
@@ -37,7 +37,7 @@
             <div class="col-xl-3">
                 <mat-form-field class="custom-form-field w-100 __grab_cursor mb-3" appearance="outline" [class.mat-form-field-invalid]="isInvalid" data-automation-id="form-field-expiration-date">
                     <mat-label data-automation-id="label-expiration-date">Expiration Date</mat-label>
-                    <input [disabled]="!item" maxlength="11" matInput [matDatepicker]="expirationDate" [(ngModel)]="expDate" (focusout)="this.onFormFieldFocusOut.emit()" (ngModelChange)="onFieldChange(expDate)" data-automation-id="input-expiration-date">
+                    <input [disabled]="!item" maxlength="11" matInput [matDatepicker]="expirationDate" [(ngModel)]="expDate" (focusout)="this.onFormFieldFocusOut.emit()" (ngModelChange)="onFieldChange(expDate)" [attr.data-automation-id]="'input-expiration-date-' + expDate">
                     <mat-datepicker-toggle matSuffix [for]="expirationDate" ngDefaultControl></mat-datepicker-toggle>
                     <mat-datepicker   #expirationDate></mat-datepicker>
                 </mat-form-field>

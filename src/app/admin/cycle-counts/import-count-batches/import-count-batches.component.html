@@ -15,7 +15,7 @@
   <div class="col-xl-3">
     <mat-form-field class="action-dropdown w-100" appearance="outline" data-automation-id="form-field-import-type">
       <mat-label data-automation-id="label-import-type">Import Type</mat-label>
-      <mat-select [(value)]="selectedImportType" placeholder="Import Type" (selectionChange)="onImportTypeChange()" data-automation-id="select-import-type">
+      <mat-select [(value)]="selectedImportType" placeholder="Import Type" (selectionChange)="onImportTypeChange()" [attr.data-automation-id]="'select-import-type-' + (selectedImportType || '')">
         <mat-option *ngFor="let type of importTypes; let i = index" [value]="type" [attr.data-automation-id]="'option-import-type-'  + type">{{ type }}</mat-option>
       </mat-select>
       <span class="material-symbols-outlined icon-expand-more">expand_more</span>
@@ -25,9 +25,9 @@
     <!-- Filter By Dropdown -->
     <mat-form-field class="action-dropdown w-100" appearance="outline" data-automation-id="form-field-filter-by">
       <mat-label data-automation-id="label-filter-by">Filter By</mat-label>
-      <mat-select [(value)]="selectedFilterBy" [disabled]="!selectedImportType" data-automation-id="select-filter-by">
+      <mat-select [(value)]="selectedFilterBy" [disabled]="!selectedImportType" [attr.data-automation-id]="'select-filter-by-' + (selectedFilterBy || '')">
         <mat-option (click)="onFilterByChange(fileInput)" value="Spreadsheet" data-automation-id="option-filter-by-spreadsheet">Spreadsheet</mat-option>
-        <mat-option (click)="onFilterByChange(fileInput)" data-automation-id="option-filter-by-dependval">{{dependVal}}</mat-option>
+        <mat-option (click)="onFilterByChange(fileInput)" data-automation-id="option-filter-by-location">{{dependVal}}</mat-option>
       </mat-select>
       <span class="material-symbols-outlined icon-expand-more">expand_more</span>
     </mat-form-field>
@@ -51,9 +51,9 @@
     #fileInput
     accept=".xls,.xlsx"
     hidden
-    (change)="onFileSelect($event)"
-    data-automation-id="input-file"
-  >
+    (change)="onFileSelect($event)" 
+    [attr.data-automation-id]="'input-file-' + fileInput.value"
+    >
   </div>
   <div class="mt-3" [formGroup]="filtersForm" [hidden]="selectedImportType !== 'Location'">
     <mat-checkbox

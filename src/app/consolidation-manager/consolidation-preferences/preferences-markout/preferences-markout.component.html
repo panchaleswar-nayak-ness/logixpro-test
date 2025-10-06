@@ -1,42 +1,45 @@
-<mat-card class="mat-elevation-z g-card mt-2 mb-3 pb-5">
+<mat-card class="mat-elevation-z g-card mt-2 mb-3 pb-5" data-automation-id="preferences-markout-card">
   <div class="mb-0">
-    <app-icon-heading-component heading="Preferences" icon="tune">
+    <app-icon-heading-component heading="Preferences" icon="tune" [automationId]="'preferences-markout-heading'">
     </app-icon-heading-component>
-    <p class="text-tertiary-800 bold py-3 mb-0"></p>
+    <p class="text-tertiary-800 bold py-3 mb-0" data-automation-id="preferences-markout-description"></p>
   </div>
-  <div>
-  <form [formGroup]="markoutForm">
-    <div class="row pb-2 mb-3">
-      <div class="col-xl-4">
-        <div class="card">
-          <div class="row p-3">
-            <div class="col-xl-12 pb-2">
+  <div data-automation-id="preferences-markout-content">
+  <form [formGroup]="markoutForm" data-automation-id="preferences-markout-form">
+    <div class="row pb-2 mb-3" data-automation-id="markout-settings-row">
+      <div class="col-xl-4" data-automation-id="markout-settings-container">
+        <div class="card" data-automation-id="markout-settings-card">
+          <div class="row p-3" data-automation-id="markout-settings-content">
+            <div class="col-xl-12 pb-2" data-automation-id="default-view-type-container">
               <mat-form-field
                 class="action-dropdown col-xl-12 col-12"
                 appearance="outline"
+                data-automation-id="default-view-type-field"
               >
-                <mat-label>Default View Type</mat-label>
+                <mat-label data-automation-id="default-view-type-label">Default View Type</mat-label>
                 <mat-select
                   formControlName="defaultViewType"
                   class="employees-action"
                   (selectionChange)="updateMarkoutPreferences()"
+                  data-automation-id="default-view-type-select"
                 >
-                  <mat-option [value]="'View by Order'"
+                  <mat-option [value]="'View by Order'" data-automation-id="view-by-order-option"
                     >View by Order</mat-option
                   >
-                  <mat-option [value]="'View by Tote'">View by Tote</mat-option>
+                  <mat-option [value]="'View by Tote'" data-automation-id="view-by-tote-option">View by Tote</mat-option>
                 </mat-select>
-                <span class="material-symbols-outlined icon-expand-more">
+                <span class="material-symbols-outlined icon-expand-more" data-automation-id="default-view-type-expand-icon">
                   expand_more
                 </span>
               </mat-form-field>
             </div>
-          <div class="row pb-0 mb-0">
-            <div class="col-xl-12">
+          <div class="row pb-0 mb-0" data-automation-id="auto-print-settings-row">
+            <div class="col-xl-12" data-automation-id="auto-print-settings-container">
               <div class="d-xl-flex gap-12 mb-0 pb-0">
-                <div class="col-xl-12 text-left admin-prefrences py-2 ps-1">
+                <div class="col-xl-12 text-left admin-prefrences py-2 ps-1" data-automation-id="auto-print-settings-section">
                   <div
                     class="d-flex justify-content-between mb-2 text-tertiary-900"
+                    data-automation-id="auto-print-markout-report-container"
                   >
                     Auto Print Markout Report:
                     <mat-slide-toggle
@@ -45,10 +48,12 @@
                       checked
                       color="primary"
                       matTooltip=""
+                      data-automation-id="auto-print-markout-report-toggle"
                     ></mat-slide-toggle>
                   </div>
                   <div
                     class="d-flex justify-content-between mb-2 text-tertiary-900"
+                    data-automation-id="auto-print-tote-manifest-container"
                   >
                     Auto Print Tote Manifest:
                     <mat-slide-toggle
@@ -57,10 +62,12 @@
                       checked
                       color="primary"
                       matTooltip=""
+                      data-automation-id="auto-print-tote-manifest-toggle"
                     ></mat-slide-toggle>
                   </div>
                   <div
                     class="d-flex justify-content-between mb-2 text-tertiary-900"
+                    data-automation-id="auto-print-tote-manifest-2-container"
                   >
                     Auto Print Tote Manifest 2:
                     <mat-slide-toggle
@@ -69,6 +76,7 @@
                       checked
                       color="primary"
                       matTooltip=""
+                      data-automation-id="auto-print-tote-manifest-2-toggle"
                     ></mat-slide-toggle>
                   </div>
                 </div>
@@ -79,25 +87,25 @@
         </div>
       </div>
     </div>
-    <div class="row pb-2 mb-3">
-      <div class="col-xl-4">
-          <div class="card">
-          <div class="row p-3">
-              <div class="col-xl-12 pb-2">
-                <div class="mb-2">
-                  <span class="text-20 text-tertiary-900 bold mb-0 d-flex align-items-center ">Status Card Highlight Settings</span>
+    <div class="row pb-2 mb-3" data-automation-id="status-highlight-settings-row">
+      <div class="col-xl-4" data-automation-id="status-highlight-settings-container">
+          <div class="card" data-automation-id="status-highlight-settings-card">
+          <div class="row p-3" data-automation-id="status-highlight-settings-content">
+              <div class="col-xl-12 pb-2" data-automation-id="status-highlight-settings-section">
+                <div class="mb-2" data-automation-id="status-highlight-title-container">
+                  <span class="text-20 text-tertiary-900 bold mb-0 d-flex align-items-center " data-automation-id="status-highlight-title">Status Card Highlight Settings</span>
                 </div>
-              <div class="row py-2">
-                  <p class="text-tertiary-800 bold mb-0 ">Tote Status</p>
-                  <mat-checkbox (change)="updateMarkoutPreferences()" formControlName="currentStatus" color="primary" class="ld_checkbox col-12 col-xl-4">Current Status</mat-checkbox>
+              <div class="row py-2" data-automation-id="tote-status-section">
+                  <p class="text-tertiary-800 bold mb-0 " data-automation-id="tote-status-label">Tote Status</p>
+                  <mat-checkbox (change)="updateMarkoutPreferences()" formControlName="currentStatus" color="primary" class="ld_checkbox col-12 col-xl-4" data-automation-id="current-status-checkbox">Current Status</mat-checkbox>
               </div>
-                  <div class="row py-2">
-                      <p class="text-tertiary-800 bold mb-0"> Transaction Status</p>
-                      <mat-checkbox  (change)="updateMarkoutPreferences()" class="ld_checkbox col-12" color="primary" formControlName="short">Short</mat-checkbox>
-                      <mat-checkbox  (change)="updateMarkoutPreferences()" class="ld_checkbox col-12" color="primary" formControlName="missed">Missed</mat-checkbox>
-                      <mat-checkbox  (change)="updateMarkoutPreferences()" class="ld_checkbox col-12" color="primary" formControlName="shipShort">Ship Short</mat-checkbox>
-                      <mat-checkbox  (change)="updateMarkoutPreferences()" class="ld_checkbox col-12" color="primary" formControlName="complete">Complete</mat-checkbox>
-                      <mat-checkbox  (change)="updateMarkoutPreferences()" class="ld_checkbox col-12" color="primary" formControlName="notInducted">Not Inducted</mat-checkbox>
+                  <div class="row py-2" data-automation-id="transaction-status-section">
+                      <p class="text-tertiary-800 bold mb-0" data-automation-id="transaction-status-label"> Transaction Status</p>
+                      <mat-checkbox  (change)="updateMarkoutPreferences()" class="ld_checkbox col-12" color="primary" formControlName="short" data-automation-id="short-checkbox">Short</mat-checkbox>
+                      <mat-checkbox  (change)="updateMarkoutPreferences()" class="ld_checkbox col-12" color="primary" formControlName="missed" data-automation-id="missed-checkbox">Missed</mat-checkbox>
+                      <mat-checkbox  (change)="updateMarkoutPreferences()" class="ld_checkbox col-12" color="primary" formControlName="shipShort" data-automation-id="ship-short-checkbox">Ship Short</mat-checkbox>
+                      <mat-checkbox  (change)="updateMarkoutPreferences()" class="ld_checkbox col-12" color="primary" formControlName="complete" data-automation-id="complete-checkbox">Complete</mat-checkbox>
+                      <mat-checkbox  (change)="updateMarkoutPreferences()" class="ld_checkbox col-12" color="primary" formControlName="notInducted" data-automation-id="not-inducted-checkbox">Not Inducted</mat-checkbox>
                   </div>
               </div>
           </div>

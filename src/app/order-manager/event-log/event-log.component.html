@@ -27,11 +27,11 @@
                 <div class="d-block d-lg-flex d-flex w-100 justify-content-end">
                 <mat-form-field class="action-dropdown mb-3 flex-1" appearance="outline" data-automation-id="eventlog-action-ff">
                     <mat-label data-automation-id="eventlog-action-lbl">Action</mat-label>
-                    <mat-select class="employees-action" placeholder="Actions" data-automation-id="eventlog-action-sel">
-                        <mat-option (click)="exportRange()" data-automation-id="eventlog-action-opt-export">Export Range</mat-option>
-                        <mat-option *ngIf="isAdmin" (click)="deleteRange()" data-automation-id="eventlog-action-opt-delete">Delete Range</mat-option>
-                        <mat-option (click)="printRange()" data-automation-id="eventlog-action-opt-print">Print Range (By Date)</mat-option>
-                        <mat-option (click)="refresh()" data-automation-id="eventlog-action-opt-refresh">Refresh</mat-option>
+                    <mat-select class="employees-action" placeholder="Actions" data-automation-id="action-select">
+                        <mat-option (click)="exportRange()" data-automation-id="actions-option-Export Range">Export Range</mat-option>
+                        <mat-option *ngIf="isAdmin" (click)="deleteRange()" data-automation-id="actions-option-Delete Range">Delete Range</mat-option>
+                        <mat-option (click)="printRange()" data-automation-id="actions-option-Print Range">Print Range (By Date)</mat-option>
+                        <mat-option (click)="refresh()" data-automation-id="actions-option-Refresh">Refresh</mat-option>
                     </mat-select>
                     <span class="material-symbols-outlined icon-expand-more">
                         expand_more
@@ -47,88 +47,88 @@
 
 
                     <ng-container matColumnDef="dateStamp">
-                        <th mat-header-cell *matHeaderCellDef mat-sort-header data-automation-id="eventlog-th-date"> Date </th>
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header data-automation-id="table-header-Date"> Date </th>
                         <td mat-cell *matCellDef="let element; let i = index"
                             #tooltip="matTooltip" matTooltipPosition="above" [matTooltip]="element.dateStamp" 
                             [matTooltipDisabled]="element.dateStamp && element.dateStamp.length>=20?false:true"
                             (dblclick)="openOmEventLogEntryDetail(element)"
-                            (contextmenu)="onContextMenu($event, element.dateStamp, 'Date Stamp')" [attr.data-automation-id]="'eventlog-row-date-' + i">
+                            (contextmenu)="onContextMenu($event, element.dateStamp, 'Date Stamp')" [attr.data-automation-id]="'table-data' + '-Date-' + element.dateStamp">
                         {{element.dateStamp}}</td>
                     </ng-container>
 
                     <ng-container matColumnDef="message">
-                        <th mat-header-cell *matHeaderCellDef mat-sort-header data-automation-id="eventlog-th-msg"> Message </th>
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header data-automation-id="table-header-Message"> Message </th>
                         <td mat-cell *matCellDef="let element; let i = index" 
                             #tooltip="matTooltip" matTooltipPosition="above" [matTooltip]="element.message" 
                             [matTooltipDisabled]="element.message && element.message.length>=20?false:true"
                             (dblclick)="openOmEventLogEntryDetail(element)"
-                            (contextmenu)="onContextMenu($event, element.message, 'Message')" [attr.data-automation-id]="'eventlog-row-msg-' + i">
+                            (contextmenu)="onContextMenu($event, element.message, 'Message')" [attr.data-automation-id]="'table-data' +  '-Message-' + element.message">
                         {{element.message}}</td>
                     </ng-container>
 
                     <ng-container matColumnDef="eventCode">
-                        <th mat-header-cell *matHeaderCellDef mat-sort-header data-automation-id="eventlog-th-ecode"> Event Code </th>
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header data-automation-id="table-header-Event Code"> Event Code </th>
                         <td mat-cell *matCellDef="let element; let i = index" 
                             #tooltip="matTooltip" matTooltipPosition="above" [matTooltip]="element.eventCode" 
                             [matTooltipDisabled]="element.eventCode && element.eventCode.length>=20?false:true"
                             (dblclick)="openOmEventLogEntryDetail(element)"
-                            (contextmenu)="onContextMenu($event, element.eventCode, 'Event Code')" [attr.data-automation-id]="'eventlog-row-ecode-' + i">
+                            (contextmenu)="onContextMenu($event, element.eventCode, 'Event Code')" [attr.data-automation-id]="'table-data-' +  'Event Code-' + element.eventCode">
                         {{element.eventCode}}</td>
                     </ng-container>
 
                     <ng-container matColumnDef="nameStamp">
-                        <th mat-header-cell *matHeaderCellDef mat-sort-header data-automation-id="eventlog-th-user"> Username </th>
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header data-automation-id="table-header-Username"> Username </th>
                         <td mat-cell *matCellDef="let element; let i = index" 
                             #tooltip="matTooltip" matTooltipPosition="above" [matTooltip]="element.nameStamp" 
                             [matTooltipDisabled]="element.nameStamp && element.nameStamp.length>=20?false:true"
                             (dblclick)="openOmEventLogEntryDetail(element)"
-                            (contextmenu)="onContextMenu($event, element.nameStamp, 'Name Stamp')" [attr.data-automation-id]="'eventlog-row-user-' + i">
+                            (contextmenu)="onContextMenu($event, element.nameStamp, 'Name Stamp')"  [attr.data-automation-id]="'table-data' + '-Username-' + element.nameStamp">
                         {{element.nameStamp}}</td>
                     </ng-container>
 
                     <ng-container matColumnDef="eventType">
-                        <th mat-header-cell *matHeaderCellDef mat-sort-header data-automation-id="eventlog-th-etype"> Event Type </th>
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header data-automation-id="table-header-Event Type"> Event Type </th>
                         <td mat-cell *matCellDef="let element; let i = index" 
                             #tooltip="matTooltip" matTooltipPosition="above" [matTooltip]="element.eventType" 
                             [matTooltipDisabled]="element.eventType && element.eventType.length>=20?false:true"
                             (dblclick)="openOmEventLogEntryDetail(element)"
-                            (contextmenu)="onContextMenu($event, element.eventType, 'Event Type')"[attr.data-automation-id]="'eventlog-row-etype-' + i">
+                            (contextmenu)="onContextMenu($event, element.eventType, 'Event Type')" [attr.data-automation-id]="'table-data' + '-Event Type-' + element.eventType">
                         {{element.eventType}}</td>
                     </ng-container>
 
                     <ng-container matColumnDef="eventLocation">
-                        <th mat-header-cell *matHeaderCellDef mat-sort-header data-automation-id="eventlog-th-eloc"> Event Location </th>
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header data-automation-id="table-header-Event Location"> Event Location </th>
                         <td mat-cell *matCellDef="let element; let i = index" 
                             #tooltip="matTooltip" matTooltipPosition="above" [matTooltip]="element.eventLocation" 
                             [matTooltipDisabled]="element.eventLocation && element.eventLocation.length>=20?false:true"
                             (dblclick)="openOmEventLogEntryDetail(element)"
-                            (contextmenu)="onContextMenu($event, element.eventLocation, 'Event Location')" [attr.data-automation-id]="'eventlog-row-eloc-' + i">
+                            (contextmenu)="onContextMenu($event, element.eventLocation, 'Event Location')" [attr.data-automation-id]="'table-data' + '-Event Location-' + element.eventLocation">
                         {{element.eventLocation}}</td>
                     </ng-container>
 
                     <ng-container matColumnDef="notes">
-                        <th mat-header-cell *matHeaderCellDef mat-sort-header data-automation-id="eventlog-th-notes"> Notes </th>
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header data-automation-id="table-header-Notes"> Notes </th>
                         <td mat-cell *matCellDef="let element; let i = index" 
                             #tooltip="matTooltip" matTooltipPosition="above" [matTooltip]="element.notes" 
                             [matTooltipDisabled]="element.notes && element.notes.length>=20?false:true"
                             (dblclick)="openOmEventLogEntryDetail(element)"
-                            (contextmenu)="onContextMenu($event, element.notes, 'Notes')"[attr.data-automation-id]="'eventlog-row-notes-' + i">
+                            (contextmenu)="onContextMenu($event, element.notes, 'Notes')" [attr.data-automation-id]="'table-data-' + 'Notes-' + element.notes">
                         {{element.notes}}</td>
                     </ng-container>
 
                     <ng-container matColumnDef="transactionID">
-                        <th mat-header-cell *matHeaderCellDef mat-sort-header data-automation-id="eventlog-th-tid"> Trans ID </th>
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header data-automation-id="table-header-Trans ID "> Trans ID </th>
                         <td mat-cell *matCellDef="let element; let i = index" 
                             #tooltip="matTooltip" matTooltipPosition="above" [matTooltip]="element.transactionID" 
                             [matTooltipDisabled]="element.transactionID && element.transactionID.length>=20?false:true"
                             (dblclick)="openOmEventLogEntryDetail(element)"
-                            (contextmenu)="onContextMenu($event, element.transactionID, 'Transaction ID')" [attr.data-automation-id]="'eventlog-row-tid-' + i">
+                            (contextmenu)="onContextMenu($event, element.transactionID, 'Transaction ID')" [attr.data-automation-id]="'table-data-' + 'Trans ID-' + element.transactionID">
                         {{element.transactionID}}</td>
                     </ng-container>
 
                     <ng-container matColumnDef="actions" stickyEnd>
-                        <th mat-header-cell *matHeaderCellDef > </th>
-                        <td mat-cell *matCellDef="let element; let i = index">
+                        <th mat-header-cell *matHeaderCellDef data-automation-id="table-header-Actions-Print"> </th>
+                        <td mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'table-data-' + 'Actions-Print-' +element.actions">
                           <div class="d-flex gap-12 align-items-center">
                             <button mat-flat-button color="primary" class="xsm-icon-button mb-2" data-automation-id="eventlog-print-btn" [attr.data-automation-id]="'eventlog-print-btn-' + i">
                               <mat-icon class="material-symbols-outlined" matTooltip="Print" matTooltipPosition="above" (click)="printSelected(element)">print</mat-icon>
@@ -138,7 +138,7 @@
                     </ng-container>
 
                     <tr class="mat-row" *matNoDataRow (contextmenu)="onContextMenu($event, undefined, '')" data-automation-id="eventlog-nodata-row">
-                        <td class="mat-cell " [attr.colspan]="displayedColumns.length">
+                        <td class="mat-cell " [attr.colspan]="displayedColumns.length" data-automation-id="no-data-row">
                             No data available in table.
                         </td>
                     </tr>

@@ -14,6 +14,7 @@ import {HeaderInterceptor} from './common/init/header-interceptor.interceptor';
 import {GlobalConfigModule} from './global-config/global-config.module';
 import {SelectZonesComponent} from './dialogs/select-zones/select-zones.component';
 import {TotesAddEditComponent} from './dialogs/totes-add-edit/totes-add-edit.component';
+import {ImLabelPrintingComponent} from './induction-manager/im-label-printing/im-label-printing.component';
 import {GeneralModule} from './gen-module';
 import {PickToteManagerComponent} from './dialogs/pick-tote-manager/pick-tote-manager.component';
 import {ViewOrdersComponent} from './dialogs/view-orders/view-orders.component';
@@ -166,6 +167,7 @@ import {OrderDetailsComponent} from './dialogs/order-details/order-details.compo
 import { ZoneGroupsComponent } from './dialogs/zone-groups/zone-groups.component';
 import { ImprefInductionFilterComponent } from './dialogs/impref-induction-filter/impref-induction-filter.component';
 import { ImportCountBatchesComponent } from './admin/cycle-counts/import-count-batches/import-count-batches.component';
+import { AuditTransferFileComponent } from './admin/cycle-counts/dialogs/audit-transfer-file/audit-transfer-file.component';
 import { MatSelectModule } from '@angular/material/select';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 
@@ -178,6 +180,10 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatSliderModule } from '@angular/material/slider';
 import { MatCardModule } from '@angular/material/card';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import {
+  DirectFilterationColumnsService
+} from './common/services/direct-filteration-columns.service';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -186,6 +192,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
     ChangePasswordComponent,
     SelectZonesComponent,
     TotesAddEditComponent,
+    ImLabelPrintingComponent,
     PickToteManagerComponent,
     ViewOrdersComponent,
     BlossomToteComponent,
@@ -290,6 +297,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
     OrderDetailsComponent,
     ZoneGroupsComponent,
     ImprefInductionFilterComponent,
+    AuditTransferFileComponent
   ],
   imports: [
     BrowserModule,
