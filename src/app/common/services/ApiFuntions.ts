@@ -26,7 +26,6 @@ import { PickToteTransPayload } from '../types/pick-tote-manager.types';
 import { ImportTypeConfig } from '../interface/audit-file-field-mapping-manager/import-type-config.interface';
 import { InventoryCompareConfigResponse } from '../interface/audit-file-field-mapping-manager/inventory-compare-response.interface';
 import { InventoryCompareConfigPayload } from '../interface/audit-file-field-mapping-manager/inventory-compare.interface';
-import { ApiResponse, ApiResponseData, ApiResult, ExitOk } from '../types/CommonTypes';
 import { PrintToteLabelsPayload } from '../interface/induction-manager/print-lable/print-lable.interface';
 import { PagingRequest } from '../interface/ccdiscrepancies/PagingRequest';
 import { CompareItem } from '../interface/ccdiscrepancies/CompareItem';
