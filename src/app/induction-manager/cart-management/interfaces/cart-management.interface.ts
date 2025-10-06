@@ -1,3 +1,6 @@
+import { SearchRequest, SortRequest } from 'src/app/common/interface/common-interfaces';
+import { FilterationColumns } from 'src/app/common/Model/pick-Tote-Manager';
+
 export interface CartManagementData {
   mode: 'create' | 'edit' | 'view';
   cartId?: string;
@@ -60,12 +63,11 @@ export interface ViewDetailsResponse {
 }
 
 export interface CartListRequest {
-  SearchValue: string;
-  SearchColumn: string;
+  Search: SearchRequest;
   SelectedPage: number;
   PageSize: number;
-  SortBy: string;
-  SortDirection: string;
+  sort: SortRequest;
+  Filters?: FilterationColumns[];
 }
 
 

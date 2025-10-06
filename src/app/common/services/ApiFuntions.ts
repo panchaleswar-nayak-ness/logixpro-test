@@ -2461,8 +2461,8 @@ public storageBinsExit(binId: string, zone: string): Observable<ExitOk> {
     return await this.ApiBase.PatchAsync(`/Consolidation/Route/${routeId}/RequestRelease`,null);
   }
 
-  public GetCartListWithParams(request: CartSearchRequest): Observable<CartListResponse> {
-    return this.ApiBase.Get<CartListResponse>('/cart/cartList', request);
+  public GetCartListWithParams(request: CartSearchRequest): Observable<CartListResponse |  null> {
+    return this.ApiBase.Post('/cart/cartList', request) as Observable<CartListResponse | null>;
   }
 
   public GetCartStatuses(): Observable<CartStatusCountsDto> {

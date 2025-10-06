@@ -183,9 +183,6 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import {
   DirectFilterationColumnsService
 } from './common/services/direct-filteration-columns.service';
-import {
-  DirectFilterationColumnsMenuComponent
-} from './common/globalComponents/direct-filteration-columns-menu/direct-filteration-columns-menu.component';
 
 @NgModule({
   declarations: [
@@ -300,7 +297,6 @@ import {
     OrderDetailsComponent,
     ZoneGroupsComponent,
     ImprefInductionFilterComponent,
-    DirectFilterationColumnsMenuComponent,  // Add this line
     AuditTransferFileComponent
   ],
   imports: [

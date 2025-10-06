@@ -12,6 +12,10 @@ import { ToasterType, ToasterTitle, Style, DialogConstants, StringConditions } f
 import { CartManagementGridDefaults } from 'src/app/common/constants/numbers.constants';
 import { CartStatus, CartStatusClassMap, CartDialogConstants, CartManagementDialogConstants, DialogModes, BuildNewCartActionResults } from '../constants/string.constants';
 import { UniqueConstants, ResponseStrings } from 'src/app/common/constants/strings.constants';
+import { NgZone } from '@angular/core';
+import { TableContextMenuService } from 'src/app/common/globalComponents/table-context-menu-component/table-context-menu.service';
+import { FilterationColumns } from 'src/app/common/Model/pick-Tote-Manager';
+import { AllDataTypeValues } from 'src/app/common/types/pick-tote-manager.types';
 
 @Component({
   selector: 'app-cart-grid',
@@ -24,7 +28,9 @@ export class CartGridComponent implements OnInit, AfterViewInit, OnChanges {
 
   constructor(
     private global: GlobalService,
-    private cartApiService: CartManagementApiService
+    private cartApiService: CartManagementApiService,
+    private ngZone: NgZone,
+    private contextMenuService: TableContextMenuService
   ) {}
 
   @Input() searchTerm: string = '';
@@ -45,6 +51,10 @@ export class CartGridComponent implements OnInit, AfterViewInit, OnChanges {
 
   // Track selected record for highlighting
   selectedRecord: CartItem | null = null;
+
+  // Context menu properties
+  isActiveTrigger: boolean = false;
+  filterationColumns: FilterationColumns[] = [];
 
   @Output() pageChange = new EventEmitter<PageEvent>();
   @Output() viewDetails = new EventEmitter<CartItem>();
@@ -102,12 +112,17 @@ export class CartGridComponent implements OnInit, AfterViewInit, OnChanges {
     this.hasError = false;
     
     const request: CartListRequest = {
-      SearchValue: this.searchTerm,
-      SearchColumn: this.selectedColumn,
+      Search: {
+        Value: this.searchTerm,
+        Column: this.selectedColumn
+      },
+      sort: {
+        Direction: this.sortDirection,
+        Column: this.sortBy
+      },
       SelectedPage: this.customPagination.pageIndex + 1,
       PageSize: this.customPagination.pageSize,
-      SortBy: this.sortBy,
-      SortDirection: this.sortDirection
+      Filters: this.filterationColumns
     };
   
     this.cartApiService.getCarts(request).subscribe({
@@ -308,5 +323,33 @@ export class CartGridComponent implements OnInit, AfterViewInit, OnChanges {
       // Trigger change detection by creating a new array reference
       this.dataSource.data = [...this.dataSource.data];
     }
+  }
+
+  // Context menu functionality
+  onContextMenu(event: MouseEvent, selectedItem: AllDataTypeValues, filterColumnName?: string, filterCondition?: string | undefined, filterItemType?: AllDataTypeValues): void {
+    event.preventDefault();
+    this.isActiveTrigger = true;
+    this.ngZone.run(() => {
+      filterColumnName = this.mapFilterColumn(filterColumnName);
+      this.contextMenuService.updateContextMenuState(event, selectedItem, filterColumnName, filterCondition, filterItemType);
+    });
+  }
+
+  // Handle filteration columns selection from context menu
+  directFilterationColumnsSelected(filterationColumns: FilterationColumns[]): void {
+    this.filterationColumns = filterationColumns;
+    this.loadCarts();
+    this.isActiveTrigger = false;
+  }
+  private mapFilterColumn(filterColumnName?: string): string | undefined {
+    const columnMapping: Record<string, string> = {
+      cartId: "SortBar.SortBar1",
+      cartStatus: "SortBar.Status",
+      statusDate: "SortBar.StatusDate",
+      toteQty: "ToteQty",
+      location: "SortBar.SortBarLocation"
+    };
+  
+    return filterColumnName ? columnMapping[filterColumnName] ?? filterColumnName : undefined;
   }
 }

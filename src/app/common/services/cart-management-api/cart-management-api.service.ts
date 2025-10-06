@@ -4,7 +4,7 @@ import { map, take } from 'rxjs/operators';
 import { ICartManagementApiService, CartListResponse } from './cart-management-api.interface';
 import { GlobalService } from '../global.service';
 import { ApiFuntions } from '../ApiFuntions';
-import { RemoveCartContentRequest, ValidateToteRequest, ValidationRequest, ViewDetailsResponse, CompleteCartResponse, ValidateToteResponse, CartSearchRequest, CartStatusCountsDto, CartStatusSummary } from 'src/app/induction-manager/cart-management/interfaces/cart-management.interface';
+import { RemoveCartContentRequest, ValidateToteRequest, ValidationRequest, ViewDetailsResponse, CompleteCartResponse, ValidateToteResponse, CartSearchRequest, CartStatusCountsDto, CartStatusSummary, CartListRequest } from 'src/app/induction-manager/cart-management/interfaces/cart-management.interface';
 
 
 @Injectable({
@@ -19,7 +19,10 @@ export class CartManagementApiService implements ICartManagementApiService {
   }
 
   getCarts(request: CartSearchRequest): Observable<CartListResponse> {
-    return this.Api.GetCartListWithParams(request).pipe(take(1));
+    return this.Api.GetCartListWithParams(request).pipe(
+      map(response => response as CartListResponse),
+      take(1)
+    );
   }
 
   async getCartById(cartId: string): Promise<ViewDetailsResponse> {

@@ -11,6 +11,7 @@ import { StatsCircleComponent } from './stats-circle/stats-circle.component';
 import { ReplacePlaceholderDirective } from '../init/replace-placeholder/replace-placeholder.directive';
 import { MatAutocompleteScrollDirective } from '../init/mat-autoscroll.directive';
 import { TotePositionGridComponent } from '../../induction-manager/cart-management/tote-position-grid/tote-position-grid.component';
+import { DirectFilterationColumnsMenuComponent } from './direct-filteration-columns-menu/direct-filteration-columns-menu.component';
 
 
 @NgModule({
@@ -24,7 +25,8 @@ import { TotePositionGridComponent } from '../../induction-manager/cart-manageme
     ColumnFilterComponentComponent,
     SortPipe,
     StatsCircleComponent,
-    TotePositionGridComponent
+    TotePositionGridComponent,
+    DirectFilterationColumnsMenuComponent
   ],
   exports: [
     ReplacePlaceholderDirective,
@@ -35,7 +37,8 @@ import { TotePositionGridComponent } from '../../induction-manager/cart-manageme
     InfoCardComponentComponent,
     ColumnFilterComponentComponent,
     SortPipe,
-    TotePositionGridComponent
+    TotePositionGridComponent,
+    DirectFilterationColumnsMenuComponent
   ],
   imports: [
     CommonModule,
