@@ -488,27 +488,42 @@ export class BulkTransactionComponent implements OnInit {
     // Reset slapper label flow flag when view changes
     this.isSlapperLabelFlow = false;
     if (event == BulkTransactionView.BATCH) {
-      this.bulkBatchesObservable().subscribe((res) => this.orders = res.value ?? []);
+      this.bulkBatchesObservable().subscribe((res) => {
+        this.orders = res.value ?? [];
+        this.originalOrders = res.value ?? [];
+      });
       this.displayedColumns = BATCH_DISPLAYED_COLUMNS;
       this.selectedDisplayedColumns = SELECTED_BATCH_DISPLAYED_COLUMNS;
       // We don't need to create a batch id manually as it is already created for batches
       this.isBatchIdGenerationEnabled=false;
     }
     else if (event == BulkTransactionView.TOTE) {
-      this.bulkTotesObservable().subscribe((res) => this.orders = res.value ?? []);
+      this.bulkTotesObservable().subscribe((res) => {
+        this.orders = res.value ?? [];
+        this.originalOrders = res.value ?? [];
+      });
       this.displayedColumns = TOTE_DISPLAYED_COLUMNS;
       this.selectedDisplayedColumns = SELECTED_TOTE_DISPLAYED_COLUMNS;
       // We don't need to create a batch id manually for totes
       this.isBatchIdGenerationEnabled=false;   
     }
     else if (event == BulkTransactionView.ORDER) {
-      this.bulkOrdersObservable().subscribe((res) => this.orders = res.value ?? []);
+      this.bulkOrdersObservable().subscribe((res) => {
+        this.orders = res.value ?? [];
+        this.originalOrders = res.value ?? [];
+      });
       this.displayedColumns = ORDER_DISPLAYED_COLUMNS;
       this.selectedDisplayedColumns = SELECTED_ORDER_DISPLAYED_COLUMNS;
        // We need to create a batch id manually for orders
       this.isBatchIdGenerationEnabled=true;
     }
     this.batchSeleted = false;
+  }
+
+  getAllCount() {
+    this.bulkOrdersCountApi();
+    this.bulkTotesCountApi();
+    this.bulkBatchesCountApi();
   }
 
   selectOrder(event) {
@@ -674,8 +689,13 @@ export class BulkTransactionComponent implements OnInit {
       })
     }
     else {
-      while (this.selectedOrders.length > 0)
-        this.removeOrder(this.selectedOrders[0]);
+      if (this.selectedOrders.length < this.originalOrders.length) {
+        while (this.selectedOrders.length > 0)
+          this.removeOrder(this.selectedOrders[0]);
+      } else {
+        this.orders = [...this.selectedOrders, ...this.orders];
+        this.selectedOrders = [];
+      }
     }
     this.batchSeleted = false;
     this.status.orderLinesCount = 0;
