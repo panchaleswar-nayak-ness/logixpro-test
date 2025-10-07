@@ -81,7 +81,7 @@
           </div>
           <div class="card br-14 table-responsive borderless">
             <ng-scrollbar class="mat-table-scrollbar scroll-bar" track="all">
-              <table mat-table [dataSource]="orderLines" class="custom-table table-fix">
+              <table mat-table [dataSource]="orderLines" class="custom-table table-fix" data-automation-id="verify-bulk-table">
 
                 <ng-container matColumnDef="OrderNo">
                   <th mat-header-cell *matHeaderCellDef data-automation-id="table-header-Order No">Order No.</th>
