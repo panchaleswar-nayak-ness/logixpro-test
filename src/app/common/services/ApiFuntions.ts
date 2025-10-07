@@ -2528,7 +2528,7 @@ public storageBinsExit(binId: string, zone: string): Observable<ExitOk> {
 
   public async DeleteComparedItems(ids: string[]): Promise<ApiResult<DeleteCompareItemsResponse>> {
     try {
-      const response = await this.ApiBase.BulkDeleteAsync('/inventorycompare/DeleteComparedItems', ids);
+      const response = await this.ApiBase.PatchAsync('/inventorycompare/DeleteComparedItems', ids);
       if (response.status === 200 && response.body) {
         return response.body as unknown as ApiResult<DeleteCompareItemsResponse>;
       }
