@@ -18,7 +18,7 @@ import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.ser
 import { GlobalService } from 'src/app/common/services/global.service';
 import { TableContextMenuService } from 'src/app/common/globalComponents/table-context-menu-component/table-context-menu.service';
 import { Column, ColumnDef, DialogConstants, localStorageKeys, Placeholders, StringConditions, TableName, ToasterMessages, ToasterTitle, ToasterType, UniqueConstants } from 'src/app/common/constants/strings.constants';
-import { AppNames, AppRoutes, RouteNames, RouteUpdateMenu } from 'src/app/common/constants/menu.constants';
+import { AppRoutes, RouteNames } from 'src/app/common/constants/menu.constants';
 import { DatePipe } from '@angular/common';
 import { Router } from '@angular/router';
 import { CurrentTabDataService } from 'src/app/admin/inventory-master/current-tab-data-service';
@@ -120,6 +120,42 @@ export class TransactionHistoryListComponent implements OnInit, AfterViewInit {
   searchAutocompleteList: any;
   onDestroy$: Subject<boolean> = new Subject();
   private subscription: Subscription = new Subscription();
+  
+  // Race condition prevention mechanism
+  private readonly cancelOtherCalls$ = new Subject<boolean>();
+  private isItemNumberActive: boolean = false;
+  private pendingApiCalls: Array<{ timestamp: number }> = [];
+  private isWaitingForItemNumber: boolean = false;
+  private hasCheckedUrl: boolean = false;
+
+   //Checks if getContentData should be blocked due to race condition prevention
+   //@returns true if the call should be blocked, false if it should proceed
+  
+  private shouldBlockGetContentData(): boolean {
+    return this.isItemNumberActive || this.isWaitingForItemNumber;
+  }
+
+  /**
+   * Resets race condition prevention flags and clears item number filter
+   * Should be called whenever filters are cleared to allow all data to load
+   */
+  resetItemNumberFilter(): void {
+    this.isItemNumberActive = false;
+    this.isWaitingForItemNumber = false;
+    this.cancelOtherCalls$.next(false);
+  }
+
+  /**
+   * Handles clearing of search input field and resets all related filters
+   * Called when user clicks the clear button (X) in the search textbox
+   */
+  onClearSearchInput(): void {
+    this.selectedDropdown = '';
+    this.columnSearch.searchValue = '';
+    this.filterString = TransactionConstants.SHOW_ALL_FILTER;
+    this.resetItemNumberFilter();
+    this.getContentData();
+  }
 
   @Input() set startDateEvent(inputStartDate: Date) {
     if (inputStartDate) {
@@ -127,7 +163,11 @@ export class TransactionHistoryListComponent implements OnInit, AfterViewInit {
     } else {
       this.startDate = new Date(TransactionConstants.defaultStartDate);
     }
-    this.getContentData();
+    
+    // Don't call getContentData if item number filter is active or waiting for item number
+    if (!this.shouldBlockGetContentData()) {
+      this.getContentData();
+    }
   }
     
 
@@ -137,19 +177,31 @@ export class TransactionHistoryListComponent implements OnInit, AfterViewInit {
     }else{
        this.endDate = new Date();
     }
+    
+    // Don't call getContentData if item number filter is active or waiting for item number
+    if (!this.shouldBlockGetContentData()) {
       this.getContentData();
+    }
     }
   
   @Input() set resetEvent(event: any) {
     if (event) {
       this.startDate = event.endDate;
       this.endDate = event.startDate;
-      this.getContentData();
+      
+      // Don't call getContentData if item number filter is active or waiting for item number
+      if (!this.isItemNumberActive && !this.isWaitingForItemNumber) {
+        this.getContentData();
+      }
     }
   }
   @Input() set orderNoEvent(event: Event) {
       this.orderNo = event;
-      this.getContentData();
+      
+      // Don't call getContentData if item number filter is active or waiting for item number
+      if (!this.isItemNumberActive && !this.isWaitingForItemNumber) {
+        this.getContentData();
+      }
   }
 
   @Input()
@@ -157,6 +209,10 @@ export class TransactionHistoryListComponent implements OnInit, AfterViewInit {
     if (event) {
       this.selectedDropdown = '';
       this.columnSearch.searchValue = '';
+      this.isItemNumberActive = false;
+      this.cancelOtherCalls$.next(false);
+      this.filterString = TransactionConstants.SHOW_ALL_FILTER; // Reset filter to show all data
+      this.getContentData(); // Refresh data after clearing
     }
   }
 
@@ -165,6 +221,8 @@ export class TransactionHistoryListComponent implements OnInit, AfterViewInit {
     this.startDate = new Date(TransactionConstants.defaultStartDate);
     this.endDate = new Date();
     this.orderNo = '';
+    this.isItemNumberActive = false;
+    this.cancelOtherCalls$.next(false);
     this.getContentData(); // Refresh data after resetting filters
   }
 }
@@ -209,9 +267,18 @@ export class TransactionHistoryListComponent implements OnInit, AfterViewInit {
     this.filterService.filterString= "";
     this.userData = this.authService.userData();
     this.iAdminApiService = adminApiService;
+    
+    // Set waiting flag immediately in constructor to catch early calls
+    this.isWaitingForItemNumber = true;
   }
 
   ngOnInit(): void {
+    // Set waiting flag to queue early calls
+    this.isWaitingForItemNumber = true;
+    
+    // Check for item number in URL FIRST
+    this.checkForItemNumberInUrl();
+    
     if (this.currentTabDataService.savedItem[this.currentTabDataService.TRANSACTIONS_History]) {
       let param = this.currentTabDataService.savedItem[this.currentTabDataService.TRANSACTIONS_History];
       this.selectedDropdown = param.searchCol;
@@ -229,20 +296,73 @@ export class TransactionHistoryListComponent implements OnInit, AfterViewInit {
     };
     this.searchBar.pipe(debounceTime(500), distinctUntilChanged()).subscribe(() => {
       this.autoCompleteSearchColumn();
-      this.filterString = "1=1"
-      this.getContentData();
+      this.filterString = TransactionConstants.SHOW_ALL_FILTER
+      
+      // Don't call getContentData if item number filter is active or waiting for item number
+      if (!this.shouldBlockGetContentData()) {
+        this.getContentData();
+      }
     });
+    
     this.getColumnsData();
+  }
+
+  /**
+   * Checks URL for item number parameter and sets up filtering if found
+   * Prevents race conditions by blocking other API calls until URL is processed
+   */
+  private checkForItemNumberInUrl(): void {
+    this.hasCheckedUrl = true;
+    
+    const urlParams = new URLSearchParams(window.location.hash.split('?')[1]);
+    const itemNumber = urlParams.get('itemNumber');
+    const type = urlParams.get('type');
+    
+    if (itemNumber && type === TransactionConstants.TRANSACTION_HISTORY_TYPE) {
+      this.setupItemNumberFilter(itemNumber.trim());
+    } else {
+      this.isWaitingForItemNumber = false;
+    }
+  }
+
+  //Sets up item number filter and activates cancellation mechanism
+  //@param itemNumber - The item number to filter by
+  
+  private setupItemNumberFilter(itemNumber: string): void {
+    this.isItemNumberActive = true;
+    this.cancelOtherCalls$.next(true);
+    
+    this.selectedDropdown = Column.ItemNumber;
+    this.columnSearch.searchValue = itemNumber;
+    this.filterString = TransactionConstants.ITEM_NUMBER_FILTER_TEMPLATE.replace('{0}', itemNumber);
+    
+    this.isWaitingForItemNumber = false;
+    this.pendingApiCalls = [];
   }
 
   ngAfterViewInit() {
     this.dataSource.paginator = this.paginator;
+    
+    // If item number is active from URL, make the API call now
+    if (this.isItemNumberActive) {
+      this._executeGetContentData();
+    }
+    
     this.subscription.add(
-    this.sharedService.historyItemObserver.subscribe(itemNo => {
+      this.sharedService.historyItemObserver.subscribe(itemNo => {
         if(itemNo) {
+          // Activate cancellation for other calls
+          this.isItemNumberActive = true;
+          this.cancelOtherCalls$.next(true);
+          
           this.selectedDropdown = Column.ItemNumber;
           this.columnSearch.searchValue = itemNo;
-          this.filterString = this.filterService.onContextMenuCommand( this.columnSearch.searchValue, this.selectedDropdown, "equals to", "string");
+          
+          // Create a simple, direct filter string
+          this.filterString = TransactionConstants.ITEM_NUMBER_FILTER_TEMPLATE.replace('{0}', itemNo);
+          
+          // Use direct method to bypass cancellation
+          this._executeGetContentData();
         }
       })
     );
@@ -252,7 +372,8 @@ export class TransactionHistoryListComponent implements OnInit, AfterViewInit {
         if(itemNo){
           this.selectedDropdown = Column.ItemNumber;
           this.columnSearch.searchValue = itemNo;
-          this.filterString = this.filterService.onContextMenuCommand( this.columnSearch.searchValue ,  this.selectedDropdown, "equals to", "string");
+          this.filterString = TransactionConstants.ITEM_NUMBER_FILTER_TEMPLATE.replace('{0}', itemNo);
+          this.getContentData();
         }
       })
     );
@@ -262,6 +383,8 @@ export class TransactionHistoryListComponent implements OnInit, AfterViewInit {
         if(loc){
           this.selectedDropdown = Column.Location;
           this.columnSearch.searchValue = loc;
+          this.filterString = `[Location] = '${loc}'`;
+          this.getContentData();
         }
       })
     );
@@ -269,16 +392,17 @@ export class TransactionHistoryListComponent implements OnInit, AfterViewInit {
     this.spliUrl = this.router.url.split('/');
   }
 
-  ngOnDestroy() {
+  ngOnDestroy(): void {
     this.searchBar.unsubscribe();
     this.subscription.unsubscribe();
+    this.cancelOtherCalls$.complete();
   }
 
-  clearMatSelectList(){
+  clearMatSelectList(): void {
     this.matRef.options.forEach((data: MatOption) => data.deselect());
   }
 
-  actionDialog(opened: boolean) {
+  actionDialog(opened: boolean): void {
     if (!opened && this.selectedVariable === StringConditions.set_column_sq) {
       this.sortCol = 0;
 
@@ -325,7 +449,13 @@ export class TransactionHistoryListComponent implements OnInit, AfterViewInit {
         if (res.data) {
           this.columnValues = res.data;
           this.columnValues.push(ColumnDef.Actions);
-          this.getContentData();
+          
+          // Use direct method if item number is active, otherwise use regular method
+          if (this.isItemNumberActive) {
+            this._executeGetContentData();
+          } else {
+            this.getContentData();
+          }
         } else this.global.ShowToastr(ToasterType.Error, ToasterMessages.SomethingWentWrong, ToasterTitle.Error);
       }
     });
@@ -355,8 +485,29 @@ export class TransactionHistoryListComponent implements OnInit, AfterViewInit {
     });
   }
 
-  getContentData() {
-    let payload = {
+  
+   // Main data fetching method with race condition prevention
+   // Blocks automatic calls until URL is checked, but allows user interactions (pagination, sorting)
+   
+  getContentData(): void {
+    if (!this.hasCheckedUrl) {
+      return; // Block all calls until URL is checked
+    }
+    
+    if (this.isWaitingForItemNumber && !this.isItemNumberActive) {
+      this.pendingApiCalls.push({ timestamp: Date.now() });
+      return; // Queue calls while waiting for item number
+    }
+    
+    // Allow all calls to proceed - user interactions (pagination, sorting) should work
+    // even when item number filter is active
+    this._executeGetContentData();
+  }
+
+  //Executes the actual API call with current filters
+  //Bypasses race condition prevention for direct calls
+  private _executeGetContentData(): void {
+    const payload = {
       draw: 0,
       sDate: this.datepipe.transform(this.startDate, 'MM/dd/yyyy'),
       eDate: this.datepipe.transform(this.endDate, 'MM/dd/yyyy'),
@@ -369,7 +520,7 @@ export class TransactionHistoryListComponent implements OnInit, AfterViewInit {
       sortOrder: this.sortOrder,
       filter: this.filterString
     };
-
+ 
     this.iAdminApiService.TransactionHistoryTable(payload).subscribe({
       next: (res: any) => {
         if(res.isExecuted && res.data) {
@@ -385,26 +536,26 @@ export class TransactionHistoryListComponent implements OnInit, AfterViewInit {
     });
   }
 
-  searchData() {
+  searchData(): void {
     if (this.columnSearch.searchColumn || this.columnSearch.searchColumn == '') this.getContentData();
   }
 
-  resetColumn() {
+  resetColumn(): void {
     this.columnSearch.searchColumn.colDef = '';
   }
 
-  resetFields() {
+  resetFields(): void {
     this.columnSearch.searchValue = '';
     this.searchAutocompleteList = [];
   }
 
-  selectStatus() {
+  selectStatus(): void {
     this.resetColumn();
     this.resetFields();
     this.getContentData();
   }
 
-  handlePageEvent(e: PageEvent) {
+  handlePageEvent(e: PageEvent): void {
     this.pageEvent = e;
     this.customPagination.startIndex = e.pageSize * e.pageIndex;
     this.customPagination.endIndex = e.pageSize * e.pageIndex + e.pageSize;
@@ -413,13 +564,18 @@ export class TransactionHistoryListComponent implements OnInit, AfterViewInit {
   }
 
   sortChange(event) {
-    
     this.resetPagination();
 
     if (!this.dataSource._data._value || event.direction == '' || event.direction == this.sortOrder) return;
 
-    let index;
-    this.columnValues.find((x, i) => { if (x === event.active) index = i; });
+    let index: number = 0; // Initialize with default value
+    this.columnValues.find((x, i) => { 
+      if (x === event.active) {
+        index = i;
+        return true; // Stop searching once found
+      }
+      return false;
+    });
     this.sortCol = index;
     this.sortOrder = event.direction;
     this.getContentData();
@@ -457,22 +613,27 @@ export class TransactionHistoryListComponent implements OnInit, AfterViewInit {
     this.isActiveTrigger = false;
   }
 
-  resetPagination(){
+  resetPagination(): void {
     this.customPagination.startIndex = 0;
     this.customPagination.endIndex = 20;
     this.paginator.pageIndex = 0;
   }
 
-  clear(){
-    this.columnSearch.searchValue = ''
-    this.getContentData()
+  clear(): void {
+    this.columnSearch.searchValue = '';
+    this.selectedDropdown = ''; // Reset selected dropdown
+    this.filterString = TransactionConstants.SHOW_ALL_FILTER; // Reset filter to show all data
+    this.resetItemNumberFilter(); // Reset race condition flags when clearing search
+    this.getContentData();
   }
 
   spliUrl;
 
   viewInInventoryMaster(row) {
-    localStorage.setItem(localStorageKeys.TransactionTabIndex,"2");
-    this.router.navigate([]).then(() => { window.open(`/#${AppRoutes.AdminInventoryMaster}?itemNumber=${row.itemNumber}`, UniqueConstants._self); });
+    localStorage.setItem(localStorageKeys.TransactionTabIndex, "2");
+    this.router.navigate([]).then(() => { 
+      window.open(`/#${AppRoutes.AdminInventoryMaster}?itemNumber=${row.itemNumber}`, UniqueConstants._self); 
+    });
   }
 
 
