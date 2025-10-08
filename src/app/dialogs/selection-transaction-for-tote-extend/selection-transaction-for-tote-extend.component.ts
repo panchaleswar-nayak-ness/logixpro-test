@@ -471,6 +471,18 @@ export class SelectionTransactionForToteExtendComponent implements OnInit {
 
               dialogRef.afterClosed().subscribe((result) => {
                 if (result == ResponseStrings.Yes) {
+                  const transactionQty = this.data.transactionQuantity ? this.data.transactionQuantity : this.data.defaultPutAwayQuantity;
+                  const checkForwardLocationsQty = res.data || 0;
+                  
+                  // Update toteQty to CheckForwardLocations data if it's less than transactionQty
+                  const toteQtyValue = (transactionQty > checkForwardLocationsQty && checkForwardLocationsQty > 0) 
+                    ? checkForwardLocationsQty 
+                    : transactionQty;
+                  
+                  this.toteForm.patchValue({
+                    toteQty: toteQtyValue
+                  });
+
                   this.findLocation(true, res.data)
                 } else {
                   this.findLocation(false, 0);
