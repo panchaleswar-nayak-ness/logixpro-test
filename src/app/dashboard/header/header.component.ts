@@ -17,6 +17,7 @@ import { UserApiService } from 'src/app/common/services/user-api/user-api.servic
 import {  ToasterTitle,ToasterType,DialogConstants} from 'src/app/common/constants/strings.constants';
 import { AppNames, AppRoutes, } from 'src/app/common/constants/menu.constants';
 import { LocalStorageService } from 'src/app/common/services/LocalStorage.service';
+import { EmergencyAlertService } from 'src/app/common/services/emergency-pick/emergency-alert-service';
 
 export interface ITheme {
   name : string
@@ -63,7 +64,8 @@ export class HeaderComponent {
     private breakpointObserver: BreakpointObserver,
     private global:GlobalService,
     private stylesService: StylesService,
-    private localstorageService:LocalStorageService
+    private localstorageService:LocalStorageService,
+    private emergencyAlertService: EmergencyAlertService
   ) {
     this.checkCurState();
     this.iGlobalConfigApi = globalConfigApi;
@@ -254,6 +256,7 @@ export class HeaderComponent {
     } else {
       this.iUserApi.Logout().subscribe((res:any) => {
         if (res.isExecuted){
+          this.emergencyAlertService.stop();
           this.localstorageService.clearLocalStorage();
           localStorage.setItem("logout", new Date().toDateString());
           window.location.href = "/#/login";

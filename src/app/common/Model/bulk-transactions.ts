@@ -23,6 +23,11 @@ export class QuickPickOrdersRequest {
     size: number;
 }
 
+export class EmergencyPickOrdersRequest {
+    start: number;
+    size: number;
+}
+
 export class BatchesResponse {
     batchId: string;
     priority: number;
@@ -498,4 +503,11 @@ export interface SelectedOrderItem {
     toteNumber?: number;
     IsTote?: boolean;
     IsError?: boolean;
+}
+
+
+export interface EmergencyOrdersInfo {
+  hasPendingForWorkstation: boolean;
+  matchingZones: string[];
+  allEmergencyZones: string[];
 }

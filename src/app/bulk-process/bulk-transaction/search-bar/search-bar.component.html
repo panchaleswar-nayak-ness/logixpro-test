@@ -4,7 +4,8 @@
             <div class="col mb-3 mb-xl-0 d-flex align-items-center">
                 <app-icon-heading-component heading="Bulk {{this.bulkTransactionType}}" icon="unarchive"   [attr.data-automation-id]="'search-bar-heading-bulk-' + (bulkTransactionType ? bulkTransactionType : 'unknown')">
                 </app-icon-heading-component>
-                <span *ngIf="this.bulkTransactionType == BulkTransactionType.PICK && isQuickPick" class="label bg-secondary-100 text-secondary-900  px-2 mb-xl-0 mb-1 mx-2 text-16" data-automation-id="search-bar-quick-pick-label"><b class="badge-ch-limit">Quick Pick</b></span>
+                <span *ngIf="showQuickPickLabel" class="label bg-secondary-100 text-secondary-900  px-2 mb-xl-0 mb-1 mx-2 text-16" data-automation-id="search-bar-quick-pick-label"><b class="badge-ch-limit">Quick Pick</b></span>
+                <span *ngIf="showEmergencyPickLabel" class="label bg-secondary-100 text-secondary-900  px-2 mb-xl-0 mb-1 mx-2 text-16" data-automation-id="search-bar-emergency-pick-label"><b class="badge-ch-limit">Emergency Pick</b></span>
             </div>
             <div class="col mb-3 mb-xl-0">
                 <div class="w-100 d-flex d-xl-block">
@@ -57,9 +58,15 @@
                     </mat-form-field>
                 </div>
             </div>
-            <div class="bg-light-blue bg-50 br-none px-4 py-4 br-20 m-h-140 d-flex align-items-center" *ngIf="this.bulkTransactionType == BulkTransactionType.PICK && allowQuickPick" >
-                <mat-checkbox (change)="changeQuickPick($event)" [checked]="isQuickPick" [(ngModel)]="isQuickPick" class="example-margin custom-checkbox" color="primary" data-automation-id="search-bar-quick-pick-checkbox">Quick Pick</mat-checkbox>
-                <mat-icon #quickPickTooltip="matTooltip" class="material-symbols-outlined text-20 ms-2 lh-24" matTooltip="Check to view unallocated orders" matTooltipPosition="above" >info</mat-icon>
+            <div class="bg-light-blue bg-50 br-none px-4 py-4 br-20 m-h-140 d-flex align-items-center" *ngIf="showPickOptions" >
+                <ng-container *ngIf="allowQuickPick">
+                    <mat-checkbox [disabled]="isEmergencyPick" (change)="changeQuickPick($event)" [checked]="isQuickPick" [(ngModel)]="isQuickPick" class="example-margin custom-checkbox" color="primary" data-automation-id="search-bar-quick-pick-checkbox">Quick Pick</mat-checkbox>
+                    <mat-icon #quickPickTooltip="matTooltip" class="material-symbols-outlined text-20 ms-2 lh-24" matTooltip="Check to view unallocated orders" matTooltipPosition="above" >info</mat-icon>
+                </ng-container>
+                <ng-container *ngIf="hasEmergencyPick">
+                    <mat-checkbox (change)="changeEmergencyPick($event)" [checked]="isEmergencyPick" [(ngModel)]="isEmergencyPick" class="example-margin custom-checkbox" color="primary" data-automation-id="search-bar-quick-pick-checkbox">Emergency Pick</mat-checkbox>
+                    <mat-icon #emergencyPickTooltip="matTooltip" class="material-symbols-outlined text-20 ms-2 lh-24" matTooltip="When enabled, only Emergency Picks are shown. Uncheck to view all picks." matTooltipPosition="above" >info</mat-icon>
+                </ng-container>
             </div>
         </div>
     </mat-card-content>

@@ -4,9 +4,10 @@
             <app-search-bar (changeViewEmitter)="changeView($event); getAllCount()" [bulkTransactionType]="this.bulkTransactionTypeAllCaps"
                 [status]="status" [view]="view" [orders]="orders" [batchSeleted]="batchSeleted"
                 [selectedOrders]="selectedOrders" [allowQuickPick]="allowQuickPick" [isQuickPick]="isQuickPick"
+                [hasEmergencyPick]="hasEmergencyPick" [isEmergencyPick]="isEmergencyPick"
                 [defaultQuickPick]="defaultQuickPick" (addItemEmitter)="selectOrder($event)"
                 (printDetailList)="printDetailList()" (createBatchEmit)="createBatchNow($event)"
-                (isQuickPickChange)="this.isQuickPick = $event;quickPickViewChange()"></app-search-bar>
+                (isQuickPickChange)="this.isQuickPick = $event;pickViewChange()" (isEmergencyPickChange)="this.isEmergencyPick = $event;pickViewChange()"></app-search-bar>
         </div>
         <div class="col-xxl-5 mb-3">
             <app-status [status]="status" [isQuickPick]="isQuickPick" [bulkTransactionType]="this.bulkTransactionTypeAllCaps"></app-status>

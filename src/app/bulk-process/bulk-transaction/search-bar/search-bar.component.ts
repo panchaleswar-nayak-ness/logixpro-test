@@ -23,10 +23,13 @@ export class SearchBarComponent implements OnDestroy, AfterViewInit {
   @Input() allowQuickPick: boolean;
   @Input() defaultQuickPick: boolean;
   @Input() isQuickPick: boolean = false;
+  @Input() hasEmergencyPick: boolean = false;
+  @Input() isEmergencyPick: boolean = false;
   @Output() changeViewEmitter = new EventEmitter<any>();
   @Output() addItemEmitter = new EventEmitter<any>();
   @Output() printDetailList = new EventEmitter<any>();
   @Output() isQuickPickChange = new EventEmitter<any>();
+  @Output() isEmergencyPickChange = new EventEmitter<boolean>();
   searchText: string = "";
   @Input() bulkTransactionType: string;
   filteredOrders:(OrderResponse | TotesResponse | BatchesResponse)[];
@@ -35,11 +38,25 @@ export class SearchBarComponent implements OnDestroy, AfterViewInit {
   @Output() createBatchEmit = new EventEmitter<boolean>();
   BulkTransactionType = BulkTransactionType;
   @ViewChild('quickPickTooltip') quickPickTooltip!: MatTooltip;
+  @ViewChild('emergencyPickTooltip') emergencyPickTooltip!: MatTooltip;
 
   // Debounce related properties
   private readonly searchSubject = new Subject<string>();
   private readonly destroy$ = new Subject<void>();
   private readonly SEARCH_DEBOUNCE_TIME = 500;
+  private readonly TOOLTIP_DURATION = 10000; // 10 seconds
+
+  get showQuickPickLabel(): boolean {
+    return this.bulkTransactionType === this.BulkTransactionType.PICK && this.isQuickPick && !this.isEmergencyPick;
+  }
+
+  get showEmergencyPickLabel(): boolean {
+    return this.bulkTransactionType === this.BulkTransactionType.PICK && this.isEmergencyPick;
+  }
+
+  get showPickOptions(): boolean {
+    return this.bulkTransactionType === this.BulkTransactionType.PICK && (this.allowQuickPick || this.hasEmergencyPick);
+  }
 
   constructor(private readonly ngZone: NgZone, private readonly global: GlobalService) {
     // Setup debounced search
@@ -57,10 +74,22 @@ export class SearchBarComponent implements OnDestroy, AfterViewInit {
     this.ClearSearch();
   }
 
+  changeEmergencyPick(event) {
+    this.isEmergencyPick = event.checked;
+    this.isEmergencyPickChange.emit(this.isEmergencyPick);
+    this.ClearSearch();
+  }
+
   CreateBatch() {
     if (this.selectedOrders.length != 0) {
       this.createBatchEmit.emit(true);
     }
+  }
+
+  showTooltip(isEmergency: boolean): void {
+    const tooltip = isEmergency ? this.emergencyPickTooltip : this.quickPickTooltip;
+    tooltip.show();
+    timer(this.TOOLTIP_DURATION).pipe(take(1)).subscribe(() => tooltip.hide());
   }
 
   ngAfterViewInit(): void {
@@ -68,11 +97,7 @@ export class SearchBarComponent implements OnDestroy, AfterViewInit {
       this.searchBoxField?.nativeElement.focus();
     });
 
-    this.quickPickTooltip.show();
-
-    timer(10000).pipe(take(1)).subscribe(() => {
-      this.quickPickTooltip.hide();
-    });
+    this.showTooltip(this.isEmergencyPick);
   }
 
 

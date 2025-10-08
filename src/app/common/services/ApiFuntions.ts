@@ -4,7 +4,7 @@ import { of } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
 import { BaseService } from './base-service.service';
 import { AuthService } from '../init/auth.service';
-import { AssignToteToOrderDto, BatchesRequest, NextToteId, OrderLineResource, OrdersRequest, PartialToteIdRequest, PartialToteIdResponse, RemoveOrderLinesRequest, RemoveOrderLinesResponse, TotesRequest } from '../Model/bulk-transactions';
+import { AssignToteToOrderDto, BatchesRequest, EmergencyPickOrdersRequest, NextToteId, OrderLineResource, OrderResponse, OrdersRequest, PartialToteIdRequest, PartialToteIdResponse, RemoveOrderLinesRequest, RemoveOrderLinesResponse, TotesRequest } from '../Model/bulk-transactions';
 import {
   MarkoutBlossomTotenRequest,
   MarkoutCompleteTransactionRequest,
@@ -2033,6 +2033,14 @@ public updateEmergencyReprocessTrans(payload: UpdateEmergencyRequest): Observabl
 
   public bulkPickOrdersQuickpick(body: any): Observable<any> {
     return this.ApiBase.Get('/orders/quickpick', body);
+  }
+
+  public getEmergencyPickOrders(body: PagingRequest) {
+    return this.ApiBase.Post('/orders/emergencypick', body);
+  }
+
+  public async getEmergencyOrdersInfo() {
+    return await this.ApiBase.GetAsync('/orders/emergencypickinfo');
   }
 
   public async bulkPickOrdersLocationAssignment(body: string[]) {

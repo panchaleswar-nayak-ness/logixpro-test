@@ -183,6 +183,10 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import {
   DirectFilterationColumnsService
 } from './common/services/direct-filteration-columns.service';
+import {
+  DirectFilterationColumnsMenuComponent
+} from './common/globalComponents/direct-filteration-columns-menu/direct-filteration-columns-menu.component';
+import { EmergencyPickComponent } from './dialogs/emergency-pick/emergency-pick.component';
 
 @NgModule({
   declarations: [
@@ -297,7 +301,8 @@ import {
     OrderDetailsComponent,
     ZoneGroupsComponent,
     ImprefInductionFilterComponent,
-    AuditTransferFileComponent
+    AuditTransferFileComponent, 
+    EmergencyPickComponent
   ],
   imports: [
     BrowserModule,

@@ -673,4 +673,14 @@ ShowMultipleToastMessages(type: string, msgs: string[], title?: string) {
   });
 }
 
+
+  /**
+  * get user Auth Token
+  * Get the authentication token from localStorage (same pattern as base-service)
+  */
+  getAuthToken(): string {
+    const { _token } = JSON.parse(localStorage.getItem('user') ?? "{}");
+    return _token || '';
+  }
+
 }
