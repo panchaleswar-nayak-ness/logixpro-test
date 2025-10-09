@@ -8,7 +8,7 @@ import { ConfirmationHeadings, ConfirmationMessages, DialogConstants, localStora
 import { IBulkProcessApiService } from 'src/app/common/services/bulk-process-api/bulk-process-api-interface';
 import { BulkProcessApiService } from 'src/app/common/services/bulk-process-api/bulk-process-api.service';
 import { GlobalService } from 'src/app/common/services/global.service';
-import { forkJoin, take } from "rxjs";
+import { forkJoin, Subject, take, takeUntil } from "rxjs";
 import { Observable } from "rxjs/internal/Observable";
 import { IAdminApiService } from 'src/app/common/services/admin-api/admin-api-interface';
 import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.service';
@@ -22,6 +22,7 @@ import { BmSlaperLabelSplitEntryComponent } from 'src/app/admin/dialogs/bm-slape
 import { LocationZone } from 'src/app/common/interface/admin/location-zones.interface';
 import { EmergencyAlertService } from 'src/app/common/services/emergency-pick/emergency-alert-service';
 import { PagingRequest } from 'src/app/common/interface/ccdiscrepancies/PagingRequest';
+import { SharedService } from 'src/app/common/services/shared.service';
 
 @Component({
   selector: 'app-bulk-transaction',
@@ -60,6 +61,7 @@ export class BulkTransactionComponent implements OnInit {
   public iPrintApiService: IPrintApiService;
   // isViewLoaded Ensures that required data for both Quick Pick and non-Quick Pick flows is loaded before rendering UI components
   isViewLoaded:boolean = false;
+  private destroy$ = new Subject<void>();
   constructor(
     public bulkProcessApiService: BulkProcessApiService,
     public adminApiService: AdminApiService,
@@ -67,7 +69,8 @@ export class BulkTransactionComponent implements OnInit {
     public readonly global: GlobalService,
     public readonly route: Router,
     private readonly spinnerService: SpinnerService,
-    private readonly emergencyAlertService: EmergencyAlertService
+    private readonly emergencyAlertService: EmergencyAlertService,
+    private sharedService: SharedService
   ) {
     this.iBulkProcessApiService = bulkProcessApiService;
     this.iAdminApiService = adminApiService;
@@ -77,6 +80,24 @@ export class BulkTransactionComponent implements OnInit {
   }
 
   async ngOnInit() {
+    await this.loadData();
+    await this.onReload();
+  }
+
+  async onReload() {
+    if (this.bulkTransactionType === BulkTransactionType.PICK) {
+      this.sharedService.reloadBulkPick$
+        .pipe(takeUntil(this.destroy$))
+        .subscribe(async() => await this.loadData());
+    }
+  }
+
+  ngOnDestroy() {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
+
+  async loadData(){
     if (this.bulkTransactionType == BulkTransactionType.PICK) {
       await this.getEmergencyOrdersInfo();
       this.getGeneralSetupInfo();

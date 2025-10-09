@@ -54,7 +54,8 @@ export class SharedService {
   sideMenuHideObserver: Subject<any> = new Subject<any>();
   PrintServiceObserver: Subject<any> = new Subject<any>();
   updateBulkProcessMenuObserver: Subject<any> = new Subject<any>();
-
+  reloadBulkPickSource = new Subject<void>();
+  reloadBulkPick$ = this.reloadBulkPickSource.asObservable();
 
   verifyBulkTransBackObserver: Subject<any> = new Subject<any>();
   
@@ -271,5 +272,9 @@ start(intervalMs = 5000): void {
 get refresh$() {
   return this.refreshSubject.asObservable();
 }
+
+  triggerBulkPickReload() {
+    this.reloadBulkPickSource.next();
+  }
 
 }

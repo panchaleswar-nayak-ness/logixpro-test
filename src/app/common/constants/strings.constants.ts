@@ -935,3 +935,7 @@ export const DialogTitles = {
     Cart_Management : 'cart_management',
   }
 
+export const EmergencyOptions = {
+    ProceedWithEmergencyPick:'proceed',
+    Snooze:'snooze'
+}

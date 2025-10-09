@@ -59,6 +59,11 @@ export const AppRoutes = {
     InductionManagerAdmin:'/InductionManager/Admin',
     Markout: '/MarkoutProcess',
     AuditFileFieldMappingComponent: '/admin/auditFileFieldMapping',
+    BulkPick:'/BulkTransactions/BulkPick'
+}
+
+export const AppMenus = {
+    BulkPick:'BulkPick'
 }
 
 export const AppNames: {

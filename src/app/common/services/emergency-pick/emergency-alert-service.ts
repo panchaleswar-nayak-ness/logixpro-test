@@ -6,11 +6,12 @@ import { BaseService } from '../base-service.service';
 import { environment } from 'src/environments/environment';
 import { AuthService } from '../../init/auth.service';
 import { GlobalService } from '../global.service';
-import { Style } from '../../constants/strings.constants';
+import { EmergencyOptions, Style } from '../../constants/strings.constants';
 import { EmergencyOrdersInfo } from '../../Model/bulk-transactions';
 import { firstValueFrom } from 'rxjs';
 import { Router } from '@angular/router';
 import { SharedService } from '../shared.service';
+import { AppMenus, AppRoutes } from '../../constants/menu.constants';
 @Injectable({ providedIn: 'root' })
 export class EmergencyAlertService {
   private hub?: signalR.HubConnection;
@@ -72,10 +73,14 @@ export class EmergencyAlertService {
         });
 
         ref.afterClosed().subscribe((action) => {
-          if (action === 'proceed') {
-            this.router.navigate(['/BulkTransactions/BulkPick']);
-            this.sharedService.updateBulkProcessMenu({menu:'BulkPick',route:'/BulkTransactions/BulkPick'});
-          } else if (action === 'snooze') {
+          if (action === EmergencyOptions.ProceedWithEmergencyPick) {
+            if (this.router.url === AppRoutes.BulkPick) {
+              this.sharedService.triggerBulkPickReload();
+            } else {
+              this.router.navigate([AppRoutes.BulkPick]);
+              this.sharedService.updateBulkProcessMenu({menu:AppMenus.BulkPick,route: AppRoutes.BulkPick});
+            }
+          } else if (action === EmergencyOptions.Snooze) {
             this.snooze30s();
           }
         });
