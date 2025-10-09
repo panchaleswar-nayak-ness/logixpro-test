@@ -313,7 +313,11 @@ export const ToasterMessages = {
     InvalidToteID: "Invalid Tote ID, please enter again",
     StorageBinExitSuccessful: 'Storage Container has been sent to Outbound Port.',
     CartAvailableAgain: 'All totes removed. Cart is now available again.',
-    CartInducted: 'Cart has been Inducted'
+    CartInducted: 'Cart has been Inducted',
+    InventoryMapRecordsDeletedSuccessfully: (count: number) => `Successfully deleted ${count} inventory map record(s)`,
+    InventoryMapRecordsPartiallyDeleted: (successCount: number, failureCount: number) => `Deleted ${successCount} record(s), but ${failureCount} failed to delete`,
+    InventoryMapRecordsDeleteFailed: 'Failed to delete inventory map records',
+    ErrorDeletingInventoryMapRecords: 'Error occurred while deleting inventory map records'
 }
 
 export const LiveAnnouncerMessage = {

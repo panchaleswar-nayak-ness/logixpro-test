@@ -602,6 +602,10 @@ export class InventoryMapComponent implements OnInit {
   }
   sendToOutboundPort(row: { row: string; zone: string; locationNumber?: string }): void {
     const binId: string = row.row;
+    
+    // Get all filtered records that are currently displayed in the grid
+    const filteredRecords = this.dataSource.data || [];
+    
     const dialogRef = this.global.OpenDialog(StorageContainerManagementModalComponent, {
       height: DialogConstants.auto,
       width: Style.w786px,
@@ -610,7 +614,8 @@ export class InventoryMapComponent implements OnInit {
         rowFieldAlias: this.fieldMappings?.row || DialogTitles.STORAGE_CONTAINER,
         sendToOutboundPort: true,
         binId: binId,
-        zone: row.zone
+        zone: row.zone,
+        filteredRecords: filteredRecords // Pass all filtered records with their invMapID
       }
     });
     dialogRef.afterClosed().pipe(takeUntil(this.onDestroy$)).subscribe(() => {
