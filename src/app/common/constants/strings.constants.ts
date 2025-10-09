@@ -314,6 +314,7 @@ export const ToasterMessages = {
     StorageBinExitSuccessful: 'Storage Container has been sent to Outbound Port.',
     CartAvailableAgain: 'All totes removed. Cart is now available again.',
     CartInducted: 'Cart has been Inducted',
+    InvalidTote: "Please enter a valid Tote ID",
     InventoryMapRecordsDeletedSuccessfully: (count: number) => `Successfully deleted ${count} inventory map record(s)`,
     InventoryMapRecordsPartiallyDeleted: (successCount: number, failureCount: number) => `Deleted ${successCount} record(s), but ${failureCount} failed to delete`,
     InventoryMapRecordsDeleteFailed: 'Failed to delete inventory map records',

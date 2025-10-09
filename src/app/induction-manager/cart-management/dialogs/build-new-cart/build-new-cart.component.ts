@@ -10,6 +10,7 @@ import { ToasterTitle, ToasterType, ConfirmationHeadings, ConfirmationMessages, 
 import { CartStatus, CartManagementDialogConstants, DialogTitles, PrimaryButtonTexts, DialogModes, ClearButtonTexts, ToteStatuses } from '../../constants/string.constants';
 import { CartManagementData, CartManagementResult, CartDraftData, ValidationRequest, ValidationResponse, ValidateToteRequest, RemoveCartContentRequest, ToteAssignments, ValidateToteResponse } from '../../interfaces/cart-management.interface';
 import { TotePostionInfo } from '../../models/cart-management-models';
+import { ArrowKeys } from 'src/app/common/enums/CommonEnums';
 
 @Component({
   selector: 'app-cart-management-dialog',
@@ -246,6 +247,9 @@ export class BuildNewCartComponent implements OnInit {
     }
     
     const wsName = this.global.getCookie("WSName");
+    this.isLoading = true; // Set loading state to prevent arrow navigation
+    
+    try {
 
     let payload: ValidationRequest = {
       cartId: value,
@@ -286,8 +290,10 @@ export class BuildNewCartComponent implements OnInit {
       this.global.ShowToastr(ToasterType.Error, ToasterMessages.InvalidCartID, ToasterTitle.Error);
     }
   }
-
-  } 
+} finally {
+  this.isLoading = false; // Always reset loading state
+}
+}
 
   selectedTote:string;
   onSelectTote(tote:string){
@@ -675,6 +681,13 @@ export class BuildNewCartComponent implements OnInit {
   }
 
   private async validateToteInput():Promise<boolean>{
+    if (!this.toteIdInput) {
+      this.global.ShowToastr(ToasterType.Error, ToasterMessages.InvalidTote, ToasterTitle.Error);
+      return false;
+    }
+    this.isLoading = true; // Set loading state to prevent arrow navigation
+
+    try {
     const payload: ValidateToteRequest = {
       cartId: this.currentCartIdInput,
       toteId: this.toteIdInput,
@@ -707,6 +720,9 @@ export class BuildNewCartComponent implements OnInit {
       return false;
     }
 
+  } finally {
+    this.isLoading = false; // Always reset loading state
+   }
   }
 
   private moveToNextPosition(): void {
@@ -752,6 +768,8 @@ export class BuildNewCartComponent implements OnInit {
   }
 
   private async removeCartContent(toteIds: string[], updateStatus:boolean){
+    this.isLoading = true; // Set loading state to prevent arrow navigation
+   try {
     const payload: RemoveCartContentRequest = {
       cartId: this.currentCartIdInput,
       toteIds: toteIds,
@@ -766,6 +784,9 @@ export class BuildNewCartComponent implements OnInit {
       this.global.ShowMultipleToastMessages(ToasterType.Error, res?.body?.errors, ToasterTitle.Error);
       return false;
     }
+  } finally {
+    this.isLoading = false; // Always reset loading state
+   }
   }
 
   @HostListener('window:beforeunload', [UniqueConstants.event])
@@ -776,10 +797,76 @@ export class BuildNewCartComponent implements OnInit {
     }
   }
 
+  @HostListener('document:keydown', ['$event'])
+  onKeyDown(event: KeyboardEvent): void {
+    // Only handle arrow keys when a position is selected, grid is enabled, and no API call is in progress
+    if (!this.selectedPosition || this.isReadonly || this.isGridDisabled || this.isLoading) {
+      return;
+    }
+
+    let newPosition: number | null = null;
+
+    switch (event.key) {
+      case ArrowKeys.Right:
+        newPosition = this.getNextPositionRight(this.selectedPosition);
+        break;
+      case ArrowKeys.Left:
+        newPosition = this.getNextPositionLeft(this.selectedPosition);
+        break;
+      case ArrowKeys.Down:
+        newPosition = this.getNextPositionDown(this.selectedPosition);
+        break;
+      case ArrowKeys.Up:
+        newPosition = this.getNextPositionUp(this.selectedPosition);
+        break;
+    }
+
+    if (newPosition && newPosition !== this.selectedPosition) {
+      event.preventDefault();
+      this.onPositionSelect(newPosition);
+    }
+  }
+
   isCartAvailable(){
     if(this.existingAssignments.length == 0 && this.isEditMode){
       this.dialogRef.close();
       this.global.ShowToastr(ToasterType.Success, ToasterMessages.CartAvailableAgain, ToasterTitle.Success);
     }
+  }
+
+  private getNextPositionRight(currentPosition: number): number | null {
+    // Check if we're at the right edge of the grid
+    if (currentPosition % this.cols === 0) {
+      return null; // Can't move right
+    }
+    
+    const nextPosition = currentPosition + 1;
+    const totalPositions = this.cols * this.rows;
+    
+    return nextPosition <= totalPositions ? nextPosition : null;
+  }
+
+  private getNextPositionLeft(currentPosition: number): number | null {
+    // Check if we're at the left edge of the grid
+    if ((currentPosition - 1) % this.cols === 0) {
+      return null; // Can't move left
+    }
+    
+    const nextPosition = currentPosition - 1;
+    
+    return nextPosition >= 1 ? nextPosition : null;
+  }
+
+  private getNextPositionDown(currentPosition: number): number | null {
+    const nextPosition = currentPosition + this.cols;
+    const totalPositions = this.cols * this.rows;
+    
+    return nextPosition <= totalPositions ? nextPosition : null;
+  }
+
+  private getNextPositionUp(currentPosition: number): number | null {
+    const nextPosition = currentPosition - this.cols;
+    
+    return nextPosition >= 1 ? nextPosition : null;
   }
 }
