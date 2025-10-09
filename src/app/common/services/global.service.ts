@@ -314,15 +314,13 @@ export class GlobalService {
   }
 
 
-  async printReportForSelectedOrders(orderNumbers: string[],reportName:PrintReports,isLoader:boolean){
-    const paylaod: PrintOrdersPayload = {
-      clientCustomData: reportName,
-      repositoryIdOfProject: REPORT_REPOSITORY_ID,
-      printerReportName: localStorage.getItem(localStorageKeys.SelectedReportPrinter),
-      printerLabelName: localStorage.getItem(localStorageKeys.SelectedLabelPrinter),
-      orderNumbers: orderNumbers
+async printReportForSelectedOrders(orderNumbers: string[],reportName:string,isLoader:boolean){
+    const payload: PrintOrdersPayload = {
+      ReportName: reportName,
+      wsid: this.userData.wsid,
+      OrderNumbers: orderNumbers
     };
-    const res = await this.iPrintApiService.printSelectedOrdersReport(paylaod,isLoader);
+    const res = await this.iPrintApiService.printSelectedOrdersReport(payload,isLoader);
     if (res?.body?.isExecuted) {
       this.ShowToastr(ToasterType.Success,ToasterMessages.PrintSuccessfullyCompleted,ToasterTitle.Success);
     } else {
