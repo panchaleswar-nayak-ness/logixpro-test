@@ -88,7 +88,10 @@ export class BulkTransactionComponent implements OnInit {
     if (this.bulkTransactionType === BulkTransactionType.PICK) {
       this.sharedService.reloadBulkPick$
         .pipe(takeUntil(this.destroy$))
-        .subscribe(async() => await this.loadData());
+        .subscribe(async () => {
+          await this.loadData();
+          this.verifyBulks = false;
+      });
     }
   }
 
@@ -843,6 +846,14 @@ export class BulkTransactionComponent implements OnInit {
     } catch (error) {
       this.global.ShowToastr(ToasterType.Error, ToasterMessages.SomethingWentWrong, ToasterTitle.Error);
     }
+  }
+
+  get showVerifyBulkButton(): boolean {
+    return !this.isQuickPick || this.isEmergencyPick;
+  }
+
+  get showQuickPickButton(): boolean {
+    return this.isQuickPick && !this.isEmergencyPick;
   }
 }
 

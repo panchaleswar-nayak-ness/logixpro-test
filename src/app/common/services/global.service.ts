@@ -683,4 +683,9 @@ ShowMultipleToastMessages(type: string, msgs: string[], title?: string) {
     return _token || '';
   }
 
+
+  /** ✅ Close all currently open dialogs */
+  CloseAllDialogs(): void {
+    this.dialog.closeAll();
+  }
 }

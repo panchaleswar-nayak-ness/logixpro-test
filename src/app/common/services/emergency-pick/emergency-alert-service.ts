@@ -80,6 +80,7 @@ export class EmergencyAlertService {
               this.router.navigate([AppRoutes.BulkPick]);
               this.sharedService.updateBulkProcessMenu({menu:AppMenus.BulkPick,route: AppRoutes.BulkPick});
             }
+            this.globalService.CloseAllDialogs();
           } else if (action === EmergencyOptions.Snooze) {
             this.snooze30s();
           }

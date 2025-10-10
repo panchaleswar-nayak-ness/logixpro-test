@@ -26,11 +26,11 @@
         </div>
     </div>
     <div>
-        <button mat-flat-button color="primary" class="btn-lg w-100" *ngIf="!isQuickPick" (click)="Process()"
+        <button mat-flat-button color="primary" class="btn-lg w-100" *ngIf="showVerifyBulkButton" (click)="Process()"
             [disabled]="!(selectedOrders.length > 0)" data-automation-id="bulk-transaction-verify-bulk-button">
             Verify Bulk {{this.bulkTransactionTypeAllCaps}}
         </button>
-        <button mat-flat-button color="primary" class="btn-lg w-100" *ngIf="isQuickPick" (click)="ProcessQuickPick()"
+        <button mat-flat-button color="primary" class="btn-lg w-100" *ngIf="showQuickPickButton" (click)="ProcessQuickPick()"
             [disabled]="!(selectedOrders.length > 0)" data-automation-id="bulk-transaction-process-quick-pick-button">
             Process Quick Pick
         </button>
