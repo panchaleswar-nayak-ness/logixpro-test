@@ -289,13 +289,13 @@ export class GlobalService {
   }
 
   async Print(ChooseReport, type = 'lst') {
-    let paylaod: any = {
+    let payload: any = {
       ClientCustomData: ChooseReport,
       repositoryIdOfProject: 'BCAEC8B2-9D16-4ACD-94EC-74932157BF82',
       PrinterReportName: localStorage.getItem('SelectedReportPrinter'),
       PrinterLabelName: localStorage.getItem('SelectedLabelPrinter'),
     };
-    let res: any = await this.iAdminApiService.CommonPrint(paylaod);
+    let res: any = await this.iAdminApiService.CommonPrint(payload);
     if (res.isExecuted) {
       this.ShowToastr(
         ToasterType.Success,
@@ -313,6 +313,29 @@ export class GlobalService {
     }
   }
 
+  async PrintCustomReport(reportFilename) {
+    let payload: any = {
+      reportName: reportFilename,
+      wsid: this.userData.wsid,
+      user: this.userData.userName
+    };
+    let res: any = await this.iAdminApiService.PrintCustomReport(payload);
+    if (res.isExecuted) {
+      this.ShowToastr(
+        ToasterType.Success,
+        'print successfully completed',
+        ToasterTitle.Success
+      );
+      return true;
+    } else {
+      this.ShowToastr(
+        ToasterType.Error,
+        res.body?.data?.error,
+        ToasterTitle.Error
+      );
+      return false;
+    }
+  }
 
   async printReportForSelectedOrders(orderNumbers: string[],reportName:PrintReports,isLoader:boolean){
     const paylaod: PrintOrdersPayload = {

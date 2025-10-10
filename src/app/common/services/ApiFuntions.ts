@@ -2003,6 +2003,10 @@ public updateEmergencyReprocessTrans(payload: UpdateEmergencyRequest): Observabl
     return await this.ApiBase.GetAsync(`/Admin/reports/print`, body);
   }
 
+  public async PrintCustomReport(body) {
+    return await this.ApiBase.PostAsync(`/print/printcustomreport`, body);
+  }
+
   public GetWorkStatPrinters(): Observable<any> {
     return this.ApiBase.Get(`/GlobalConfig/WorkStatPrinters`);
   }
