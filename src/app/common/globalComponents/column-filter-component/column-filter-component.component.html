@@ -1,13 +1,13 @@
 <div class="d-xl-flex gap-12 align-items-center">
   <mat-form-field class="action-dropdown w-100 mb-3 mb-xl-0" appearance="outline">
-    <mat-label>Select</mat-label>
-    <mat-select class="employees-action" [(ngModel)]="this.searchCol" (selectionChange)="selectionChange($event.value)" (keyup.enter)="colKeyUpEnter($event)" [attr.data-automation-id]="'column-filter-select-' + searchCol">
-      <mat-option value="" data-automation-id="column-filter-option-empty"></mat-option>
-      <mat-option *ngFor="let item of sortedColumns; let i = index" [value]="item.colDef" [attr.data-automation-id]="'column-filter-option-' + item.colDef" replacePlaceholder>
+    <mat-label data-automation-id="column-filter-label">Select</mat-label>
+    <mat-select class="employees-action" [(ngModel)]="this.searchCol" (selectionChange)="selectionChange($event.value)" (keyup.enter)="colKeyUpEnter($event)" data-automation-id="select-search">
+      <mat-option value="" data-automation-id="select-search-option-empty"></mat-option>
+      <mat-option *ngFor="let item of sortedColumns; let i = index" [value]="item.colDef" [attr.data-automation-id]="'select-search-option-' + item.colDef" replacePlaceholder>
         {{ item.colDef }}
       </mat-option>
     </mat-select>
-    <span class="material-symbols-outlined icon-expand-more">expand_more</span>
+    <span class="material-symbols-outlined icon-expand-more" data-automation-id="column-filter-expand-icon">expand_more</span>
   </mat-form-field>
   
   <span class="v-br d-xl-block d-none mb-3 mb-xl-0">-</span>
