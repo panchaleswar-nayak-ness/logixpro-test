@@ -172,6 +172,8 @@ export class ProcessPutAwaysComponent implements OnInit {
     this.iAdminApiService = adminApiService;
     this.commonApiService=CommonApiService;
     this.iInductionManagerApi=inductionManagerApi;
+    // Expose sticky header z-index from constants to CSS via a CSS variable
+    document.documentElement.style.setProperty('--z-index-sticky-header', String(Style.zIndexStickyHeader));
   }
 
   ngAfterViewInit() {

@@ -120,4 +120,29 @@
   .completeBatchBTN-style{
     min-width: 150px !important;
   }
+
+  .stickyHeader{
+    position: sticky;
+    top: 0px;
+    z-index: var(--z-index-sticky-header, 200000000);
+  }
+
+  .searchColumn{
+    display: inline-block;
+    white-space: nowrap;
+    overflow: hidden !important;
+    text-overflow: ellipsis;
+  }
+
+  .span-width{
+    width: 140px !important;
+  }
+
+  .span-searchColumn{
+    width:  140px !important; 
+    text-overflow: ellipsis !important; 
+    overflow: hidden !important;
+    max-width: 20ch !important; 
+    white-space: nowrap !important;
+  }
   

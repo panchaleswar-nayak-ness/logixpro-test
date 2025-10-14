@@ -590,7 +590,8 @@ export const Style = {
     w1080px: '1080px',
     w990px: '990px',
     auto:'auto',
-    w56vw: '56vw'
+    w56vw: '56vw',
+    zIndexStickyHeader: 200000000
 }
 
 export const FilterColumnName = {
