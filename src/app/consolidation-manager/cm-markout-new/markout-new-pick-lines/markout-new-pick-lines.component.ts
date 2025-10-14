@@ -27,7 +27,7 @@ const DEFAULT_PAGE = 1;
 export class MarkoutNewPickLinesComponent implements OnInit {
   @ViewChild(MatSort) sort!: MatSort;
 
-  private _toteId: number;
+  private _toteId: number | null = null;
 
   placeholders = Placeholders;
   fieldMappings = JSON.parse(localStorage.getItem('fieldMappings') ?? '{}');
@@ -130,7 +130,9 @@ export class MarkoutNewPickLinesComponent implements OnInit {
     const sortColumn = this.sort?.active || '';
     const sortOrder = this.sort?.direction || 'desc';
 
-    this.getTotePickLines(this.toteId,sortColumn, sortOrder);
+    if (this.toteId) {
+      this.getTotePickLines(this.toteId,sortColumn, sortOrder);
+    }
   }
 
   ngOnInit(): void {
@@ -145,20 +147,28 @@ export class MarkoutNewPickLinesComponent implements OnInit {
 
     this.sort.sortChange.subscribe((sort) => {
       this.customPagination.pageIndex=0;
-      this.getTotePickLines(this.toteId,sort.active, sort.direction);
+      if (this.toteId) {
+        this.getTotePickLines(this.toteId,sort.active, sort.direction);
+      }
     });
   }
 
   // Sets toteId input, resets pagination, and fetches pick lines if the value changes
   @Input()
-  set toteId(value: number) {
-    if (this._toteId !== value && value !== null && value !== undefined) {
+  set toteId(value: number | null) {
+    if (this._toteId !== value) {
       this._toteId = value;
       this.customPagination.pageIndex = 0;
-      this.getTotePickLines(value);
+      if (value !== null && value !== undefined) {
+        this.getTotePickLines(value);
+      } else {
+        // When no toteId is provided, initialize with empty data to show "No data found" message
+        this.dataSource.data = [];
+        this.customPagination.total = 0;
+      }
     }
   }
-  get toteId(): number {
+  get toteId(): number | null {
     return this._toteId;
   }
 
@@ -215,13 +225,15 @@ export class MarkoutNewPickLinesComponent implements OnInit {
     };
   
     // 3) hit the same API and pull out .suggestions
-    this.iMarkoutApiService
-      .GetTotePickLines(rawPayload, this.toteId)
-      .subscribe((res: MarkoutPickLinesResponse) => {
-        this.searchAutocompleteListByCol = this.mapSuggestions(
-          res.suggestions || []
-        );
-      });
+    if (this.toteId) {
+      this.iMarkoutApiService
+        .GetTotePickLines(rawPayload, this.toteId)
+        .subscribe((res: MarkoutPickLinesResponse) => {
+          this.searchAutocompleteListByCol = this.mapSuggestions(
+            res.suggestions || []
+          );
+        });
+    }
   }
   // --- End suggestive search ---
 
@@ -251,7 +263,9 @@ export class MarkoutNewPickLinesComponent implements OnInit {
   }
   // Called when an autocomplete option is selected
   onAutocompleteOptionSelected() {
-    this.getTotePickLines(this.toteId);
+    if (this.toteId) {
+      this.getTotePickLines(this.toteId);
+    }
   }
 }
 
