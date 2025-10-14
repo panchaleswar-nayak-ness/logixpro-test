@@ -238,8 +238,8 @@ export class SelectionTransactionForToteExtendComponent implements OnInit {
               carouselVelocity                  : values.carouselVelocity,
               bulkVelocity                      : values.bulkVelocity,
               cfVelocity                        : values.cfVelocity,
-              primaryPickZone                   : values.primaryPickZone,
-              secondaryPickZone                 : values.secondaryPickZone,
+              primaryPickZone                   : values.primaryPickZone!.toLowerCase(),
+              secondaryPickZone                 : values.secondaryPickZone!.toLowerCase(),
 
               // Location Info
               zone                              : values.zone,
