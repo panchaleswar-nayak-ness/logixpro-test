@@ -386,8 +386,6 @@ export class InventoryMapComponent implements OnInit {
             this.getColumnsData();
           }
         });
-    } else if (actionEvent.value === InventoryMapActionValues.Cart_Management) {
-      this.router.navigate(['/admin/inventoryMap/cartManagement']);
     }
   }
 
