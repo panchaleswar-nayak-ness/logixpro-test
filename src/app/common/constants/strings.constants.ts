@@ -82,7 +82,8 @@ export const StringConditions = {
     edit: 'edit',
     MoveFrom: 'MoveFrom',
     Short: 'Short',
-    Confirm:'confirm'
+    Confirm:'confirm',
+    Unknown: 'Unknown'
 }
 
 export const ResponseStrings = {

@@ -59,6 +59,7 @@ export class StorageContainerManagementModalComponent implements OnInit, OnDestr
 
 
   public iAdminApiService: IAdminApiService;
+  storageContainerDisabledFields = storageContainerDisabledFields;
 
   constructor(
     private readonly dialog: MatDialog,
@@ -129,7 +130,7 @@ export class StorageContainerManagementModalComponent implements OnInit, OnDestr
       dedicated: record.dedicated || false,
       cellId: record.cellId || `${record.bin || binId}-${record.row || binId}`,
       location: record.location || `${zone}-${record.row || binId}-${record.bin || binId}`,
-      containerType: record.containerType || 'Unknown',
+      containerType: record.containerType || StringConditions.Unknown,
       cellSize: record.cellSize || '',
       constraintViolations: record.constraintViolations || [],
       hasConstraints: record.hasConstraints || false
@@ -227,10 +228,10 @@ export class StorageContainerManagementModalComponent implements OnInit, OnDestr
     // Fallback to container types array if available
     if (this.scm.containerType && this.containerTypes.length > 0) {
       const containerType = this.containerTypes.find(ct => ct.id === this.scm.containerType);
-      return containerType?.name || 'Unknown';
+      return containerType?.name || StringConditions.Unknown;
     }
     
-    return 'Unknown';
+    return StringConditions.Unknown;
   }
   
   getCellConstraintsTooltip(cellId: string): string {
@@ -647,6 +648,10 @@ export class StorageContainerManagementModalComponent implements OnInit, OnDestr
   checkDisabled(field: string): boolean {
     // In read-only mode (sendToOutboundPort), disable all input fields except the proceed button
     if (this.isReadOnlyMode) {
+      // Disable proceed button if containerType is "Unknown"
+      if (field === storageContainerDisabledFields.SENDTOOUTBOUNDPORT) {
+        return this.getContainerTypeName() === StringConditions.Unknown;
+      }
       return field !== storageContainerDisabledFields.SENDTOOUTBOUNDPORT;
     }
     
