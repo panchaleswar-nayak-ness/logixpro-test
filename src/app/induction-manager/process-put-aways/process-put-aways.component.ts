@@ -913,10 +913,24 @@ async clearBatchData(){
   }
 
   updateToteID($event) {
+    const enteredToteID = $event.target.value.trim();
+    
+    // Check if the tote ID already exists in the table
+    const isDuplicate = this.ELEMENT_DATA.some(element => 
+      element.toteid && element.toteid.toString().trim() === enteredToteID
+    );
+    
+    if (isDuplicate) {
+      this.global.ShowToastr(ToasterType.Error, ToasterMessages.ToteIDAlreadyExists, ToasterTitle.Error);
+      this.toteID = '';
+      return;
+    }
+    
+    // Populate the first empty position with the tote ID
     for (let i = 0; i < this.pickBatchQuantity; i++) {
       if( this.ELEMENT_DATA[i]){
       if (this.ELEMENT_DATA[i].toteid == '') {
-        this.ELEMENT_DATA[i].toteid = $event.target.value;
+        this.ELEMENT_DATA[i].toteid = enteredToteID;
         this.toteID = '';
         break;
       }

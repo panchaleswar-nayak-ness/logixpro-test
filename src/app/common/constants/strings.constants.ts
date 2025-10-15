@@ -319,7 +319,8 @@ export const ToasterMessages = {
     InventoryMapRecordsDeletedSuccessfully: (count: number) => `Successfully deleted ${count} inventory map record(s)`,
     InventoryMapRecordsPartiallyDeleted: (successCount: number, failureCount: number) => `Deleted ${successCount} record(s), but ${failureCount} failed to delete`,
     InventoryMapRecordsDeleteFailed: 'Failed to delete inventory map records',
-    ErrorDeletingInventoryMapRecords: 'Error occurred while deleting inventory map records'
+    ErrorDeletingInventoryMapRecords: 'Error occurred while deleting inventory map records',
+    ToteIDAlreadyExists: 'This Tote ID already exists in the table. Please enter a different Tote ID.'
 }
 
 export const LiveAnnouncerMessage = {
