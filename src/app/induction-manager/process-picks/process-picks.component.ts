@@ -30,6 +30,7 @@ import {
   ToasterType
 ,ResponseStrings,DialogConstants,Style,UniqueConstants,TableConstant} from 'src/app/common/constants/strings.constants';
 import {CommonApiService } from 'src/app/common/services/common-api/common-api.service';
+import { FieldMappingService } from 'src/app/common/services/field-mapping/field-mapping.service';
 @Component({
   selector: 'app-process-picks',
   templateUrl: './process-picks.component.html',
@@ -75,6 +76,7 @@ export class ProcessPicksComponent implements OnInit {
   pickBatchesCrossbtn;
   imPreferences: any;
   public ifAllowed: boolean = false;
+  carouselFieldName: string;
 
   constructor(
     private global: GlobalService,
@@ -83,10 +85,19 @@ export class ProcessPicksComponent implements OnInit {
     public router: Router,
     public inductionManagerApi: InductionManagerApiService,
     private printApiService: PrintApiService,
-    private CommonApiService:CommonApiService
+    private CommonApiService:CommonApiService,
+    private fieldNameMappingService: FieldMappingService,
   ) {
     this.iinductionManagerApi = inductionManagerApi;
     this.commonApiService=CommonApiService;
+    this.fieldNameMappingService=fieldNameMappingService;
+  }
+
+  private setFieldNameMapping(){
+    const fieldMapping = this.fieldNameMappingService.getFieldMappingAlias();
+    if (fieldMapping) {
+    this.carouselFieldName = fieldMapping.carousel;
+    }
   }
 
   ngOnInit(): void {
@@ -95,6 +106,7 @@ export class ProcessPicksComponent implements OnInit {
     this.getAllZones();
     this.getAllOrders();
     this.isBatchIdFocus = true;
+    this.setFieldNameMapping();
   }
 
   async printPick(type) {
