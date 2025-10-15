@@ -26,9 +26,8 @@
                                 (click)=" orderNumber = '';autocompleteSearchColumn();clearFields();" data-automation-id="clear-button"><mat-icon
                                     class="text-20 text-chrome-600">cancel</mat-icon></button>
 
-                            <mat-autocomplete class="card custom-scroll" #auto="matAutocomplete">
-
-                                <h6 class="card-header matAutoCompHeader ">
+                            <mat-autocomplete class="card custom-scroll w-100" #auto="matAutocomplete">
+                                <h6 class="card-header matAutoCompHeader sticky-header">
                                     <span class="w-140px" data-automation-id="option-header-order-number">Order Number</span> 
                                     <span class="w-140px" data-automation-id="option-header-transaction-type">Trans. Type</span> 
                                     <span class="w-140px" data-automation-id="option-header-item-number" replacePlaceholder [replacePlaceHolder]="placeholders.itemNumber" [fallbackPlaceHolder]="placeholders.itemNumberFallback">{{LabelItemNumber}}</span> 
@@ -37,10 +36,10 @@
                                 <mat-option *ngFor="let option of searchAutocompleteList" [value]="option.orderNumber"
                                     class="matAutoCompTableContent" [attr.data-automation-id]="'option-order-number-'  + option.orderNumber">
                                     <div class="loc_option" (click)="getRow(option)">
-                                        <span class="searchColumn w-140px" [attr.data-automation-id]="'option-order-number-value-'  + option.orderNumber">{{option.orderNumber}}</span>
-                                        <span class="searchColumn" w-140px [attr.data-automation-id]="'option-transaction-type-value-' + option.transactionType">{{option.transactionType}}</span> <span
-                                            class="searchColumn w-140px" [attr.data-automation-id]="'option-item-number-value-'  + option.itemNumber">{{option.itemNumber}}</span>
-                                        <span class="searchColumn w-140px" [attr.data-automation-id]="'option-transaction-quantity-value-' + option.transactionQuantity">{{option.transactionQuantity}}</span>
+                                        <span class="searchColumn w-140px" [matTooltip]="option.orderNumber" [matTooltipDisabled]="!(cellOrderNumber.scrollWidth > cellOrderNumber.clientWidth)" matTooltipPosition="above" #cellOrderNumber [attr.data-automation-id]="'option-order-number-value-'  + option.orderNumber">{{option.orderNumber}}</span>
+                                        <span class="searchColumn w-140px" [matTooltip]="option.transactionType" [matTooltipDisabled]="!(cellTransactionType.scrollWidth > cellTransactionType.clientWidth)" matTooltipPosition="above" #cellTransactionType [attr.data-automation-id]="'option-transaction-type-value-' + option.transactionType">{{option.transactionType}}</span> <span
+                                            class="searchColumn w-140px" [matTooltip]="option.itemNumber" [matTooltipDisabled]="!(cellItemNumber.scrollWidth > cellItemNumber.clientWidth)" matTooltipPosition="above" #cellItemNumber [attr.data-automation-id]="'option-item-number-value-'  + option.itemNumber">{{option.itemNumber}}</span>
+                                        <span class="searchColumn w-140px" [matTooltip]="option.transactionQuantity" [matTooltipDisabled]="!(cellTransactionQuantity.scrollWidth > cellTransactionQuantity.clientWidth)" matTooltipPosition="above" #cellTransactionQuantity [attr.data-automation-id]="'option-transaction-quantity-value-' + option.transactionQuantity">{{option.transactionQuantity}}</span>
                                     </div>
                                 </mat-option>
                             </mat-autocomplete>
