@@ -140,6 +140,7 @@ export const ConfirmationHeadings = {
     CancelCartUpdate: "Discard Changes?",
     PrintBatchOrOrders: "Print Batch Or Orders?",
     PrintOffCarouselPickItemLabels: "Print Off-Carousel Pick Item Labels?",
+    PrintOffCarouselPickItemSingleLabel: "Print Off-Carousel Pick Item Label?",
     ContinueCreatingTransaction: 'Continue Creating Transactions?',
     AssignLocation: 'Assign Location',
     ChangeFormatType: "Change Format Type"
@@ -176,6 +177,7 @@ export const ConfirmationMessages = {
     UpdateAllInterfaceWithZone: 'Click OK to update all devices with Com Port: {{comPort}} and Zone: {{zone}}',
     PrintBatchOrOrders: 'Click Yes to print all orders as a batch. Click No to print a page for each order.',
     PrintOffCarouselPickItemLabels: 'Click Yes to print item labels for all the items in this batch.',
+    PrintOffCarouselPickItemSingleLabel: 'Click Yes to print item label for the selected item.',
     InconsistentFormat: (fieldName: string, newFormat: string, oldFormat: string) => `An "${fieldName}" was added with ${oldFormat} format. Changing to ${newFormat} will update that entry as well. Do you want to continue?`,
     ContinueCreatingTransaction: 'You will now create a “Count” Transaction for each Item Number in the Queue.',
     InfoText: 'These items will be removed from the Discrepancies List.',

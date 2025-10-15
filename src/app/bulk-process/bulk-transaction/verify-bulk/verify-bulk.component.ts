@@ -532,6 +532,7 @@ export class VerifyBulkComponent implements OnInit {
       selectedRow.selected = !selectedRow.selected;
     }
   }
+
   printAllToteLabels() {
     if(this.isSlapperLabelFlow) {
       this.printOffCarouselPickItemLabels();
@@ -566,11 +567,16 @@ export class VerifyBulkComponent implements OnInit {
     });
   }
 
-  printTote(index: number) {
-    const transactionType = this.bulkTransactionType;
-    let orderNumber: string[] = [this.orderLines.filteredData[index].orderNumber || ''];
-    let toteId: string[] = [this.orderLines.filteredData[index].toteId || ''];
-    this.iAdminApiService.PrintTotes(orderNumber, toteId, transactionType, index);
+  printSingleToteLabel(index: number) {
+    if (this.isSlapperLabelFlow) {
+      let labelId = this.orderLines.filteredData[index].id;
+      this.printOffCarouselPickItemLabels(labelId);
+    } else {
+      const transactionType = this.bulkTransactionType;
+      let orderNumber: string[] = [this.orderLines.filteredData[index].orderNumber || ''];
+      let toteId: string[] = [this.orderLines.filteredData[index].toteId || ''];
+      this.iAdminApiService.PrintTotes(orderNumber, toteId, transactionType, index);
+    }
   }
 
   printBulkTraveler() {
@@ -582,24 +588,39 @@ export class VerifyBulkComponent implements OnInit {
     }
   }
 
-  printOffCarouselPickItemLabels() {
+  printOffCarouselPickItemLabels(index: number = -1) {
+    let dlgMessage = '';
+    let dlgHeading = '';
+    let transIDs: number[] = [];
+
+    if (index == -1) {
+      // All labels
+      dlgMessage = ConfirmationMessages.PrintOffCarouselPickItemLabels;
+      dlgHeading = ConfirmationHeadings.PrintOffCarouselPickItemLabels;
+      transIDs = this.orderLines.filteredData.filter(o => o.isPartialCase).map(o => o.id);
+    } else {
+      // Single label
+      dlgMessage = ConfirmationMessages.PrintOffCarouselPickItemSingleLabel;
+      dlgHeading = ConfirmationHeadings.PrintOffCarouselPickItemSingleLabel;
+      transIDs.push(index);
+    }
+
     const dialogRef1 = this.global.OpenDialog(ConfirmationDialogComponent, {
       height: DialogConstants.auto,
       width: Style.w560px,
       autoFocus: DialogConstants.autoFocus,
       disableClose: true,
       data: {
-        message: ConfirmationMessages.PrintOffCarouselPickItemLabels,          
-        heading: ConfirmationHeadings.PrintOffCarouselPickItemLabels,
+        message: dlgMessage,
+        heading: dlgHeading,
         buttonFields: true,
       },
     });
     dialogRef1.afterClosed().subscribe(async (res: string) => {
       if (res == ResponseStrings.Yes) {
-        let transIDs = this.orderLines.filteredData.filter(o => o.isPartialCase).map(o => o.id);
         this.printApiService.PrintOCPItem(transIDs);
       }
-    }); 
+    });
   }
 
   @ViewChild('tooltip') tooltip: MatTooltip;
