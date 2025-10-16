@@ -367,8 +367,7 @@ ContextMenu($event:any){
       username: [this.userData?.userName || '', [Validators.required]],
 
       itemQuarantined: [this.getInvMasterData?.itemQuarantined || '', [Validators.required]],
-
-      supplierName: ['']
+      supplierName: [this.getInvMasterData?.supplierName || '',[Validators.maxLength(50)]],
     });
     let CopyObject = JSON.stringify(this.invMaster.value);
     this.OldInvMaster = JSON.parse(CopyObject || '{}');
