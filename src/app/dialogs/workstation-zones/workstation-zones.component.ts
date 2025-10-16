@@ -4,8 +4,11 @@ import {
   ViewChild,
   Inject,
   ElementRef,
+  AfterViewInit,
+  OnDestroy,
 } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { FocusMonitor } from '@angular/cdk/a11y';
 
 import { takeUntil } from 'rxjs/internal/operators/takeUntil';
 import { Subject } from 'rxjs/internal/Subject';
@@ -31,8 +34,9 @@ import { ZoneFilterType } from 'src/app/common/enums/CommonEnums';
   templateUrl: './workstation-zones.component.html',
   styleUrls: ['./workstation-zones.component.scss'],
 })
-export class WorkstationZonesComponent implements OnInit {
+export class WorkstationZonesComponent implements OnInit, AfterViewInit, OnDestroy {
   @ViewChild('fieldFocus') fieldFocus: ElementRef;
+  @ViewChild('addZoneInput') addZoneInput: ElementRef;
 
   public workstationZones: any[] = [];
   onDestroy$: Subject<boolean> = new Subject();
@@ -66,7 +70,8 @@ export class WorkstationZonesComponent implements OnInit {
     public inductionManagerApi: InductionManagerApiService,
     private adminApiService: AdminApiService,
     public dialogRef: MatDialogRef<any>,
-    private global: GlobalService
+    private global: GlobalService,
+    private focusMonitor: FocusMonitor
   ) {
     this.iCommonAPI = commonAPI;
     this.iInductionManagerApi = inductionManagerApi;
@@ -81,7 +86,9 @@ export class WorkstationZonesComponent implements OnInit {
     this.getLocationZones();
   }
   ngAfterViewInit(): void {
-    this.fieldFocus?.nativeElement.focus();
+    if (this.addZoneInput) {
+      this.focusMonitor.focusVia(this.addZoneInput, 'program');
+    }
     console.log(this.zoneSelectOptions);
     this.zoneSelectOptions = this.zones;
   }
@@ -395,5 +402,13 @@ export class WorkstationZonesComponent implements OnInit {
 
   closeBatchDialog() {
     this.dialogRef.close(this.workstationZones);
+  }
+
+  ngOnDestroy(): void {
+    this.onDestroy$.next(true);
+    this.onDestroy$.complete();
+    if (this.addZoneInput) {
+      this.focusMonitor.stopMonitoring(this.addZoneInput);
+    }
   }
 }

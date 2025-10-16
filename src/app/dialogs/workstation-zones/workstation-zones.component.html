@@ -37,8 +37,8 @@
             </div>
             <div class="mt-3">
                 <mat-form-field class="custom-form-field w-100" appearance="outline" data-automation-id="add-zone-field">
-                    <mat-label data-automation-id="add-zone-label">Add Zone</mat-label>
-                    <input matInput type="text" [(ngModel)]="selectedZone"  [matAutocomplete]="searchauto" (keyup)="searchItem($event)" data-automation-id="add-zone-input">
+                    <mat-label data-automation-id="add-zone-label">Search to add Zone</mat-label>
+                    <input #addZoneInput matInput type="text" [(ngModel)]="selectedZone"  [matAutocomplete]="searchauto" (keyup)="searchItem($event)" data-automation-id="add-zone-input">
                     <button matSuffix *ngIf="selectedZone" class="clear-btn"  (click)="selectedZone = ''" data-automation-id="clear-zone-button"><mat-icon class="text-20 text-chrome-600" data-automation-id="clear-zone-icon">cancel</mat-icon></button>
                             <mat-autocomplete class="card custom-scroll" #searchauto="matAutocomplete"
                                 (optionSelected)="onSearchSelect($event)" data-automation-id="zone-autocomplete">
@@ -57,8 +57,8 @@
     <div class="card w-100" data-automation-id="warehouse-card">
         <div class="card-header" data-automation-id="warehouse-card-header">
             <div class="row">
-                <div class="col-6 pl-64" data-automation-id="zone-header">
-                    Selected Zone
+                <div class="col-6 px-4" data-automation-id="zone-header">
+                    Selected Zones
                 </div>
             </div>
         </div>
