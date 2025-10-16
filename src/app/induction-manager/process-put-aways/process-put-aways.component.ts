@@ -212,10 +212,7 @@ export class ProcessPutAwaysComponent implements OnInit {
   }
 
   callFunBatchSetup(event:any){
-    if(event.funName == "batchIdKeyup"){
-      this.batchIdKeyup();
-    }
-    else if (event.funName == StringConditions.clear){
+    if (event.funName == StringConditions.clear){
       this.clear();
     }
     else if (event.funName == "getRow"){
@@ -261,10 +258,6 @@ export class ProcessPutAwaysComponent implements OnInit {
     else if (event.funName == "assignToteAtPosition"){
       this.assignToteAtPosition(event.funParam1,event.funParam2,event.funParam3);
     }
-  }
-
-  batchIdKeyup(){
-    this.getRow();
   }
 
   @HostListener('window:beforeunload', [UniqueConstants.event])

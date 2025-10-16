@@ -2,7 +2,7 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { FloatLabelType } from '@angular/material/form-field';
 import { Subject, debounceTime, distinctUntilChanged } from 'rxjs';
-import { ToasterMessages, ToasterTitle, ToasterType ,UniqueConstants} from 'src/app/common/constants/strings.constants';
+import { StringConditions, ToasterMessages, ToasterTitle, ToasterType ,UniqueConstants} from 'src/app/common/constants/strings.constants';
 import { GlobalService } from 'src/app/common/services/global.service';
 import { IInductionManagerApiService } from 'src/app/common/services/induction-manager-api/induction-manager-api-interface';
 import { InductionManagerApiService } from 'src/app/common/services/induction-manager-api/induction-manager-api.service';
@@ -43,6 +43,10 @@ export class PpaTsBatchSetupComponent  implements OnInit{
   }
 
   callFun(funName:any,funParam:any){
+    if(funName === StringConditions.clear){
+      this.batchId = '';
+      this.searchAutocompleteItemNum = [];
+    }
     this.funCall.emit({funName:funName,funParam:funParam,batchId:this.batchId});
   }
 
