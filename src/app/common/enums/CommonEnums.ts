@@ -156,3 +156,10 @@ export enum ArrowKeys   {
     Down = 'ArrowDown',
     Up = 'ArrowUp',
   }
+
+export enum ZoneFilterType {
+  All = 'All',
+  Carousel = 'Carousel',
+  CartonFlow = 'CartonFlow',
+  Bulk = 'Bulk'
+}
