@@ -31,6 +31,7 @@ import {
 ,ResponseStrings,DialogConstants,Style,UniqueConstants,TableConstant} from 'src/app/common/constants/strings.constants';
 import {CommonApiService } from 'src/app/common/services/common-api/common-api.service';
 import { FieldMappingService } from 'src/app/common/services/field-mapping/field-mapping.service';
+import { LocalStorageService } from 'src/app/common/services/LocalStorage.service';
 @Component({
   selector: 'app-process-picks',
   templateUrl: './process-picks.component.html',
@@ -87,6 +88,7 @@ export class ProcessPicksComponent implements OnInit {
     private printApiService: PrintApiService,
     private CommonApiService:CommonApiService,
     private fieldNameMappingService: FieldMappingService,
+    private localStorageService: LocalStorageService,
   ) {
     this.iinductionManagerApi = inductionManagerApi;
     this.commonApiService=CommonApiService;
@@ -100,8 +102,13 @@ export class ProcessPicksComponent implements OnInit {
     }
   }
 
+  onPickTypeChange(): void {
+    this.localStorageService.SetProcessPicksPickType(this.pickType);
+  }
+
   ngOnInit(): void {
     this.userData = this.authService.userData();
+    this.pickType = this.localStorageService.GetProcessPicksPickType();
     this.pickToteSetupIndex();
     this.getAllZones();
     this.getAllOrders();
@@ -324,7 +331,6 @@ export class ProcessPicksComponent implements OnInit {
   }
 
   createToteSetupTable(pickBatchQuantity: any) {
-    this.pickType = 'MixedZones';
     this.tote_Setup = [];
     for (let index = 0; index < pickBatchQuantity; index++) {
       this.tote_Setup.push({

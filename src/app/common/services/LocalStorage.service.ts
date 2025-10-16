@@ -1,13 +1,17 @@
 import { Injectable } from '@angular/core';
-import {PickToteFilterpreferences } from '../constants/strings.constants';
-import { PickToteFilterPreference } from '../Model/pick-Tote-Manager';
+import { AuthService } from 'src/app/common/init/auth.service';
+import { UserSession } from '../types/CommonTypes';
+import { ProcessPicksPickTypePreference } from '../interface/common-interfaces';
 
 @Injectable({
   providedIn: 'root'
 })
 export class LocalStorageService {
 
-  constructor() {}
+  userData: UserSession;
+  constructor(private authService: AuthService) {
+    this.userData = authService.userData();
+  }
 
   SetImportCountLocationChecks(e: any, type: any): any[] {
 
@@ -465,6 +469,70 @@ export class LocalStorageService {
      return []; // If no pick checks found for the user, return an empty array
 
   }
+  private processPicksPickTypeKey = "ProcessPicksPickType"; // Key for process picks pick type in localStorage
+  private processPicksPickTypeDefaultValue = "MixedZones"; // Default value for process picks pick type
+  SetProcessPicksPickType(pickType: string): string {
+    const LoggedInUserName: string = this.userData.userName;  // Get current login user name from Logged-in user data
+    const AllPickTypePreferences: string | null = localStorage.getItem(this.processPicksPickTypeKey); // Pick Type preferences for all users
+    
+    if (AllPickTypePreferences) // check if any value exists in local storage
+    {
+      const usersPickTypePreferences: ProcessPicksPickTypePreference[] = JSON.parse(AllPickTypePreferences);
+      const userPickTypePreference: ProcessPicksPickTypePreference | undefined = usersPickTypePreferences.find((pref: ProcessPicksPickTypePreference) => pref.UserName === LoggedInUserName);
+      
+      if (userPickTypePreference) // check if value exists for loggedIn user in local storage
+      {
+        userPickTypePreference.PickType = pickType;
+        localStorage.setItem(this.processPicksPickTypeKey, JSON.stringify(usersPickTypePreferences));
+      }
+      else //if value not exists for loggedIn user then add
+      {
+        const PickTypePreference: ProcessPicksPickTypePreference = 
+        {
+          UserName: LoggedInUserName,
+          PickType: pickType
+        }
+        usersPickTypePreferences.push(PickTypePreference);
+        localStorage.setItem(this.processPicksPickTypeKey, JSON.stringify(usersPickTypePreferences));
+      }
+    } 
+    else // if value not exists for any user in local storage then add value in it
+    {
+      const PickTypePreference: ProcessPicksPickTypePreference = 
+      {
+        UserName: LoggedInUserName,
+        PickType: pickType
+      }
+      const allPickTypePreferences: ProcessPicksPickTypePreference[] = [PickTypePreference];
+      localStorage.setItem(this.processPicksPickTypeKey, JSON.stringify(allPickTypePreferences)); 
+    } 
+   
+    // Retrieve the updated pick type preference from localStorage
+    const updatedPickTypePreferences: ProcessPicksPickTypePreference[] = JSON.parse(localStorage.getItem(this.processPicksPickTypeKey) || '[]');
+    const updatedUserPickTypePreference: ProcessPicksPickTypePreference | undefined = updatedPickTypePreferences.find((pref: ProcessPicksPickTypePreference) => pref.UserName === LoggedInUserName);
+    
+    // Return the pick type value
+    if (updatedUserPickTypePreference) {
+      return updatedUserPickTypePreference.PickType;
+    }
+    return this.processPicksPickTypeDefaultValue; // Default value if not found
+  }
+
+  GetProcessPicksPickType(): string {
+    const LoggedInUserName: string = this.userData.userName;  // Get current login user name from Logged-in user data
+    const AllPickTypePreferences: string | null = localStorage.getItem(this.processPicksPickTypeKey); // Pick Type preferences for all users
+    
+    if (AllPickTypePreferences) {
+      const usersPickTypePreferences: ProcessPicksPickTypePreference[] = JSON.parse(AllPickTypePreferences);
+      const userPickTypePreference: ProcessPicksPickTypePreference | undefined = usersPickTypePreferences.find((pref: ProcessPicksPickTypePreference) => pref.UserName === LoggedInUserName);
+      
+      if (userPickTypePreference) {
+        return userPickTypePreference.PickType;
+      }
+    }
+    
+    return this.processPicksPickTypeDefaultValue; // Default value if not found
+  }
 
   clearLocalStorage(): void {
   
@@ -472,7 +540,7 @@ export class LocalStorageService {
     const totalKeys: number = localStorage.length;
 
     // Create an array of keys to be excluded from removal
-    const exceptKeys: string[] = ['CountPickChecks','CountPutChecks', 'CountPickChecksLocation', 'CountPutChecksLocation','ImportCountLocationChecks','OrderStatusSelectionDefaultValue']; // Add more keys as needed
+    const exceptKeys: string[] = ['CountPickChecks','CountPutChecks', 'CountPickChecksLocation', 'CountPutChecksLocation','ImportCountLocationChecks','OrderStatusSelectionDefaultValue','ProcessPicksPickType']; // Add more keys as needed
 
     // Iterate through all the keys in localStorage
     for (let i = 0; i < totalKeys; i++) {
