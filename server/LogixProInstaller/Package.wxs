@@ -62,7 +62,7 @@
 
 					<Component Id="LogixProServiceComponent" Bitness="always64" Guid="*">
 						<!-- The service executable -->
-						<File Id="LogixPro.exe" Name="LogixPro.exe" Source="$(var.FilesDir)\LogixProServer.exe" />
+						<File Id="LogixPro.exe" Name="LogixPro.exe" Source="$(var.FilesDir)\LogixPro.exe" />
 
 						<!-- Service installation settings -->
 						<ServiceInstall Id="LogixProServiceInstaller"
