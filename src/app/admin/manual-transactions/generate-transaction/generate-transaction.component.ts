@@ -14,6 +14,7 @@ import {
   DeleteConfirmationManualTransactionComponent
 } from '../../dialogs/delete-confirmation-manual-transaction/delete-confirmation-manual-transaction.component';
 import {InvalidQuantityComponent} from '../../dialogs/invalid-quantity/invalid-quantity.component';
+import {ErrorDialogComponent} from '../../../dialogs/error-dialog/error-dialog.component';
 import {MatSelect} from '@angular/material/select';
 import {MatOption} from '@angular/material/core';
 import {ApiFuntions} from 'src/app/common/services/ApiFuntions';
@@ -26,6 +27,8 @@ import {PrintApiService} from "../../../common/services/print-api/print-api.serv
 import {
   DialogConstants,
   Placeholders,
+  showNotificationHeading,
+  showNotificationMessage,
   StringConditions,
   Style,
   ToasterTitle,
@@ -432,19 +435,18 @@ export class GenerateTransactionComponent implements OnInit {
     const quantityAllocatedPick = Number(this.quantityAllocatedPick) || 0;
     const actualQuantity = totalQuantity - quantityAllocatedPick;
     if (this.isLocation && this.transQuantity > actualQuantity && this.transType === TransactionType.Pick) {
-      const dialogRef: any = this.global.OpenDialog(InvalidQuantityComponent, {
+      const dialogRef = this.global.OpenDialog(ErrorDialogComponent, {
         height: DialogConstants.auto,
         width: Style.w560px,
         autoFocus: DialogConstants.autoFocus,
         disableClose: true,
-      });
-      dialogRef.afterClosed().subscribe((res) => {
-        this.clearMatSelectList();
-        this.isQuantityConfirmation = res;
-        if (this.isQuantityConfirmation) {
-          this.updateTransactionFunction();
-          this.postTransactionFunction(type);
+        data: {
+          heading: showNotificationHeading.TransactionQuantityExceedsAvailable,
+          message: showNotificationMessage.TransactionQuantityExceedsAvailable
         }
+      });
+      dialogRef.afterClosed().subscribe(() => {
+        this.clearMatSelectList();
       });
     } else {
       this.clearMatSelectList();
@@ -635,17 +637,18 @@ export class GenerateTransactionComponent implements OnInit {
       this.transType === TransactionType.Pick
     ) {
       this.isInvalidQuantityPopUp = true;
-      const dialogRef: any = this.global.OpenDialog(InvalidQuantityComponent, {
+      const dialogRef = this.global.OpenDialog(ErrorDialogComponent, {
         height: DialogConstants.auto,
         width: Style.w560px,
         autoFocus: DialogConstants.autoFocus,
         disableClose: true,
-      });
-      dialogRef.afterClosed().subscribe((res) => {
-        this.clearMatSelectList();
-        if (res) {
-          this.updateTransactionFunction();
+        data: {
+          heading: showNotificationHeading.TransactionQuantityExceedsAvailable,
+          message: showNotificationMessage.TransactionQuantityExceedsAvailable
         }
+      });
+      dialogRef.afterClosed().subscribe(() => {
+        this.clearMatSelectList();
       });
     } else {
       this.updateTransactionFunction();

@@ -421,14 +421,16 @@ export const showNotificationHeading = {
     FieldsMissing: 'Fields Missing',
     InvalidQuantity: 'Invalid Quantity',
     InvalidItemEntered: 'Invalid Item Entered',
-    InvalidToteEntered: 'Invalid Tote Entered'
+    InvalidToteEntered: 'Invalid Tote Entered',
+    TransactionQuantityExceedsAvailable: 'Transaction Quantity Exceeds Available Quantity'
 }
 
 export const showNotificationMessage = {
     FieldsFill: 'Not all the fields were filled out. Please fill them out',
     InvalidQuantity: 'An invalid quantity was entered. Please enter a quantity greater than 0',
     ItemNotExists: 'This item does not exist in Inventory',
-    ToteAlreadyExists: 'This tote id already exists in Open Transactions'
+    ToteAlreadyExists: 'This tote id already exists in Open Transactions',
+    TransactionQuantityExceedsAvailable: 'Transaction quantity cannot exceed available inventory quantity.'
 }
 
 export const FieldName = {
