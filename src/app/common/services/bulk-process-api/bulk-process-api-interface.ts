@@ -1,5 +1,5 @@
 import { ZoneListPayload } from "src/app/bulk-process/preferences/preference.models";
-import { AssignToteToOrderDto, BatchesRequest, BatchesResponse, EmergencyPickOrdersRequest, OrderLineResource, OrderResponse, OrdersRequest, PartialToteIdRequest, PartialToteIdResponse, QuickPickOrdersRequest, RemoveOrderLinesRequest, RemoveOrderLinesResponse, TotesRequest, TotesResponse } from "../../Model/bulk-transactions";
+import { AssignToteToOrderDto, BatchesRequest, BatchesResponse, EmergencyPickOrdersRequest, OrderLineResource, OrderResponse, OrdersRequest, PartialToteIdRequest, PartialToteIdResponse, QuickPickOrdersRequest, RemoveOrderLinesRequest, RemoveOrderLinesResponse, TotesRequest, TotesResponse, UpdateOTsNewBatchIdRequest } from "../../Model/bulk-transactions";
 import { ApiResult } from "../../types/CommonTypes";
 import { Observable } from "rxjs";
 import { PagingRequest } from "../../interface/ccdiscrepancies/PagingRequest";
@@ -40,5 +40,6 @@ export interface IBulkProcessApiService {
   RemoveOrderLinesFromTote(request: RemoveOrderLinesRequest): Promise<RemoveOrderLinesResponse>;
   bulkPickBatchesCount(payload:BatchesRequest) : Promise<ApiResult<number>>;
   bulkPickOrdersCount(payload:OrdersRequest) : Promise<ApiResult<number>>;
-  bulkPickTotesCount(payload:TotesRequest) : Promise<ApiResult<number>>;
+  bulkPickTotesCount(payload: TotesRequest): Promise<ApiResult<number>>;
+  UpdateOTsNewBatchIdRequest(request: UpdateOTsNewBatchIdRequest): Promise<string>;
 }

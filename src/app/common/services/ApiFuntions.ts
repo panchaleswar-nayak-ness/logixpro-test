@@ -4,7 +4,7 @@ import { of } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
 import { BaseService } from './base-service.service';
 import { AuthService } from '../init/auth.service';
-import { AssignToteToOrderDto, BatchesRequest, EmergencyPickOrdersRequest, NextToteId, OrderLineResource, OrderResponse, OrdersRequest, PartialToteIdRequest, PartialToteIdResponse, RemoveOrderLinesRequest, RemoveOrderLinesResponse, TotesRequest } from '../Model/bulk-transactions';
+import { AssignToteToOrderDto, BatchesRequest, EmergencyPickOrdersRequest, NextToteId, OrderLineResource, OrderResponse, OrdersRequest, PartialToteIdRequest, PartialToteIdResponse, RemoveOrderLinesRequest, RemoveOrderLinesResponse, TotesRequest, UpdateOTsNewBatchIdRequest } from '../Model/bulk-transactions';
 import {
   MarkoutBlossomTotenRequest,
   MarkoutCompleteTransactionRequest,
@@ -2025,6 +2025,14 @@ public updateEmergencyReprocessTrans(payload: UpdateEmergencyRequest): Observabl
 
   public bulkPickBatchId(body: any): Observable<any> {
     return this.ApiBase.Get(`/batches/${body.batchpickid}`, body);
+  }
+
+  public async updateOTsNewBatchId(request: UpdateOTsNewBatchIdRequest): Promise<string> {
+    const response = await this.ApiBase.PostAsync<any>('/batches/updateotsnewbatchid', request);
+    if (!response.body) {
+      throw new Error('No response body or value received from /batches/updateotsnewbatchid API');
+    }
+    return response.body;
   }
 
   public bulkPickOrders(body: any): Observable<any> {

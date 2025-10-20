@@ -34,6 +34,7 @@ import { firstValueFrom } from 'rxjs';
 import { ApiResponse} from 'src/app/common/types/CommonTypes';
 import { DisplayEOBResponse } from 'src/app/common/types/bulk-process/bulk-transactions';
 import { BulkTransactionType } from 'src/app/common/constants/bulk-process/bulk-transactions';
+import { UpdateOTsNewBatchIdRequest } from '../../../common/Model/bulk-transactions';
 
 @Component({
   selector: 'app-verify-bulk',
@@ -61,7 +62,6 @@ export class VerifyBulkComponent implements OnInit {
   taskCompleted: boolean = false;
   backSubscription;
   backCount: number = 0;
-  batchId:string="";
   workstationPreferences: WorkStationSetupResponse;
   @Input() isBatchIdGenerationEnabled:boolean; 
   public iBulkProcessApiService: IBulkProcessApiService;
@@ -85,19 +85,58 @@ export class VerifyBulkComponent implements OnInit {
     this.commonApiService=CommonApiService;
   }
 
-  ngOnInit(): void {
-    this.orderLines.forEach(element => {
-      this.taskCompleteNewRequest.push({
-        id: element.id,
-        completedQty: 0,
-        newLocationQty: -1
+  async ngOnInit(): Promise<void> {
+    try {
+      this.orderLines.forEach(element => {
+        this.taskCompleteNewRequest.push({
+          id: element.id,
+          completedQty: 0,
+          newLocationQty: -1
+        });
+        element.completedQuantity = 0;
       });
-      element.completedQuantity = 0;
-    });
-    this.backSubscription = this.sharedService.verifyBulkTransBackObserver.subscribe((data: any) => {
-      this.backCount++;
-      this.backButton();
-    });
+
+      this.backSubscription = this.sharedService.verifyBulkTransBackObserver.subscribe((data: any) => {
+        this.backCount++;
+        this.backButton();
+      });
+
+      // Make sure all order lines have consistent Batch ID assignment
+      this.validateOrderLines();
+
+      if (this.isBatchIdGenerationEnabled && !this.orderLines[0].batchId) {
+        var request = new UpdateOTsNewBatchIdRequest();
+        this.orderLines.forEach(orderLine => {
+          request.openTransactionIds.push(orderLine.id);
+        });
+
+        // Need this because the await on the API call below causes 'this' context to be lost,
+        // resulting in an error when trying to access this.orderLines
+        const locOrderLines: OrderLineResource[] = Array.from(this.orderLines);
+
+        var newBatchId = await this.iBulkProcessApiService.UpdateOTsNewBatchIdRequest(request);
+
+        locOrderLines.forEach(orderLine => {
+          orderLine.batchId = newBatchId;
+        });
+      }
+
+    } catch (error) {
+      console.log(error);
+      this.global.ShowToastr(
+        ToasterType.Error,
+        ToasterMessages.SomethingWentWrong,
+        ToasterTitle.Error
+      );
+    }
+  }
+
+  private validateOrderLines() {
+    if (this.orderLines?.length === 0)
+      throw new Error('No order lines.');
+
+    if (!(this.orderLines.every(item => !item.batchId || item.batchId === '') || this.orderLines.every(item => item.batchId && item.batchId !== '')))
+      throw new Error('Inconsistent Batch ID assignment in order lines.');
   }
 
   ngOnDestroy() {
@@ -359,20 +398,14 @@ export class VerifyBulkComponent implements OnInit {
     });
     dialogRef1.afterClosed().subscribe(async (resp: string) => {
       if (resp == ResponseStrings.Yes) {        
-        const batchId = this.isBatchIdGenerationEnabled ? await this.getNextBatchID() : null;
         let ordersNew: TaskCompleteNewRequest[] = new Array();
         orderLines.forEach((orderLine: OrderLineResource) => {
           let record = this.taskCompleteNewRequest.find((r: TaskCompleteNewRequest) => r.id == orderLine.id);
           if (record) {
             record.completedQty =orderLine.completedQuantity;
-            // Only assign BatchID if generateBatchID is true and batchId is valid
-            if (this.isBatchIdGenerationEnabled && batchId) {
-            record.BatchID = batchId;
-          }
             ordersNew.push(record);
           }
         });
-
         
         let res = await this.iBulkProcessApiService.bulkPickTaskComplete(ordersNew);
         if (res?.status == HttpStatusCode.Ok) {                              
@@ -386,7 +419,6 @@ export class VerifyBulkComponent implements OnInit {
       }
     });
   }
-
   
   getNextBatchID(): Promise<string> {
   return firstValueFrom(this.commonApiService.NextBatchID())
@@ -412,8 +444,7 @@ export class VerifyBulkComponent implements OnInit {
     });
 }
 
-
-  async validateTaskComplete() {
+async validateTaskComplete() {
     let isZeroCompletedQuantity: boolean = false;
     this.orderLines.filteredData.forEach((x: OrderLineResource) => {
       if (x.completedQuantity == 0) isZeroCompletedQuantity = true;
@@ -545,24 +576,32 @@ export class VerifyBulkComponent implements OnInit {
     }
   }
 
-  printBatchOrOrders() {
+  printBulkTraveler() {
     const dialogRef1 = this.global.OpenDialog(ConfirmationDialogComponent, {
       height: DialogConstants.auto,
       width: Style.w560px,
       autoFocus: DialogConstants.autoFocus,
       disableClose: true,
       data: {
-        message: ConfirmationMessages.PrintBatchOrOrders,          
+        message: ConfirmationMessages.PrintBatchOrOrders,
         heading: ConfirmationHeadings.PrintBatchOrOrders,
         buttonFields: true,
         threeButtons: true
       },
     });
+
     dialogRef1.afterClosed().subscribe(async (res: string) => {
-      if(res){
-        let transIDs = this.orderLines.filteredData.filter(o => !o.isPartialCase).map(o => o.id);
-        if (res == ResponseStrings.Yes) this.printApiService.PrintBulkTraveler(transIDs);
-        else if (res == ResponseStrings.No) this.printApiService.PrintBulkTransactionsTravelerOrder(transIDs);
+      if (res) {
+        let transIDs = this.isSlapperLabelFlow ?
+          this.orderLines.filteredData.filter(o => !o.isPartialCase).map(o => o.id) :
+          this.orderLines.filteredData.map(o => o['id']);
+
+        if (res == ResponseStrings.Yes) {
+          this.printApiService.PrintBulkTraveler(transIDs);
+        }
+        else if (res == ResponseStrings.No) {
+          this.printApiService.PrintBulkTransactionsTravelerOrder(transIDs);
+        }
       }
     });
   }
@@ -576,15 +615,6 @@ export class VerifyBulkComponent implements OnInit {
       let orderNumber: string[] = [this.orderLines.filteredData[index].orderNumber || ''];
       let toteId: string[] = [this.orderLines.filteredData[index].toteId || ''];
       this.iAdminApiService.PrintTotes(orderNumber, toteId, transactionType, index);
-    }
-  }
-
-  printBulkTraveler() {
-    if(this.isSlapperLabelFlow) {
-      this.printBatchOrOrders();      
-    } else {
-      let transIDs = this.orderLines.filteredData.map(o => o['id']);
-      this.printApiService.PrintBulkTraveler(transIDs);
     }
   }
 
