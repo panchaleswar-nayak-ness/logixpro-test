@@ -1,0 +1,37 @@
+﻿name: Create RC
+
+on:
+  workflow_dispatch:
+    inputs:
+      base_ref:
+        description: "Branch off of"
+        required: false
+        default: Development
+
+permissions:
+  contents: write
+
+jobs:
+  rc:
+    runs-on: ubuntu-latest
+    env:
+      APP_ID: ${{ secrets.APP_ID }}
+      APP_PRIVATE_KEY: ${{ secrets.APP_PRIVATE_KEY }}
+      # DEFAULT_BRANCH: ${{ vars.DEFAULT_BRANCH }}
+    
+    steps:
+      - name: Next RC
+        id: next
+        uses: scotttech-enterprise64/github-actions/actions/create-rc-branch@main
+        with:
+          base_ref: ${{ github.event.inputs.base_ref }}
+          # --- Optional knobs (uncomment to override defaults) ---
+          # tag_prefix: v
+          # release_regex: '^v\d+\.\d+\.\d+\.\d+$'
+          # major_flag: '\[MAJOR\]'
+          # feature_flag: '\[FEATURE\]'
+          # patch_flag: '\[PATCH\]'
+          # dry_run: 'false'   # 'true' to compute without creating the branch
+
+      - name: Show result
+        run: echo "RC Branch => ${{ steps.next.outputs.rc_branch }}"

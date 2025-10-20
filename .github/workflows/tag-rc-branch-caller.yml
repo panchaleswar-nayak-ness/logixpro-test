@@ -1,0 +1,17 @@
+﻿name: Tag RC Branch
+
+on:
+  create:
+  pull_request_target:
+    types: [closed]
+    branches: ['rc/**']  # validate exact pattern inside the action
+
+permissions:
+  contents: write
+
+jobs:
+  rc_tagging:
+    runs-on: ubuntu-latest
+    steps:
+      - name: RC Tagging (composite)
+        uses: scotttech-enterprise64/github-actions/actions/tag-rc-branch@main
