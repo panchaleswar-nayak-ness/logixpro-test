@@ -951,3 +951,8 @@ export const EmergencyOptions = {
     ProceedWithEmergencyPick:'proceed',
     Snooze:'snooze'
 }
+
+export const OrderActions = {
+    SelectFirstOrder: 'select_first_order',
+    UnselectOrder: 'unselect_order'
+}

@@ -7,7 +7,7 @@ import { MatSort } from '@angular/material/sort';
 import { IInductionManagerApiService } from 'src/app/common/services/induction-manager-api/induction-manager-api-interface';
 import { InductionManagerApiService } from 'src/app/common/services/induction-manager-api/induction-manager-api.service';
 import { GlobalService } from 'src/app/common/services/global.service';
-import {  TableConstant ,Column,zoneType,ToasterTitle,ToasterType,ColumnDef,UniqueConstants} from 'src/app/common/constants/strings.constants';
+import {  TableConstant ,Column,zoneType,ToasterTitle,ToasterType,ColumnDef,UniqueConstants,OrderActions} from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-view-orders',
@@ -137,10 +137,11 @@ export class ViewOrdersComponent implements OnInit {
           if (this.data.allOrders.length > 0) {
             const selectedArr = this.allOrders.filter(element => this.data.allOrders.includes(element.orderNumber));
             
-            selectedArr.forEach(ele => {
-              ele.isSelected = true
-              this.selectedOrders.push(ele.orderNumber);
-            });
+            // Only select the first order for single-select mode
+            if (selectedArr.length > 0) {
+              selectedArr[0].isSelected = true;
+              this.selectedOrders = [selectedArr[0].orderNumber];
+            }
           }
   
           this.orderDataSource = new MatTableDataSource<any>(this.allOrders);
@@ -163,18 +164,20 @@ export class ViewOrdersComponent implements OnInit {
     });
   }
   onChangeOrderAction(option: any) {
-    if (option === 'fill_top_orders') {
-      this.selectedOrders = [];
-      for (let index = 0; index < this.data.pickBatchQuantity; index++) {
-        this.allOrders[index].isSelected = true;
-        this.selectedOrders.push(this.allOrders[index].orderNumber);
+    if (option === OrderActions.SelectFirstOrder) {
+      // Deselect all orders first
+      this.deselectAllOrders();
+      
+      // Select only the first order
+      if (this.allOrders.length > 0) {
+        this.allOrders[0].isSelected = true;
+        this.selectedOrders = [this.allOrders[0].orderNumber];
       }
     }
-    if (option === 'unselect_all_orders') {
-      for (let index = 0; index < this.data.pickBatchQuantity; index++) {
-        this.allOrders[index].isSelected = false;
-        this.selectedOrders = [];
-      }
+    if (option === OrderActions.UnselectOrder) {
+      this.deselectAllOrders();
+      this.selectedOrders = [];
+      this.orderTransDataSource = [];
     }
   }
 
@@ -184,28 +187,29 @@ export class ViewOrdersComponent implements OnInit {
   }
 
   onOrderSelect(row: any) {
-    
-    
-    
+    // If clicking the same order that's already selected, deselect it
     if (this.selectedOrders.includes(row.orderNumber)) {
       this.allOrders.forEach(val => {
         if (val.orderNumber === row.orderNumber) {
           val.isSelected = false;
-          this.orderTransDataSource = [];
         }
       });
-      this.selectedOrders = this.selectedOrders.filter(item => item !== row.orderNumber)
-    }
-    else if (this.selectedOrders.length >= this.data.pickBatchQuantity) {
-      this.global.ShowToastr(ToasterType.Error,'No open totes in batch', 'Batch is Filled.');
+      this.selectedOrders = [];
+      this.orderTransDataSource = [];
     }
     else {
-      this.selectedOrders.push(row.orderNumber);
+      // Deselect all previously selected orders
+      this.deselectAllOrders();
+      
+      // Select only the new order
+      this.selectedOrders = [row.orderNumber];
       this.allOrders.forEach(val => {
         if (val.orderNumber === row.orderNumber) {
           val.isSelected = true;
         }
       });
+      
+      // Fetch transactions for the selected order
       let paylaod = {
         "Draw": 0,
         "OrderNumber": row.orderNumber,
@@ -216,25 +220,26 @@ export class ViewOrdersComponent implements OnInit {
         "Filter": "1=1", 
       }
       this.iInductionManagerApi.InZoneTransDT(paylaod).subscribe((res) => {
-        if (res.isExecuted && res.data) {
-          this.transData = res.data.pickToteManTrans;
+        if (res.isSuccess && res.value) {
+          this.transData = res.value.transactions;
           this.orderTransDataSource = new MatTableDataSource<any>(this.transData);
           this.orderTransDataSource.paginator = this.paginatorTrans;
           this.orderTransDataSource.sort = this.viewTransSort;
         }
         else {
           this.global.ShowToastr(ToasterType.Error, this.global.globalErrorMsg(), ToasterTitle.Error);
-          console.log("InZoneTransDT",res.responseMessage);
-
         }
       });
     }
-
-
-
   }
   onSelectedOrders() {
     this.dialogRef.close(this.selectedOrders);
+  }
+
+  private deselectAllOrders(): void {
+    this.allOrders.forEach(val => {
+      val.isSelected = false;
+    });
   }
 
 }

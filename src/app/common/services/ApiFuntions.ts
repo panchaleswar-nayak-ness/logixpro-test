@@ -942,7 +942,7 @@ export class ApiFuntions {
   }
 
   public InZoneTransDT(body: any): Observable<any> {
-    return this.ApiBase.Get('/Induction/inzonetransdt', body);
+    return this.ApiBase.Get('/Induction/inzonetransdtnonreporders', body);
   }
 
   public ContIDShipTransUpdate(body: any): Observable<any> {
