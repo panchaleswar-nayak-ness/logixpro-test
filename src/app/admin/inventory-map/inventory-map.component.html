@@ -44,9 +44,6 @@
                       (click)="this.employeeAccessLevel.accessStorageContainer  && storageContainerManagement()" data-automation-id="invmap-action-storage-opt">
                       Storage Container Management
                     </mat-option>
-                    <mat-option data-automation-id="invmap-action-cart-opt" value="cart_management" >
-                      Cart Management
-                    </mat-option>
                   </mat-select>
                   <span class="material-symbols-outlined icon-expand-more">expand_more</span>
                 </mat-form-field>
@@ -89,7 +86,7 @@
                       <button mat-menu-item (click)="duplicate(seletedRecord)" *ngIf="inventoryRoute && this.userData.accessLevel.toLowerCase() == accessLevel.Administrator" data-automation-id="duplicate-button">Duplicate</button>
                       <button mat-menu-item (click)="viewInInventoryMaster(seletedRecord)" data-automation-id="view-in-inventory-master-button">View item in Inventory Master</button>
                       <button mat-menu-item (click)="viewLocationHistory(seletedRecord)" data-automation-id="view-location-history-button">View Location History</button>
-                      <button mat-menu-item (click)="sendToOutboundPort(seletedRecord)" [disabled]="seletedRecord.locationID <= 0" data-automation-id="send-to-outbound-port-button">Send to Outbound Port</button>
+                      <button mat-menu-item (click)="sendToOutboundPort(seletedRecord)" data-automation-id="send-to-outbound-port-button">Send to Outbound Port</button>
                     </mat-menu>
                   </td>
  

@@ -104,14 +104,14 @@
                     <button matSuffix *ngIf="inputValue" class="clear-btn" (click)="clearInputValue()" data-automation-id="process-put-aways-clear-input-value-button"><mat-icon class="text-20 text-chrome-600">cancel</mat-icon></button>  
 
                     <mat-autocomplete class="card custom-scroll" #itemNumberAuto="matAutocomplete" (optionSelected)="onAutocompleteOptionSelected($event)">
-                      <h6 class="card-header matAutoCompHeader">
+                      <h6 class="card-header matAutoCompHeader stickyHeader">
                         <span class="span-width">{{ itemNumber }}</span>
                         <span class="span-width">Description</span>
                       </h6>
                       <mat-option *ngFor="let option of searchAutocompleteItemNumbers; let i = index" [value]="option.itemNumber" class="matAutoCompTableContent" [attr.data-automation-id]="'process-put-aways-item-number-option-' + i">
                         <div class="loc_option">
-                          <span class="searchColumn span-width">{{ option.itemNumber }}</span>
-                          <span class="searchColumn span-searchColumn">{{ option.description }}</span>
+                          <span class="searchColumn span-width" matTooltip="{{ option.itemNumber }}" matTooltipPosition="above">{{ option.itemNumber }}</span>
+                          <span class="searchColumn span-searchColumn" matTooltip="{{ option.description }}" matTooltipPosition="above">{{ option.description }}</span>
                         </div>
                       </mat-option>
                     </mat-autocomplete>

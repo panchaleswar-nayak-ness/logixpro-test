@@ -2,5 +2,30 @@
     height: auto !important;
 }
 .w-140px{
-    width: 140px !important;
+    width: 20ch;
+    min-width: 124px;
+    padding-right:6px;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    &:nth-child(2){
+      width: auto;
+    }
+    &:nth-child(4){
+      width: auto;
+    }
 }
+
+
+
+.sticky-header {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  display: flex;
+  border-bottom: 1px solid #ddd;
+}
+ .table-container {
+    display: block;
+    overflow-x: auto; // horizontal scroll (header + body together)
+  }

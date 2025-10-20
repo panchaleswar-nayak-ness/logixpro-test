@@ -198,6 +198,7 @@ import { StorageContainerManagementModalComponent } from './dialogs/storage-cont
 import { RouteManagementDetailViewComponent } from './dialogs/route-management-detail-view/route-management-detail-view.component';
 import { CycleCountConfirmMessageDialogComponent } from './dialogs/cycle-count-confirm-message-dialog/cycle-count-confirm-message-dialog.component';
 import { AuditFileFieldMappingComponent } from './cycle-counts/audit-file-field-mapping-manager/audit-file-field-mapping-manager.component';
+import { EmergencyAlertService } from '../common/services/emergency-pick/emergency-alert-service';
 
 export function initializeApp(authService: AuthService, fieldMappingService: FieldMappingService) {
     return (): Promise<any> => {
@@ -427,6 +428,7 @@ export function initializeApp(authService: AuthService, fieldMappingService: Fie
     ],
     providers: [
         FieldMappingService,
+        EmergencyAlertService,
         AuthService,
         {
             provide: APP_INITIALIZER,

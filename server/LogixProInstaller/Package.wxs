@@ -1,5 +1,6 @@
 <Wix xmlns="http://wixtoolset.org/schemas/v4/wxs"
-	 xmlns:ui="http://wixtoolset.org/schemas/v4/wxs/ui">
+	 xmlns:ui="http://wixtoolset.org/schemas/v4/wxs/ui"
+	 xmlns:util="http://wixtoolset.org/schemas/v4/wxs/util">
 
 	<?define UpgradeCode = {d909a5fa-4323-4e42-925f-de3975535cd2}?>
 	<?define ServiceName = "PeakLogix.LogixPro"?>
@@ -10,14 +11,27 @@
 		Version="$(Version)"
 		UpgradeCode="$(var.UpgradeCode)"
 		Scope="perMachine">
+
 	  <MajorUpgrade
-	  AllowDowngrades="yes"/>
+	  	AllowDowngrades="yes"/>
 
 		<MediaTemplate EmbedCab="yes" />
-		<ui:WixUI
-	Id="WixUI_InstallDir_NoLicense"
-	InstallDirectory="INSTALLFOLDER"
-			/>
+
+		<Binary Id="UpdateConfigJS" SourceFile="updateConfig.js" />
+
+		<CustomAction Id="SetReplaceUrlsProps"
+					Property="ReplaceUrls"
+					Value="[INSTALLFOLDER];[SERVER_URL]" />
+
+		<CustomAction Id="ReplaceUrls"
+					BinaryRef="UpdateConfigJS"
+					JScriptCall="replaceServerUrlInFile"
+					Execute="deferred"
+					Impersonate="no"
+					Return="check" />
+
+		<ui:WixUI Id="WixUI_InstallDir_NoLicense" InstallDirectory="INSTALLFOLDER" />
+
 		<SetProperty 
 			After="FindRelatedProducts" 
 			Id="FirstInstall" 
@@ -81,5 +95,11 @@
 		<ComponentGroupRef Id="HarvestedComponents" />
 		<ComponentRef Id="LogixProServiceComponent" />
     </Feature>
+
+	<InstallExecuteSequence>
+		<Custom Action="SetReplaceUrlsProps" After="CostFinalize" />
+		<Custom Action="ReplaceUrls" After="InstallFiles" Condition="NOT Installed" />
+	</InstallExecuteSequence>
+
   </Package>
 </Wix>

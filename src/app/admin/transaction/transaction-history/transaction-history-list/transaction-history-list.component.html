@@ -10,7 +10,7 @@
                         [tableColumns]="this.displayedColumns" 
                         [searchCol]="this.selectedDropdown"
                         (selectionChangeEvent)="this.selectedDropdown = ($event).toString(); resetFields()"
-                        (clearInputFieldEvent)="this.selectedDropdown = '';  this.columnSearch.searchValue = '';this.searchBar.next($event)"
+                        (clearInputFieldEvent)="onClearSearchInput(); this.searchBar.next($event)"
                         [searchString]="this.columnSearch.searchValue"
                         [searchByInput]="this.searchBar"
                         [searchAutocompleteList]="this.searchAutocompleteList"

@@ -21,7 +21,6 @@
                                 [(ngModel)]="batchId" 
                                 [matAutocomplete]="item"
                                 (ngModelChange)="this.searchByItem.next($event)"
-                                (keyup)="callFun('batchIdKeyup',undefined)"
                                 [attr.data-automation-id]="'batch-id-input-' + batchId">
                             <button matSuffix *ngIf="batchId" class="clear-btn"
                                 (click)="callFun('clear',undefined)" data-automation-id="clear-batch-id-button"><mat-icon

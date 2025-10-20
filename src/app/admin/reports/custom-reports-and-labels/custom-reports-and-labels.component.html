@@ -45,7 +45,7 @@
                                 <mat-select  #matRef  class="employees-action" value="pick"  (selectionChange)="openAction()" [attr.data-automation-id]="'custom-reports-actions-select'+ (matRef.value || '')">
                                     <mat-option value="123456"(click)="crAddNewCustomReportDialogue()" data-automation-id="custom-reports-action-add-new">Add New</mat-option>
                                     <mat-option [value]="detail.testData" [disabled]="!detail.testData" (click)="this.global.OpenExportModal(this.detail.fileName,this.detail.fileName)" data-automation-id="custom-reports-action-export">Export</mat-option>
-                                    <mat-option [value]="detail.testData" [disabled]="!detail.testData" (click)="this.global.Print(this.detail.fileName.replace('.','-'))" data-automation-id="custom-reports-action-print">Print</mat-option>
+                                    <mat-option [value]="detail.testData" [disabled]="!detail.testData" (click)="this.global.PrintCustomReport(this.detail.fileName)" data-automation-id="custom-reports-action-print">Print</mat-option>
                                     <mat-option [value]="detail.testData" [disabled]="!detail.testData" (click)="openListAndLabel('report')" data-automation-id="custom-reports-action-design">Design</mat-option>
                                     <mat-option (click)="openDeleteDialogue()" [disabled]="!detail.testData" data-automation-id="custom-reports-action-delete">Delete</mat-option>
                                     <mat-option (click)="fileInput.click()"[disabled]="!detail.testData" data-automation-id="custom-reports-action-import">Import</mat-option>

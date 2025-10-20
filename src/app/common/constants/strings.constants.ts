@@ -82,7 +82,8 @@ export const StringConditions = {
     edit: 'edit',
     MoveFrom: 'MoveFrom',
     Short: 'Short',
-    Confirm:'confirm'
+    Confirm:'confirm',
+    Unknown: 'Unknown'
 }
 
 export const ResponseStrings = {
@@ -139,6 +140,7 @@ export const ConfirmationHeadings = {
     CancelCartUpdate: "Discard Changes?",
     PrintBatchOrOrders: "Print Batch Or Orders?",
     PrintOffCarouselPickItemLabels: "Print Off-Carousel Pick Item Labels?",
+    PrintOffCarouselPickItemSingleLabel: "Print Off-Carousel Pick Item Label?",
     ContinueCreatingTransaction: 'Continue Creating Transactions?',
     AssignLocation: 'Assign Location',
     ChangeFormatType: "Change Format Type"
@@ -175,6 +177,7 @@ export const ConfirmationMessages = {
     UpdateAllInterfaceWithZone: 'Click OK to update all devices with Com Port: {{comPort}} and Zone: {{zone}}',
     PrintBatchOrOrders: 'Click Yes to print all orders as a batch. Click No to print a page for each order.',
     PrintOffCarouselPickItemLabels: 'Click Yes to print item labels for all the items in this batch.',
+    PrintOffCarouselPickItemSingleLabel: 'Click Yes to print item label for the selected item.',
     InconsistentFormat: (fieldName: string, newFormat: string, oldFormat: string) => `An "${fieldName}" was added with ${oldFormat} format. Changing to ${newFormat} will update that entry as well. Do you want to continue?`,
     ContinueCreatingTransaction: 'You will now create a “Count” Transaction for each Item Number in the Queue.',
     InfoText: 'These items will be removed from the Discrepancies List.',
@@ -313,7 +316,13 @@ export const ToasterMessages = {
     InvalidToteID: "Invalid Tote ID, please enter again",
     StorageBinExitSuccessful: 'Storage Container has been sent to Outbound Port.',
     CartAvailableAgain: 'All totes removed. Cart is now available again.',
-    CartInducted: 'Cart has been Inducted'
+    CartInducted: 'Cart has been Inducted',
+    InvalidTote: "Please enter a valid Tote ID",
+    InventoryMapRecordsDeletedSuccessfully: (count: number) => `Successfully deleted ${count} inventory map record(s)`,
+    InventoryMapRecordsPartiallyDeleted: (successCount: number, failureCount: number) => `Deleted ${successCount} record(s), but ${failureCount} failed to delete`,
+    InventoryMapRecordsDeleteFailed: 'Failed to delete inventory map records',
+    ErrorDeletingInventoryMapRecords: 'Error occurred while deleting inventory map records',
+    ToteIDAlreadyExists: 'This Tote ID already exists in the table. Please enter a different Tote ID.'
 }
 
 export const LiveAnnouncerMessage = {
@@ -409,17 +418,19 @@ export const alertMessage = {
 }
 
 export const showNotificationHeading = {
-  FieldsMissing: 'Fields Missing',
-  InvalidQuantity: 'Invalid Quantity',
-  InvalidItemEntered: 'Invalid Item Entered',
-  InvalidToteEntered: 'Invalid Tote Entered'
+    FieldsMissing: 'Fields Missing',
+    InvalidQuantity: 'Invalid Quantity',
+    InvalidItemEntered: 'Invalid Item Entered',
+    InvalidToteEntered: 'Invalid Tote Entered',
+    TransactionQuantityExceedsAvailable: 'Transaction Quantity Exceeds Available Quantity'
 }
 
 export const showNotificationMessage = {
-  FieldsFill: 'Not all the fields were filled out. Please fill them out',
-  InvalidQuantity: 'An invalid quantity was entered. Please enter a quantity greater than 0',
-  ItemNotExists: 'This item does not exist in Inventory',
-  ToteAlreadyExists: 'This tote id already exists in Open Transactions'
+    FieldsFill: 'Not all the fields were filled out. Please fill them out',
+    InvalidQuantity: 'An invalid quantity was entered. Please enter a quantity greater than 0',
+    ItemNotExists: 'This item does not exist in Inventory',
+    ToteAlreadyExists: 'This tote id already exists in Open Transactions',
+    TransactionQuantityExceedsAvailable: 'Transaction quantity cannot exceed available inventory quantity.'
 }
 
 export const FieldName = {
@@ -574,18 +585,19 @@ export const UniqueConstants = {
 
 }
 export const Style = {
-  w560px: '560px',
-  w100vw: '100vw',
-  w50vw: '50vw',
-  w96vw:'96vw',
-  w480px: '480px',
-  w600px: '600px',
-  w786px: '786px',
-  w402px: '402px',
-  w1080px: '1080px',
-  w990px: '990px',
-  auto:'auto',
-  w56vw: '56vw'
+    w560px: '560px',
+    w100vw: '100vw',
+    w50vw: '50vw',
+    w96vw:'96vw',
+    w480px: '480px',
+    w600px: '600px',
+    w786px: '786px',
+    w402px: '402px',
+    w1080px: '1080px',
+    w990px: '990px',
+    auto:'auto',
+    w56vw: '56vw',
+    zIndexStickyHeader: 200000000
 }
 
 export const FilterColumnName = {
@@ -935,3 +947,7 @@ export const DialogTitles = {
     Cart_Management : 'cart_management',
   }
 
+export const EmergencyOptions = {
+    ProceedWithEmergencyPick:'proceed',
+    Snooze:'snooze'
+}

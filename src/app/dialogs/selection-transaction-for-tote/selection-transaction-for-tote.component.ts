@@ -114,7 +114,7 @@ export class SelectionTransactionForToteComponent implements OnInit {
       this.iInductionManagerApi.BatchByZone(payload).subscribe(
         (res: any) => {
           if (res.isExecuted) {
-            if (!res.data) {
+            if (!res.data || res.data != this.batchID) {
               let dialogRef:any = this.global.OpenDialog(ConfirmationDialogComponent, {
                 height: 'auto',
                 width: Style.w560px,

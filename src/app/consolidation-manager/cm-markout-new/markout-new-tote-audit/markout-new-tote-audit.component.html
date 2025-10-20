@@ -93,7 +93,7 @@
 
                                 <tr class="mat-row " *matNoDataRow data-automation-id="no-data-row">
                                     <td class="mat-cell text-center" [attr.colspan]="displayedColumns.length" data-automation-id="no-data-cell">
-                                        No data matching the filter.
+                                        {{ !toteId ? 'No data found.' : 'No data matching the filter.' }}
                                     </td>
                                 </tr>
                                 <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky:true" data-automation-id="tote-audit-table-header-row"></tr>

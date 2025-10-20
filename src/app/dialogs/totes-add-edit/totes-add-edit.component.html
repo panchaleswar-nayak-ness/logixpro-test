@@ -1,9 +1,3 @@
-    <!-- Tab Group for IM Path -->
-    <mat-tab-group *ngIf="isIMPath" dynamicHeight data-automation-id="tote-manager-tabs">
-      <mat-tab label="Tote" data-automation-id="tote-tab">
-        <mat-card class="mat-elevation-z g-card mb-3 h-100 mt-3"  >
-  <mat-card-content>
-
     <div *ngIf="!isIMPath" class="d-flex justify-content-between align-items-center mb-4">
       <div class="w-48px"></div>
       <h1 class="m-0" mat-dialog-title data-automation-id="totes-dialog-title">Totes - Add, Edit, Delete and Print</h1>
@@ -11,6 +5,12 @@
         <mat-icon class="close-icon">close</mat-icon>
       </button>
     </div>
+
+    <!-- Tab Group for IM Path -->
+    <mat-tab-group *ngIf="isIMPath" dynamicHeight data-automation-id="tote-manager-tabs">
+      <mat-tab label="Tote" data-automation-id="tote-tab">
+        <mat-card class="mat-elevation-z g-card mb-3 h-100 mt-3"  >
+  <mat-card-content>
 
     <h2 *ngIf="isIMPath" class="card-header-title mb-3 d-flex align-items-center" data-automation-id="totes-im-title">
       <div class="mat-icon-wrap me-1 me-lg-3">
@@ -329,12 +329,12 @@
         </ng-scrollbar>
       </div>
 
-      <div class="d-flex justify-content-between align-items-center">
-        <div class="mb-4" (click)="$event.stopPropagation()">
+      <div class="d-flex justify-content-between align-items-center mb-2">
+        <div (click)="$event.stopPropagation()">
           <b data-automation-id="managed-totes-title">Managed Tote IDs</b>
         </div>
 
-        <button [disabled]="isRowAdded" mat-flat-button color="primary" class="add-icon-button mb-2" (click)="addRow()" data-automation-id="add-managed-tote-ids-btn">
+        <button [disabled]="isRowAdded" mat-flat-button color="primary" class="add-icon-button" (click)="addRow()" data-automation-id="add-managed-tote-ids-btn">
           <span class="material-symbols-outlined">
             add
           </span>

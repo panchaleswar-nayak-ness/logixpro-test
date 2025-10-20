@@ -181,7 +181,7 @@
 
             <div class="card br-14 borderless px-0 overflow-auto">
                 <ng-scrollbar track="all" class="mat-table-scrollbar h-260px">
-                    <table class="w-100 table-borderless" id="ShipTransTable" mat-table matSort #MatSort2="matSort" #sort2 
+                    <table class="w-100 table-borderless" data-automation-id="ConfPackSelectTable" id="ShipTransTable" mat-table matSort #MatSort2="matSort" #sort2 
                     (matSortChange)="announceSortChange2($event)" 
                     [dataSource]="transTable" data-automation-id="ConfirmPackingTable">
                         <ng-container matColumnDef="sT_ID">

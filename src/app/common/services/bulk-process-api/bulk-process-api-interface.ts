@@ -1,7 +1,8 @@
 import { ZoneListPayload } from "src/app/bulk-process/preferences/preference.models";
-import { AssignToteToOrderDto, BatchesRequest, BatchesResponse, OrderLineResource, OrderResponse, OrdersRequest, PartialToteIdRequest, PartialToteIdResponse, QuickPickOrdersRequest, RemoveOrderLinesRequest, RemoveOrderLinesResponse, TotesRequest, TotesResponse } from "../../Model/bulk-transactions";
+import { AssignToteToOrderDto, BatchesRequest, BatchesResponse, EmergencyPickOrdersRequest, OrderLineResource, OrderResponse, OrdersRequest, PartialToteIdRequest, PartialToteIdResponse, QuickPickOrdersRequest, RemoveOrderLinesRequest, RemoveOrderLinesResponse, TotesRequest, TotesResponse } from "../../Model/bulk-transactions";
 import { ApiResult } from "../../types/CommonTypes";
 import { Observable } from "rxjs";
+import { PagingRequest } from "../../interface/ccdiscrepancies/PagingRequest";
 
 export interface IBulkProcessApiService {
   bulkPickoOrderBatchToteQty(payload: any);
@@ -10,6 +11,8 @@ export interface IBulkProcessApiService {
   bulkPickOrders(paylaod: OrdersRequest) : Observable<ApiResult<OrderResponse[]>>;
   bulkPickTotes(paylaod: TotesRequest) : Observable<ApiResult<TotesResponse[]>>;
   bulkPickOrdersQuickpick(paylaod: QuickPickOrdersRequest) : Observable<ApiResult<OrderResponse[]>>;
+  getEmergencyPickOrders(paylaod: PagingRequest);
+  getEmergencyOrdersInfo();
   bulkPickOrdersLocationAssignment(paylaod:any);
   bulkPickOrdersCheckLocationAssignment(paylaod:string[]);
   bulkPickOrdersCheckOffCarouselPicks(paylaod:string[]);

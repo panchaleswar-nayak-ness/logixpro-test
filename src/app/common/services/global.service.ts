@@ -289,13 +289,13 @@ export class GlobalService {
   }
 
   async Print(ChooseReport, type = 'lst') {
-    let paylaod: any = {
+    let payload: any = {
       ClientCustomData: ChooseReport,
       repositoryIdOfProject: 'BCAEC8B2-9D16-4ACD-94EC-74932157BF82',
       PrinterReportName: localStorage.getItem('SelectedReportPrinter'),
       PrinterLabelName: localStorage.getItem('SelectedLabelPrinter'),
     };
-    let res: any = await this.iAdminApiService.CommonPrint(paylaod);
+    let res: any = await this.iAdminApiService.CommonPrint(payload);
     if (res.isExecuted) {
       this.ShowToastr(
         ToasterType.Success,
@@ -313,6 +313,29 @@ export class GlobalService {
     }
   }
 
+  async PrintCustomReport(reportFilename) {
+    let payload: any = {
+      reportName: reportFilename,
+      wsid: this.userData.wsid,
+      user: this.userData.userName
+    };
+    let res: any = await this.iAdminApiService.PrintCustomReport(payload);
+    if (res.isExecuted) {
+      this.ShowToastr(
+        ToasterType.Success,
+        'print successfully completed',
+        ToasterTitle.Success
+      );
+      return true;
+    } else {
+      this.ShowToastr(
+        ToasterType.Error,
+        res.body?.data?.error,
+        ToasterTitle.Error
+      );
+      return false;
+    }
+  }
 
 async printReportForSelectedOrders(orderNumbers: string[],reportName:string,isLoader:boolean){
     const payload: PrintOrdersPayload = {
@@ -671,4 +694,19 @@ ShowMultipleToastMessages(type: string, msgs: string[], title?: string) {
   });
 }
 
+
+  /**
+  * get user Auth Token
+  * Get the authentication token from localStorage (same pattern as base-service)
+  */
+  getAuthToken(): string {
+    const { _token } = JSON.parse(localStorage.getItem('user') ?? "{}");
+    return _token || '';
+  }
+
+
+  /** ✅ Close all currently open dialogs */
+  CloseAllDialogs(): void {
+    this.dialog.closeAll();
+  }
 }

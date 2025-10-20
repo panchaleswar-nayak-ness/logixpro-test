@@ -19,7 +19,7 @@ import { IQueryParams } from '../../cm-route-id-management/routeid-list/routeid-
 export class MarkoutNewToteAuditComponent {
 
   @ViewChild(MatSort) sort!: MatSort;
-  private _toteId: number;
+  private _toteId: number | null = null;
 
   constructor(
     public iMarkoutApiService: MarkoutNewApiService,
@@ -30,15 +30,21 @@ export class MarkoutNewToteAuditComponent {
   searchValue: string;
 
   @Input()
-  set toteId(value: number) {
-    if (this._toteId !== value && value !== null && value !== undefined) {
+  set toteId(value: number | null) {
+    if (this._toteId !== value) {
       this._toteId = value;
       this.customPagination.pageIndex = 0;
-      this.getToteAuditData(value);
+      if (value !== null && value !== undefined) {
+        this.getToteAuditData(value);
+      } else {
+        // When no toteId is provided, initialize with empty data to show "No data found" message
+        this.dataSource.data = [];
+        this.customPagination.total = 0;
+      }
     }
   }
 
-  get toteId(): number {
+  get toteId(): number | null {
     return this._toteId;
   }
 
@@ -47,7 +53,9 @@ export class MarkoutNewToteAuditComponent {
 
     this.sort.sortChange.subscribe((sort) => {
       this.customPagination.pageIndex = 0;
-      this.getToteAuditData(this.toteId, sort.active, sort.direction);
+      if (this.toteId) {
+        this.getToteAuditData(this.toteId, sort.active, sort.direction);
+      }
     });
   }
 
@@ -66,7 +74,9 @@ export class MarkoutNewToteAuditComponent {
     const sortColumn = this.sort?.active || '';
     const sortOrder = this.sort?.direction || 'desc';
 
-    this.getToteAuditData(this.toteId, sortColumn, sortOrder);
+    if (this.toteId) {
+      this.getToteAuditData(this.toteId, sortColumn, sortOrder);
+    }
   }
 
   // Updates search column and value based on user input
@@ -135,11 +145,15 @@ export class MarkoutNewToteAuditComponent {
   onClearSearch() {
     this.searchCol = '';
     this.searchValue = '';
-    this.getToteAuditData(this.toteId);
+    if (this.toteId) {
+      this.getToteAuditData(this.toteId);
+    }
   }
 
   onFilterChange() {
-    this.getToteAuditData(this.toteId);
+    if (this.toteId) {
+      this.getToteAuditData(this.toteId);
+    }
     this.customPagination.pageIndex = 0;
   }
 }

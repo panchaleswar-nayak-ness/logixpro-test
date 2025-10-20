@@ -254,6 +254,7 @@ export class ReprocessTransactionComponent implements OnInit {
         if(itemNo){
           this.columnSearch.searchColumn.colDef = Column.ItemNumber;
           this.columnSearch.searchValue = itemNo;
+          this.getContentData();
         }
       })
     );

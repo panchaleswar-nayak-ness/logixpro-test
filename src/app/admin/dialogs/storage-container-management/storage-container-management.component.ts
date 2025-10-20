@@ -11,6 +11,7 @@ import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.ser
 import { GlobalService } from 'src/app/common/services/global.service';
 import { ApiErrorMessages,ConfirmationMessages, DialogConstants, ResponseStrings, storageContainerDisabledFields, StringConditions, Style, ToasterMessages, ToasterTitle, ToasterType } from 'src/app/common/constants/strings.constants';
 import { BinCellLayout, CarouselZone, ContainerTypes, InventoryMap, InventoryRecord,InventoryMapRecordsResponse, StorageContainerLayout, ValidationErrorCodes, ConstraintViolations, InventoryMapRecordsDto} from 'src/app/common/Model/storage-container-management';
+import { InventoryMapRecord } from 'src/app/common/interface/admin/inventory-map-record.interface';
 
 @Component({
   selector: 'app-storage-container-management-modal',
@@ -50,6 +51,7 @@ export class StorageContainerManagementModalComponent implements OnInit, OnDestr
   constraintViolations: ConstraintViolations = {};
   isReadOnlyMode: boolean = false;
   totalRecordsToRemove: number = 0;
+  filteredRecords: InventoryMapRecord[] = []; // Stores the filtered records passed from inventory map component
 
   @ViewChild('zone') zoneSelect!: MatSelect;
   @ViewChild('containerTypeDropdown') containerTypeSelect!: MatSelect;
@@ -57,6 +59,7 @@ export class StorageContainerManagementModalComponent implements OnInit, OnDestr
 
 
   public iAdminApiService: IAdminApiService;
+  storageContainerDisabledFields = storageContainerDisabledFields;
 
   constructor(
     private readonly dialog: MatDialog,
@@ -70,6 +73,7 @@ export class StorageContainerManagementModalComponent implements OnInit, OnDestr
     this.sendToOutboundPort = data?.sendToOutboundPort ?? false;
     this.binId = data?.binId ?? '';
     this.zone = data?.zone ?? '';
+    this.filteredRecords = data?.filteredRecords ?? [];
   }
 
   async ngOnInit(): Promise<void> {
@@ -126,7 +130,7 @@ export class StorageContainerManagementModalComponent implements OnInit, OnDestr
       dedicated: record.dedicated || false,
       cellId: record.cellId || `${record.bin || binId}-${record.row || binId}`,
       location: record.location || `${zone}-${record.row || binId}-${record.bin || binId}`,
-      containerType: record.containerType || 'Unknown',
+      containerType: record.containerType || StringConditions.Unknown,
       cellSize: record.cellSize || '',
       constraintViolations: record.constraintViolations || [],
       hasConstraints: record.hasConstraints || false
@@ -224,10 +228,10 @@ export class StorageContainerManagementModalComponent implements OnInit, OnDestr
     // Fallback to container types array if available
     if (this.scm.containerType && this.containerTypes.length > 0) {
       const containerType = this.containerTypes.find(ct => ct.id === this.scm.containerType);
-      return containerType?.name || 'Unknown';
+      return containerType?.name || StringConditions.Unknown;
     }
     
-    return 'Unknown';
+    return StringConditions.Unknown;
   }
   
   getCellConstraintsTooltip(cellId: string): string {
@@ -316,12 +320,79 @@ export class StorageContainerManagementModalComponent implements OnInit, OnDestr
   private handleStorageBinExitSuccess(result: { isSuccess: boolean, status?: number }) {
     if (result?.isSuccess) {
       this.global.ShowToastr(ToasterType.Success, ToasterMessages.StorageBinExitSuccessful, ToasterTitle.Success);
-      // Close the dialog so the parent component can refresh data
-      this.dialogRef.close(true);
+      // Delete inventory map records after successful storage bin exit
+      this.deleteInventoryMapRecords();
     } else if (!result?.isSuccess && result?.status === 6) {
       this.global.ShowToastr(ToasterType.Error, ToasterMessages.UnableToConnectToServer, ToasterTitle.Error);
     } else {
       this.global.ShowToastr(ToasterType.Error, ToasterMessages.FailedToRequestStorageBinExit, ToasterTitle.Error);
+    }
+  }
+
+  // Delete all inventory map records after successful storage bin exit
+  private async deleteInventoryMapRecords(): Promise<void> {
+    if (this.filteredRecords.length === 0) {
+      this.dialogRef.close(true);
+      return;
+    }
+
+    // Filter records that have invMapID (the actual field name from inventory map API)
+    const recordsToDelete = this.filteredRecords.filter(record => record.invMapID);
+    
+    if (recordsToDelete.length === 0) {
+      this.dialogRef.close(true);
+      return;
+    }
+
+    try {
+      // Create an array of delete API calls
+      const deletePromises = recordsToDelete.map(async (record) => {
+        try {
+          const result = await this.iAdminApiService.deleteInventoryMap({
+            inventoryMapID: record.invMapID
+          }).toPromise();
+          return { isExecuted: true, result };
+        } catch (error) {
+          return { isExecuted: false, error };
+        }
+      });
+
+      // Execute all delete calls in parallel
+      const results = await Promise.all(deletePromises);
+      
+      const successCount = results.filter(result => result.isExecuted).length;
+      const failureCount = results.length - successCount;
+
+      if (failureCount === 0) {
+        this.global.ShowToastr(
+          ToasterType.Success,
+          ToasterMessages.InventoryMapRecordsDeletedSuccessfully(successCount),
+          ToasterTitle.Success
+        );
+      } else if (successCount > 0) {
+        this.global.ShowToastr(
+          ToasterType.Info,
+          ToasterMessages.InventoryMapRecordsPartiallyDeleted(successCount, failureCount),
+          ToasterTitle.Warning
+        );
+      } else {
+        this.global.ShowToastr(
+          ToasterType.Error,
+          ToasterMessages.InventoryMapRecordsDeleteFailed,
+          ToasterTitle.Error
+        );
+      }
+
+      // Close the dialog to refresh the parent grid
+      this.dialogRef.close(true);
+    } catch (error) {
+      this.global.ShowToastr(
+        ToasterType.Error,
+        ToasterMessages.ErrorDeletingInventoryMapRecords,
+        ToasterTitle.Error
+      );
+      // Still close the dialog even on error
+      this.dialogRef.close(true);
     }
   }
 
@@ -577,6 +648,10 @@ export class StorageContainerManagementModalComponent implements OnInit, OnDestr
   checkDisabled(field: string): boolean {
     // In read-only mode (sendToOutboundPort), disable all input fields except the proceed button
     if (this.isReadOnlyMode) {
+      // Disable proceed button if containerType is "Unknown"
+      if (field === storageContainerDisabledFields.SENDTOOUTBOUNDPORT) {
+        return this.getContainerTypeName() === StringConditions.Unknown;
+      }
       return field !== storageContainerDisabledFields.SENDTOOUTBOUNDPORT;
     }
     

@@ -81,7 +81,7 @@
           </div>
           <div class="card br-14 table-responsive borderless">
             <ng-scrollbar class="mat-table-scrollbar scroll-bar" track="all">
-              <table mat-table [dataSource]="orderLines" class="custom-table table-fix">
+              <table mat-table [dataSource]="orderLines" class="custom-table table-fix" data-automation-id="verify-bulk-table">
 
                 <ng-container matColumnDef="OrderNo">
                   <th mat-header-cell *matHeaderCellDef data-automation-id="table-header-Order No">Order No.</th>
@@ -163,7 +163,7 @@
                     <mat-menu #appMenu="matMenu">
                       <button mat-menu-item
                         matTooltip="Press to Print a Off-Carousel {{bulkTransactionType}} Item Label for the currently selected record."
-                        (click)="printTote(i)" data-automation-id="print-single-label-menu-item">
+                        (click)="printSingleToteLabel(i)" data-automation-id="print-single-label-menu-item">
                         Print Single Label</button>
                       <button mat-menu-item matTooltip="Press to split this transaction into more than one tote."
                         *ngIf="['Put Away','Count'].indexOf(bulkTransactionType) < 0" (click)="fullTote(element,i)"

@@ -82,5 +82,5 @@
 
 <mat-dialog-actions>
   <button *ngIf="!isReadOnlyMode" id="saveBtn" type="submit" mat-flat-button class="btn-lg flex-grow-1" color="primary" [disabled]="checkDisabled('save')" (click)="save()" data-automation-id="scm-save-btn">Save</button>
-  <button *ngIf="isReadOnlyMode" type="submit" mat-flat-button class="btn-lg flex-grow-1" color="primary" (click)="proceedToRemovalConfirmation()" data-automation-id="scm-send-outbound-btn">Proceed</button>
+  <button *ngIf="isReadOnlyMode" type="submit" mat-flat-button class="btn-lg flex-grow-1" color="primary" [disabled]="checkDisabled(storageContainerDisabledFields.SENDTOOUTBOUNDPORT)" (click)="proceedToRemovalConfirmation()" data-automation-id="scm-send-outbound-btn">Proceed</button>
 </mat-dialog-actions>

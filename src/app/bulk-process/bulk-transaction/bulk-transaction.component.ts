@@ -3,12 +3,12 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { BmToteidEntryComponent } from 'src/app/admin/dialogs/bm-toteid-entry/bm-toteid-entry.component';
 import { ConfirmationDialogComponent } from 'src/app/admin/dialogs/confirmation-dialog/confirmation-dialog.component';
-import { BatchesRequest, BatchesResponse, BulkPreferences, BulkZone, CreateBatchRequest, OrderBatchToteQtyResponse, OrderLineResource, OrderResponse, OrdersRequest, QuickPickOrdersRequest, TotesRequest, TotesResponse } from 'src/app/common/Model/bulk-transactions';
+import { BatchesRequest, BatchesResponse, BulkPreferences, BulkZone, CreateBatchRequest, EmergencyPickOrdersRequest, OrderBatchToteQtyResponse, OrderLineResource, OrderResponse, OrdersRequest, QuickPickOrdersRequest, TotesRequest, TotesResponse } from 'src/app/common/Model/bulk-transactions';
 import { ConfirmationHeadings, ConfirmationMessages, DialogConstants, localStorageKeys, PrintReports, ResponseStrings, Style, ToasterMessages, ToasterType, ToasterTitle, ConsoleErrorMessages} from 'src/app/common/constants/strings.constants';
 import { IBulkProcessApiService } from 'src/app/common/services/bulk-process-api/bulk-process-api-interface';
 import { BulkProcessApiService } from 'src/app/common/services/bulk-process-api/bulk-process-api.service';
 import { GlobalService } from 'src/app/common/services/global.service';
-import { forkJoin, take } from "rxjs";
+import { forkJoin, Subject, take, takeUntil } from "rxjs";
 import { Observable } from "rxjs/internal/Observable";
 import { IAdminApiService } from 'src/app/common/services/admin-api/admin-api-interface';
 import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.service';
@@ -20,6 +20,9 @@ import { PrintApiService } from 'src/app/common/services/print-api/print-api.ser
 import { IPrintApiService } from 'src/app/common/services/print-api/print-api-interface';
 import { BmSlaperLabelSplitEntryComponent } from 'src/app/admin/dialogs/bm-slaper-label-split-entry/bm-slaper-label-split-entry.component';
 import { LocationZone } from 'src/app/common/interface/admin/location-zones.interface';
+import { EmergencyAlertService } from 'src/app/common/services/emergency-pick/emergency-alert-service';
+import { PagingRequest } from 'src/app/common/interface/ccdiscrepancies/PagingRequest';
+import { SharedService } from 'src/app/common/services/shared.service';
 
 @Component({
   selector: 'app-bulk-transaction',
@@ -47,6 +50,8 @@ export class BulkTransactionComponent implements OnInit {
   allowQuickPick: boolean = false;
   defaultQuickPick: boolean = false;
   isQuickPick: boolean = false;
+  isEmergencyPick: boolean = false;
+  hasEmergencyPick: boolean = false;
   isZoneSelected: boolean = false;
   generalSetupInfo: GeneralSetup;
   isBatchIdGenerationEnabled:boolean=false;
@@ -56,13 +61,16 @@ export class BulkTransactionComponent implements OnInit {
   public iPrintApiService: IPrintApiService;
   // isViewLoaded Ensures that required data for both Quick Pick and non-Quick Pick flows is loaded before rendering UI components
   isViewLoaded:boolean = false;
+  private destroy$ = new Subject<void>();
   constructor(
     public bulkProcessApiService: BulkProcessApiService,
     public adminApiService: AdminApiService,
     public printApiService: PrintApiService,
     public readonly global: GlobalService,
     public readonly route: Router,
-    private readonly spinnerService: SpinnerService
+    private readonly spinnerService: SpinnerService,
+    private readonly emergencyAlertService: EmergencyAlertService,
+    private sharedService: SharedService
   ) {
     this.iBulkProcessApiService = bulkProcessApiService;
     this.iAdminApiService = adminApiService;
@@ -71,8 +79,30 @@ export class BulkTransactionComponent implements OnInit {
     this.bulkTransactionTypeAllCaps = this.global.insertSpaceInCamelOrPascal(this.bulkTransactionType);
   }
 
-  ngOnInit(): void {
+  async ngOnInit() {
+    await this.loadData();
+    await this.onReload();
+  }
+
+  async onReload() {
+    if (this.bulkTransactionType === BulkTransactionType.PICK) {
+      this.sharedService.reloadBulkPick$
+        .pipe(takeUntil(this.destroy$))
+        .subscribe(async () => {
+          await this.loadData();
+          this.verifyBulks = false;
+      });
+    }
+  }
+
+  ngOnDestroy() {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
+
+  async loadData(){
     if (this.bulkTransactionType == BulkTransactionType.PICK) {
+      await this.getEmergencyOrdersInfo();
       this.getGeneralSetupInfo();
     }
     else {
@@ -98,7 +128,7 @@ export class BulkTransactionComponent implements OnInit {
           }
           this.isQuickPick = this.defaultQuickPick;
           this.isViewLoaded = true;
-          this.quickPickViewChange();
+          this.pickViewChange();
         }
       },
       error: (err) => {
@@ -107,8 +137,28 @@ export class BulkTransactionComponent implements OnInit {
     });
 }
 
-  quickPickViewChange() {
-    this.isQuickPick ? this.quickPickOrders() : this.bulkOrderBatchToteQty();
+  pickViewChange() {
+    this.isEmergencyPick ? this.emergencyPickOrders() : this.isQuickPick ? this.quickPickOrders() : this.bulkOrderBatchToteQty();
+  }
+
+  emergencyPickOrders() {
+    let payload: PagingRequest = {
+      selectedPage:0,
+      pageSize: 500000
+    };
+    this.iBulkProcessApiService.getEmergencyPickOrders(payload).subscribe((res: ApiResult<OrderResponse[]>) => {
+      this.selectedOrders = [];
+      this.status.batchCount = 0;
+      this.status.toteCount = 0;
+      this.status.orderCount = 0;
+      this.status.orderLinesCount = 0;
+      this.orders = res.value ?? [];
+      this.originalOrders = res.value ?? [];
+      this.status.orderCount = res.value?.length ?? 0;
+      this.view = BulkTransactionView.ORDER;
+      this.displayedColumns = ORDER_DISPLAYED_COLUMNS;
+      this.selectedDisplayedColumns = SELECTED_ORDER_DISPLAYED_COLUMNS;
+    })
   }
 
   quickPickOrders() {
@@ -312,7 +362,7 @@ export class BulkTransactionComponent implements OnInit {
   quickPickToNonQuickPick(){
     this.selectedOrders = [];
     this.isQuickPick = false;
-    this.quickPickViewChange();
+    this.pickViewChange();
   }
 
 
@@ -465,9 +515,10 @@ export class BulkTransactionComponent implements OnInit {
     }
   }
 
-  changeVisibiltyVerifyBulk(event: boolean) {
+  async changeVisibiltyVerifyBulk(event: boolean) {
     if (event) {
       if (this.bulkTransactionType == BulkTransactionType.PICK) {
+        await this.getEmergencyOrdersInfo();
         this.getGeneralSetupInfo();
       }
       else {
@@ -781,5 +832,28 @@ export class BulkTransactionComponent implements OnInit {
     });
   }
 
+  async getEmergencyOrdersInfo() {
+    try {
+      const res = await this.iBulkProcessApiService.getEmergencyOrdersInfo();
+      if(res?.body?.isSuccess){
+        const emergencyInfo = res?.body?.value;
+        this.hasEmergencyPick = emergencyInfo.hasPendingForWorkstation;
+        this.isEmergencyPick = emergencyInfo.hasPendingForWorkstation;
+        if(this.isEmergencyPick){
+          this.emergencyAlertService.snooze30s();
+        }
+      }
+    } catch (error) {
+      this.global.ShowToastr(ToasterType.Error, ToasterMessages.SomethingWentWrong, ToasterTitle.Error);
+    }
+  }
+
+  get showVerifyBulkButton(): boolean {
+    return !this.isQuickPick || this.isEmergencyPick;
+  }
+
+  get showQuickPickButton(): boolean {
+    return this.isQuickPick && !this.isEmergencyPick;
+  }
 }
 

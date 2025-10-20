@@ -4,7 +4,7 @@ import { of } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
 import { BaseService } from './base-service.service';
 import { AuthService } from '../init/auth.service';
-import { AssignToteToOrderDto, BatchesRequest, NextToteId, OrderLineResource, OrdersRequest, PartialToteIdRequest, PartialToteIdResponse, RemoveOrderLinesRequest, RemoveOrderLinesResponse, TotesRequest } from '../Model/bulk-transactions';
+import { AssignToteToOrderDto, BatchesRequest, EmergencyPickOrdersRequest, NextToteId, OrderLineResource, OrderResponse, OrdersRequest, PartialToteIdRequest, PartialToteIdResponse, RemoveOrderLinesRequest, RemoveOrderLinesResponse, TotesRequest } from '../Model/bulk-transactions';
 import {
   MarkoutBlossomTotenRequest,
   MarkoutCompleteTransactionRequest,
@@ -2003,6 +2003,10 @@ public updateEmergencyReprocessTrans(payload: UpdateEmergencyRequest): Observabl
     return await this.ApiBase.GetAsync(`/Admin/reports/print`, body);
   }
 
+  public async PrintCustomReport(body) {
+    return await this.ApiBase.PostAsync(`/print/printcustomreport`, body);
+  }
+
   public GetWorkStatPrinters(): Observable<any> {
     return this.ApiBase.Get(`/GlobalConfig/WorkStatPrinters`);
   }
@@ -2033,6 +2037,14 @@ public updateEmergencyReprocessTrans(payload: UpdateEmergencyRequest): Observabl
 
   public bulkPickOrdersQuickpick(body: any): Observable<any> {
     return this.ApiBase.Get('/orders/quickpick', body);
+  }
+
+  public getEmergencyPickOrders(body: PagingRequest) {
+    return this.ApiBase.Post('/orders/emergencypick', body);
+  }
+
+  public async getEmergencyOrdersInfo() {
+    return await this.ApiBase.GetAsync('/orders/emergencypickinfo');
   }
 
   public async bulkPickOrdersLocationAssignment(body: string[]) {
@@ -2528,7 +2540,7 @@ public storageBinsExit(binId: string, zone: string): Observable<ExitOk> {
 
   public async DeleteComparedItems(ids: string[]): Promise<ApiResult<DeleteCompareItemsResponse>> {
     try {
-      const response = await this.ApiBase.BulkDeleteAsync('/inventorycompare/DeleteComparedItems', ids);
+      const response = await this.ApiBase.PatchAsync('/inventorycompare/DeleteComparedItems', ids);
       if (response.status === 200 && response.body) {
         return response.body as unknown as ApiResult<DeleteCompareItemsResponse>;
       }

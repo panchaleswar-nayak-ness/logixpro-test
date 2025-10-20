@@ -172,6 +172,8 @@ export class ProcessPutAwaysComponent implements OnInit {
     this.iAdminApiService = adminApiService;
     this.commonApiService=CommonApiService;
     this.iInductionManagerApi=inductionManagerApi;
+    // Expose sticky header z-index from constants to CSS via a CSS variable
+    document.documentElement.style.setProperty('--z-index-sticky-header', String(Style.zIndexStickyHeader));
   }
 
   ngAfterViewInit() {
@@ -210,10 +212,7 @@ export class ProcessPutAwaysComponent implements OnInit {
   }
 
   callFunBatchSetup(event:any){
-    if(event.funName == "batchIdKeyup"){
-      this.batchIdKeyup();
-    }
-    else if (event.funName == StringConditions.clear){
+    if (event.funName == StringConditions.clear){
       this.clear();
     }
     else if (event.funName == "getRow"){
@@ -259,10 +258,6 @@ export class ProcessPutAwaysComponent implements OnInit {
     else if (event.funName == "assignToteAtPosition"){
       this.assignToteAtPosition(event.funParam1,event.funParam2,event.funParam3);
     }
-  }
-
-  batchIdKeyup(){
-    this.getRow();
   }
 
   @HostListener('window:beforeunload', [UniqueConstants.event])
@@ -911,10 +906,24 @@ async clearBatchData(){
   }
 
   updateToteID($event) {
+    const enteredToteID = $event.target.value.trim();
+    
+    // Check if the tote ID already exists in the table
+    const isDuplicate = this.ELEMENT_DATA.some(element => 
+      element.toteid && element.toteid.toString().trim() === enteredToteID
+    );
+    
+    if (isDuplicate) {
+      this.global.ShowToastr(ToasterType.Error, ToasterMessages.ToteIDAlreadyExists, ToasterTitle.Error);
+      this.toteID = '';
+      return;
+    }
+    
+    // Populate the first empty position with the tote ID
     for (let i = 0; i < this.pickBatchQuantity; i++) {
       if( this.ELEMENT_DATA[i]){
       if (this.ELEMENT_DATA[i].toteid == '') {
-        this.ELEMENT_DATA[i].toteid = $event.target.value;
+        this.ELEMENT_DATA[i].toteid = enteredToteID;
         this.toteID = '';
         break;
       }

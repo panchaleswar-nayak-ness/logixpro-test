@@ -14,13 +14,14 @@
 	<ItemGroup>
 		<PackageReference Include="WixToolset.Heat" Version="4.0.4" />
 		<PackageReference Include="WixToolset.UI.wixext" Version="4.0.4" />
+		<PackageReference Include="WixToolset.Util.wixext" Version="4.0.4" />
 	</ItemGroup>
 	<Target Name="PublishApplication" BeforeTargets="BeforeBuild">
 		<Exec Command="dir" />
 		<Message Text="Deleting Publish" Importance="high" />
 		<Exec Command="rd /s /q ..\LogixProServer\Publish\" />
 		<Message Text="Publishing LogixProServer" Importance="high" />
-		<Exec Command="dotnet restore ..\LogixProServer\LogixProServer.csproj -s https://peaklogix.jfrog.io/artifactory/api/nuget/v3/peaklogix-nuget-dev-virtual" />
+		<Exec Command="dotnet restore ..\LogixProServer\LogixProServer.csproj" />
 		<Exec Command="dotnet publish ..\LogixProServer\LogixProServer.csproj /p:ExecutableName=LogixPro;PublishSingleFile=true;SelfContained=true;Configuration=Release;PublishProfile=FolderProfile;DebugType=none;SiteName=$(SiteName)" Condition="$(AssetsPackageFile) == ''"/>
 		<Exec Command="dotnet publish ..\LogixProServer\LogixProServer.csproj /p:ExecutableName=LogixPro;PublishSingleFile=true;SelfContained=true;Configuration=Release;PublishProfile=FolderProfile;DebugType=none;SiteName=$(SiteName);AssetsPackageFile=$(AssetsPackageFile)" Condition="$(AssetsPackageFile) != ''"/>
 		<Message Text="Finished Publishing" Importance="high" />

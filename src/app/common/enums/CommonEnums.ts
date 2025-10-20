@@ -150,3 +150,16 @@ export enum PaginationData   {
     EndRow = 10,
     Draw = 0,
 }
+export enum ArrowKeys   {
+    Right = 'ArrowRight',
+    Left = 'ArrowLeft',
+    Down = 'ArrowDown',
+    Up = 'ArrowUp',
+  }
+
+export enum ZoneFilterType {
+  All = 'All',
+  Carousel = 'Carousel',
+  CartonFlow = 'CartonFlow',
+  Bulk = 'Bulk'
+}

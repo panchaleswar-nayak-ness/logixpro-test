@@ -4,6 +4,8 @@ import { BroadcastService } from './common/init/broadcast.service';
 import {  UniqueConstants } from 'src/app/common/constants/strings.constants';
 import { LocalStorageService } from './common/services/LocalStorage.service';
 import { Router } from '@angular/router';
+import { EmergencyAlertService } from './common/services/emergency-pick/emergency-alert-service';
+import { AuthService } from './common/init/auth.service';
 
 @Component({
   selector: 'app-root',
@@ -17,7 +19,9 @@ export class AppComponent implements OnInit {
     private readonly browserCloseService: BrowserCloseService,
     private readonly broadCast:BroadcastService,
     private readonly localstorageService:LocalStorageService,
-    private readonly router: Router
+    private readonly router: Router,
+    private alerts: EmergencyAlertService,
+    private authService: AuthService
   ) {}
 
   @HostListener('window:storage', [UniqueConstants.event])
@@ -41,5 +45,8 @@ export class AppComponent implements OnInit {
   ngOnInit() {
     this.broadCast.checkLastTab(() => {});
     window.addEventListener('beforeunload', () => this.broadCast.sendTabClosedMessage());
+    if(this.authService.IsloggedIn()){
+      this.alerts.start();
+    }
   }
 }

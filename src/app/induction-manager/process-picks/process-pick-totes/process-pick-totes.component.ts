@@ -1,5 +1,5 @@
 import { SelectionModel } from '@angular/cdk/collections';
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output, ViewChildren, QueryList, ElementRef } from '@angular/core';
 import { MatSelect } from '@angular/material/select';
 import { Router } from '@angular/router';
 import { StringConditions, ToasterMessages, ToasterTitle, ToasterType ,UniqueConstants} from 'src/app/common/constants/strings.constants';
@@ -23,6 +23,7 @@ export class ProcessPickTotesComponent {
   @Input() imPreferences: any;
   @Input() useInZonePickScreen: any;
   @Input() batchID: any;
+  @ViewChildren('toteIdInput') toteIdInputs!: QueryList<ElementRef>;
   selection = new SelectionModel<any>(true, []);
   public iinductionManagerApi: IInductionManagerApiService;
   displayedColumns: string[] = [UniqueConstants.position, 'toteid', 'orderno', UniqueConstants.Priority, 'other'];
@@ -130,6 +131,35 @@ export class ProcessPickTotesComponent {
         this.printApiService.ProcessPickPrintPickItemLabel(positionList, toteList, orderNumberList, this.batchID);
       } else {
         window.open(`/#/report-view?file=FileName:PrintPrevIMPickItemLabel|Positions:${positionList}|ToteIDs:${toteList}|OrderNums:${orderNumberList}|BatchID:${this.batchID}|WSID:${this.userData.wsid}`, UniqueConstants._blank, 'width=' + screen.width + ',height=' + screen.height + ',toolbar=0,menubar=0,location=0,status=1,scrollbars=1,resizable=1,left=0,top=0')
+      }
+    }
+  }
+
+  onToteIdEnter(index: number) {
+    const element = this.TOTE_SETUP[index];
+    
+    // Check if the current tote ID is empty
+    if (!element.toteID || element.toteID.trim() === '') {
+      return;
+    }
+
+    // Check for duplicate tote ID
+    let isDuplicate = false;
+    for (let i = 0; i < this.TOTE_SETUP.length; i++) {
+      if (i !== index && this.TOTE_SETUP[i].toteID === element.toteID) {
+        element.toteID = "";
+        this.global.ShowToastr(ToasterType.Error, ToasterMessages.ToteIdAlreadyInBatch, ToasterTitle.Error);
+        isDuplicate = true;
+        break;
+      }
+    }
+
+    // Only move to next input if current tote ID is valid (not empty and not duplicate)
+    if (!isDuplicate) {
+      const inputsArray = this.toteIdInputs.toArray();
+      const nextIndex = index + 1;
+      if (nextIndex < inputsArray.length) {
+        inputsArray[nextIndex].nativeElement.focus();
       }
     }
   }

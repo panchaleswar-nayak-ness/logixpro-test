@@ -350,6 +350,7 @@ export class OpenTransactionOnHoldComponent implements OnInit, AfterViewInit {
           this.columnSearch.searchColumn.colDef = Column.ItemNumber;
           this.columnSearch.searchValue = itemNo;
           this.filterString = this.filterService.onContextMenuCommand(this.columnSearch.searchValue, this.columnSearch.searchColumn.colDef , "equals to", "string");
+          this.getContentData();
         }
       })
     );

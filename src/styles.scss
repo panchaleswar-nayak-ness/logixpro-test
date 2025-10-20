@@ -2234,19 +2234,27 @@ button.default-btn {
 
 .custom-scroll.mat-autocomplete-panel {
   max-height: 350px !important;
-
+  position: relative;
+  &.card{
+    border-radius: 4px;
+    .card-header{
+      border-radius: 0px;
+    }
+  }
   &::-webkit-scrollbar {
     width: 8px;
+    border-radius: 4px;
+    background: var(--clr-table-header);
   }
 
   &::-webkit-scrollbar-track {
     border-radius: 4px;
-    background-color: var(--clr-pure-white);
+    background-color: transparent; 
   }
 
   &::-webkit-scrollbar-thumb {
     border-radius: 4px;
-    background-color: var(--clr-tertiary-50);
+    background-color: var(--clr-chrome-600);
   }
 }
 

@@ -104,7 +104,7 @@ export class AdminComponent implements OnInit {
   inventoryDetail = new FormGroup({
     item: new FormControl({ value: '', disabled: true }),
     description: new FormControl({ value: '', disabled: true }),
-    supplierNo: new FormControl({ value: '', disabled: true }),
+    supplierName: new FormControl({ value: '', disabled: true }),
     minRTSReelQty: new FormControl({ value: '', disabled: true }),
     primaryPickZone: new FormControl({ value: '', disabled: true }),
     secondaryPickZone: new FormControl({ value: '', disabled: true }),
@@ -215,7 +215,7 @@ export class AdminComponent implements OnInit {
           const data = res.data;
           this.inventoryDetail.get(UniqueConstants.item)?.setValue(data?.itemNumber);
           this.inventoryDetail.get(UniqueConstants.Description)?.setValue(data?.description);
-          this.inventoryDetail.get("supplierNo")?.setValue(data?.supplierItemID);
+          this.inventoryDetail.get("supplierName")?.setValue(data?.supplierName);
           this.inventoryDetail.get("minRTSReelQty")?.setValue(data?.minimumRTSReelQuantity);
           this.inventoryDetail.get("primaryPickZone")?.setValue(data?.primaryPickZone);
           this.inventoryDetail.get("secondaryPickZone")?.setValue(data?.secondaryPickZone);

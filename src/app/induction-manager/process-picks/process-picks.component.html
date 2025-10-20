@@ -47,7 +47,7 @@
             </div>
             <div class="col-xxl-8" *ngIf="!useInZonePickScreen">
                 <div class="card p-3">
-                    <mat-radio-group color="primary" class="d-block d-xl-flex" name="radioOpt1" [(ngModel)]="pickType">
+                    <mat-radio-group color="primary" class="d-block d-xl-flex" name="radioOpt1" [(ngModel)]="pickType" (change)="onPickTypeChange()">
                         <div class="d-flex w-100 pe-2 align-items-center mb-3 mb-xl-0">
                             <mat-radio-button class=" custom-horizontal-radio" value="MixedZones" data-automation-id="radio-mixedzones"></mat-radio-button>
                             <mat-form-field class="custom-form-field w-100" appearance="outline">
@@ -67,7 +67,7 @@
                         <div class="d-flex w-100 pe-2 align-items-center mb-3 mb-xl-0">
                             <mat-radio-button class=" custom-horizontal-radio" value="Carousel" data-automation-id="radio-carousel"></mat-radio-button>
                             <mat-form-field class="custom-form-field w-100" appearance="outline">
-                                <mat-label data-automation-id="carousel-label">Carousel</mat-label>
+                                <mat-label data-automation-id="carousel-label">{{this.carouselFieldName || 'Carousel'}}</mat-label>
                                 <input (keydown.shift.enter)="$event.preventDefault()" matInput type="text"
                                 value="{{countInfo?.carousel}}" disabled="true" [attr.data-automation-id]="'carousel-input-' + (countInfo?.carousel || '')">
                             </mat-form-field>

@@ -4,8 +4,11 @@ import {
   ViewChild,
   Inject,
   ElementRef,
+  AfterViewInit,
+  OnDestroy,
 } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { FocusMonitor } from '@angular/cdk/a11y';
 
 import { takeUntil } from 'rxjs/internal/operators/takeUntil';
 import { Subject } from 'rxjs/internal/Subject';
@@ -20,14 +23,20 @@ import { ICommonApi } from 'src/app/common/services/common-api/common-api-interf
 import { CommonApiService } from 'src/app/common/services/common-api/common-api.service';
 import { GlobalService } from 'src/app/common/services/global.service';
 import {  ToasterTitle ,ResponseStrings,ToasterType,KeyboardKeys,DialogConstants,Style} from 'src/app/common/constants/strings.constants';
+import { IAdminApiService } from 'src/app/common/services/admin-api/admin-api-interface';
+import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.service';
+import { LocationZone } from 'src/app/common/interface/admin/location-zones.interface';
+import { ApiResponse } from 'src/app/common/types/CommonTypes';
+import { ZoneFilterType } from 'src/app/common/enums/CommonEnums';
 
 @Component({
   selector: 'app-workstation-zones',
   templateUrl: './workstation-zones.component.html',
   styleUrls: ['./workstation-zones.component.scss'],
 })
-export class WorkstationZonesComponent implements OnInit {
+export class WorkstationZonesComponent implements OnInit, AfterViewInit, OnDestroy {
   @ViewChild('fieldFocus') fieldFocus: ElementRef;
+  @ViewChild('addZoneInput') addZoneInput: ElementRef;
 
   public workstationZones: any[] = [];
   onDestroy$: Subject<boolean> = new Subject();
@@ -37,6 +46,11 @@ export class WorkstationZonesComponent implements OnInit {
   public zones: any[] = [];
   @ViewChild('btnSave') button;
   public iInductionManagerApi: IInductionManagerApiService;
+  public iAdminApiService: IAdminApiService;
+
+  locationZones: LocationZone[] = [];
+  activeFilters: Set<ZoneFilterType> = new Set([ZoneFilterType.All]);
+  ZoneFilterType = ZoneFilterType; // Expose enum to template
 
   @ViewChild('searchauto', { static: false })
   autocompleteOpened: MatAutocomplete;
@@ -54,11 +68,14 @@ export class WorkstationZonesComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data: any,
     private authService: AuthService,
     public inductionManagerApi: InductionManagerApiService,
+    private adminApiService: AdminApiService,
     public dialogRef: MatDialogRef<any>,
-    private global: GlobalService
+    private global: GlobalService,
+    private focusMonitor: FocusMonitor
   ) {
     this.iCommonAPI = commonAPI;
     this.iInductionManagerApi = inductionManagerApi;
+    this.iAdminApiService = adminApiService;
   }
 
   public iCommonAPI: ICommonApi;
@@ -66,10 +83,12 @@ export class WorkstationZonesComponent implements OnInit {
   ngOnInit(): void {
     this.userData = this.authService.userData();
     this.getWorkstationZones();
-    this.getAllZoneList();
+    this.getLocationZones();
   }
   ngAfterViewInit(): void {
-    this.fieldFocus?.nativeElement.focus();
+    if (this.addZoneInput) {
+      this.focusMonitor.focusVia(this.addZoneInput, 'program');
+    }
     console.log(this.zoneSelectOptions);
     this.zoneSelectOptions = this.zones;
   }
@@ -174,6 +193,97 @@ export class WorkstationZonesComponent implements OnInit {
         console.log('LocationZonesSelect', res.responseMessage);
       }
     });
+  }
+
+  getLocationZones() {
+    this.iAdminApiService.LocationZone().subscribe((res : ApiResponse<LocationZone[]>) => {
+      if (res.isExecuted && res.data) {
+        this.locationZones = res.data;
+        this.zones = [];
+        res.data.forEach((zone: LocationZone, i) => {          
+          this.zones.push(zone.zone);
+        });
+        this.updateZoneSelectOptions(); 
+        this.toggleFilter(ZoneFilterType.Carousel, true);
+        this.toggleFilter(ZoneFilterType.CartonFlow, true);
+      } else {
+        this.global.ShowToastr(ToasterType.Error, this.global.globalErrorMsg(), ToasterTitle.Error);
+        console.log('LocationZone', res.responseMessage);
+      }
+    });
+  }
+
+  toggleFilter(filterType: ZoneFilterType, isChecked: boolean): void {
+    if (filterType === ZoneFilterType.All) {
+      if (isChecked) {
+        this.activeFilters.clear();
+        this.activeFilters.add(ZoneFilterType.All);
+      } else {
+        this.activeFilters.delete(ZoneFilterType.All);
+      }
+    } else {
+      this.activeFilters.delete(ZoneFilterType.All);
+      
+      if (isChecked) {
+        this.activeFilters.add(filterType);
+      } else {
+        this.activeFilters.delete(filterType);
+      }
+    }
+    
+    this.applyFilters();
+  }
+
+  isFilterActive(filterType: ZoneFilterType): boolean {
+    return this.activeFilters.has(filterType);
+  }
+
+  private applyFilters(): void {
+    if (this.activeFilters.size === 0) {
+      // No filters active, show empty list
+      this.zones = [];
+    } else if (this.activeFilters.has(ZoneFilterType.All)) {
+      this.zones = this.locationZones.map(zone => zone.zone);
+    } else {
+      this.zones = this.locationZones
+        .filter(zone => this.matchesAnyActiveFilter(zone))
+        .map(zone => zone.zone);
+    }
+    
+    this.updateZoneSelectOptions();
+  }
+
+  private matchesAnyActiveFilter(zone: LocationZone): boolean {
+    for (const filterType of this.activeFilters) {
+      if (this.matchesFilterType(zone, filterType)) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  private matchesFilterType(zone: LocationZone, filterType: ZoneFilterType): boolean {
+    switch (filterType) {
+      case ZoneFilterType.All:
+        return true;
+      case ZoneFilterType.Carousel:
+        return zone.carousel || zone.includeCFCarouselPick;
+      case ZoneFilterType.CartonFlow:
+        return zone.cartonFlow;
+      case ZoneFilterType.Bulk:
+        return !zone.carousel && !zone.includeCFCarouselPick && !zone.cartonFlow;
+      default:
+        return false;
+    }
+  }
+
+  updateZoneSelectOptions() {
+    this.zoneSelectOptions = this.zones.filter(
+      (x: any) =>
+        this.workstationZones.filter(
+          (y: any) => y.zone.toLowerCase() == x.toLowerCase()
+        ).length == 0
+    );
   }
 
   addVLRow() {
@@ -292,5 +402,13 @@ export class WorkstationZonesComponent implements OnInit {
 
   closeBatchDialog() {
     this.dialogRef.close(this.workstationZones);
+  }
+
+  ngOnDestroy(): void {
+    this.onDestroy$.next(true);
+    this.onDestroy$.complete();
+    if (this.addZoneInput) {
+      this.focusMonitor.stopMonitoring(this.addZoneInput);
+    }
   }
 }

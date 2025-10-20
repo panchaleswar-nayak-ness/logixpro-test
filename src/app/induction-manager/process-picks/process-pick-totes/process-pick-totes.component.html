@@ -42,8 +42,8 @@
                         <td mat-cell *matCellDef="let element; let i = index;" [attr.data-automation-id]="'table-data-tote-id-' + i ">
                             <div class="pe-2">
                                 <mat-form-field class="custom-form-field w-100" appearance="outline">
-                                    <input matInput type="text" #specialFeature maxlength="255"
-                                        [(ngModel)]="element.toteID" (focusout)="checkDuplicateTote(element, i)" [attr.data-automation-id]="'tote-id-input-' + i">
+                                    <input matInput type="text" #toteIdInput maxlength="255"
+                                        [(ngModel)]="element.toteID" (focusout)="checkDuplicateTote(element, i)" (keydown.enter)="onToteIdEnter(i)" [attr.data-automation-id]="'tote-id-input-' + i">
                                 </mat-form-field>
                             </div>
                         </td>
@@ -86,7 +86,7 @@
                                     <button type="button" mat-menu-item (click)="onViewOrder(element)" [attr.data-automation-id]="'row-action-' + i">
                                         <b class="text-tertiary-900">View Order</b>
                                     </button>
-                                    <button type="button" mat-menu-item (click)="clearOrderNumber(i)" [attr.data-automation-id]="'row-action-' + i">Clear</button>
+                                    <button type="button" mat-menu-item (click)="clearOrderNumber(i)" [attr.data-automation-id]="'row-action-' + i">Clear Order</button>
                                     <button type="button" (click)="printToteLabels(element)" mat-menu-item [attr.data-automation-id]="'row-action-' + i">Print Tote Labels</button>
                                     <button type="button" (click)="printPickLabels(element)" mat-menu-item [attr.data-automation-id]="'row-action-' + i">Print Pick Labels</button>
                                     <button type="button" mat-menu-item (click)="fillNextToteID(i)" [attr.data-automation-id]="'row-action-' + i">Next Tote ID</button>

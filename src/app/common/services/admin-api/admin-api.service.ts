@@ -1958,6 +1958,10 @@ export class AdminApiService implements IAdminApiService {
     return await this.Api.CommonPrint(payload);
   }
 
+  public async PrintCustomReport(body) {
+    return await this.Api.PrintCustomReport(body);
+  }
+
   public async PrintTotes(orderNumbers: string[], toteIds: string[], type: string, position = 0) {
     const payload = {
       username: this.userData.userName,

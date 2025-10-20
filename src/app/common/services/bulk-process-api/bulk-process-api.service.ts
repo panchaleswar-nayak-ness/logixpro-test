@@ -2,10 +2,11 @@ import { Injectable } from '@angular/core';
 import { ApiFuntions } from '../ApiFuntions';
 import { AuthService } from 'src/app/common/init/auth.service';
 import { IBulkProcessApiService } from './bulk-process-api-interface'
-import { AssignToteToOrderDto, BatchesRequest, BatchesResponse, NextToteId, OrderLineResource, OrderResponse, OrdersRequest, PartialToteIdRequest, PartialToteIdResponse, QuickPickOrdersRequest, RemoveOrderLinesRequest, RemoveOrderLinesResponse, TotesRequest, TotesResponse } from "../../Model/bulk-transactions";
+import { AssignToteToOrderDto, BatchesRequest, BatchesResponse, EmergencyPickOrdersRequest, NextToteId, OrderLineResource, OrderResponse, OrdersRequest, PartialToteIdRequest, PartialToteIdResponse, QuickPickOrdersRequest, RemoveOrderLinesRequest, RemoveOrderLinesResponse, TotesRequest, TotesResponse } from "../../Model/bulk-transactions";
 import { ZoneListPayload } from 'src/app/bulk-process/preferences/preference.models';
 import { ApiResult } from '../../types/CommonTypes';
 import { Observable } from 'rxjs';
+import { PagingRequest } from '../../interface/ccdiscrepancies/PagingRequest';
 
 @Injectable({
   providedIn: 'root'
@@ -37,6 +38,12 @@ export class BulkProcessApiService implements IBulkProcessApiService {
   }
   public bulkPickOrdersQuickpick(body: QuickPickOrdersRequest) : Observable<ApiResult<OrderResponse[]>> {
     return this.Api.bulkPickOrdersQuickpick(body);
+  }
+  public getEmergencyPickOrders(body: PagingRequest) {
+    return this.Api.getEmergencyPickOrders(body);
+  }
+  public getEmergencyOrdersInfo(){
+    return this.Api.getEmergencyOrdersInfo();
   }
   public bulkPickOrdersLocationAssignment(body: any) {
     return this.Api.bulkPickOrdersLocationAssignment(body);

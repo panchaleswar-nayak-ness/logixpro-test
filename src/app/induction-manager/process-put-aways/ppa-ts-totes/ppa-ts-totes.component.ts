@@ -19,6 +19,7 @@ export class PpaTsTotesComponent {
 
   callFun(funName:any,funParam1?:any,funParam2?:any,funParam3?:any){
     this.funCall.emit({funName:funName,funParam1:funParam1,funParam2:funParam2,funParam3:funParam3});
+    this.toteID = '';
   }
 
 }
