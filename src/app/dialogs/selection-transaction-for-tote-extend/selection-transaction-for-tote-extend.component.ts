@@ -484,8 +484,6 @@ export class SelectionTransactionForToteExtendComponent implements OnInit {
                   });
 
                   this.findLocation(true, res.data)
-                } else {
-                  this.findLocation(false, 0);
                 }
               });
 
