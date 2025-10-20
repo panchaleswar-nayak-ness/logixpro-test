@@ -87,6 +87,7 @@
                                         <b class="text-tertiary-900">View Order</b>
                                     </button>
                                     <button type="button" mat-menu-item (click)="clearOrderNumber(i)" [attr.data-automation-id]="'row-action-' + i">Clear Order</button>
+                                    <button type="button" mat-menu-item (click)="clearAll(i)" [attr.data-automation-id]="'row-action-' + i">Clear All</button>
                                     <button type="button" (click)="printToteLabels(element)" mat-menu-item [attr.data-automation-id]="'row-action-' + i">Print Tote Labels</button>
                                     <button type="button" (click)="printPickLabels(element)" mat-menu-item [attr.data-automation-id]="'row-action-' + i">Print Pick Labels</button>
                                     <button type="button" mat-menu-item (click)="fillNextToteID(i)" [attr.data-automation-id]="'row-action-' + i">Next Tote ID</button>
