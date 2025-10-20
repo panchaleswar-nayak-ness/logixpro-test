@@ -1,0 +1,97 @@
+name: Next RC from commit flags
+
+on:
+  workflow_dispatch:
+    inputs:
+      base_ref:
+        description: "Branch/tag to scan and branch from"
+        required: true
+        default: Development
+
+permissions:
+  contents: write
+
+jobs:
+  next_rc_from_flags:
+    runs-on: ubuntu-latest
+    steps:
+      - name: App token
+        id: app
+        uses: tibdex/github-app-token@v2
+        with:
+          app_id: ${{ secrets.APP_ID }}
+          private_key: ${{ secrets.APP_PRIVATE_KEY }}
+
+      - name: Compute next version and create rc branch
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ steps.app.outputs.token }}
+          script: |
+            const { owner, repo } = context.repo;
+            const baseRefInput = '${{ github.event.inputs.base_ref }}';
+
+            // Resolve a ref (branch or tag) to SHA
+            async function resolveSha(refLike) {
+              try { return (await github.rest.git.getRef({ owner, repo, ref: `heads/${refLike}` })).data.object.sha; } catch {}
+              return (await github.rest.git.getRef({ owner, repo, ref: `tags/${refLike}` })).data.object.sha;
+            }
+
+            // 1) Find latest plain release vA.B.C.D (no -rc)
+            const { data: tagRefs } = await github.rest.git.listMatchingRefs({ owner, repo, ref: 'tags/v' });
+            const releases = tagRefs
+              .map(t => t.ref.replace(/^refs\/tags\//,''))
+              .filter(n => /^v\d+\.\d+\.\d+\.\d+$/.test(n));
+            if (!releases.length) {
+              core.setFailed('No release tags found (expected vA.B.C.D).');
+              return;
+            }
+            const nums = v => v.slice(1).split('.').map(x => parseInt(x,10));
+            releases.sort((a,b)=>{const A=nums(a),B=nums(b); for(let i=0;i<4;i++){ if(A[i]!==B[i]) return A[i]-B[i]; } return 0;});
+            const latest = releases.at(-1);
+            core.info(`Latest release tag: ${latest}`);
+
+            // 2) Determine commit range: from latest tag -> base_ref tip
+            const baseSha = await resolveSha(baseRefInput).catch(() => null);
+            if (!baseSha) { core.setFailed(`Ref not found: ${baseRefInput}`); return; }
+
+            // get tag sha
+            const { data: latestTagRef } = await github.rest.git.getRef({ owner, repo, ref: `tags/${latest}` });
+            const startSha = latestTagRef.object.sha;
+            const { data: cmp } = await github.rest.repos.compareCommits({
+              owner, repo, base: startSha, head: baseSha
+            });
+
+            const messages = cmp.commits.map(c => `${c.commit.message}\n${c.commit.body||''}`).join('\n');
+            const hasMajor = /\[MAJOR\]/i.test(messages);
+            const hasFeature = /\[FEATURE\]/i.test(messages);
+            const hasPatch = /\[PATCH\]/i.test(messages);
+
+            // Highest precedence wins: MAJOR > FEATURE > PATCH; default PATCH if none found
+            let level = hasMajor ? 'major' : hasFeature ? 'feature' : 'patch';
+            core.info(`Detected bump: ${level} (via commit flags)`);
+
+            // 3) Bump vA.B.C.D -> vA.B'.C'.D' according to your mapping
+            let [A,B,C,D] = nums(latest); // A is fixed here; you asked to bump 2nd/3rd/4th
+            if (level === 'major') { B += 1; C = 0; D = 0; }
+            else if (level === 'feature') { C += 1; D = 0; }
+            else { D += 1; }
+
+            const nextBase = `v${A}.${B}.${C}.${D}`;
+            const rcBranch = `rc/${nextBase}`;
+            core.info(`Next base version: ${nextBase} → branch ${rcBranch}`);
+
+            // 4) Idempotency: if branch exists, exit
+            try { await github.rest.git.getRef({ owner, repo, ref: `heads/${rcBranch}` });
+              core.info(`Branch ${rcBranch} already exists. Nothing to do.`);
+              core.setOutput('rc_branch', rcBranch);
+              return;
+            } catch {}
+
+            // 5) Create the rc branch at base_ref tip (with App token so on:create will fire)
+            await github.rest.git.createRef({
+              owner, repo,
+              ref: `refs/heads/${rcBranch}`,
+              sha: baseSha
+            });
+            core.info(`Created ${rcBranch} at ${baseRefInput} (${baseSha.substring(0,7)}).`);
+            core.setOutput('rc_branch', rcBranch);
