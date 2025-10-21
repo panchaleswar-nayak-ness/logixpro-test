@@ -85,47 +85,46 @@ export class CmMarkoutComponent implements OnInit {
     this.MarkoutToteReq = new MarkoutToteRequest();
     this.MarkoutToteReq.toteId = toteId;
     this.MarkoutToteReq.viewType = viewType;
-    this.getToteData();
+    this.getToteData(true);
   }
 
-  getToteData() {
+  getToteData(print: boolean) {
     this.iMarkoutApiService
       .GetMarkoutData(this.MarkoutToteReq)
       .subscribe((res: ToteDataResponse) => {
         this.toteDataResponse = res;
-    
-        this.handlePrinting();
+        if (print){
+          this.handlePrinting();
+        }
       });
   }
 
   // Markout Print Logic
   async handlePrinting() {
-    if (this.toteDataResponse.data.length > 0) {
-      const allTransactionsComplete = this.toteDataResponse.data.every(
-        (data: ToteData) => data.status === StringConditions.Complete
-      );
+    if (this.toteDataResponse.data.length > 0) { 
+      const allTransactionsComplete = this.toteDataResponse.toteStatus === StringConditions.Complete;
 
       if (allTransactionsComplete) {
         try {
           if (this.preferencesData.autoPrintToteManifest) {
             await this.print('Print Tote Manifest', this.toteId);
-          }  
+          }
         } catch (error) {
           console.error("Error printing Tote Manifest:", error);
         }
-        
+
         try {
           if (this.preferencesData.autoPrintToteManifest2) {
             await this.print('Print Tote Manifest 2', this.toteId);
           }
         } catch (error) {
           console.error("Error printing Tote Manifest 2:", error);
-        }        
-      } 
-      
-      if (!allTransactionsComplete && this.preferencesData.autoPrintMarkoutReport) {
+        }
+
+      } else if (this.preferencesData.autoPrintMarkoutReport) {
+        //Only ever auto printing exception when tote not complete
         try {
-          this.print('Print Markout Report', this.toteId);
+          await this.print('Print Markout Report', this.toteId);
         } catch (error) {
           console.error('Error printing Markout Report:', error);
         }

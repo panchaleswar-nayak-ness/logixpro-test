@@ -9,7 +9,7 @@
         </div>
         <div class="col-xl-12" data-automation-id="markout-list-column">
             <app-markout-list 
-            (updateTableEmitter)="getToteData()" (toteIdEmitter)="handleToteId($event)"
+            (updateTableEmitter)="getToteData(false)" (toteIdEmitter)="handleToteId($event)"
             [toteDataResponse]="toteDataResponse" [selectedView]="selectedView" [isBlossomComplete]="isBlossomComplete" data-automation-id="markout-list-component"></app-markout-list>
         </div>
     </div>
