@@ -1,20 +1,22 @@
-<div class="d-flex justify-content-between mb-4 align-items-center">
-    <div class="div-width"></div>
-    <h1 class="m-0" mat-dialog-title data-automation-id="postmt-title">Post Transaction</h1>
-    <button mat-icon-button class="close-button dialog-close-button-fix" [mat-dialog-close]="false" data-automation-id="postmt-close-btn">
-        <mat-icon class="close-icon" data-automation-id="postmt-close-icon">close</mat-icon>
+<div class="d-flex flex-column align-items-center justify-content-center text-center py-2">
+  <div class="circle-icon circle-66 circle-primary mb-4 text-primary-900">
+    <mat-icon class="material-symbols-outlined" color="primary" data-automation-id="confirmation-dialog-icon">info</mat-icon>
+  </div>
+  <div>
+
+    <h1 class="mat-card-title text-primary-900" data-automation-id="postmt-title">
+      Post Transaction
+    </h1>
+    <p class="bold text-tritary-900 mb-4" data-automation-id="postmt-message">{{message}}
+    </p>
+  </div>
+  <div class="w-100">
+    <button [mat-dialog-close]="true" mat-stroked-button color="primary" cdkFocusInitial
+      class="w-100 btn-lg mb-3 prompt-action-accent-button" data-automation-id="postmt-ok-btn">
+      Ok
     </button>
-</div>
-<div>
-    <div class="w-100">
-        <div class="col-12 mb-2">
-            <p class="prompt-message py-4 mb-0 text-center" data-automation-id="postmt-message">
-                <b data-automation-id="postmt-message-bold">{{message}}</b>
-            </p>
-        </div>
-        <div class="d-flex justify-content-end pt-3">
-            <button mat-flat-button color="primary" class="button-primary btn-lg flex-grow-1" cdkFocusInitial
-                [mat-dialog-close]="true" data-automation-id="postmt-ok-btn">Ok</button>
-        </div>
-    </div>
+    <button [mat-dialog-close]="false" mat-stroked-button color="primary" class="custom-btn bg-white w-100 btn-lg" data-automation-id="postmt-close-btn">
+      Cancel
+    </button>
+  </div>
 </div>
