@@ -98,6 +98,7 @@ export interface PickToteTransPayload {
   SortOrder: string | number; // depends on UniqueConstants.Asc type
   Filter: string;
   FiltrationColumns: FilterationColumns[]; // replace 'any' with proper type if you know structure
+  IsZoneOrderSelection?: boolean; // Optional parameter to indicate zone order selection
 }
 export interface PickToteTransResponse {
   TotalRecords: number;
