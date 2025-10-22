@@ -969,6 +969,7 @@ export const EmergencyOptions = {
 }
 
 export const OrderActions = {
-    SelectFirstOrder: 'select_first_order',
-    UnselectOrder: 'unselect_order'
+    SelectOrder: 'select_order',
+    UnselectAllOrders: 'unselect_all_orders',
+    SelectAllOrders: 'select_all_orders'
 }
