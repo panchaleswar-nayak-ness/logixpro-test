@@ -28,6 +28,7 @@ import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.ser
 import { LocationZone } from 'src/app/common/interface/admin/location-zones.interface';
 import { ApiResponse } from 'src/app/common/types/CommonTypes';
 import { ZoneFilterType } from 'src/app/common/enums/CommonEnums';
+import { LocalStorageService } from 'src/app/common/services/LocalStorage.service';
 
 @Component({
   selector: 'app-workstation-zones',
@@ -49,7 +50,7 @@ export class WorkstationZonesComponent implements OnInit, AfterViewInit, OnDestr
   public iAdminApiService: IAdminApiService;
 
   locationZones: LocationZone[] = [];
-  activeFilters: Set<ZoneFilterType> = new Set([ZoneFilterType.All]);
+  activeFilters: Set<ZoneFilterType> = new Set();
   ZoneFilterType = ZoneFilterType; // Expose enum to template
 
   @ViewChild('searchauto', { static: false })
@@ -71,7 +72,8 @@ export class WorkstationZonesComponent implements OnInit, AfterViewInit, OnDestr
     private adminApiService: AdminApiService,
     public dialogRef: MatDialogRef<any>,
     private global: GlobalService,
-    private focusMonitor: FocusMonitor
+    private focusMonitor: FocusMonitor,
+    private localStorageService: LocalStorageService
   ) {
     this.iCommonAPI = commonAPI;
     this.iInductionManagerApi = inductionManagerApi;
@@ -82,8 +84,27 @@ export class WorkstationZonesComponent implements OnInit, AfterViewInit, OnDestr
 
   ngOnInit(): void {
     this.userData = this.authService.userData();
+    this.loadSavedFilterPreferences();
     this.getWorkstationZones();
     this.getLocationZones();
+  }
+
+  loadSavedFilterPreferences(): void {
+    const savedPreferences = this.localStorageService.GetWorkstationZoneFilter();
+    
+    // Clear existing filters
+    this.activeFilters.clear();
+    
+    // Set filters based on saved preferences
+    if (savedPreferences.Carousel) {
+      this.activeFilters.add(ZoneFilterType.Carousel);
+    }
+    if (savedPreferences.CartonFlow) {
+      this.activeFilters.add(ZoneFilterType.CartonFlow);
+    }
+    if (savedPreferences.Bulk) {
+      this.activeFilters.add(ZoneFilterType.Bulk);
+    }
   }
   ngAfterViewInit(): void {
     if (this.addZoneInput) {
@@ -203,9 +224,7 @@ export class WorkstationZonesComponent implements OnInit, AfterViewInit, OnDestr
         res.data.forEach((zone: LocationZone, i) => {          
           this.zones.push(zone.zone);
         });
-        this.updateZoneSelectOptions(); 
-        this.toggleFilter(ZoneFilterType.Carousel, true);
-        this.toggleFilter(ZoneFilterType.CartonFlow, true);
+        this.applyFilters();
       } else {
         this.global.ShowToastr(ToasterType.Error, this.global.globalErrorMsg(), ToasterTitle.Error);
         console.log('LocationZone', res.responseMessage);
@@ -231,7 +250,18 @@ export class WorkstationZonesComponent implements OnInit, AfterViewInit, OnDestr
       }
     }
     
+    // Save filter preferences to localStorage
+    this.saveFilterPreferences();
+    
     this.applyFilters();
+  }
+
+  saveFilterPreferences(): void {
+    const carousel = this.activeFilters.has(ZoneFilterType.Carousel);
+    const cartonFlow = this.activeFilters.has(ZoneFilterType.CartonFlow);
+    const bulk = this.activeFilters.has(ZoneFilterType.Bulk);
+    
+    this.localStorageService.SetWorkstationZoneFilter(carousel, cartonFlow, bulk);
   }
 
   isFilterActive(filterType: ZoneFilterType): boolean {
