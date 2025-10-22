@@ -12,6 +12,7 @@ import { IGlobalConfigApi } from 'src/app/common/services/globalConfig-api/globa
 import { GlobalConfigApiService } from 'src/app/common/services/globalConfig-api/global-config-api.service';
 import { ICommonApi } from 'src/app/common/services/common-api/common-api-interface';
 import { CommonApiService } from 'src/app/common/services/common-api/common-api.service';
+import { CartManagementApiService } from 'src/app/common/services/cart-management-api/cart-management-api.service';
 import { GlobalService } from 'src/app/common/services/global.service';
 import { Mode, ToasterTitle, ToasterType, ResponseStrings } from 'src/app/common/constants/strings.constants';
 import { UserSession } from 'src/app/common/types/CommonTypes';
@@ -39,6 +40,7 @@ export class DeleteConfirmationComponent implements OnInit {
     public globalConfigApi: GlobalConfigApiService,
     private global: GlobalService,
     public adminApiService: AdminApiService,
+    public cartApiService: CartManagementApiService,
     public dialogRef: MatDialogRef<DeleteConfirmationComponent>,
     private authService: AuthService,
     private router: Router,
@@ -153,6 +155,9 @@ export class DeleteConfirmationComponent implements OnInit {
           Category: this.data.category,
           SubCategory: this.data.subCategory,
         })
+      },
+      [Mode.DeleteCart]: {
+        method: () => this.cartApiService.deleteCart(this.data.cartId)
       }
     };
 
@@ -167,21 +172,33 @@ export class DeleteConfirmationComponent implements OnInit {
 
   // Centralized method to handle API calls
   private handleDelete(apiMethod: () => any) {
-    apiMethod().subscribe(
-      (res: any) => {
-        if (res.isExecuted) {
-          this.global.ShowToastr(ToasterType.Success, labels.alert.delete, ToasterTitle.Success);
-          this.dialogRef.close({ isExecuted: true });
-        } else {
-          this.global.ShowToastr(ToasterType.Error, labels.alert.went_worng, ToasterTitle.Error);
-          this.dialogRef.close({ isExecuted: false });
-          console.log(apiMethod.name, res.responseMessage);
-        }
-      },
-      (error: any) => {
+    
+    const result = apiMethod();
+    
+    // Unified response handler
+    const handleResponse = (res, isSuccess: boolean) => {
+      if (isSuccess) {
+        this.global.ShowToastr(ToasterType.Success, labels.alert.delete, ToasterTitle.Success);
+        this.dialogRef.close({ isExecuted: true });
+      } else {
         this.global.ShowToastr(ToasterType.Error, labels.alert.went_worng, ToasterTitle.Error);
-        console.log(apiMethod.name, error);
+        this.dialogRef.close({ isExecuted: false });
       }
+    };
+
+    // Unified error handler
+    const handleError = (error) => {
+      this.global.ShowToastr(ToasterType.Error, labels.alert.went_worng, ToasterTitle.Error);
+    };
+
+    // Handle all API calls as Observables
+    result.subscribe(
+      (res) => {
+        // Handle different API response structures
+        const isSuccess = res.isSuccess || res.isExecuted;
+        handleResponse(res, isSuccess);
+      },
+      handleError
     );
   }
 

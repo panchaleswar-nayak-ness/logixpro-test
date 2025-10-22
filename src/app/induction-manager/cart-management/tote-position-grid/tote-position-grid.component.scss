@@ -1,23 +1,7 @@
 // Base tote position grid styles
 .tote-position-grid {
-  .grid-container-4x3 {
+  .grid-container {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    grid-template-rows: repeat(3, 1fr);
-    gap: 10px;
-  }
-
-  .grid-container-3x3 {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    grid-template-rows: repeat(3, 1fr);
-    gap: 10px;
-  }
-
-  .grid-container-1x3 {
-    display: grid;
-    grid-template-columns: repeat(1, 1fr);
-    grid-template-rows: repeat(3, 1fr);
     gap: 10px;
   }
 
@@ -30,6 +14,7 @@
     align-items: center;
     justify-content: center;
     padding: 8px;
+    min-width: 110px;
 
     &:hover:not(:disabled):not(.position-selected) {
       background: rgba(var(--clr-primary-rgb-500), 0.1);
@@ -100,36 +85,5 @@
     .tote-id {
       color: var(--clr-chrome-300);
     }
-  }
-}
-
-// Grid layout variations
-// These classes will be applied dynamically based on backend dimensions
-// TODO: TypeScript integration will handle dynamic class application
-
-.tote-position-grid-4x3 {
-  .grid-container {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    grid-template-rows: repeat(3, 1fr);
-    gap: 10px;
-  }
-}
-
-.tote-position-grid-3x3 {
-  .grid-container {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    grid-template-rows: repeat(3, 1fr);
-    gap: 10px;
-  }
-}
-
-.tote-position-grid-1x3 {
-  .grid-container {
-    display: grid;
-    grid-template-columns: repeat(1, 1fr);
-    grid-template-rows: repeat(3, 1fr);
-    gap: 10px;
   }
 }

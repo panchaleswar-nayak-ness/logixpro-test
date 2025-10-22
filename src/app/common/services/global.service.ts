@@ -357,6 +357,7 @@ async printReportForSelectedOrders(orderNumbers: string[],reportName:string,isLo
     return this.dialog.open(component, {
       height: item.height ? item.height : DialogConstants.auto,
       width: item.width ? item.width : '600px',
+      minWidth: item.minWidth ? item.minWidth : '560px',
       disableClose: item.disableClose ?? true,
       autoFocus: item.autoFocus || DialogConstants.autoFocus,
       data: item.data,

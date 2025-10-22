@@ -84,7 +84,9 @@ export class BuildNewCartComponent implements OnInit {
 
   get dialogTitle(): string {
     switch (this.data.mode) {
-      case DialogModes.CREATE: return DialogTitles.CREATE;
+      case DialogModes.CREATE: 
+        // Show "Induct Cart" when opened from induct cart component (isReadonly = true)
+        return this.data.isReadonly ? DialogTitles.INDUCT : DialogTitles.CREATE;
       case DialogModes.EDIT: return DialogTitles.EDIT;
       case DialogModes.VIEW: return DialogTitles.VIEW;
       default: return DialogTitles.DEFAULT;
@@ -192,6 +194,25 @@ export class BuildNewCartComponent implements OnInit {
     if (this.data.cartId) {
       this.cartForm.get('cartId')?.setValue(this.data.cartId);
       this.currentCartIdInput = this.data.cartId; // Set the current cart ID input
+      // If opened from induct-cart after successful validation, skip re-validating
+      if (this.data.isReadonly) {
+        // initialize grid directly using provided dimensions
+        this.rows = Math.max(1, this.data.rows ?? 3);
+        this.cols = Math.max(1, this.data.cols ?? 4);
+        this.initializePositions();
+        this.cartIdEntered = true;
+        this.showToteGrid = true;
+        this.cartValidatedSuccessfully = true;
+        // Make only Cart ID non-editable to the user
+        this.cartForm.get('cartId')?.disable({ emitEvent: false });
+        // Inform parent listeners consistent with previous behavior
+        this.cartDraftCreated.emit();
+        this.emitToteQuantityChange();
+        this.onPositionSelect(1);
+      } else {
+        // legacy create flow: validate here
+        this.onCartIdEnter()
+      }
     }
 
     if(this.isCreateMode) {
@@ -224,7 +245,8 @@ export class BuildNewCartComponent implements OnInit {
   }
 
   private setReadonlyMode(): void {
-    this.isReadonly = this.isViewMode;
+    // honor readonly from induct-cart (pre-validated) or view mode
+    this.isReadonly = !!this.data.isReadonly || this.isViewMode;
   }
 
   async onCartIdEnter() {
@@ -335,7 +357,9 @@ export class BuildNewCartComponent implements OnInit {
   }
 
   onPositionSelect(position: number): void {
-    if (this.isReadonly || this.isGridDisabled) return;
+    // Allow selecting positions even when Cart ID is readonly (induct-cart flow)
+    // Block only in view mode or when grid logically disabled
+    if (this.isViewMode || this.isGridDisabled) return;
 
     // Clear error states and invalid tote IDs from all positions when selecting a new position
     this.positions.forEach(pos => {
@@ -369,7 +393,8 @@ export class BuildNewCartComponent implements OnInit {
   }
 
   onPositionClear(position: number): void {
-    if (this.isReadonly || this.isGridDisabled) return;
+    // Allow clearing positions even when Cart ID is readonly
+    if (this.isViewMode || this.isGridDisabled) return;
 
     const pos = this.positions.find(p => p.position === position);
     if (pos) {
@@ -613,7 +638,7 @@ export class BuildNewCartComponent implements OnInit {
       const dialogRef = this.global.OpenDialog(AlertConfirmationComponent, {
         width: Style.w560px,
         data: {
-          heading: ConfirmationHeadings.CancelCartCreation,
+          heading: ConfirmationHeadings.BuildCartCancel,
           message: ConfirmationMessages.CancelCartCreationMessage,
         }
       });

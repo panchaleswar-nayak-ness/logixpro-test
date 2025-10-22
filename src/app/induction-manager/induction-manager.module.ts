@@ -32,6 +32,8 @@ import { BuildNewCartComponent } from './cart-management/dialogs/build-new-cart/
 import { CartSearchComponent } from './cart-management/cart-search/cart-search.component';
 import { CartStatusSummaryComponent } from './cart-management/cart-status-summary/cart-status-summary.component';
 import { CartGridComponent } from './cart-management/cart-grid/cart-grid.component';
+import { InductCartComponent } from './cart-management/induct-cart/induct-cart.component';
+import { AddNewCartComponent } from './cart-management/add-new-cart/add-new-cart.component';
 
 @NgModule({
     declarations: [
@@ -61,7 +63,9 @@ import { CartGridComponent } from './cart-management/cart-grid/cart-grid.compone
         BuildNewCartComponent,
         CartSearchComponent,
         CartStatusSummaryComponent,
-        CartGridComponent
+        CartGridComponent,
+        InductCartComponent,
+        AddNewCartComponent
     ],
     imports: [
         CommonModule,

@@ -70,10 +70,6 @@ export class CartManagementComponent implements OnInit, OnDestroy {
     });
   }
 
-  onSearchChange(searchData: { searchTerm: string, column: string }): void {
-    this.searchTerm = searchData.searchTerm;
-    this.selectedColumn = searchData.column;
-  }
 
   onCartDataLoaded(): void {
     // Refresh status summary when cart data is loaded
@@ -129,6 +125,11 @@ export class CartManagementComponent implements OnInit, OnDestroy {
     }
     // Also refresh the status summary when grid data changes
     this.loadStatusSummary();
+  }
+
+  // Public wrapper for template event
+  onCartValidated(): void {
+    this.refreshGrid();
   }
 
   private updateCartQuantityInGrid(cartId: string, quantity: number): void {

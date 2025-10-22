@@ -7,7 +7,7 @@ import { KeyboardKeys } from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-cart-search',
-  templateUrl: './cart-search.component.html',
+  templateUrl: 'cart-search.component.html',
   styleUrls: ['./cart-search.component.scss']
 })
 export class CartSearchComponent implements OnDestroy {
