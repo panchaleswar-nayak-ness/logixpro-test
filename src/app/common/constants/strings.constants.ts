@@ -335,6 +335,8 @@ export const ToasterMessages = {
     InventoryMapRecordsDeleteFailed: 'Failed to delete inventory map records',
     ErrorDeletingInventoryMapRecords: 'Error occurred while deleting inventory map records',
     ToteIDAlreadyExists: 'This Tote ID already exists in the table. Please enter a different Tote ID.',
+    NoBatchesWithZone: 'There are no batches with this zone ({{zone}}) assigned.  Click OK to start a new batch or cancel to choose a different location/transaction.',
+    BatchChangedSuccessfully: 'Current Batch is now {{batchId}}',
 }
 
 export const LiveAnnouncerMessage = {
