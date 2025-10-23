@@ -535,7 +535,7 @@ export class LocalStorageService {
   }
 
   private workstationZoneFilterKey = "WorkstationZoneFilter"; // Key for workstation zone filter in localStorage
-  private workstationZoneFilterDefaultValue = { Carousel: true, CartonFlow: true, Bulk: false }; // Default values for workstation zone filter
+  private workstationZoneFilterDefaultValue = { Carousel: false, CartonFlow: true, Bulk: true }; // Default values for workstation zone filter
 
   SetWorkstationZoneFilter(carousel: boolean, cartonFlow: boolean, bulk: boolean): WorkstationZoneFilterPreference {
     const LoggedInUserName: string = this.userData.userName;  // Get current login user name from Logged-in user data
