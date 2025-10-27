@@ -68,11 +68,11 @@
               mat-header-cell
               *matHeaderCellDef
               mat-sort-header
-              sortActionDescription="Sort by status"   data-automation-id="th-status"
+              sortActionDescription="Sort by status"   data-automation-id="table-header-Status"
             >
               Status
             </th>
-            <td mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'td-status-' + i ">
+            <td mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'table-data-Status-' + (element.status ? element.status : ' ')">
               <div class="d-flex align-items-center">
                 <span
                   class="br-14 label px-3 f-16"
@@ -89,11 +89,11 @@
               mat-header-cell
               *matHeaderCellDef
               mat-sort-header
-              sortActionDescription="Sort by orderNumber"   data-automation-id="th-order-number"
+              sortActionDescription="Sort by orderNumber"   data-automation-id="table-header-Order Number"
             >
               Order No.
             </th>
-            <td mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'td-order-number-' + i ">
+            <td mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'table-data-Order Number-'+ (element.orderNumber ? element.orderNumber : ' ')">
               {{ element.orderNumber }}
             </td>
           </ng-container>
@@ -104,11 +104,11 @@
               mat-header-cell
               *matHeaderCellDef
               mat-sort-header
-              sortActionDescription="Sort by zone"  data-automation-id="th-start-zone"
+              sortActionDescription="Sort by zone"  data-automation-id="table-header-Start Zone"
             >
               Start Zone
             </th>
-            <td mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'td-start-zone-' + i ">{{ element.zone }}</td>
+            <td mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'table-data-Start Zone-' + (element.zone ? element.zone : ' ')">{{ element.zone }}</td>
           </ng-container>
 
           <!-- Priority Column -->
@@ -117,11 +117,11 @@
               mat-header-cell
               *matHeaderCellDef
               mat-sort-header
-              sortActionDescription="Sort by priority" data-automation-id="th-priority"
+              sortActionDescription="Sort by priority" data-automation-id="table-header-Priority"
             >
               Priority
             </th>
-            <td mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'td-priority-' + i ">{{ element.priority }}</td>
+            <td mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'table-data-Priority-' + (element.priority ? element.priority : ' ')">{{ element.priority }}</td>
           </ng-container>
 
           <!-- Required Date Column -->
@@ -130,11 +130,11 @@
               mat-header-cell
               *matHeaderCellDef
               mat-sort-header
-              sortActionDescription="Sort by requiredDate" data-automation-id="th-required-date"
+              sortActionDescription="Sort by requiredDate" data-automation-id="table-header-Required Date"
             >
               Required Date
             </th>
-            <td mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'td-required-date-' + i ">
+            <td mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'table-data-Required Date-' + (element.requiredDate ? (element.requiredDate | date : 'MM/dd/yyyy hh:mm:ss a') : ' ')">
               {{ element.requiredDate | date : "MM/dd/yyyy hh:mm:ss a" }}
             </td>
           </ng-container>
@@ -145,25 +145,25 @@
               mat-header-cell
               *matHeaderCellDef
               mat-sort-header
-              sortActionDescription="Sort by total" data-automation-id="th-total-order-quantity"
+              sortActionDescription="Sort by total" data-automation-id="table-header-Total Order Quantity"
             >
               Total Order Quantity
             </th>
-            <td mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'td-total-order-quantity-' + i ">
+            <td mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'table-data-Total Order Quantity-' + (element.transactionQuantity ? element.transactionQuantity : ' ')">
               {{ element.transactionQuantity }}
             </td>
           </ng-container>
 
           <!-- Tote Scanned Column -->
           <ng-container matColumnDef="toteScanned">
-            <th mat-header-cell *matHeaderCellDef data-automation-id="th-tote-scanned">Tote Scanned</th>
-            <td mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'td-tote-scanned-' + i ">
+            <th mat-header-cell *matHeaderCellDef data-automation-id="table-header-Tote Scanned">Tote Scanned</th>
+            <td mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'table-data-Tote Scanned-' + (element.toteScanned ? element.toteScanned : ' ')">
               <mat-form-field appearance="outline" data-automation-id="form-field-tote-scanned">
                 <input
                   matInput
                   [(ngModel)]="element.toteScanned"
                   (keyup.enter)="onEnter(element, i)"
-                  [disabled]="disableNonSBInputs" [attr.data-automation-id]="'input-tote-scanned-' + element.toteScanned"
+                  [disabled]="disableNonSBInputs" [attr.data-automation-id]="'input-tote-scanned-' + (element.toteScanned ? element.toteScanned : ' ')"
                 />
               </mat-form-field>
             </td>
@@ -192,7 +192,7 @@
     </div>
 
     <div
-      class="table-pagination d-flex justify-content-start align-items-center" data-automation-id="table-pagination"
+      class="table-pagination d-flex justify-content-start align-items-center" data-automation-id="non-super-batch-orders-paginator"
     >
       <mat-paginator
         #paginator
@@ -200,7 +200,7 @@
         [pageSize]="20"
         [pageSizeOptions]="[5, 10, 20, 100]"
         showFirstLastButtons
-        (page)="handlePageEvent($event)" data-automation-id="paginator-non-super-batch-orders"
+        (page)="handlePageEvent($event)" data-automation-id="table-paginator"
       ></mat-paginator>
     </div>
   </mat-card-content>
