@@ -54,6 +54,19 @@ export class SearchBarComponent implements OnDestroy, AfterViewInit {
     return this.bulkTransactionType === this.BulkTransactionType.PICK && this.isEmergencyPick;
   }
 
+  // Validation functions for disabled expressions
+  isBatchOptionDisabled(): boolean {
+    return (this.bulkTransactionType == BulkTransactionType.PICK && this.isQuickPick) || this.status.batchCount < 1;
+  }
+
+  isToteOptionDisabled(): boolean {
+    return (this.bulkTransactionType == BulkTransactionType.PICK && this.isQuickPick) || this.status.toteCount < 1;
+  }
+
+  isOrderOptionDisabled(): boolean {
+    return (this.bulkTransactionType == BulkTransactionType.PICK && this.isQuickPick) || this.status.orderCount < 1;
+  }
+
   get showPickOptions(): boolean {
     return this.bulkTransactionType === this.BulkTransactionType.PICK && (this.allowQuickPick || this.hasEmergencyPick);
   }

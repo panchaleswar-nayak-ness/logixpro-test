@@ -2055,6 +2055,22 @@ public updateEmergencyReprocessTrans(payload: UpdateEmergencyRequest): Observabl
     return await this.ApiBase.GetAsync('/orders/emergencypickinfo');
   }
 
+  public getEmergencyPickTotes(body: PagingRequest) {
+    return this.ApiBase.Post('/totes/emergencypick', body);
+  }
+
+  public async getEmergencyTotesCount() {
+    return await this.ApiBase.GetAsync('/totes/emergencypick/count');
+  }
+
+  public getEmergencyPickBatches(body: PagingRequest) {
+    return this.ApiBase.Post('/batches/emergencypick', body);
+  }
+
+  public async getEmergencyBatchesCount() {
+    return await this.ApiBase.GetAsync('/batches/emergencypick/count');
+  }
+
   public async bulkPickOrdersLocationAssignment(body: string[]) {
     return await this.ApiBase.PutAsync('/orders/locationassignment', body,false);
   }

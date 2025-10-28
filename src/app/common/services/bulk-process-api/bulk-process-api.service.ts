@@ -46,6 +46,18 @@ export class BulkProcessApiService implements IBulkProcessApiService {
   public getEmergencyOrdersInfo(){
     return this.Api.getEmergencyOrdersInfo();
   }
+  public getEmergencyPickTotes(body: PagingRequest) {
+    return this.Api.getEmergencyPickTotes(body);
+  }
+  public getEmergencyTotesCount(){
+    return this.Api.getEmergencyTotesCount();
+  }
+  public getEmergencyPickBatches(body: PagingRequest) {
+    return this.Api.getEmergencyPickBatches(body);
+  }
+  public getEmergencyBatchesCount(){
+    return this.Api.getEmergencyBatchesCount();
+  }
   public bulkPickOrdersLocationAssignment(body: any) {
     return this.Api.bulkPickOrdersLocationAssignment(body);
   }

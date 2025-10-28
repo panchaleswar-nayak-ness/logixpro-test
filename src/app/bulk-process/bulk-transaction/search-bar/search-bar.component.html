@@ -33,9 +33,9 @@
                 <div class="d-xl-flex d-block justify-content-between align-items-center gap-12 w-100">
                     <mat-form-field class="action-dropdown w-100 mb-3 mb-xl-0" appearance="outline">
                         <mat-select class="employees-action" [(ngModel)]="view" [value]="view" (selectionChange)="changeView($event)"  [attr.data-automation-id]="'search-bar-view-select-' + view">
-                            <mat-option value="batch" matTooltip='Press to change the Order Selection List to view all current "batch" order.' matTooltipPosition="above"  [disabled]="(this.bulkTransactionType == BulkTransactionType.PICK && isQuickPick) || status.batchCount < 1" data-automation-id="search-bar-option-batches">Batches</mat-option>
-                            <mat-option value="tote" matTooltip='Press to change the Order Selection List to view all current "Tote" order.' [disabled]="(this.bulkTransactionType == BulkTransactionType.PICK && isQuickPick) || status.toteCount < 1" data-automation-id="search-bar-option-totes">Totes</mat-option>
-                            <mat-option value="order" matTooltip='Press to change the Order Selection List to view all "Orders".' [disabled]="status.orderCount < 1" data-automation-id="search-bar-option-orders">Orders</mat-option>
+                            <mat-option value="batch" matTooltip='Press to change the Order Selection List to view all current "batch" order.' matTooltipPosition="above"  [disabled]="isBatchOptionDisabled()" data-automation-id="search-bar-option-batches">Batches</mat-option>
+                            <mat-option value="tote" matTooltip='Press to change the Order Selection List to view all current "Tote" order.' [disabled]="isToteOptionDisabled()" data-automation-id="search-bar-option-totes">Totes</mat-option>
+                            <mat-option value="order" matTooltip='Press to change the Order Selection List to view all "Orders".' [disabled]="isOrderOptionDisabled()" data-automation-id="search-bar-option-orders">Orders</mat-option>
                         </mat-select>
                         <span class="material-symbols-outlined icon-expand-more">expand_more</span>
                     </mat-form-field>

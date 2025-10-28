@@ -13,6 +13,10 @@ export interface IBulkProcessApiService {
   bulkPickOrdersQuickpick(paylaod: QuickPickOrdersRequest) : Observable<ApiResult<OrderResponse[]>>;
   getEmergencyPickOrders(paylaod: PagingRequest);
   getEmergencyOrdersInfo();
+  getEmergencyPickTotes(paylaod: PagingRequest);
+  getEmergencyTotesCount();
+  getEmergencyPickBatches(paylaod: PagingRequest);
+  getEmergencyBatchesCount();
   bulkPickOrdersLocationAssignment(paylaod:any);
   bulkPickOrdersCheckLocationAssignment(paylaod:string[]);
   bulkPickOrdersCheckOffCarouselPicks(paylaod:string[]);
