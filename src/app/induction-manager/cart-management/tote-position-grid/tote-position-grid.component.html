@@ -1,5 +1,7 @@
 <div class="tote-position-grid w-100">
-  <div [ngClass]="['grid-container-' + cols + 'x' + rows]" [style.grid-template-columns]="'repeat(' + cols + ', 1fr)'">
+  <div class="grid-container" 
+       [style.grid-template-columns]="'repeat(' + cols + ', 1fr)'"
+       [style.grid-template-rows]="'repeat(' + rows + ', 1fr)'">
     <ng-container *ngIf="positions && positions.length">
       <button 
         *ngFor="let position of positions" 

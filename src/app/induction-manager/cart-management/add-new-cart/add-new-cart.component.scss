@@ -1,0 +1,15 @@
+@media (max-width: 768px) {
+  .d-flex {
+    flex-direction: column;
+    gap: 16px !important;
+  }
+
+  [mat-dialog-actions] {
+    flex-direction: column;
+    gap: 12px !important;
+
+    button {
+      width: 100%;
+    }
+  }
+}

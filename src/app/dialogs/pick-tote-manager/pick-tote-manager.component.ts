@@ -1108,7 +1108,8 @@ filterationColumns : FilterationColumns[] = [];
         SortColumnNumber: 0,
         SortOrder: UniqueConstants.Asc,
         Filter: UniqueConstants.OneEqualsOne,
-        FiltrationColumns :  this.filterationColumns
+        FiltrationColumns :  this.filterationColumns,
+        IsZoneOrderSelection: false
       };
       this.iInductionManagerApi.PickToteTransDT(payload).subscribe((res) => {
         if (res) {
@@ -1175,8 +1176,8 @@ filterationColumns : FilterationColumns[] = [];
         SortColumnNumber: 0,
         SortOrder: UniqueConstants.Asc,
         Filter: UniqueConstants.OneEqualsOne,
-        FiltrationColumns:[]
-
+        FiltrationColumns:[],
+        IsZoneOrderSelection: true
       };
       this.iInductionManagerApi.PickToteTransDT(payload).subscribe((res) => {
         if (res) {
@@ -1350,7 +1351,8 @@ filterationColumns : FilterationColumns[] = [];
         SortColumnNumber: 0,
         SortOrder: UniqueConstants.Asc,
         Filter: UniqueConstants.OneEqualsOne,
-        FiltrationColumns : []
+        FiltrationColumns : [],
+        IsZoneOrderSelection: true
       };
       this.iInductionManagerApi.PickToteTransDT(payload).subscribe((res) => {
         if (res.data.pickToteManTrans?.length > 0) {
@@ -1384,7 +1386,8 @@ filterationColumns : FilterationColumns[] = [];
           SortColumnNumber: 0,
           SortOrder: UniqueConstants.Asc,
           Filter: UniqueConstants.OneEqualsOne,
-          FiltrationColumns:[]
+          FiltrationColumns:[],
+          IsZoneOrderSelection: true
         };
         this.iInductionManagerApi.PickToteTransDT(payload).subscribe((res) => {
           if (res.data.pickToteManTrans?.length > 0) {
@@ -1422,7 +1425,8 @@ filterationColumns : FilterationColumns[] = [];
         SortColumnNumber: 0,
         SortOrder: UniqueConstants.Asc,
         Filter: UniqueConstants.OneEqualsOne,
-        FiltrationColumns:[]
+        FiltrationColumns:[],
+        IsZoneOrderSelection: false
       };
       this.iInductionManagerApi.PickToteTransDT(payload).subscribe((res) => {
         if (res.data.pickToteManTrans?.length > 0) {
@@ -1456,7 +1460,8 @@ filterationColumns : FilterationColumns[] = [];
           SortColumnNumber: 0,
           SortOrder: UniqueConstants.Asc,
           Filter: UniqueConstants.OneEqualsOne,
-          FiltrationColumns: []
+          FiltrationColumns: [],
+          IsZoneOrderSelection: false
         };
         this.iInductionManagerApi.PickToteTransDT(payload).subscribe((res) => {
           if (res.data.pickToteManTrans?.length > 0) {
@@ -1819,7 +1824,8 @@ filterationColumns : FilterationColumns[] = [];
       SortColumnNumber: 0,
       SortOrder: UniqueConstants.Asc,
       Filter: this.filterString,
-      FiltrationColumns :  this.filterationColumns
+      FiltrationColumns :  this.filterationColumns,
+      IsZoneOrderSelection: false
     };
     this.iInductionManagerApi.PickToteTransDT(payload).subscribe((result: { data: { pickToteManTrans?: FilterTransaction[] }; }) => {
       const pickToteManTrans = result.data.pickToteManTrans ?? [];

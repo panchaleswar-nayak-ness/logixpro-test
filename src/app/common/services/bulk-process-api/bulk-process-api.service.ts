@@ -7,6 +7,7 @@ import { ZoneListPayload } from 'src/app/bulk-process/preferences/preference.mod
 import { ApiResult } from '../../types/CommonTypes';
 import { Observable } from 'rxjs';
 import { PagingRequest } from '../../interface/ccdiscrepancies/PagingRequest';
+import { UpdateOTsNewBatchIdRequest } from '../../Model/bulk-transactions';
 
 @Injectable({
   providedIn: 'root'
@@ -150,4 +151,7 @@ export class BulkProcessApiService implements IBulkProcessApiService {
     return await this.Api.bulkPickTotesCount(payload);
   }
 
+  public async UpdateOTsNewBatchIdRequest(request: UpdateOTsNewBatchIdRequest): Promise<string> {
+    return await this.Api.updateOTsNewBatchId(request);
+  }
 }

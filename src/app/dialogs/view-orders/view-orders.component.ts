@@ -7,7 +7,9 @@ import { MatSort } from '@angular/material/sort';
 import { IInductionManagerApiService } from 'src/app/common/services/induction-manager-api/induction-manager-api-interface';
 import { InductionManagerApiService } from 'src/app/common/services/induction-manager-api/induction-manager-api.service';
 import { GlobalService } from 'src/app/common/services/global.service';
-import {  TableConstant ,Column,zoneType,ToasterTitle,ToasterType,ColumnDef,UniqueConstants} from 'src/app/common/constants/strings.constants';
+import {  TableConstant ,Column,zoneType,ToasterTitle,ToasterType,ColumnDef,UniqueConstants,OrderActions} from 'src/app/common/constants/strings.constants';
+import { TransactionData } from 'src/app/common/interface/view-orders-dialog/transaction-data.interface';
+import { cleanData, safeCellValue } from 'src/app/common/CommonHelpers/data-utils.helper';
 
 @Component({
   selector: 'app-view-orders',
@@ -42,65 +44,67 @@ export class ViewOrdersComponent implements OnInit {
   orderDataSource: any;
   selectedTd: any;
   isDisableSubmit: boolean = true
-  transData: any;
+  transData: TransactionData[];
+  isMultiSelectMode: boolean = false;
 
   filterTransColumns = [
-    { columnDef: 'orderNumber', header: Column.OrderNumber, cell: (element: any) => `${element.orderNumber}` },
-    { columnDef: 'itemNumber', header: this.ItemNumber, cell: (element: any) => `${element.itemNumber}` },
-    { columnDef: ColumnDef.TransactionQuantity, header: TableConstant.TransactionQuantity, cell: (element: any) => `${element.transactionQuantity}` },
-    { columnDef: TableConstant.Location, header: Column.Location, cell: (element: any) => `${element.location}` },
-    { columnDef: TableConstant.completedQuantity, header: 'Completed Quantity', cell: (element: any) => `${element.completedQuantity}` },
-    { columnDef: UniqueConstants.Description, header: Column.Description, cell: (element: any) => `${element.description}` },
-    { columnDef: TableConstant.BatchPickID, header: ColumnDef.BatchPickID, cell: (element: any) => `${element.batchPickID}` },
-    { columnDef: ColumnDef.Bin, header: this.fieldMappings?.bin || TableConstant.Bin, cell: (element: any) => `${element.bin}` },
-    { columnDef: zoneType.carousel, header: this.fieldMappings?.carousel || TableConstant.Carousel, cell: (element: any) => `${element.carousel}` },
-    { columnDef: Column.cell, header: TableConstant.Cell, cell: (element: any) => `${element.cell}` },
-    { columnDef: 'completedBy', header: 'Completed By', cell: (element: any) => `${element.completedBy}` },
-    { columnDef: 'completedDate', header: TableConstant.CompletedDate, cell: (element: any) => `${element.completedDate}` },
-    { columnDef: UniqueConstants.emergency, header: ColumnDef.Emergency, cell: (element: any) => `${element.emergency}` },
-    { columnDef: ColumnDef.ExpirationDate, header: TableConstant.ExpirationDate, cell: (element: any) => `${element.expirationDate}` },
-    { columnDef: 'exportBatchID', header: 'Export Batch ID', cell: (element: any) => `${element.exportBatchID}` },
-    { columnDef: 'exportDate', header: 'Export Date', cell: (element: any) => `${element.exportDate}` },
-    { columnDef: 'exportedBy', header: 'Exported By', cell: (element: any) => `${element.exportedBy}` },
-    { columnDef: ColumnDef.HostTransactionId, header: TableConstant.HostTransactionID, cell: (element: any) => `${element.hostTransactionID}` },
-    { columnDef: 'id', header: 'ID', cell: (element: any) => `${element.id}` },
-    { columnDef: TableConstant.ImportBy, header: 'Import By', cell: (element: any) => `${element.importBy}` },
-    { columnDef: TableConstant.ImportDate, header: 'Import Date', cell: (element: any) => `${element.importDate}` },
-    { columnDef: 'importFilename', header: 'Import Filename', cell: (element: any) => `${element.importFilename}` },
-    { columnDef: 'invMapID', header: 'Inventory Map ID', cell: (element: any) => `${element.invMapID}` },
-    { columnDef: TableConstant.LineNumber, header: 'Line Number', cell: (element: any) => `${element.lineNumber}` },
-    { columnDef: TableConstant.LineSequence, header: 'Line Sequence', cell: (element: any) => `${element.lineSequence}` },
-    { columnDef: TableConstant.LotNumber, header: Column.LotNumber, cell: (element: any) => `${element.lotNumber}` },
-    { columnDef: 'masterRecord', header: 'Master Record', cell: (element: any) => `${element.masterRecord}` },
-    { columnDef: 'masterRecordID', header: 'Master Record ID', cell: (element: any) => `${element.masterRecordID}` },
-    { columnDef: TableConstant.Notes, header: 'Notes', cell: (element: any) => `${element.notes}` },
-    { columnDef: UniqueConstants.Priority, header: 'Priority', cell: (element: any) => `${element.priority}` },
-    { columnDef: ColumnDef.RequiredDate, header: 'Required Date', cell: (element: any) => `${element.requiredDate}` },
-    { columnDef: ColumnDef.Revision, header: TableConstant.Revision, cell: (element: any) => `${element.revision}` },
-    { columnDef: Column.Row, header: this.fieldMappings?.row || TableConstant.Row, cell: (element: any) => `${element.row}` },
-    { columnDef: TableConstant.SerialNumber, header: ColumnDef.SerialNumber, cell: (element: any) => `${element.serialNumber}` },
-    { columnDef: TableConstant.shelf, header: this.fieldMappings?.shelf || TableConstant.shelf, cell: (element: any) => `${element.shelf}` },
-    { columnDef: 'statusCode', header: 'Status Code', cell: (element: any) => `${element.statusCode}` },
-    { columnDef: ColumnDef.ToteID, header: Column.ToteID, cell: (element: any) => `${element.toteID}` },
-    { columnDef: 'toteNumber', header: 'Tote Number', cell: (element: any) => `${element.toteNumber}` },
-    { columnDef: ColumnDef.UnitOfMeasure, header: this.UnitOfMeasure, cell: (element: any) => `${element.unitOfMeasure}` },
-    { columnDef: ColumnDef.userField1, header: this.UserField1, cell: (element: any) => `${element.userField1}` },
-    { columnDef: ColumnDef.userField2, header: this.UserField2, cell: (element: any) => `${element.userField2}` },
-    { columnDef: ColumnDef.userField3, header: this.UserField3, cell: (element: any) => `${element.userField3}` },
-    { columnDef: ColumnDef.userField4, header: this.UserField4, cell: (element: any) => `${element.userField4}` },
-    { columnDef: ColumnDef.userField5, header: this.UserField5, cell: (element: any) => `${element.userField5}` },
-    { columnDef: ColumnDef.userField6, header: this.UserField6, cell: (element: any) => `${element.userField6}` },
-    { columnDef: ColumnDef.userField7, header: this.UserField7, cell: (element: any) => `${element.userField7}` },
-    { columnDef: ColumnDef.userField8, header: this.UserField8, cell: (element: any) => `${element.userField8}` },
-    { columnDef: ColumnDef.userField9, header: this.UserField9, cell: (element: any) => `${element.userField9}` },
-    { columnDef: ColumnDef.userField10, header: this.UserField10, cell: (element: any) => `${element.userField10}` },
-    { columnDef: TableConstant.WareHouse, header: ColumnDef.Warehouse, cell: (element: any) => `${element.warehouse}` },
-    { columnDef: TableConstant.zone, header: ColumnDef.Zone, cell: (element: any) => `${element.zone}` },
+    { columnDef: 'orderNumber', header: Column.OrderNumber, cell: (element: TransactionData) => `${element.orderNumber}` },
+    { columnDef: 'itemNumber', header: this.ItemNumber, cell: (element: TransactionData) => `${element.itemNumber}` },
+    { columnDef: ColumnDef.TransactionQuantity, header: TableConstant.TransactionQuantity, cell: (element: TransactionData) => `${element.transactionQuantity}` },
+    { columnDef: TableConstant.Location, header: Column.Location, cell: (element: TransactionData) => `${element.location}` },
+    { columnDef: TableConstant.completedQuantity, header: 'Completed Quantity', cell: (element: TransactionData) => `${element.completedQuantity}` },
+    { columnDef: UniqueConstants.Description, header: Column.Description, cell: (element: TransactionData) => `${element.description}` },
+    { columnDef: TableConstant.BatchPickID, header: ColumnDef.BatchPickID, cell: (element: TransactionData) => safeCellValue(element.batchPickId) },
+    { columnDef: ColumnDef.Bin, header: this.fieldMappings?.bin || TableConstant.Bin, cell: (element: TransactionData) => `${element.bin}` },
+    { columnDef: zoneType.carousel, header: this.fieldMappings?.carousel || TableConstant.Carousel, cell: (element: TransactionData) => `${element.carousel}` },
+    { columnDef: Column.cell, header: TableConstant.Cell, cell: (element: TransactionData) => `${element.cell}` },
+    { columnDef: 'completedBy', header: 'Completed By', cell: (element: TransactionData) => `${element.completedBy}` },
+    { columnDef: 'completedDate', header: TableConstant.CompletedDate, cell: (element: TransactionData) => `${element.completedDate}` },
+    { columnDef: UniqueConstants.emergency, header: ColumnDef.Emergency, cell: (element: TransactionData) => `${element.emergency}` },
+    { columnDef: ColumnDef.ExpirationDate, header: TableConstant.ExpirationDate, cell: (element: TransactionData) => `${element.expirationDate}` },
+    { columnDef: 'exportBatchID', header: 'Export Batch ID', cell: (element: TransactionData) => safeCellValue(element.exportBatchId) },
+    { columnDef: 'exportDate', header: 'Export Date', cell: (element: TransactionData) => `${element.exportDate}` },
+    { columnDef: 'exportedBy', header: 'Exported By', cell: (element: TransactionData) => `${element.exportedBy}` },
+    { columnDef: ColumnDef.HostTransactionId, header: TableConstant.HostTransactionID, cell: (element: TransactionData) => safeCellValue(element.hostTransactionId) },
+    { columnDef: 'id', header: 'ID', cell: (element: TransactionData) => `${element.id}` },
+    { columnDef: TableConstant.ImportBy, header: 'Import By', cell: (element: TransactionData) => `${element.importBy}` },
+    { columnDef: TableConstant.ImportDate, header: 'Import Date', cell: (element: TransactionData) => `${element.importDate}` },
+    { columnDef: 'importFilename', header: 'Import Filename', cell: (element: TransactionData) => `${element.importFilename}` },
+    { columnDef: 'invMapID', header: 'Inventory Map ID', cell: (element: TransactionData) => safeCellValue(element.invMapId) },
+    { columnDef: TableConstant.LineNumber, header: 'Line Number', cell: (element: TransactionData) => `${element.lineNumber}` },
+    { columnDef: TableConstant.LineSequence, header: 'Line Sequence', cell: (element: TransactionData) => `${element.lineSequence}` },
+    { columnDef: TableConstant.LotNumber, header: Column.LotNumber, cell: (element: TransactionData) => `${element.lotNumber}` },
+    { columnDef: 'masterRecord', header: 'Master Record', cell: (element: TransactionData) => `${element.masterRecord}` },
+    { columnDef: 'masterRecordID', header: 'Master Record ID', cell: (element: TransactionData) => safeCellValue(element.masterRecordId) },
+    { columnDef: TableConstant.Notes, header: 'Notes', cell: (element: TransactionData) => `${element.notes}` },
+    { columnDef: UniqueConstants.Priority, header: 'Priority', cell: (element: TransactionData) => `${element.priority}` },
+    { columnDef: ColumnDef.RequiredDate, header: 'Required Date', cell: (element: TransactionData) => `${element.requiredDate}` },
+    { columnDef: ColumnDef.Revision, header: TableConstant.Revision, cell: (element: TransactionData) => `${element.revision}` },
+    { columnDef: Column.Row, header: this.fieldMappings?.row || TableConstant.Row, cell: (element: TransactionData) => `${element.row}` },
+    { columnDef: TableConstant.SerialNumber, header: ColumnDef.SerialNumber, cell: (element: TransactionData) => `${element.serialNumber}` },
+    { columnDef: TableConstant.shelf, header: this.fieldMappings?.shelf || TableConstant.shelf, cell: (element: TransactionData) => `${element.shelf}` },
+    { columnDef: 'statusCode', header: 'Status Code', cell: (element: TransactionData) => `${element.statusCode}` },
+    { columnDef: ColumnDef.ToteID, header: Column.ToteID, cell: (element: TransactionData) => safeCellValue(element.toteId) },
+    { columnDef: 'toteNumber', header: 'Tote Number', cell: (element: TransactionData) => `${element.toteNumber}` },
+    { columnDef: ColumnDef.UnitOfMeasure, header: this.UnitOfMeasure, cell: (element: TransactionData) => `${element.unitOfMeasure}` },
+    { columnDef: ColumnDef.userField1, header: this.UserField1, cell: (element: TransactionData) => `${element.userField1}` },
+    { columnDef: ColumnDef.userField2, header: this.UserField2, cell: (element: TransactionData) => `${element.userField2}` },
+    { columnDef: ColumnDef.userField3, header: this.UserField3, cell: (element: TransactionData) => `${element.userField3}` },
+    { columnDef: ColumnDef.userField4, header: this.UserField4, cell: (element: TransactionData) => `${element.userField4}` },
+    { columnDef: ColumnDef.userField5, header: this.UserField5, cell: (element: TransactionData) => `${element.userField5}` },
+    { columnDef: ColumnDef.userField6, header: this.UserField6, cell: (element: TransactionData) => `${element.userField6}` },
+    { columnDef: ColumnDef.userField7, header: this.UserField7, cell: (element: TransactionData) => `${element.userField7}` },
+    { columnDef: ColumnDef.userField8, header: this.UserField8, cell: (element: TransactionData) => `${element.userField8}` },
+    { columnDef: ColumnDef.userField9, header: this.UserField9, cell: (element: TransactionData) => `${element.userField9}` },
+    { columnDef: ColumnDef.userField10, header: this.UserField10, cell: (element: TransactionData) => `${element.userField10}` },
+    { columnDef: TableConstant.WareHouse, header: ColumnDef.Warehouse, cell: (element: TransactionData) => `${element.warehouse}` },
+    { columnDef: TableConstant.zone, header: ColumnDef.Zone, cell: (element: TransactionData) => `${element.zone}` },
   ];
 
   displayedTransColumns = this.filterTransColumns.map(c => c.columnDef);
 
-  orderTransDataSource: any;
+  orderTransDataSource: MatTableDataSource<TransactionData>;
+
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild('paginatorTrans') paginatorTrans: MatPaginator;
   @ViewChild(MatSort) viewTransSort: MatSort;
@@ -137,10 +141,11 @@ export class ViewOrdersComponent implements OnInit {
           if (this.data.allOrders.length > 0) {
             const selectedArr = this.allOrders.filter(element => this.data.allOrders.includes(element.orderNumber));
             
-            selectedArr.forEach(ele => {
-              ele.isSelected = true
-              this.selectedOrders.push(ele.orderNumber);
-            });
+            // Only select the first order for single-select mode
+            if (selectedArr.length > 0) {
+              selectedArr[0].isSelected = true;
+              this.selectedOrders = [selectedArr[0].orderNumber];
+            }
           }
   
           this.orderDataSource = new MatTableDataSource<any>(this.allOrders);
@@ -163,18 +168,22 @@ export class ViewOrdersComponent implements OnInit {
     });
   }
   onChangeOrderAction(option: any) {
-    if (option === 'fill_top_orders') {
-      this.selectedOrders = [];
-      for (let index = 0; index < this.data.pickBatchQuantity; index++) {
-        this.allOrders[index].isSelected = true;
-        this.selectedOrders.push(this.allOrders[index].orderNumber);
-      }
+    if (option === OrderActions.SelectOrder) {
+      // Enable multi-select mode
+      this.isMultiSelectMode = true;
     }
-    if (option === 'unselect_all_orders') {
-      for (let index = 0; index < this.data.pickBatchQuantity; index++) {
-        this.allOrders[index].isSelected = false;
-        this.selectedOrders = [];
-      }
+    if (option === OrderActions.SelectAllOrders) {
+      this.isMultiSelectMode = false;
+      this.allOrders.forEach(val => {
+        val.isSelected = true;
+      });
+      this.selectedOrders = this.allOrders.map(val => val.orderNumber);
+    }
+    if (option === OrderActions.UnselectAllOrders) {
+      this.isMultiSelectMode = false;
+      this.deselectAllOrders();
+      this.selectedOrders = [];
+      this.orderTransDataSource = new MatTableDataSource<TransactionData>([]);
     }
   }
 
@@ -184,57 +193,92 @@ export class ViewOrdersComponent implements OnInit {
   }
 
   onOrderSelect(row: any) {
-    
-    
-    
-    if (this.selectedOrders.includes(row.orderNumber)) {
-      this.allOrders.forEach(val => {
-        if (val.orderNumber === row.orderNumber) {
-          val.isSelected = false;
-          this.orderTransDataSource = [];
+    if (this.isMultiSelectMode) {
+      // Multi-select mode: Toggle the clicked order
+      if (this.selectedOrders.includes(row.orderNumber)) {
+        // Deselect the order
+        this.allOrders.forEach(val => {
+          if (val.orderNumber === row.orderNumber) {
+            val.isSelected = false;
+          }
+        });
+        this.selectedOrders = this.selectedOrders.filter(orderNum => orderNum !== row.orderNumber);
+        
+        // Clear transactions if no orders selected
+        if (this.selectedOrders.length === 0) {
+          this.orderTransDataSource = new MatTableDataSource<TransactionData>([]);
         }
-      });
-      this.selectedOrders = this.selectedOrders.filter(item => item !== row.orderNumber)
-    }
-    else if (this.selectedOrders.length >= this.data.pickBatchQuantity) {
-      this.global.ShowToastr(ToasterType.Error,'No open totes in batch', 'Batch is Filled.');
+      }
+      else {
+        // Select the order (add to existing selection)
+        this.allOrders.forEach(val => {
+          if (val.orderNumber === row.orderNumber) {
+            val.isSelected = true;
+          }
+        });
+        this.selectedOrders.push(row.orderNumber);
+      }
     }
     else {
-      this.selectedOrders.push(row.orderNumber);
-      this.allOrders.forEach(val => {
-        if (val.orderNumber === row.orderNumber) {
-          val.isSelected = true;
-        }
-      });
-      let paylaod = {
-        "Draw": 0,
-        "OrderNumber": row.orderNumber,
-        "sRow": 1,
-        "eRow": 10,
-        "SortColumnNumber": 0,
-        "SortOrder": UniqueConstants.Asc,
-        "Filter": "1=1", 
+      // Single-select mode (default behavior)
+      // If clicking the same order that's already selected, deselect it
+      if (this.selectedOrders.includes(row.orderNumber)) {
+        this.allOrders.forEach(val => {
+          if (val.orderNumber === row.orderNumber) {
+            val.isSelected = false;
+          }
+        });
+        this.selectedOrders = [];
+        this.orderTransDataSource = new MatTableDataSource<TransactionData>([]);
       }
-      this.iInductionManagerApi.InZoneTransDT(paylaod).subscribe((res) => {
-        if (res.isExecuted && res.data) {
-          this.transData = res.data.pickToteManTrans;
-          this.orderTransDataSource = new MatTableDataSource<any>(this.transData);
-          this.orderTransDataSource.paginator = this.paginatorTrans;
-          this.orderTransDataSource.sort = this.viewTransSort;
-        }
-        else {
-          this.global.ShowToastr(ToasterType.Error, this.global.globalErrorMsg(), ToasterTitle.Error);
-          console.log("InZoneTransDT",res.responseMessage);
-
-        }
-      });
+      else {
+        // Deselect all previously selected orders
+        this.deselectAllOrders();
+        
+        // Select only the new order
+        this.selectedOrders = [row.orderNumber];
+        this.allOrders.forEach(val => {
+          if (val.orderNumber === row.orderNumber) {
+            val.isSelected = true;
+          }
+        });
+        
+        // Fetch transactions for the selected order
+        this.fetchOrderTransactions(row.orderNumber);
+      }
     }
-
-
-
   }
   onSelectedOrders() {
     this.dialogRef.close(this.selectedOrders);
+  }
+
+  private deselectAllOrders(): void {
+    this.allOrders.forEach(val => {
+      val.isSelected = false;
+    });
+  }
+
+  private fetchOrderTransactions(orderNumber: string): void {
+    let paylaod = {
+      "Draw": 0,
+      "OrderNumber": orderNumber,
+      "sRow": 1,
+      "eRow": 10,
+      "SortColumnNumber": 0,
+      "SortOrder": UniqueConstants.Asc,
+      "Filter": "1=1", 
+    }
+    this.iInductionManagerApi.InZoneTransDT(paylaod).subscribe((res) => {
+      if (res.isSuccess && res.value) {
+        this.transData = cleanData(res.value.transactions as TransactionData[]);
+        this.orderTransDataSource = new MatTableDataSource<TransactionData>(this.transData);
+        this.orderTransDataSource.paginator = this.paginatorTrans;
+        this.orderTransDataSource.sort = this.viewTransSort;
+      }
+      else {
+        this.global.ShowToastr(ToasterType.Error, this.global.globalErrorMsg(), ToasterTitle.Error);
+      }
+    });
   }
 
 }

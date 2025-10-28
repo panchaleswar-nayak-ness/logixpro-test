@@ -1,36 +1,15 @@
-<mat-card class="mat-elevation-z g-card mb-4">
-  <mat-card-content>
-    <div class="d-flex align-items-center justify-content-between mb-4">
-      <div class="d-flex align-items-center">
-        <app-icon-heading-component 
-          icon="shelves" 
-          heading="Cart Management" 
-          [automationId]="'cart-management-title'">
-        </app-icon-heading-component>
-      </div>
-      <button mat-flat-button 
-              color="primary" 
-              class="btn-regular" 
-              data-automation-id="build-new-cart-button" 
-              (click)="onBuildNewCart()">
-        Build New Cart
-      </button>
-    </div>
 
-    <div class="row g-3">
-      <div class="col-xl-4 col-xxl-5">
-        <app-cart-search 
-          [searchTerm]="searchTerm" 
-          (searchChange)="onSearchChange($event)">
-        </app-cart-search>
-      </div>
-      
-      <div class="col-xl-8 col-xxl-7">
-        <app-cart-status-summary 
-          [statusSummary]="statusSummary">
-        </app-cart-status-summary>
-      </div>
+  <div class="row g-3 mb-3">
+    <div class="col-xl-6 col-xxl-6">
+      <app-induct-cart (cartValidated)="onCartValidated()"></app-induct-cart>
     </div>
+    
+    <div class="col-xl-6 col-xxl-6">
+      <app-cart-status-summary 
+        [statusSummary]="statusSummary">
+      </app-cart-status-summary>
+    </div>
+  </div>
 
     <app-cart-grid 
       [searchTerm]="searchTerm"
@@ -39,5 +18,3 @@
       (dataLoaded)="onCartDataLoaded()">
     </app-cart-grid>
 
-  </mat-card-content>
-</mat-card>

@@ -56,6 +56,7 @@ export const DialogModes = {
 
 export const DialogTitles = {
   CREATE: 'Build New Cart',
+  INDUCT: 'Induct Cart',
   EDIT: 'Edit Cart',
   VIEW: 'Cart Details',
   DEFAULT: 'Cart Management'

@@ -1,4 +1,4 @@
-import { Component, OnInit, Inject } from '@angular/core';
+import { Component, OnInit, Inject, OnDestroy } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { SelectionTransactionForToteExtendComponent } from '../selection-transaction-for-tote-extend/selection-transaction-for-tote-extend.component';
 import { ConfirmationDialogComponent } from 'src/app/admin/dialogs/confirmation-dialog/confirmation-dialog.component';
@@ -9,6 +9,9 @@ import {  ResponseStrings ,ToasterMessages,ToasterTitle,ToasterType,DialogConsta
 import { ApiResponse, ColumnAlias, OpenTransactions } from 'src/app/common/types/CommonTypes';
 import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.service';
 import { IAdminApiService } from 'src/app/common/services/admin-api/admin-api-interface';
+import { DialogCommunicationService } from 'src/app/common/services/dialog-communication.service';
+import { Subscription } from 'rxjs';
+import { BatchTotesTableResponse } from 'src/app/induction-manager/process-put-aways/process-put-aways.component';
 
 interface TransactionForToteResponse {
   inputType: string;
@@ -28,7 +31,7 @@ interface TransactionForToteResponse {
   templateUrl: './selection-transaction-for-tote.component.html',
   styleUrls: ['./selection-transaction-for-tote.component.scss']
 })
-export class SelectionTransactionForToteComponent implements OnInit {
+export class SelectionTransactionForToteComponent implements OnInit, OnDestroy {
 
   apiResponse : TransactionForToteResponse;
   transactionTable :  OpenTransactions[];
@@ -56,6 +59,7 @@ export class SelectionTransactionForToteComponent implements OnInit {
   formControlName: any;
   processForm: any;
   val: any;
+  private readonly subscriptions: Subscription[] = [];
 
   constructor(
     private dialog: MatDialog ,
@@ -63,7 +67,8 @@ export class SelectionTransactionForToteComponent implements OnInit {
     public inductionManagerApi: InductionManagerApiService,
     public dialogRef: MatDialogRef<SelectionTransactionForToteComponent>,
     public adminApiService: AdminApiService,
-    @Inject(MAT_DIALOG_DATA) public data: any
+    @Inject(MAT_DIALOG_DATA) public data: any,
+    private dialogCommunicationService: DialogCommunicationService
   ) { 
     this.iInductionManagerApi = inductionManagerApi;
     this.iAdminApiService = adminApiService;
@@ -72,7 +77,31 @@ export class SelectionTransactionForToteComponent implements OnInit {
   ngOnInit(): void {
     this.setData();
     this.getTransactions();
-    this.blindInduction();
+    this.blindInduction();    
+    this.subscribeToUpdates();
+  }
+
+  subscribeToUpdates() {
+    // Subscribe to batch and zone updates from dialog communication service
+    this.subscriptions.push(
+      this.dialogCommunicationService.batchUpdate$.subscribe((newBatchId: string) => {
+        if (newBatchId) {
+          this.batchID = newBatchId;
+          this.data.batchID = newBatchId;
+        }
+      }),
+      this.dialogCommunicationService.zoneUpdate$.subscribe((newZones: string) => {
+        if (newZones) {
+          this.zone = newZones;
+          this.data.zones = newZones;
+        }
+      }),
+      this.dialogCommunicationService.totesUpdate$.subscribe((newTotes: BatchTotesTableResponse[]) => {
+        if (newTotes) {
+          this.data.totes = newTotes;
+        }
+      })
+    );
   }
 
   setData(){
@@ -112,11 +141,12 @@ export class SelectionTransactionForToteComponent implements OnInit {
     if (val.zone) {
       let payload = { zone: val.zone };
       this.iInductionManagerApi.BatchByZone(payload).subscribe(
-        (res: any) => {
+        (res: ApiResponse<string>) => {
           if (res.isExecuted) {
-            if (!res.data || res.data != this.batchID) {
+            const zoneBatchId = res.data;
+            if (!zoneBatchId) {
               let dialogRef:any = this.global.OpenDialog(ConfirmationDialogComponent, {
-                height: 'auto',
+                height: DialogConstants.auto,
                 width: Style.w560px,
                 autoFocus: DialogConstants.autoFocus,
                 disableClose:true,
@@ -127,6 +157,10 @@ export class SelectionTransactionForToteComponent implements OnInit {
 
               dialogRef.afterClosed().subscribe((res) => { if (res == ResponseStrings.Yes) this.dialogRef.close("New Batch"); });
             } else {
+
+              // Zone belongs to different batch - broadcast update
+              this.dialogCommunicationService.updateBatch(zoneBatchId);
+
               const dialogRef:any = this.global.OpenDialog(SelectionTransactionForToteExtendComponent, {
                 height: DialogConstants.auto,
                 width: Style.w100vw,
@@ -279,5 +313,10 @@ export class SelectionTransactionForToteComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe((res) => { if (res) this.dialogRef.close(res); });
+  }
+
+  ngOnDestroy(): void {
+    // Unsubscribe from all subscriptions to prevent memory leaks
+    this.subscriptions.forEach(sub => sub.unsubscribe());
   }
 }

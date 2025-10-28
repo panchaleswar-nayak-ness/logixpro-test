@@ -1,0 +1,92 @@
+<div class="d-flex justify-content-between align-items-center mb-4">
+  <div class="w-48px"></div>
+  <h1 class="m-0" mat-dialog-title data-automation-id="add-cart-dialog-title">Add New Cart</h1>
+  <button mat-icon-button 
+          class="close-button dialog-close-button-fix" 
+          (click)="onClose()" 
+          data-automation-id="add-cart-dialog-close-btn">
+    <mat-icon class="close-icon">close</mat-icon>
+  </button>
+</div>
+
+<form [formGroup]="cartForm" mat-dialog-content>
+  <div class="cart-id-section mb-4">
+    <mat-form-field class="d-block w-100" appearance="outline" data-automation-id="cart-id-field">
+      <mat-label data-automation-id="cart-id-label">Cart ID</mat-label>
+      <input matInput 
+             #cartInputFocus
+             formControlName="cartId"
+             placeholder="Type / Scan Cart ID" 
+             [maxlength]="50" 
+             (keyup.enter)="onCartIdEnter()"
+             data-automation-id="cart-id-input">
+      <mat-error *ngIf="cartForm.get('cartId')?.hasError('maxlength')" data-automation-id="cart-id-maxlength-error">
+        Cart ID cannot exceed 50 characters
+      </mat-error>
+    </mat-form-field>
+  </div>
+
+  <div class="dimensions-section mb-4" *ngIf="showAdditionalFields">
+    <div class="d-flex align-items-end gap-3">
+      <mat-form-field class="flex-grow-1" appearance="outline" data-automation-id="position-count-field">
+        <mat-label data-automation-id="position-count-label">Position Count</mat-label>
+        <input matInput 
+               #positionCountInputRef
+               [(ngModel)]="positionCountInput"
+               type="number"
+               [min]="1"
+               [max]="8"
+               (keyup.enter)="onBothFieldsEnter()"
+               [ngModelOptions]="{standalone: true}"
+               data-automation-id="position-count-input">
+      </mat-form-field>
+
+      <mat-form-field class="flex-grow-1" appearance="outline" data-automation-id="shelve-count-field">
+        <mat-label data-automation-id="shelve-count-label">Shelve Count</mat-label>
+        <input matInput 
+               [(ngModel)]="shelveCountInput"
+               type="number"
+               [min]="1"
+               [max]="5"
+               (keyup.enter)="onBothFieldsEnter()"
+               [ngModelOptions]="{standalone: true}"
+               data-automation-id="shelve-count-input">
+      </mat-form-field>
+    </div>
+  </div>
+
+  <div class="instruction-section mb-4" *ngIf="showToteGrid">
+    <div class="d-flex align-items-center gap-2">
+      <mat-icon class="text-tertiary-800">info_outline</mat-icon>
+      <span class="text-tertiary-800 text-14" data-automation-id="layout-instruction-text">{{ getLayoutInstructionText() }}</span>
+    </div>
+  </div>
+
+  <div class="tote-grid-section mb-4" *ngIf="showToteGrid">
+    <app-tote-position-grid
+      [positions]="positions"
+      [selectedPosition]="selectedPosition"
+      [readonly]="true"
+      [cols]="cols"
+      [rows]="rows"
+      data-automation-id="tote-position-grid">
+    </app-tote-position-grid>
+  </div>
+</form>
+
+<mat-dialog-actions class="d-flex gap-12 w-100">
+  <button
+    type="button"
+    mat-flat-button
+    class="btn-lg flex-grow-1 flex-basis-0"
+    color="primary"
+    (click)="onAdd()"
+    [disabled]="isLoading || !showAdditionalFields || !areDimensionsValid()"
+    data-automation-id="add-btn">
+    <span *ngIf="!isLoading">Add</span>
+    <span *ngIf="isLoading">
+      <mat-spinner diameter="20" class="d-inline-block me-2"></mat-spinner>
+      Adding...
+    </span>
+  </button>
+</mat-dialog-actions>

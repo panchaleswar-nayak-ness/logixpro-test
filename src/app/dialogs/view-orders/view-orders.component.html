@@ -16,8 +16,9 @@
           <mat-label data-automation-id="actions-label">Actions</mat-label>
           <mat-select #matRef class="employees-action" placeholder="Actions"
             (selectionChange)="onChangeOrderAction($event.value)" [attr.data-automation-id]="'actions-select-' + (matRef.value || '')">
-            <mat-option value="fill_top_orders" data-automation-id="fill-top-orders-option">Fill With Top Orders</mat-option>
-            <mat-option value="unselect_all_orders" data-automation-id="unselect-all-orders-option">Un-Select All Orders</mat-option>
+            <mat-option value="select_all_orders" data-automation-id="select_all_orders-option">Select All</mat-option>
+            <mat-option value="unselect_all_orders" data-automation-id="unselect-order-option">Un-Select All Order</mat-option>
+            <mat-option value="select_order" data-automation-id="select-first-order-option">Select Order</mat-option>
           </mat-select>
           <span class="material-symbols-outlined icon-expand-more" data-automation-id="actions-expand-icon">
             expand_more

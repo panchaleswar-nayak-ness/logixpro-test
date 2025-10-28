@@ -18,6 +18,7 @@ export class ProcessPickTotesComponent {
   @Output() ToteAction = new EventEmitter<any>();
   @Output() fillNxtToteId = new EventEmitter<any>();
   @Output() clearOrderNum = new EventEmitter<any>();
+  @Output() clearAllEmitter = new EventEmitter<number>();
   @Input() dataSource: any;
   @Input() TOTE_SETUP: any;
   @Input() imPreferences: any;
@@ -162,5 +163,9 @@ export class ProcessPickTotesComponent {
         inputsArray[nextIndex].nativeElement.focus();
       }
     }
+  }
+
+  clearAll(index: number) {
+    this.clearAllEmitter.emit(index);
   }
 }

@@ -1,14 +1,16 @@
-import { Component, Input, Output, EventEmitter, ViewChild, OnInit, AfterViewInit, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, Input, Output, EventEmitter, ViewChild, OnInit, AfterViewInit, OnChanges, SimpleChanges, OnDestroy } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatSort, Sort } from '@angular/material/sort';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
-import { MatDialogRef } from '@angular/material/dialog';
+import { MatDialogRef, MatDialog } from '@angular/material/dialog';
+import { DeleteConfirmationComponent } from 'src/app/admin/dialogs/delete-confirmation/delete-confirmation.component';
 import { CartItem, PaginationConfig } from '../models/cart-management-models';
 import { GlobalService } from 'src/app/common/services/global.service';
 import { BuildNewCartComponent } from '../dialogs/build-new-cart/build-new-cart.component';
-import { CartListRequest, CartManagementData, CartManagementResult, ViewDetailsResponse } from '../interfaces/cart-management.interface';
+import { AddNewCartComponent } from '../add-new-cart/add-new-cart.component';
+import { CartListRequest, CartManagementData, CartManagementResult, ViewDetailsResponse, DeleteCartResponse } from '../interfaces/cart-management.interface';
 import { CartManagementApiService } from 'src/app/common/services/cart-management-api/cart-management-api.service';
-import { ToasterType, ToasterTitle, Style, DialogConstants, StringConditions } from 'src/app/common/constants/strings.constants';
+import { ToasterType, ToasterTitle, ToasterMessages, Style, DialogConstants, StringConditions, Mode, ConfirmationMessages, AccessLevel } from 'src/app/common/constants/strings.constants';
 import { CartManagementGridDefaults } from 'src/app/common/constants/numbers.constants';
 import { CartStatus, CartStatusClassMap, CartDialogConstants, CartManagementDialogConstants, DialogModes, BuildNewCartActionResults } from '../constants/string.constants';
 import { UniqueConstants, ResponseStrings } from 'src/app/common/constants/strings.constants';
@@ -16,13 +18,18 @@ import { NgZone } from '@angular/core';
 import { TableContextMenuService } from 'src/app/common/globalComponents/table-context-menu-component/table-context-menu.service';
 import { FilterationColumns } from 'src/app/common/Model/pick-Tote-Manager';
 import { AllDataTypeValues } from 'src/app/common/types/pick-tote-manager.types';
+import { AuthService } from 'src/app/common/init/auth.service';
+import { UserSession } from 'src/app/common/types/CommonTypes';
+import { TableHeaderDefinitions } from 'src/app/common/types/CommonTypes';
+import { Subject, Subscription } from 'rxjs';
+import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 
 @Component({
   selector: 'app-cart-grid',
   templateUrl: './cart-grid.component.html',
   styleUrls: ['./cart-grid.component.scss']
 })
-export class CartGridComponent implements OnInit, AfterViewInit, OnChanges {
+export class CartGridComponent implements OnInit, AfterViewInit, OnChanges, OnDestroy {
   @ViewChild(MatSort) sort!: MatSort;
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
@@ -30,12 +37,16 @@ export class CartGridComponent implements OnInit, AfterViewInit, OnChanges {
     private global: GlobalService,
     private cartApiService: CartManagementApiService,
     private ngZone: NgZone,
-    private contextMenuService: TableContextMenuService
+    private contextMenuService: TableContextMenuService,
+    private authService: AuthService
   ) {}
 
   @Input() searchTerm: string = '';
-  @Input() selectedColumn: string = 'cartId';
+  @Input() selectedColumn: string = 'Cart ID';
   @Input() selectedStatus: string = CartStatus.All;
+  
+  // Internal property to track the actual API column name
+  private apiColumnName: string = 'cartId';
   sortBy: string = 'CartID';
   sortDirection: string = 'asc';
   
@@ -56,6 +67,37 @@ export class CartGridComponent implements OnInit, AfterViewInit, OnChanges {
   isActiveTrigger: boolean = false;
   filterationColumns: FilterationColumns[] = [];
 
+  // User access properties
+  userData: UserSession;
+
+  // Column filter properties
+  tableColumns: TableHeaderDefinitions[] = [
+    { colHeader: 'cartId', colTitle: 'Cart ID', colDef: 'Cart ID' },
+    { colHeader: 'cartStatus', colTitle: 'Status', colDef: 'Status' },
+    { colHeader: 'toteQty', colTitle: 'Tote Quantity', colDef: 'Tote Quantity' },
+    { colHeader: 'location', colTitle: 'Location', colDef: 'Location' }
+  ];
+  searchAutocompleteList: string[] = [];
+  searchByInput = new Subject<string>();
+  private searchSubscription: Subscription;
+  isLoadingSuggestions: boolean = false;
+
+  // Centralized column mapping for consistent usage
+  private readonly columnMapping = {
+    'Cart ID': 'cartId',
+    'Status': 'cartStatus',
+    'Tote Quantity': 'toteQty',
+    'Location': 'location'
+  } as const;
+
+  // Property mapping for dynamic cart property access
+  private readonly cartPropertyMap = {
+    cartId: 'cartID',
+    cartStatus: 'cartStatus',
+    location: 'location',
+    toteQty: 'totesQty'
+  } as const;
+
   @Output() pageChange = new EventEmitter<PageEvent>();
   @Output() viewDetails = new EventEmitter<CartItem>();
   @Output() editCart = new EventEmitter<CartItem>();
@@ -63,10 +105,27 @@ export class CartGridComponent implements OnInit, AfterViewInit, OnChanges {
   @Output() dataLoaded = new EventEmitter<void>();
 
   ngOnInit(): void {
+    // Initialize user data
+    this.userData = this.authService.userData();
+    
     // Initialize the data source
     if (this.dataSource) {
       this.dataSource.sort = this.sort;
     }
+    
+    // Initialize API column name mapping
+    this.initializeColumnMapping();
+    
+    // Initialize search subscription for autocomplete
+    this.searchSubscription = this.searchByInput
+      .pipe(
+        debounceTime(300),
+        distinctUntilChanged()
+      )
+      .subscribe(searchTerm => {
+        this.loadAutocompleteSuggestions(searchTerm);
+      });
+    
     this.loadCarts();
   }
 
@@ -88,6 +147,18 @@ export class CartGridComponent implements OnInit, AfterViewInit, OnChanges {
     if (this.dataSource && this.dataSource.data.length > 0) {
       this.dataSource.data = [...this.dataSource.data];
     }
+  }
+
+  ngOnDestroy(): void {
+    if (this.searchSubscription) {
+      this.searchSubscription.unsubscribe();
+    }
+    this.searchByInput.complete();
+  }
+
+  // Initialize column mapping based on the current selectedColumn
+  private initializeColumnMapping(): void {
+    this.apiColumnName = this.columnMapping[this.selectedColumn] || 'cartId';
   }
 
   getStatusClass(status: string): string {
@@ -114,7 +185,7 @@ export class CartGridComponent implements OnInit, AfterViewInit, OnChanges {
     const request: CartListRequest = {
       Search: {
         Value: this.searchTerm,
-        Column: this.selectedColumn
+        Column: this.apiColumnName
       },
       sort: {
         Direction: this.sortDirection,
@@ -124,10 +195,11 @@ export class CartGridComponent implements OnInit, AfterViewInit, OnChanges {
       PageSize: this.customPagination.pageSize,
       Filters: this.filterationColumns
     };
+
   
     this.cartApiService.getCarts(request).subscribe({
       next: (response) => {
-        const mappedData = response.value.map(cart => ({
+        const mappedData: CartItem[] = response.value.map(cart => ({
           cartId: cart.cartID, // Map cartID to cartId for component compatibility
           cartStatus: cart.cartStatus, // Map cartStatus to status for component compatibility
           statusDate: cart.cartStatusDate, // Map cartStatusDate to inductedDateTime for component compatibility
@@ -299,6 +371,134 @@ export class CartGridComponent implements OnInit, AfterViewInit, OnChanges {
     }
   }
 
+  onDeleteCart(record: CartItem): void {
+    const dialogData = {
+      action: 'delete',
+      actionMessage: ` cart "${record.cartId}"`,
+      message: ConfirmationMessages.IrreversibleActionWarning,
+      mode: Mode.DeleteCart,
+      cartId: record.cartId
+    };
+
+    const dialogRef = this.global.OpenDialog(DeleteConfirmationComponent, {
+      data: dialogData,
+      width: Style.w480px,
+      height: DialogConstants.auto,
+      disableClose: true
+    });
+
+    dialogRef.afterClosed().subscribe((result: { isExecuted: boolean } | undefined) => {
+      if (result && result.isExecuted) {
+        // Just refresh the grid - API call handled in DeleteConfirmationComponent
+        this.loadCarts();
+      }
+    });
+  }
+
+  
+  // Column filter component event handlers
+  onColumnSelectionChange(event: Event | string): void {
+    // Extract the selected value from the event
+    let selectedDisplayName: string;
+    
+    if (typeof event === 'string') {
+      selectedDisplayName = event;
+    } else {
+      // Handle Event object - extract value from target
+      const target = event.target as HTMLSelectElement;
+      selectedDisplayName = target.value;
+    }
+    
+    this.selectedColumn = selectedDisplayName; // Keep display name for UI
+    this.apiColumnName = this.columnMapping[selectedDisplayName] || selectedDisplayName; // Store API name
+    this.searchTerm = '';
+    this.searchAutocompleteList = [];
+    // Don't call loadCarts() here - let user search first
+  }
+
+  onSearchInput(searchTerm: string): void {
+    this.searchTerm = searchTerm;
+    // Only trigger autocomplete for meaningful search terms
+    if (searchTerm) {
+      this.searchByInput.next(searchTerm);
+    } else {
+      this.searchAutocompleteList = [];
+    }
+  }
+
+  onOptionSelected(selectedValue: string): void {
+    this.searchTerm = selectedValue;
+    this.loadCarts();
+  }
+
+  onClearSearch(): void {
+    this.searchTerm = '';
+    this.selectedColumn = '';
+    this.apiColumnName = '';
+    this.searchAutocompleteList = [];
+    this.loadCarts();
+  }
+
+  // Load autocomplete suggestions based on search term and selected column
+  private loadAutocompleteSuggestions(searchTerm: string): void {
+    if (!searchTerm || !this.apiColumnName) {
+      this.searchAutocompleteList = [];
+      return;
+    }
+
+    this.isLoadingSuggestions = true;
+
+    // Create a request to get suggestions for the specific column
+    const request: CartListRequest = {
+      Search: {
+        Value: searchTerm,
+        Column: this.apiColumnName
+      },
+      sort: {
+        Direction: 'asc',
+        Column: this.apiColumnName
+      },
+      SelectedPage: 1,
+      PageSize: 50, 
+      Filters: []
+    };
+
+    this.cartApiService.getCarts(request).subscribe({
+      next: (response) => {
+        const suggestions: Set<string> = new Set<string>();
+        const property: string = this.cartPropertyMap[this.apiColumnName];
+        
+        response.value.forEach(cart => {
+          const value = cart[property]?.toString() || '';
+          
+          if (value && value.toLowerCase().includes(searchTerm.toLowerCase())) {
+            suggestions.add(value);
+          }
+        });
+        
+        this.searchAutocompleteList = Array.from(suggestions).slice(0, 10);
+        this.isLoadingSuggestions = false;
+      },
+      error: (error) => {
+        this.handleAutocompleteError(error);
+        this.isLoadingSuggestions = false;
+      }
+    });
+  }
+
+  onSearchChange(searchData: { searchTerm: string, column: string }): void {
+    this.searchTerm = searchData.searchTerm;
+    this.selectedColumn = searchData.column;
+    this.loadCarts();
+  }
+
+  // Centralized error handling for autocomplete
+  private handleAutocompleteError(error: Error | unknown): void {
+    console.error('Error loading autocomplete suggestions:', error);
+    this.searchAutocompleteList = [];
+    // Could add user-friendly notification here if needed
+  }
+
   onRowClick(record: CartItem): void {
     this.selectedRecord = record;
   }
@@ -342,14 +542,42 @@ export class CartGridComponent implements OnInit, AfterViewInit, OnChanges {
     this.isActiveTrigger = false;
   }
   private mapFilterColumn(filterColumnName?: string): string | undefined {
-    const columnMapping: Record<string, string> = {
+    const columnMapping = {
       cartId: "SortBar.SortBar1",
       cartStatus: "SortBar.Status",
       statusDate: "SortBar.StatusDate",
       toteQty: "ToteQty",
       location: "SortBar.SortBarLocation"
-    };
+    } as const;
   
     return filterColumnName ? columnMapping[filterColumnName] ?? filterColumnName : undefined;
+  }
+
+    onAddNewCart(): void {
+    const dialogRef = this.global.OpenDialog(AddNewCartComponent, {
+      // width: Style.w560px,
+      // maxWidth: Style.w1080px,
+      width: 'auto',
+      minWidth: Style.w560px,
+      height: DialogConstants.auto,
+      disableClose: false
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        // Handle the result from the Add New Cart dialog
+        this.loadCarts();
+      }
+    });
+  }
+
+  // Check if current user is administrator
+  isAdministrator(): boolean {
+    return this.userData?.accessLevel?.toLowerCase() === AccessLevel.Administrator.toLowerCase();
+  }
+
+  // Check if user can delete a specific cart
+  canDeleteCart(record: CartItem): boolean {
+    return this.isAdministrator() && record.cartStatus === 'Available';
   }
 }

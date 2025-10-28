@@ -4,7 +4,7 @@ import { of } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
 import { BaseService } from './base-service.service';
 import { AuthService } from '../init/auth.service';
-import { AssignToteToOrderDto, BatchesRequest, EmergencyPickOrdersRequest, NextToteId, OrderLineResource, OrderResponse, OrdersRequest, PartialToteIdRequest, PartialToteIdResponse, RemoveOrderLinesRequest, RemoveOrderLinesResponse, TotesRequest } from '../Model/bulk-transactions';
+import { AssignToteToOrderDto, BatchesRequest, EmergencyPickOrdersRequest, NextToteId, OrderLineResource, OrderResponse, OrdersRequest, PartialToteIdRequest, PartialToteIdResponse, RemoveOrderLinesRequest, RemoveOrderLinesResponse, TotesRequest, UpdateOTsNewBatchIdRequest } from '../Model/bulk-transactions';
 import {
   MarkoutBlossomTotenRequest,
   MarkoutCompleteTransactionRequest,
@@ -17,7 +17,7 @@ import {IQueryParams} from 'src/app/consolidation-manager/cm-route-id-management
 import { MarkoutAuditResponse, MarkoutPickLinesResponse, MarkoutResponse } from 'src/app/consolidation-manager/cm-markout-new/models/cm-markout-new-models';
 import { ZoneListPayload } from 'src/app/bulk-process/preferences/preference.models';
 import { DevicePreferenceRequest, DevicePreferencesTableRequest } from '../interface/admin/device-preferences';
-import { RemoveCartContentRequest, ValidateToteRequest, ValidationRequest, ViewDetailsResponse, CartApiResponse, ValidateToteResponse, CompleteCartResponse, CartListResponse, CartSearchRequest, CartStatusCountsDto } from 'src/app/induction-manager/cart-management/interfaces/cart-management.interface';
+import { RemoveCartContentRequest, ValidateToteRequest, ValidationRequest, ViewDetailsResponse, CartApiResponse, ValidateToteResponse, CompleteCartResponse, CartListResponse, CartSearchRequest, CartStatusCountsDto, AddCartRequest, AddCartResponse, ValidateCartIdResponse, DeleteCartResponse } from 'src/app/induction-manager/cart-management/interfaces/cart-management.interface';
 import { UpdateEmergencyRequest } from '../interface/admin/opentransaction.interfaces';
 import { ApiResponse, ApiResponseData, ApiResult, ExitOk } from '../types/CommonTypes';
 import {PrintOrdersPayload, PrintTransactionPayload} from '../interface/bulk-transactions/bulk-pick';
@@ -942,7 +942,7 @@ export class ApiFuntions {
   }
 
   public InZoneTransDT(body: any): Observable<any> {
-    return this.ApiBase.Get('/Induction/inzonetransdt', body);
+    return this.ApiBase.Get('/Induction/inzonetransdtnonreporders', body);
   }
 
   public ContIDShipTransUpdate(body: any): Observable<any> {
@@ -2027,6 +2027,14 @@ public updateEmergencyReprocessTrans(payload: UpdateEmergencyRequest): Observabl
     return this.ApiBase.Get(`/batches/${body.batchpickid}`, body);
   }
 
+  public async updateOTsNewBatchId(request: UpdateOTsNewBatchIdRequest): Promise<string> {
+    const response = await this.ApiBase.PostAsync<any>('/batches/updateotsnewbatchid', request);
+    if (!response.body) {
+      throw new Error('No response body or value received from /batches/updateotsnewbatchid API');
+    }
+    return response.body;
+  }
+
   public bulkPickOrders(body: any): Observable<any> {
     return this.ApiBase.Get('/orders', body);
   }
@@ -2523,6 +2531,30 @@ public storageBinsExit(binId: string, zone: string): Observable<ExitOk> {
       throw new Error('No response body received from completeCart API');
     }
     return response.body as unknown as CompleteCartResponse;
+  }
+
+  public async addCart(request: AddCartRequest): Promise<AddCartResponse> {
+    const response = await this.ApiBase.PostAsync('/cart/addCart', request);
+    if (!response.body) {
+      throw new Error(ApiErrorMessages.NoResponseBodyFromAddCartAPI);
+    }
+    return response.body as unknown as AddCartResponse;
+  }
+
+  public async validateCartId(cartId: string): Promise<ValidateCartIdResponse> {
+    const response = await this.ApiBase.GetAsync(`/cart/validateCartId?cartId=${cartId}`);
+    if (!response.body) {
+      throw new Error(ApiErrorMessages.NoResponseBodyFromValidateCartIdAPI);
+    }
+    return response.body as unknown as ValidateCartIdResponse;
+  }
+
+  public async deleteCart(cartId: string): Promise<DeleteCartResponse> {
+    const response = await this.ApiBase.DeleteAsync(`/cart/deleteCart?cartId=${cartId}`);
+    if (!response.body) {
+      throw new Error(ApiErrorMessages.NoResponseBodyFromDeleteCartAPI);
+    }
+    return response.body as unknown as DeleteCartResponse;
   }
   
   public async GetNextToteIdForSlapperLabelAsync(request: PartialToteIdRequest[]): Promise<PartialToteIdResponse[]> {

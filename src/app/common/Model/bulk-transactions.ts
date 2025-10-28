@@ -511,3 +511,7 @@ export interface EmergencyOrdersInfo {
   matchingZones: string[];
   allEmergencyZones: string[];
 }
+
+export class UpdateOTsNewBatchIdRequest {
+  openTransactionIds: number[] = [];
+}

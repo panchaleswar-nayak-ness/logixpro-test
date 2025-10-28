@@ -137,6 +137,7 @@ export const ConfirmationHeadings = {
     ResolveToteId: "Resolve Tote ID",
     ClearAll: "Clear All?",
     CancelCartCreation: "Cancel Cart Creation",
+    BuildCartCancel: "Build Cart Cancel",
     CancelCartUpdate: "Discard Changes?",
     PrintBatchOrOrders: "Print Batch Or Orders?",
     PrintOffCarouselPickItemLabels: "Print Off-Carousel Pick Item Labels?",
@@ -316,13 +317,26 @@ export const ToasterMessages = {
     InvalidToteID: "Invalid Tote ID, please enter again",
     StorageBinExitSuccessful: 'Storage Container has been sent to Outbound Port.',
     CartAvailableAgain: 'All totes removed. Cart is now available again.',
-    CartInducted: 'Cart has been Inducted',
+    PleaseEnterBothPositionAndShelveCount: 'Please enter both Position Count and Shelve Count',
+    PleaseEnterValidNumbersForPositionAndShelveCount: 'Please enter valid numbers for Position Count and Shelve Count',
+    PositionCountMustBeBetween1And8: 'Position Count must be between 1 and 8',
+    ShelveCountMustBeBetween1And5: 'Shelve Count must be between 1 and 5',
+    PleaseEnterValidCartId: 'Cart ID already exists.',
+    PleaseEnterCartId: 'Please enter a Cart ID.',
+    UnableToValidateCartID: 'Unable To Validate Cart ID.',
+    CartInducted: 'Cart has been Inducted.',
+    CartCreatedSuccessfully: 'Cart {{cartId}} created successfully!',
+    FailedToCreateCart: 'Failed to create cart.',
+    CartDeletedSuccessfully: 'Cart deleted successfully',
+    FailedToDeleteCart: 'Failed to delete cart',
     InvalidTote: "Please enter a valid Tote ID",
     InventoryMapRecordsDeletedSuccessfully: (count: number) => `Successfully deleted ${count} inventory map record(s)`,
     InventoryMapRecordsPartiallyDeleted: (successCount: number, failureCount: number) => `Deleted ${successCount} record(s), but ${failureCount} failed to delete`,
     InventoryMapRecordsDeleteFailed: 'Failed to delete inventory map records',
     ErrorDeletingInventoryMapRecords: 'Error occurred while deleting inventory map records',
-    ToteIDAlreadyExists: 'This Tote ID already exists in the table. Please enter a different Tote ID.'
+    ToteIDAlreadyExists: 'This Tote ID already exists in the table. Please enter a different Tote ID.',
+    NoBatchesWithZone: 'There are no batches with this zone ({{zone}}) assigned.  Click OK to start a new batch or cancel to choose a different location/transaction.',
+    BatchChangedSuccessfully: 'Current Batch is now {{batchId}}',
 }
 
 export const LiveAnnouncerMessage = {
@@ -491,27 +505,28 @@ export const Case = {
 }
 
 export const Mode = {
-  HoldTransactions: 'hold-trans',
-  DeleteTransaction: 'delete-transaction',
-  DeleteZone: 'delete-zone',
-  DeletePickLevel: 'delete-picklevel',
-  DeleteLocation: 'delete-location',
-  DeleteConnectionString: 'delete-connection-string',
-  DeleteGroup: 'delete-group',
-  DeleteAllowedGroup: 'delete-allowed-group',
-  DeleteAllowedFunction: 'delete-allowed-funcation',
-  DeleteInvMap: 'delete-inventory-map',
-  DeleteEmp: 'delete-emp',
-  DeleteGrpAllowed: 'delete-grpallowed',
-  DeleteWarehouse: 'delete-warehouse',
-  DeleteVelocity: 'delete-velocity',
-  DeleteOrderStatus: 'delete-order-status',
-  DeleteCarrier: 'delete-carrier',
-  DeleteWorkstation: 'delete_workstation',
-  DeleteCategory: 'delete-category',
-  DeleteTrans: 'delete-trans',
-  DeleteOrder: 'delete-order',
-  DeleteManualTransaction: 'delete-manual-transaction'
+    HoldTransactions: 'hold-trans',
+    DeleteTransaction: 'delete-transaction',
+    DeleteZone: 'delete-zone',
+    DeletePickLevel: 'delete-picklevel',
+    DeleteLocation: 'delete-location',
+    DeleteConnectionString: 'delete-connection-string',
+    DeleteGroup: 'delete-group',
+    DeleteAllowedGroup: 'delete-allowed-group',
+    DeleteAllowedFunction: 'delete-allowed-funcation',
+    DeleteInvMap: 'delete-inventory-map',
+    DeleteEmp: 'delete-emp',
+    DeleteGrpAllowed: 'delete-grpallowed',
+    DeleteWarehouse: 'delete-warehouse',
+    DeleteVelocity: 'delete-velocity',
+    DeleteOrderStatus: 'delete-order-status',
+    DeleteCarrier: 'delete-carrier',
+    DeleteWorkstation: 'delete_workstation',
+    DeleteCategory: 'delete-category',
+    DeleteCart: 'delete-cart',
+    DeleteTrans: 'delete-trans',
+    DeleteOrder: 'delete-order',
+    DeleteManualTransaction: 'delete-manual-transaction'
 }
 
 export const TableName = {
@@ -835,6 +850,9 @@ export class ApiErrorMessages {
   static readonly ErrorLoadingContainerLayout = "Error loading container layout"
   static readonly ErrorLoadingInventoryData = "Error loading inventory data"
   static readonly ValidationError = "Validation error"
+  static readonly NoResponseBodyFromAddCartAPI = "No response body received from addCart API"
+  static readonly NoResponseBodyFromValidateCartIdAPI = "No response body received from validateCartId API"
+  static readonly NoResponseBodyFromDeleteCartAPI = "No response body received from deleteCart API"
 }
 export const PickToteFilterpreferences = {
   preferences: "PickToteFilterPrefs"
@@ -950,4 +968,10 @@ export const DialogTitles = {
 export const EmergencyOptions = {
     ProceedWithEmergencyPick:'proceed',
     Snooze:'snooze'
+}
+
+export const OrderActions = {
+    SelectOrder: 'select_order',
+    UnselectAllOrders: 'unselect_all_orders',
+    SelectAllOrders: 'select_all_orders'
 }

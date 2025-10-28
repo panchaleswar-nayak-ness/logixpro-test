@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { AuthService } from 'src/app/common/init/auth.service';
 import { UserSession } from '../types/CommonTypes';
-import { ProcessPicksPickTypePreference } from '../interface/common-interfaces';
+import { ProcessPicksPickTypePreference, WorkstationZoneFilterPreference } from '../interface/common-interfaces';
 
 @Injectable({
   providedIn: 'root'
@@ -534,13 +534,85 @@ export class LocalStorageService {
     return this.processPicksPickTypeDefaultValue; // Default value if not found
   }
 
+  private workstationZoneFilterKey = "WorkstationZoneFilter"; // Key for workstation zone filter in localStorage
+  private workstationZoneFilterDefaultValue = { Carousel: false, CartonFlow: true, Bulk: true }; // Default values for workstation zone filter
+
+  SetWorkstationZoneFilter(carousel: boolean, cartonFlow: boolean, bulk: boolean): WorkstationZoneFilterPreference {
+    const LoggedInUserName: string = this.userData.userName;  // Get current login user name from Logged-in user data
+    const AllZoneFilterPreferences: string | null = localStorage.getItem(this.workstationZoneFilterKey); // Zone Filter preferences for all users
+    
+    if (AllZoneFilterPreferences) // check if any value exists in local storage
+    {
+      const usersZoneFilterPreferences: WorkstationZoneFilterPreference[] = JSON.parse(AllZoneFilterPreferences);
+      const userZoneFilterPreference: WorkstationZoneFilterPreference | undefined = usersZoneFilterPreferences.find((pref: WorkstationZoneFilterPreference) => pref.UserName === LoggedInUserName);
+      
+      if (userZoneFilterPreference) // check if value exists for loggedIn user in local storage
+      {
+        userZoneFilterPreference.Carousel = carousel;
+        userZoneFilterPreference.CartonFlow = cartonFlow;
+        userZoneFilterPreference.Bulk = bulk;
+        localStorage.setItem(this.workstationZoneFilterKey, JSON.stringify(usersZoneFilterPreferences));
+      }
+      else //if value not exists for loggedIn user then add
+      {
+        const ZoneFilterPreference: WorkstationZoneFilterPreference = 
+        {
+          UserName: LoggedInUserName,
+          Carousel: carousel,
+          CartonFlow: cartonFlow,
+          Bulk: bulk
+        }
+        usersZoneFilterPreferences.push(ZoneFilterPreference);
+        localStorage.setItem(this.workstationZoneFilterKey, JSON.stringify(usersZoneFilterPreferences));
+      }
+    } 
+    else // if value not exists for any user in local storage then add value in it
+    {
+      const ZoneFilterPreference: WorkstationZoneFilterPreference = 
+      {
+        UserName: LoggedInUserName,
+        Carousel: carousel,
+        CartonFlow: cartonFlow,
+        Bulk: bulk
+      }
+      const allZoneFilterPreferences: WorkstationZoneFilterPreference[] = [ZoneFilterPreference];
+      localStorage.setItem(this.workstationZoneFilterKey, JSON.stringify(allZoneFilterPreferences)); 
+    } 
+   
+    // Retrieve the updated zone filter preference from localStorage
+    const updatedZoneFilterPreferences: WorkstationZoneFilterPreference[] = JSON.parse(localStorage.getItem(this.workstationZoneFilterKey) || '[]');
+    const updatedUserZoneFilterPreference: WorkstationZoneFilterPreference | undefined = updatedZoneFilterPreferences.find((pref: WorkstationZoneFilterPreference) => pref.UserName === LoggedInUserName);
+    
+    // Return the zone filter preference
+    if (updatedUserZoneFilterPreference) {
+      return updatedUserZoneFilterPreference;
+    }
+    return { UserName: LoggedInUserName, ...this.workstationZoneFilterDefaultValue }; // Default values if not found
+  }
+
+  GetWorkstationZoneFilter(): WorkstationZoneFilterPreference {
+    const LoggedInUserName: string = this.userData.userName;  // Get current login user name from Logged-in user data
+    const AllZoneFilterPreferences: string | null = localStorage.getItem(this.workstationZoneFilterKey); // Zone Filter preferences for all users
+    
+    if (AllZoneFilterPreferences) {
+      const usersZoneFilterPreferences: WorkstationZoneFilterPreference[] = JSON.parse(AllZoneFilterPreferences);
+      const userZoneFilterPreference: WorkstationZoneFilterPreference | undefined = usersZoneFilterPreferences.find((pref: WorkstationZoneFilterPreference) => pref.UserName === LoggedInUserName);
+      
+      if (userZoneFilterPreference) {
+        return userZoneFilterPreference;
+      }
+    }
+    
+    return { UserName: LoggedInUserName, ...this.workstationZoneFilterDefaultValue }; // Default values if not found
+  }
+
   clearLocalStorage(): void {
   
     // Get the total number of keys in localStorage   
     const totalKeys: number = localStorage.length;
 
     // Create an array of keys to be excluded from removal
-    const exceptKeys: string[] = ['CountPickChecks','CountPutChecks', 'CountPickChecksLocation', 'CountPutChecksLocation','ImportCountLocationChecks','OrderStatusSelectionDefaultValue','ProcessPicksPickType']; // Add more keys as needed
+    const exceptKeys: string[] = ['CountPickChecks','CountPutChecks', 'CountPickChecksLocation', 'CountPutChecksLocation','ImportCountLocationChecks','OrderStatusSelectionDefaultValue','ProcessPicksPickType','WorkstationZoneFilter']; // Add more keys as needed
 
     // Iterate through all the keys in localStorage
     for (let i = 0; i < totalKeys; i++) {

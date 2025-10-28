@@ -1,5 +1,5 @@
 import { SelectionModel } from '@angular/cdk/collections';
-import { Component, ElementRef, HostListener, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, HostListener, OnInit, ViewChild, OnDestroy } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import { BatchDeleteComponent } from 'src/app/dialogs/batch-delete/batch-delete.component';
@@ -8,7 +8,7 @@ import { SelectionTransactionForToteComponent } from 'src/app/dialogs/selection-
 import { TotesAddEditComponent } from 'src/app/dialogs/totes-add-edit/totes-add-edit.component';
 import { AuthService } from 'src/app/common/init/auth.service';
 import { ConfirmationDialogComponent } from 'src/app/admin/dialogs/confirmation-dialog/confirmation-dialog.component';
-import { debounceTime, distinctUntilChanged, Subject, timer } from 'rxjs';
+import { debounceTime, distinctUntilChanged, Subject, timer, Subscription } from 'rxjs';
 import { FloatLabelType } from '@angular/material/form-field';
 import { FormControl } from '@angular/forms';
 import { ToteTransactionViewComponent } from 'src/app/dialogs/tote-transaction-view/tote-transaction-view.component';
@@ -33,6 +33,7 @@ import { ToasterTitle, ToasterType ,LiveAnnouncerMessage,ResponseStrings,Keyboar
 import { ApiResponse, ColumnAlias } from 'src/app/common/types/CommonTypes';
 import { PrintApiService} from "../../common/services/print-api/print-api.service";
 import {CommonApiService } from 'src/app/common/services/common-api/common-api.service';
+import { DialogCommunicationService } from 'src/app/common/services/dialog-communication.service';
 export interface PeriodicElement {
   position: string;
 }
@@ -46,6 +47,16 @@ interface BatchTotesResponse {
   wsid: string;
 }
 
+export interface BatchTotesTableResponse {
+  cells: string;
+  isSelected: boolean;
+  status: number;
+  toteID: string;
+  toteQuantity: number;
+  totesPosition: string;
+  zoneLabel: string;
+}
+
 interface SearchItemResponse {
   isExecuted: boolean;
   data: Array<{ itemNumber: string; description: string }>;
@@ -57,7 +68,7 @@ interface SearchItemResponse {
   templateUrl: './process-put-aways.component.html',
   styleUrls: ['./process-put-aways.component.scss'],
 })
-export class ProcessPutAwaysComponent implements OnInit {
+export class ProcessPutAwaysComponent implements OnInit, OnDestroy {
   fieldMappings = JSON.parse(localStorage.getItem('fieldMappings') ?? '{}');
   itemNumber: string = this.fieldMappings.itemNumber;
   ELEMENT_DATA = [{ position: 0, cells: '', toteid: '', locked: '' }];
@@ -135,6 +146,7 @@ export class ProcessPutAwaysComponent implements OnInit {
   searchAutocompleteItemNumbers: Array<{ itemNumber: string; description: string }> = [];
   searchByItemNumber: Subject<string> = new Subject<string>();
   private isOptionBeingSelected: boolean = false;
+  private readonly subscriptions: Subscription[] = [];
 
   /** Whether the number of selected elements matches the total number of rows. */
   isAllSelected() {
@@ -167,7 +179,8 @@ export class ProcessPutAwaysComponent implements OnInit {
     private router: Router,
     private sharedService: SharedService,
     private printApiService: PrintApiService,
-     private CommonApiService:CommonApiService
+     private CommonApiService:CommonApiService,
+    private dialogCommunicationService: DialogCommunicationService
   ) {
     this.iAdminApiService = adminApiService;
     this.commonApiService=CommonApiService;
@@ -209,6 +222,17 @@ export class ProcessPutAwaysComponent implements OnInit {
         this.autocompleteSearchColumnItemNumber();
       });
     setTimeout(()=> this.getProcessPutAwayIndex(), 300)
+    
+    // Subscribe to batch updates from dialog communication service
+    this.subscriptions.push(
+      this.dialogCommunicationService.batchUpdate$.subscribe((newBatchId: string) => {
+        if (newBatchId) {
+          this.batchId = newBatchId;
+          this.batchId2 = newBatchId;
+          this.fillToteTable(newBatchId);
+        }
+      })
+    );
   }
 
   callFunBatchSetup(event:any){
@@ -401,6 +425,15 @@ export class ProcessPutAwaysComponent implements OnInit {
           }
 
           this.dataSource = new MatTableDataSource<any>(this.ELEMENT_DATA);
+          
+          // Broadcast updated zones to all dialogs
+          if (this.assignedZones) {
+            this.dialogCommunicationService.updateZones(this.assignedZones);
+          }
+
+          if (this.dataSource2.data.length > 0) {
+            this.dialogCommunicationService.updateTotes(this.dataSource2.data);
+          }
         } else {
           this.global.ShowToastr(ToasterType.Error,ToasterMessages.SomethingWentWrong, ToasterTitle.Error);
           console.log("BatchTotes",res.responseMessage);
@@ -1664,5 +1697,9 @@ async clearBatchData(){
     }
   }
 
+  ngOnDestroy(): void {
+    // Unsubscribe from all subscriptions to prevent memory leaks
+    this.subscriptions.forEach(sub => sub.unsubscribe());
+  }
 
 }

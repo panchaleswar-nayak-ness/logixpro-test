@@ -1,4 +1,4 @@
-import { Component, OnInit, Inject, ViewChild, ElementRef, Renderer2 } from '@angular/core';
+import { Component, OnInit, Inject, ViewChild, ElementRef, Renderer2, OnDestroy } from '@angular/core';
 import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
 import { formatDate } from '@angular/common'
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
@@ -20,14 +20,18 @@ import { InductionManagerApiService } from 'src/app/common/services/induction-ma
 import { ICommonApi } from 'src/app/common/services/common-api/common-api-interface';
 import { CommonApiService } from 'src/app/common/services/common-api/common-api.service';
 import { AlertConfirmationComponent } from '../alert-confirmation/alert-confirmation.component';
-import {  ToasterTitle ,ResponseStrings,ToasterType,ToasterMessages,zoneType,DialogConstants,Style,UniqueConstants,TableConstant,StringConditions,ColumnDef, Placeholders} from 'src/app/common/constants/strings.constants';
+import {  ToasterTitle ,ResponseStrings,ToasterType,ToasterMessages,DialogConstants,Style,UniqueConstants,StringConditions,ColumnDef, Placeholders} from 'src/app/common/constants/strings.constants';
+import { DialogCommunicationService } from 'src/app/common/services/dialog-communication.service';
+import { Subscription } from 'rxjs';
+import { BatchTotesTableResponse } from 'src/app/induction-manager/process-put-aways/process-put-aways.component';
+import { ApiResponse } from 'src/app/common/types/CommonTypes';
 
 @Component({
   selector: 'app-selection-transaction-for-tote-extend',
   templateUrl: './selection-transaction-for-tote-extend.component.html',
   styleUrls: ['./selection-transaction-for-tote-extend.component.scss']
 })
-export class SelectionTransactionForToteExtendComponent implements OnInit {
+export class SelectionTransactionForToteExtendComponent implements OnInit, OnDestroy {
   @ViewChild('fieldFocus') fieldFocus: ElementRef;
   @ViewChild('tooltip') tooltip: any = ElementRef;
   @ViewChild('inputToteQty') inputToteQty: ElementRef;
@@ -57,6 +61,7 @@ export class SelectionTransactionForToteExtendComponent implements OnInit {
   public iCommonAPI : ICommonApi;
   event: Event;
   placeholders = Placeholders;
+  private readonly subscriptions: Subscription[] = [];
 
   constructor(
     private renderer: Renderer2,
@@ -70,6 +75,7 @@ export class SelectionTransactionForToteExtendComponent implements OnInit {
     public inductionManagerApi: InductionManagerApiService,
     public router: Router,
     private global:GlobalService,
+    private dialogCommunicationService: DialogCommunicationService
   ) {
     const selectedTote = this.data?.totes?.find((e) => e.isSelected);
     let cell = selectedTote?.toteQuantity != null ? Number(selectedTote.toteQuantity) + 1 : 0;
@@ -145,8 +151,39 @@ export class SelectionTransactionForToteExtendComponent implements OnInit {
     this.getVelocityCodeList();
     this.getDetails();
     this.imPreferences = this.global.getImPreferences();
-    this.pickToteSetupIndex();
-    
+    this.pickToteSetupIndex();          
+    this.subscribeToUpdates();
+  }
+
+  subscribeToUpdates() {
+    this.subscriptions.push(
+      this.dialogCommunicationService.batchUpdate$.subscribe((newBatchId: string) => {
+        if (newBatchId) {
+          this.toteForm.patchValue({ batchID: newBatchId });
+          this.data.batchID = newBatchId;
+        }
+      }),
+      this.dialogCommunicationService.zoneUpdate$.subscribe((newZones: string) => {
+        if (newZones) {
+          this.toteForm.patchValue({ zones: newZones });
+          this.data.zones = newZones;
+        }
+      }),
+      this.dialogCommunicationService.totesUpdate$.subscribe((newTotes: BatchTotesTableResponse[]) => {
+        if (newTotes) {
+          this.data.totes = newTotes;
+          this.totes = this.data.totes;
+          let fil = this.totes.filter((e: any) => e.isSelected);
+          if(fil.length > 0) {
+          this.toteForm.patchValue({
+            toteID                            : fil[0].toteID,
+              totePos                           : fil[0].totesPosition,
+              toteCells                         : fil[0].cells
+            });
+          }
+        }
+      })
+    );
   }
 
   ngAfterViewInit(): void {
@@ -484,8 +521,6 @@ export class SelectionTransactionForToteExtendComponent implements OnInit {
                   });
 
                   this.findLocation(true, res.data)
-                } else {
-                  this.findLocation(false, 0);
                 }
               });
 
@@ -532,20 +567,50 @@ export class SelectionTransactionForToteExtendComponent implements OnInit {
         (res: any) => {
           if (res.data && res.isExecuted) {
             if (res.data.success) {
-              this.toteForm.patchValue({
-                // Location Info
-                zone                              : res.data.zone,
-                carousel                          : res.data.carousel,
-                row                               : res.data.row,
-                shelf                             : res.data.shelf,
-                bin                               : res.data.bin,
-                cellSize                          : res.data.cellSz,
-                velocityCode                      : res.data.velCode,
-                itemQuantity                      : res.data.locQty,
-                maximumQuantity                   : res.data.locMaxQty,
-                quantityAllocatedPutAway          : res.data.qtyAlloc,
-                invMapID                          : res.data.invMapID
-              });
+              // Validate zone and update batch if needed
+              let payload = { zone: res.data.zone };
+              this.iInductionManagerApi.BatchByZone(payload).subscribe(
+                (batchRes: ApiResponse<string>) => {
+                  if (batchRes.isExecuted) {
+                    const zoneBatchId = batchRes.data;
+                    
+                    if (zoneBatchId) {
+                      if(zoneBatchId != this.data.batchID) {
+                      // Zone belongs to different batch - broadcast update
+                        this.dialogCommunicationService.updateBatch(zoneBatchId);
+                      }
+                      this.toteForm.patchValue({
+                        // Location Info
+                        zone                              : res.data.zone,
+                        carousel                          : res.data.carousel,
+                        row                               : res.data.row,
+                        shelf                             : res.data.shelf,
+                        bin                               : res.data.bin,
+                        cellSize                          : res.data.cellSz,
+                        velocityCode                      : res.data.velCode,
+                        itemQuantity                      : res.data.locQty,
+                        maximumQuantity                   : res.data.locMaxQty,
+                        quantityAllocatedPutAway          : res.data.qtyAlloc,
+                        invMapID                          : res.data.invMapID
+                      });
+                    } else {
+                      let dialogRef = this.global.OpenDialog(ConfirmationDialogComponent, {
+                        height: DialogConstants.auto,
+                        width: Style.w560px,
+                        autoFocus: DialogConstants.autoFocus,
+                        disableClose: true,
+                        data: {
+                          message: ToasterMessages.NoBatchesWithZone.replace('{{zone}}', res.data.zone),
+                        },
+                      });
+
+                      dialogRef.afterClosed().subscribe((res) => {
+                        if (res == ResponseStrings.Yes) this.dialogRef.close("New Batch");
+                      });                      
+                    }
+                  }
+                }
+              );              
             } else this.global.ShowToastr(ToasterType.Error,'No available locations were found for this item.', ToasterTitle.Error);
           } else {
             this.global.ShowToastr(ToasterType.Error,ToasterMessages.SomethingWentWrong, ToasterTitle.Error);
@@ -966,6 +1031,20 @@ export class SelectionTransactionForToteExtendComponent implements OnInit {
     }
     if (currentScrollPosition > this.lastScrollPosition) this.tooltipShowDelay = 100000;
     this.lastScrollPosition = currentScrollPosition; // Update last known scroll position
+  }
+
+  /**
+   * Validates zone and checks if it belongs to a batch
+   * Shows confirmation dialog if no batch is found
+   * @param zone - Zone to validate
+   */
+  validateZoneBatch(zone: string) {
+    
+  }
+
+  ngOnDestroy(): void {
+    // Unsubscribe from all subscriptions to prevent memory leaks
+    this.subscriptions.forEach(sub => sub.unsubscribe());
   }
 
 }

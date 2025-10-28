@@ -7,6 +7,7 @@ export interface CartManagementData {
   existingAssignments?: Record<number, {toteId: string, status?: string}>;
   rows: number;
   cols: number;
+  isReadonly?: boolean;
 }
 
 export interface CartManagementResult {
@@ -166,4 +167,32 @@ export interface CartStatusSummary {
   inducted: number;
   inProgress: number;
   available: number;
+}
+
+export interface AddCartRequest {
+  cartId: string;
+  positionCount: number;
+  shelveCount: number;
+}
+
+export interface AddCartResponse {
+  data: string;        // The CartId that was created
+  status: string;      // "Success" or error status
+  message?: string;    // Optional error message
+}
+
+export interface ValidateCartIdResponse {
+  errors: string[];
+  isSuccess: boolean;
+  message: string;
+  status: number;
+  value: boolean;
+}
+
+export interface DeleteCartResponse {
+  errors: string[];
+  isSuccess: boolean;
+  message: string;
+  status: number;
+  value: string; // The cartId that was deleted
 }

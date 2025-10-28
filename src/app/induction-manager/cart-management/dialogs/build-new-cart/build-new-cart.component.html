@@ -20,12 +20,13 @@
                  formControlName="cartId"
                  placeholder="Type / Scan Cart ID" 
                  maxlength="50" 
+                 [readonly]="isReadonly"
                  (keyup.enter)="onCartIdEnter()"
                  (keyup.backspace)="onCartIDBackspaceCheck()"
                  (keyup)="onCartIDChange()"
                  data-automation-id="cart-id-input">
           <button matSuffix 
-                  *ngIf="cartIdEntered && isCreateMode" 
+                  *ngIf="cartIdEntered && isCreateMode && !isReadonly" 
                   class="clear-btn" 
                   (click)="onClearCartId()" 
                   data-automation-id="cart-id-clear-btn">
@@ -49,7 +50,7 @@
         <app-tote-position-grid
           [positions]="positions"
           [selectedPosition]="selectedPosition"
-          [readonly]="isReadonly || isGridDisabled"
+          [readonly]="isGridDisabled"
           [cols]="cols"
           [rows]="rows"
           (positionSelect)="onPositionSelect($event)"
@@ -85,7 +86,7 @@
     </div>
   </form>
 
-  <mat-dialog-actions class="d-flex gap-12 w-100">
+  <mat-dialog-actions *ngIf="!isViewMode" class="d-flex gap-12 w-100">
     <button
       type="button"
       mat-stroked-button

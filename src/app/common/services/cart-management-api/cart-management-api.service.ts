@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, from } from 'rxjs';
 import { map, take } from 'rxjs/operators';
 import { ICartManagementApiService, CartListResponse } from './cart-management-api.interface';
 import { GlobalService } from '../global.service';
 import { ApiFuntions } from '../ApiFuntions';
-import { RemoveCartContentRequest, ValidateToteRequest, ValidationRequest, ViewDetailsResponse, CompleteCartResponse, ValidateToteResponse, CartSearchRequest, CartStatusCountsDto, CartStatusSummary, CartListRequest } from 'src/app/induction-manager/cart-management/interfaces/cart-management.interface';
+import { RemoveCartContentRequest, ValidateToteRequest, ValidationRequest, ViewDetailsResponse, CompleteCartResponse, ValidateToteResponse, CartSearchRequest, CartStatusCountsDto, CartStatusSummary, CartListRequest, AddCartRequest, AddCartResponse, ValidateCartIdResponse, DeleteCartResponse } from 'src/app/induction-manager/cart-management/interfaces/cart-management.interface';
 
 
 @Injectable({
@@ -50,7 +50,7 @@ export class CartManagementApiService implements ICartManagementApiService {
     return viewDetails;
   }
 
-  validateCart(request: ValidationRequest){
+  validateCart(request: ValidationRequest) {
     return this.Api.validateCart(request);
   }
   
@@ -59,7 +59,7 @@ export class CartManagementApiService implements ICartManagementApiService {
   }
 
   getCartStatuses(): Observable<CartStatusCountsDto> {
-    return this.Api.GetCartStatuses().pipe(take(1));;
+    return this.Api.GetCartStatuses().pipe(take(1));
   }
 
   getCartStatusSummary(): Observable<CartStatusSummary> {
@@ -99,8 +99,7 @@ export class CartManagementApiService implements ICartManagementApiService {
   }
 
   // Method to simulate external cart history updates
- 
-  removeCartContent(request: RemoveCartContentRequest){
+  removeCartContent(request: RemoveCartContentRequest) {
     return this.Api.removeCartContent(request);
   }
 
@@ -110,6 +109,18 @@ export class CartManagementApiService implements ICartManagementApiService {
 
   async completeCart(cartId: string): Promise<CompleteCartResponse> {
     return await this.Api.completeCart(cartId);
+  }
+
+  async addCart(request: AddCartRequest): Promise<AddCartResponse> {
+    return await this.Api.addCart(request);
+  }
+
+  async validateCartId(cartId: string): Promise<ValidateCartIdResponse> {
+    return await this.Api.validateCartId(cartId);
+  }
+
+  deleteCart(cartId: string): Observable<DeleteCartResponse> {
+    return from(this.Api.deleteCart(cartId));
   }
 
 }

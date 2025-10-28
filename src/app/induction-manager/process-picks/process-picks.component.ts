@@ -1050,4 +1050,12 @@ export class ProcessPicksComponent implements OnInit {
       console.error('Error occurred:', error);
     }
   }
+
+  clearAll(index: number) {
+    this.tote_Setup[index].orderNumber = '';
+    this.tote_Setup[index].priority = '';
+    this.tote_Setup[index].toteID = '';
+    this.allOrders[index] = '';
+    this.resultObj = this.resultObj.splice(index, 1);
+  }
 }
