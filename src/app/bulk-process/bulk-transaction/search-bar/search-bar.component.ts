@@ -56,14 +56,26 @@ export class SearchBarComponent implements OnDestroy, AfterViewInit {
 
   // Validation functions for disabled expressions
   isBatchOptionDisabled(): boolean {
+    // Emergency pick overrides quick pick - if emergency is enabled, use emergency count logic
+    if (this.isEmergencyPick) {
+      return this.status.batchCount < 1;
+    }
     return (this.bulkTransactionType == BulkTransactionType.PICK && this.isQuickPick) || this.status.batchCount < 1;
   }
 
   isToteOptionDisabled(): boolean {
+    // Emergency pick overrides quick pick - if emergency is enabled, use emergency count logic
+    if (this.isEmergencyPick) {
+      return this.status.toteCount < 1;
+    }
     return (this.bulkTransactionType == BulkTransactionType.PICK && this.isQuickPick) || this.status.toteCount < 1;
   }
 
   isOrderOptionDisabled(): boolean {
+    // Emergency pick overrides quick pick - if emergency is enabled, use emergency count logic
+    if (this.isEmergencyPick) {
+      return this.status.orderCount < 1;
+    }
     return (this.bulkTransactionType == BulkTransactionType.PICK && this.isQuickPick) || this.status.orderCount < 1;
   }
 

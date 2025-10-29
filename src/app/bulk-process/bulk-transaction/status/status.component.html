@@ -16,10 +16,10 @@
                     <div class="employees text-center">
                       <app-stats-circle [value]="status.orderCount.toString()" title="Orders" data-automation-id="status-orders-circle"></app-stats-circle>
                     </div>
-                    <div class="customer text-center" *ngIf="bulkTransactionType !== BulkTransactionType.PICK || !isQuickPick">
+                    <div class="customer text-center" *ngIf="shouldShowBatchesCount()">
                       <app-stats-circle [value]="status.batchCount.toString()" title="Batches" data-automation-id="status-batches-circle"></app-stats-circle>
                     </div>
-                    <div class="customer text-center" *ngIf="bulkTransactionType !== BulkTransactionType.PICK  || !isQuickPick">
+                    <div class="customer text-center" *ngIf="shouldShowTotesCount()">
                       <app-stats-circle [value]="status.toteCount.toString()" title="Totes" data-automation-id="status-totes-circle"></app-stats-circle>
                     </div>
                   </div>

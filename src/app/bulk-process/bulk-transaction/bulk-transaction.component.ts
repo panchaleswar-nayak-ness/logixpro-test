@@ -161,8 +161,9 @@ export class BulkTransactionComponent implements OnInit {
   }
 
   pickViewChange() {
+    // Priority: Emergency > Quick Pick > Normal
     if (this.isEmergencyPick) {
-      // For emergency pick, show the view that has data first (batches > totes > orders)
+      // Emergency mode has highest priority - show the view that has data first (batches > totes > orders)
       if (this.status.batchCount > 0) {
         // Batches have data - highest priority
         this.emergencyPickBatches();
@@ -177,8 +178,10 @@ export class BulkTransactionComponent implements OnInit {
         this.emergencyPickOrders();
       }
     } else if (this.isQuickPick) {
+      // Quick pick mode - only when emergency is not enabled
       this.quickPickOrders();
     } else {
+      // Normal mode - when both emergency and quick pick are disabled
       this.bulkOrderBatchToteQty();
     }
   }
