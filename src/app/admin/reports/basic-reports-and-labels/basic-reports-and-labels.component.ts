@@ -102,10 +102,7 @@ export class BasicReportsAndLabelsComponent implements OnInit {
     this.clearMatSelectList();
   }
   onFocusEmptyInput(i: number) {
-    const inputValue = this.reportData[16 + i];
-    if (!inputValue || inputValue === '') {
-      this.changeFilter(this.reportData[4 + i], i);
-    }
+    this.changeFilter(this.reportData[4 + i], i);
   }
 
 
