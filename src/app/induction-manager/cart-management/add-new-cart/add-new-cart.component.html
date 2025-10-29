@@ -36,18 +36,20 @@
                type="number"
                [min]="1"
                [max]="8"
+               (ngModelChange)="onPositionChange($event, 1, 8)"
                (keyup.enter)="onBothFieldsEnter()"
                [ngModelOptions]="{standalone: true}"
                data-automation-id="position-count-input">
       </mat-form-field>
 
       <mat-form-field class="flex-grow-1" appearance="outline" data-automation-id="shelve-count-field">
-        <mat-label data-automation-id="shelve-count-label">Shelve Count</mat-label>
+        <mat-label data-automation-id="shelve-count-label">Shelf Count</mat-label>
         <input matInput 
                [(ngModel)]="shelveCountInput"
                type="number"
                [min]="1"
                [max]="5"
+               (ngModelChange)="onPositionChange($event, 1, 5)"
                (keyup.enter)="onBothFieldsEnter()"
                [ngModelOptions]="{standalone: true}"
                data-automation-id="shelve-count-input">
