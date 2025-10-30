@@ -301,6 +301,7 @@ export class VerifyBulkComponent implements OnInit {
       data: {
         url: this.bulkTransactionType,
         completedQuantity: element.completedQuantity,
+        transactionQuantity: element.transactionQuantity,
         from: "completed quantity"
       }
     });
@@ -333,6 +334,9 @@ export class VerifyBulkComponent implements OnInit {
           element.completedQuantity = resp.newQuantity || 0;
         });
       } else if (resp.type == ResponseStrings.Cancel) {
+        element.completedQuantity = resp.newQuantity || 0;
+      } else if (resp.type == null) {
+        // When completed quantity equals or exceeds order quantity, no location empty dialog was shown
         element.completedQuantity = resp.newQuantity || 0;
       } else {
         record.newLocationQty = resp.newQuantity || 0;

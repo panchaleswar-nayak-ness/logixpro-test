@@ -30,6 +30,7 @@ export class BpNumberSelectionComponent implements OnInit {
   from: string = "completed quantity";
   @ViewChild('autoFocusField') searchBoxField: ElementRef;
   url: string;
+  transactionQuantity: number;
 
   constructor(
     public dialogRef: MatDialogRef<BpNumberSelectionComponent>,
@@ -43,6 +44,7 @@ export class BpNumberSelectionComponent implements OnInit {
     this.toteQuantity = this.data?.toteQuantity;
     this.IsFullTote = this.data?.IsFullTote;
     this.url = this.data.url;
+    this.transactionQuantity = this.data?.transactionQuantity;
   }
 
   ngOnInit(): void {
@@ -86,6 +88,8 @@ export class BpNumberSelectionComponent implements OnInit {
   done() {
     if (!this.IsFullTote || (this.newQuantity <= this.toteQuantity && this.newQuantity >= 0)) {
       if (this.from == "completed quantity") {
+            // Only show "Location Empty" popup when completed quantity is less than order quantity (short pick)
+            if (this.newQuantity < this.transactionQuantity) {
         const dialogRef1 = this.global.OpenDialog(ConfirmationDialogComponent, {
             height: 'auto',
             width: Style.w560px,
@@ -113,6 +117,10 @@ export class BpNumberSelectionComponent implements OnInit {
               this.searchBoxField?.nativeElement.focus();
             }
           });
+        } else {
+          // When completed quantity equals or exceeds order quantity, just close without showing popup
+          this.dialogRef.close({newQuantity: this.newQuantity.toString(), type: null});
+        }
       } else if (this.from == "qunatity put in new tote") {
         this.respYesNo = null;
         this.dialogRef.close(this.newQuantity.toString());
