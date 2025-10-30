@@ -110,7 +110,7 @@ export class BpNumberSelectionComponent implements OnInit {
               this.dialogRef.close({newQuantity: this.newQuantity.toString(), type: ResponseStrings.No});
             } else if (resp == ResponseStrings.Cancel) {
               this.respYesNo = null;
-              this.dialogRef.close({newQuantity: this.newQuantity.toString(), type: ResponseStrings.Cancel});
+              this.searchBoxField?.nativeElement.focus();
             }
           });
       } else if (this.from == "qunatity put in new tote") {
