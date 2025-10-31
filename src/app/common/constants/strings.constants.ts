@@ -945,6 +945,18 @@ export const DISABLED_FIELDS = [
     NUMERIC : 'Numeric',
     ALPHA_NUMERIC : 'Alphanumeric',
   }
+  export const CriteriaOptions = {
+    EQUALS: 'Equals',
+    NOT_EQUAL: 'Not Equal To',
+    GREATER_THAN: 'Greater Than',
+    GREATER_OR_EQUAL: 'Greater or Equal',
+    LESS_THAN: 'Less Than',
+    LESS_OR_EQUAL: 'Less or Equal',
+    IS_LIKE: 'Is Like',
+    CONTAINS_DATA: 'Contains Data',
+    HAS_NO_DATA: 'Has No Data',
+  }
+  
   export const storageContainerDisabledFields = {
     SENDTOOUTBOUNDPORT: 'sendToOutboundPort',
     CAROUSELZONE: 'carouselZone',

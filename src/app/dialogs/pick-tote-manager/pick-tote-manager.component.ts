@@ -27,7 +27,7 @@ import { IInductionManagerApiService } from 'src/app/common/services/induction-m
 import { InductionManagerApiService } from 'src/app/common/services/induction-manager-api/induction-manager-api.service';
 import { GlobalService } from 'src/app/common/services/global.service';
 import { PickToteManagerService } from 'src/app/common/services/pick-tote-manager.service'
-import {  TableConstant ,ToasterTitle,ResponseStrings,Column,ToasterType,zoneType,DialogConstants,ColumnDef,UniqueConstants,Style,StringConditions, Placeholders, ToasterMessages, FormatValues, FIELDS_DEFAULT_AN, ConfirmationMessages, ConfirmationHeadings, DISABLED_FIELDS, FormatType, INPUT_TYPES, DATE_COLUMNS} from 'src/app/common/constants/strings.constants';
+import {  TableConstant ,ToasterTitle,ResponseStrings,Column,ToasterType,zoneType,DialogConstants,ColumnDef,UniqueConstants,Style,StringConditions, Placeholders, ToasterMessages, FormatValues, FIELDS_DEFAULT_AN, ConfirmationMessages, ConfirmationHeadings, DISABLED_FIELDS, FormatType, INPUT_TYPES, DATE_COLUMNS, CriteriaOptions} from 'src/app/common/constants/strings.constants';
 import { FilterOrder, FilterTransaction, SavedFilterChangeEvent, FilterData, OrderData, PickToteTransPayload, AllDataTypeValues } from 'src/app/common/types/pick-tote-manager.types';
 import { TableContextMenuService } from 'src/app/common/globalComponents/table-context-menu-component/table-context-menu.service';
 import { FilterationColumns, PeriodicElement } from 'src/app/common/Model/pick-Tote-Manager';
@@ -459,10 +459,21 @@ filterationColumns : FilterationColumns[] = [];
     this.iInductionManagerApi = inductionManagerApi;
   }
 
+  onTabChange(event: { index: number }): void {
+    this.tabIndex = event.index;
+    // When switching to the zone tab, ensure the data is loaded
+    if (this.tabIndex === 1 && (!this.zoneOrderTransactionSource || this.zoneOrderTransactionSource.data.length === 0)) {
+      this.getZoneContentData();
+    }
+  }
+
   ngOnInit(): void {
     this.savedFilterList = [];
     this.userData = this.authService.userData();
     this.getSavedFilters();
+    // Initialize both data sources
+    this.filterOrderTransactionSource = new MatTableDataSource<FilterTransaction>([]);
+    this.zoneOrderTransactionSource = new MatTableDataSource<FilterTransaction>([]);
     this.dataSource = new MatTableDataSource<any>(this.filterData);
     this.dataSource1 = new MatTableDataSource<any>(this.filterData);
     this.orderBydataSource = new MatTableDataSource<any>(this.orderByData);
@@ -712,6 +723,11 @@ filterationColumns : FilterationColumns[] = [];
   
     // Mark element as unsaved
     element.isSaved = false;
+
+    // Clear value if criteria is 'Contains Data' or 'Has No Data'
+    if (this.isValueDisabled(element.criteria)) {
+      element.value = '';
+    }
   
     // Apply numeric format for disabled fields
     if (this.applyDisabledFieldFormatting(element)) {
@@ -723,8 +739,8 @@ filterationColumns : FilterationColumns[] = [];
   
     // No related rows, no further action needed
     if (sameFieldRows.length === 0) {
-  return;
-}
+      return;
+    }
 
     // Handle format synchronization
     this.handleFormatSynchronization(element, sameFieldRows);
@@ -1154,6 +1170,7 @@ userFields = Array.from({ length: 9 }, (_, i) => ({
           val.isSelected = true;
         }
       });
+      this.selectedOrderValue =row.orderNumber; 
       this.isOrderSelectZone = false;
       const payload: PickToteTransPayload = {
         Draw: PaginationData.Draw,
@@ -1467,8 +1484,11 @@ clearOrderSelection() {
     }
   }
 
-  onSaveSingleFilter(element: any) {
-    if (element.value === '' || element.format === '') {
+  onSaveSingleFilter(element: FilterData) {
+    const hasEmptyFields = element.value === '' || element.format === '';
+    const requiresValue = !this.isValueDisabled(element.criteria);
+    
+    if (hasEmptyFields && requiresValue) {
         this.global.ShowToastr(
             ToasterType.Error,
             ToasterMessages.InvalidInputForFilter,
@@ -1784,9 +1804,48 @@ refreshOrderDataGrid() {
     // Directly use the FilterationColumns objects
     this.filterationColumns = filterationColumns;
     
-    // Call the existing method to get content data
-    this.getContentData();
+    // Call the appropriate method based on the current tab
+    if (this.tabIndex === 0) {
+      this.getContentData();
+    } else if (this.tabIndex === 1) {
+      this.getZoneContentData();
+    }
+    
     this.isActiveTrigger = false;
+  }
+
+  getZoneContentData() {
+    if (this.filterString === "") {
+      this.filterString = UniqueConstants.OneEqualsOne;
+    }
+
+    const payload: PickToteTransPayload = {
+      Draw: PaginationData.Draw,
+      OrderNumber: this.selectedOrderValue,
+      SRow: PaginationData.StartRow,
+      ERow: PaginationData.EndRow,
+      SortColumnNumber: 0,
+      SortOrder: UniqueConstants.Asc,
+      Filter: this.filterString,
+      FiltrationColumns: this.filterationColumns
+    };
+
+    this.iInductionManagerApi.PickToteTransDT(payload).subscribe((result: { data: { pickToteManTrans?: FilterTransaction[] } }) => {
+      const pickToteManTrans = result.data.pickToteManTrans ?? [];
+      if (pickToteManTrans.length >= 0) {
+        this.zoneOrderTransactionSource = new MatTableDataSource<FilterTransaction>(
+          pickToteManTrans
+        );
+        this.zoneOrderTransactionSource.paginator = this.zoneBatchTrans;
+        this.zoneOrderTransactionSource.sort = this.viewZoneTransSort;
+      } else {
+        this.global.ShowToastr(
+          ToasterType.Error,
+          this.global.globalErrorMsg(),
+          ToasterTitle.Error
+        );
+      }
+    });
   }
   getContentData(){
     if(this.filterString == "")
@@ -1844,6 +1903,29 @@ refreshOrderDataGrid() {
   isFormatDisabled(field: string): boolean {
     // Case-insensitive check for robustness
     return DISABLED_FIELDS.some(f => f.toLowerCase() === (field || '').toLowerCase());
+  }
+
+  isValueDisabled(criteria: string): boolean {
+    // Disable the Value field if criteria is 'Contains Data' or 'Has No Data'
+    return criteria === CriteriaOptions.CONTAINS_DATA || criteria === CriteriaOptions.HAS_NO_DATA;
+  }
+
+  /**
+   * Checks if the field is an Emergency field
+   * @param field - The field name to check
+   * @returns true if the field is Emergency
+   */
+  isEmergencyField(field: string): boolean {
+    return field === ColumnDef.Emergency;
+  }
+
+  /**
+   * Checks if the field is not an Emergency field
+   * @param field - The field name to check
+   * @returns true if the field is not Emergency
+   */
+  isNotEmergencyField(field: string): boolean {
+    return !this.isEmergencyField(field);
   }
 
   /**

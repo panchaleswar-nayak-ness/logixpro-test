@@ -54,7 +54,7 @@
                     <mat-option value="rename" [disabled]="!isFilterAdd" data-automation-id="filter-action-rename">Rename Filter</mat-option>
                     <mat-option value="view_default" data-automation-id="filter-action-view-default">View Default</mat-option>
                     <mat-option value="set_default" [disabled]="!isFilterAdd" data-automation-id="filter-action-set-default">Set Default</mat-option>
-                    <mat-option value="clear_default" data-automation-id="filter-action-clear-default">Clear Default</mat-option>
+                    <mat-option value="clear_default" [disabled]="!isFilterAdd" data-automation-id="filter-action-clear-default">Clear Default</mat-option>
                     <mat-option value="delete_selected_filter" [disabled]="!isFilterAdd" data-automation-id="filter-action-delete-selected">Deleted Selected Filter</mat-option>
                     <mat-option value="add_new_filter" data-automation-id="filter-action-add-new">Add New Filter</mat-option>
                   </mat-select>
@@ -152,7 +152,7 @@
                           <th mat-header-cell *matHeaderCellDef data-automation-id="table-header-Criteria"> Criteria </th>
                           <td mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'table-data-Criteria-' + (element.criteria ? element.criteria : ' ')">
                             <div>
-                              <mat-form-field class="custom-form-field w-160" appearance="outline" [attr.data-automation-id]="'criteria-dropdown-' + i">
+                              <mat-form-field class="custom-form-field" appearance="outline" [attr.data-automation-id]="'criteria-dropdown-' + i">
                                 <mat-select #matRef class="employees-action" [(ngModel)]="element.criteria" (ngModelChange)="onChangeFunctionsFields(element)" [attr.data-automation-id]="'criteria-select-' + element.criteria">
                                   <mat-option value="Equals" data-automation-id="criteria-option-equals">Equals</mat-option>
                                   <mat-option value="Not Equal To" data-automation-id="criteria-option-not-equal">Not Equal To</mat-option>
@@ -176,8 +176,18 @@
                           <th mat-header-cell *matHeaderCellDef data-automation-id="table-header-Value"> Value </th>
                           <td mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'table-data-Value-' + (element.value ? element.value : ' ')">
                             <div>
-                              <mat-form-field class="custom-form-field" appearance="outline" [attr.data-automation-id]="'value-field-' + i">
-                                <input matInput [type]="getInputType(element.field)" maxlength="255" [(ngModel)]="element.value" (ngModelChange)="onChangeFunctionsFields(element)" [attr.data-automation-id]="'value-input-' + i">
+                              <mat-form-field class="custom-form-field w-160" appearance="outline" [attr.data-automation-id]="'value-field-' + i" *ngIf="isNotEmergencyField(element.field)">
+                                <input matInput [type]="getInputType(element.field)" maxlength="255" [(ngModel)]="element.value" (ngModelChange)="onChangeFunctionsFields(element)" [attr.data-automation-id]="'value-input-' + i" [disabled]="isValueDisabled(element.criteria)">
+                              </mat-form-field>
+                              
+                              <mat-form-field class="custom-form-field w-160" appearance="outline" [attr.data-automation-id]="'emergency-dropdown-' + i" *ngIf="isEmergencyField(element.field)">
+                                <mat-select [(ngModel)]="element.value" (selectionChange)="onChangeFunctionsFields(element)" [disabled]="isValueDisabled(element.criteria)">
+                                  <mat-option value="1" data-automation-id="emergency-true-option">True</mat-option>
+                                  <mat-option value="0" data-automation-id="emergency-false-option">False</mat-option>
+                                </mat-select>
+                                <span matSuffix class="material-symbols-outlined icon-expand-more" [attr.data-automation-id]="'criteria-expand-icon-' + i">
+                                  expand_more
+                                </span>
                               </mat-form-field>
                             </div>
                           </td>
@@ -458,7 +468,7 @@
                         </td>
                         </ng-container>
 
-                        <tr class="mat-row" *matNoDataRow (contextmenu)="onContextMenu($event, undefined, '')">
+                        <tr class="mat-row" *matNoDataRow (contextmenu)="onContextMenu($event, null, '')">
                           <td class="mat-cell border " [attr.colspan]="displayedTransColumns.length">No data available in table.</td>
                         </tr>
 
@@ -671,11 +681,16 @@
                           <td mat-cell *cdkCellDef="let row; let i = index"
                               [matTooltip]="column.cell(row)"
                               matTooltipPosition="above"
-                              [matTooltipDisabled]="isTooltipDisabled(column.cell(row))" [attr.data-automation-id]="'transactions-table-row-cell-'+column.columnDef+'-'+ i">
+                              [matTooltipDisabled]="isTooltipDisabled(column.cell(row))" 
+                              [attr.data-automation-id]="'transactions-table-row-cell-'+column.columnDef+'-'+ i"
+                              (contextmenu)="onContextMenu($event, row[column.columnDef], column.columnDef)">
                             {{ column.cell(row) }}
                           </td>
                         </ng-container>
                         <tr mat-header-row *matHeaderRowDef="displayedTransColumns; sticky:true" data-automation-id="transactions-table-header-row"></tr>
+                        <tr class="mat-row" *matNoDataRow (contextmenu)="onContextMenu($event, undefined, '')">
+                          <td class="mat-cell border " [attr.colspan]="displayedTransColumns.length">No data available in table.</td>
+                        </tr>
                         <tr mat-row *matRowDef="let row; columns: displayedTransColumns;" data-automation-id="transactions-table-row"></tr>
                       </table>
                     </ng-scrollbar>
