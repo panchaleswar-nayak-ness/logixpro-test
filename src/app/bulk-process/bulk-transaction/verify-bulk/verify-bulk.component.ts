@@ -295,7 +295,8 @@ export class VerifyBulkComponent implements OnInit {
 
     const dialogRef1: any = this.global.OpenDialog(BpNumberSelectionComponent, {
       height: 'auto',
-      width: Style.w402px,
+      width: Style.auto,
+      minWidth: Style.auto,
       autoFocus: DialogConstants.autoFocus,
       disableClose: true,
       data: {
