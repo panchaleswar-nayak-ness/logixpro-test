@@ -102,417 +102,417 @@
           <table class="w-100 table-borderless" mat-table [dataSource]="tableData" matSort #sort1 (matSortChange)="announceSortChange($event)">
 
             <ng-container matColumnDef="transactionType">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header [attr.data-automation-id]="'table-header-transaction-type'">Transaction Type</th>
+                <th mat-header-cell *matHeaderCellDef mat-sort-header data-automation-id="table-header-Transaction Type">Transaction Type</th>
                 <td mat-cell *matCellDef="let element; let i = index"
                 #tooltip="matTooltip" matTooltipPosition="above" [matTooltip]="element.transactionType" 
                 class="table-order-td" 
                 [matTooltipDisabled]="element.transactionType && element.transactionType.length>=20?false:true"
                 (contextmenu)="onContextMenu($event, element.transactionType, 'Transaction Type')"
-                 [class.selected]="element.id == selectedTransaction.id"  [attr.data-automation-id]="'table-data-transaction-type-' + i"
+                 [class.selected]="element.id == selectedTransaction.id"  [attr.data-automation-id]="'table-data-Transaction Type-' + i"
                 >{{element.transactionType}}</td>
             </ng-container>
             
             <ng-container matColumnDef="orderNumber">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header [attr.data-automation-id]="'table-header-order-number'">Order Number</th>
+                <th mat-header-cell *matHeaderCellDef mat-sort-header data-automation-id="table-header-Order Number">Order Number</th>
                 <td mat-cell *matCellDef="let element; let i = index"
                 #tooltip="matTooltip" matTooltipPosition="above" [matTooltip]="element.orderNumber" class="table-order-td" 
                 [matTooltipDisabled]="element.orderNumber && element.orderNumber.length>=20?false:true"
                 (contextmenu)="onContextMenu($event, element.orderNumber, 'Order Number')"
-                 [class.selected]="element.id == selectedTransaction.id"  [attr.data-automation-id]="'table-data-order-number-' + i"
+                 [class.selected]="element.id == selectedTransaction.id"  [attr.data-automation-id]="'table-data-Order Number-' + i"
                 >{{element.orderNumber}}</td>
             </ng-container>
 
             <ng-container matColumnDef="priority">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header [attr.data-automation-id]="'table-header-priority'">Priority</th>
+                <th mat-header-cell *matHeaderCellDef mat-sort-header data-automation-id="table-header-Priority">Priority</th>
                 <td mat-cell *matCellDef="let element; let i = index"
                 #tooltip="matTooltip" matTooltipPosition="above" [matTooltip]="element.priority" class="table-order-td" 
                 [matTooltipDisabled]="element.priority && element.priority.length>=20?false:true"
                 (contextmenu)="onContextMenu($event, element.priority, 'Priority')"
-                 [class.selected]="element.id == selectedTransaction.id" [attr.data-automation-id]="'table-data-priority-' + i"
+                 [class.selected]="element.id == selectedTransaction.id" [attr.data-automation-id]="'table-data-Priority-' + i"
                 >{{element.priority}}</td>
             </ng-container>
 
             <ng-container matColumnDef="requiredDate">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header [attr.data-automation-id]="'table-header-required-date'">Required Date</th>
+                <th mat-header-cell *matHeaderCellDef mat-sort-header data-automation-id="table-header-Required Date">Required Date</th>
                 <td mat-cell *matCellDef="let element; let i = index"
                 #tooltip="matTooltip" matTooltipPosition="above" [matTooltip]="element.requiredDate" class="table-order-td" 
                 [matTooltipDisabled]="element.requiredDate && element.requiredDate.length>=20?false:true"
                 (contextmenu)="onContextMenu($event, element.requiredDate, 'Required Date')"
-                 [class.selected]="element.id == selectedTransaction.id" [attr.data-automation-id]="'table-data-required-date-' + i"
+                 [class.selected]="element.id == selectedTransaction.id" [attr.data-automation-id]="'table-data-Required Date-' + i"
                 >{{element.requiredDate}}</td>
             </ng-container>
 
             <ng-container matColumnDef="userField1">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header replacePlaceholder [replacePlaceHolder]="placeholders.userField1" [fallbackPlaceHolder]="placeholders.userField1Fallback" [attr.data-automation-id]="'table-header-user-field1'"> {{UserField1}} </th>
+                <th mat-header-cell *matHeaderCellDef mat-sort-header replacePlaceholder [replacePlaceHolder]="placeholders.userField1" [fallbackPlaceHolder]="placeholders.userField1Fallback" data-automation-id="table-header-User Field1"> {{UserField1}} </th>
                 <td mat-cell *matCellDef="let element; let i = index"
                 #tooltip="matTooltip" matTooltipPosition="above" [matTooltip]="element.userField1" 
                 class="table-order-td" 
                 [matTooltipDisabled]="element.userField1 && element.userField1.length>=20?false:true"
                 (contextmenu)="onContextMenu($event, element.userField1, 'User Field1')"
-                 [class.selected]="element.id == selectedTransaction.id" [attr.data-automation-id]="'table-data-user-field1-' + i"
+                 [class.selected]="element.id == selectedTransaction.id" [attr.data-automation-id]="'table-data-User Field1-' + i"
                 >{{element.userField1}}</td>
             </ng-container>
 
             <ng-container matColumnDef="userField2">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header replacePlaceholder [replacePlaceHolder]="placeholders.userField2" [fallbackPlaceHolder]="placeholders.userField2Fallback" [attr.data-automation-id]="'table-header-user-field2'"> {{UserField2}} </th>
+                <th mat-header-cell *matHeaderCellDef mat-sort-header replacePlaceholder [replacePlaceHolder]="placeholders.userField2" [fallbackPlaceHolder]="placeholders.userField2Fallback" data-automation-id="table-header-User Field2"> {{UserField2}} </th>
                 <td mat-cell *matCellDef="let element; let i = index"
                 #tooltip="matTooltip" matTooltipPosition="above" [matTooltip]="element.userField2" 
                 class="table-order-td" 
                 [matTooltipDisabled]="element.userField2 && element.userField2.length>=20?false:true"
                 (contextmenu)="onContextMenu($event, element.userField2, 'User Field2')"
-                 [class.selected]="element.id == selectedTransaction.id" [attr.data-automation-id]="'table-data-user-field2-' + i"
+                 [class.selected]="element.id == selectedTransaction.id" [attr.data-automation-id]="'table-data-User Field2-' + i"
                 >{{element.userField2}}</td>
             </ng-container>
 
             <ng-container matColumnDef="userField3">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header replacePlaceholder [replacePlaceHolder]="placeholders.userField3" [fallbackPlaceHolder]="placeholders.userField3Fallback" [attr.data-automation-id]="'table-header-user-field3'"> {{UserField3}} </th>
+                <th mat-header-cell *matHeaderCellDef mat-sort-header replacePlaceholder [replacePlaceHolder]="placeholders.userField3" [fallbackPlaceHolder]="placeholders.userField3Fallback" data-automation-id="table-header-User Field3"> {{UserField3}} </th>
                 <td mat-cell *matCellDef="let element; let i = index"
                 #tooltip="matTooltip" matTooltipPosition="above" [matTooltip]="element.userField3" 
                 class="table-order-td" 
                 [matTooltipDisabled]="element.userField3 && element.userField3.length>=20?false:true"
                 (contextmenu)="onContextMenu($event, element.userField3, 'User Field3')"
-                 [class.selected]="element.id == selectedTransaction.id"  [attr.data-automation-id]="'table-data-user-field3-' + i"
+                 [class.selected]="element.id == selectedTransaction.id"  [attr.data-automation-id]="'table-data-User Field3-' + i"
                 >{{element.userField3}}</td>
             </ng-container>
 
             <ng-container matColumnDef="userField4">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header replacePlaceholder [replacePlaceHolder]="placeholders.userField4" [fallbackPlaceHolder]="placeholders.userField4Fallback" [attr.data-automation-id]="'table-header-user-field4'"> {{UserField4}} </th>
+                <th mat-header-cell *matHeaderCellDef mat-sort-header replacePlaceholder [replacePlaceHolder]="placeholders.userField4" [fallbackPlaceHolder]="placeholders.userField4Fallback" data-automation-id="table-header-User Field4"> {{UserField4}} </th>
                 <td mat-cell *matCellDef="let element; let i = index"
                 #tooltip="matTooltip" matTooltipPosition="above" [matTooltip]="element.userField4" 
                 class="table-order-td" 
                 [matTooltipDisabled]="element.userField4 && element.userField4.length>=20?false:true"
                 (contextmenu)="onContextMenu($event, element.userField4, 'User Field4')"
-                 [class.selected]="element.id == selectedTransaction.id"  [attr.data-automation-id]="'table-data-user-field4-' + i"
+                 [class.selected]="element.id == selectedTransaction.id"  [attr.data-automation-id]="'table-data-User Field4-' + i"
                 >{{element.userField4}}</td>
             </ng-container>
 
             <ng-container matColumnDef="userField5">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header replacePlaceholder [replacePlaceHolder]="placeholders.userField5" [fallbackPlaceHolder]="placeholders.userField5Fallback" [attr.data-automation-id]="'table-header-user-field5'"> {{UserField5}} </th>
+                <th mat-header-cell *matHeaderCellDef mat-sort-header replacePlaceholder [replacePlaceHolder]="placeholders.userField5" [fallbackPlaceHolder]="placeholders.userField5Fallback" data-automation-id="table-header-User Field5"> {{UserField5}} </th>
                 <td mat-cell *matCellDef="let element; let i = index"
                 #tooltip="matTooltip" matTooltipPosition="above" [matTooltip]="element.userField5" 
                 class="table-order-td" 
                 [matTooltipDisabled]="element.userField5 && element.userField5.length>=20?false:true"
                 (contextmenu)="onContextMenu($event, element.userField5, 'User Field5')"
-                 [class.selected]="element.id == selectedTransaction.id" [attr.data-automation-id]="'table-data-user-field5-' + i"
+                 [class.selected]="element.id == selectedTransaction.id" [attr.data-automation-id]="'table-data-User Field5-' + i"
                 >{{element.userField5}}</td>
             </ng-container>
 
             <ng-container matColumnDef="userField6">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header replacePlaceholder [replacePlaceHolder]="placeholders.userField6" [fallbackPlaceHolder]="placeholders.userField6Fallback" [attr.data-automation-id]="'table-header-user-field6'"> {{UserField6}} </th>
+                <th mat-header-cell *matHeaderCellDef mat-sort-header replacePlaceholder [replacePlaceHolder]="placeholders.userField6" [fallbackPlaceHolder]="placeholders.userField6Fallback" data-automation-id="table-header-User Field6"> {{UserField6}} </th>
                 <td mat-cell *matCellDef="let element; let i = index"
                 #tooltip="matTooltip" matTooltipPosition="above" [matTooltip]="element.userField6" 
                 class="table-order-td" 
                 [matTooltipDisabled]="element.userField6 && element.userField6.length>=20?false:true"
                 (contextmenu)="onContextMenu($event, element.userField6, 'User Field6')"
-                 [class.selected]="element.id == selectedTransaction.id" [attr.data-automation-id]="'table-data-user-field6-' + i"
+                 [class.selected]="element.id == selectedTransaction.id" [attr.data-automation-id]="'table-data-User Field6-' + i"
                 >{{element.userField6}}</td>
             </ng-container>
 
             <ng-container matColumnDef="userField7">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header replacePlaceholder [replacePlaceHolder]="placeholders.userField7" [fallbackPlaceHolder]="placeholders.userField7Fallback" [attr.data-automation-id]="'table-header-user-field7'"> {{UserField7}} </th>
+                <th mat-header-cell *matHeaderCellDef mat-sort-header replacePlaceholder [replacePlaceHolder]="placeholders.userField7" [fallbackPlaceHolder]="placeholders.userField7Fallback" data-automation-id="table-header-User Field7"> {{UserField7}} </th>
                 <td mat-cell *matCellDef="let element; let i = index"
                 #tooltip="matTooltip" matTooltipPosition="above" [matTooltip]="element.userField7" 
                 class="table-order-td" 
                 [matTooltipDisabled]="element.userField7 && element.userField7.length>=20?false:true"
                 (contextmenu)="onContextMenu($event, element.userField7, 'User Field7')"
-                 [class.selected]="element.id == selectedTransaction.id" [attr.data-automation-id]="'table-data-user-field7-' + i"
+                 [class.selected]="element.id == selectedTransaction.id" [attr.data-automation-id]="'table-data-User Field7-' + i"
                 >{{element.userField7}}</td>
             </ng-container>
 
             <ng-container matColumnDef="userField8">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header replacePlaceholder [replacePlaceHolder]="placeholders.userField8" [fallbackPlaceHolder]="placeholders.userField8Fallback" [attr.data-automation-id]="'table-header-user-field8'"> {{UserField8}} </th>
+                <th mat-header-cell *matHeaderCellDef mat-sort-header replacePlaceholder [replacePlaceHolder]="placeholders.userField8" [fallbackPlaceHolder]="placeholders.userField8Fallback" data-automation-id="table-header-User Field8"> {{UserField8}} </th>
                 <td mat-cell *matCellDef="let element; let i = index"
                 #tooltip="matTooltip" matTooltipPosition="above" [matTooltip]="element.userField8" 
                 class="table-order-td" 
                 [matTooltipDisabled]="element.userField8 && element.userField8.length>=20?false:true"
                 (contextmenu)="onContextMenu($event, element.userField8, 'User Field8')"
-                 [class.selected]="element.id == selectedTransaction.id" [attr.data-automation-id]="'table-data-user-field8-' + i"
+                 [class.selected]="element.id == selectedTransaction.id" [attr.data-automation-id]="'table-data-User Field8-' + i"
                 >{{element.userField8}}</td>
             </ng-container>
 
             <ng-container matColumnDef="userField9">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header replacePlaceholder [replacePlaceHolder]="placeholders.userField9" [fallbackPlaceHolder]="placeholders.userField9Fallback" [attr.data-automation-id]="'table-header-user-field9'"> {{UserField9}} </th>
+                <th mat-header-cell *matHeaderCellDef mat-sort-header replacePlaceholder [replacePlaceHolder]="placeholders.userField9" [fallbackPlaceHolder]="placeholders.userField9Fallback" data-automation-id="table-header-User Field9"> {{UserField9}} </th>
                 <td mat-cell *matCellDef="let element; let i = index"
                 #tooltip="matTooltip" matTooltipPosition="above" [matTooltip]="element.userField9" 
                 class="table-order-td" 
                 [matTooltipDisabled]="element.userField9 && element.userField9.length>=20?false:true"
                 (contextmenu)="onContextMenu($event, element.userField9, 'User Field9')"
-                 [class.selected]="element.id == selectedTransaction.id"  [attr.data-automation-id]="'table-data-user-field9-' + i"
+                 [class.selected]="element.id == selectedTransaction.id"  [attr.data-automation-id]="'table-data-User Field9-' + i"
                 >{{element.userField9}}</td>
             </ng-container>
 
             <ng-container matColumnDef="userField10">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header replacePlaceholder [replacePlaceHolder]="placeholders.userField10" [fallbackPlaceHolder]="placeholders.userField10Fallback" [attr.data-automation-id]="'table-header-user-field10'"> {{UserField10}} </th>
+                <th mat-header-cell *matHeaderCellDef mat-sort-header replacePlaceholder [replacePlaceHolder]="placeholders.userField10" [fallbackPlaceHolder]="placeholders.userField10Fallback" data-automation-id="table-header-User Field10"> {{UserField10}} </th>
                 <td mat-cell *matCellDef="let element; let i = index"
                 #tooltip="matTooltip" matTooltipPosition="above" [matTooltip]="element.userField10" 
                 class="table-order-td" 
                 [matTooltipDisabled]="element.userField10 && element.userField10.length>=20?false:true"
                 (contextmenu)="onContextMenu($event, element.userField10, 'User Field10')"
-                 [class.selected]="element.id == selectedTransaction.id"  [attr.data-automation-id]="'table-data-user-field10-' + i"
+                 [class.selected]="element.id == selectedTransaction.id"  [attr.data-automation-id]="'table-data-User Field10-' + i"
                 >{{element.userField10}}</td>
             </ng-container>
 
             <ng-container matColumnDef="itemNumber">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header [attr.data-automation-id]="'table-header-item-number'">{{ItemNumber}}</th>
+                <th mat-header-cell *matHeaderCellDef mat-sort-header data-automation-id="table-header-Item Number">{{ItemNumber}}</th>
                 <td mat-cell *matCellDef="let element; let i = index"
                 #tooltip="matTooltip" matTooltipPosition="above" [matTooltip]="element.itemNumber" 
                 class="table-order-td" 
                 [matTooltipDisabled]="element.itemNumber && element.itemNumber.length>=20?false:true"
                 (contextmenu)="onContextMenu($event, element.itemNumber, 'Item Number')"
-                 [class.selected]="element.id == selectedTransaction.id"  [attr.data-automation-id]="'table-data-item-number-' + i"
+                 [class.selected]="element.id == selectedTransaction.id"  [attr.data-automation-id]="'table-data-Item Number-' + i"
                 >{{element.itemNumber}}</td>
             </ng-container>
 
             <ng-container matColumnDef="description">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header [attr.data-automation-id]="'table-header-description'">Description</th>
+                <th mat-header-cell *matHeaderCellDef mat-sort-header data-automation-id="table-header-Description">Description</th>
                 <td mat-cell *matCellDef="let element; let i = index"
                 #tooltip="matTooltip" matTooltipPosition="above" [matTooltip]="element.description" 
                 class="table-order-td" 
                 [matTooltipDisabled]="element.description && element.description.length>=20?false:true"
                 (contextmenu)="onContextMenu($event, element.description, 'Description')"
-                 [class.selected]="element.id == selectedTransaction.id" [attr.data-automation-id]="'table-data-description-' + i"
+                 [class.selected]="element.id == selectedTransaction.id" [attr.data-automation-id]="'table-data-Description-' + i"
                 >{{element.description}}</td>
             </ng-container>
 
             <ng-container matColumnDef="lineNumber">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header [attr.data-automation-id]="'table-header-line-number'">Line Number</th>
+                <th mat-header-cell *matHeaderCellDef mat-sort-header data-automation-id="table-header-Line Number">Line Number</th>
                 <td mat-cell *matCellDef="let element; let i = index"
                 #tooltip="matTooltip" matTooltipPosition="above" [matTooltip]="element.lineNumber" 
                 class="table-order-td" 
                 [matTooltipDisabled]="element.lineNumber && element.lineNumber.length>=20?false:true"
                 (contextmenu)="onContextMenu($event, element.lineNumber, 'Line Number')"
-                 [class.selected]="element.id == selectedTransaction.id" [attr.data-automation-id]="'table-data-line-number-' + i"
+                 [class.selected]="element.id == selectedTransaction.id" [attr.data-automation-id]="'table-data-Line Number-' + i"
                 >{{element.lineNumber}}</td>
             </ng-container>
 
             <ng-container matColumnDef="transactionQuantity">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header [attr.data-automation-id]="'table-header-transaction-quantity'">Transaction Quantity</th>
+                <th mat-header-cell *matHeaderCellDef mat-sort-header data-automation-id="table-header-Transaction Quantity">Transaction Quantity</th>
                 <td mat-cell *matCellDef="let element; let i = index"
                 #tooltip="matTooltip" matTooltipPosition="above" [matTooltip]="element.transactionQuantity" 
                 class="table-order-td" 
                 [matTooltipDisabled]="element.transactionQuantity && element.transactionQuantity.length>=20?false:true"
                 (contextmenu)="onContextMenu($event, element.transactionQuantity, 'Transaction Quantity')"
-                 [class.selected]="element.id == selectedTransaction.id"  [attr.data-automation-id]="'table-data-transaction-quantity-' + i"
+                 [class.selected]="element.id == selectedTransaction.id"  [attr.data-automation-id]="'table-data-Transaction Quantity-' + i"
                 >{{element.transactionQuantity}}</td>
             </ng-container>
 
             <ng-container matColumnDef="warehouse">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header [attr.data-automation-id]="'table-header-warehouse'">Warehouse</th>
+                <th mat-header-cell *matHeaderCellDef mat-sort-header data-automation-id="table-header-Warehouse">Warehouse</th>
                 <td mat-cell *matCellDef="let element; let i = index"
                 #tooltip="matTooltip" matTooltipPosition="above" [matTooltip]="element.warehouse" 
                 class="table-order-td" 
                 [matTooltipDisabled]="element.warehouse && element.warehouse.length>=20?false:true"
                 (contextmenu)="onContextMenu($event, element.warehouse, 'Warehouse')"
-                 [class.selected]="element.id == selectedTransaction.id"  [attr.data-automation-id]="'table-data-warehouse-' + i"
+                 [class.selected]="element.id == selectedTransaction.id"  [attr.data-automation-id]="'table-data-Warehouse-' + i"
                 >{{element.warehouse}}</td>
             </ng-container>
 
             <ng-container matColumnDef="lineSequence">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header [attr.data-automation-id]="'table-header-line-sequence'">Line Sequence</th>
+                <th mat-header-cell *matHeaderCellDef mat-sort-header data-automation-id="table-header-Line Sequence">Line Sequence</th>
                 <td mat-cell *matCellDef="let element; let i = index"
                 #tooltip="matTooltip" matTooltipPosition="above" [matTooltip]="element.lineSequence" 
                 class="table-order-td" 
                 [matTooltipDisabled]="element.lineSequence && element.lineSequence.length>=20?false:true"
                 (contextmenu)="onContextMenu($event, element.lineSequence, 'Line Sequence')"
-                 [class.selected]="element.id == selectedTransaction.id"  [attr.data-automation-id]="'table-data-line-sequence-' + i"
+                 [class.selected]="element.id == selectedTransaction.id"  [attr.data-automation-id]="'table-data-Line Sequence-' + i"
                 >{{element.lineSequence}}</td>
             </ng-container>
 
             <ng-container matColumnDef="inProcess">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header [attr.data-automation-id]="'table-header-in-process'">In Process</th>
+                <th mat-header-cell *matHeaderCellDef mat-sort-header data-automation-id="table-header-In Process">In Process</th>
                 <td mat-cell *matCellDef="let element; let i = index"
                 #tooltip="matTooltip" matTooltipPosition="above" [matTooltip]="element.inProcess" 
                 class="table-order-td" 
                 [matTooltipDisabled]="element.inProcess && element.inProcess.length>=20?false:true"
                 (contextmenu)="onContextMenu($event, element.inProcess, 'In Process')"
-                 [class.selected]="element.id == selectedTransaction.id"  [attr.data-automation-id]="'table-data-in-process-' + i"
+                 [class.selected]="element.id == selectedTransaction.id"  [attr.data-automation-id]="'table-data-In Process-' + i"
                 >{{element.inProcess}}</td>
             </ng-container>
 
             <ng-container matColumnDef="processingBy">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header [attr.data-automation-id]="'table-header-processing-by'">Processing By</th>
+                <th mat-header-cell *matHeaderCellDef mat-sort-header data-automation-id="table-header-Processing By">Processing By</th>
                 <td mat-cell *matCellDef="let element; let i = index"
                 #tooltip="matTooltip" matTooltipPosition="above" [matTooltip]="element.processingBy" 
                 class="table-order-td" 
                 [matTooltipDisabled]="element.processingBy && element.processingBy.length>=20?false:true"
                 (contextmenu)="onContextMenu($event, element.processingBy, 'Processing By')"
-                 [class.selected]="element.id == selectedTransaction.id"  [attr.data-automation-id]="'table-data-processing-by-' + i"
+                 [class.selected]="element.id == selectedTransaction.id"  [attr.data-automation-id]="'table-data-Processing By-' + i"
                 >{{element.processingBy}}</td>
             </ng-container>
 
             <ng-container matColumnDef="unitOfMeasure">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header replacePlaceholder [replacePlaceHolder]="placeholders.unitOfMeasure" [fallbackPlaceHolder]="placeholders.unitOfMeasureFallback" [attr.data-automation-id]="'table-header-unit-of-measure'"> {{UnitOfMeasure}} </th>
+                <th mat-header-cell *matHeaderCellDef mat-sort-header replacePlaceholder [replacePlaceHolder]="placeholders.unitOfMeasure" [fallbackPlaceHolder]="placeholders.unitOfMeasureFallback" data-automation-id="table-header-Unit Of Measure"> {{UnitOfMeasure}} </th>
                 <td mat-cell *matCellDef="let element; let i = index"
                 #tooltip="matTooltip" matTooltipPosition="above" [matTooltip]="element.unitOfMeasure" 
                 class="table-order-td" 
                 [matTooltipDisabled]="element.unitOfMeasure && element.unitOfMeasure.length>=20?false:true"
                 (contextmenu)="onContextMenu($event, element.unitOfMeasure, 'Unit of Measure')"
-                 [class.selected]="element.id == selectedTransaction.id"  [attr.data-automation-id]="'table-data-unit-of-measure-' + i"
+                 [class.selected]="element.id == selectedTransaction.id"  [attr.data-automation-id]="'table-data-Unit Of Measure-' + i"
                 >{{element.unitOfMeasure}}</td>
             </ng-container>
 
             <ng-container matColumnDef="importBy">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header [attr.data-automation-id]="'table-header-import-by'">Import By</th>
+                <th mat-header-cell *matHeaderCellDef mat-sort-header data-automation-id="table-header-Import By">Import By</th>
                 <td mat-cell *matCellDef="let element; let i = index"
                 #tooltip="matTooltip" matTooltipPosition="above" [matTooltip]="element.importBy" 
                 class="table-order-td" 
                 [matTooltipDisabled]="element.importBy && element.importBy.length>=20?false:true"
                 (contextmenu)="onContextMenu($event, element.importBy, 'Import By')"
-                 [class.selected]="element.id == selectedTransaction.id" [attr.data-automation-id]="'table-data-import-by-' + i"
+                 [class.selected]="element.id == selectedTransaction.id" [attr.data-automation-id]="'table-data-Import By-' + i"
                 >{{element.importBy}}</td>
             </ng-container>
 
             <ng-container matColumnDef="importDate">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header [attr.data-automation-id]="'table-header-import-date'">Import Date</th>
+                <th mat-header-cell *matHeaderCellDef mat-sort-header data-automation-id="table-header-Import Date">Import Date</th>
                 <td mat-cell *matCellDef="let element; let i = index"
                 #tooltip="matTooltip" matTooltipPosition="above" [matTooltip]="element.importDate" 
                 class="table-order-td" 
                 [matTooltipDisabled]="element.importDate && element.importDate.length>=20?false:true"
                 (contextmenu)="onContextMenu($event, element.importDate, 'Import Date')"
-                 [class.selected]="element.id == selectedTransaction.id"  [attr.data-automation-id]="'table-data-import-date-' + i"
+                 [class.selected]="element.id == selectedTransaction.id"  [attr.data-automation-id]="'table-data-Import Date-' + i"
                 >{{element.importDate}}</td>
             </ng-container>
 
             <ng-container matColumnDef="importFilename">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header [attr.data-automation-id]="'table-header-import-filename'">Import Filename</th>
+                <th mat-header-cell *matHeaderCellDef mat-sort-header data-automation-id="table-header-Import Filename">Import Filename</th>
                 <td mat-cell *matCellDef="let element; let i = index"
                 #tooltip="matTooltip" matTooltipPosition="above" [matTooltip]="element.importFilename" 
                 class="table-order-td" 
                 [matTooltipDisabled]="element.importFilename && element.importFilename.length>=20?false:true"
                 (contextmenu)="onContextMenu($event, element.importFilename, 'Import Filename')"
-                 [class.selected]="element.id == selectedTransaction.id"  [attr.data-automation-id]="'table-data-import-filename-' + i"
+                 [class.selected]="element.id == selectedTransaction.id"  [attr.data-automation-id]="'table-data-Import Filename-' + i"
                 >{{element.importFilename}}</td>
             </ng-container>
 
             <ng-container matColumnDef="expirationDate">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header [attr.data-automation-id]="'table-header-expiration-date'">Expiration Date</th>
+                <th mat-header-cell *matHeaderCellDef mat-sort-header data-automation-id="table-header-Expiration Date">Expiration Date</th>
                 <td mat-cell *matCellDef="let element; let i = index"
                 #tooltip="matTooltip" matTooltipPosition="above" [matTooltip]="element.expirationDate" 
                 class="table-order-td" 
                 [matTooltipDisabled]="element.expirationDate && element.expirationDate.length>=20?false:true"
                 (contextmenu)="onContextMenu($event, element.expirationDate, 'Expiration Date')"
-                 [class.selected]="element.id == selectedTransaction.id" [attr.data-automation-id]="'table-data-expiration-date-' + i"
+                 [class.selected]="element.id == selectedTransaction.id" [attr.data-automation-id]="'table-data-Expiration Date-' + i"
                 >{{element.expirationDate}}</td>
             </ng-container>
 
             <ng-container matColumnDef="lotNumber">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header [attr.data-automation-id]="'table-header-lot-number'">Lot Number</th>
+                <th mat-header-cell *matHeaderCellDef mat-sort-header data-automation-id="table-header-Lot Number">Lot Number</th>
                 <td mat-cell *matCellDef="let element; let i = index"
                 #tooltip="matTooltip" matTooltipPosition="above" [matTooltip]="element.lotNumber" 
                 class="table-order-td" 
                 [matTooltipDisabled]="element.lotNumber && element.lotNumber.length>=20?false:true"
                 (contextmenu)="onContextMenu($event, element.lotNumber, 'Lot Number')"
-                 [class.selected]="element.id == selectedTransaction.id" [attr.data-automation-id]="'table-data-lot-number-' + i"
+                 [class.selected]="element.id == selectedTransaction.id" [attr.data-automation-id]="'table-data-Lot Number-' + i"
                 >{{element.lotNumber}}</td>
             </ng-container>
 
             <ng-container matColumnDef="serialNumber">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header [attr.data-automation-id]="'table-header-serial-number'">Serial Number</th>
+                <th mat-header-cell *matHeaderCellDef mat-sort-header data-automation-id="table-header-Serial Number">Serial Number</th>
                 <td mat-cell *matCellDef="let element; let i = index"
                 #tooltip="matTooltip" matTooltipPosition="above" [matTooltip]="element.serialNumber" 
                 class="table-order-td" 
                 [matTooltipDisabled]="element.serialNumber && element.serialNumber.length>=20?false:true"
                 (contextmenu)="onContextMenu($event, element.serialNumber, 'Serial Number')"
-                 [class.selected]="element.id == selectedTransaction.id" [attr.data-automation-id]="'table-data-serial-number-' + i"
+                 [class.selected]="element.id == selectedTransaction.id" [attr.data-automation-id]="'table-data-Serial Number-' + i"
                 >{{element.serialNumber}}</td>
             </ng-container>
 
             <ng-container matColumnDef="notes">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header [attr.data-automation-id]="'table-header-notes'">Notes</th>
+                <th mat-header-cell *matHeaderCellDef mat-sort-header data-automation-id="table-header-Notes">Notes</th>
                 <td mat-cell *matCellDef="let element; let i = index"
                 #tooltip="matTooltip" matTooltipPosition="above" [matTooltip]="element.notes" 
                 class="table-order-td" 
                 [matTooltipDisabled]="element.notes && element.notes.length>=20?false:true"
                 (contextmenu)="onContextMenu($event, element.notes, 'Notes')"
-                 [class.selected]="element.id == selectedTransaction.id" [attr.data-automation-id]="'table-data-notes-' + i"
+                 [class.selected]="element.id == selectedTransaction.id" [attr.data-automation-id]="'table-data-Notes-' + i"
                 >{{element.notes}}</td>
             </ng-container>
 
             <ng-container matColumnDef="revision">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header [attr.data-automation-id]="'table-header-revision'">Revision</th>
+                <th mat-header-cell *matHeaderCellDef mat-sort-header data-automation-id="table-header-Revision">Revision</th>
                 <td mat-cell *matCellDef="let element; let i = index"
                 #tooltip="matTooltip" matTooltipPosition="above" [matTooltip]="element.revision" 
                 class="table-order-td" 
                 [matTooltipDisabled]="element.revision && element.revision.length>=20?false:true"
                 (contextmenu)="onContextMenu($event, element.revision, 'Revision')"
-                 [class.selected]="element.id == selectedTransaction.id" [attr.data-automation-id]="'table-data-revision-' + i"
+                 [class.selected]="element.id == selectedTransaction.id" [attr.data-automation-id]="'table-data-Revision-' + i"
                 >{{element.revision}}</td>
             </ng-container>
 
             <ng-container matColumnDef="id">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header [attr.data-automation-id]="'table-header-id'">ID</th>
+                <th mat-header-cell *matHeaderCellDef mat-sort-header data-automation-id="table-header-ID">ID</th>
                 <td mat-cell *matCellDef="let element; let i = index"
                 #tooltip="matTooltip" matTooltipPosition="above" [matTooltip]="element.id" 
                 class="table-order-td" 
                 [matTooltipDisabled]="element.id && element.id.length>=20?false:true"
                 (contextmenu)="onContextMenu($event, element.id, 'ID')"
-                 [class.selected]="element.id == selectedTransaction.id"  [attr.data-automation-id]="'table-data-id-' + i"
+                 [class.selected]="element.id == selectedTransaction.id"  [attr.data-automation-id]="'table-data-ID-' + i"
                 >{{element.id}}</td>
             </ng-container>
 
             <ng-container matColumnDef="hostTransactionID">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header [attr.data-automation-id]="'table-header-host-transaction-id'">Host Transaction ID</th>
+                <th mat-header-cell *matHeaderCellDef mat-sort-header data-automation-id="table-header-Host Transaction ID">Host Transaction ID</th>
                 <td mat-cell *matCellDef="let element; let i = index"
                 #tooltip="matTooltip" matTooltipPosition="above" [matTooltip]="element.hostTransactionID" 
                 class="table-order-td" 
                 [matTooltipDisabled]="element.hostTransactionID && element.hostTransactionID.length>=20?false:true"
                 (contextmenu)="onContextMenu($event, element.hostTransactionID, 'Host Transaction ID')"
-                 [class.selected]="element.id == selectedTransaction.id"  [attr.data-automation-id]="'table-data-host-transaction-id-' + i"
+                 [class.selected]="element.id == selectedTransaction.id"  [attr.data-automation-id]="'table-data-Host Transaction ID-' + i"
                 >{{element.hostTransactionID}}</td>
             </ng-container>
 
             <ng-container matColumnDef="emergency">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header [attr.data-automation-id]="'table-header-emergency'">Emergency</th>
+                <th mat-header-cell *matHeaderCellDef mat-sort-header data-automation-id="table-header-Emergency">Emergency</th>
                 <td mat-cell *matCellDef="let element; let i = index"
                 #tooltip="matTooltip" matTooltipPosition="above" [matTooltip]="element.emergency" 
                 class="table-order-td" 
                 [matTooltipDisabled]="element.emergency && element.emergency.length>=20?false:true"
                 (contextmenu)="onContextMenu($event, element.emergency, 'Emergency')"
-                 [class.selected]="element.id == selectedTransaction.id"  [attr.data-automation-id]="'table-data-emergency-' + i"
+                 [class.selected]="element.id == selectedTransaction.id"  [attr.data-automation-id]="'table-data-Emergency-' + i"
                 >{{element.emergency}}</td>
             </ng-container>
 
             <ng-container matColumnDef="label">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header [attr.data-automation-id]="'table-header-label'">Label</th>
+                <th mat-header-cell *matHeaderCellDef mat-sort-header data-automation-id="table-header-Label">Label</th>
                 <td mat-cell *matCellDef="let element; let i = index"
                 #tooltip="matTooltip" matTooltipPosition="above" [matTooltip]="element.label" 
                 class="table-order-td" 
                 [matTooltipDisabled]="element.label && element.label.length>=20?false:true"
                 (contextmenu)="onContextMenu($event, element.label, 'Label')"
-                 [class.selected]="element.id == selectedTransaction.id" [attr.data-automation-id]="'table-data-label-' + i"
+                 [class.selected]="element.id == selectedTransaction.id" [attr.data-automation-id]="'table-data-Label-' + i"
                 >{{element.label}}</td>
             </ng-container>
 
             <ng-container matColumnDef="batchPickID">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header [attr.data-automation-id]="'table-header-batch-pick-id'">Batch Pick ID</th>
+                <th mat-header-cell *matHeaderCellDef mat-sort-header data-automation-id="table-header-Batch Pick ID">Batch Pick ID</th>
                 <td mat-cell *matCellDef="let element; let i = index"
                 #tooltip="matTooltip" matTooltipPosition="above" [matTooltip]="element.batchPickID" 
                 class="table-order-td" 
                 [matTooltipDisabled]="element.batchPickID && element.batchPickID.length>=20?false:true"
                 (contextmenu)="onContextMenu($event, element.batchPickID, 'Batch Pick ID')"
-                 [class.selected]="element.id == selectedTransaction.id"  [attr.data-automation-id]="'table-data-batch-pick-id-' + i"
+                 [class.selected]="element.id == selectedTransaction.id"  [attr.data-automation-id]="'table-data-Batch Pick ID-' + i"
                 >{{element.batchPickID}}</td>
             </ng-container>
 
             <ng-container matColumnDef="toteID">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header [attr.data-automation-id]="'table-header-tote-id'">Tote ID</th>
+                <th mat-header-cell *matHeaderCellDef mat-sort-header data-automation-id="table-header-Tote ID">Tote ID</th>
                 <td mat-cell *matCellDef="let element; let i = index"
                 #tooltip="matTooltip" matTooltipPosition="above" [matTooltip]="element.toteID" 
                 class="table-order-td" 
                 [matTooltipDisabled]="element.toteID && element.toteID.length>=20?false:true"
                 (contextmenu)="onContextMenu($event, element.toteID, 'Tote ID')"
-                 [class.selected]="element.id == selectedTransaction.id" [attr.data-automation-id]="'table-data-tote-id-' + i"
+                 [class.selected]="element.id == selectedTransaction.id" [attr.data-automation-id]="'table-data-Tote ID-' + i"
                 >{{element.toteID}}</td>
             </ng-container>
 
             <ng-container matColumnDef="cell">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header [attr.data-automation-id]="'table-header-cell'">Cell</th>
+                <th mat-header-cell *matHeaderCellDef mat-sort-header data-automation-id="table-header-Cell">Cell</th>
                 <td mat-cell *matCellDef="let element; let i = index"
                 #tooltip="matTooltip" matTooltipPosition="above" [matTooltip]="element.cell" 
                 class="table-order-td" 
                 [matTooltipDisabled]="element.cell && element.cell.length>=20?false:true"
                 (contextmenu)="onContextMenu($event, element.cell, 'Cell')"
-                 [class.selected]="element.id == selectedTransaction.id" [attr.data-automation-id]="'table-data-cell-' + i"
+                 [class.selected]="element.id == selectedTransaction.id" [attr.data-automation-id]="'table-data-Cell-' + i"
                 >{{element.cell}}</td>
             </ng-container>
 
