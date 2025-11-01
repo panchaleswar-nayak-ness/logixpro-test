@@ -9,7 +9,7 @@ import { PickTotes } from './models/cm-markout-new-models';
 })
 export class CmMarkoutNewComponent {
 
-  rowSelected: PickTotes;
+  rowSelected: PickTotes | null = null;
 
   constructor() {}
 

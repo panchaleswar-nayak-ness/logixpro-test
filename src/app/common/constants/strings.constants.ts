@@ -317,10 +317,10 @@ export const ToasterMessages = {
     InvalidToteID: "Invalid Tote ID, please enter again",
     StorageBinExitSuccessful: 'Storage Container has been sent to Outbound Port.',
     CartAvailableAgain: 'All totes removed. Cart is now available again.',
-    PleaseEnterBothPositionAndShelveCount: 'Please enter both Position Count and Shelve Count',
-    PleaseEnterValidNumbersForPositionAndShelveCount: 'Please enter valid numbers for Position Count and Shelve Count',
+    PleaseEnterBothPositionAndShelveCount: 'Please enter both Position Count and Shelf Count',
+    PleaseEnterValidNumbersForPositionAndShelveCount: 'Please enter valid numbers for Position Count and Shelf Count',
     PositionCountMustBeBetween1And8: 'Position Count must be between 1 and 8',
-    ShelveCountMustBeBetween1And5: 'Shelve Count must be between 1 and 5',
+    ShelveCountMustBeBetween1And5: 'Shelf Count must be between 1 and 5',
     PleaseEnterValidCartId: 'Cart ID already exists.',
     PleaseEnterCartId: 'Please enter a Cart ID.',
     UnableToValidateCartID: 'Unable To Validate Cart ID.',
@@ -945,6 +945,18 @@ export const DISABLED_FIELDS = [
     NUMERIC : 'Numeric',
     ALPHA_NUMERIC : 'Alphanumeric',
   }
+  export const CriteriaOptions = {
+    EQUALS: 'Equals',
+    NOT_EQUAL: 'Not Equal To',
+    GREATER_THAN: 'Greater Than',
+    GREATER_OR_EQUAL: 'Greater or Equal',
+    LESS_THAN: 'Less Than',
+    LESS_OR_EQUAL: 'Less or Equal',
+    IS_LIKE: 'Is Like',
+    CONTAINS_DATA: 'Contains Data',
+    HAS_NO_DATA: 'Has No Data',
+  }
+  
   export const storageContainerDisabledFields = {
     SENDTOOUTBOUNDPORT: 'sendToOutboundPort',
     CAROUSELZONE: 'carouselZone',

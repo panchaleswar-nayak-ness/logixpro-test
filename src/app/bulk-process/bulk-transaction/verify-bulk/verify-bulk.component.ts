@@ -295,12 +295,14 @@ export class VerifyBulkComponent implements OnInit {
 
     const dialogRef1: any = this.global.OpenDialog(BpNumberSelectionComponent, {
       height: 'auto',
-      width: Style.w402px,
+      width: Style.auto,
+      minWidth: Style.auto,
       autoFocus: DialogConstants.autoFocus,
       disableClose: true,
       data: {
         url: this.bulkTransactionType,
         completedQuantity: element.completedQuantity,
+        transactionQuantity: element.transactionQuantity,
         from: "completed quantity"
       }
     });
@@ -333,6 +335,9 @@ export class VerifyBulkComponent implements OnInit {
           element.completedQuantity = resp.newQuantity || 0;
         });
       } else if (resp.type == ResponseStrings.Cancel) {
+        element.completedQuantity = resp.newQuantity || 0;
+      } else if (resp.type == null) {
+        // When completed quantity equals or exceeds order quantity, no location empty dialog was shown
         element.completedQuantity = resp.newQuantity || 0;
       } else {
         record.newLocationQty = resp.newQuantity || 0;

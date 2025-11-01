@@ -2,20 +2,20 @@
     <div class="row">
         <div class="col-xxl-7 mb-3">
             <app-search-bar (changeViewEmitter)="changeView($event); getAllCount()" [bulkTransactionType]="this.bulkTransactionTypeAllCaps"
-                [status]="status" [view]="view" [orders]="orders" [batchSeleted]="batchSeleted"
+                [status]="status" [view]="view" [orders]="orders" [batchSeleted]="batchSelected"
                 [selectedOrders]="selectedOrders" [allowQuickPick]="allowQuickPick" [isQuickPick]="isQuickPick"
                 [hasEmergencyPick]="hasEmergencyPick" [isEmergencyPick]="isEmergencyPick"
                 [defaultQuickPick]="defaultQuickPick" (addItemEmitter)="selectOrder($event)"
                 (printDetailList)="printDetailList()" (createBatchEmit)="createBatchNow($event)"
-                (isQuickPickChange)="this.isQuickPick = $event;pickViewChange()" (isEmergencyPickChange)="this.isEmergencyPick = $event;pickViewChange()"></app-search-bar>
+                (isQuickPickChange)="this.isQuickPick = $event;pickViewChange()" (isEmergencyPickChange)="handleEmergencyPickChange($event)"></app-search-bar>
         </div>
         <div class="col-xxl-5 mb-3">
-            <app-status [status]="status" [isQuickPick]="isQuickPick" [bulkTransactionType]="this.bulkTransactionTypeAllCaps"></app-status>
+            <app-status [status]="status" [isQuickPick]="isQuickPick" [isEmergencyPick]="isEmergencyPick" [bulkTransactionType]="this.bulkTransactionTypeAllCaps"></app-status>
         </div>
     </div>
     <div class="row">
         <div class="col-xxl-7 mb-3">
-            <app-order-selection-list [batchSeleted]="batchSeleted" [url]="this.bulkTransactionTypeAllCaps"
+            <app-order-selection-list [batchSeleted]="batchSelected" [url]="this.bulkTransactionTypeAllCaps"
                 [orders]="orders" [view]="view" [displayedColumns]="displayedColumns"
                 (selectOrderEmitter)="selectOrder($event)" (appendAllEmitter)="appendAll()"></app-order-selection-list>
         </div>

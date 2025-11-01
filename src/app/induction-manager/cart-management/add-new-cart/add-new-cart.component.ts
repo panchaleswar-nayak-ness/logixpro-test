@@ -74,6 +74,7 @@ export class AddNewCartComponent implements OnInit {
 
   ngOnInit(): void {
     this.focusCartIdInput();
+    this.showAdditionalFields = true;
   }
 
   private focusCartIdInput(): void {
@@ -87,11 +88,15 @@ export class AddNewCartComponent implements OnInit {
     if (!(await this.isCartIdValid())) {
       return;
     }
+    this.showAdditionFields();
+  }
 
+  async showAdditionFields() {
     this.showAdditionalFields = true;
     // Force change detection to ensure DOM is updated
     this.cdr.detectChanges();
     this.focusPositionCountInput();
+
   }
 
   private async isCartIdValid(): Promise<boolean> {
@@ -160,6 +165,12 @@ export class AddNewCartComponent implements OnInit {
 
     return true;
   }
+
+  onPositionChange(value: number, min: number, max: number) {
+  if (value >= min && value <= max) {
+    this.createGrid();
+  }
+}
 
   private createGrid(): void {
     this.cols = this.positionCountInput!;

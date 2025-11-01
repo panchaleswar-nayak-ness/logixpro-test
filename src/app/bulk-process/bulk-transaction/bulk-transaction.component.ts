@@ -31,6 +31,10 @@ import { SharedService } from 'src/app/common/services/shared.service';
 })
 export class BulkTransactionComponent implements OnInit {
 
+  // Constants for pagination
+  private readonly MAX_PAGE_SIZE = 10000; // Reduced from 500000 for better performance
+  private readonly EMERGENCY_PAGE_SIZE = 500000; // Large size for emergency data since no search endpoint
+
   verifyBulks: boolean = false;
   status: OrderBatchToteQtyResponse = new OrderBatchToteQtyResponse();
   view: string;
@@ -42,7 +46,7 @@ export class BulkTransactionComponent implements OnInit {
   Prefernces: BulkPreferences;
   selectedOrders: (OrderResponse | TotesResponse)[] = [];
   nextBatchId: string = '';
-  batchSeleted: boolean = false;
+  batchSelected: boolean = false;
   orderLines: OrderLineResource[] = [];
   bulkTransactionType: string;
   bulkTransactionTypeAllCaps: string;
@@ -137,19 +141,59 @@ export class BulkTransactionComponent implements OnInit {
     });
 }
 
+  async handleEmergencyPickChange(isEmergencyPick: boolean) {
+    this.isEmergencyPick = isEmergencyPick;
+    
+    if (this.isEmergencyPick) {
+      // Emergency pick enabled - reset batchSelected and fetch counts first
+      this.batchSelected = false;
+      await this.getEmergencyOrdersInfo();
+    } else {
+      // Emergency pick disabled - reset counts
+      this.status.orderCount = 0;
+      this.status.toteCount = 0;
+      this.status.batchCount = 0;
+      this.batchSelected = false;
+    }
+    
+    // Call pickViewChange() outside the if-else block to avoid duplication
+    this.pickViewChange();
+  }
+
   pickViewChange() {
-    this.isEmergencyPick ? this.emergencyPickOrders() : this.isQuickPick ? this.quickPickOrders() : this.bulkOrderBatchToteQty();
+    // Priority: Emergency > Quick Pick > Normal
+    if (this.isEmergencyPick) {
+      // Emergency mode has highest priority - show the view that has data first (batches > totes > orders)
+      if (this.status.batchCount > 0) {
+        // Batches have data - highest priority
+        this.emergencyPickBatches();
+      } else if (this.status.toteCount > 0) {
+        // Totes have data - medium priority
+        this.emergencyPickTotes();
+      } else if (this.status.orderCount > 0) {
+        // Orders have data - lowest priority
+        this.emergencyPickOrders();
+      } else {
+        // No data - default to orders
+        this.emergencyPickOrders();
+      }
+    } else if (this.isQuickPick) {
+      // Quick pick mode - only when emergency is not enabled
+      this.quickPickOrders();
+    } else {
+      // Normal mode - when both emergency and quick pick are disabled
+      this.bulkOrderBatchToteQty();
+    }
   }
 
   emergencyPickOrders() {
     let payload: PagingRequest = {
       selectedPage:0,
-      pageSize: 500000
+      pageSize: this.EMERGENCY_PAGE_SIZE // Large size for emergency data since no search endpoint
     };
     this.iBulkProcessApiService.getEmergencyPickOrders(payload).subscribe((res: ApiResult<OrderResponse[]>) => {
       this.selectedOrders = [];
-      this.status.batchCount = 0;
-      this.status.toteCount = 0;
+      // Don't reset batchCount and toteCount - keep the emergency counts
       this.status.orderCount = 0;
       this.status.orderLinesCount = 0;
       this.orders = res.value ?? [];
@@ -158,6 +202,44 @@ export class BulkTransactionComponent implements OnInit {
       this.view = BulkTransactionView.ORDER;
       this.displayedColumns = ORDER_DISPLAYED_COLUMNS;
       this.selectedDisplayedColumns = SELECTED_ORDER_DISPLAYED_COLUMNS;
+    })
+  }
+
+  emergencyPickTotes() {
+    let payload: PagingRequest = {
+      selectedPage:0,
+      pageSize: this.EMERGENCY_PAGE_SIZE // Large size for emergency data since no search endpoint
+    };
+    this.iBulkProcessApiService.getEmergencyPickTotes(payload).subscribe((res: ApiResult<TotesResponse[]>) => {
+      this.selectedOrders = [];
+      // Don't reset batchCount and orderCount - keep the emergency counts
+      this.status.toteCount = 0;
+      this.status.orderLinesCount = 0;
+      this.orders = res.value ?? [];
+      this.originalOrders = res.value ?? [];
+      this.status.toteCount = res.value?.length ?? 0;
+      this.view = BulkTransactionView.TOTE;
+      this.displayedColumns = TOTE_DISPLAYED_COLUMNS;
+      this.selectedDisplayedColumns = SELECTED_TOTE_DISPLAYED_COLUMNS;
+    })
+  }
+
+  emergencyPickBatches() {
+    let payload: PagingRequest = {
+      selectedPage:0,
+      pageSize: this.EMERGENCY_PAGE_SIZE // Large size for emergency data since no search endpoint
+    };
+    this.iBulkProcessApiService.getEmergencyPickBatches(payload).subscribe((res: ApiResult<BatchesResponse[]>) => {
+      this.selectedOrders = [];
+      // Don't reset orderCount and toteCount - keep the emergency counts
+      this.status.batchCount = 0;
+      this.status.orderLinesCount = 0;
+      this.orders = res.value ?? [];
+      this.originalOrders = res.value ?? [];
+      this.status.batchCount = res.value?.length ?? 0;
+      this.view = BulkTransactionView.BATCH;
+      this.displayedColumns = BATCH_DISPLAYED_COLUMNS;
+      this.selectedDisplayedColumns = SELECTED_BATCH_DISPLAYED_COLUMNS;
     })
   }
 
@@ -390,7 +472,7 @@ export class BulkTransactionComponent implements OnInit {
   }
 
   async bulkOrderBatchToteQty() {
-    this.batchSeleted = false;
+    this.batchSelected = false;
 
     forkJoin([
       this.bulkBatchesCountApi(),
@@ -528,6 +610,8 @@ export class BulkTransactionComponent implements OnInit {
       // Reset the slapper label flow flag when closing verify-bulk
       this.isSlapperLabelFlow = false;
     }
+    // Reset batchSeleted flag when coming back from verify-bulk screen
+    this.batchSelected = false;
     this.verifyBulks = !this.verifyBulks;
     localStorage.setItem(localStorageKeys.VerifyBulks, this.verifyBulks.toString());
   }
@@ -538,43 +622,80 @@ export class BulkTransactionComponent implements OnInit {
     this.status.orderLinesCount = 0;
     // Reset slapper label flow flag when view changes
     this.isSlapperLabelFlow = false;
-    if (event == BulkTransactionView.BATCH) {
-      this.bulkBatchesObservable().subscribe((res) => {
-        this.orders = res.value ?? [];
-        this.originalOrders = res.value ?? [];
-      });
-      this.displayedColumns = BATCH_DISPLAYED_COLUMNS;
-      this.selectedDisplayedColumns = SELECTED_BATCH_DISPLAYED_COLUMNS;
-      // We don't need to create a batch id manually as it is already created for batches
-      this.isBatchIdGenerationEnabled=false;
+    
+    // Handle emergency pick mode
+    if (this.isEmergencyPick) {
+      // Reset batchSelected flag when switching views in emergency mode
+      this.batchSelected = false;
+      switch (event) {
+        case BulkTransactionView.BATCH:
+          this.emergencyPickBatches();
+          break;
+        case BulkTransactionView.TOTE:
+          this.emergencyPickTotes();
+          break;
+        case BulkTransactionView.ORDER:
+          this.emergencyPickOrders();
+          break;
+      }
+      return;
     }
-    else if (event == BulkTransactionView.TOTE) {
-      this.bulkTotesObservable().subscribe((res) => {
-        this.orders = res.value ?? [];
-        this.originalOrders = res.value ?? [];
-      });
-      this.displayedColumns = TOTE_DISPLAYED_COLUMNS;
-      this.selectedDisplayedColumns = SELECTED_TOTE_DISPLAYED_COLUMNS;
-      // We don't need to create a batch id manually for totes
-      this.isBatchIdGenerationEnabled=false;   
+    
+    switch (event) {
+      case BulkTransactionView.BATCH:
+        this.bulkBatchesObservable()
+          .pipe(take(1)) // Auto-unsubscribe after first emission
+          .subscribe((res) => {
+            this.orders = res.value ?? [];
+            this.originalOrders = res.value ?? [];
+          });
+        this.displayedColumns = BATCH_DISPLAYED_COLUMNS;
+        this.selectedDisplayedColumns = SELECTED_BATCH_DISPLAYED_COLUMNS;
+        // We don't need to create a batch id manually as it is already created for batches
+        this.isBatchIdGenerationEnabled = false;
+        break;
+        
+      case BulkTransactionView.TOTE:
+        this.bulkTotesObservable()
+          .pipe(take(1)) // Auto-unsubscribe after first emission
+          .subscribe((res) => {
+            this.orders = res.value ?? [];
+            this.originalOrders = res.value ?? [];
+          });
+        this.displayedColumns = TOTE_DISPLAYED_COLUMNS;
+        this.selectedDisplayedColumns = SELECTED_TOTE_DISPLAYED_COLUMNS;
+        // We don't need to create a batch id manually for totes
+        this.isBatchIdGenerationEnabled = false;
+        break;
+        
+      case BulkTransactionView.ORDER:
+        this.bulkOrdersObservable()
+          .pipe(take(1)) // Auto-unsubscribe after first emission
+          .subscribe((res) => {
+            this.orders = res.value ?? [];
+            this.originalOrders = res.value ?? [];
+          });
+        this.displayedColumns = ORDER_DISPLAYED_COLUMNS;
+        this.selectedDisplayedColumns = SELECTED_ORDER_DISPLAYED_COLUMNS;
+        // We need to create a batch id manually for orders
+        this.isBatchIdGenerationEnabled = true;
+        break;
     }
-    else if (event == BulkTransactionView.ORDER) {
-      this.bulkOrdersObservable().subscribe((res) => {
-        this.orders = res.value ?? [];
-        this.originalOrders = res.value ?? [];
-      });
-      this.displayedColumns = ORDER_DISPLAYED_COLUMNS;
-      this.selectedDisplayedColumns = SELECTED_ORDER_DISPLAYED_COLUMNS;
-       // We need to create a batch id manually for orders
-      this.isBatchIdGenerationEnabled=true;
-    }
-    this.batchSeleted = false;
+    this.batchSelected = false;
   }
 
   getAllCount() {
-    this.bulkOrdersCountApi();
-    this.bulkTotesCountApi();
-    this.bulkBatchesCountApi();
+    if (this.isEmergencyPick) {
+      // In emergency pick mode, fetch emergency counts
+      this.getEmergencyOrdersCount();
+      this.getEmergencyTotesCount();
+      this.getEmergencyBatchesCount();
+    } else {
+      // Normal mode - fetch all counts
+      this.bulkOrdersCountApi();
+      this.bulkTotesCountApi();
+      this.bulkBatchesCountApi();
+    }
   }
 
   selectOrder(event) {
@@ -585,7 +706,7 @@ export class BulkTransactionComponent implements OnInit {
     if (this.view == BulkTransactionView.BATCH) {
       this.selectedOrders = event.orders;
       this.orders = this.orders.filter((element) => element.batchId != event.batchId);
-      this.batchSeleted = true;
+      this.batchSelected = true;
     }
     else if (this.view == BulkTransactionView.TOTE) {
       this.selectedOrders.forEach((element, index) => { element.toteNumber = index + 1 });
@@ -734,21 +855,56 @@ export class BulkTransactionComponent implements OnInit {
 
   removeAll() {
     if (this.view == BulkTransactionView.BATCH) {
-      this.bulkBatchesObservable().subscribe((res) => {
-        this.orders = res.value ?? [];
-        this.selectedOrders = [];
-      })
-    }
-    else {
-      if (this.selectedOrders.length < this.originalOrders.length) {
-        while (this.selectedOrders.length > 0)
-          this.removeOrder(this.selectedOrders[0]);
+      if (this.isEmergencyPick) {
+        // In emergency mode, repopulate with emergency batches
+        this.emergencyPickBatches();
       } else {
-        this.orders = [...this.selectedOrders, ...this.orders];
-        this.selectedOrders = [];
+        // In normal mode, repopulate with normal batches
+        this.bulkBatchesObservable()
+          .pipe(take(1)) // Auto-unsubscribe after first emission
+          .subscribe((res) => {
+            this.orders = res.value ?? [];
+            this.selectedOrders = [];
+          });
       }
     }
-    this.batchSeleted = false;
+    else if (this.view == BulkTransactionView.TOTE) {
+      if (this.isEmergencyPick) {
+        // In emergency mode, repopulate with emergency totes
+        this.emergencyPickTotes();
+      } else {
+        // In normal mode, use optimized logic
+        if (this.selectedOrders.length < this.originalOrders.length) {
+          // Optimized: Reset arrays and update counts properly
+          this.status.orderLinesCount = 0;
+          this.orderLines = [];
+          this.selectedOrders = [];
+          this.orders = [...this.originalOrders];
+        } else {
+          this.orders = [...this.selectedOrders, ...this.orders];
+          this.selectedOrders = [];
+        }
+      }
+    }
+    else if (this.view == BulkTransactionView.ORDER) {
+      if (this.isEmergencyPick) {
+        // In emergency mode, repopulate with emergency orders
+        this.emergencyPickOrders();
+      } else {
+        // In normal mode, use optimized logic
+        if (this.selectedOrders.length < this.originalOrders.length) {
+          // Optimized: Reset arrays and update counts properly
+          this.status.orderLinesCount = 0;
+          this.orderLines = [];
+          this.selectedOrders = [];
+          this.orders = [...this.originalOrders];
+        } else {
+          this.orders = [...this.selectedOrders, ...this.orders];
+          this.selectedOrders = [];
+        }
+      }
+    }
+    this.batchSelected = false;
     this.status.orderLinesCount = 0;
     this.orderLines = [];
     // Reset slapper label flow flag when all orders are removed
@@ -834,17 +990,57 @@ export class BulkTransactionComponent implements OnInit {
 
   async getEmergencyOrdersInfo() {
     try {
-      const res = await this.iBulkProcessApiService.getEmergencyOrdersInfo();
-      if(res?.body?.isSuccess){
-        const emergencyInfo = res?.body?.value;
-        this.hasEmergencyPick = emergencyInfo.hasPendingForWorkstation;
-        this.isEmergencyPick = emergencyInfo.hasPendingForWorkstation;
-        if(this.isEmergencyPick){
-          this.emergencyAlertService.snooze30s();
-        }
+      const ordersRes = await this.iBulkProcessApiService.getEmergencyOrdersInfo();
+      const hasEmergencyOrders = ordersRes?.body?.isSuccess && ordersRes?.body?.value?.hasPendingForWorkstation;
+      
+      this.hasEmergencyPick = hasEmergencyOrders;
+      this.isEmergencyPick = hasEmergencyOrders; // Set the checkbox state
+      
+      if(this.isEmergencyPick){
+        this.emergencyAlertService.snooze30s();
+        // Fetch emergency orders, totes, and batches counts when emergency pick is enabled
+        await this.getEmergencyOrdersCount();
+        await this.getEmergencyTotesCount();
+        await this.getEmergencyBatchesCount();
       }
     } catch (error) {
       this.global.ShowToastr(ToasterType.Error, ToasterMessages.SomethingWentWrong, ToasterTitle.Error);
+    }
+  }
+
+  async getEmergencyOrdersCount() {
+    try {
+      // Use the same API call as emergencyPickOrders but just get the count
+      let payload: PagingRequest = {
+        selectedPage: 0,
+        pageSize: this.EMERGENCY_PAGE_SIZE // Large size for emergency data since no search endpoint
+      };
+      const ordersRes = await this.iBulkProcessApiService.getEmergencyPickOrders(payload).toPromise();
+      this.status.orderCount = ordersRes?.value?.length || 0;
+    } catch (error) {
+      console.error('Failed to fetch emergency orders count:', error);
+    }
+  }
+
+  async getEmergencyTotesCount() {
+    try {
+      const totesCountRes = await this.iBulkProcessApiService.getEmergencyTotesCount();
+      if(totesCountRes?.body?.isSuccess) {
+        this.status.toteCount = totesCountRes.body.value || 0;
+      }
+    } catch (error) {
+      console.error('Failed to fetch emergency totes count:', error);
+    }
+  }
+
+  async getEmergencyBatchesCount() {
+    try {
+      const batchesCountRes = await this.iBulkProcessApiService.getEmergencyBatchesCount();
+      if(batchesCountRes?.body?.isSuccess) {
+        this.status.batchCount = batchesCountRes.body.value || 0;
+      }
+    } catch (error) {
+      console.error('Failed to fetch emergency batches count:', error);
     }
   }
 

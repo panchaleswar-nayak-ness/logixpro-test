@@ -162,10 +162,10 @@
 
                     <mat-menu #appMenu="matMenu">
                       <button mat-menu-item
-                        matTooltip="Press to Print a Off-Carousel {{bulkTransactionType}} Item Label for the currently selected record."
+                        matTooltip="Press to Print a Off-Carousel {{bulkTransactionType}} Item Label for the currently selected record." matTooltipPosition="before"
                         (click)="printSingleToteLabel(i)" data-automation-id="print-single-label-menu-item">
                         Print Single Label</button>
-                      <button mat-menu-item matTooltip="Press to split this transaction into more than one tote."
+                      <button mat-menu-item matTooltip="Press to split this transaction into more than one tote." matTooltipPosition="before"
                         *ngIf="['Put Away','Count'].indexOf(bulkTransactionType) < 0" (click)="fullTote(element,i)"
                         [disabled]="bulkTransactionType == 'Pick' && !Prefernces.workstationPreferences.pickToTotes" data-automation-id="blossom-tote-menu-item">Blossom Tote</button>
                     </mat-menu>
