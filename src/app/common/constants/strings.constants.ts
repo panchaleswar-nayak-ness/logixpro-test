@@ -337,6 +337,7 @@ export const ToasterMessages = {
     ToteIDAlreadyExists: 'This Tote ID already exists in the table. Please enter a different Tote ID.',
     NoBatchesWithZone: 'There are no batches with this zone ({{zone}}) assigned.  Click OK to start a new batch or cancel to choose a different location/transaction.',
     BatchChangedSuccessfully: 'Current Batch is now {{batchId}}',
+    QtyNewToteZero: 'Quantity Put in New Tote should be greater than 0'
 }
 
 export const LiveAnnouncerMessage = {

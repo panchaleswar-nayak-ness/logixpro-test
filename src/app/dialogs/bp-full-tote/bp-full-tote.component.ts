@@ -1,5 +1,5 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { DialogConstants, Placeholders, ResponseStrings, Style } from 'src/app/common/constants/strings.constants';
+import { DialogConstants, Placeholders, ResponseStrings, Style, ToasterMessages, ToasterTitle, ToasterType } from 'src/app/common/constants/strings.constants';
 import { GlobalService } from 'src/app/common/services/global.service';
 import { BpNumberSelectionComponent } from '../bp-number-selection/bp-number-selection.component';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
@@ -9,6 +9,7 @@ import { AlertConfirmationComponent } from '../alert-confirmation/alert-confirma
 import { HttpStatusCode } from '@angular/common/http';
 import { FullToteRequest, ValidateToteRequest } from 'src/app/common/Model/bulk-transactions';
 import { ConfirmationDialogComponent } from 'src/app/admin/dialogs/confirmation-dialog/confirmation-dialog.component';
+import { ErrorDialogComponent } from '../error-dialog/error-dialog.component';
 
 @Component({
   selector: 'app-bp-full-tote',
@@ -97,8 +98,21 @@ export class BpFullToteComponent implements OnInit {
     }
   }
 
+  isValidToteQty() {
+    const qty = Number(this.data.PutNewToteQty);
+
+    if (!Number.isFinite(qty) || qty <= 0) {
+      this.global.ShowToastr(ToasterType.Error, ToasterMessages.QtyNewToteZero, ToasterTitle.Error);
+      return false;
+    }
+
+    return true;
+  }
+
+
   async done() {
     if (this.data.NewToteID != "") {
+      if (!this.isValidToteQty()) return;
       let payload: FullToteRequest = new FullToteRequest();
       payload.NewToteID = this.data.NewToteID;
       payload.NewToteQTY = parseInt(this.data.PutNewToteQty);
