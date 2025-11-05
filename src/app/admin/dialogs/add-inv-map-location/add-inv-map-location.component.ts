@@ -481,8 +481,7 @@ performClear() {
       if (res.data.length > 0) {
         this.itemNumberList = res.data;
       }
-      else {
-        this.addInvMapLocation.controls[UniqueConstants.item].setValue('');
+      else {        
         this.itemNumberList = []
         this.clearFields()
       }
