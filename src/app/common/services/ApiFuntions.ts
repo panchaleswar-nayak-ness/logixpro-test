@@ -1489,7 +1489,7 @@ export class ApiFuntions {
   }
 
   public ReprocessTransactionTable(Body: any): Observable<any> {
-    return this.ApiBase.Get(`/Admin/reprocesstransaction`, Body);
+    return this.ApiBase.Post(`/Admin/reprocessTransactionTable`, Body);
   }
 
   public OrderToPost(Body: any): Observable<any> {

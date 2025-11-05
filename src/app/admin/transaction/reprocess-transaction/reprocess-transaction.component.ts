@@ -1,4 +1,4 @@
-import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
+import { Component, OnInit, OnDestroy, OnChanges, SimpleChanges, Input, TemplateRef, ViewChild, NgZone } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import labels from 'src/app/common/labels/labels.json';
 import { DeleteConfirmationComponent } from '../../dialogs/delete-confirmation/delete-confirmation.component';
@@ -21,6 +21,8 @@ import { Router } from '@angular/router';
 import { AppNames, AppRoutes, RouteUpdateMenu } from 'src/app/common/constants/menu.constants';
 import { CurrentTabDataService } from '../../inventory-master/current-tab-data-service';
 import { UpdateEmergencyRequest } from 'src/app/common/interface/admin/opentransaction.interfaces';
+import { TableContextMenuService } from 'src/app/common/globalComponents/table-context-menu-component/table-context-menu.service';
+import { FilterationColumns } from 'src/app/common/Model/pick-Tote-Manager';
 
 
 @Component({
@@ -28,7 +30,9 @@ import { UpdateEmergencyRequest } from 'src/app/common/interface/admin/opentrans
   templateUrl: './reprocess-transaction.component.html',
   styleUrls: ['./reprocess-transaction.component.scss'],
 })
-export class ReprocessTransactionComponent implements OnInit {
+export class ReprocessTransactionComponent implements OnInit, OnDestroy, OnChanges {
+  
+  @Input() tabIndex: number;
   
   placeholders = Placeholders;
   fieldMappings = JSON.parse(localStorage.getItem('fieldMappings') ?? '{}');
@@ -84,7 +88,7 @@ export class ReprocessTransactionComponent implements OnInit {
     { colHeader: 'userField7', colDef: 'User Field7', colTitle: this.fieldMappings.userField7 || Placeholders.userField7Fallback  },
     { colHeader: 'userField8', colDef: 'User Field8', colTitle: this.fieldMappings.userField8 || Placeholders.userField8Fallback  },
     { colHeader: 'userField9', colDef: 'User Field9', colTitle: this.fieldMappings.userField9 || Placeholders.userField9Fallback  },
-    { colHeader: 'userField10', colDef: 'User Field10', colTitle: this.fieldMappings.userField10 || Placeholders.userField9Fallback },
+    { colHeader: 'userField10', colDef: 'User Field10', colTitle: this.fieldMappings.userField10 || Placeholders.userField10Fallback },
     { colHeader: 'toteID', colDef: 'Tote ID', colTitle: 'Tote ID' },
     { colHeader: 'toteNumber', colDef: 'Tote Number', colTitle: 'Tote Number' },
     { colHeader: 'cell', colDef: 'Cell', colTitle: 'Cell' },
@@ -199,8 +203,20 @@ export class ReprocessTransactionComponent implements OnInit {
   hideRequiredFormControl = new FormControl(false);
   searchByColumn = new Subject<string>();
   spliUrl;
+  isActiveTrigger: boolean = false;
+  filterString: string = UniqueConstants.OneEqualsOne;
+  filtrationColumns: FilterationColumns[] = [];
 
   public iAdminApiService: IAdminApiService;
+
+   // Ensures filterString has a valid default value
+   // Centralized setter to avoid code repetition
+
+  private ensureValidFilterString(): void {
+    if (this.filterString == "" || !this.filterString) {
+      this.filterString = UniqueConstants.OneEqualsOne;
+    }
+  }
 
   constructor(
     private authService: AuthService,
@@ -208,9 +224,18 @@ export class ReprocessTransactionComponent implements OnInit {
     private sharedService: SharedService,
     public adminApiService: AdminApiService,
     private router: Router,
-    private currentTabDataService: CurrentTabDataService
+    private currentTabDataService: CurrentTabDataService,
+    private contextMenuService: TableContextMenuService,
+    private ngZone: NgZone
   ) {
     this.iAdminApiService = adminApiService;
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    // Reset context menu trigger when tab changes
+    if (changes['tabIndex'] && !changes['tabIndex'].firstChange) {
+      this.isActiveTrigger = false;
+    }
   }
 
   ngOnInit(): void {
@@ -252,7 +277,7 @@ export class ReprocessTransactionComponent implements OnInit {
     this.subscription.add(
       this.sharedService.reprocessItemObserver.subscribe(itemNo => {
         if(itemNo){
-          this.columnSearch.searchColumn.colDef = Column.ItemNumber;
+          this.columnSearch.searchColumn.columnDef = Column.ItemNumber;
           this.columnSearch.searchValue = itemNo;
           this.getContentData();
         }
@@ -330,8 +355,8 @@ export class ReprocessTransactionComponent implements OnInit {
   }
 
   setQueryString() {
-    if(this.searchFieldsTrueFalse.indexOf(this.columnSearch.searchColumn.colDef) > -1 && this.switchTrueString) this.queryString = '1';
-    else if(this.searchFieldsTrueFalse.indexOf(this.columnSearch.searchColumn.colDef) > -1 && !this.switchTrueString) this.queryString = '0';
+    if(this.searchFieldsTrueFalse.indexOf(this.columnSearch.searchColumn.columnDef) > -1 && this.switchTrueString) this.queryString = '1';
+    else if(this.searchFieldsTrueFalse.indexOf(this.columnSearch.searchColumn.columnDef) > -1 && !this.switchTrueString) this.queryString = '0';
     else this.queryString = '';
   }
 
@@ -710,17 +735,23 @@ export class ReprocessTransactionComponent implements OnInit {
 
   getContentData(clear = "") {
     this.rowClicked = "";
+    
+    // Ensure filterString has a default value
+    this.ensureValidFilterString();
+    
     let payload = {
-      draw: 0,
-      searchString: this.queryString != '' ? this.queryString : this.columnSearch.searchValue,
-      searchColumn: this.columnSearch.searchColumn.colDef,
-      start: this.customPagination.startIndex,
-      length: this.customPagination.recordsPerPage,
-      orderNumber: clear == "" ? this.orderNumber : "",
-      sortColumnNumber: this.sortCol,
-      sortOrder: this.sortOrder,
-      itemNumber: clear == "" ? this.itemNumber : "",
-      hold: this.isHold,
+      Draw: 0,
+      SearchString: this.queryString != '' ? this.queryString : this.columnSearch.searchValue,
+      SearchColumn: this.columnSearch.searchColumn.colDef,
+      Start: this.customPagination.startIndex,
+      Length: this.customPagination.recordsPerPage,
+      OrderNumber: clear == "" ? this.orderNumber : "",
+      SortColumnNumber: this.sortCol,
+      SortOrder: this.sortOrder,
+      ItemNumber: clear == "" ? this.itemNumber : "",
+      Hold: this.isHold,
+      Filter: this.filterString,
+      FiltrationColumns: this.filtrationColumns,
     };
     this.iAdminApiService.ReprocessTransactionTable(payload).subscribe({
       next: (res: any) => {
@@ -742,6 +773,10 @@ export class ReprocessTransactionComponent implements OnInit {
 
   getHistoryData() {
     this.rowClicked = "";
+    
+    // Ensure filterString has a default value
+    this.ensureValidFilterString();
+    
     let payload = {
       draw: 0,
       searchString: this.columnSearch.searchValue,
@@ -752,6 +787,8 @@ export class ReprocessTransactionComponent implements OnInit {
       sortOrder: this.sortOrder,
       orderNumber: this.orderNumber,
       itemNumber: this.itemNumber,
+      filter: this.filterString,
+      filtrationColumns: this.filtrationColumns,
     };
     this.iAdminApiService.ReprocessedTransactionHistoryTable(payload).subscribe({
       next: (res: any) => {
@@ -829,6 +866,8 @@ export class ReprocessTransactionComponent implements OnInit {
 
   ngOnDestroy() {
     this.subscription.unsubscribe();
+    // Reset the context menu trigger to prevent showing on other screens
+    this.isActiveTrigger = false;
   }
 
   clear() {
@@ -908,6 +947,23 @@ isDisabled(element): boolean {
 
   return hasCompletion || notPick;
 }
+
+  onContextMenu(event: MouseEvent, SelectedItem: any, FilterColumnName?: string, FilterConditon?: string | undefined, FilterItemType?: any) {
+    event.preventDefault();
+    this.isActiveTrigger = true;
+    this.ngZone.run(() => {
+      this.contextMenuService.updateContextMenuState(event, SelectedItem, FilterColumnName, FilterConditon, FilterItemType);
+    });
+  }
+
+  directFilterationColumnsSelected(filterationColumns: FilterationColumns[]) {
+    // Directly use the FilterationColumns objects
+    this.filtrationColumns = filterationColumns;
+    
+    // Call the existing method to get content data
+    this.getContentData();
+    this.isActiveTrigger = false;
+  }
 
   //Toggles the emergency flag and updates the backend, showing success or error feedback based on the response.
 onCheckboxToggle(

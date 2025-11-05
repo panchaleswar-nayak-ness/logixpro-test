@@ -18,7 +18,7 @@
             </app-transaction-history>
         </mat-tab>
         <mat-tab label="Reprocess Transactions" *ngIf="!showReprocess && !isOrderStatus" data-automation-id="reprocess-transactions-tab">
-            <app-reprocess-transaction></app-reprocess-transaction >
+            <app-reprocess-transaction [tabIndex]="tabIndex"></app-reprocess-transaction >
         </mat-tab> 
         <mat-tab label="Reprocessed Transactions" *ngIf="!showReprocessed && !isOrderStatus" data-automation-id="reprocessed-transactions-tab">
             <app-reprocessed-transaction></app-reprocessed-transaction>

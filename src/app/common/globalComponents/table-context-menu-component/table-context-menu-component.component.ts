@@ -6,7 +6,7 @@ import { ContextMenuFiltersService } from 'src/app/common/init/context-menu-filt
 import { TableContextMenuService } from './table-context-menu.service';
 import { OperationTypes } from './../../enums/CommonEnums';
 import { Operations } from './../../types/CommonTypes';
-import { DialogConstants } from '../../constants/strings.constants';
+import { DialogConstants, FILTRATION_GRID_OPERATION_KEYS } from '../../constants/strings.constants';
 
 @Component({
   selector: 'app-table-context-menu-component',
@@ -110,32 +110,42 @@ export class TableContextMenuComponentComponent implements OnInit{
   onContextMenuCommand(SelectedItem: any, FilterColumnName: any, Condition: any, Type: any) 
   {
  if (this.isPrimaryComponent(this.componentName)) {
-      if(SelectedItem != undefined && Condition !== 'clear') {
+      if(SelectedItem != undefined && Condition !== FILTRATION_GRID_OPERATION_KEYS.Clear) {
         this.filterString = this.filterService.onContextMenuCommand(SelectedItem, FilterColumnName, Condition, Type);
       }
       
-      if (FilterColumnName && Condition === 'clear') {
+      if (FilterColumnName && Condition === FILTRATION_GRID_OPERATION_KEYS.Clear) {
         this.filterString = this.filterService.clearSpecificColumnFilter(FilterColumnName);
         this.optionSelected.emit(this.filterString);
       } 
       this.filterString = this.filterString != "" ? this.filterString : "1 = 1";
     } 
-    else if(this.componentName == 'deAllOrd' || this.componentName == 'openTransOnHold' || this.componentName == 'transOrders' || this.componentName == 'transHistory') 
+    else if(this.componentName == 'deAllOrd' || this.componentName == 'openTransOnHold' || this.componentName == 'transOrders' || this.componentName == 'transHistory' || this.componentName == 'ReprocessTransaction') 
     {
-      if(FilterColumnName != "" && Condition == "clears") {
+      if(FilterColumnName != "" && Condition == FILTRATION_GRID_OPERATION_KEYS.Clears) {
         this.filterString = this.filterService.onContextMenuCommand(SelectedItem, FilterColumnName, Condition, Type);
         this.filterString = this.filterString != "" ? this.filterString : "1=1";
       }
 
-      else  if (FilterColumnName && Condition === 'clear') {
+      else  if (FilterColumnName && Condition === FILTRATION_GRID_OPERATION_KEYS.Clear) {
         this.filterString = this.filterService.clearSpecificColumnFilter(FilterColumnName);
-        this.optionSelected.emit(this.filterString);
       } else if (SelectedItem != undefined) {
         this.filterString = this.filterService.onContextMenuCommand(SelectedItem, FilterColumnName, Condition, Type);
       }
   
       this.filterString = this.filterString != "" ? this.filterString : "1 = 1"; 
       
+    }
+    else {
+      // Default handling for any other component - build filter if selection is made
+      if (SelectedItem != undefined && Condition !== FILTRATION_GRID_OPERATION_KEYS.Clear && Condition !== FILTRATION_GRID_OPERATION_KEYS.Clears) {
+        this.filterString = this.filterService.onContextMenuCommand(SelectedItem, FilterColumnName, Condition, Type);
+      } else if (FilterColumnName && Condition === FILTRATION_GRID_OPERATION_KEYS.Clear) {
+        this.filterString = this.filterService.clearSpecificColumnFilter(FilterColumnName);
+      } else if (Condition === FILTRATION_GRID_OPERATION_KEYS.Clears) {
+        this.filterString = "1 = 1";
+      }
+      this.filterString = this.filterString != "" ? this.filterString : "1 = 1";
     }
     
     this.optionSelected.emit(this.filterString);
