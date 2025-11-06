@@ -149,6 +149,7 @@ export enum PaginationData   {
     StartRow = 1,
     EndRow = 10,
     Draw = 0,
+    Max = 10000,
 }
 export enum ArrowKeys   {
     Right = 'ArrowRight',

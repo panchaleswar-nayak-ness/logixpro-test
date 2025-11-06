@@ -237,6 +237,7 @@ export const ClearTypes = {
   Item: 'item' as ClearType
 };
 
+
 export interface SystemPreference {
     id: number;
     maximumOrders: number;

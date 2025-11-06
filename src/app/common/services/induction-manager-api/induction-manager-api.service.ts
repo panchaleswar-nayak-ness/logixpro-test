@@ -6,6 +6,7 @@ import {AddPickToteInductionFilter} from 'src/app/induction-manager/models/PickT
 import {Observable} from 'rxjs';
 import { PickToteTransPayload } from '../../types/pick-tote-manager.types';
 import { ApiResult } from '../../types/CommonTypes';
+import { OrdersInZoneRequest, OrdersInZoneResponse, OrdersInZoneApiResponse } from '../../Model/orders-in-zone';
 
 @Injectable({
   providedIn: 'root',
@@ -282,7 +283,7 @@ export class InductionManagerApiService implements IInductionManagerApiService {
     return this.Api.PickBatchFilterDelete(payload);
   }
 
-  public OrdersInZone(payloadParams: any) {
+  public OrdersInZone(payloadParams: OrdersInZoneRequest): Observable<OrdersInZoneApiResponse | null> {
     const payload = {
       username: this.userData.username,
       wsid: this.userData.wsid,

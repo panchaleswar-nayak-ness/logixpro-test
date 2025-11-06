@@ -33,13 +33,18 @@ import { TableContextMenuService } from 'src/app/common/globalComponents/table-c
 import { FilterationColumns, PeriodicElement } from 'src/app/common/Model/pick-Tote-Manager';
 import { InputType, PaginationData } from 'src/app/common/enums/CommonEnums';
 import { NgZone } from '@angular/core';
+import { DatePipe } from '@angular/common';
+import { DateFormats } from 'src/app/common/services/global.service';
+import { PickToteManagerDialogData } from 'src/app/common/interface/pick-tote-manager-dialog/pick-tote-manager-interface';
 
 @Component({
   selector: 'app-pick-tote-manager',
   templateUrl: './pick-tote-manager.component.html',
   styleUrls: ['./pick-tote-manager.component.scss'],
+  providers: [DatePipe]
 })
 export class PickToteManagerComponent implements OnInit {
+  readonly dateFormats = DateFormats;
   selectedOrderValue: string = '';
   filterString : string = UniqueConstants.OneEqualsOne;
 
@@ -199,7 +204,7 @@ UserField10:string = this.fieldMappings.userField10;
     {
       columnDef: TableConstant.ImportDate,
       header: 'Import Date',
-      cell: (element: any) => `${element.importDate}`,
+      cell: (element: any) => this.datePipe.transform(element.importDate, DateFormats.DateTimeWithMilliseconds) || element.importDate,
     },
     {
       columnDef: UniqueConstants.Priority,
@@ -209,7 +214,7 @@ UserField10:string = this.fieldMappings.userField10;
     {
       columnDef: ColumnDef.RequiredDate,
       header: 'Required Date',
-      cell: (element: any) => `${element.requiredDate}`,
+      cell: (element: any) => this.datePipe.transform(element.requiredDate, DateFormats.DateTimeWithMilliseconds) || element.requiredDate,
     },
     {
       columnDef: TableConstant.LineNumber,
@@ -234,12 +239,12 @@ UserField10:string = this.fieldMappings.userField10;
     {
       columnDef: ColumnDef.ExpirationDate,
       header: TableConstant.ExpirationDate,
-      cell: (element: any) => `${element.expirationDate}`,
+      cell: (element: any) => this.datePipe.transform(element.expirationDate, 'MM/dd/yyyy') || element.expirationDate,
     },
     {
       columnDef: 'completedDate',
       header: TableConstant.CompletedDate,
-      cell: (element: any) => `${element.completedDate}`,
+      cell: (element: any) => this.datePipe.transform(element.completedDate, 'MM/dd/yyyy') || element.completedDate,
     },
     {
       columnDef: 'completedBy',
@@ -459,7 +464,8 @@ filterationColumns : FilterationColumns[] = [];
     public inductionManagerApi: InductionManagerApiService,
     private authService: AuthService,
     public dialogRef: MatDialogRef<any>,
-    @Inject(MAT_DIALOG_DATA) public data: any
+    @Inject(MAT_DIALOG_DATA) public data: PickToteManagerDialogData,
+    private datePipe: DatePipe
   ) {
     this.iInductionManagerApi = inductionManagerApi;
   }
@@ -1291,7 +1297,8 @@ filterationColumns : FilterationColumns[] = [];
   onChangeOrderAction(option: any) {
     if (option === 'fill_top_orders') {
       for (let index = 0; index < this.data.pickBatchQuantity; index++) {
-        if (this.filterBatchData[index]) {
+        // Only select orders for totes that have ToteIDs filled
+        if (this.hasToteId(index) && this.filterBatchData[index]) {
           this.filterBatchData[index].isSelected = true;
           this.selectedOrders.push(this.filterBatchData[index].orderNumber);
         }
@@ -1324,7 +1331,8 @@ filterationColumns : FilterationColumns[] = [];
   onChangeOrderActionZone(option: any) {
     if (option === 'fill_top_orders') {
       for (let index = 0; index < this.data.pickBatchQuantity; index++) {
-        if (this.filterBatchDataZone[index]) {
+        // Only select orders for totes that have ToteIDs filled
+        if (this.hasToteId(index) && this.filterBatchDataZone[index]) {
           this.filterBatchDataZone[index].isSelected = true;
           this.selectedOrders.push(this.filterBatchDataZone[index].orderNumber);
         }
@@ -1813,6 +1821,18 @@ filterationColumns : FilterationColumns[] = [];
           });
       }
     });
+  }
+
+  /**
+   * Checks if a tote at the given index has a valid tote ID
+   * @param index - The index of the tote in the toteSetup array
+   * @returns boolean indicating if the tote has a valid ID
+   */
+  private hasToteId(index: number): boolean {
+    return !!(this.data.toteSetup && 
+           this.data.toteSetup[index] && 
+           this.data.toteSetup[index].toteID && 
+           this.data.toteSetup[index].toteID !== '');
   }  
 
   onContextMenu(event: MouseEvent, SelectedItem: AllDataTypeValues, FilterColumnName?: string, FilterConditon?: string | undefined, FilterItemType?: AllDataTypeValues) {

@@ -27,6 +27,13 @@ import { PrintOrdersPayload } from '../interface/bulk-transactions/bulk-pick';
 import { IPrintApiService } from './print-api/print-api-interface';
 import { PrintApiService } from './print-api/print-api.service';
 
+export const DateFormats = {
+  Date: 'MM/dd/yyyy',
+  DateTime: 'MM/dd/yyyy hh:mm:ss a',
+  DateTimeWithMilliseconds: 'MM/dd/yyyy hh:mm:ss.SSS a',
+  DateTimeSingleHour: 'MM/dd/yyyy h:mm:ss a'
+} as const;
+
 @Injectable({
   providedIn: 'root',
 })

@@ -413,7 +413,7 @@
                           <th mat-header-cell *matHeaderCellDef data-automation-id="table-header-Required Date"> Required Date </th>
                           <td mat-cell *matCellDef="let element; let i = index" [class.selected]="element.isSelected" [attr.data-automation-id]="'table-data-Required Date-' + (element.reqDate ? element.reqDate : ' ')">
                             <div class="pe-2">
-                              {{element.reqDate}}
+                              {{element.reqDate | date:dateFormats.Date}}
                             </div>
                           </td>
                         </ng-container>
@@ -634,7 +634,7 @@
                         <ng-container matColumnDef="requireddate">
                           <th mat-header-cell *matHeaderCellDef data-automation-id="orders-table-header-required-date"> Required Date </th>
                           <td mat-cell *matCellDef="let element; let i = index" [class.selected]="element.isSelected" [attr.data-automation-id]="'orders-table-row-required-date-cell-' + i">
-                              {{element.reqDate}}
+                              {{element.reqDate | date:dateFormats.Date}}
                           </td>
                         </ng-container>
 

@@ -28,6 +28,7 @@ import { ContextMenuFiltersService } from 'src/app/common/init/context-menu-filt
 import { PrintApiService } from 'src/app/common/services/print-api/print-api.service';
 import { UpdateEmergencyRequest } from 'src/app/common/interface/admin/opentransaction.interfaces';
 import {TransactionConstants} from 'src/app/common/constants/admin/transaction-constants';
+import { DateFormats } from 'src/app/common/services/global.service';
 // Define a strongly typed enum for date types to avoid using magic strings
 enum DateType {
   Start = 'sDate',
@@ -41,6 +42,7 @@ enum DateType {
 })
 export class OpenTransactionOnHoldComponent implements OnInit, AfterViewInit {
 
+  readonly dateFormats = DateFormats;
   placeholders = Placeholders;
   fieldMappings = JSON.parse(localStorage.getItem('fieldMappings') ?? '{}');
 
@@ -832,6 +834,10 @@ setDateOnBlank(event: Date | null, dateType: DateType): void {
       const selectedRow = this.dataSource.filteredData.find((x: any) => x === row);
       if(selectedRow) selectedRow.selected = !selectedRow.selected;
     }, 250);
+  }
+
+  isRequiredDateColumn(col): boolean {
+    return col?.colDef === ColumnDef.RequiredDate;
   }
 
 }
