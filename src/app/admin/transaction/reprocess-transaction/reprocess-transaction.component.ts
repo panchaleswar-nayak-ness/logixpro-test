@@ -960,9 +960,45 @@ isDisabled(element): boolean {
     // Directly use the FilterationColumns objects
     this.filtrationColumns = filterationColumns;
     
+    // If filtrationColumns is empty (Clear Filters was clicked), also clear row selection data
+    if (filterationColumns.length === 0) {
+      this.clearRowSelection();
+    }
+    
+    // Reset pagination to first page when filter is applied
+    this.resetPaginationToFirstPage();
+    
     // Call the existing method to get content data
     this.getContentData();
     this.isActiveTrigger = false;
+  }
+
+
+   // Resets pagination to the first page
+   // This should be called whenever filters are applied to ensure correct data display
+   
+  private resetPaginationToFirstPage(): void {
+    this.customPagination.startIndex = 0;
+    this.customPagination.endIndex = this.customPagination.recordsPerPage;
+    if (this.paginator) {
+      this.paginator.pageIndex = 0;
+    }
+  }
+
+  
+   // Clears all row selection data including orderNumber, itemNumber, and transaction info panel
+   
+  private clearRowSelection(): void {
+    this.orderNumber = '';
+    this.itemNumber = '';
+    this.rowClicked = '';
+    this.transactionID = 0;
+    this.selectedTransaction = null;
+    this.createdBy = '';
+    this.transactionDateTime = '';
+    this.reason = '';
+    this.reasonMessage = '';
+    this.clearTransactionData();
   }
 
   //Toggles the emergency flag and updates the backend, showing success or error feedback based on the response.
