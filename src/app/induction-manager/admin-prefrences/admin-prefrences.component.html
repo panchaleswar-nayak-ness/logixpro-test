@@ -382,6 +382,14 @@
                       color="primary" data-automation-id="dont-allow-over-receipt-toggle"
                     ></mat-slide-toggle>
                   </div>
+                  <div class="d-flex justify-content-between mb-2" data-automation-id="new-put-away-for-same-sku-label">
+                    New Put Away for Same SKU:
+                    <mat-slide-toggle
+                      (change)="updatePreferences(1)"
+                      formControlName="newPutAwayForSameSKU"
+                      color="primary" data-automation-id="new-put-away-for-same-sku-toggle"
+                    ></mat-slide-toggle>
+                  </div>
                   <div class="d-flex justify-content-between mb-2" data-automation-id="auto-assign-all-zones-label">
                     Auto Assign All Zones:
                     <mat-slide-toggle

@@ -712,7 +712,7 @@ export class SelectionTransactionForToteExtendComponent implements OnInit, OnDes
     try {
       const values = this.toteForm.value;
       if (!this.validationPopups({...values, type : 1})) return;
-      if (!this.validateOverReciept(values.otid)) return;
+      if (!this.validateOverReciept(this.data.otid)) return;
 
       let payload = { zone: this.toteForm.value.zone };
       this.iInductionManagerApi.BatchByZone(payload).subscribe(
@@ -783,7 +783,7 @@ export class SelectionTransactionForToteExtendComponent implements OnInit, OnDes
     let toteQty = this.toteForm?.get('toteQty')?.value;
     let transactionQuantity = this.toteForm?.get(ColumnDef.TransactionQuantity)?.value;
     if(otid > 0 && this.imPreferences.dontAllowOverReceipt && toteQty > transactionQuantity) {
-      this.global.ShowToastr(ToasterType.Error, "Quantity cannot be greater than current transaction quantity.", ToasterTitle.Error);
+      this.global.ShowToastr(ToasterType.Error, ToasterMessages.QuantityCannotExceedOriginalTransactionQuantity, ToasterTitle.Error);
       this.inputToteQty.nativeElement.focus();
       this.QtyToAssignFieldColor = 'warn';
       return false;
@@ -792,6 +792,15 @@ export class SelectionTransactionForToteExtendComponent implements OnInit, OnDes
       this.QtyToAssignFieldColor = 'primary';
       return true;
     }
+  }
+
+  onQuantityToAssignEnter(event: Event) {
+    event.preventDefault();
+    this.validateOverReciept(this.data.otid);
+  }
+
+  onQuantityToAssignBlur() {
+    this.validateOverReciept(this.data.otid);
   }
 
   taskComplete(values : any) {

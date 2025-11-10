@@ -94,6 +94,7 @@ UserField10:string = this.fieldMappings.userField10;
       dontAllowOverReceipt: new FormControl(false, Validators.compose([])),
       autoAssignAllZones: new FormControl(false, Validators.compose([])),
       purchaseOrderRequired: new FormControl(false, Validators.compose([])),
+      newPutAwayForSameSKU: new FormControl(false, Validators.compose([])),
       defaultPutAwayShortQuantity: new FormControl('', Validators.compose([])),
 
       // Print Settings
@@ -353,6 +354,7 @@ UserField10:string = this.fieldMappings.userField10;
             dontAllowOverReceipt: values.dontAllowOverReceipt,
             autoAssignAllZones: values.autoAssignAllZones,
             purchaseOrderRequired: values.purchaseOrderRequired,
+            newPutAwayForSameSKU: values.newPutAwayForSameSKU,
             defaultPutAwayShortQuantity: this.isSplitShortPutAwayEnabled === false ? 'Prompt user on short quantity' : values.defaultPutAwayShortQuantity,
 
             // Print Settings
@@ -491,6 +493,7 @@ UserField10:string = this.fieldMappings.userField10;
           DontAllowOverReceipt: values.dontAllowOverReceipt,
           AutoAssignAllZones: values.autoAssignAllZones,
           PurchaseOrderRequired: values.purchaseOrderRequired,
+          NewPutAwayForSameSKU: values.newPutAwayForSameSKU,
           ExcludeOrdersinReprocess: values.excludeOrderInReprocess,
           MaximumQuantityperTote: values.maximumQtyPerTote,
           SBMaximumQuantityperTote: values.sbMaximumQtyPerTote,
