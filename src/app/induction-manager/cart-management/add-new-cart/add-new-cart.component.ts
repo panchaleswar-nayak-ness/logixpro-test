@@ -96,12 +96,16 @@ export class AddNewCartComponent implements OnInit {
     // Force change detection to ensure DOM is updated
     this.cdr.detectChanges();
     this.focusPositionCountInput();
-
+    this.positionCountInput = 4;
+    this.shelveCountInput = 3;
+    this.onBothFieldsEnter();
   }
 
   private async isCartIdValid(): Promise<boolean> {
     
-    const cartId = this.cartForm.get('cartId')?.value?.trim();
+    const cartIdControl = this.cartForm.get('cartId');
+    const cartId = cartIdControl?.value?.trim()?.toUpperCase() || '';
+    cartIdControl?.setValue(cartId, { emitEvent: false });
     
     if (!cartId) {
       this.global.ShowToastr(ToasterType.Error, ToasterMessages.PleaseEnterCartId, ToasterTitle.Error);
