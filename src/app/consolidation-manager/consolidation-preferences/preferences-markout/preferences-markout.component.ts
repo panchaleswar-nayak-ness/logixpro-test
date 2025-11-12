@@ -13,6 +13,7 @@ interface Config {
   autoPrintMarkoutReport: boolean;
   autoPrintToteManifest: boolean;
   autoPrintToteManifest2: boolean;
+  decInvOnCompletion: boolean;
   currentStatus: boolean;
   missed: boolean;
   short: boolean;
@@ -45,6 +46,7 @@ export class PreferencesMarkoutComponent {
       autoPrintMarkoutReport: new FormControl(false),
       autoPrintToteManifest: new FormControl(false),
       autoPrintToteManifest2: new FormControl(false),
+      decInvOnCompletion: new FormControl(false),
       currentStatus:new FormControl(false),
       short: new FormControl(false),
       missed: new FormControl(false),
@@ -60,6 +62,7 @@ export class PreferencesMarkoutComponent {
     this.markoutForm.controls['autoPrintMarkoutReport'].setValue(item.autoPrintMarkoutReport);
     this.markoutForm.controls['autoPrintToteManifest'].setValue(item.autoPrintToteManifest);
     this.markoutForm.controls['autoPrintToteManifest2'].setValue(item.autoPrintToteManifest2);
+    this.markoutForm.controls['decInvOnCompletion'].setValue(item.decInvOnCompletion);
     this.markoutForm.controls['currentStatus'].setValue(item.currentStatus);
     this.markoutForm.controls['short'].setValue(item.short);
     this.markoutForm.controls['missed'].setValue(item.missed);
@@ -80,6 +83,7 @@ export class PreferencesMarkoutComponent {
       autoPrintMarkoutReport: this.markoutForm.controls['autoPrintMarkoutReport'].value,
       autoPrintToteManifest: this.markoutForm.controls['autoPrintToteManifest'].value,
       autoPrintToteManifest2: this.markoutForm.controls['autoPrintToteManifest2'].value,
+      decInvOnCompletion: this.markoutForm.controls['decInvOnCompletion'].value,
       currentStatus: this.markoutForm.controls['currentStatus'].value,
       short: this.markoutForm.controls['short'].value,
       missed: this.markoutForm.controls['missed'].value,
