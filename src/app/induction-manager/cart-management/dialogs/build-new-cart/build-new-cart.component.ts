@@ -732,15 +732,7 @@ export class BuildNewCartComponent implements OnInit {
       return true;
     }
     else{
-      // Set error state on the current position
-      if (this.selectedPosition) {
-        const pos = this.positions.find(p => p.position === this.selectedPosition);
-        if (pos && !pos?.toteId) {
-          pos.hasError = true;
-          pos.toteId = this.toteIdInput; // Show the invalid tote ID
-        }
-        this.toteIdInput = "";
-      }
+      this.toteIdInput = "";
       this.global.ShowToastr(ToasterType.Error, ToasterMessages.InvalidToteID, ToasterTitle.Error);
       return false;
     }
