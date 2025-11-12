@@ -314,7 +314,7 @@ export class VerifyBulkComponent implements OnInit {
       // Dialog is only shown is Zero Location Qty Check is turned on and the url is Pick
       if (resp.type == ResponseStrings.Yes) {
         record.newLocationQty = 0;
-        element.completedQuantity = resp.newQuantity || 0;
+        this.SetQuantity(resp.newQuantity || 0, element);
       }
       else if (resp.type == ResponseStrings.No) {
         const dialogRef: any = this.global.OpenDialog(InputFilterComponent, {
@@ -332,20 +332,40 @@ export class VerifyBulkComponent implements OnInit {
             return;
           }
           record.newLocationQty = parseInt(result.SelectedItem || '0');
-          element.completedQuantity = resp.newQuantity || 0;
+          this.SetQuantity(resp.newQuantity || 0, element);
         });
       } else if (resp.type == ResponseStrings.Cancel) {
-        element.completedQuantity = resp.newQuantity || 0;
+        this.SetQuantity(resp.newQuantity || 0, element);
       } else if (resp.type == null) {
         // When completed quantity equals or exceeds order quantity, no location empty dialog was shown
-        element.completedQuantity = resp.newQuantity || 0;
+        this.SetQuantity(resp.newQuantity || 0, element);
       } else {
         record.newLocationQty = resp.newQuantity || 0;
-        element.completedQuantity = resp.newQuantity || 0;
+        this.SetQuantity(resp.newQuantity || 0, element);
       }
     });
   }
-
+  SetQuantity(completedQuantity: number, element: OrderLineResource & { NextToteID?: number }) {
+    if (this.bulkTransactionType == BulkTransactionType.COUNT) {
+        let dialogRef: any = this.global.OpenDialog(ConfirmationDialogComponent, {
+            height: DialogConstants.auto,
+            width: Style.w560px,
+            autoFocus: DialogConstants.autoFocus,
+            disableClose: true,
+            data: {
+              message: ConfirmationMessages.AdjustQuantityForCount(element.completedQuantity?.toString()),
+              heading: '',
+            },
+          });
+          dialogRef.afterClosed().subscribe((res) => {
+            if (res === ResponseStrings.Yes) {
+              element.completedQuantity = completedQuantity;
+            }
+          });
+        }    
+    else
+      element.completedQuantity = completedQuantity;
+  }
   ResetAllCompletedQty() {
     this.orderLines.filteredData.forEach(element => {
       element.completedQuantity = 0;

@@ -184,6 +184,7 @@ export const ConfirmationMessages = {
     InfoText: 'These items will be removed from the Discrepancies List.',
     ClickYesToAssignLocation: 'Click Yes to close the Cycle Count Manager screen and go the Location Assignment Screen.',
     ClickOkToOutboundPort: (totalRecordsToRemove: number, binId: string) => `Proceeding will remove ${totalRecordsToRemove} record(s) of Storage Container  ${binId} from inventory map. Do you want to continue?`,
+    AdjustQuantityForCount: (count: string) => `The count entered is different from the system count ${count}. Do you want to adjust the System Quantity? `
 }
 
 export const ToasterMessages = {
