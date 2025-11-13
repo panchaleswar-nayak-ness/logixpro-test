@@ -11,9 +11,10 @@ import { AddNewCartComponent } from '../add-new-cart/add-new-cart.component';
 import { CartListRequest, CartManagementData, CartManagementResult, ViewDetailsResponse, DeleteCartResponse } from '../interfaces/cart-management.interface';
 import { CartManagementApiService } from 'src/app/common/services/cart-management-api/cart-management-api.service';
 import { ToasterType, ToasterTitle, ToasterMessages, Style, DialogConstants, StringConditions, Mode, ConfirmationMessages, AccessLevel } from 'src/app/common/constants/strings.constants';
+import { CartManagementPermissions } from 'src/app/common/constants/cart-management/cart-management-constant';
 import { CartManagementGridDefaults } from 'src/app/common/constants/numbers.constants';
 import { CartStatus, CartStatusClassMap, CartDialogConstants, CartManagementDialogConstants, DialogModes, BuildNewCartActionResults } from '../constants/string.constants';
-import { UniqueConstants, ResponseStrings } from 'src/app/common/constants/strings.constants';
+import { UniqueConstants, ResponseStrings, PermissionMessages } from 'src/app/common/constants/strings.constants';
 import { NgZone } from '@angular/core';
 import { TableContextMenuService } from 'src/app/common/globalComponents/table-context-menu-component/table-context-menu.service';
 import { FilterationColumns } from 'src/app/common/Model/pick-Tote-Manager';
@@ -69,6 +70,7 @@ export class CartGridComponent implements OnInit, AfterViewInit, OnChanges, OnDe
 
   // User access properties
   userData: UserSession;
+  public readonly permissionMessages = PermissionMessages;
 
   // Column filter properties
   tableColumns: TableHeaderDefinitions[] = [
@@ -577,7 +579,15 @@ export class CartGridComponent implements OnInit, AfterViewInit, OnChanges, OnDe
   }
 
   // Check if user can delete a specific cart
+  hasDeletePermission(): boolean {
+    return this.authService.isAuthorized(CartManagementPermissions.DeleteCart);
+  }
+
   canDeleteCart(record: CartItem): boolean {
+    const hasDeletePermission = this.hasDeletePermission();
+    if (!hasDeletePermission) {
+      return false;
+    }
     return this.isAdministrator() && record.cartStatus === 'Available';
   }
 }

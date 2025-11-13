@@ -814,6 +814,11 @@ export const AccessLevel = {
   StaffMember: "staff_member"
 }
 
+
+export const PermissionMessages = {
+  NoPermission: 'User does not have permission'
+} as const;
+
 export const AppLicensingDisplayedColumns = {
   AppName: 'appname',
   DisplayName: 'displayname',

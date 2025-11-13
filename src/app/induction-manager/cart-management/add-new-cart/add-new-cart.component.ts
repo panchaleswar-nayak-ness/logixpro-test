@@ -3,13 +3,15 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
 import { FocusMonitor } from '@angular/cdk/a11y';
 import { GlobalService } from 'src/app/common/services/global.service';
-import { ToasterType, ToasterTitle, ToasterMessages, Style } from 'src/app/common/constants/strings.constants';
+import { ToasterType, ToasterTitle, ToasterMessages, Style, PermissionMessages } from 'src/app/common/constants/strings.constants';
+import { CartManagementPermissions } from 'src/app/common/constants/cart-management/cart-management-constant';
 import { AlertConfirmationComponent } from '../../../dialogs/alert-confirmation/alert-confirmation.component';
 import { ConfirmationHeadings, ConfirmationMessages } from 'src/app/common/constants/strings.constants';
 import { TotePosition } from '../tote-position-grid/tote-position-grid.component';
 import { AddCartRequest, AddCartResponse, ValidateCartIdResponse } from '../interfaces/cart-management.interface';
 import { CartManagementApiService } from 'src/app/common/services/cart-management-api/cart-management-api.service';
 import { ICartManagementApiService } from 'src/app/common/services/cart-management-api/cart-management-api.interface';
+import { AuthService } from 'src/app/common/init/auth.service';
 
 // Constants for this component
 const VALIDATION_LIMITS = {
@@ -50,6 +52,8 @@ export class AddNewCartComponent implements OnInit {
 
   // API service
   public iCartManagementApiService: ICartManagementApiService;
+  public readonly permissions = CartManagementPermissions;
+  public readonly permissionMessages = PermissionMessages;
 
   constructor(
     private fb: FormBuilder,
@@ -57,7 +61,8 @@ export class AddNewCartComponent implements OnInit {
     private cartApiService: CartManagementApiService,
     private focusMonitor: FocusMonitor,
     private cdr: ChangeDetectorRef,
-    public dialogRef: MatDialogRef<AddNewCartComponent>
+    public dialogRef: MatDialogRef<AddNewCartComponent>,
+    public authService: AuthService
   ) {
     this.iCartManagementApiService = cartApiService;
     this.initializeForm();
@@ -293,5 +298,12 @@ export class AddNewCartComponent implements OnInit {
               this.positionCountInput <= VALIDATION_LIMITS.POSITION_COUNT_MAX &&
               this.shelveCountInput >= VALIDATION_LIMITS.SHELVE_COUNT_MIN &&
               this.shelveCountInput <= VALIDATION_LIMITS.SHELVE_COUNT_MAX);
+  }
+
+  isAddDisabled(): boolean {
+    return this.isLoading ||
+           !this.showAdditionalFields ||
+           !this.areDimensionsValid() ||
+           !this.authService.isAuthorized(this.permissions.AddCart);
   }
 }

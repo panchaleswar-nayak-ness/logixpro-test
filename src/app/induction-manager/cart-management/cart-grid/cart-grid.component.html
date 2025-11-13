@@ -94,6 +94,8 @@
                   <button mat-menu-item [disabled]="(selectedRecord.cartStatus === STATUS_COMPLETE) || (selectedRecord.cartStatus === STATUS_IN_PROGRESS && selectedRecord.location !== LOCATION_IN_TRANSIT)" (click)="onEditCart(selectedRecord)">Edit</button>
                   <button mat-menu-item 
                           [disabled]="!canDeleteCart(selectedRecord)"
+                          [matTooltip]="permissionMessages.NoPermission"
+                          [matTooltipDisabled]="hasDeletePermission()"
                           (click)="onDeleteCart(selectedRecord)">Delete Cart</button>          
                 </mat-menu>
               </td>

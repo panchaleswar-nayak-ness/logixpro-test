@@ -83,7 +83,9 @@
     class="btn-lg flex-grow-1 flex-basis-0"
     color="primary"
     (click)="onAdd()"
-    [disabled]="isLoading || !showAdditionalFields || !areDimensionsValid()"
+    [disabled]="isAddDisabled()"
+    [matTooltip]="permissionMessages.NoPermission"
+    [matTooltipDisabled]="authService.isAuthorized(permissions.AddCart)"
     data-automation-id="add-btn">
     <span *ngIf="!isLoading">Add</span>
     <span *ngIf="isLoading">
