@@ -176,7 +176,7 @@ export interface CmPreferences {
     userField7Alias: string;
     autoPrintToteManifest: boolean;
     autoPrintToteManifest2: boolean;
-    decInvOnCompletion: boolean;
+    decrementInvOnCompletion: boolean;
     autoPrintMarkoutReport: boolean;
     defaultViewType: string;
     currentStatus: boolean;
