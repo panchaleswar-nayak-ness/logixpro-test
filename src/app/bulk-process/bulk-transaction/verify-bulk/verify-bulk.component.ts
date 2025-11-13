@@ -347,13 +347,14 @@ export class VerifyBulkComponent implements OnInit {
   }
   SetQuantity(completedQuantity: number, element: OrderLineResource & { NextToteID?: number }) {
     if (this.bulkTransactionType == BulkTransactionType.COUNT) {
+        if (element.transactionQuantity !== +completedQuantity) {
         let dialogRef: any = this.global.OpenDialog(ConfirmationDialogComponent, {
             height: DialogConstants.auto,
             width: Style.w560px,
             autoFocus: DialogConstants.autoFocus,
             disableClose: true,
             data: {
-              message: ConfirmationMessages.AdjustQuantityForCount(element.completedQuantity?.toString()),
+              message: ConfirmationMessages.AdjustQuantityForCount(element.transactionQuantity?.toString()),
               heading: '',
             },
           });
@@ -363,6 +364,9 @@ export class VerifyBulkComponent implements OnInit {
             }
           });
         }    
+    else
+      element.completedQuantity = completedQuantity;
+    }
     else
       element.completedQuantity = completedQuantity;
   }
