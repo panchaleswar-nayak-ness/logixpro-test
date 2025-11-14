@@ -512,7 +512,7 @@ export class BuildNewCartComponent implements OnInit {
       }
     }
     
-    return totalPositions;
+    return currentPosition;
   }
 
   async onSaveTote() {
@@ -758,9 +758,9 @@ export class BuildNewCartComponent implements OnInit {
     }
 
     if (nextPosition) {
-      if (this.selectedPosition === (this.rows * this.cols))
+      if (nextPosition === this.selectedPosition)
       {
-        this.focusPrimaryButton(); 
+        this.focusPrimaryButton();         
       }
       else {
         this.selectedPosition = nextPosition;
