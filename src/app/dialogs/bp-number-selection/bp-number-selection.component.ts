@@ -9,7 +9,8 @@ import {
   ResponseStrings,
   Style,
   ToasterTitle,
-  ToasterType
+  ToasterType,
+  TransactionType
 } from 'src/app/common/constants/strings.constants';
 import {CustomValidatorService} from 'src/app/common/init/custom-validator.service';
 import {IBulkProcessApiService} from 'src/app/common/services/bulk-process-api/bulk-process-api-interface';
@@ -88,9 +89,14 @@ export class BpNumberSelectionComponent implements OnInit {
   done() {
     if (!this.IsFullTote || (this.newQuantity <= this.toteQuantity && this.newQuantity >= 0)) {
       if (this.from == "completed quantity") {
-            // Only show "Location Empty" popup when completed quantity is less than order quantity (short pick)
-            if (this.newQuantity < this.transactionQuantity) {
-        const dialogRef1 = this.global.OpenDialog(ConfirmationDialogComponent, {
+        // Don't show "Location Empty" popup for Put Away transactions
+        if (this.url === TransactionType.PutAway) {
+          // For Put Away, close without showing location empty popup
+          this.dialogRef.close({newQuantity: this.newQuantity.toString(), type: null});
+        } 
+        // Only show "Location Empty" popup for other transaction types when completed quantity is less than order quantity (short pick)
+        else if (this.newQuantity < this.transactionQuantity) {
+          const dialogRef1 = this.global.OpenDialog(ConfirmationDialogComponent, {
             height: 'auto',
             width: Style.w560px,
             autoFocus: DialogConstants.autoFocus,

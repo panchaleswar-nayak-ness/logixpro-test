@@ -7,12 +7,12 @@
             <div class="col">
               <div class="d-flex">
                 <button mat-icon-button class="add-icon-button circle-icon-o round me-2" (click)="backButton()" data-automation-id="verify-bulk-back-button">
-                  <span class="material-symbols-outlined cursor-pointer" matTooltip="Back to Bulk {{this.bulkTransactionType}}"
+                  <span class="material-symbols-outlined cursor-pointer" matTooltip="Back to Bulk {{this.bulkTransactionTypeDisplay}}"
                     matTooltipPosition="above">
                     arrow_back
                   </span>
                 </button>
-                <app-icon-heading-component heading="Verify Bulk {{this.bulkTransactionType}}" icon="unarchive"  [automationId]="'verify-bulk-heading'">
+                <app-icon-heading-component heading="Verify Bulk {{this.bulkTransactionTypeDisplay}}" icon="unarchive"  [automationId]="'verify-bulk-heading'">
                 </app-icon-heading-component>
               </div>
             </div>
@@ -31,7 +31,7 @@
                     <mat-option value="add_new_transaction" (click)="printBulkTraveler()"
                       matTooltip="Press to Print a traveler - off Carousel list for this Batch." data-automation-id="verify-bulk-option-print-list">Print List</mat-option>
                     <mat-option value="add_new_transaction"
-                      matTooltip="Press to Print a Off-Carousel {{bulkTransactionType}} Item Label for all of this Batch."
+                      matTooltip="Press to Print a Off-Carousel {{bulkTransactionTypeDisplay}} Item Label for all of this Batch."
                       (click)="printAllToteLabels()" data-automation-id="verify-bulk-option-print-all-labels">Print All Labels</mat-option>
                   </mat-select>
                   <span class="material-symbols-outlined icon-expand-more">expand_more</span>
@@ -162,12 +162,12 @@
 
                     <mat-menu #appMenu="matMenu">
                       <button mat-menu-item
-                        matTooltip="Press to Print a Off-Carousel {{bulkTransactionType}} Item Label for the currently selected record." matTooltipPosition="before"
+                        matTooltip="Press to Print a Off-Carousel {{bulkTransactionTypeDisplay}} Item Label for the currently selected record." matTooltipPosition="before"
                         (click)="printSingleToteLabel(i)" data-automation-id="print-single-label-menu-item">
                         Print Single Label</button>
                       <button mat-menu-item matTooltip="Press to split this transaction into more than one tote." matTooltipPosition="before"
-                        *ngIf="['Put Away','Count'].indexOf(bulkTransactionType) < 0" (click)="fullTote(element,i)"
-                        [disabled]="bulkTransactionType == 'Pick' && !Prefernces.workstationPreferences.pickToTotes" data-automation-id="blossom-tote-menu-item">Blossom Tote</button>
+                        *ngIf="['Put Away','Count'].indexOf(bulkTransactionTypeDisplay) < 0" (click)="fullTote(element,i)"
+                        [disabled]="bulkTransactionTypeDisplay == 'Pick' && !Prefernces.workstationPreferences.pickToTotes" data-automation-id="blossom-tote-menu-item">Blossom Tote</button>
                     </mat-menu>
                   </td>
                 </ng-container>
