@@ -224,6 +224,8 @@ isButtonDisabled: boolean = true;
   searchAutocompleteShipName: any = [];
   isInputDisabled:boolean=false;
   public iCommonAPI : ICommonApi;
+  originalItemNumber: string = '';
+  isItemNumberChangeable: boolean = true;
 
   placeholders = Placeholders;
   locationZoneType = LocationZoneType;
@@ -262,6 +264,20 @@ isButtonDisabled: boolean = true;
     return this.clearInvMapLocation.valid;
   }
 
+  checkItemNumberChangeable(): void {
+    if (this.data.mode === 'editInvMapLocation') {
+      const itemQuantity = parseFloat(this.getDetailInventoryMapData.itemQuantity?.toString() || '0');
+      const quantityAllocatedPick = parseFloat(this.getDetailInventoryMapData.quantityAllocatedPick?.toString() || '0');
+      const quantityAllocatedPutAway = parseFloat(this.getDetailInventoryMapData.quantityAllocatedPutAway?.toString() || '0');
+      
+      this.isItemNumberChangeable = !(itemQuantity > 0 || quantityAllocatedPick > 0 || quantityAllocatedPutAway > 0);
+      
+      if (!this.isItemNumberChangeable) {
+        this.addInvMapLocation.get('item')?.disable();
+      }
+    }
+  }
+
   ngOnInit(): void {
 
     this.isClearWholeLocationAvailable = this.data?.isClearWholeLocationAvailable || false;
@@ -280,11 +296,13 @@ isButtonDisabled: boolean = true;
       this.unitOFMeasure = this.getDetailInventoryMapData.unitOfMeasure;
       this.shipVia = this.getDetailInventoryMapData.userField1;
       this.shipToName = this.getDetailInventoryMapData.userField2;
+      this.originalItemNumber = this.getDetailInventoryMapData.itemNumber || '';
       this.updateItemNumber();
     }
 
 
     this.initializeDataSet();
+    this.checkItemNumberChangeable();
 
     this.getLocationZones();
    
@@ -384,7 +402,7 @@ getLocationZones() {
     this.location_name?.nativeElement.focus();
   }
   onClearFieldDisable(): boolean {
-    return !this.searchItemNumbers;
+    return !this.searchItemNumbers || !this.isItemNumberChangeable;
   }
  
   clearFields() {
@@ -461,11 +479,16 @@ performClear() {
   }
 
   searchItemNumber(event:any,itemNum: any) {
+    // Prevent item number changes when it's not changeable
+    if (!this.isItemNumberChangeable && this.data.mode === 'editInvMapLocation') {
+      return;
+    }
+    
     if(this.searchItemNumbers == ''||this.searchItemNumbers == undefined){
       this.clearFields()
     }
     if(event.keyCode == 13){
-      this.searchItemNumbers = this.itemNumberList.find(x=>x.itemNumber == event.target.value.toString()).itemNumber;
+      this.searchItemNumbers = this.itemNumberList.find(x=>x.itemNumber == event.target.value.toString())?.itemNumber;
       if(this.searchItemNumbers) {
         this.loadItemDetails(this.searchItemNumbers);
         this.itemNumberList = []
@@ -650,6 +673,24 @@ onSubmit(form: FormGroup<InventoryMapFormData>) {
         );
         return;
       }
+      
+      // Check if item number was changed when it shouldn't be
+      const formRawValue = form.getRawValue();
+      const currentItemNumber = formRawValue.item || '';
+      if (!this.isItemNumberChangeable && currentItemNumber !== this.originalItemNumber) {
+        this.global.ShowToastr(
+          ToasterType.Error,
+          ToasterMessages.ItemNumberCannotBeRemoved,
+          ToasterTitle.Warning
+        );
+        // Reset to original value
+        form.get('item')?.enable();
+        form.get('item')?.setValue(this.originalItemNumber);
+        form.get('item')?.disable();
+        this.searchItemNumbers = this.originalItemNumber;
+        return;
+      }
+      
       if (this.warehouseSensitive && !form.value.warehouse) {
         this.global.ShowToastr(
           ToasterType.Error,

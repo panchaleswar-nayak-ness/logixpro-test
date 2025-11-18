@@ -348,7 +348,8 @@ export const ToasterMessages = {
     NoBatchesWithZone: 'There are no batches with this zone ({{zone}}) assigned.  Click OK to start a new batch or cancel to choose a different location/transaction.',
     BatchChangedSuccessfully: 'Current Batch is now {{batchId}}',
     QtyNewToteZero: 'Quantity Put in New Tote should be greater than 0',
-    QuantityCannotExceedOriginalTransactionQuantity: 'Quantity cannot exceed the original transaction quantity of this order.'
+    QuantityCannotExceedOriginalTransactionQuantity: 'Quantity cannot exceed the original transaction quantity of this order.',
+    ItemNumberCannotBeRemoved: 'Item number cannot be removed or changed when Item Quantity, Quantity Allocated Pick, or Quantity Allocated Put Away is present in the record.'
 }
 
 export const LiveAnnouncerMessage = {
