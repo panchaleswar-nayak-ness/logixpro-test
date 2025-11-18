@@ -38,9 +38,7 @@ export class BaseService {
   )
   {
     this.initializeApiUrl();
-
   }
-
 
   private initializeApiUrl(): void {
     if (environment.production) {
@@ -57,7 +55,7 @@ export class BaseService {
   private request<T>(
     method: Method,
     endPoint: string,
-    options: { body?: T; params?: HttpParams } = {},
+    options: { body?: any; params?: HttpParams } = {},
     headers?: HttpHeaders,
     observe: any = 'body',
     spinnershow: boolean = true
@@ -81,31 +79,30 @@ export class BaseService {
               this.spinnerService.hide();
             }
           }),
-  catchError(err => {
-  const error = err as HttpErrorResponse;
+          catchError(err => {
+          const error = err as HttpErrorResponse;
 
-  // Only show toasts if it's not a session timeout
-  if (!HeaderInterceptor.getSessionTimeout()) {
-    if (error?.error?.messageCode === ErrorCode.UnableToPrint) {
-      // Specific error handling for UnableToPrint
-      this.injector.get(GlobalService).ShowToastr(
-        ToasterType.Error,
-        error?.error.error,
-        ToasterTitle.Error
-      );
-    } else {
-      // Generic API error toast
-      this.injector.get(GlobalService).ShowToastr(
-        ToasterType.Error,
-        ToasterMessages.APIErrorMessage,
-        ToasterTitle.Error
-      );
-    }
-  }
+          // Only show toasts if it's not a session timeout
+          if (!HeaderInterceptor.getSessionTimeout()) {
+            if (error?.error?.messageCode === ErrorCode.UnableToPrint) {
+              // Specific error handling for UnableToPrint
+              this.injector.get(GlobalService).ShowToastr(
+                ToasterType.Error,
+                error?.error.error,
+                ToasterTitle.Error
+              );
+            } else {
+              // Generic API error toast
+              this.injector.get(GlobalService).ShowToastr(
+                ToasterType.Error,
+                ToasterMessages.APIErrorMessage,
+                ToasterTitle.Error
+              );
+            }
+          }
 
-  return throwError(() => error);
-})
-
+          return throwError(() => error);
+        })
         );
       })
     );
@@ -227,7 +224,7 @@ export class BaseService {
     }));
   }
 
-  async PutAsync<T>(endPoint: string, reqPaylaod: T, spinnerShow: boolean = true) {
+  async PutAsync<T>(endPoint: string, reqPaylaod: any, spinnerShow: boolean = true) {
     return await lastValueFrom(this.request<T>('PUT', endPoint, { body: reqPaylaod }, undefined, 'body', spinnerShow));
   }
 

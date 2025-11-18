@@ -2574,8 +2574,8 @@ public storageBinsExit(binId: string, zone: string): Observable<ExitOk> {
     return response.body as unknown as DeleteCartResponse;
   }
   
-  public async GetNextToteIdForSlapperLabelAsync(request: PartialToteIdRequest[]): Promise<PartialToteIdResponse[]> {
-    const response = await this.ApiBase.PutAsync<PartialToteIdRequest[]>('/totes/nexttoteforslapperlable', request);
+  public async GetNextToteIdForSlapperLabelAsync(request: PartialToteIdRequest): Promise<PartialToteIdResponse[]> {
+    const response = await this.ApiBase.PutAsync<PartialToteIdResponse[]>('/totes/nexttoteforslapperlable', request);
     return response.body as PartialToteIdResponse[] || [];
   }
 

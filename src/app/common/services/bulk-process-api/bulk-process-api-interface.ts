@@ -39,7 +39,7 @@ export interface IBulkProcessApiService {
   fullTote(body:any);
   AssignToteToOrder(orders: AssignToteToOrderDto[]);
   updateOpenTransactionsZoneCaseQuantity(body: OrderLineResource[]);
-  GetNextToteIdForSlapperLabelAsync(request: PartialToteIdRequest[]): Promise<PartialToteIdResponse[]>;
+  GetNextToteIdForSlapperLabelAsync(request: PartialToteIdRequest): Promise<PartialToteIdResponse[]>;
   SubmitCaseWiseOrders(request: PartialToteIdResponse[]): Promise<ApiResult<PartialToteIdResponse[]>>;
   RemoveOrderLinesFromTote(request: RemoveOrderLinesRequest): Promise<RemoveOrderLinesResponse>;
   bulkPickBatchesCount(payload:BatchesRequest) : Promise<ApiResult<number>>;

@@ -139,7 +139,7 @@ export class BulkProcessApiService implements IBulkProcessApiService {
     return this.Api.updateOpenTransactionsZoneCaseQuantity(body);
   }
 
-  public async GetNextToteIdForSlapperLabelAsync(request: PartialToteIdRequest[]): Promise<PartialToteIdResponse[]> {
+  public async GetNextToteIdForSlapperLabelAsync(request: PartialToteIdRequest): Promise<PartialToteIdResponse[]> {
     return await this.Api.GetNextToteIdForSlapperLabelAsync(request);
   }
 

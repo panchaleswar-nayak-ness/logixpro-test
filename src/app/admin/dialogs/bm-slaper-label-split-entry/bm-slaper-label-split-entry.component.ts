@@ -13,6 +13,7 @@ import {AssignToteToOrderDto, PartialToteIdRequest, PartialToteIdResponse, Slapp
 import { PrintApiService } from 'src/app/common/services/print-api/print-api.service';
 import { BmToteidEntryComponent } from '../bm-toteid-entry/bm-toteid-entry.component';
 import { UserSession, ApiResponse } from 'src/app/common/types/CommonTypes';
+import { Zone, BulkZone } from 'src/app/bulk-process/preferences/preference.models'
 
 @Component({
     selector: 'app-bm-slaper-label-split-entry',
@@ -248,12 +249,17 @@ export class BmSlaperLabelSplitEntryComponent implements OnInit {
       try {
         
         // Prepare the request data
-        const requestData: PartialToteIdRequest[] = this.selectedList.map((item) => ({
+        const requestData: PartialToteIdRequest = new PartialToteIdRequest();
+
+        requestData.toteItems = this.selectedList.map((item) => ({
           orderNumber: item.orderNumber,
           toteNumber: item.toteNumber?.toString(),
           toteID: item.toteId || '',
           partialToteID: item.partialToteId?.toString()
         }));
+
+        requestData.zones = (await this.getBulkPickZones()).map(x => x.zone);
+
         // Call the API
         const response: PartialToteIdResponse[] = await this.iBulkProcessApiService.GetNextToteIdForSlapperLabelAsync(requestData);
         
@@ -295,6 +301,11 @@ export class BmSlaperLabelSplitEntryComponent implements OnInit {
         console.error('Error creating next tote:', error);
         this.global.ShowToastr(ToasterType.Error, ToasterMessages.SomethingWentWrong, ToasterTitle.Error);
       }
+    }
+
+    async getBulkPickZones() : Promise<BulkZone[]> {
+      let response: { body: BulkZone[]; status: number } = await this.iBulkProcessApiService.bulkPickBulkZone();
+      return response.body;      
     }
 
     /**
