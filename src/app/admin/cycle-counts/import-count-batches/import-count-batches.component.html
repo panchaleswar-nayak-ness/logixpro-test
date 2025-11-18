@@ -163,7 +163,7 @@
   </ng-scrollbar>
 </div>
 <div class="d-flex justify-content-between bg-white mb-3">
-  <div class="table-pagination d-flex justify-content-start">
+  <div class="table-pagination d-flex justify-content-start" data-automation-id="paginator-import-count-batches">
       <mat-paginator [length]="this.customPagination.total" showFirstLastButtons [pageSize]="10"
           [pageSizeOptions]="[10, 20, 100]" (page)="handlePageEvent($event)" data-automation-id="paginator"></mat-paginator>
   </div>
