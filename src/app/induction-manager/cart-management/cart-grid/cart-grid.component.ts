@@ -39,7 +39,7 @@ export class CartGridComponent implements OnInit, AfterViewInit, OnChanges, OnDe
     private cartApiService: CartManagementApiService,
     private ngZone: NgZone,
     private contextMenuService: TableContextMenuService,
-    private authService: AuthService
+    public authService: AuthService
   ) {}
 
   @Input() searchTerm: string = '';
@@ -71,6 +71,7 @@ export class CartGridComponent implements OnInit, AfterViewInit, OnChanges, OnDe
   // User access properties
   userData: UserSession;
   public readonly permissionMessages = PermissionMessages;
+  public readonly permissions = CartManagementPermissions;
 
   // Column filter properties
   tableColumns: TableHeaderDefinitions[] = [
@@ -107,6 +108,7 @@ export class CartGridComponent implements OnInit, AfterViewInit, OnChanges, OnDe
   @Output() dataLoaded = new EventEmitter<void>();
 
   ngOnInit(): void {
+    
     // Initialize user data
     this.userData = this.authService.userData();
     
@@ -589,5 +591,8 @@ export class CartGridComponent implements OnInit, AfterViewInit, OnChanges, OnDe
       return false;
     }
     return this.isAdministrator() && record.cartStatus === 'Available';
+  }
+  isAddDisabled(): boolean {
+    return !this.authService.isAuthorized(this.permissions.AddCart);
   }
 }

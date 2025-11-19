@@ -11,7 +11,7 @@
       <button mat-stroked-button
               color="primary" 
               class="btn-regular"
-              [disabled]="!isAdministrator()"
+              [disabled]="isAddDisabled()"
               (click)="onAddNewCart()"
               data-automation-id="add-new-cart-btn">
         Add New Cart
