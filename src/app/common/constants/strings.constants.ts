@@ -144,7 +144,8 @@ export const ConfirmationHeadings = {
     PrintOffCarouselPickItemSingleLabel: "Print Off-Carousel Pick Item Label?",
     ContinueCreatingTransaction: 'Continue Creating Transactions?',
     AssignLocation: 'Assign Location',
-    ChangeFormatType: "Change Format Type"
+    ChangeFormatType: "Change Format Type",
+    PrintLabels: "Print Labels?"
 }
 export const ConfirmationButtonText = {
   ResetPassword: 'Reset Password Now',
@@ -193,8 +194,9 @@ export const ConfirmationMessages = {
     TransactionVerificationUnderway: 'Transaction verification is currently underway',
     LeavingWillRemoveTransactions: 'Leaving will remove transactions, otherwise continue with transaction verification',
     VerifyBulkTransactionType: (transactionType: string) => `Verify Bulk ${transactionType}`,
-    EnterLocationQuantityAfterTransaction: (transactionType: string) => `Enter the Location Quantity after this ${transactionType}` 
-  }
+    EnterLocationQuantityAfterTransaction: (transactionType: string) => `Enter the Location Quantity after this ${transactionType}`,
+    PrintLabelsFromQueue: 'Print labels from queue?'
+}
 
 export const ToasterMessages = {
     NoOpenLocations: 'There are no open locations.',
