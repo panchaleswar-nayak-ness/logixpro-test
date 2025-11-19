@@ -10,4 +10,5 @@ export interface ConfirmationDialogData {
     btn2Text?: string;
     hideCancel?: boolean;
     checkBox?: boolean;
+    icon?: string;
 }

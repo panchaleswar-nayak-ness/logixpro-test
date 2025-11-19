@@ -10,7 +10,7 @@ import { IInductionManagerApiService } from 'src/app/common/services/induction-m
 import { InductionManagerApiService } from 'src/app/common/services/induction-manager-api/induction-manager-api.service';
 import { PrintApiService } from 'src/app/common/services/print-api/print-api.service';
 import { IPrintApiService } from 'src/app/common/services/print-api/print-api-interface';
-import { ToasterType, ToasterTitle, ToasterMessages, LabelPrintingModes, Style, DialogConstants, StringConditions, ConfirmationMessages, ConfirmationHeadings } from 'src/app/common/constants/strings.constants';
+import { ToasterType, ToasterTitle, ToasterMessages, LabelPrintingModes, Style, DialogConstants, StringConditions, ConfirmationMessages, ConfirmationHeadings, Icons } from 'src/app/common/constants/strings.constants';
 import { AvailableTote, PrintQueueItem } from 'src/app/common/interface/induction-manager/print-lable/print-lable.interface';
 import { ApiResponse, ApiResult, UserSession } from 'src/app/common/types/CommonTypes';
 import { ConfirmationDialogComponent } from 'src/app/admin/dialogs/confirmation-dialog/confirmation-dialog.component';
@@ -220,6 +220,10 @@ export class ImLabelPrintingComponent implements OnInit, AfterViewInit {
       data: {
         heading: ConfirmationHeadings.PrintLabels,
         message: ConfirmationMessages.PrintLabelsFromQueue,
+        customButtonText: true,
+        btn1Text: StringConditions.Yes,
+        btn2Text: StringConditions.No,
+        icon: Icons.Print,
       },
     });
 

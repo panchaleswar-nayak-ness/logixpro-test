@@ -1,7 +1,7 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { FunctionAllocationComponent } from '../function-allocation/function-allocation.component';
-import {  ResponseStrings } from 'src/app/common/constants/strings.constants';
+import {  Icons, ResponseStrings } from 'src/app/common/constants/strings.constants';
 import { MatCheckboxChange } from '@angular/material/checkbox';
 import { ConfirmationDialogData } from 'src/app/common/interface/confirm-dialog-data';
 
@@ -22,6 +22,7 @@ export class ConfirmationDialogComponent implements OnInit {
   btn2Text: string = '';
   hideCancel: boolean = true;
   checkBox: boolean = false;
+  icon: string = Icons.Info;
   
   
   checkBoxText:string="I understand data cannot be recovered";
@@ -33,6 +34,10 @@ export class ConfirmationDialogComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    this.setDialogData();
+  }
+
+  private setDialogData(): void {
     this.dialog_msg = this.data?.message ?? '';
     this.dialog_msg2 = this.data?.message2 ?? '';
     this.dialog_heading = this.data?.heading ?? '';
@@ -44,6 +49,7 @@ export class ConfirmationDialogComponent implements OnInit {
     this.btn2Text = this.data?.btn2Text ?? '';
     this.hideCancel = this.data?.hideCancel ?? true;
     this.checkBox = this.data?.checkBox ?? false;
+    this.icon = this.data?.icon ?? Icons.Info;
   }
 
   confirmOK()

@@ -145,7 +145,7 @@ export const ConfirmationHeadings = {
     ContinueCreatingTransaction: 'Continue Creating Transactions?',
     AssignLocation: 'Assign Location',
     ChangeFormatType: "Change Format Type",
-    PrintLabels: "Print Labels?"
+    PrintLabels: "Print Labels"
 }
 export const ConfirmationButtonText = {
   ResetPassword: 'Reset Password Now',
@@ -195,7 +195,7 @@ export const ConfirmationMessages = {
     LeavingWillRemoveTransactions: 'Leaving will remove transactions, otherwise continue with transaction verification',
     VerifyBulkTransactionType: (transactionType: string) => `Verify Bulk ${transactionType}`,
     EnterLocationQuantityAfterTransaction: (transactionType: string) => `Enter the Location Quantity after this ${transactionType}`,
-    PrintLabelsFromQueue: 'Print labels from queue?'
+    PrintLabelsFromQueue: 'Do you want to print labels from the queue?'
 }
 
 export const ToasterMessages = {
@@ -1007,4 +1007,9 @@ export const OrderActions = {
     SelectOrder: 'select_order',
     UnselectAllOrders: 'unselect_all_orders',
     SelectAllOrders: 'select_all_orders'
+}
+
+export const Icons = {
+  Info: 'info',
+  Print: 'print'
 }
