@@ -760,7 +760,9 @@ export class BuildNewCartComponent implements OnInit {
     if (nextPosition) {
       if (nextPosition === this.selectedPosition)
       {
-        this.focusPrimaryButton();         
+        this.focusPrimaryButton();  
+        this.selectedPosition = 0;
+       
       }
       else {
         this.selectedPosition = nextPosition;
