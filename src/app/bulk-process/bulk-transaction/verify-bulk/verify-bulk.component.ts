@@ -424,8 +424,9 @@ export class VerifyBulkComponent implements OnInit {
             height: DialogConstants.auto,
             width: Style.w560px,
             autoFocus: DialogConstants.autoFocus,
-            disableClose: true,
+            disableClose: true,            
             data: {
+              buttonFields: true,
               message: ConfirmationMessages.AdjustQuantityForCount(element.transactionQuantity?.toString()),
               heading: '',
             },
