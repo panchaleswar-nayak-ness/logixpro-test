@@ -1847,6 +1847,9 @@ filterationColumns : FilterationColumns[] = [];
     // Directly use the FilterationColumns objects
     this.filterationColumns = filterationColumns;
     
+    // Reset pagination to first page when filter is applied
+    this.resetPaginationForFilters();
+    
     // Call the appropriate method based on the current tab
     if (this.tabIndex === 0) {
       this.getContentData();
@@ -1855,6 +1858,16 @@ filterationColumns : FilterationColumns[] = [];
     }
     
     this.isActiveTrigger = false;
+  }
+  
+  // Resets pagination to the first page for transaction tables when filters are applied
+  private resetPaginationForFilters(): void {
+    if (this.filterBatchTrans) {
+      this.filterBatchTrans.firstPage();
+    }
+    if (this.zoneBatchTrans) {
+      this.zoneBatchTrans.firstPage();
+    }
   }
 
   getZoneContentData() {
@@ -1940,8 +1953,10 @@ filterationColumns : FilterationColumns[] = [];
   }
 
   isTooltipDisabled(value: string): boolean {
+    if (value == null || value === undefined) {
+      return true; // Disable tooltip for null/undefined values
+    }
     return value.length < 25;
-
   }
 
   isFormatDisabled(field: string): boolean {
