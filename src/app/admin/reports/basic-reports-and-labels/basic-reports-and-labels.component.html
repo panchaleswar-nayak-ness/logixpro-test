@@ -96,17 +96,27 @@
                                     <th mat-header-cell *matHeaderCellDef  data-automation-id="basic-reports-table-header-value-to-test">Value To Test</th>
                                     <td mat-cell *matCellDef="let element;let i =index">
                                         <mat-form-field class="custom-form-field w-100 pe-2" appearance="outline">
-                                            <input matInput type="text"  [matAutocomplete]="auto"
-                                            
-                                             (ngModelChange)="[filterByItem($event,i),reportFieldValuesChange(i,reportData[16+i])]"  (focus)="onFocusEmptyInput(i)"   
-                                             [(ngModel)]="reportData[16+i]" [disabled]="(reportData[4+i] == '' || reportData[4+i] == null) || basicReportModel.ChooseReport == ''"  [attr.data-automation-id]="'basic-reports-table-value-to-test-input-' + i" />
-                                            <mat-autocomplete #auto="matAutocomplete"  (optionSelected)="valueSelect($event,i)">
-                                                <mat-option *ngFor="let option of listFilterValue[i]; let i=index" [value]="option"  [attr.data-automation-id]="'basic-reports-table-value-to-test-option-' + i"
-                                                >
-                                                  {{option}}
-                                                </mat-option>
+                                            <input matInput type="text"
+                                             #autoInput="matAutocompleteTrigger"
+                                             [matAutocomplete]="auto"
+                                             (ngModelChange)="[filterByItem($event,i),reportFieldValuesChange(i,reportData[16+i])]"
+                                             (focus)="[onFocusEmptyInput(i), onAutocompleteOpened(i, autoInput)]"   
+                                             [(ngModel)]="reportData[16+i]"
+                                             [disabled]="isValueInputDisabled(i)"
+                                             [attr.data-automation-id]="'basic-reports-table-value-to-test-input-' + i" />
+                                            <mat-autocomplete #auto="matAutocomplete" (optionSelected)="valueSelect($event,i)">
+                                              <mat-option *ngFor="let option of listFilterValue[i]; let idx=index" [value]="option"  [attr.data-automation-id]="'basic-reports-table-value-to-test-option-' + i">
+                                                {{option}}
+                                              </mat-option>
                                               
-                                              </mat-autocomplete>
+                                              <!-- Loading indicator when fetching more data -->
+                                              <mat-option *ngIf="isLoadingMore[i]" disabled>
+                                                <div class="d-flex align-items-center justify-content-center p-2 text-primary-500">
+                                                  <mat-spinner diameter="20" class="me-2"></mat-spinner>
+                                                  <div>{{loadingMore}}</div>
+                                                </div>
+                                              </mat-option>
+                                            </mat-autocomplete>
                                             </mat-form-field>
                                         </td>
                                     </ng-container>

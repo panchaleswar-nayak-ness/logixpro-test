@@ -1,10 +1,11 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
+import { Component, OnInit, ViewChild, OnDestroy, ViewChildren, QueryList } from '@angular/core';
+import { MatAutocompleteSelectedEvent, MatAutocompleteTrigger } from '@angular/material/autocomplete';
 import { MatOption } from '@angular/material/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSelect } from '@angular/material/select';
 import { NavigationEnd, Router } from '@angular/router';
-import { Subject } from 'rxjs';
+import { Subject, Subscription } from 'rxjs';
+import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 import { ToasterTitle, ToasterType,UniqueConstants,ColumnDef} from 'src/app/common/constants/strings.constants';
 import { AppNames } from 'src/app/common/constants/menu.constants';
 import { GlobalService } from 'src/app/common/services/global.service';
@@ -12,16 +13,18 @@ import { AuthService } from 'src/app/common/init/auth.service';
 import { ApiFuntions } from 'src/app/common/services/ApiFuntions'; 
 import { IAdminApiService } from 'src/app/common/services/admin-api/admin-api-interface';
 import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.service';
+import { ChangeFilterRequest } from 'src/app/common/interface/admin/reports.interfaces';
 
 @Component({
   selector: 'app-basic-reports-and-labels',
   templateUrl: './basic-reports-and-labels.component.html',
   styleUrls: ['./basic-reports-and-labels.component.scss']
 })
-export class BasicReportsAndLabelsComponent implements OnInit {
+export class BasicReportsAndLabelsComponent implements OnInit, OnDestroy {
 
   reports:any = [];
   @ViewChild('matRef') matRef: MatSelect;
+  @ViewChildren(MatAutocompleteTrigger) triggers!: QueryList<MatAutocompleteTrigger>;
   reportTitles: any = [1,2,3,4]; 
   searchByInput: any = new Subject<string>();
   listFilterValue:any = [];
@@ -30,6 +33,26 @@ export class BasicReportsAndLabelsComponent implements OnInit {
   
   basicReportModel:any = {};
   reportData:any = {};
+  
+  // Debouncing properties
+  searchSubjects: Subject<{value: string, index: number}>[] = [];
+  private readonly DEBOUNCE_TIME = 400; // 400ms delay
+  
+  // Debouncing for "Value To Test" field changes
+  private valueChangeSubjects: Subject<{value: string, index: number}>[] = [];
+  private readonly VALUE_CHANGE_DEBOUNCE_TIME = 1000; // 1000ms delay for value changes
+  
+  // Lazy loading properties
+  currentPage: number[] = [1, 1, 1, 1, 1, 1]; // Track page for each of 6 filters
+  hasMoreData: boolean[] = [true, true, true, true, true, true]; // Track if more data available
+  isLoadingMore: boolean[] = [false, false, false, false, false, false]; // Loading state
+  private readonly PAGE_SIZE = 500; // Number of items per page
+  loadingMore: string = "Loading more...";
+  
+  // Store scroll handlers for proper listener management
+  private scrollHandlers: Map<number, (event: Event) => void> = new Map();
+  // Store autocomplete subscriptions for cleanup
+  private autocompleteSubscriptions: Map<number, Subscription> = new Map();
   ELEMENT_DATA: any[] =[
     {order_no: '1202122'},
     {order_no: '1202122'},
@@ -93,8 +116,39 @@ export class BasicReportsAndLabelsComponent implements OnInit {
   ngOnInit(): void {
     this.basicReportModel.ChooseReport = "";
     this.getCustomReports();
-    
+    this.initializeDebounce();
   }
+
+  initializeDebounce(){
+    // Initialize debounced search subjects for each filter input (6 total)
+    for (let i = 0; i < 6; i++) {
+      this.searchSubjects[i] = new Subject<{value: string, index: number}>();
+      
+      // Set up debounced subscription - only calls API after user stops typing
+      this.searchSubjects[i].pipe(
+        debounceTime(this.DEBOUNCE_TIME),
+        distinctUntilChanged((prev, curr) => prev.value === curr.value)
+      ).subscribe(({value, index}) => {
+        // Reset to page 1 when searching
+        this.currentPage[index] = 1;
+        this.changeFilter(this.reportData[4 + index], index, value, 1);
+      });
+    }
+    
+    // Initialize debounced value change subjects for each "Value To Test" field (6 total)
+    for (let i = 0; i < 6; i++) {
+      this.valueChangeSubjects[i] = new Subject<{value: string, index: number}>();
+      
+      // Set up debounced subscription - waits 1000ms after user stops typing
+      this.valueChangeSubjects[i].pipe(
+        debounceTime(this.VALUE_CHANGE_DEBOUNCE_TIME),
+        distinctUntilChanged((prev, curr) => prev.value === curr.value)
+      ).subscribe(({value, index}) => {
+        this.reportFieldValues(index, value);
+      });
+    }
+  }
+
   clearMatSelectList(){
     this.matRef.options.forEach((data: MatOption) => data.deselect());
   }
@@ -102,13 +156,20 @@ export class BasicReportsAndLabelsComponent implements OnInit {
     this.clearMatSelectList();
   }
   onFocusEmptyInput(i: number) {
-    this.changeFilter(this.reportData[4 + i], i);
+    // Only load if no data exists yet
+    if (!this.listFilterValue[i] || this.listFilterValue[i].length === 0) {
+      this.currentPage[i] = 1;
+      // Check if there's already a value in the input field (default value)
+      const existingValue = this.reportData[16 + i] || '';
+      this.changeFilter(this.reportData[4 + i], i, existingValue, 1);
+    }
   }
 
 
   filterByItem(value : any,index){ 
-    this.listFilterValue[index] = this.oldFilterValue[index].filter(x=> x.toString().toLowerCase().indexOf(value.toString().toLowerCase()) > -1);
- 
+    // Use debounced subject instead of direct API call
+    // This prevents API spam while user is typing
+    this.searchSubjects[index].next({value: value || '', index: index});
   }
 
   
@@ -163,24 +224,56 @@ basicReportDetails(selectedReport: string) {
 }
 
 
-  async changeFilter(column,index){  
+  async changeFilter(column, index, searchTerm: string = '', pageNumber: number = 1) {  
+    // Don't load if already loading
+    if (this.isLoadingMore[index] && pageNumber > 1) {
+      return;
+    }
 
-    let payload:any ={
-      reportName:this.basicReportModel.ChooseReport,
-      column:column
+    // Reset hasMoreData for new searches (page 1)
+    if (pageNumber === 1) {
+      this.hasMoreData[index] = true;
+    }
+
+    // Set loading state for lazy loading
+    if (pageNumber > 1) {
+      this.isLoadingMore[index] = true;
+    }
+
+    const payload: ChangeFilterRequest = {
+      reportName: this.basicReportModel.ChooseReport,
+      column: column,
+      searchTerm: searchTerm,
+      pageSize: this.PAGE_SIZE,
+      pageNumber: pageNumber
     };
-    this.iAdminApiService.changefilter(payload).subscribe((res:any)=>{
-      if(res.isExecuted && res.data)
-      {
-        this.listFilterValue[index] = res.data;
-        this.oldFilterValue[index] = res.data;
+    
+    this.iAdminApiService.changefilter(payload).subscribe((res: any) => {
+      if (res.isExecuted && res.data) {
+        if (pageNumber === 1) {
+          // New search or initial load - replace data
+          this.listFilterValue[index] = res.data;
+          this.oldFilterValue[index] = res.data;
+          this.currentPage[index] = 1;
+        } else {
+          // Lazy load - append data
+          this.listFilterValue[index] = [...this.listFilterValue[index], ...res.data];
+          this.oldFilterValue[index] = [...this.oldFilterValue[index], ...res.data];
+        }
+        
+        // Check if we got less than pageSize, meaning no more data available
+        this.hasMoreData[index] = res.data.length >= this.PAGE_SIZE;
+        this.isLoadingMore[index] = false;
       }
       else {
         this.global.ShowToastr(ToasterType.Error, this.global.globalErrorMsg(), ToasterTitle.Error);
-        console.log("changefilter",res.responseMessage);
+        console.log("changefilter", res.responseMessage);
+        this.isLoadingMore[index] = false;
       }
-    })  
-    
+    }, (error) => {
+      this.isLoadingMore[index] = false;
+      this.global.ShowToastr(ToasterType.Error, this.global.globalErrorMsg(), ToasterTitle.Error);
+    });
   }
   reportFieldsExps(item:any=null,index:any=null){
     if(item == 'fields'){
@@ -211,9 +304,8 @@ basicReportDetails(selectedReport: string) {
    selectedIndex:number;
    selectedValue:string;
    reportFieldValuesChange(index,value){
-      setTimeout(() => {
-        this.reportFieldValues(index,value)        
-      }, 1000);
+      // Use debounced subject instead of setTimeout
+      this.valueChangeSubjects[index].next({value: value, index: index});
    }
 reportFieldValues(selectedIndex,selectedValue,IsRemove=false){
   if(IsRemove || !(selectedIndex == this.selectedIndex && selectedValue == this.selectedIndex)){
@@ -260,10 +352,127 @@ Remove(index){
   this.reportFieldsExps();
   this.reportFieldValues(index,"",true);
   this.reportPayloadTitles();
+  
+  // Reset pagination state
+  this.currentPage[index] = 1;
+  this.hasMoreData[index] = true;
+  this.listFilterValue[index] = [];
+  this.oldFilterValue[index] = [];
 }
 
+/**
+ * Load more data for lazy loading (called when user scrolls near bottom)
+ */
+loadMoreData(index: number): void {
+  if (!this.hasMoreData[index] || this.isLoadingMore[index]) {
+    return; // Don't load if no more data or already loading
+  }
+  
+  this.currentPage[index]++;
+  const searchTerm = this.reportData[16 + index] || '';
+  const column = this.reportData[4 + index];
+  
+  this.changeFilter(column, index, searchTerm, this.currentPage[index]);
+}
 
+/**
+ * Setup scroll listener when autocomplete opens
+ */
+onAutocompleteOpened(index: number, trigger: MatAutocompleteTrigger): void {
+  // Unsubscribe from previous subscription if exists
+  const oldSubscription = this.autocompleteSubscriptions.get(index);
+  if (oldSubscription) {
+    oldSubscription.unsubscribe();
+  }
 
+  // Function to attach scroll listener to panel
+  const attachScrollListener = () => {
+    // Use requestAnimationFrame to ensure panel is fully rendered in next frame
+    requestAnimationFrame(() => {
+      const panel = trigger.autocomplete.panel?.nativeElement as HTMLElement;
 
+      if (panel) {
+        // Remove old handler if exists
+        const oldHandler = this.scrollHandlers.get(index);
+        if (oldHandler) {
+          panel.removeEventListener('scroll', oldHandler);
+        }
+
+        // Create and store new handler with proper types
+        const newHandler = (event: Event) => this.handleAutocompleteScroll(event, index);
+        this.scrollHandlers.set(index, newHandler);
+        
+        // Add new listener
+        panel.addEventListener('scroll', newHandler);
+      }
+    });
+  };
+
+  // Check if panel is already open and attach listener immediately
+  if (trigger.panelOpen) {
+    attachScrollListener();
+  }
+
+  // Subscribe to opened events for future opens
+  const subscription = trigger.autocomplete.opened.subscribe(() => {
+    attachScrollListener();
+  });
+
+  // Store subscription for cleanup
+  this.autocompleteSubscriptions.set(index, subscription);
+}
+
+/**
+ * Handle scroll event on autocomplete panel
+ */
+private handleAutocompleteScroll(event: Event, index: number): void {
+  const target = event.target as HTMLElement;
+  if (!target) return;
+  
+  const threshold = 0.8; // Load more when scrolled 80% down
+  const position = (target.scrollTop + target.offsetHeight) / target.scrollHeight;
+  
+  if (position > threshold) {
+    this.loadMoreData(index);
+  }
+}
+
+/**
+ * Cleanup subscriptions when component is destroyed
+ */
+ngOnDestroy(): void {
+  // Unsubscribe from all search subjects to prevent memory leaks
+  this.searchSubjects.forEach(subject => {
+    if (subject) {
+      subject.complete();
+    }
+  });
+  
+  // Unsubscribe from value change subjects
+  this.valueChangeSubjects.forEach(subject => {
+    if (subject) {
+      subject.complete();
+    }
+  });
+  
+  // Unsubscribe from autocomplete subscriptions
+  this.autocompleteSubscriptions.forEach(subscription => {
+    if (subscription) {
+      subscription.unsubscribe();
+    }
+  });
+  
+  // Clean up scroll listeners
+  this.scrollHandlers.clear();
+  this.autocompleteSubscriptions.clear();
+}
+
+isValueInputDisabled(index: number): boolean {
+  const reportField = this.reportData[4 + index];
+  const isFieldEmpty = reportField === '' || reportField === null;
+  const noReportSelected = this.basicReportModel.ChooseReport === '';
+
+  return isFieldEmpty || noReportSelected;
+}
 
 }

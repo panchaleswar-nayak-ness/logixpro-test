@@ -1924,7 +1924,7 @@ public updateEmergencyReprocessTrans(payload: UpdateEmergencyRequest): Observabl
   }
 
   public changefilter(body): Observable<any> {
-    return this.ApiBase.Get('/Admin/customreports/changefilter', body);
+    return this.ApiBase.Get('/Admin/customreports/changefilter', body,false);
   }
 
   public importFile(body) {

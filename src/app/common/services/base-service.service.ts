@@ -136,14 +136,14 @@ export class BaseService {
     });
   }
 
-  Get<T>(endPoint: string, payload?, isLoader: boolean = false): Observable<T> {
+  Get<T>(endPoint: string, payload?, spinnerShow: boolean = true): Observable<T> {
     let queryParams = new HttpParams();
     if (payload != null)
       for (let key in payload)
         if (payload[key] != undefined) queryParams = queryParams.append(key, payload[key]);
 
 
-    let requestObservable = this.request<T>('GET', endPoint, { params: queryParams });
+    let requestObservable = this.request<T>('GET', endPoint, { params: queryParams }, undefined, 'body', spinnerShow);
     return requestObservable.pipe(
       map(response => response.body!)
     );
