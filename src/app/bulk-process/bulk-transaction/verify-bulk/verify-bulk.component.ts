@@ -15,7 +15,7 @@ import {
   OrderLineWithSelection
 } from 'src/app/common/Model/bulk-transactions';
 import { SetTimeout } from 'src/app/common/constants/numbers.constants';
-import { ConfirmationButtonText, ConfirmationHeadings, ConfirmationMessages, DialogConstants, Placeholders, ResponseStrings, Style, ToasterMessages, ToasterTitle, ToasterType, TransactionType } from 'src/app/common/constants/strings.constants';
+import { alertMessage, ConfirmationButtonText, ConfirmationHeadings, ConfirmationMessages, DialogConstants, Placeholders, ResponseStrings, Style, ToasterMessages, ToasterTitle, ToasterType, TransactionType } from 'src/app/common/constants/strings.constants';
 import { IAdminApiService } from 'src/app/common/services/admin-api/admin-api-interface';
 import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.service';
 import { IBulkProcessApiService } from 'src/app/common/services/bulk-process-api/bulk-process-api-interface';
@@ -308,6 +308,7 @@ export class VerifyBulkComponent implements OnInit {
         url: this.bulkTransactionType,
         completedQuantity: element.completedQuantity,
         transactionQuantity: element.transactionQuantity,
+        maxAllowedQuantity: (this.bulkTransactionType == BulkTransactionType.PICK && !this.Prefernces?.systemPreferences?.allowOverpick) ? element.transactionQuantity : null, // Only validate for PICK if allowOverpick is disabled
         from: "completed quantity"
       }
     });
@@ -379,6 +380,14 @@ export class VerifyBulkComponent implements OnInit {
     });
   }
 
+  private validateCompletedQuantity(completedQuantity: number, element: OrderLineResource & { NextToteID?: number }): boolean {
+    // Only validate for PICK transactions when allowOverpick is disabled
+    if (this.bulkTransactionType == BulkTransactionType.PICK && !this.Prefernces?.systemPreferences?.allowOverpick) {
+      return completedQuantity <= element.transactionQuantity;
+    }
+    return true; // Skip validation for non-PICK transactions or when allowOverpick is enabled
+  }
+
   private processNumberSelectionResponse(resp: DialogResponse, record: TaskCompleteNewRequest, element: OrderLineResource & { NextToteID?: number }) {
     // Convert newQuantity to number (it may be string or number)
     const quantity = resp.newQuantity != null ? parseFloat(resp.newQuantity.toString()) : 0;
@@ -418,6 +427,11 @@ export class VerifyBulkComponent implements OnInit {
     }
   }
   SetQuantity(completedQuantity: number, element: OrderLineResource & { NextToteID?: number }) {
+    // Validate completed quantity (only for PICK transactions)
+    if (!this.validateCompletedQuantity(completedQuantity, element)) {
+      return; // Exit if validation fails
+    }
+
     if (this.bulkTransactionType == BulkTransactionType.COUNT) {
         if (element.transactionQuantity !== +completedQuantity) {
         let dialogRef: any = this.global.OpenDialog(ConfirmationDialogComponent, {

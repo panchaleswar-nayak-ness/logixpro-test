@@ -143,7 +143,7 @@ async removeAllZones() {
   payload(){
     const payload: any = {
       "preference": [
-        this.companyInfo.orderSort,this.companyInfo.cartonFlowDisplay,this.companyInfo.autoDisplayImage,
+        this.companyInfo.orderSort,this.companyInfo.cartonFlowDisplay,this.companyInfo.autoDisplayImage,this.companyInfo.allowOverpick,
       ],
       "panel": 4
     };

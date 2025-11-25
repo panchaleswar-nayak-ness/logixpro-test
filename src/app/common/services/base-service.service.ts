@@ -91,7 +91,14 @@ export class BaseService {
                 error?.error.error,
                 ToasterTitle.Error
               );
-            } else {
+            } 
+            if (error?.error?.status === ErrorCode.BadRequest) {
+              this.injector.get(GlobalService).ShowToastr(
+                ToasterType.Error,
+                error?.error.detail,
+                ToasterTitle.Error
+              );
+            }else {
               // Generic API error toast
               this.injector.get(GlobalService).ShowToastr(
                 ToasterType.Error,

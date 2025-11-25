@@ -1,10 +1,12 @@
-import {Component, ElementRef, Inject, OnInit, ViewChild} from '@angular/core';
+import {Component, ElementRef, Inject, NgZone, OnInit, ViewChild} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
 import {ToastrService} from 'ngx-toastr';
+import { take } from 'rxjs';
 import {ConfirmationDialogComponent} from 'src/app/admin/dialogs/confirmation-dialog/confirmation-dialog.component';
 import {BulkPreferences} from 'src/app/common/Model/bulk-transactions';
 import {SetTimeout} from 'src/app/common/constants/numbers.constants';
 import {
+  alertMessage,
   DialogConstants,
   ResponseStrings,
   Style,
@@ -32,6 +34,8 @@ export class BpNumberSelectionComponent implements OnInit {
   @ViewChild('autoFocusField') searchBoxField: ElementRef;
   url: string;
   transactionQuantity: number;
+  maxAllowedQuantity: number;
+  isInvalid: boolean = false;
 
   constructor(
     public dialogRef: MatDialogRef<BpNumberSelectionComponent>,
@@ -39,6 +43,7 @@ export class BpNumberSelectionComponent implements OnInit {
     private global: GlobalService,
     private cusValidator: CustomValidatorService,
     @Inject(MAT_DIALOG_DATA) public data: any,
+    private ngZone: NgZone
   ) {
     this.iBulkProcessApiService = bulkProcessApiService;
     this.from = this.data.from;
@@ -46,6 +51,7 @@ export class BpNumberSelectionComponent implements OnInit {
     this.IsFullTote = this.data?.IsFullTote;
     this.url = this.data.url;
     this.transactionQuantity = this.data?.transactionQuantity;
+    this.maxAllowedQuantity = this.data?.maxAllowedQuantity;
   }
 
   ngOnInit(): void {
@@ -74,6 +80,9 @@ export class BpNumberSelectionComponent implements OnInit {
     }
     if (!this.IsFullTote || newQuantity <= this.toteQuantity) this.newQuantity = newQuantity;
     else this.global.ShowToastr(ToasterType.Error, "This tote only needs a quantity of " + this.toteQuantity, ToasterTitle.Error);
+    
+    // Reset invalid state when user types
+    this.isInvalid = false;
   }
 
   numberOnly(event): boolean {
@@ -81,12 +90,33 @@ export class BpNumberSelectionComponent implements OnInit {
       this.global.ShowToastr(ToasterType.Error, "This tote only needs a quantity of " + this.toteQuantity, ToasterTitle.Error);
     }
 
+    // Reset invalid state when user types
+    this.isInvalid = false;
+
     return this.cusValidator.numberOnly(event);
   }
 
   respYesNo: boolean | null = null;
 
   done() {
+    // Validate quantity doesn't exceed max allowed (Order Quantity)
+    if (this.maxAllowedQuantity && this.newQuantity > this.maxAllowedQuantity) {
+      this.isInvalid = true;
+      this.global.ShowToastr(
+        ToasterType.Error,
+        alertMessage.QtyMustBeLessThanPickQty,
+        ToasterTitle.Error
+      );
+      // Focus back on input field
+      this.ngZone.onStable.pipe(take(1)).subscribe(() => {
+        this.searchBoxField?.nativeElement.focus();
+      });
+      return; // Don't close dialog
+    }
+
+    // Reset invalid state if validation passes
+    this.isInvalid = false;
+
     if (!this.IsFullTote || (this.newQuantity <= this.toteQuantity && this.newQuantity >= 0)) {
       if (this.from == "completed quantity") {
         // Don't show "Location Empty" popup for Put Away transactions

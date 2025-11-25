@@ -263,6 +263,7 @@ export class SystemPreference {
     osTextBlue?: string;
     generateQuarantineTransactions: boolean;
     requireHotReasons: boolean;
+    allowOverpick: boolean;
 }
 
 export class BulkPreferences {

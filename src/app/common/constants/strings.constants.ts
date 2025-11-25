@@ -145,6 +145,7 @@ export const ConfirmationHeadings = {
     ContinueCreatingTransaction: 'Continue Creating Transactions?',
     AssignLocation: 'Assign Location',
     ChangeFormatType: "Change Format Type",
+    Error: "Error",
     PrintLabels: "Print Labels"
 }
 export const ConfirmationButtonText = {
@@ -443,7 +444,8 @@ export const alertMessage = {
   DeleteMessage: 'You are about to mark the scanned reels as empty. This will delete ALL current open transactions associated with the scanned reels.',
   ZoneCannotBeLeftBlank:'Zone cannot be left blank.',
   DeviceTypeCannotBeLeftBlank:'Device Type cannot be left blank.',
-  DeviceNumberCannotBeLeftBlank:'Device Number cannot be left blank.'
+  DeviceNumberCannotBeLeftBlank:'Device Number cannot be left blank.',
+  QtyMustBeLessThanPickQty:'Error! Quantity must be less than or equals to order quantity'
 }
 
 export const showNotificationHeading = {
