@@ -568,8 +568,18 @@ async validateTaskComplete() {
         },
       });
       dialogRef1.afterClosed().subscribe(async (res: string) => {
-        if (res == ResponseStrings.Yes) await this.taskComplete(this.orderLines.filteredData.filter((x: OrderLineResource) => x.completedQuantity > 0));
-        else if (res == ResponseStrings.No) await this.taskComplete(this.orderLines.filteredData);
+        if (res == ResponseStrings.Yes) {
+          const filteredOrderLines = this.orderLines.filteredData
+            .filter((x: OrderLineResource) => x.completedQuantity > 0);
+
+          if (filteredOrderLines.length) {
+            await this.taskComplete(filteredOrderLines);
+            return;
+          }
+
+          this.back.emit(this.taskCompleted);
+        }
+          else if (res == ResponseStrings.No) await this.taskComplete(this.orderLines.filteredData);
       });
     }
     else await this.taskComplete(this.orderLines.filteredData);
