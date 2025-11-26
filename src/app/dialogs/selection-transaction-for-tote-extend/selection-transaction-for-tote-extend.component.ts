@@ -21,8 +21,10 @@ import { ICommonApi } from 'src/app/common/services/common-api/common-api-interf
 import { CommonApiService } from 'src/app/common/services/common-api/common-api.service';
 import { AlertConfirmationComponent } from '../alert-confirmation/alert-confirmation.component';
 import {  ToasterTitle ,ResponseStrings,ToasterType,ToasterMessages,DialogConstants,Style,UniqueConstants,StringConditions,ColumnDef, Placeholders} from 'src/app/common/constants/strings.constants';
+import { ANGULAR_DATE_FORMAT } from 'src/app/common/constants/date-format.constants';
 import { DialogCommunicationService } from 'src/app/common/services/dialog-communication.service';
 import { Subscription } from 'rxjs';
+import { distinctUntilChanged } from 'rxjs/operators';
 import { BatchTotesTableResponse } from 'src/app/induction-manager/process-put-aways/process-put-aways.component';
 import { ApiResponse } from 'src/app/common/types/CommonTypes';
 
@@ -62,6 +64,59 @@ export class SelectionTransactionForToteExtendComponent implements OnInit, OnDes
   event: Event;
   placeholders = Placeholders;
   private readonly subscriptions: Subscription[] = [];
+  
+  // Constants
+  private readonly RESERVED_SUCCESSFULLY = 'Reserved Successfully';
+  
+  // Form field name constants
+  private readonly FormFieldNames = {
+    warehouse: 'warehouse',
+    zone: 'zone',
+    carousel: 'carousel',
+    row: 'row',
+    shelf: 'shelf',
+    bin: 'bin',
+    cellSize: 'cellSize',
+    velocityCode: 'velocityCode',
+    itemQuantity: 'itemQuantity',
+    maximumQuantity: 'maximumQuantity',
+    quantityAllocatedPutAway: 'quantityAllocatedPutAway',
+    invMapID: 'invMapID',
+    replenishment: 'replenishment',
+    locationLotNumber: 'locationLotNumber',
+    locationSerialNumber: 'locationSerialNumber',
+    locationExpirationDate: 'locationExpirationDate'
+  } as const;
+  
+  // Location validity tracking
+  isLocationValid: boolean = false;
+  isInitialLoad: boolean = true;
+  isSettingLocationFromDialog: boolean = false;
+  
+  // Fields that trigger location clearing when changed
+  private readonly monitoredTransactionFields = [
+    'lotNumber', 
+    'expirationDate', 
+    'serialNumber', 
+    'transactionQuantity', 
+    'warehouse', 
+    'returnToStock', 
+    'blindInduct',
+    'category',
+    'subCategory'
+  ];
+  
+  private readonly monitoredItemInfoFields = [
+    'supplierItemID',
+    'carouselCellSize',
+    'bulkCellSize',
+    'cfCellSize',
+    'carouselVelocity',
+    'bulkVelocity',
+    'cfVelocity',
+    'primaryPickZone',
+    'secondaryPickZone'
+  ];
 
   constructor(
     private renderer: Renderer2,
@@ -131,6 +186,9 @@ export class SelectionTransactionForToteExtendComponent implements OnInit, OnDes
       maximumQuantity                   : new FormControl('', Validators.compose([])),
       quantityAllocatedPutAway          : new FormControl('', Validators.compose([])),
       replenishment                     : new FormControl(0, Validators.compose([])),
+      locationLotNumber                 : new FormControl('', Validators.compose([])),
+      locationSerialNumber              : new FormControl('', Validators.compose([])),
+      locationExpirationDate            : new FormControl('', Validators.compose([]))  ,
 
       // Complete Transaction
       toteID                            : new FormControl('', Validators.compose([])),
@@ -153,6 +211,7 @@ export class SelectionTransactionForToteExtendComponent implements OnInit, OnDes
     this.imPreferences = this.global.getImPreferences();
     this.pickToteSetupIndex();          
     this.subscribeToUpdates();
+    this.setupFieldMonitoring();
   }
 
   subscribeToUpdates() {
@@ -184,6 +243,32 @@ export class SelectionTransactionForToteExtendComponent implements OnInit, OnDes
         }
       })
     );
+  }
+
+  
+  
+  
+   //Sets up monitoring for form fields that should trigger location clearing
+   //The isInitialLoad flag in clearLocationInfo() prevents clearing during form initialization
+   
+  private setupFieldMonitoring(): void {
+    // Combine all monitored fields into a single array to avoid code duplication
+    const allMonitoredFields = [...this.monitoredTransactionFields, ...this.monitoredItemInfoFields];
+    
+    allMonitoredFields.forEach(fieldName => {
+      const control = this.toteForm.get(fieldName);
+      if (control) {
+        const subscription = control.valueChanges
+          .pipe(
+            distinctUntilChanged() // Only trigger when value actually changes
+          )
+          .subscribe(() => {
+            this.clearLocationInfo();
+          });
+        
+        this.subscriptions.push(subscription);
+      }
+    });
   }
 
   ngAfterViewInit(): void {
@@ -257,7 +342,7 @@ export class SelectionTransactionForToteExtendComponent implements OnInit, OnDes
               userField1                        : values.userField1,
               userField2                        : values.userField2,
               lotNumber                         : values.lotNumber,
-              expirationDate                    : values.expirationDate ? formatDate(values.expirationDate, 'yyyy-MM-dd', 'en') : '',
+              expirationDate                    : values.expirationDate ? formatDate(values.expirationDate, ANGULAR_DATE_FORMAT.YYYY_MM_DD, ANGULAR_DATE_FORMAT.LOCALE_EN) : '',
               serialNumber                      : values.serialNumber,
               transactionQuantity               : this.data.transactionQuantity ? this.data.transactionQuantity : this.data.defaultPutAwayQuantity,
               warehouse                         : values.warehouse,
@@ -289,6 +374,9 @@ export class SelectionTransactionForToteExtendComponent implements OnInit, OnDes
               itemQuantity                      : values.itemQuantity,
               maximumQuantity                   : values.maximumQuantity,
               quantityAllocatedPutAway          : values.quantityAllocatedPutAway,
+              locationLotNumber                 : values.imLotNumber,
+              locationSerialNumber              : values.imSerialNumber,
+              locationExpirationDate            : values.imExpirationDate ? formatDate(values.imExpirationDate, ANGULAR_DATE_FORMAT.YYYY_MM_DD, ANGULAR_DATE_FORMAT.LOCALE_EN) : '',
 
               // Complete Transaction
               toteID                            : fil[0].toteID,
@@ -300,8 +388,18 @@ export class SelectionTransactionForToteExtendComponent implements OnInit, OnDes
               dedicated                         : values.dedicated,
             });
             this.toolTipMsgForTransQty = `Current Transaction Quantity is ${this.toteForm.value.transactionQuantity}`;
+            
+            // Set location as valid if invMapID exists
+            if (values.invMapID && values.invMapID > 0) {
+              this.setLocationValid(true);
+            }
+            
             this.checkRepenishment();
             this.inputToteQty.nativeElement.focus();
+            
+            // Mark initial load as complete after all form initialization is done
+            // This ensures field monitoring doesn't trigger during initial data population
+            this.isInitialLoad = false;
           } else {
             this.global.ShowToastr(ToasterType.Error,ToasterMessages.SomethingWentWrong, ToasterTitle.Error);
             console.log("ItemDetails",res.responseMessage);
@@ -459,6 +557,12 @@ export class SelectionTransactionForToteExtendComponent implements OnInit, OnDes
 
   openChooseLocation() {
     const values = this.toteForm.value;
+    
+    // Ensure initial load is complete before opening dialog to prevent field monitoring from clearing location
+    if (this.isInitialLoad === true) {
+      this.isInitialLoad = false;
+    }
+    
     const dialogRef:any = this.global.OpenDialog(ChooseLocationComponent, {
       height: 'auto',
       width: '70vw',
@@ -468,7 +572,20 @@ export class SelectionTransactionForToteExtendComponent implements OnInit, OnDes
     });
 
     dialogRef.afterClosed().subscribe((res) => {
-      if (res?.responseMessage  === "Reserved Successfully") {
+      if (res?.responseMessage === this.RESERVED_SUCCESSFULLY) {
+        // Set flag to prevent field monitoring from clearing location while we set it
+        this.isSettingLocationFromDialog = true;
+        
+        // Get warehouse control to update it without triggering valueChanges
+        const warehouseControl = this.toteForm.get(this.FormFieldNames.warehouse);
+        const warehouseValue = res.warehouse ? res.warehouse : values.warehouse;
+        
+        // Update warehouse without emitting events to prevent field monitoring from triggering
+        if (warehouseControl && warehouseValue !== warehouseControl.value) {
+          warehouseControl.setValue(warehouseValue, { emitEvent: false });
+        }
+        
+        // Update location fields
         this.toteForm.patchValue({
           zone                              : res.zone,
           carousel                          : res.carousel,
@@ -481,8 +598,16 @@ export class SelectionTransactionForToteExtendComponent implements OnInit, OnDes
           maximumQuantity                   : res.max,
           quantityAllocatedPutAway          : res.qtyPut,
           invMapID                          : res.invMapID,
-          warehouse                         : res.warehouse ? res.warehouse : values.warehouse
-        });
+          // Map lot/serial/expiry fields - using finalized field names
+          locationLotNumber                 : res.imLotNumber || '',
+          locationSerialNumber              : res.imSerialNumber || '',
+          locationExpirationDate            : res.imExpirationDate ? formatDate(res.imExpirationDate, ANGULAR_DATE_FORMAT.YYYY_MM_DD, ANGULAR_DATE_FORMAT.LOCALE_EN) : ''
+        }, { emitEvent: false });
+        
+        this.setLocationValid(true);
+        
+        // Reset flag synchronously after patchValue completes
+        this.isSettingLocationFromDialog = false;
       }
     });
   }
@@ -592,8 +717,12 @@ export class SelectionTransactionForToteExtendComponent implements OnInit, OnDes
                         itemQuantity                      : res.data.locQty,
                         maximumQuantity                   : res.data.locMaxQty,
                         quantityAllocatedPutAway          : res.data.qtyAlloc,
-                        invMapID                          : res.data.invMapID
+                        invMapID                          : res.data.invMapID,
+                        locationLotNumber                 : res.data.imLotNumber || '',
+                        locationSerialNumber              : res.data.imSerialNumber || '',
+                        locationExpirationDate            : res.data.imExpirationDate ? formatDate(res.data.imExpirationDate, ANGULAR_DATE_FORMAT.YYYY_MM_DD, ANGULAR_DATE_FORMAT.LOCALE_EN) : ''
                       });
+                      this.setLocationValid(true);
                     } else {
                       let dialogRef = this.global.OpenDialog(ConfirmationDialogComponent, {
                         height: DialogConstants.auto,
@@ -672,9 +801,11 @@ export class SelectionTransactionForToteExtendComponent implements OnInit, OnDes
     });
     dialogRef.afterClosed().subscribe((res) => {
       if(res && res != StringConditions.clear) {
-        this.toteForm.patchValue({ 'warehouse' : res });
-        this.findLocation(false, 0);
-      } else if(res == StringConditions.clear) this.toteForm.patchValue({ 'warehouse' : '' });
+        this.toteForm.patchValue({ [this.FormFieldNames.warehouse] : res });
+        // Location clearing is handled by field monitoring - user must manually click Find Location
+      } else if(res == StringConditions.clear) {
+        this.toteForm.patchValue({ [this.FormFieldNames.warehouse] : '' });
+      }
     });
   }
 
@@ -972,9 +1103,18 @@ export class SelectionTransactionForToteExtendComponent implements OnInit, OnDes
       itemQuantity                      : '',
       maximumQuantity                   : '',
       quantityAllocatedPutAway          : '',
+      invMapID                          : 0,
+      replenishment                     : 0,
+      locationLotNumber                 : '',
+      locationSerialNumber              : '',
+      locationExpirationDate            : '',
 
       toteQty                           : this.data.defaultPutAwayQuantity
     });
+    
+    // Mark location as invalid after clearing
+    this.setLocationValid(false);
+    
     this.blindInduction()
   }
 
@@ -1041,6 +1181,41 @@ export class SelectionTransactionForToteExtendComponent implements OnInit, OnDes
     }
     if (currentScrollPosition > this.lastScrollPosition) this.tooltipShowDelay = 100000;
     this.lastScrollPosition = currentScrollPosition; // Update last known scroll position
+  }
+
+  /**
+   * Clears all location-related form fields and marks location as invalid
+   */
+  private clearLocationInfo(): void {
+    if (this.isInitialLoad === true || this.isSettingLocationFromDialog === true) return;
+    
+    this.toteForm.patchValue({
+      [this.FormFieldNames.zone]: '',
+      [this.FormFieldNames.carousel]: '',
+      [this.FormFieldNames.row]: '',
+      [this.FormFieldNames.shelf]: '',
+      [this.FormFieldNames.bin]: '',
+      [this.FormFieldNames.cellSize]: '',
+      [this.FormFieldNames.velocityCode]: '',
+      [this.FormFieldNames.itemQuantity]: '',
+      [this.FormFieldNames.maximumQuantity]: '',
+      [this.FormFieldNames.quantityAllocatedPutAway]: '',
+      [this.FormFieldNames.invMapID]: 0,
+      [this.FormFieldNames.replenishment]: 0,
+      [this.FormFieldNames.locationLotNumber]: '',
+      [this.FormFieldNames.locationSerialNumber]: '',
+      [this.FormFieldNames.locationExpirationDate]: ''
+    });
+    
+    this.setLocationValid(false);
+  }
+
+  /**
+   * Sets location validity status
+   * @param isValid - true to mark location as valid, false to mark as invalid
+   */
+  private setLocationValid(isValid: boolean): void {
+    this.isLocationValid = isValid;
   }
 
   /**

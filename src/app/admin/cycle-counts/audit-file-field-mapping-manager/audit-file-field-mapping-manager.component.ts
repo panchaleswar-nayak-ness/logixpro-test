@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { DATE_FORMATS, FIELD_MAPPINGS, PickProFields } from 'src/app/common/constants/audit-file-field-mapping/audit-file-field-mapping.constants';
+import { FIELD_MAPPINGS, PickProFields } from 'src/app/common/constants/audit-file-field-mapping/audit-file-field-mapping.constants';
+import { DATE_FORMATS } from 'src/app/common/constants/date-format.constants';
 import { ApiFuntions } from 'src/app/common/services/ApiFuntions';
 import { InventoryCompareConfigPayload, InventoryCompareField } from 'src/app/common/interface/audit-file-field-mapping-manager/inventory-compare.interface';
 import { InventoryCompareConfigResponse } from 'src/app/common/interface/audit-file-field-mapping-manager/inventory-compare-response.interface';

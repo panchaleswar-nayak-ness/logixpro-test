@@ -65,14 +65,3 @@ export const FIELD_MAPPINGS: FieldMapping[] = [
         importFormat: null
     }
 ];
-
-export const DATE_FORMATS: string[] = [
-    'DD/MM/YYYY',
-    'MM/DD/YYYY',
-    'DD/MM/YY',
-    'MM/DD/YY',
-    'YYYY/DD/MM',
-    'YYYY/MM/DD',
-    'YY/DD/MM',
-    'YY/MM/DD'
-]; 
