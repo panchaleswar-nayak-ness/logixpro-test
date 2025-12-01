@@ -225,7 +225,6 @@ export class BmToteidEntryComponent implements OnInit, AfterViewInit {
       this.global.ShowToastr(ToasterType.Error, 'No valid order data to submit', ToasterTitle.Error);
       return;
     }
-
     
     this.iBulkProcessApiService.SubmitCaseWiseOrders(this.data.rawOrderList)
       .then((result: ApiResult<PartialToteIdResponse[]>) => {
@@ -249,11 +248,7 @@ export class BmToteidEntryComponent implements OnInit, AfterViewInit {
           });
           const transformedData = Array.from(orderGroups.values());
           this.dialogRef.close(transformedData);
-          // Now, remove order lines from tote
-          const removeSuccess = this.removeOrderLinesFromTote();
-          if (!removeSuccess) {
-            return; // Stop execution if removal failed
-          }
+          
         } else {
           this.global.ShowToastr(ToasterType.Error, result.errorMessage || ToasterMessages.SomethingWentWrong, ToasterTitle.Error);
         }
