@@ -584,13 +584,20 @@ export class BulkTransactionComponent implements OnInit {
     let shouldOpenSlapperLabel = false;    
     try {
       const res: { body: BulkZone[]; status: number } = await this.iBulkProcessApiService.bulkPickBulkZone();      
-      if (res.status == HttpStatusCode.Ok && Array.isArray(res.body) && res.body.length === 1) {
-        const zoneData = this.locationZone.find(x => x.zone === res.body[0].zone);
-        if (zoneData?.caseLabel && zoneData.caseLabel.trim() !== '') {
-          shouldOpenSlapperLabel = true;
-        }
+      if (res.status == HttpStatusCode.Ok && Array.isArray(res.body)) {
+        let allSlapperLabelZones = true;
+        const returnedZones : string[] = res.body.map(x => x.zone);
+        for (const rz of returnedZones) {
+          const zoneData = this.locationZone.find(x => x.zone === rz);
+          if (!zoneData?.caseLabel || zoneData.caseLabel.trim() === '')
+            allSlapperLabelZones = false;
+            break;
+        };
+        shouldOpenSlapperLabel = allSlapperLabelZones;
       }      
+
       return shouldOpenSlapperLabel;
+
     } catch (error) {
       console.error('Failed to fetch location zones:', error);
       return false;
