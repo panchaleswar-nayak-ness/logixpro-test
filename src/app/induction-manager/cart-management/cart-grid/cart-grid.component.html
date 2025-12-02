@@ -31,6 +31,16 @@
           data-automation-id="cart-column-filter-component">
         </app-column-filter-component>
     </div>
+    
+    <!-- Applied Filters Display -->
+    <app-applied-filters-display
+      [appliedFilters]="filterationColumns"
+      [columnDisplayMap]="columnDisplayMap"
+      (clearAllFilters)="onClearAllFilters()"
+      (clearFilter)="onClearSingleFilter($event)"
+      data-automation-id="applied-filters-display">
+    </app-applied-filters-display>
+    
       <div class="card br-14 table-responsive my-3">
         <table mat-table 
                [dataSource]="dataSource" 

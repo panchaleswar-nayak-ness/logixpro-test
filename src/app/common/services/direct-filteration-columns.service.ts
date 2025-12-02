@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { FiltrationDataTypes } from '../enums/CommonEnums';
 import { FilterationColumns } from '../Model/pick-Tote-Manager';
 import { DATE_COLUMNS, FILTRATION_GRID_OPERATION_KEYS, OPERATION_CONDITIONS } from '../constants/strings.constants';
@@ -8,7 +9,14 @@ import { AllDataTypeValues } from '../types/pick-tote-manager.types';
   providedIn: 'root'
 })
 export class DirectFilterationColumnsService {
-  private filterationColumns: FilterationColumns[] = [];
+  // Single source of truth - BehaviorSubject emits only when filters actually change
+  private filterationColumnsSubject = new BehaviorSubject<FilterationColumns[]>([]);
+  public filterationColumns$: Observable<FilterationColumns[]> = this.filterationColumnsSubject.asObservable();
+
+  // Private array for internal operations
+  private get filterationColumns(): FilterationColumns[] {
+    return this.filterationColumnsSubject.value;
+  }
 
   constructor() { }
 
@@ -29,14 +37,10 @@ export class DirectFilterationColumnsService {
     
     if (condition === FILTRATION_GRID_OPERATION_KEYS.Clears) {
       // Clear all filters
-      this.filterationColumns = [];
+      this.setFilters([]);
       return this.filterationColumns;
     }
-      /**
-   * Checks if a string is null, undefined, empty, or an empty string
-   * @param str The string to check
-   * @returns True if the string is null, undefined, empty, or an empty string
-   */ 
+    
     if (this.isNullOrEmpty(selectedItem) || !filterColumnName) {
       return this.filterationColumns;
     }
@@ -64,10 +68,12 @@ export class DirectFilterationColumnsService {
       IsInput: isInput
     };
 
-    this.filterationColumns.push(filterationColumn);
+    const updatedFilters = [...this.filterationColumns, filterationColumn];
+    this.setFilters(updatedFilters);
 
-    return [...this.filterationColumns];
+    return this.filterationColumns;
   }
+
   isNullOrEmpty(str: AllDataTypeValues): boolean {
     return str == null || str == undefined;
   }
@@ -105,15 +111,18 @@ export class DirectFilterationColumnsService {
 
     // Check if we already have a filter for this column
     const existingIndex = this.filterationColumns.findIndex(f => f.ColumnName === columnName);
+    const updatedFilters = [...this.filterationColumns];
+    
     if (existingIndex >= 0) {
       // Replace existing filter
-      this.filterationColumns[existingIndex] = filterationColumn;
+      updatedFilters[existingIndex] = filterationColumn;
     } else {
       // Add new filter
-      this.filterationColumns.push(filterationColumn);
+      updatedFilters.push(filterationColumn);
     }
 
-    return [...this.filterationColumns];
+    this.setFilters(updatedFilters);
+    return this.filterationColumns;
   }
 
   /**
@@ -126,12 +135,13 @@ export class DirectFilterationColumnsService {
       return this.filterationColumns;
     }
 
-    this.filterationColumns = this.filterationColumns.filter(f => f.ColumnName !== columnName);
-    return [...this.filterationColumns];
+    const updatedFilters = this.filterationColumns.filter(f => f.ColumnName !== columnName);
+    this.setFilters(updatedFilters);
+    return this.filterationColumns;
   }
 
   /**
-   * Gets the current array of FilterationColumns objects
+   * Gets the current array of FilterationColumns objects (synchronous access)
    * @returns The current array of FilterationColumns objects
    */
   getFilterationColumns(): FilterationColumns[] {
@@ -139,10 +149,43 @@ export class DirectFilterationColumnsService {
   }
 
   /**
+   * Observable for reactive access - components subscribe to this
+   * @returns Observable of FilterationColumns array
+   */
+  getFilterationColumns$(): Observable<FilterationColumns[]> {
+    return this.filterationColumns$;
+  }
+
+  /**
    * Resets all filters
    */
   resetFilters(): void {
-    this.filterationColumns = [];
+    this.setFilters([]);
+  }
+
+  /**
+   * Sets the filters array directly (for syncing with external state)
+   * @param filters The filters array to set
+   */
+  setFilters(filters: FilterationColumns[]): void {
+    // Emit new array - BehaviorSubject ensures components only update when this is called
+    // This is only called when filters actually change, not on every change detection
+    this.filterationColumnsSubject.next([...filters]);
+  }
+
+  /**
+   * Removes a specific filter from the array
+   * @param filter The filter to remove
+   * @returns The updated array of FilterationColumns objects
+   */
+  removeFilter(filter: FilterationColumns): FilterationColumns[] {
+    const updatedFilters = this.filterationColumns.filter(
+      f => !(f.ColumnName === filter.ColumnName && 
+             f.GridOperation === filter.GridOperation && 
+             f.Value === filter.Value)
+    );
+    this.setFilters(updatedFilters);
+    return this.filterationColumns;
   }
 
   /**
@@ -160,22 +203,20 @@ export class DirectFilterationColumnsService {
    * @param columnName The column name
    * @returns The column type
    */
-  
   private determineColumnType(columnName: string, type?: string): FiltrationDataTypes {
     
     if ((!type || type.trim() !== '') && DATE_COLUMNS.has(columnName)) {
-      return  FiltrationDataTypes.Datetime;
+      return FiltrationDataTypes.Datetime;
     }
   
-    if (type === FiltrationDataTypes.Number) return   FiltrationDataTypes.Integer;
-    if (type ===  FiltrationDataTypes.Boolean) return   FiltrationDataTypes.Boolean;
+    if (type === FiltrationDataTypes.Number) return FiltrationDataTypes.Integer;
+    if (type === FiltrationDataTypes.Boolean) return FiltrationDataTypes.Boolean;
   
-    return  FiltrationDataTypes.String;
+    return FiltrationDataTypes.String;
   }
 
   private formatValue(value: AllDataTypeValues, type: string): AllDataTypeValues {
     if (value == null) return null;
-
     return value;
   }
   

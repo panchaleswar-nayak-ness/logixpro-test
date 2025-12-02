@@ -24,6 +24,7 @@ import { UserSession } from 'src/app/common/types/CommonTypes';
 import { TableHeaderDefinitions } from 'src/app/common/types/CommonTypes';
 import { Subject, Subscription } from 'rxjs';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
+import { DirectFilterationColumnsService } from 'src/app/common/services/direct-filteration-columns.service';
 
 @Component({
   selector: 'app-cart-grid',
@@ -39,7 +40,8 @@ export class CartGridComponent implements OnInit, AfterViewInit, OnChanges, OnDe
     private cartApiService: CartManagementApiService,
     private ngZone: NgZone,
     private contextMenuService: TableContextMenuService,
-    public authService: AuthService
+    public authService: AuthService,
+    private directFilterService: DirectFilterationColumnsService
   ) {}
 
   @Input() searchTerm: string = '';
@@ -66,7 +68,27 @@ export class CartGridComponent implements OnInit, AfterViewInit, OnChanges, OnDe
 
   // Context menu properties
   isActiveTrigger: boolean = false;
+
+  // Filters array - updated reactively from service (single source of truth)
   filterationColumns: FilterationColumns[] = [];
+  private filtersSubscription: Subscription;
+
+  // Column display mapping for filter chips
+  // Maps both API column names and service-transformed column names to user-friendly display names
+  readonly columnDisplayMap: Record<string, string> = {
+    // Mapped column names (from mapFilterColumn - service transforms these)
+    'SortBar.SortBar1': 'Cart ID',
+    'SortBar.Status': 'Status',
+    'SortBar.StatusDate': 'Status Date/Time',
+    'ToteQty': 'Tote Quantity',
+    'SortBar.SortBarLocation': 'Location',
+    // Direct column names (from tableColumns)
+    'cartId': 'Cart ID',
+    'cartStatus': 'Status',
+    'statusDate': 'Status Date/Time',
+    'toteQty': 'Tote Quantity',
+    'location': 'Location'
+  };
 
   // User access properties
   userData: UserSession;
@@ -112,6 +134,14 @@ export class CartGridComponent implements OnInit, AfterViewInit, OnChanges, OnDe
     // Initialize user data
     this.userData = this.authService.userData();
     
+    // Subscribe to filters from service (single source of truth)
+    // Component updates reactively only when filters actually change
+    this.filtersSubscription = this.directFilterService.getFilterationColumns$().subscribe(
+      filters => {
+        this.filterationColumns = filters;
+      }
+    );
+    
     // Initialize the data source
     if (this.dataSource) {
       this.dataSource.sort = this.sort;
@@ -156,6 +186,9 @@ export class CartGridComponent implements OnInit, AfterViewInit, OnChanges, OnDe
   ngOnDestroy(): void {
     if (this.searchSubscription) {
       this.searchSubscription.unsubscribe();
+    }
+    if (this.filtersSubscription) {
+      this.filtersSubscription.unsubscribe();
     }
     this.searchByInput.complete();
   }
@@ -541,7 +574,10 @@ export class CartGridComponent implements OnInit, AfterViewInit, OnChanges, OnDe
 
   // Handle filteration columns selection from context menu
   directFilterationColumnsSelected(filterationColumns: FilterationColumns[]): void {
-    this.filterationColumns = filterationColumns;
+    // Service will emit new value via BehaviorSubject, component will update reactively
+    this.directFilterService.setFilters(filterationColumns);
+    // Reset to first page when filter is applied (filtered data may have fewer pages)
+    this.customPagination.pageIndex = CartManagementGridDefaults.DefaultPageIndex;
     this.loadCarts();
     this.isActiveTrigger = false;
   }
@@ -594,5 +630,21 @@ export class CartGridComponent implements OnInit, AfterViewInit, OnChanges, OnDe
   }
   isAddDisabled(): boolean {
     return !this.authService.isAuthorized(this.permissions.AddCart);
+  }
+
+  // Clears all applied filters
+  onClearAllFilters(): void {
+    // Service will emit new value via BehaviorSubject, component will update reactively
+    this.directFilterService.resetFilters();
+    this.customPagination.pageIndex = CartManagementGridDefaults.DefaultPageIndex;
+    this.loadCarts();
+  }
+
+  // Removes a single filter
+  onClearSingleFilter(filter: FilterationColumns): void {
+    // Service will emit new value via BehaviorSubject, component will update reactively
+    this.directFilterService.removeFilter(filter);
+    this.customPagination.pageIndex = CartManagementGridDefaults.DefaultPageIndex;
+    this.loadCarts();
   }
 }

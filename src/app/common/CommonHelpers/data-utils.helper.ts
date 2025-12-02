@@ -31,3 +31,22 @@ export function safeCellValue(value: string | number | boolean | null | undefine
   return String(value);
 }
 
+/**
+ * Converts camelCase or PascalCase strings to Title Case with spaces
+ * @param str String to convert (e.g., 'orderNumber', 'StatusDate')
+ * @returns Converted string (e.g., 'Order Number', 'Status Date')
+ * @example
+ * convertCamelCaseToTitleCase('orderNumber') // Returns: 'Order Number'
+ * convertCamelCaseToTitleCase('cartId') // Returns: 'Cart Id'
+ */
+export function convertCamelCaseToTitleCase(str: string): string {
+  if (!str) return '';
+
+  return str
+    // Step 1: Add space before each uppercase letter, Example: 'orderNumber' → ' order Number'
+    .replace(/([A-Z])/g, ' $1')
+    // Step 2: Capitalize the first character of the result, Example: ' order Number' → ' Order Number' 
+    .replace(/^./, str => str.toUpperCase())
+    // Step 3: Remove leading/trailing whitespace, Example: ' Order Number' → 'Order Number'
+    .trim();
+}

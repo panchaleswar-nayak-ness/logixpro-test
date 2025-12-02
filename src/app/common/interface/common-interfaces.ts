@@ -1,3 +1,5 @@
+import { FilterationColumns } from '../Model/pick-Tote-Manager';
+
 export interface SearchRequest {
   Value: string;
   Column: string;
@@ -15,4 +17,15 @@ export interface WorkstationZoneFilterPreference {
   Carousel: boolean;
   CartonFlow: boolean;
   Bulk: boolean;
+}
+
+// Applied Filter Display Interface for filter chips
+// Uses FilterationColumns type directly to avoid duplication and maintain single source of truth
+export interface AppliedFilterDisplay {
+  columnName: string;
+  columnDisplayName: string;
+  criteria: string;
+  value: string;
+  value2?: string;
+  filter: FilterationColumns;
 }
