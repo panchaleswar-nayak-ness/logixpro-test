@@ -586,7 +586,8 @@ export const TableConstant = {
   WareHouse: 'warehouse',
   SerialNumber: 'serialNumber',
   LotNumber: 'lotNumber',
-
+  locationdesc: 'locationdesc',
+  options: 'options'
 }
 export const UniqueConstants = {
   backClass: 'back-class',

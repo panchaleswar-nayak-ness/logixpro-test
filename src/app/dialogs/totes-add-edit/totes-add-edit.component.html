@@ -208,8 +208,8 @@
             </td>
           </ng-container>
 
-          <tr mat-header-row *matHeaderRowDef="displayedColumns1; sticky:true" data-automation-id="managed-totes-header-row"></tr>
-          <tr mat-row *matRowDef="let row; columns: displayedColumns1;" (click)="selection.toggle(row)" [attr.data-automation-id]="'managed-totes-row-' + row.toteID"></tr>
+          <tr mat-header-row *matHeaderRowDef="displayedColumnsIM; sticky:true" data-automation-id="managed-totes-header-row"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumnsIM;" (click)="selection.toggle(row)" [attr.data-automation-id]="'managed-totes-row-' + row.toteID"></tr>
         </table>
           </ng-scrollbar>
           </div>
