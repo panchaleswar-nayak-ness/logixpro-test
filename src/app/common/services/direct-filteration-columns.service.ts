@@ -68,8 +68,24 @@ export class DirectFilterationColumnsService {
       IsInput: isInput
     };
 
-    const updatedFilters = [...this.filterationColumns, filterationColumn];
-    this.setFilters(updatedFilters);
+    // Check if an identical filter already exists to prevent duplicates
+    // Use case-insensitive and trimmed comparison for string values
+    const isDuplicate = this.filterationColumns.some(f => {
+      const isSameColumn = f.ColumnName === filterationColumn.ColumnName;
+      const isSameOperation = f.GridOperation === filterationColumn.GridOperation;
+      
+      // Compare values with normalization (trim and case-insensitive for strings)
+      const isSameValue = this.areValuesEqual(f.Value, filterationColumn.Value);
+      const isSameValue2 = this.areValuesEqual(f.Value2, filterationColumn.Value2);
+      
+      return isSameColumn && isSameOperation && isSameValue && isSameValue2;
+    });
+
+    // Only add the filter if it doesn't already exist
+    if (!isDuplicate) {
+      const updatedFilters = [...this.filterationColumns, filterationColumn];
+      this.setFilters(updatedFilters);
+    }
 
     return this.filterationColumns;
   }
@@ -230,5 +246,24 @@ export class DirectFilterationColumnsService {
     
     const date = new Date(dateStr);
     return !isNaN(date.getTime());
+  }
+
+  // Compares two filter values with normalization (trimmed, case-insensitive strings; strict equality for other types).
+  private areValuesEqual(value1: AllDataTypeValues, value2: AllDataTypeValues): boolean {
+    // Handle null/undefined cases
+    if (value1 === null && value2 === null) return true;
+    if (value1 === undefined && value2 === undefined) return true;
+    if (value1 === null || value1 === undefined || value2 === null || value2 === undefined) return false;
+    
+    // Handle empty string cases
+    if (value1 === '' && value2 === '') return true;
+    
+    // If both are strings, compare case-insensitive and trimmed
+    if (typeof value1 === 'string' && typeof value2 === 'string') {
+      return value1.trim().toLowerCase() === value2.trim().toLowerCase();
+    }
+    
+    // For numbers, booleans, dates - use strict equality
+    return value1 === value2;
   }
 }
