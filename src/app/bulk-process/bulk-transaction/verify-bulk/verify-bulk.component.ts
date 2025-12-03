@@ -51,6 +51,7 @@ export class VerifyBulkComponent implements OnInit {
   @Input() bulkTransactionType: string;
   @Input() isSlapperLabelFlow: boolean = false; // New flag to identify slapper label flow
   IsLoading: boolean = true;
+  recordsWithQuantityErrors: Set<number> = new Set();
   
   // Getter for display-formatted transaction type 
   get bulkTransactionTypeDisplay(): string {
@@ -523,13 +524,31 @@ export class VerifyBulkComponent implements OnInit {
           }
         });
         
-        let res = await this.iBulkProcessApiService.bulkPickTaskComplete(ordersNew);
-        if (res?.status == HttpStatusCode.Ok) {
-          if (this.bulkTransactionType == BulkTransactionType.PICK && res?.body.length > 0) {
-            await this.TaskCompleteEOB(res?.body);
+        try {
+          let res = await this.iBulkProcessApiService.bulkPickTaskComplete(ordersNew);
+          if (res?.status === HttpStatusCode.Ok) {
+            // Clear previous errors on success
+            this.recordsWithQuantityErrors.clear();
+            
+            const responseBody = res?.body ?? [];
+            if (
+              this.bulkTransactionType === BulkTransactionType.PICK &&
+              responseBody.length > 0
+            ) {
+              await this.TaskCompleteEOB(responseBody);
+            } else {
+              this.taskCompleteFinished();
+            }
           }
-          else {
-            this.taskCompleteFinished();
+        } catch (error: unknown) {
+          // Handle validation error response
+          const err: any = error; // safely narrow for runtime inspection
+          if (err?.status === HttpStatusCode.BadRequest) {
+            const errorBody = err?.error;
+            // Better array validation
+            if (Array.isArray(errorBody?.recordIdsWithErrors)) {
+              this.recordsWithQuantityErrors = new Set(errorBody.recordIdsWithErrors);
+            }
           }
         }
       }
@@ -800,5 +819,9 @@ async validateTaskComplete() {
       event.preventDefault();
       this.tooltip.hide();
     }
+  }
+
+  hasQuantityError(recordId: number): boolean {
+    return this.recordsWithQuantityErrors.has(recordId);
   }
 }
