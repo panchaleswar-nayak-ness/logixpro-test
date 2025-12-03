@@ -843,7 +843,7 @@ onSubmit(form: FormGroup<InventoryMapFormData>) {
         }
       })
       dialogRef.afterClosed().subscribe(result => {
-        if (result !== true && result !== false) {
+        if (result != DialogConstants.close) {
           this.addInvMapLocation.controls[Column.cell].setValue(result);
         }
       })
@@ -861,7 +861,7 @@ onSubmit(form: FormGroup<InventoryMapFormData>) {
         },
       });
       dialogRef.afterClosed().subscribe((result) => {
-        if (result !== true && result !== false) {
+        if (result != DialogConstants.close) {
           this.addInvMapLocation.controls['velocity'].setValue(result);
         }
       });
