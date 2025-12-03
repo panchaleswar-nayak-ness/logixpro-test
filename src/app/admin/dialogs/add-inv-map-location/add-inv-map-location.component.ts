@@ -406,7 +406,19 @@ getLocationZones() {
   }
  
   clearFields() {
+    // Clear User Field 1
+    this.shipVia = '';
+    this.addInvMapLocation.get('userField1')?.setValue('');
 
+    // Clear User Field 2
+    this.shipToName = '';
+    this.addInvMapLocation.get('userField2')?.setValue('');
+
+    // Clear Min Quantity
+    this.addInvMapLocation.get('minQuantity')?.setValue('');
+
+    // Clear Max Quantity
+    this.addInvMapLocation.get('maxQuantity')?.setValue('');
   }
 
   clearWholeLocation() {
