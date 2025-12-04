@@ -148,6 +148,10 @@ export class SpLocationZonesComponent implements OnInit, OnDestroy {
 
   conflictCheck(zone: Zone) {
     if (zone.allocable && zone.kanbanZone) {
+      const originalZone = this.duplicateLocationZone.find((x: Zone) => x.id === zone.id);
+      const prevAllocable = originalZone?.allocable ?? false;
+      const prevKanban = originalZone?.kanbanZone ?? false;
+      
       let dialogRef: any = this.global.OpenDialog(
         KanbanZoneAllocationConflictComponent,
         {
@@ -162,6 +166,9 @@ export class SpLocationZonesComponent implements OnInit, OnDestroy {
           zone.allocable = result.allocation;
           zone.kanbanZone = result.kanban;
           this.zoneChange(zone, false);
+        } else {
+          zone.allocable = prevAllocable;
+          zone.kanbanZone = prevKanban;
         }
       });
     }
@@ -170,6 +177,14 @@ export class SpLocationZonesComponent implements OnInit, OnDestroy {
   zoneChange(zone: Zone, check, type?) {
     
     if (!check) {
+      // Check for conflict BEFORE API call when type is 'kanbanZone' or 'allocable'
+      if (type == 'kanbanZone' || type == 'allocable') {
+        if (zone.allocable && zone.kanbanZone) {
+          this.conflictCheck(zone);
+          return; // No API call if conflict exists
+        }
+      }
+
       if (type === zoneType.carousel) {
         if (zone.carousel) {
           this.alterParentZones(true, zone.zone);
@@ -276,12 +291,6 @@ export class SpLocationZonesComponent implements OnInit, OnDestroy {
             }
           });
     }
-    if (type == 'kanbanZone' || type=='allocable'){
-      this.conflictCheck(zone);
-    }
-  else {
-      return;  
-    }
   }
 
   private applyServerUpdate(zone, updatedZone) {
@@ -313,6 +322,10 @@ private revertZone(zone) {
       if (res.isExecuted && res.data) {
         this.locationzone = [];
         res.data.forEach((zone: Zone, i) => {
+          // TODO: Correct this field name in the backend. Current mapping kept temporarily to avoid wider impact.
+          if ("includeCFCarouselPick" in zone) {
+            zone.includeCfCarouselPick = Boolean((zone as any)["includeCFCarouselPick"]);
+          }
           zone.id = i + 1;
           if (zone.carousel && zone.zone != '') {
             this.parentZones.push(zone.zone);
