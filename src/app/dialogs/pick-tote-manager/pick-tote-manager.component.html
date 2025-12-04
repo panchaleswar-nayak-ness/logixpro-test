@@ -462,8 +462,11 @@
 
                         <ng-container matColumnDef="{{col.columnDef}}" *ngFor="let col of filterBatchTransColumns; let indexOfelement=index;">
                           <th class="header container-table-header" mat-header-cell  *matHeaderCellDef mat-sort-header >{{ col.header }}</th>
-                          <td class="container-table-data" mat-cell *matCellDef="let element" 
-                          (contextmenu)=" onContextMenu($event, element[col.columnDef], col.columnDef)" >
+                          <td #cell class="container-table-data" mat-cell *matCellDef="let element" 
+                          [matTooltip]="'' + col.cell(element)"
+                          matTooltipPosition="above"
+                          [matTooltipDisabled]="!(cell.scrollWidth > cell.clientWidth)"
+                          (contextmenu)=" onContextMenu($event, col.cell(element), col.columnDef)" >
                           {{ col.cell(element) }}
                         </td>
                         </ng-container>
@@ -678,12 +681,12 @@
 
                         <ng-container *ngFor="let column of filterBatchTransColumns" [cdkColumnDef]="column.columnDef">
                           <th mat-header-cell *cdkHeaderCellDef mat-sort-header data-automation-id="transactions-table-header-column-header">{{ column.header }}</th>
-                          <td mat-cell *cdkCellDef="let row; let i = index"
-                              [matTooltip]="column.cell(row)"
+                          <td #cell mat-cell *cdkCellDef="let row; let i = index"
+                              [matTooltip]="'' + column.cell(row)"
                               matTooltipPosition="above"
-                              [matTooltipDisabled]="isTooltipDisabled(column.cell(row))" 
+                              [matTooltipDisabled]="!(cell.scrollWidth > cell.clientWidth)"
                               [attr.data-automation-id]="'transactions-table-row-cell-'+column.columnDef+'-'+ i"
-                              (contextmenu)="onContextMenu($event, row[column.columnDef], column.columnDef)">
+                              (contextmenu)="onContextMenu($event, column.cell(row), column.columnDef)">
                             {{ column.cell(row) }}
                           </td>
                         </ng-container>

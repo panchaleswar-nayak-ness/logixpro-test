@@ -35,6 +35,12 @@ export type FilterOrder = {
 };
 export type AllDataTypeValues = string | number | boolean | Date | null | undefined;
 
+export type TransactionColumnDef = {
+  columnDef: string;
+  header: string;
+  cell: (element: FilterTransaction) => string | number | boolean;
+};
+
 export type FilterTransaction = {
   orderNumber: string;
   itemNumber?: string;
@@ -42,15 +48,15 @@ export type FilterTransaction = {
   location?: string;
   completedQuantity?: number;
   description?: string;
-  importDate?: string;
+  importDate: string | Date | null ;
   priority?: number | string;
-  requiredDate?: string;
+  requiredDate: string | Date | null ;
   lineNumber?: number;
   lineSequence?: number;
   serialNumber?: string;
   lotNumber?: string;
-  expirationDate?: string;
-  completedDate?: string;
+  expirationDate: string | Date | null ;
+  completedDate: string | Date | null ;
   completedBy?: string;
   batchPickID?: string;
   unitOfMeasure?: string;
@@ -84,7 +90,7 @@ export type FilterTransaction = {
   masterRecord?: string;
   masterRecordID?: string;
   exportBatchID?: string;
-  exportDate?: string;
+  exportDate: string | Date | null ;
   exportedBy?: string;
   statusCode?: string;
 }; 

@@ -597,7 +597,12 @@ async printReportForSelectedOrders(orderNumbers: string[],reportName:string,isLo
     return input.replace(/(.)([A-Z][a-z])/g, '$1 $2');
   }
 
-  getFormattedDateTime(date: string | Date, includeTime: boolean = false): string {
+  getFormattedDateTime(date: string | Date | null, includeTime: boolean = false): string {
+  // Handle null and undefined values
+  if (date == null) {
+    return '';
+  }
+
   let dateObj: Date;
 
   if (typeof date === 'string') {
