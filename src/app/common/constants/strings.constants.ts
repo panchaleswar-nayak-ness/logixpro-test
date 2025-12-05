@@ -352,7 +352,8 @@ export const ToasterMessages = {
     BatchChangedSuccessfully: 'Current Batch is now {{batchId}}',
     QtyNewToteZero: 'Quantity Put in New Tote should be greater than 0',
     QuantityCannotExceedOriginalTransactionQuantity: 'Quantity cannot exceed the original transaction quantity of this order.',
-    ItemNumberCannotBeRemoved: 'Item number cannot be removed or changed when Item Quantity, Quantity Allocated Pick, or Quantity Allocated Put Away is present in the record.'
+    ItemNumberCannotBeRemoved: 'Item number cannot be removed or changed when Item Quantity, Quantity Allocated Pick, or Quantity Allocated Put Away is present in the record.',
+    ItemNotFound: "Item not found"
 }
 
 export const LiveAnnouncerMessage = {
