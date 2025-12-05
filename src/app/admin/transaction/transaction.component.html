@@ -1,8 +1,10 @@
 <mat-tab-group dynamicHeight [(selectedIndex)]="tabIndex" (selectedTabChange)="onTabChanged($event);" data-automation-id="transaction-tabs">
     <mat-tab label="Order Status" data-automation-id="order-status-tab">
-        <app-order-status [fieldNames]="fieldNames"
-            [tabIndex]="tabIndex">
-        </app-order-status>
+        <ng-template matTabContent>
+            <app-order-status [fieldNames]="fieldNames"
+                [tabIndex]="tabIndex">
+            </app-order-status>
+        </ng-template>
     </mat-tab>
     <ng-container *ngIf="authService.UserPermissonByFuncName('Transaction Journal') || authService.UserPermissonByFuncName('Admin Transaction Journal')">
         <mat-tab label="Open Transactions" *ngIf="!isOrderStatus" data-automation-id="open-transactions-tab">
@@ -13,15 +15,21 @@
             </app-open-transaction>
         </mat-tab>
         <mat-tab label="Transaction History" *ngIf="!isOrderStatus" data-automation-id="transaction-history-tab">
-            <app-transaction-history 
-                [tabIndex]="tabIndex">
-            </app-transaction-history>
+            <ng-template matTabContent>
+                <app-transaction-history 
+                    [tabIndex]="tabIndex">
+                </app-transaction-history>
+            </ng-template>
         </mat-tab>
         <mat-tab label="Reprocess Transactions" *ngIf="!showReprocess && !isOrderStatus" data-automation-id="reprocess-transactions-tab">
-            <app-reprocess-transaction></app-reprocess-transaction >
+            <ng-template matTabContent>
+                <app-reprocess-transaction [tabIndex]="tabIndex"></app-reprocess-transaction >
+            </ng-template>
         </mat-tab> 
         <mat-tab label="Reprocessed Transactions" *ngIf="!showReprocessed && !isOrderStatus" data-automation-id="reprocessed-transactions-tab">
-            <app-reprocessed-transaction></app-reprocessed-transaction>
+            <ng-template matTabContent>
+                <app-reprocessed-transaction></app-reprocessed-transaction>
+            </ng-template>
         </mat-tab>
     </ng-container>
 </mat-tab-group> 

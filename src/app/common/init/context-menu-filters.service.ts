@@ -57,11 +57,19 @@ export class ContextMenuFiltersService {
   
   
 
-  getType(val) : string {
-    if(val == 'Expiration Date' ||  val == 'Put Away Date' || 
-      val == 'Import Date' || val == 'Required Date' || val == 'Expiration Date' ||
-      val == 'Completed Date' || val == 'Export Date' || val == 'Induction Date') return "date";
-    else return typeof val;
+  private readonly dateFields = new Set([
+    'Expiration Date',
+    'Put Away Date',
+    'Import Date',
+    'Required Date',
+    'Completed Date',
+    'Export Date',
+    'Induction Date',
+    'Date Stamp'
+  ]);
+
+  getType(val: string): string {
+    return this.dateFields.has(val) ? 'date' : typeof val;
   }
 
   getConditionSymbol(conditionText: any) :string

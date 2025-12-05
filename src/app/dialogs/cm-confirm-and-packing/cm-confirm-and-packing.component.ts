@@ -13,7 +13,7 @@ import { Router } from '@angular/router';
 import { GlobalService } from 'src/app/common/services/global.service';
 import { IConsolidationApi } from 'src/app/common/services/consolidation-api/consolidation-api-interface';
 import { ConsolidationApiService } from 'src/app/common/services/consolidation-api/consolidation-api.service';
-import {  LiveAnnouncerMessage ,ResponseStrings,KeyboardKeys,StringConditions,ToasterTitle,ToasterType,DialogConstants,Style,TableConstant,ColumnDef,UniqueConstants, Placeholders} from 'src/app/common/constants/strings.constants';
+import {  LiveAnnouncerMessage ,ResponseStrings,KeyboardKeys,StringConditions,ToasterTitle,ToasterType,DialogConstants,Style,TableConstant,ColumnDef,UniqueConstants, Placeholders, ToasterMessages} from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-cm-confirm-and-packing',
@@ -289,7 +289,22 @@ announceSortChange2(sortState: Sort) {
     data: {ItemNumber:ItemNumber,orderNumber:this.orderNumber,contID:this.contID,confPackTransTable:this.transTable,id:id}
   })
   dialogRef.afterClosed().subscribe(result => {
-    if(result == StringConditions.True){
+    if(result && result.isExecuted){
+      if (!result.selectedId) {
+        this.global.ShowToastr(ToasterType.Error, ToasterMessages.DialogClosedWithoutSelectedId, ToasterTitle.Error);
+        return;
+      }
+      const selectedTransaction = this.transTable.filteredData.find(x => x.sT_ID == result.selectedId);
+      if (!selectedTransaction) {
+        this.global.ShowToastr(ToasterType.Error, ToasterMessages.TransactionNotFound(result.selectedId), ToasterTitle.Error);
+        return;
+      }
+      selectedTransaction.containerID = result.containerID ?? this.contID;
+      selectedTransaction.complete = true;
+      if (result.containerID) {
+        this.contID = result.containerID;
+      }
+    } else if(result == StringConditions.True){
       this.transTable.filteredData[index].containerID = this.contID;
       this.transTable.filteredData[index].complete = true; 
     }  

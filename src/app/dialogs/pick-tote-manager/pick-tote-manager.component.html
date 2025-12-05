@@ -413,7 +413,7 @@
                           <th mat-header-cell *matHeaderCellDef data-automation-id="table-header-Required Date"> Required Date </th>
                           <td mat-cell *matCellDef="let element; let i = index" [class.selected]="element.isSelected" [attr.data-automation-id]="'table-data-Required Date-' + (element.reqDate ? element.reqDate : ' ')">
                             <div class="pe-2">
-                              {{element.reqDate}}
+                              {{element.reqDate | date:dateFormats.Date}}
                             </div>
                           </td>
                         </ng-container>
@@ -462,8 +462,11 @@
 
                         <ng-container matColumnDef="{{col.columnDef}}" *ngFor="let col of filterBatchTransColumns; let indexOfelement=index;">
                           <th class="header container-table-header" mat-header-cell  *matHeaderCellDef mat-sort-header >{{ col.header }}</th>
-                          <td class="container-table-data" mat-cell *matCellDef="let element" 
-                          (contextmenu)=" onContextMenu($event, element[col.columnDef], col.columnDef)" >
+                          <td #cell class="container-table-data" mat-cell *matCellDef="let element" 
+                          [matTooltip]="'' + col.cell(element)"
+                          matTooltipPosition="above"
+                          [matTooltipDisabled]="!(cell.scrollWidth > cell.clientWidth)"
+                          (contextmenu)=" onContextMenu($event, col.cell(element), col.columnDef)" >
                           {{ col.cell(element) }}
                         </td>
                         </ng-container>
@@ -634,7 +637,7 @@
                         <ng-container matColumnDef="requireddate">
                           <th mat-header-cell *matHeaderCellDef data-automation-id="orders-table-header-required-date"> Required Date </th>
                           <td mat-cell *matCellDef="let element; let i = index" [class.selected]="element.isSelected" [attr.data-automation-id]="'orders-table-row-required-date-cell-' + i">
-                              {{element.reqDate}}
+                              {{element.reqDate | date:dateFormats.Date}}
                           </td>
                         </ng-container>
 
@@ -678,12 +681,12 @@
 
                         <ng-container *ngFor="let column of filterBatchTransColumns" [cdkColumnDef]="column.columnDef">
                           <th mat-header-cell *cdkHeaderCellDef mat-sort-header data-automation-id="transactions-table-header-column-header">{{ column.header }}</th>
-                          <td mat-cell *cdkCellDef="let row; let i = index"
-                              [matTooltip]="column.cell(row)"
+                          <td #cell mat-cell *cdkCellDef="let row; let i = index"
+                              [matTooltip]="'' + column.cell(row)"
                               matTooltipPosition="above"
-                              [matTooltipDisabled]="isTooltipDisabled(column.cell(row))" 
+                              [matTooltipDisabled]="!(cell.scrollWidth > cell.clientWidth)"
                               [attr.data-automation-id]="'transactions-table-row-cell-'+column.columnDef+'-'+ i"
-                              (contextmenu)="onContextMenu($event, row[column.columnDef], column.columnDef)">
+                              (contextmenu)="onContextMenu($event, column.cell(row), column.columnDef)">
                             {{ column.cell(row) }}
                           </td>
                         </ng-container>

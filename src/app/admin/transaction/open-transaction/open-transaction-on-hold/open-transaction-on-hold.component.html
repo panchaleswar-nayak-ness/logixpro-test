@@ -184,7 +184,12 @@
                                       </div>
                                 </ng-container>
 
-                                <ng-template #textContent>{{ element[col.colHeader] }}</ng-template>
+                                <ng-template #textContent>
+                                    <ng-container *ngIf="isRequiredDateColumn(col); else regularText">
+                                        {{ element[col.colHeader] | date: dateFormats.Date }}
+                                    </ng-container>
+                                    <ng-template #regularText>{{ element[col.colHeader] }}</ng-template>
+                                </ng-template>
                             </td>
                         </ng-container>
 

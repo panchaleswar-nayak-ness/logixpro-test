@@ -5,6 +5,7 @@ import { map, catchError } from 'rxjs/operators';
 import { BaseService } from './base-service.service';
 import { AuthService } from '../init/auth.service';
 import { AssignToteToOrderDto, BatchesRequest, EmergencyPickOrdersRequest, NextToteId, OrderLineResource, OrderResponse, OrdersRequest, PartialToteIdRequest, PartialToteIdResponse, RemoveOrderLinesRequest, RemoveOrderLinesResponse, TotesRequest, UpdateOTsNewBatchIdRequest } from '../Model/bulk-transactions';
+import { OrdersInZoneRequest, OrdersInZoneResponse, OrdersInZoneApiResponse } from '../Model/orders-in-zone';
 import {
   MarkoutBlossomTotenRequest,
   MarkoutCompleteTransactionRequest,
@@ -897,8 +898,8 @@ export class ApiFuntions {
     return this.ApiBase.Post('/Induction/pickbatchfilterdelete', body);
   }
 
-  public OrdersInZone(body: any): Observable<any> {
-    return this.ApiBase.Get('/Induction/ordersinzone', body);
+  public OrdersInZone(body: OrdersInZoneRequest): Observable<OrdersInZoneApiResponse | null> {
+    return this.ApiBase.Get<OrdersInZoneApiResponse>('/Induction/ordersinzoneentity', body);
   }
 
   public WSPickZoneSelect(body: any): Observable<any> {
@@ -1489,7 +1490,7 @@ export class ApiFuntions {
   }
 
   public ReprocessTransactionTable(Body: any): Observable<any> {
-    return this.ApiBase.Get(`/Admin/reprocesstransaction`, Body);
+    return this.ApiBase.Post(`/Admin/reprocessTransactionTable`, Body);
   }
 
   public OrderToPost(Body: any): Observable<any> {
@@ -1923,7 +1924,7 @@ public updateEmergencyReprocessTrans(payload: UpdateEmergencyRequest): Observabl
   }
 
   public changefilter(body): Observable<any> {
-    return this.ApiBase.Get('/Admin/customreports/changefilter', body);
+    return this.ApiBase.Get('/Admin/customreports/changefilter', body,false);
   }
 
   public importFile(body) {
@@ -2573,8 +2574,8 @@ public storageBinsExit(binId: string, zone: string): Observable<ExitOk> {
     return response.body as unknown as DeleteCartResponse;
   }
   
-  public async GetNextToteIdForSlapperLabelAsync(request: PartialToteIdRequest[]): Promise<PartialToteIdResponse[]> {
-    const response = await this.ApiBase.PutAsync<PartialToteIdRequest[]>('/totes/nexttoteforslapperlable', request);
+  public async GetNextToteIdForSlapperLabelAsync(request: PartialToteIdRequest): Promise<PartialToteIdResponse[]> {
+    const response = await this.ApiBase.PutAsync<PartialToteIdResponse[]>('/totes/nexttoteforslapperlable', request);
     return response.body as PartialToteIdResponse[] || [];
   }
 

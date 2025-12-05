@@ -1,13 +1,13 @@
-name: LogixPro Frontend CI Staging
+name: LogixPro Frontend Build, Deploy and Test
 
 on:
-  push:
-    branches:
-      - staging
-  pull_request:
-    branches:
-    - staging
-    types: [opened, synchronize, reopened, ready_for_review]
+  # push:
+  #   branches:
+  #     - Development
+  # pull_request:
+  #   branches:
+  #   - Development
+  #   types: [opened, synchronize, reopened, ready_for_review]
   workflow_dispatch:
 
 env:
@@ -29,7 +29,7 @@ jobs:
         uses: actions/checkout@v4
         with:
           repository: scotttech-enterprise64/LogixProFrontend
-          ref: 'staging'
+          ref: 'Development'
           path: ${{ env.APP_CHECKOUT_DIR }}
           fetch-depth: 0
 
@@ -260,13 +260,14 @@ jobs:
               --overwrite
             echo "Upload completed"
 
+
       - name: 'Download and Install on Azure VM'
         uses: azure/CLI@v2
         with:
           inlineScript: |
             az vm run-command invoke \
-              --name "vm-test-dev2-eus" \
-              --resource-group "rg-stage-214-eus" \
+              --name "vm-test-server-eus" \
+              --resource-group "rg-test-eus" \
               --command-id RunPowerShellScript \
               --script '
                 $azPath = "C:\Program Files (x86)\Microsoft SDKs\Azure\CLI2\wbin\az.cmd"
@@ -364,4 +365,74 @@ jobs:
         run: |
           az logout
           az account clear
-          
+
+  test:
+    runs-on: [self-hosted, Windows, X64, win-server]
+    needs: deploy
+
+    # Grant permissions
+    permissions:
+      id-token: write
+      contents: read
+
+    # Run python scripts
+    steps: 
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Download latest test cases
+        shell: cmd
+        run: |
+          cd C:\TestAutomation && "C:\Program Files\Git\bin\git.exe" stash && "C:\Program Files\Git\bin\git.exe" pull && "C:\Program Files\Git\bin\git.exe" stash pop
+
+      - name: Run Tests
+        env:  
+          PYTHONUTF8: "1"
+        shell: cmd
+        run: |
+          cd C:\TestAutomation\LogixPro && npm install -g allure-commandline --save-dev && allure --version && python run_web_tests.py
+  
+  upload-results:
+    needs: test
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write
+
+    steps:
+      - name: Log in to Azure
+        uses: azure/login@v1
+        with:
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+
+      - name: 'Upload test results'
+        uses: azure/CLI@v2
+        with:
+          inlineScript: |
+            az vm run-command invoke \
+              --name "vm-test-server-eus" \
+              --resource-group "rg-test-eus" \
+              --command-id RunPowerShellScript \
+              --scripts '
+                $azPath = "C:\Program Files (x86)\Microsoft SDKs\Azure\CLI2\wbin\az.cmd"   
+                $datetimeFolder = Get-Date -Format 'yyyy-MM-dd_HH-mm-ss'
+                $blobName = "logixpro/$datetimeFolder/index.html"
+                $sourceFolder = "C:\PeakLogix\TestAutomation\LogixPro\allure-report"
+                # $destinationContainer = "$web"
+
+                & $azPath login --identity
+
+                Write-Host "Uploading test results to storage folder"
+                & $azPath storage blob upload `
+                  --account-name "gaintegration" `
+                  --auth-mode login `
+                  --container-name "test-results" `
+                  --file "$sourceFolder\index.html" `
+                  --name $blobName
+
+                Write-Host "Test results uploaded."
+                '  

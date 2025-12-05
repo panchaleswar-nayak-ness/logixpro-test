@@ -100,7 +100,7 @@
                     <input
                       type="text"
                       [(ngModel)]="i.zone"
-                      (ngModelChange)="zoneChange(i, false)"
+                      (ngModelChange)="onFieldChange(i)"
                       matInput
                       maxlength="2" data-automation-id="zone-name-input-{{i.zone}}"
                     />
@@ -132,9 +132,9 @@
                   >
                     <mat-label data-automation-id="parent-zone-label">Parent Zone</mat-label>
                     <mat-select
-                      [disabled]="!i.includeCFCarouselPick"
+                      [disabled]="!i.includeCfCarouselPick"
                       [(ngModel)]="i.parentZone"
-                      (ngModelChange)="zoneChange(i, false)"
+                      (ngModelChange)="onFieldChange(i)"
                       [disableOptionCentering]="true"
                       class="employees-action" data-automation-id="parent-zone-select-{{i.zone}}"
                     >
@@ -158,7 +158,7 @@
                     <input
                       type="number"
                       [(ngModel)]="i.sequence"
-                      (ngModelChange)="zoneChange(i, false)"
+                      (ngModelChange)="onFieldChange(i)"
                       matInput
                       maxlength="6" data-automation-id="sequence-input-{{i.zone}}"
                     />
@@ -173,7 +173,7 @@
                     <input
                       type="text"
                       [(ngModel)]="i.label1"
-                      (ngModelChange)="zoneChange(i, false)"
+                      (ngModelChange)="onFieldChange(i)"
                       matInput
                       maxlength="20" data-automation-id="carousel-input-{{i.zone}}"
                     />
@@ -188,7 +188,7 @@
                     <input
                       type="text"
                       [(ngModel)]="i.label2"
-                      (ngModelChange)="zoneChange(i, false)"
+                      (ngModelChange)="onFieldChange(i)"
                       matInput
                       maxlength="20" data-automation-id="row-input-{{i.zone}}"
                     />
@@ -203,7 +203,7 @@
                     <input
                       type="text"
                       [(ngModel)]="i.label3"
-                      (ngModelChange)="zoneChange(i, false)"
+                      (ngModelChange)="onFieldChange(i)"
                       matInput
                       maxlength="20" data-automation-id="shelf-input-{{i.zone}}"
                     />
@@ -218,7 +218,7 @@
                     <input
                       type="text"
                       [(ngModel)]="i.label4"
-                      (ngModelChange)="zoneChange(i, false)"
+                      (ngModelChange)="onFieldChange(i)"
                       matInput
                       maxlength="20" data-automation-id="bin-input-{{i.zone}}"
                     />
@@ -232,8 +232,8 @@
                     <mat-label data-automation-id="case-label-label">Case Label</mat-label>
                     <mat-select
                       [(ngModel)]="i.caseLabel"
-                      (ngModelChange)="zoneChange(i, false)"
-                      [disabled]="i.carousel || i.includeCFCarouselPick"
+                      (ngModelChange)="onFieldChange(i)"
+                      [disabled]="i.carousel || i.includeCfCarouselPick"
                       [disableOptionCentering]="true"
                       class="employees-action" data-automation-id="case-label-select-{{i.zone}}"
                     >

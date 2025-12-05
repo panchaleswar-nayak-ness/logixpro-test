@@ -1,0 +1,15 @@
+.custom-form-field {
+  ::ng-deep .mat-mdc-form-field-subscript-wrapper {
+    display: none;
+  }
+}
+.pr-15px {
+  padding-right: 15px;
+}
+.h-390px {
+  height: 390px;
+}
+.gap-12 {
+  gap: 12px;
+}
+

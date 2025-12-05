@@ -236,15 +236,16 @@ export class ProcessPicksComponent implements OnInit {
       OrderView: ResponseStrings.AllCaps,
     };
     this.iinductionManagerApi.OrdersInZone(paylaod).subscribe((res) => {
-      if (res.data) {
-        this.orderNumberList = res.data;
+      if (res && res.isSuccess && res.value && Array.isArray(res.value)) {
+        // Extract just the order numbers for the typeahead
+        this.orderNumberList = res.value.map(order => order.orderNumber || '').filter(orderNum => orderNum !== '');
       } else {
         this.global.ShowToastr(
           ToasterType.Error,
           this.global.globalErrorMsg(),
           ToasterTitle.Error
         );
-        console.log('OrdersInZone', res.responseMessage);
+        console.log('OrdersInZone - Invalid response', res);
       }
       this.filteredOrderNum = this.orderNumber.valueChanges.pipe(
         startWith(''),
@@ -423,15 +424,16 @@ export class ProcessPicksComponent implements OnInit {
                 }
               }
               if (this.batchID != '') {
-                if (this.autoPickToteID) {
+                // Don't auto-fill Tote IDs if using Pick Batch Manager
+                // Users should have manual control over which positions have Tote IDs
+                if (this.autoPickToteID && !this.usePickBatchManager) {
                   this.getAllToteIds(true);
-                  if (this.usePickBatchManager) {
-                    this.openPickToteDialogue();
-                  }
+                } else if (this.usePickBatchManager) {
+                  this.openPickToteDialogue();
                 }
               }
+              // Clear order numbers and priorities, but preserve Tote IDs
               this.tote_Setup.map((obj) => {
-                obj.toteID = '';
                 obj.orderNumber = '';
                 obj.priority = '';
               });
@@ -467,8 +469,11 @@ export class ProcessPicksComponent implements OnInit {
                   this.getAllToteIds(true);
                 }
               }
+              // Clear order numbers and priorities, but preserve Tote IDs if using Pick Batch Manager
               this.tote_Setup.map((obj) => {
-                obj.toteID = '';
+                if (!this.usePickBatchManager) {
+                  obj.toteID = '';
+                }
                 obj.orderNumber = '';
               });
             } else if (this.autoPickToteID) {
@@ -507,6 +512,7 @@ export class ProcessPicksComponent implements OnInit {
           useDefaultZone: this.useDefaultZone,
           allOrders: this.allOrders,
           resultObj: this.resultObj,
+          toteSetup: this.tote_Setup,
         },
         autoFocus: DialogConstants.autoFocus,
       });
@@ -529,9 +535,17 @@ export class ProcessPicksComponent implements OnInit {
             });
           }
         
-          this.tote_Setup.forEach((element, key) => {
-            element.orderNumber = resultObj[key]?.orderNumber ?? '';
-            element.priority = resultObj[key]?.priority ?? '';
+          // Map orders to positions with Tote IDs filled
+          let resultIndex = 0;
+          this.tote_Setup.forEach((element) => {
+            // Only assign order number if toteID is filled
+            if (element.toteID && element.toteID !== '') {
+              if (resultObj && resultObj[resultIndex]) {
+                element.orderNumber = resultObj[resultIndex].orderNumber ?? '';
+                element.priority = resultObj[resultIndex].priority ?? '';
+                resultIndex++;
+              }
+            }
           });
         });
     }

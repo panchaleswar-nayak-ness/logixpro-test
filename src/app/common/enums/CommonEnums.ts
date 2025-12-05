@@ -121,7 +121,8 @@ export enum FilterType {
 }
 
 export enum ErrorCode {
-    UnableToPrint = 555
+    UnableToPrint = 555,
+    BadRequest = 400
 }
 export type QuantityFilterTypeUnion =
 | FilterType.Equals
@@ -149,6 +150,7 @@ export enum PaginationData   {
     StartRow = 1,
     EndRow = 10,
     Draw = 0,
+    Max = 10000,
 }
 export enum ArrowKeys   {
     Right = 'ArrowRight',

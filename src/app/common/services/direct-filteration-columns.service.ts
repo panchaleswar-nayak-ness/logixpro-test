@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { FiltrationDataTypes } from '../enums/CommonEnums';
 import { FilterationColumns } from '../Model/pick-Tote-Manager';
 import { DATE_COLUMNS, FILTRATION_GRID_OPERATION_KEYS, OPERATION_CONDITIONS } from '../constants/strings.constants';
@@ -8,7 +9,14 @@ import { AllDataTypeValues } from '../types/pick-tote-manager.types';
   providedIn: 'root'
 })
 export class DirectFilterationColumnsService {
-  private filterationColumns: FilterationColumns[] = [];
+  // Single source of truth - BehaviorSubject emits only when filters actually change
+  private filterationColumnsSubject = new BehaviorSubject<FilterationColumns[]>([]);
+  public filterationColumns$: Observable<FilterationColumns[]> = this.filterationColumnsSubject.asObservable();
+
+  // Private array for internal operations
+  private get filterationColumns(): FilterationColumns[] {
+    return this.filterationColumnsSubject.value;
+  }
 
   constructor() { }
 
@@ -29,14 +37,10 @@ export class DirectFilterationColumnsService {
     
     if (condition === FILTRATION_GRID_OPERATION_KEYS.Clears) {
       // Clear all filters
-      this.filterationColumns = [];
+      this.setFilters([]);
       return this.filterationColumns;
     }
-      /**
-   * Checks if a string is null, undefined, empty, or an empty string
-   * @param str The string to check
-   * @returns True if the string is null, undefined, empty, or an empty string
-   */ 
+    
     if (this.isNullOrEmpty(selectedItem) || !filterColumnName) {
       return this.filterationColumns;
     }
@@ -64,10 +68,28 @@ export class DirectFilterationColumnsService {
       IsInput: isInput
     };
 
-    this.filterationColumns.push(filterationColumn);
+    // Check if an identical filter already exists to prevent duplicates
+    // Use case-insensitive and trimmed comparison for string values
+    const isDuplicate = this.filterationColumns.some(f => {
+      const isSameColumn = f.ColumnName === filterationColumn.ColumnName;
+      const isSameOperation = f.GridOperation === filterationColumn.GridOperation;
+      
+      // Compare values with normalization (trim and case-insensitive for strings)
+      const isSameValue = this.areValuesEqual(f.Value, filterationColumn.Value);
+      const isSameValue2 = this.areValuesEqual(f.Value2, filterationColumn.Value2);
+      
+      return isSameColumn && isSameOperation && isSameValue && isSameValue2;
+    });
 
-    return [...this.filterationColumns];
+    // Only add the filter if it doesn't already exist
+    if (!isDuplicate) {
+      const updatedFilters = [...this.filterationColumns, filterationColumn];
+      this.setFilters(updatedFilters);
+    }
+
+    return this.filterationColumns;
   }
+
   isNullOrEmpty(str: AllDataTypeValues): boolean {
     return str == null || str == undefined;
   }
@@ -105,15 +127,18 @@ export class DirectFilterationColumnsService {
 
     // Check if we already have a filter for this column
     const existingIndex = this.filterationColumns.findIndex(f => f.ColumnName === columnName);
+    const updatedFilters = [...this.filterationColumns];
+    
     if (existingIndex >= 0) {
       // Replace existing filter
-      this.filterationColumns[existingIndex] = filterationColumn;
+      updatedFilters[existingIndex] = filterationColumn;
     } else {
       // Add new filter
-      this.filterationColumns.push(filterationColumn);
+      updatedFilters.push(filterationColumn);
     }
 
-    return [...this.filterationColumns];
+    this.setFilters(updatedFilters);
+    return this.filterationColumns;
   }
 
   /**
@@ -126,12 +151,13 @@ export class DirectFilterationColumnsService {
       return this.filterationColumns;
     }
 
-    this.filterationColumns = this.filterationColumns.filter(f => f.ColumnName !== columnName);
-    return [...this.filterationColumns];
+    const updatedFilters = this.filterationColumns.filter(f => f.ColumnName !== columnName);
+    this.setFilters(updatedFilters);
+    return this.filterationColumns;
   }
 
   /**
-   * Gets the current array of FilterationColumns objects
+   * Gets the current array of FilterationColumns objects (synchronous access)
    * @returns The current array of FilterationColumns objects
    */
   getFilterationColumns(): FilterationColumns[] {
@@ -139,10 +165,43 @@ export class DirectFilterationColumnsService {
   }
 
   /**
+   * Observable for reactive access - components subscribe to this
+   * @returns Observable of FilterationColumns array
+   */
+  getFilterationColumns$(): Observable<FilterationColumns[]> {
+    return this.filterationColumns$;
+  }
+
+  /**
    * Resets all filters
    */
   resetFilters(): void {
-    this.filterationColumns = [];
+    this.setFilters([]);
+  }
+
+  /**
+   * Sets the filters array directly (for syncing with external state)
+   * @param filters The filters array to set
+   */
+  setFilters(filters: FilterationColumns[]): void {
+    // Emit new array - BehaviorSubject ensures components only update when this is called
+    // This is only called when filters actually change, not on every change detection
+    this.filterationColumnsSubject.next([...filters]);
+  }
+
+  /**
+   * Removes a specific filter from the array
+   * @param filter The filter to remove
+   * @returns The updated array of FilterationColumns objects
+   */
+  removeFilter(filter: FilterationColumns): FilterationColumns[] {
+    const updatedFilters = this.filterationColumns.filter(
+      f => !(f.ColumnName === filter.ColumnName && 
+             f.GridOperation === filter.GridOperation && 
+             f.Value === filter.Value)
+    );
+    this.setFilters(updatedFilters);
+    return this.filterationColumns;
   }
 
   /**
@@ -160,22 +219,20 @@ export class DirectFilterationColumnsService {
    * @param columnName The column name
    * @returns The column type
    */
-  
   private determineColumnType(columnName: string, type?: string): FiltrationDataTypes {
     
     if ((!type || type.trim() !== '') && DATE_COLUMNS.has(columnName)) {
-      return  FiltrationDataTypes.Datetime;
+      return FiltrationDataTypes.Datetime;
     }
   
-    if (type === FiltrationDataTypes.Number) return   FiltrationDataTypes.Integer;
-    if (type ===  FiltrationDataTypes.Boolean) return   FiltrationDataTypes.Boolean;
+    if (type === FiltrationDataTypes.Number) return FiltrationDataTypes.Integer;
+    if (type === FiltrationDataTypes.Boolean) return FiltrationDataTypes.Boolean;
   
-    return  FiltrationDataTypes.String;
+    return FiltrationDataTypes.String;
   }
 
   private formatValue(value: AllDataTypeValues, type: string): AllDataTypeValues {
     if (value == null) return null;
-
     return value;
   }
   
@@ -189,5 +246,24 @@ export class DirectFilterationColumnsService {
     
     const date = new Date(dateStr);
     return !isNaN(date.getTime());
+  }
+
+  // Compares two filter values with normalization (trimmed, case-insensitive strings; strict equality for other types).
+  private areValuesEqual(value1: AllDataTypeValues, value2: AllDataTypeValues): boolean {
+    // Handle null/undefined cases
+    if (value1 === null && value2 === null) return true;
+    if (value1 === undefined && value2 === undefined) return true;
+    if (value1 === null || value1 === undefined || value2 === null || value2 === undefined) return false;
+    
+    // Handle empty string cases
+    if (value1 === '' && value2 === '') return true;
+    
+    // If both are strings, compare case-insensitive and trimmed
+    if (typeof value1 === 'string' && typeof value2 === 'string') {
+      return value1.trim().toLowerCase() === value2.trim().toLowerCase();
+    }
+    
+    // For numbers, booleans, dates - use strict equality
+    return value1 === value2;
   }
 }

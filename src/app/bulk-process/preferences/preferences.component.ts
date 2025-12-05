@@ -36,7 +36,8 @@ export class PreferencesComponent implements OnInit {
 
 
   get filteredAvailableZones(): Zone[] {
-    if (!this.allZonesFilter) return this.availableZones;
+    if (!this.allZonesFilter)
+      return this.availableZones;
     const filterValue = this.allZonesFilter.toLowerCase();
     return this.availableZones.filter(zone =>
       zone.zone.toLowerCase().includes(filterValue)
@@ -44,7 +45,8 @@ export class PreferencesComponent implements OnInit {
   }
 
   get filteredBulkZones(): BulkZone[] {
-    if (!this.selectedZonesFilter) return this.bulkZones;
+    if (!this.selectedZonesFilter)
+      return this.bulkZones;
     const filterValue = this.selectedZonesFilter.toLowerCase();
     return this.bulkZones.filter(zone =>
       zone.zone.toLowerCase().includes(filterValue)
@@ -141,7 +143,7 @@ async removeAllZones() {
   payload(){
     const payload: any = {
       "preference": [
-        this.companyInfo.orderSort,this.companyInfo.cartonFlowDisplay,this.companyInfo.autoDisplayImage,
+        this.companyInfo.orderSort,this.companyInfo.cartonFlowDisplay,this.companyInfo.autoDisplayImage,this.companyInfo.allowOverpick,
       ],
       "panel": 4
     };

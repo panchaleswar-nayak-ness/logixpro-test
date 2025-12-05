@@ -21,6 +21,7 @@ export interface Zone {
   kanbanReplenishmentZone: boolean;
   keepMasterLocation: boolean;
   allowWholeClearLocation: boolean;
+  id?: number;
 }
 export interface BulkZone {
   wsid: string;

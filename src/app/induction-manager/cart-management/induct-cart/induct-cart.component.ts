@@ -48,22 +48,27 @@ export class InductCartComponent implements OnInit, AfterViewInit {
     }
   }
 
-  async onInductCart(): Promise<void> {
-    if (!this.cartId?.trim()){
-      this.global.ShowToastr(ToasterType.Error, ToasterMessages.PleaseEnterCartId, ToasterTitle.Error);
-      return;
-    }
-    try {
-      const payload: ValidationRequest = {
-        cartId: this.cartId.trim(),
-        workstationName: this.global.getCookie('WSName')
-      };
+async onInductCart(): Promise<void> {
+  if (!this.cartId?.trim()) {
+    this.global.ShowToastr(ToasterType.Error, ToasterMessages.PleaseEnterCartId, ToasterTitle.Error);
+    return;
+  }
 
-      const res = await this.iCartManagementApiService.validateCart(payload);
+  try {
+    const payload: ValidationRequest = {
+      cartId: this.cartId.trim(),
+      workstationName: this.global.getCookie('WSName')
+    };
+
+    const res = await this.iCartManagementApiService.validateCart(payload);
+    
+    // Check success status first (enum serializes as number: 0 = Success)
+    if (res?.body?.status === 0) {
+      // Success - now validate cart details
       const details: ValidationResponse | undefined = res?.body?.value;
-
+      
       if (details && details.status === 'Available') {
-        // notify parent to refresh cart grid immediately
+        // Cart is valid and available - proceed with dialog
         this.cartValidated.emit(this.cartId.trim());
         const dialogData: CartManagementData = {
           mode: 'create',
@@ -80,27 +85,36 @@ export class InductCartComponent implements OnInit, AfterViewInit {
           disableClose: true
         }) as MatDialogRef<BuildNewCartComponent>;
 
-        // Mirror parent subscriptions so grid reflects changes/cancellations
         const instance = dialogRef.componentInstance as BuildNewCartComponent;
         if (instance) {
           instance.cartDeleted.subscribe(() => this.cartValidated.emit(this.cartId.trim()));
           instance.cartUpdated.subscribe(() => this.cartValidated.emit(this.cartId.trim()));
         }
+        
         dialogRef.afterClosed().subscribe(() => {
-          // Ensure grid refresh on close (including cancel path)
           this.cartValidated.emit(this.cartId.trim());
-          // Clear input and refocus for next scan/entry
-          this.cartId = '';
-          this.focusCartIdInput();
+          this.clearAndFocusCartInput();
         });
       } else {
+        // Success response but cart status is not "Available" (edge case handling)
         this.global.ShowToastr(ToasterType.Error, ToasterMessages.InvalidCartID, ToasterTitle.Error);
+        this.clearAndFocusCartInput();
       }
-    } catch (error) {
-      this.global.ShowToastr(ToasterType.Error, ToasterMessages.UnableToValidateCartID, ToasterTitle.Error);
+    } else {
+      // Not successful - show specific error message from API
+      const errorMessage = res?.body?.message || res?.body?.errors?.[0] || ToasterMessages.InvalidCartID;
+      this.global.ShowToastr(ToasterType.Error, errorMessage, ToasterTitle.Error);
+      this.clearAndFocusCartInput();
     }
+  } catch (error) {
+    this.global.ShowToastr(ToasterType.Error, ToasterMessages.UnableToValidateCartID, ToasterTitle.Error);
+    this.clearAndFocusCartInput();
   }
+}
 
- 
+private clearAndFocusCartInput(): void {
+  this.cartId = '';
+  this.focusCartIdInput();
+}
 
 }

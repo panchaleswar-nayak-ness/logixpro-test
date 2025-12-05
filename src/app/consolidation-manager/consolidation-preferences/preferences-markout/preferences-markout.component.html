@@ -79,6 +79,20 @@
                       data-automation-id="auto-print-tote-manifest-2-toggle"
                     ></mat-slide-toggle>
                   </div>
+                  <div
+                    class="d-flex justify-content-between mb-2 text-tertiary-900"
+                    data-automation-id="decrement-Inventory-upon-completion-div"
+                  >
+                    Decrement Inventory upon completion:
+                    <mat-slide-toggle
+                      (change)="updateMarkoutPreferences()"
+                      formControlName="decrementInvOnCompletion"
+                      checked
+                      color="primary"
+                      matTooltip=""
+                      data-automation-id="decrement-Inventory-upon-completion-toggle"
+                    ></mat-slide-toggle>
+                  </div>
                 </div>
               </div>
             </div>

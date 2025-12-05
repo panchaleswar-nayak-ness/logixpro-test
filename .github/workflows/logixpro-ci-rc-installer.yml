@@ -1,0 +1,393 @@
+name: LogixPro Frontend and Run Tests for RC tags
+
+on:
+# Triggers the workflow on push events, but only for tags
+  push:
+    tags:
+       - '*-rc'        # Triggers on tags ending in -rc (e.g., v15.28.0.1-rc)
+       - '*-rc[0-9]*'  # Triggers on tags ending in -rc# (e.g., v15.28.0.1-rc1)
+  workflow_dispatch:
+
+env:
+  SCRIPTS_CHECKOUT_DIR: 'scripts'
+  ARTIFACT_DIR: 'C:/buildArtifacts/LogixPro'
+
+jobs:
+  build:
+    runs-on: windows-latest
+    permissions:
+      contents: read
+    outputs:
+      full_version: ${{ steps.versioning.outputs.full_version }}
+      clean_version: ${{ steps.versioning.outputs.clean_version }}
+
+
+    steps:
+      - name: Checkout LogixPro Application Code
+        uses: actions/checkout@v4
+        with:
+          repository: scotttech-enterprise64/LogixProFrontend
+          ref: 'staging-test'
+          path: ${{ env.APP_CHECKOUT_DIR }}
+          fetch-depth: 0
+
+      - name: Checkout Build Scripts
+        uses: actions/checkout@v4
+        with:
+          repository: scotttechpickpro/JenkinsBuildAgent
+          token: ${{ secrets.PAT_TOKEN }}
+          ref: 'main'
+          path: ${{ env.SCRIPTS_CHECKOUT_DIR }}
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+
+      - name: Install dependencies
+        run: |
+          npm install -g @angular/cli
+          npm install
+
+      - name: Setup .NET SDK
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.414'
+
+      - name: Run Pre-Build Scripts
+        run: |
+          $scriptsDir = "${{ github.workspace }}\${{ env.SCRIPTS_CHECKOUT_DIR }}\buildScripts\"
+          powershell -File "${scriptsDir}PostSCMScript.ps1"
+          powershell -File "${scriptsDir}CheckForDLLs.ps1"
+        shell: pwsh
+
+      - name: Calculate Version Number
+        id: versioning
+        working-directory: ${{ env.APP_CHECKOUT_DIR }}
+        run: |
+          # Get the latest git tag description
+          $gitResult = git describe --tags $(git rev-list --tags --max-count=1)
+
+          echo "Variable gitResult is $gitResult"
+
+          # Clean the result to get a base version (e.g., "1.2.3")
+          $cleanResult = ($gitResult.Trim() -replace '^v', '').Split('-')[0]
+
+          echo "Variable cleanResult is $cleanResult"
+
+          # Get the build number from GitHub Actions
+          $buildNumber = "${{ github.run_number }}"
+
+          # Construct the full version string by appending the suffix
+          $fullVersion = "$cleanResult-RC$buildNumber"
+          echo "Generated Version: $fullVersion"
+
+          # Set the version as an output for subsequent steps
+          echo "full_version=$fullVersion" >> $env:GITHUB_OUTPUT
+          echo "clean_version=$cleanResult" >> $env:GITHUB_OUTPUT
+
+        shell: pwsh
+
+      - name: Build Application and Installer
+        working-directory: ${{ env.APP_CHECKOUT_DIR }}
+        run: |
+          # Get the version calculated in the previous step
+          $fullVersion = "${{ steps.versioning.outputs.full_version }}"
+          Write-Output "Using version $fullVersion for the build."
+
+          # Define paths
+          $workspacePath = $env:GITHUB_WORKSPACE
+          $tempPath = "C:\Temp\LogixProRCTemp"
+
+          # Show directory files
+          Write-Output "Directory"
+          dir
+
+          # Creating a nuget.config file
+          $nugetConfigContent = @"
+          <?xml version="1.0" encoding="utf-8"?>
+          <configuration>
+            <packageSources>
+              <add key="nuget.org" value="https://api.nuget.org/v3/index.json" protocolVersion="3" />
+              <add key="jfrog-private-peaklogix" value="https://peaklogix.jfrog.io/artifactory/api/nuget/peaklogix-nuget-dev-virtual" />
+              <add key="jfrog-private-picklib-core" value="https://peaklogix.jfrog.io/artifactory/api/nuget/picklib-core-nuget-dev-local" />
+            </packageSources>
+            <packageSourceCredentials>
+              <jfrog-private-peaklogix>
+                <add key="Username" value="${{ secrets.JFROG_USERNAME }}" />
+                <add key="ClearTextPassword" value="${{ secrets.JFROG_PASSWORD }}" />
+              </jfrog-private-peaklogix>
+              <jfrog-private-picklib-core>
+                <add key="Username" value="${{ secrets.JFROG_USERNAME }}" />
+                <add key="ClearTextPassword" value="${{ secrets.JFROG_PASSWORD }}" />
+              </jfrog-private-picklib-core>
+            </packageSourceCredentials>
+          </configuration>
+          "@
+          $nugetConfigPath = Join-Path (Get-Location) "nuget.config"
+          Set-Content -Path $nugetConfigPath -Value $nugetConfigContent
+          
+          $json = Get-Content -Path package.json | ConvertFrom-Json
+          $json.version = "${{ steps.versioning.outputs.full_version }}"
+          $json | ConvertTo-Json -Depth 20 | Set-Content -Path package.json
+
+          cd build
+          ./build.ps1
+          
+          # Find the output tarball and save its path
+          $tarFile = (Get-ChildItem -Path ../output -Filter *.tgz | Select-Object -First 1).FullName
+          Write-Host "Assets Tarball found at: $tarFile"
+          echo "ASSETS_TAR=$tarFile" >> $env:GITHUB_ENV
+        shell: powershell
+
+      - name: Build Installer
+        shell: powershell
+        run: |
+          # Debug
+          Get-ChildItem -Path . -Filter "*.msi" -Recurse
+          Get-ChildItem -Path . -Filter "appsettings.json" -Recurse
+
+          # Creating a nuget.config file
+          Write-Host "Creating a nuget.config file"
+          $nugetConfigContent = @"
+          <?xml version="1.0" encoding="utf-8"?>
+          <configuration>
+            <packageSources>
+              <add key="nuget.org" value="https://api.nuget.org/v3/index.json" protocolVersion="3" />
+              <add key="jfrog-private-peaklogix" value="https://peaklogix.jfrog.io/artifactory/api/nuget/peaklogix-nuget-dev-virtual" />
+              <add key="jfrog-private-picklib-core" value="https://peaklogix.jfrog.io/artifactory/api/nuget/picklib-core-nuget-dev-local" />
+            </packageSources>
+            <packageSourceCredentials>
+              <jfrog-private-peaklogix>
+                <add key="Username" value="${{ secrets.JFROG_USERNAME }}" />
+                <add key="ClearTextPassword" value="${{ secrets.JFROG_PASSWORD }}" />
+              </jfrog-private-peaklogix>
+              <jfrog-private-picklib-core>
+                <add key="Username" value="${{ secrets.JFROG_USERNAME }}" />
+                <add key="ClearTextPassword" value="${{ secrets.JFROG_PASSWORD }}" />
+              </jfrog-private-picklib-core>
+            </packageSourceCredentials>
+          </configuration>
+          "@
+
+          # Creates the nuget.config in the current working directory
+          Set-Content -Path "nuget.config" -Value $nugetConfigContent
+
+          # Update appsettings.json
+          $appSettingsPath = "server\LogixProServer\appsettings.json"
+          (Get-Content $appSettingsPath) -replace '0.0.0', '${{ steps.versioning.outputs.full_version }}' | Set-Content $appSettingsPath
+
+          # Restore and Build Installer
+          cd server
+          dotnet restore LogixProInstaller\LogixProServerInstaller.wixproj
+          dotnet build LogixProInstaller\LogixProServerInstaller.wixproj -c Release /p:"Platform=x64;AssetsPackageFile=${{ env.ASSETS_TAR }}"
+
+          $installerDir = "LogixProInstaller\bin\x64\Release\en-US"
+          $msiFile = Get-ChildItem -Path $installerDir -Filter "*.msi" | Select-Object -First 1
+          
+          $newMsiName = "LogixProInstaller_${{ steps.versioning.outputs.full_version }}.msi"
+          Rename-Item -Path $msiFile.FullName -NewName $newMsiName
+          $fullInstallerPath = Join-Path $msiFile.Directory.FullName $newMsiName
+          echo "INSTALLER_PATH=$fullInstallerPath" >> $env:GITHUB_ENV
+
+      - name: Upload Installer Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: LogixPro-Installer-${{ steps.versioning.outputs.full_version }}
+          path: ${{ env.INSTALLER_PATH }}   
+
+  deploy:
+    runs-on: [self-hosted, Windows, X64, win-server]
+    needs: build
+
+    # Grant permissions
+    permissions:
+      id-token: write
+      contents: read
+
+    steps:
+      - name: 'Downloading build artifacts'
+        uses: actions/download-artifact@v4
+        with:
+          name: LogixPro-Installer-${{ needs.build.outputs.full_version }}
+          path: C:\artifacts
+
+      - name: 'List downloaded files'
+        shell: powershell
+        run: |
+          Write-Host "Listing C:\artifacts contents:"
+          Get-ChildItem -Path "C:\artifacts" -Recurse
+
+      - name: 'Install on VM'
+        shell: powershell
+        run: |
+          $version = "${{ needs.build.outputs.full_version }}"
+          $installerName = "LogixProInstaller_$($version).msi"
+          $searchRoot = "C:\artifacts"
+          
+          Write-Host "Searching for $installerName in $searchRoot..."
+          $installerFile = Get-ChildItem -Path $searchRoot -Filter $installerName -Recurse | Select-Object -First 1
+          
+          if ($null -eq $installerFile) {
+            Write-Error "ERROR: Installer not found ($installerName) anywhere under $searchRoot."
+            Get-ChildItem -Path $searchRoot -Recurse | ForEach-Object { Write-Host $_.FullName }
+            exit 1
+          }
+          
+          $installerPath = $installerFile.FullName
+          Write-Host "Installer found at: $installerPath"
+
+          Write-Host "Starting silent installation of $installerName..."
+          $argList = @(
+              "/i",
+              "`"$installerPath`"",
+              "/qn",
+              "SERVER_URL=`"https://logixpro.peaklogix.local`""
+          )
+          
+          try {
+            $process = Start-Process -FilePath "msiexec.exe" -ArgumentList $argList -Wait -PassThru -ErrorAction Stop
+            
+            if ($process.ExitCode -ne 0) {
+              Write-Error "Installer failed with exit code: $($process.ExitCode)"
+              exit $process.ExitCode
+            } else {
+              Write-Host "Installer completed successfully. (Exit Code: $($process.ExitCode))"
+            }
+          }
+          catch {
+            Write-Error "Failed to start installer process. Error: $_"
+            exit 1
+          }
+
+      - name: 'Verify Service is Running'
+        shell: powershell
+        run: |
+          $serviceName = "PeakLogix.LogixPro" # <-- Adapted for LogixPro
+          $maxAttempts = 6
+          $waitTime = 10  # Total 60 seconds
+          $attempt = 0
+
+          Write-Host "Verifying service '$serviceName' status..."
+
+          while ($attempt -lt $maxAttempts) {
+              $attempt++
+              Write-Host "Attempt $attempt of $maxAttempts..."
+              
+              try {
+                  $service = Get-Service -Name $serviceName -ErrorAction Stop
+                  
+                  if ($service.Status -eq "Running") {
+                      Write-Host "SUCCESS: Service '$serviceName' is Running."
+                      exit 0
+                  }
+                  
+                  if ($service.Status -eq "Stopped") {
+                      Write-Host "Service is 'Stopped'. Attempting to restart..."
+                      Start-Service -Name $serviceName
+                      
+                      Start-Sleep -Seconds 10 
+
+                      $service = Get-Service -Name $serviceName
+                      if ($service.Status -eq "Running") {
+                          Write-Host "SUCCESS: Service '$serviceName' is Running after restart."
+                          exit 0
+                      }
+                      Write-Host "Service did not start. Status: $($service.Status). Waiting..."
+                  } else {
+                      Write-Host "Service status is: $($service.Status). Waiting $waitTime seconds..."
+                  }
+              }
+              catch {
+                  Write-Host "Service '$serviceName' not found yet. Waiting $waitTime seconds..."
+              }
+              
+              if ($attempt -lt $maxAttempts) {
+                  Start-Sleep -Seconds $waitTime
+              }
+          }
+
+          Write-Error "FAILURE: Service '$serviceName' did not start within 60 seconds."
+          
+          Write-Host "Final service status:"
+          try {
+              Get-Service -Name $serviceName | Format-List *
+          } catch {
+              Write-Host "Service $serviceName not found."
+          }
+
+          Write-Host "Checking Application Event Log for recent errors..."
+          Get-EventLog -LogName Application -EntryType Error -Newest 10 | Where-Object { $_.Source -eq $serviceName -or $_.Source -like ".NET Runtime*" } | Format-List TimeGenerated, Source, Message
+          
+          exit 1
+
+  test:
+    runs-on: [self-hosted, Windows, X64, win-server]
+    needs: deploy
+
+    # Grant permissions
+    permissions:
+      id-token: write
+      contents: read
+
+    # Run python scripts
+    steps: 
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Download latest test cases
+        shell: cmd
+        run: |
+          cd C:\TestAutomation && "C:\Program Files\Git\bin\git.exe" stash && "C:\Program Files\Git\bin\git.exe" pull && "C:\Program Files\Git\bin\git.exe" stash pop
+
+      - name: Run Tests
+        env:  
+          PYTHONUTF8: "1"
+        shell: cmd
+        run: |
+          cd C:\TestAutomation\LogixPro && npm install -g allure-commandline --save-dev && allure --version && python run_web_tests.py
+  
+  upload-results:
+    needs: test
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write
+
+    steps:
+      - name: Log in to Azure
+        uses: azure/login@v1
+        with:
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+
+      - name: 'Upload test results'
+        uses: azure/CLI@v2
+        with:
+          inlineScript: |
+            az vm run-command invoke \
+              --name "vm-test-server-eus" \
+              --resource-group "rg-test-eus" \
+              --command-id RunPowerShellScript \
+              --scripts '
+                $azPath = "C:\Program Files (x86)\Microsoft SDKs\Azure\CLI2\wbin\az.cmd"   
+                $datetimeFolder = Get-Date -Format 'yyyy-MM-dd_HH-mm-ss'
+                $blobName = "logixpro/$datetimeFolder/index.html"
+                $sourceFolder = "C:\PeakLogix\TestAutomation\LogixPro\allure-report"
+                # $destinationContainer = "$web"
+
+                & $azPath login --identity
+
+                Write-Host "Uploading test results to storage folder"
+                & $azPath storage blob upload `
+                  --account-name "gaintegration" `
+                  --auth-mode login `
+                  --container-name "test-results" `
+                  --file "$sourceFolder\index.html" `
+                  --name $blobName
+
+                Write-Host "Test results uploaded." 
+                '  

@@ -530,90 +530,90 @@
                 <table class="w-100 table-borderless" mat-table [dataSource]="dataSource" matSort
                     (matSortChange)="announceSortChange($event)">
                     <ng-container matColumnDef="itemNumber">
-                        <th mat-header-cell *matHeaderCellDef mat-sort-header data-automation-id="table-header-item-number"> {{ItemNumber}} </th>
-                        <td mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'table-data-item-number-' + i" [matTooltip]="element.itemNumber"
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header data-automation-id="table-header-Item Number"> {{ItemNumber}} </th>
+                        <td mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'table-data-Item Number-' + element.itemNumber" [matTooltip]="element.itemNumber"
                             matTooltipPosition="above"
                             [matTooltipDisabled]="element.itemNumber && element.itemNumber.length>=12?false:true">
                             {{element.itemNumber}} </td>
                     </ng-container>
                     <ng-container matColumnDef="description">
-                        <th mat-header-cell *matHeaderCellDef mat-sort-header data-automation-id="table-header-description"> Description </th>
-                        <td mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'table-data-description-' + i" [matTooltip]="element.description"
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header data-automation-id="table-header-Description"> Description </th>
+                        <td mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'table-data-Description-' + element.description" [matTooltip]="element.description"
                             matTooltipPosition="above"
                             [matTooltipDisabled]="element.description && element.description.length>=12?false:true">
                             {{element.description}} </td>
                     </ng-container>
                     <ng-container matColumnDef="itemQuantity">
-                        <th mat-header-cell *matHeaderCellDef mat-sort-header data-automation-id="table-header-item-quantity"> Location Quantity </th>
-                        <td mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'table-data-item-quantity-' + i" [matTooltip]="element.itemQuantity"
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header data-automation-id="table-header-Location Quantity"> Location Quantity </th>
+                        <td mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'table-data-Location Quantity-' + element.itemQuantity" [matTooltip]="element.itemQuantity"
                             matTooltipPosition="above"
                             [matTooltipDisabled]="element.itemQuantity && element.itemQuantity.length>=12?false:true">
                             {{element.itemQuantity}} </td>
                     </ng-container>
                     <ng-container matColumnDef="unitofMeasure">
-                        <th mat-header-cell *matHeaderCellDef mat-sort-header data-automation-id="table-header-unit-of-measure"> {{UnitOfMeasure}} </th>
-                        <td mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'table-data-unit-of-measure-' + i" [matTooltip]="element.unitofMeasure"
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header data-automation-id="table-header-UM"> {{UnitOfMeasure}} </th>
+                        <td mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'table-data-UM-' + element.unitofMeasure" [matTooltip]="element.unitofMeasure"
                             matTooltipPosition="above"
                             [matTooltipDisabled]="element.unitofMeasure && element.unitofMeasure.length>=12?false:true">
                             {{element.unitofMeasure}} </td>
                     </ng-container>
                     <ng-container matColumnDef="warehouse">
-                        <th mat-header-cell *matHeaderCellDef mat-sort-header data-automation-id="table-header-warehouse"> Warehouse</th>
-                        <td mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'table-data-warehouse-' + i" [matTooltip]="element.warehouse"
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header data-automation-id="table-header-Warehouse"> Warehouse</th>
+                        <td mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'table-data-Warehouse-' + element.warehouse" [matTooltip]="element.warehouse"
                             matTooltipPosition="above"
                             [matTooltipDisabled]="element.warehouse && element.warehouse.length>=12?false:true">
                             {{element.warehouse}} </td>
                     </ng-container>
 
                     <ng-container matColumnDef="location">
-                        <th mat-header-cell *matHeaderCellDef mat-sort-header data-automation-id="table-header-location"> Location</th>
-                        <td mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'table-data-location-' + i" [matTooltip]="element.location"
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header data-automation-id="table-header-Location"> Location</th>
+                        <td mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'table-data-Location-' + element.location" [matTooltip]="element.location"
                             matTooltipPosition="above"
                             [matTooltipDisabled]="element.location && element.location.length>=12?false:true">
                             {{element.location}} </td>
                     </ng-container>
                     <ng-container matColumnDef="goldenZone">
-                        <th mat-header-cell *matHeaderCellDef mat-sort-header data-automation-id="table-header-velocity-code"> Velocity Code </th>
-                        <td mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'table-data-velocity-code-' + i" [matTooltip]="element.goldenZone"
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header data-automation-id="table-header-Velocity Code"> Velocity Code </th>
+                        <td mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'table-data-Velocity Code-' + element.goldenZone" [matTooltip]="element.goldenZone"
                             matTooltipPosition="above"
                             [matTooltipDisabled]="element.goldenZone && element.goldenZone.length>=12?false:true">
                             {{element.goldenZone}} </td>
                     </ng-container>
 
                     <ng-container matColumnDef="cellSize">
-                        <th mat-header-cell *matHeaderCellDef mat-sort-header data-automation-id="table-header-cell-size"> Cell Size </th>
-                        <td mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'table-data-cell-size-' + i" [matTooltip]="element.cellSize"
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header data-automation-id="table-header-Cell Size"> Cell Size </th>
+                        <td mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'table-data-Cell Size-' + element.cellSize" [matTooltip]="element.cellSize"
                             matTooltipPosition="above"
                             [matTooltipDisabled]="element.cellSize && element.cellSize.length>=12?false:true">
                             {{element.cellSize}} </td>
                     </ng-container>
 
                     <ng-container matColumnDef="serialNumber">
-                        <th mat-header-cell *matHeaderCellDef mat-sort-header data-automation-id="table-header-serial-number"> Serial Number </th>
-                        <td mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'table-data-serial-number-' + i" [matTooltip]="element.serialNumber"
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header data-automation-id="table-header-Serial Number"> Serial Number </th>
+                        <td mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'table-data-Serial Number-' + element.serialNumber" [matTooltip]="element.serialNumber"
                             matTooltipPosition="above"
                             [matTooltipDisabled]="element.serialNumber && element.serialNumber.length>=12?false:true">
                             {{element.serialNumber}} </td>
                     </ng-container>
 
                     <ng-container matColumnDef="lotNumber">
-                        <th mat-header-cell *matHeaderCellDef mat-sort-header data-automation-id="table-header-lot-number"> Lot Number </th>
-                        <td mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'table-data-lot-number-' + i" [matTooltip]="element.lotNumber"
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header data-automation-id="table-header-Lot Number"> Lot Number </th>
+                        <td mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'table-data-Lot Number-' + element.lotNumber" [matTooltip]="element.lotNumber"
                             matTooltipPosition="above"
                             [matTooltipDisabled]="element.lotNumber && element.lotNumber.length>=12?false:true">
                             {{element.lotNumber}} </td>
                     </ng-container>
 
                     <ng-container matColumnDef="expirationDate">
-                        <th mat-header-cell *matHeaderCellDef mat-sort-header data-automation-id="table-header-expiration-date"> Expiration Date </th>
-                        <td mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'table-data-expiration-date-' + i" [matTooltip]="element.expirationDate"
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header data-automation-id="table-header-Expiration Date"> Expiration Date </th>
+                        <td mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'table-data-Expiration Date-' + element.expirationDate" [matTooltip]="element.expirationDate"
                             matTooltipPosition="above"
                             [matTooltipDisabled]="element.expirationDate && element.expirationDate.length>=12?false:true">
                             {{element.expirationDate}} </td>
                     </ng-container>
 
                     <ng-container matColumnDef="actions" stickyEnd>
-                        <th width="10%" class="container text-end" mat-header-cell *matHeaderCellDef data-automation-id="table-header-action">
+                        <th width="10%" class="container text-end" mat-header-cell *matHeaderCellDef data-automation-id="table-header-Action">
                             Action
                         </th>
                         <td mat-cell *matCellDef="let element; let i = index" width="10%" class="text-end">
@@ -638,7 +638,7 @@
 
         </div>
         <div class="d-flex justify-content-between bg-white mb-3">
-            <div class="table-pagination d-flex justify-content-start">
+            <div class="table-pagination d-flex justify-content-start" data-automation-id="paginator-create-counts" >
                 <mat-paginator [length]="this.customPagination.total" showFirstLastButtons [pageSize]="10"
                     [pageSizeOptions]="[10, 20, 100]" (page)="handlePageEvent($event)" data-automation-id="paginator"></mat-paginator>
             </div>

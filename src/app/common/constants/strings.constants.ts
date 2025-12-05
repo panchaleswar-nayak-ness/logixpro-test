@@ -144,11 +144,16 @@ export const ConfirmationHeadings = {
     PrintOffCarouselPickItemSingleLabel: "Print Off-Carousel Pick Item Label?",
     ContinueCreatingTransaction: 'Continue Creating Transactions?',
     AssignLocation: 'Assign Location',
-    ChangeFormatType: "Change Format Type"
+    ChangeFormatType: "Change Format Type",
+    Error: "Error",
+    PrintLabels: "Print Labels"
 }
 export const ConfirmationButtonText = {
   ResetPassword: 'Reset Password Now',
-  RemindMeLater: 'Remind Me Later'
+  RemindMeLater: 'Remind Me Later',
+  ContinueVerification: 'Continue Verification',
+  LeaveAnyway: 'Leave Anyway',
+  EnterLocationQuantity: 'Enter Location Quantity'
 }
 
 
@@ -184,6 +189,14 @@ export const ConfirmationMessages = {
     InfoText: 'These items will be removed from the Discrepancies List.',
     ClickYesToAssignLocation: 'Click Yes to close the Cycle Count Manager screen and go the Location Assignment Screen.',
     ClickOkToOutboundPort: (totalRecordsToRemove: number, binId: string) => `Proceeding will remove ${totalRecordsToRemove} record(s) of Storage Container  ${binId} from inventory map. Do you want to continue?`,
+    AdjustQuantityForCount: (count: string) => `The count entered is different from the system count (${count}). Do you want to adjust the System Quantity? `,
+    ChangeTotalQuantityPutAway: 'You are about to change the Total Quantity to Put Away.',
+    ContinueQuestion: 'Continue?',
+    TransactionVerificationUnderway: 'Transaction verification is currently underway',
+    LeavingWillRemoveTransactions: 'Leaving will remove transactions, otherwise continue with transaction verification',
+    VerifyBulkTransactionType: (transactionType: string) => `Verify Bulk ${transactionType}`,
+    EnterLocationQuantityAfterTransaction: (transactionType: string) => `Enter the Location Quantity after this ${transactionType}`,
+    PrintLabelsFromQueue: 'Do you want to print labels from the queue?'
 }
 
 export const ToasterMessages = {
@@ -337,6 +350,13 @@ export const ToasterMessages = {
     ToteIDAlreadyExists: 'This Tote ID already exists in the table. Please enter a different Tote ID.',
     NoBatchesWithZone: 'There are no batches with this zone ({{zone}}) assigned.  Click OK to start a new batch or cancel to choose a different location/transaction.',
     BatchChangedSuccessfully: 'Current Batch is now {{batchId}}',
+    QtyNewToteZero: 'Quantity Put in New Tote should be greater than 0',
+    QuantityCannotExceedOriginalTransactionQuantity: 'Quantity cannot exceed the original transaction quantity of this order.',
+    ItemNumberCannotBeRemoved: 'Item number cannot be removed or changed when Item Quantity, Quantity Allocated Pick, or Quantity Allocated Put Away is present in the record.',
+    DialogClosedWithoutSelectedId: 'Dialog closed without selected transaction ID.',
+    TransactionNotFound: (transactionId: number | string) => `Transaction with ID ${transactionId} not found.`,
+    RecordCreatedSuccessful: 'Record Created Successfully',
+    ItemNotFound: "Item not found"
 }
 
 export const LiveAnnouncerMessage = {
@@ -428,7 +448,8 @@ export const alertMessage = {
   DeleteMessage: 'You are about to mark the scanned reels as empty. This will delete ALL current open transactions associated with the scanned reels.',
   ZoneCannotBeLeftBlank:'Zone cannot be left blank.',
   DeviceTypeCannotBeLeftBlank:'Device Type cannot be left blank.',
-  DeviceNumberCannotBeLeftBlank:'Device Number cannot be left blank.'
+  DeviceNumberCannotBeLeftBlank:'Device Number cannot be left blank.',
+  QtyMustBeLessThanPickQty:'Error! Quantity must be less than or equals to order quantity'
 }
 
 export const showNotificationHeading = {
@@ -497,7 +518,10 @@ export const ColumnDef = {
   Bin: 'bin',
   Warehouse: 'Warehouse',
   RequiredDate: 'requiredDate',
-  actions: 'actions'
+  actions: 'actions',
+  StatusCode: 'statuscode',
+  DisplaySequence: 'displaySequence',
+  CodeValue: 'codeValue'
 }
 
 export const Case = {
@@ -569,7 +593,8 @@ export const TableConstant = {
   WareHouse: 'warehouse',
   SerialNumber: 'serialNumber',
   LotNumber: 'lotNumber',
-
+  locationdesc: 'locationdesc',
+  options: 'options'
 }
 export const UniqueConstants = {
   backClass: 'back-class',
@@ -811,6 +836,11 @@ export const AccessLevel = {
   StaffMember: "staff_member"
 }
 
+
+export const PermissionMessages = {
+  NoPermission: 'User does not have permission'
+} as const;
+
 export const AppLicensingDisplayedColumns = {
   AppName: 'appname',
   DisplayName: 'displayname',
@@ -875,32 +905,33 @@ export const INPUT_TYPES = {
   Text: "text"
 }
 export const DATE_COLUMNS = new Set([
-  'expirationDate',
-  'putAwayDate',
-  'importDate',
-  'requiredDate',
-  'completedDate',
-  'exportDate',
-  'inductionDate'
-]);
-export const OPERATION_CONDITIONS: Record<string, string> = {
-  'equals to': 'Equals',
-  'is not equals to': 'NotEquals',
-  'is greater than or equal to': 'GreaterThanOrEqual',
-  'is less than or equal to': 'LessThanOrEqual',
-  'is greater than': 'GreaterThan',
-  'is less than': 'LessThan',
-  'is like': 'Like',
-  'contains': 'Contains',
-  'is not like': 'NotLike',
-  'does not contains': 'DoesNotContain',
-  'begins with': 'Begins',
-  'does not begins with': 'DoesNotBegin',
-  'ends with': 'EndsWith',
-  'does not ends with': 'DoesNotEndWith',
-  'is between': 'Between',
-  'between': 'Between'
-};
+      'expirationDate',
+      'putAwayDate',
+      'importDate',
+      'requiredDate',
+      'completedDate',
+      'exportDate',
+      'inductionDate',
+      'dateStamp'
+    ]);
+    export const OPERATION_CONDITIONS: Record<string, string> = {
+      'equals to': 'Equals',
+      'is not equals to': 'NotEquals',
+      'is greater than or equal to': 'GreaterThanOrEqual',
+      'is less than or equal to': 'LessThanOrEqual',
+      'is greater than': 'GreaterThan',
+      'is less than': 'LessThan',
+      'is like': 'Like',
+      'contains': 'Contains',
+      'is not like': 'NotLike',
+      'does not contains': 'DoesNotContain',
+      'begins with': 'Begins',
+      'does not begins with': 'DoesNotBegin',
+      'ends with': 'EndsWith',
+      'does not ends with': 'DoesNotEndWith',
+      'is between': 'Between',
+      'between': 'Between'
+    };
 
 export const MarkoutFunctions = {
   MarkoutProcess: 'Markout Process',
@@ -986,4 +1017,40 @@ export const OrderActions = {
     SelectOrder: 'select_order',
     UnselectAllOrders: 'unselect_all_orders',
     SelectAllOrders: 'select_all_orders'
+}
+
+export const Icons = {
+  Info: 'info',
+  Print: 'print'
+}
+
+export const SystemConstants = {
+  Default: 'Default'
+}
+
+export const ListNames = {
+  ShortPick: 'ShortPick',
+  PutAwayChangeQty: 'PutAwayChangeQty',
+  HotPick: 'HotPick',
+  HotPut: 'HotPut',
+  HotMove: 'HotMove',
+  BlindInduct: 'BlindInduct'
+}
+
+export const LookupListDescriptions = {
+  PickLookupInfo: 'The Pick Lookup List controls the reason codes a user can select when performing a pick.',
+  PutAwayLookupInfo: 'The Put Away Lookup List controls the reason codes a user can select when performing a put away.',
+  HotPickLookupInfo: 'The Hot Pick Lookup List controls the reason codes a user can select when performing a hot pick.',
+  HotPutAwayLookupInfo: 'The Hot Put Away Lookup List controls the reason codes a user can select when performing a hot put away.',
+  HotMoveLookupInfo: 'The Hot Move Lookup List controls the reason codes a user can select when performing a hot move.',
+  BlindInductionLookupInfo: 'The Blind Induction Lookup List controls the reason codes a user can select when performing a blind induction.'
+}
+
+export const LookupListDeleteMessages = {
+  Pick: 'Pick list',
+  PutAway: 'Put Away list',
+  HotPick: 'Hot Pick list',
+  HotPutAway: 'Hot Put Away list',
+  HotMove: 'Hot Move list',
+  BlindInduction: 'Blind Induction list'
 }

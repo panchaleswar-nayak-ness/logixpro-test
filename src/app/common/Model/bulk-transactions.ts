@@ -263,6 +263,7 @@ export class SystemPreference {
     osTextBlue?: string;
     generateQuarantineTransactions: boolean;
     requireHotReasons: boolean;
+    allowOverpick: boolean;
 }
 
 export class BulkPreferences {
@@ -394,6 +395,11 @@ export class BulkZone {
 }
 
 export class PartialToteIdRequest {
+  toteItems: ToteItem[] = [];
+  zones: string[] = [];
+}
+
+export class ToteItem {
     orderNumber?: string;
     toteNumber?: string;
     toteID?: string;
@@ -407,6 +413,7 @@ export class PartialToteIdResponse {
     partialToteID: string;
     orderLines: OrderLineResource[];
 }
+
 export interface SlapperLabelResponse {
     id: number;
     orderNumber: string;

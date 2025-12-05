@@ -23,7 +23,7 @@ import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.ser
 import { GlobalService } from 'src/app/common/services/global.service';
 import { QuarantineDialogComponent } from '../dialogs/quarantine-dialog/quarantine-dialog.component';
 import { UnquarantineDialogComponent } from '../dialogs/unquarantine-dialog/unquarantine-dialog.component';
-import { ToasterTitle,ResponseStrings,ToasterType,KeyboardKeys,StringConditions,Column,DialogConstants,Style,UniqueConstants, Placeholders} from 'src/app/common/constants/strings.constants';
+import { ToasterTitle,ResponseStrings,ToasterType,KeyboardKeys,StringConditions,Column,DialogConstants,Style,UniqueConstants, Placeholders, ToasterMessages} from 'src/app/common/constants/strings.constants';
 import { AppNames } from 'src/app/common/constants/menu.constants'; 
 import { ContextMenuFiltersService } from 'src/app/common/init/context-menu-filters.service';
 
@@ -384,9 +384,14 @@ ContextMenu($event:any){
 
     this.iAdminApiService.GetInventoryItemNumber(payLoad).subscribe((res:any) => {
       this.RecordSavedItem();
-      if(res.isExecuted){
-        this.currentPageItemNo = res.data
-        this.getInsertedItemNumber(res.data, init)
+      if(res?.isExecuted){
+        if (res?.data) {
+          this.currentPageItemNo = res.data
+          this.getInsertedItemNumber(res.data, init)
+        }
+        else {
+          this.global.ShowToastr(ToasterType.Error,ToasterMessages.ItemNotFound, ToasterTitle.Error); 
+        }
       }
       else{
         this.global.ShowToastr(ToasterType.Error,res.responseMessage, ToasterTitle.Error);

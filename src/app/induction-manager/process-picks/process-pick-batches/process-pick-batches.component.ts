@@ -124,6 +124,7 @@ export class ProcessPickBatchesComponent {
         viewType: viewType,
         pickBatchQuantity: this.pickBatchQuantity,
         allOrders: this.allOrders,
+        toteSetup: this.TOTE_SETUP,
       },
       autoFocus: DialogConstants.autoFocus
     });
@@ -133,8 +134,14 @@ export class ProcessPickBatchesComponent {
       if (result) {
         if (result.length > 0) {
           this.allOrders = result;
-          this.TOTE_SETUP.forEach((element, key) => {
-            element.orderNumber = result[key] ?? '';
+          // Map orders to positions with Tote IDs filled
+          let resultIndex = 0;
+          this.TOTE_SETUP.forEach((element) => {
+            // Only assign order number if toteID is filled
+            if (element.toteID && element.toteID !== '') {
+              element.orderNumber = result[resultIndex] ?? '';
+              resultIndex++;
+            }
           });
         }
         else {

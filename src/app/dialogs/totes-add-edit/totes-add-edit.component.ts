@@ -436,6 +436,7 @@ export class TotesAddEditComponent implements OnInit {
   }
 
   displayedColumns1: string[] = [UniqueConstants.Select, TableConstant.zone, 'locationdesc', 'options'];
+  displayedColumnsIM: string[] = [TableConstant.zone, TableConstant.locationdesc, TableConstant.options];
   dataSource1 = new MatTableDataSource<PeriodicElement>(this.elementData);
   selection1 = new SelectionModel<PeriodicElement>(true, []);
 

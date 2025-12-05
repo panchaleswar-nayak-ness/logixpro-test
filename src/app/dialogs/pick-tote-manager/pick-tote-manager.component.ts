@@ -28,18 +28,24 @@ import { InductionManagerApiService } from 'src/app/common/services/induction-ma
 import { GlobalService } from 'src/app/common/services/global.service';
 import { PickToteManagerService } from 'src/app/common/services/pick-tote-manager.service'
 import {  TableConstant ,ToasterTitle,ResponseStrings,Column,ToasterType,zoneType,DialogConstants,ColumnDef,UniqueConstants,Style,StringConditions, Placeholders, ToasterMessages, FormatValues, FIELDS_DEFAULT_AN, ConfirmationMessages, ConfirmationHeadings, DISABLED_FIELDS, FormatType, INPUT_TYPES, DATE_COLUMNS, CriteriaOptions} from 'src/app/common/constants/strings.constants';
-import { FilterOrder, FilterTransaction, SavedFilterChangeEvent, FilterData, OrderData, PickToteTransPayload, AllDataTypeValues } from 'src/app/common/types/pick-tote-manager.types';
+import { FilterOrder, FilterTransaction, SavedFilterChangeEvent, FilterData, OrderData, PickToteTransPayload, AllDataTypeValues, TransactionColumnDef } from 'src/app/common/types/pick-tote-manager.types';
 import { TableContextMenuService } from 'src/app/common/globalComponents/table-context-menu-component/table-context-menu.service';
 import { FilterationColumns, PeriodicElement } from 'src/app/common/Model/pick-Tote-Manager';
 import { InputType, PaginationData } from 'src/app/common/enums/CommonEnums';
 import { NgZone } from '@angular/core';
+import { DatePipe } from '@angular/common';
+import { DateFormats } from 'src/app/common/services/global.service';
+import { PickToteManagerDialogData } from 'src/app/common/interface/pick-tote-manager-dialog/pick-tote-manager-interface';
 
 @Component({
   selector: 'app-pick-tote-manager',
   templateUrl: './pick-tote-manager.component.html',
   styleUrls: ['./pick-tote-manager.component.scss'],
+  providers: [DatePipe]
 })
 export class PickToteManagerComponent implements OnInit {
+  
+  readonly dateFormats = DateFormats;
   selectedOrderValue: string = '';
   filterString : string = UniqueConstants.OneEqualsOne;
 
@@ -165,257 +171,257 @@ UserField10:string = this.fieldMappings.userField10;
     'transaction',
     TableConstant.Location,
   ];
-  filterBatchTransColumns = [
+  filterBatchTransColumns: TransactionColumnDef[] = [
     {
       columnDef: UniqueConstants.OrderNumber,
       header: Column.OrderNumber,
-      cell: (element: any) => `${element.orderNumber}`,
+      cell: (element: FilterTransaction) => element.orderNumber ?? '',
     },
     {
       columnDef: 'itemNumber',
       header: this.ItemNumber,
-      cell: (element: any) => `${element.itemNumber}`,
+      cell: (element: FilterTransaction) => element.itemNumber ?? '',
     },
     {
       columnDef: ColumnDef.TransactionQuantity,
       header: TableConstant.TransactionQuantity,
-      cell: (element: any) => `${element.transactionQuantity}`,
+      cell: (element: FilterTransaction) => element.transactionQuantity ?? '',
     },
     {
       columnDef: TableConstant.Location,
       header: Column.Location,
-      cell: (element: any) => `${element.location}`,
+      cell: (element: FilterTransaction) => element.location ?? '',
     },
     {
       columnDef: TableConstant.completedQuantity,
       header: 'Completed Quantity',
-      cell: (element: any) => `${element.completedQuantity}`,
+      cell: (element: FilterTransaction) => element.completedQuantity ?? '',
     },
     {
       columnDef: UniqueConstants.Description,
       header: Column.Description,
-      cell: (element: any) => `${element.description}`,
+      cell: (element: FilterTransaction) => element.description ?? '',
     },
     {
       columnDef: TableConstant.ImportDate,
       header: 'Import Date',
-      cell: (element: any) => `${element.importDate}`,
+      cell: (element: FilterTransaction) => this.global.getFormattedDateTime(element.importDate, true),
     },
     {
       columnDef: UniqueConstants.Priority,
       header: 'Priority',
-      cell: (element: any) => `${element.priority}`,
+      cell: (element: FilterTransaction) => element.priority ?? '',
     },
     {
       columnDef: ColumnDef.RequiredDate,
       header: 'Required Date',
-      cell: (element: any) => `${element.requiredDate}`,
+      cell: (element: FilterTransaction) => this.global.getFormattedDateTime(element.requiredDate, true),
     },
     {
       columnDef: TableConstant.LineNumber,
       header: 'Line Number',
-      cell: (element: any) => `${element.lineNumber}`,
+      cell: (element: FilterTransaction) => element.lineNumber ?? '',
     },
     {
       columnDef: TableConstant.LineSequence,
       header: 'Line Sequence',
-      cell: (element: any) => `${element.lineSequence}`,
+      cell: (element: FilterTransaction) => element.lineSequence ?? '',
     },
     {
       columnDef: TableConstant.SerialNumber,
       header: ColumnDef.SerialNumber,
-      cell: (element: any) => `${element.serialNumber}`,
+      cell: (element: FilterTransaction) => element.serialNumber ?? '',
     },
     {
       columnDef: TableConstant.LotNumber,
       header: Column.LotNumber,
-      cell: (element: any) => `${element.lotNumber}`,
+      cell: (element: FilterTransaction) => element.lotNumber ?? '',
     },
     {
       columnDef: ColumnDef.ExpirationDate,
       header: TableConstant.ExpirationDate,
-      cell: (element: any) => `${element.expirationDate}`,
+      cell: (element: FilterTransaction) => this.global.getFormattedDateTime(element.expirationDate, true),
     },
     {
       columnDef: 'completedDate',
       header: TableConstant.CompletedDate,
-      cell: (element: any) => `${element.completedDate}`,
+      cell: (element: FilterTransaction) => this.global.getFormattedDateTime(element.completedDate, true),
     },
     {
       columnDef: 'completedBy',
       header: 'Completed By',
-      cell: (element: any) => `${element.completedBy}`,
+      cell: (element: FilterTransaction) => element.completedBy ?? '',
     },
     {
       columnDef: TableConstant.BatchPickID,
       header: ColumnDef.BatchPickID,
-      cell: (element: any) => `${element.batchPickID}`,
+      cell: (element: FilterTransaction) => element.batchPickID ?? '',
     },
     {
       columnDef: ColumnDef.UnitOfMeasure,
       header: this.UnitOfMeasure,
-      cell: (element: any) => `${element.unitOfMeasure}`,
+      cell: (element: FilterTransaction) => element.unitOfMeasure ?? '',
     },
     {
       columnDef: ColumnDef.userField1,
       header: this.UserField1,
-      cell: (element: any) => `${element.userField1}`,
+      cell: (element: FilterTransaction) => element.userField1 ?? '',
     },
     {
       columnDef: ColumnDef.userField2,
       header: this.UserField2,
-      cell: (element: any) => `${element.userField2}`,
+      cell: (element: FilterTransaction) => element.userField2 ?? '',
     },
     {
       columnDef: ColumnDef.userField3,
       header: this.UserField3,
-      cell: (element: any) => `${element.userField3}`,
+      cell: (element: FilterTransaction) => element.userField3 ?? '',
     },
     {
       columnDef: ColumnDef.userField4,
       header: this.UserField4,
-      cell: (element: any) => `${element.userField4}`,
+      cell: (element: FilterTransaction) => element.userField4 ?? '',
     },
     {
       columnDef: ColumnDef.userField5,
       header: this.UserField5,
-      cell: (element: any) => `${element.userField5}`,
+      cell: (element: FilterTransaction) => element.userField5 ?? '',
     },
     {
       columnDef: ColumnDef.userField6,
       header: this.UserField6,
-      cell: (element: any) => `${element.userField6}`,
+      cell: (element: FilterTransaction) => element.userField6 ?? '',
     },
     {
       columnDef: ColumnDef.userField7,
       header: this.UserField7,
-      cell: (element: any) => `${element.userField7}`,
+      cell: (element: FilterTransaction) => element.userField7 ?? '',
     },
     {
       columnDef: ColumnDef.userField8,
       header: this.UserField8,
-      cell: (element: any) => `${element.userField8}`,
+      cell: (element: FilterTransaction) => element.userField8 ?? '',
     },
     {
       columnDef: ColumnDef.userField9,
       header: this.UserField9,
-      cell: (element: any) => `${element.userField9}`,
+      cell: (element: FilterTransaction) => element.userField9 ?? '',
     },
     {
       columnDef: ColumnDef.userField10,
       header: this.UserField10,
-      cell: (element: any) => `${element.userField10}`,
+      cell: (element: FilterTransaction) => element.userField10 ?? '',
     },
     {
       columnDef: ColumnDef.Revision,
       header: TableConstant.Revision,
-      cell: (element: any) => `${element.revision}`,
+      cell: (element: FilterTransaction) => element.revision ?? '',
     },
     {
       columnDef: ColumnDef.ToteID,
       header: Column.ToteID,
-      cell: (element: any) => `${element.toteID}`,
+      cell: (element: FilterTransaction) => element.toteID ?? '',
     },
     {
       columnDef: 'toteNumber',
       header: 'Tote Number',
-      cell: (element: any) => `${element.toteNumber}`,
+      cell: (element: FilterTransaction) => element.toteNumber ?? '',
     },
     {
       columnDef: Column.cell,
       header: TableConstant.Cell,
-      cell: (element: any) => `${element.cell}`,
+      cell: (element: FilterTransaction) => element.cell ?? '',
     },
     {
       columnDef: ColumnDef.HostTransactionId,
       header: TableConstant.HostTransactionID,
-      cell: (element: any) => `${element.hostTransactionID}`,
+      cell: (element: FilterTransaction) => element.hostTransactionID ?? '',
     },
-    {columnDef: 'id', header: 'ID', cell: (element: any) => `${element.id}`},
+    {columnDef: 'id', header: 'ID', cell: (element: FilterTransaction) => element.id ?? ''},
     {
       columnDef: TableConstant.zone,
       header: ColumnDef.Zone,
-      cell: (element: any) => `${element.zone}`,
+      cell: (element: FilterTransaction) => element.zone ?? '',
     },
     {
       columnDef: zoneType.carousel,
       header: this.fieldMappings?.carousel || TableConstant.Carousel,
-      cell: (element: any) => `${element.carousel}`,
+      cell: (element: FilterTransaction) => element.carousel ?? '',
     },
     {
       columnDef: Column.Row,
       header: this.fieldMappings?.row || TableConstant.Row,
-      cell: (element: any) => `${element.row}`,
+      cell: (element: FilterTransaction) => element.row ?? '',
     },
     {
       columnDef: TableConstant.shelf,
       header: this.fieldMappings?.shelf || TableConstant.shelf,
-      cell: (element: any) => `${element.shelf}`,
+      cell: (element: FilterTransaction) => element.shelf ?? '',
     },
     {
       columnDef: ColumnDef.Bin,
       header: this.fieldMappings?.bin || TableConstant.Bin,
-      cell: (element: any) => `${element.bin}`,
+      cell: (element: FilterTransaction) => element.bin ?? '',
     },
     {
       columnDef: TableConstant.WareHouse,
       header: ColumnDef.Warehouse,
-      cell: (element: any) => `${element.warehouse}`,
+      cell: (element: FilterTransaction) => element.warehouse ?? '',
     },
     {
       columnDef: 'invMapID',
       header: 'Inventory Map ID',
-      cell: (element: any) => `${element.invMapID}`,
+      cell: (element: FilterTransaction) => element.invMapID ?? '',
     },
     {
       columnDef: TableConstant.ImportBy,
       header: 'Import By',
-      cell: (element: any) => `${element.importBy}`,
+      cell: (element: FilterTransaction) => element.importBy ?? '',
     },
     {
       columnDef: 'importFilename',
       header: 'Import Filename',
-      cell: (element: any) => `${element.importFilename}`,
+      cell: (element: FilterTransaction) => element.importFilename ?? '',
     },
     {
       columnDef: TableConstant.Notes,
       header: 'Notes',
-      cell: (element: any) => `${element.notes}`,
+      cell: (element: FilterTransaction) => element.notes ?? '',
     },
     {
       columnDef: UniqueConstants.emergency,
       header: ColumnDef.Emergency,
-      cell: (element: any) => `${element.emergency}`,
+      cell: (element: FilterTransaction) => element.emergency ?? '',
     },
     {
       columnDef: 'masterRecord',
       header: 'Master Record',
-      cell: (element: any) => `${element.masterRecord}`,
+      cell: (element: FilterTransaction) => element.masterRecord ?? '',
     },
     {
       columnDef: 'masterRecordID',
       header: 'Master Record ID',
-      cell: (element: any) => `${element.masterRecordID}`,
+      cell: (element: FilterTransaction) => element.masterRecordID ?? '',
     },
     {
       columnDef: 'exportBatchID',
       header: 'Export Batch ID',
-      cell: (element: any) => `${element.exportBatchID}`,
+      cell: (element: FilterTransaction) => element.exportBatchID ?? '',
     },
     {
       columnDef: 'exportDate',
       header: 'Export Date',
-      cell: (element: any) => `${element.exportDate}`,
+      cell: (element: FilterTransaction) => this.global.getFormattedDateTime(element.exportDate, true),
     },
     {
       columnDef: 'exportedBy',
       header: 'Exported By',
-      cell: (element: any) => `${element.exportedBy}`,
+      cell: (element: FilterTransaction) => element.exportedBy ?? '',
     },
     {
       columnDef: 'statusCode',
       header: 'Status Code',
-      cell: (element: any) => `${element.statusCode}`,
+      cell: (element: FilterTransaction) => element.statusCode ?? '',
     },
   ];
 
@@ -459,9 +465,11 @@ filterationColumns : FilterationColumns[] = [];
     public inductionManagerApi: InductionManagerApiService,
     private authService: AuthService,
     public dialogRef: MatDialogRef<any>,
-    @Inject(MAT_DIALOG_DATA) public data: any
+    @Inject(MAT_DIALOG_DATA) public data: PickToteManagerDialogData,
+    private datePipe: DatePipe
   ) {
     this.iInductionManagerApi = inductionManagerApi;
+    this.global = global;
   }
 
   onTabChange(event: { index: number }): void {
@@ -1129,8 +1137,8 @@ filterationColumns : FilterationColumns[] = [];
       };
       this.iInductionManagerApi.PickToteTransDT(payload).subscribe((res) => {
         if (res) {
-          this.filterOrderTransactionSource = new MatTableDataSource<any>(
-            res.data.pickToteManTrans
+          this.filterOrderTransactionSource = new MatTableDataSource<FilterTransaction>(
+            res.data.pickToteManTrans || []
           );
           this.filterOrderTransactionSource.paginator = this.filterBatchTrans;
           this.filterOrderTransactionSource.sort = this.viewFilterTransSort;
@@ -1198,8 +1206,8 @@ filterationColumns : FilterationColumns[] = [];
       };
       this.iInductionManagerApi.PickToteTransDT(payload).subscribe((res) => {
         if (res) {
-          this.zoneOrderTransactionSource = new MatTableDataSource<any>(
-            res.data.pickToteManTrans
+          this.zoneOrderTransactionSource = new MatTableDataSource<FilterTransaction>(
+            res.data.pickToteManTrans || []
           );
           this.zoneOrderTransactionSource.paginator = this.zoneBatchTrans;
           this.zoneOrderTransactionSource.sort = this.viewZoneTransSort;
@@ -1291,7 +1299,8 @@ filterationColumns : FilterationColumns[] = [];
   onChangeOrderAction(option: any) {
     if (option === 'fill_top_orders') {
       for (let index = 0; index < this.data.pickBatchQuantity; index++) {
-        if (this.filterBatchData[index]) {
+        // Only select orders for totes that have ToteIDs filled
+        if (this.hasToteId(index) && this.filterBatchData[index]) {
           this.filterBatchData[index].isSelected = true;
           this.selectedOrders.push(this.filterBatchData[index].orderNumber);
         }
@@ -1324,7 +1333,8 @@ filterationColumns : FilterationColumns[] = [];
   onChangeOrderActionZone(option: any) {
     if (option === 'fill_top_orders') {
       for (let index = 0; index < this.data.pickBatchQuantity; index++) {
-        if (this.filterBatchDataZone[index]) {
+        // Only select orders for totes that have ToteIDs filled
+        if (this.hasToteId(index) && this.filterBatchDataZone[index]) {
           this.filterBatchDataZone[index].isSelected = true;
           this.selectedOrders.push(this.filterBatchDataZone[index].orderNumber);
         }
@@ -1373,7 +1383,7 @@ filterationColumns : FilterationColumns[] = [];
       };
       this.iInductionManagerApi.PickToteTransDT(payload).subscribe((res) => {
         if (res.data.pickToteManTrans?.length > 0) {
-          this.zoneOrderTransactionSource = new MatTableDataSource<any>(
+          this.zoneOrderTransactionSource = new MatTableDataSource<FilterTransaction>(
             res.data.pickToteManTrans
           );
           this.zoneOrderTransactionSource.paginator = this.zoneBatchTrans;
@@ -1408,7 +1418,7 @@ filterationColumns : FilterationColumns[] = [];
         };
         this.iInductionManagerApi.PickToteTransDT(payload).subscribe((res) => {
           if (res.data.pickToteManTrans?.length > 0) {
-            this.zoneOrderTransactionSource = new MatTableDataSource<any>(
+            this.zoneOrderTransactionSource = new MatTableDataSource<FilterTransaction>(
               res.data.pickToteManTrans
             );
             this.zoneOrderTransactionSource.paginator = this.zoneBatchTrans;
@@ -1447,7 +1457,7 @@ filterationColumns : FilterationColumns[] = [];
       };
       this.iInductionManagerApi.PickToteTransDT(payload).subscribe((res) => {
         if (res.data.pickToteManTrans?.length > 0) {
-          this.filterOrderTransactionSource = new MatTableDataSource<any>(
+          this.filterOrderTransactionSource = new MatTableDataSource<FilterTransaction>(
             res.data.pickToteManTrans
           );
           this.filterOrderTransactionSource.paginator = this.filterBatchTrans;
@@ -1482,7 +1492,7 @@ filterationColumns : FilterationColumns[] = [];
         };
         this.iInductionManagerApi.PickToteTransDT(payload).subscribe((res) => {
           if (res.data.pickToteManTrans?.length > 0) {
-            this.filterOrderTransactionSource = new MatTableDataSource<any>(
+            this.filterOrderTransactionSource = new MatTableDataSource<FilterTransaction>(
               res.data.pickToteManTrans
             );
             this.filterOrderTransactionSource.paginator = this.filterBatchTrans;
@@ -1813,6 +1823,18 @@ filterationColumns : FilterationColumns[] = [];
           });
       }
     });
+  }
+
+  /**
+   * Checks if a tote at the given index has a valid tote ID
+   * @param index - The index of the tote in the toteSetup array
+   * @returns boolean indicating if the tote has a valid ID
+   */
+  private hasToteId(index: number): boolean {
+    return !!(this.data.toteSetup && 
+           this.data.toteSetup[index] && 
+           this.data.toteSetup[index].toteID && 
+           this.data.toteSetup[index].toteID !== '');
   }  
 
   onContextMenu(event: MouseEvent, SelectedItem: AllDataTypeValues, FilterColumnName?: string, FilterConditon?: string | undefined, FilterItemType?: AllDataTypeValues) {
@@ -1827,6 +1849,9 @@ filterationColumns : FilterationColumns[] = [];
     // Directly use the FilterationColumns objects
     this.filterationColumns = filterationColumns;
     
+    // Reset pagination to first page when filter is applied
+    this.resetPaginationForFilters();
+    
     // Call the appropriate method based on the current tab
     if (this.tabIndex === 0) {
       this.getContentData();
@@ -1835,6 +1860,16 @@ filterationColumns : FilterationColumns[] = [];
     }
     
     this.isActiveTrigger = false;
+  }
+  
+  // Resets pagination to the first page for transaction tables when filters are applied
+  private resetPaginationForFilters(): void {
+    if (this.filterBatchTrans) {
+      this.filterBatchTrans.firstPage();
+    }
+    if (this.zoneBatchTrans) {
+      this.zoneBatchTrans.firstPage();
+    }
   }
 
   getZoneContentData() {
@@ -1917,11 +1952,6 @@ filterationColumns : FilterationColumns[] = [];
     return elementFormat === FormatValues.NUMERIC
       ? InputType.Number
       : InputType.Text;
-  }
-
-  isTooltipDisabled(value: string): boolean {
-    return value.length < 25;
-
   }
 
   isFormatDisabled(field: string): boolean {

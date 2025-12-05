@@ -442,21 +442,26 @@ export class StorageContainerManagementModalComponent implements OnInit, OnDestr
     this.scm.containerType = 0;
     if (this.scm.tray === "") return;
     let res = await this.iAdminApiService.validateScannedContainer(this.scm.tray, this.scm.carouselZone.zone);
-    if (res?.status == HttpStatusCode.Ok) {
-      this.isExistingContainer = false;
-
-      //TODO: Use HATEOS Link
-      await this.getStorageContainerLayout();
-    } else if (res?.error?.hasError) {
-
-      if (res?.error?.validationErrorCode.toString() === ValidationErrorCodes.NoLayoutAssignedToContainer) {
+    
+    // Check for error in response body (even if HTTP status is 200 OK)
+    const errorData = res?.body?.hasError ? res?.body : res?.error;
+    
+    if (errorData?.hasError) {
+      // Show error message toast for all error cases
+      if (errorData?.errorMessage) {
+        this.global.ShowToastr(ToasterType.Error, errorData.errorMessage, ToasterTitle.Error);
+      }
+      
+      if (errorData?.validationErrorCode?.toString() === ValidationErrorCodes.NoLayoutAssignedToContainer) {
         this.reassigningContainerWithoutLayout();
         return;
       }
 
       this.scm.tray = "";
       this.scm.containerType = 0;
-      this.global.ShowToastr(ToasterType.Error, res?.error?.errorMessage, ToasterTitle.Error);
+    } else if (res?.status == HttpStatusCode.Ok) {
+      this.isExistingContainer = false;
+      await this.getStorageContainerLayout();
     }
   }
 

@@ -39,6 +39,8 @@ export class BuildNewCartComponent implements OnInit {
       el.nativeElement.select();
     }
   }
+@ViewChild('toteActionFocus', { static: false, read: ElementRef })
+  private toteActionBtn?: ElementRef<HTMLButtonElement>;
 
   get toteInputFocus(): ElementRef<HTMLInputElement> | undefined {
     return this._toteInputFocus;
@@ -510,7 +512,7 @@ export class BuildNewCartComponent implements OnInit {
       }
     }
     
-    return 1;
+    return currentPosition;
   }
 
   async onSaveTote() {
@@ -732,15 +734,7 @@ export class BuildNewCartComponent implements OnInit {
       return true;
     }
     else{
-      // Set error state on the current position
-      if (this.selectedPosition) {
-        const pos = this.positions.find(p => p.position === this.selectedPosition);
-        if (pos && !pos?.toteId) {
-          pos.hasError = true;
-          pos.toteId = this.toteIdInput; // Show the invalid tote ID
-        }
-        this.toteIdInput = "";
-      }
+      this.toteIdInput = "";
       this.global.ShowToastr(ToasterType.Error, ToasterMessages.InvalidToteID, ToasterTitle.Error);
       return false;
     }
@@ -752,9 +746,8 @@ export class BuildNewCartComponent implements OnInit {
 
   private moveToNextPosition(): void {
     const nextPosition = this.findNextAvailablePosition(this.selectedPosition!);
-
     const selectedPos = this.positions.find(p => p.position === nextPosition);
-    
+
     // Generate StorageLocationId using cartRow and cartColumn from the position
     if (selectedPos?.cartRow && selectedPos?.cartColumn) {
       const totePositionInfo: TotePostionInfo = {
@@ -765,13 +758,29 @@ export class BuildNewCartComponent implements OnInit {
     }
 
     if (nextPosition) {
-      this.selectedPosition = nextPosition;
-      this.toteInputFocus?.nativeElement.focus();
+      if (nextPosition === this.selectedPosition)
+      {
+        this.focusPrimaryButton();  
+        this.selectedPosition = 0;
+       
+      }
+      else {
+        this.selectedPosition = nextPosition;
+        this.toteInputFocus?.nativeElement.focus();
+      }
     } else {
       this.selectedPosition = 0;
     }
   }
-
+private focusPrimaryButton() {
+  // Defer to the next frame so the button is definitely in the DOM
+  requestAnimationFrame(() => {
+    const btn = this.toteActionBtn?.nativeElement;
+    if (btn && !btn.disabled) {
+      btn.focus();
+    }
+  });
+}
   private clearAllPositions(): void {
     this.positions.forEach(pos => {
       if (pos.status !== ToteStatuses.Closed) {

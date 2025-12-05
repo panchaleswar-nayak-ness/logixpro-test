@@ -176,6 +176,7 @@ export interface CmPreferences {
     userField7Alias: string;
     autoPrintToteManifest: boolean;
     autoPrintToteManifest2: boolean;
+    decrementInvOnCompletion: boolean;
     autoPrintMarkoutReport: boolean;
     defaultViewType: string;
     currentStatus: boolean;
@@ -236,6 +237,7 @@ export const ClearTypes = {
   Order: 'order' as ClearType,
   Item: 'item' as ClearType
 };
+
 
 export interface SystemPreference {
     id: number;

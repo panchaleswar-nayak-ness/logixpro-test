@@ -15,7 +15,7 @@ import {
   OrderLineWithSelection
 } from 'src/app/common/Model/bulk-transactions';
 import { SetTimeout } from 'src/app/common/constants/numbers.constants';
-import { ConfirmationHeadings, ConfirmationMessages, DialogConstants, Placeholders, ResponseStrings, Style, ToasterMessages, ToasterTitle, ToasterType } from 'src/app/common/constants/strings.constants';
+import { alertMessage, ConfirmationButtonText, ConfirmationHeadings, ConfirmationMessages, DialogConstants, Placeholders, ResponseStrings, Style, ToasterMessages, ToasterTitle, ToasterType, TransactionType } from 'src/app/common/constants/strings.constants';
 import { IAdminApiService } from 'src/app/common/services/admin-api/admin-api-interface';
 import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.service';
 import { IBulkProcessApiService } from 'src/app/common/services/bulk-process-api/bulk-process-api-interface';
@@ -51,6 +51,12 @@ export class VerifyBulkComponent implements OnInit {
   @Input() bulkTransactionType: string;
   @Input() isSlapperLabelFlow: boolean = false; // New flag to identify slapper label flow
   IsLoading: boolean = true;
+  recordsWithQuantityErrors: Set<number> = new Set();
+  
+  // Getter for display-formatted transaction type 
+  get bulkTransactionTypeDisplay(): string {
+    return this.bulkTransactionType ?? '';
+  }
   OldSelectedList: any = [];
   taskCompleteNewRequest: TaskCompleteNewRequest[] = [];
   filteredData: any = [];
@@ -271,13 +277,13 @@ export class VerifyBulkComponent implements OnInit {
         autoFocus: DialogConstants.autoFocus,
         disableClose: true,
         data: {
-          message: `Transaction verification is currently underway.
-          Leaving will remove transactions, otherwise continue with transaction verification`,
-          heading: `Verify Bulk ${this.bulkTransactionType}`,
+          message: `${ConfirmationMessages.TransactionVerificationUnderway}.
+          ${ConfirmationMessages.LeavingWillRemoveTransactions}`,
+          heading: ConfirmationMessages.VerifyBulkTransactionType(this.bulkTransactionTypeDisplay),
           buttonFields: true,
           customButtonText: true,
-          btn1Text: 'Continue Verification',
-          btn2Text: 'Leave Anyway'
+          btn1Text: ConfirmationButtonText.ContinueVerification,
+          btn2Text: ConfirmationButtonText.LeaveAnyway
         },
       });
       dialogRef1.afterClosed().subscribe(async (resp: string) => {
@@ -303,49 +309,155 @@ export class VerifyBulkComponent implements OnInit {
         url: this.bulkTransactionType,
         completedQuantity: element.completedQuantity,
         transactionQuantity: element.transactionQuantity,
+        maxAllowedQuantity: (this.bulkTransactionType == BulkTransactionType.PICK && !this.Prefernces?.systemPreferences?.allowOverpick) ? element.transactionQuantity : null, // Only validate for PICK if allowOverpick is disabled
         from: "completed quantity"
       }
     });
-    dialogRef1.afterClosed().subscribe(async (resp: DialogResponse) => {
-      if (record == undefined) {
+    
+    dialogRef1.afterClosed().subscribe(async (resp: DialogResponse | null) => {
+      if (!record) return;
+      const safeRecord = record;
+      
+      if (!resp) {
         return;
       }
-      // ResponseString is the users response to Location Empty dialog
-      // Dialog is only shown is Zero Location Qty Check is turned on and the url is Pick
-      if (resp.type == ResponseStrings.Yes) {
-        record.newLocationQty = 0;
-        element.completedQuantity = resp.newQuantity || 0;
+      
+      // Check if Put Away confirmation is needed
+      if (this.shouldShowPutAwayConfirmation(resp, element)) {
+        this.handlePutAwayQuantityMismatch(resp, safeRecord, element);
+        return;
       }
-      else if (resp.type == ResponseStrings.No) {
-        const dialogRef: any = this.global.OpenDialog(InputFilterComponent, {
-          height: DialogConstants.auto,
-          width: '480px',
-          data: {
-            FilterColumnName: `Enter the Location Quantity after this ${this.bulkTransactionType}`,
-            dynamicText: 'Enter Location Quantity'
-          },
-          autoFocus: DialogConstants.autoFocus,
-          disableClose: true,
-        });
-        dialogRef.afterClosed().subscribe(async (result: DialogResponse) => {
-          if (record == undefined || resp.type == undefined) {
-            return;
-          }
-          record.newLocationQty = parseInt(result.SelectedItem || '0');
-          element.completedQuantity = resp.newQuantity || 0;
-        });
-      } else if (resp.type == ResponseStrings.Cancel) {
-        element.completedQuantity = resp.newQuantity || 0;
-      } else if (resp.type == null) {
-        // When completed quantity equals or exceeds order quantity, no location empty dialog was shown
-        element.completedQuantity = resp.newQuantity || 0;
+      
+      // Process the response normally if no confirmation needed
+      this.processNumberSelectionResponse(resp, safeRecord, element);
+    });
+  }
+
+  private shouldShowPutAwayConfirmation(resp: DialogResponse, element: OrderLineResource): boolean {
+    // Only for Put Away transactions
+    if (this.bulkTransactionType !== TransactionType.PutAway) {
+      return false;
+    }
+    
+    // Only if user clicked Done (not Cancel) and entered a quantity
+    if (resp.newQuantity == null || resp.type === ResponseStrings.Cancel) {
+      return false;
+    }
+    
+    // Check if entered quantity differs from order quantity
+    const newQuantityStr = resp.newQuantity?.toString() || '';
+    const enteredQuantity = parseFloat(newQuantityStr);
+    const orderQuantity = element.transactionQuantity ?? 0;
+    
+    return !isNaN(enteredQuantity) && enteredQuantity !== orderQuantity;
+  }
+
+  private handlePutAwayQuantityMismatch(
+    resp: DialogResponse, 
+    record: TaskCompleteNewRequest, 
+    element: OrderLineResource & { NextToteID?: number }
+  ) {
+    const confirmationDialogRef = this.global.OpenDialog(ConfirmationDialogComponent, {
+      height: DialogConstants.auto,
+      width: Style.w560px,
+      autoFocus: DialogConstants.autoFocus,
+      disableClose: true,
+      data: {
+        message: ConfirmationMessages.ChangeTotalQuantityPutAway,
+        message2: ConfirmationMessages.ContinueQuestion,
+        heading: '',
+        buttonFields: true,
+      },
+    });
+    
+    confirmationDialogRef.afterClosed().subscribe(async (confirmationResp: string) => {
+      if (confirmationResp === ResponseStrings.Yes) {
+        // User confirmed - proceed with the existing logic
+        this.processNumberSelectionResponse(resp, record, element);
       } else {
-        record.newLocationQty = resp.newQuantity || 0;
-        element.completedQuantity = resp.newQuantity || 0;
+        // User clicked No - reopen the number selection dialog to adjust quantity
+        this.numberSelection(element);
       }
     });
   }
 
+  private validateCompletedQuantity(completedQuantity: number, element: OrderLineResource & { NextToteID?: number }): boolean {
+    // Only validate for PICK transactions when allowOverpick is disabled
+    if (this.bulkTransactionType == BulkTransactionType.PICK && !this.Prefernces?.systemPreferences?.allowOverpick) {
+      return completedQuantity <= element.transactionQuantity;
+    }
+    return true; // Skip validation for non-PICK transactions or when allowOverpick is enabled
+  }
+
+  private processNumberSelectionResponse(resp: DialogResponse, record: TaskCompleteNewRequest, element: OrderLineResource & { NextToteID?: number }) {
+    // Convert newQuantity to number (it may be string or number)
+    const quantity = resp.newQuantity != null ? parseFloat(resp.newQuantity.toString()) : 0;
+    
+    // ResponseString is the users response to Location Empty dialog
+    // Dialog is only shown is Zero Location Qty Check is turned on and the url is Pick
+    if (resp.type == ResponseStrings.Yes) {
+      record.newLocationQty = 0;
+      this.SetQuantity(quantity, element);
+    }
+    else if (resp.type == ResponseStrings.No) {
+      const dialogRef = this.global.OpenDialog(InputFilterComponent, {
+        height: DialogConstants.auto,
+        width: Style.w480px,
+        data: {
+          FilterColumnName: ConfirmationMessages.EnterLocationQuantityAfterTransaction(this.bulkTransactionType),
+          dynamicText: ConfirmationButtonText.EnterLocationQuantity
+        },
+        autoFocus: DialogConstants.autoFocus,
+        disableClose: true,
+      });
+      dialogRef.afterClosed().subscribe(async (result: DialogResponse) => {
+        if (!record || resp.type == undefined) {
+          return;
+        }
+        record.newLocationQty = parseInt(result.SelectedItem || '0');
+        this.SetQuantity(quantity, element);
+      });
+    } else if (resp.type == ResponseStrings.Cancel) {
+      this.SetQuantity(quantity, element);
+    } else if (resp.type == null) {
+      // When completed quantity equals or exceeds order quantity, no location empty dialog was shown
+      this.SetQuantity(quantity, element);
+    } else {
+      record.newLocationQty = quantity;
+      this.SetQuantity(quantity, element);
+    }
+  }
+  SetQuantity(completedQuantity: number, element: OrderLineResource & { NextToteID?: number }) {
+    // Validate completed quantity (only for PICK transactions)
+    if (!this.validateCompletedQuantity(completedQuantity, element)) {
+      return; // Exit if validation fails
+    }
+
+    if (this.bulkTransactionType == BulkTransactionType.COUNT) {
+        if (element.transactionQuantity !== +completedQuantity) {
+        let dialogRef: any = this.global.OpenDialog(ConfirmationDialogComponent, {
+            height: DialogConstants.auto,
+            width: Style.w560px,
+            autoFocus: DialogConstants.autoFocus,
+            disableClose: true,            
+            data: {
+              buttonFields: true,
+              message: ConfirmationMessages.AdjustQuantityForCount(element.transactionQuantity?.toString()),
+              heading: '',
+            },
+          });
+          dialogRef.afterClosed().subscribe((res) => {
+            if (res === ResponseStrings.Yes) {
+              element.completedQuantity = completedQuantity;
+            }
+          });
+        }    
+    else
+      element.completedQuantity = completedQuantity;
+    }
+    else
+      element.completedQuantity = completedQuantity;
+  }
   ResetAllCompletedQty() {
     this.orderLines.filteredData.forEach(element => {
       element.completedQuantity = 0;
@@ -412,13 +524,31 @@ export class VerifyBulkComponent implements OnInit {
           }
         });
         
-        let res = await this.iBulkProcessApiService.bulkPickTaskComplete(ordersNew);
-        if (res?.status == HttpStatusCode.Ok) {
-          if (this.bulkTransactionType == BulkTransactionType.PICK && res?.body.length > 0) {
-            await this.TaskCompleteEOB(res?.body);
+        try {
+          let res = await this.iBulkProcessApiService.bulkPickTaskComplete(ordersNew);
+          if (res?.status === HttpStatusCode.Ok) {
+            // Clear previous errors on success
+            this.recordsWithQuantityErrors.clear();
+            
+            const responseBody = res?.body ?? [];
+            if (
+              this.bulkTransactionType === BulkTransactionType.PICK &&
+              responseBody.length > 0
+            ) {
+              await this.TaskCompleteEOB(responseBody);
+            } else {
+              this.taskCompleteFinished();
+            }
           }
-          else {
-            this.taskCompleteFinished();
+        } catch (error: unknown) {
+          // Handle validation error response
+          const err: any = error; // safely narrow for runtime inspection
+          if (err?.status === HttpStatusCode.BadRequest) {
+            const errorBody = err?.error;
+            // Better array validation
+            if (Array.isArray(errorBody?.recordIdsWithErrors)) {
+              this.recordsWithQuantityErrors = new Set(errorBody.recordIdsWithErrors);
+            }
           }
         }
       }
@@ -471,8 +601,18 @@ async validateTaskComplete() {
         },
       });
       dialogRef1.afterClosed().subscribe(async (res: string) => {
-        if (res == ResponseStrings.Yes) await this.taskComplete(this.orderLines.filteredData.filter((x: OrderLineResource) => x.completedQuantity > 0));
-        else if (res == ResponseStrings.No) await this.taskComplete(this.orderLines.filteredData);
+        if (res == ResponseStrings.Yes) {
+          const filteredOrderLines = this.orderLines.filteredData
+            .filter((x: OrderLineResource) => x.completedQuantity > 0);
+
+          if (filteredOrderLines.length) {
+            await this.taskComplete(filteredOrderLines);
+            return;
+          }
+
+          this.back.emit(this.taskCompleted);
+        }
+          else if (res == ResponseStrings.No) await this.taskComplete(this.orderLines.filteredData);
       });
     }
     else await this.taskComplete(this.orderLines.filteredData);
@@ -679,5 +819,9 @@ async validateTaskComplete() {
       event.preventDefault();
       this.tooltip.hide();
     }
+  }
+
+  hasQuantityError(recordId: number): boolean {
+    return this.recordsWithQuantityErrors.has(recordId);
   }
 }

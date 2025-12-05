@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { AuthService } from 'src/app/common/init/auth.service';
 import { LocationNameComponent } from 'src/app/admin/dialogs/location-name/location-name.component';
 import { DeleteConfirmationComponent } from 'src/app/admin/dialogs/delete-confirmation/delete-confirmation.component';
@@ -9,14 +9,16 @@ import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.ser
 import { GlobalService } from 'src/app/common/services/global.service';
 import { zoneType, ToasterMessages, ToasterType ,ToasterTitle,ResponseStrings,DialogConstants,UniqueConstants,TableConstant,Style} from 'src/app/common/constants/strings.constants';
 import { ApiResponse, ColumnAlias, UserSession } from 'src/app/common/types/CommonTypes';
-import { LocationZone } from 'src/app/common/interface/admin/location-zones.interface';
+import { Zone } from 'src/app/bulk-process/preferences/preference.models';
+import { Subject } from 'rxjs';
+import { debounceTime, distinctUntilChanged, takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'app-sp-location-zones',
   templateUrl: './sp-location-zones.component.html',
   styleUrls: ['./sp-location-zones.component.scss'],
 })
-export class SpLocationZonesComponent implements OnInit {
+export class SpLocationZonesComponent implements OnInit, OnDestroy {
   prevLocation : string;
   fieldMappings : ColumnAlias = JSON.parse(localStorage.getItem('fieldMappings') ?? '{}');
 
@@ -67,8 +69,8 @@ export class SpLocationZonesComponent implements OnInit {
     },
     {
       label: 'Include CF Carousel Pick',
-      name: 'includeCFCarouselPick',
-      property: 'includeCFCarouselPick',
+      name: 'includeCfCarouselPick',
+      property: 'includeCfCarouselPick',
     },
     {
       label: 'Allow Pick Allocation',
@@ -90,8 +92,12 @@ export class SpLocationZonesComponent implements OnInit {
   public iAdminApiService: IAdminApiService;
   includeCf: boolean = false;
 
-  locationzone: LocationZone[] = [];
-  duplicateLocationZone: LocationZone[] = [];
+  locationzone: Zone[] = [];
+  duplicateLocationZone: Zone[] = [];
+  
+  // RxJS Subject for debouncing all field changes (toggles and inputs)
+  private zoneChangeSubject = new Subject<{zone: Zone, property?: string}>();
+  private readonly destroy$ = new Subject<void>();
   constructor(
    
     public authService: AuthService,
@@ -104,10 +110,48 @@ export class SpLocationZonesComponent implements OnInit {
   ngOnInit(): void {
     this.userData = this.authService.userData();
     this.getLocationZones();
+    
+    // Setup debounced subscription for all field changes (toggles, inputs, selects)
+    // Uses takeUntil pattern for automatic cleanup - Angular best practice
+    this.zoneChangeSubject.pipe(
+      debounceTime(1000),
+      distinctUntilChanged((prev, curr) => {
+        // Compare zone IDs - must be same zone
+        if (prev.zone.id !== curr.zone.id) return false;
+        
+        // If property is specified (for toggles), compare that specific property value
+        if (prev.property && curr.property && prev.property === curr.property) {
+          return prev.zone[prev.property] === curr.zone[curr.property];
+        }
+        
+        // For general field changes without property, always allow through
+        // The debounceTime will handle preventing rapid calls
+        return false;
+      }),
+      takeUntil(this.destroy$)
+    ).subscribe(({zone, property}) => {
+      this.zoneChange(zone, false, property);
+    });
   }
 
-  conflictCheck(zone: LocationZone) {
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
+
+  // Generic method to handle all field changes with debouncing
+  // Works for toggles (with property) and input/select fields (without property)
+  onFieldChange(zone: Zone, property?: string): void {
+    this.zoneChangeSubject.next({zone, property});
+  }
+
+
+  conflictCheck(zone: Zone) {
     if (zone.allocable && zone.kanbanZone) {
+      const originalZone = this.duplicateLocationZone.find((x: Zone) => x.id === zone.id);
+      const prevAllocable = originalZone?.allocable ?? false;
+      const prevKanban = originalZone?.kanbanZone ?? false;
+      
       let dialogRef: any = this.global.OpenDialog(
         KanbanZoneAllocationConflictComponent,
         {
@@ -122,22 +166,33 @@ export class SpLocationZonesComponent implements OnInit {
           zone.allocable = result.allocation;
           zone.kanbanZone = result.kanban;
           this.zoneChange(zone, false);
+        } else {
+          zone.allocable = prevAllocable;
+          zone.kanbanZone = prevKanban;
         }
       });
     }
   }
 
-  zoneChange(zone: LocationZone, check, type?) {
+  zoneChange(zone: Zone, check, type?) {
     
     if (!check) {
+      // Check for conflict BEFORE API call when type is 'kanbanZone' or 'allocable'
+      if (type == 'kanbanZone' || type == 'allocable') {
+        if (zone.allocable && zone.kanbanZone) {
+          this.conflictCheck(zone);
+          return; // No API call if conflict exists
+        }
+      }
+
       if (type === zoneType.carousel) {
         if (zone.carousel) {
           this.alterParentZones(true, zone.zone);
           if (zone.cartonFlow) {
             zone.cartonFlow = false;
           }
-          if (zone.includeCFCarouselPick) {
-            zone.includeCFCarouselPick = false;
+          if (zone.includeCfCarouselPick) {
+            zone.includeCfCarouselPick = false;
           }
           // Reset Case Label when Carousel is enabled
           zone.caseLabel = '';
@@ -156,8 +211,8 @@ export class SpLocationZonesComponent implements OnInit {
           }
         }
       }
-      if (type === zoneType.includeCFCarouselPick) {
-        if (zone.includeCFCarouselPick) {
+      if (type === 'includeCfCarouselPick') {
+        if (zone.includeCfCarouselPick) {
           if (!zone.cartonFlow) {
             this.alterParentZones(false, zone.zone);
             zone.cartonFlow = true;
@@ -173,7 +228,7 @@ export class SpLocationZonesComponent implements OnInit {
         }
       }
       let oldZone: string = this.duplicateLocationZone.filter(
-        (x: LocationZone) => x.id == zone.id
+        (x: Zone) => x.id == zone.id
       )[0].zone;
       let newZone: string = zone.zone;
       let seq = zone.sequence;
@@ -197,7 +252,7 @@ export class SpLocationZonesComponent implements OnInit {
       let check = oldZone.toLowerCase() != newZone.toLowerCase();
       if (check) {
         let test = this.duplicateLocationZone.find(
-          (x: LocationZone) => x.zone == newZone
+          (x: Zone) => x.zone == newZone
         );
         if (test) {
           this.global.ShowToastr(
@@ -207,42 +262,70 @@ export class SpLocationZonesComponent implements OnInit {
           );
         }
       }
-      let locationZone = JSON.parse(JSON.stringify(zone));
-      Object.keys(locationZone).forEach((k) => {
-        locationZone[k] = '' + locationZone[k];
-      });
-      const updatedObj = {};
-      for (const key in locationZone) {
-        const updatedKey = key.charAt(0).toUpperCase() + key.slice(1);
-        updatedObj[updatedKey] = locationZone[key];
-      }
 
       let payload: any = {
         oldZone: oldZone,
-        locationZone: updatedObj,
+        locationZone: zone,
       };
 
       this.iAdminApiService.LocationZoneSave(payload).subscribe((res) => {
-        if (!res.isExecuted) {
-          zone.locationName = this.prevLocation;
-          this.global.ShowToastr(ToasterType.Error, res.responseMessage, ToasterTitle.Error);
-        }
-       });
-    }
-    if (type == 'kanbanZone' || type=='allocable'){
-      this.conflictCheck(zone);
-    }
-  else {
-      return;  
+          // --- UPDATE FRONTEND WITH SERVER VALUES ---
+           const updatedZone = res.data?.locationZone;
+
+            if (res.isExecuted && updatedZone) {
+              this.applyServerUpdate(zone, updatedZone);
+
+              this.global.ShowToastr(
+                ToasterType.Success,
+                ToasterMessages.ZoneUpdatedSuccessfully,
+                ToasterTitle.Success
+              );
+            } else {
+              this.revertZone(zone);
+
+              this.global.ShowToastr(
+                ToasterType.Error,
+                res.responseMessage,
+                ToasterTitle.Error
+              );
+            }
+          });
     }
   }
 
+  private applyServerUpdate(zone, updatedZone) {
+  const { id, ...cleanData } = updatedZone; // prevent ID overwrite
+
+  // Update main zone
+  Object.assign(zone, cleanData);
+
+  // Update duplicate zone
+  const dupIndex = this.duplicateLocationZone.findIndex(x => x.id === zone.id);
+  if (dupIndex > -1) {
+    this.duplicateLocationZone[dupIndex] = {
+      ...this.duplicateLocationZone[dupIndex],
+      ...cleanData
+    };
+  }
+}
+
+private revertZone(zone) {
+  const original = this.duplicateLocationZone.find(x => x.id === zone.id);
+  if (original) {
+    Object.assign(zone, original);
+  }
+}
+
   parentZones: string[] = [];
   getLocationZones() {
-    this.iAdminApiService.LocationZone().subscribe((res : ApiResponse<LocationZone[]>) => {
+    this.iAdminApiService.LocationZone().subscribe((res : ApiResponse<Zone[]>) => {
       if (res.isExecuted && res.data) {
         this.locationzone = [];
-        res.data.forEach((zone: LocationZone, i) => {
+        res.data.forEach((zone: Zone, i) => {
+          // TODO: Correct this field name in the backend. Current mapping kept temporarily to avoid wider impact.
+          if ("includeCFCarouselPick" in zone) {
+            zone.includeCfCarouselPick = Boolean((zone as any)["includeCFCarouselPick"]);
+          }
           zone.id = i + 1;
           if (zone.carousel && zone.zone != '') {
             this.parentZones.push(zone.zone);
@@ -250,9 +333,8 @@ export class SpLocationZonesComponent implements OnInit {
           }
           this.locationzone.push(zone);
         });
-        this.duplicateLocationZone = JSON.parse(
-          JSON.stringify(this.locationzone)
-        );
+
+        this.duplicateLocationZone = this.locationzone.map(zone => Object.assign({}, zone));
       } else {
         this.global.ShowToastr(ToasterType.Error, this.global.globalErrorMsg(), ToasterTitle.Error);
         console.log('LocationZone', res.responseMessage);
@@ -260,7 +342,7 @@ export class SpLocationZonesComponent implements OnInit {
     });
   }
 
-  locationName(item: LocationZone) {
+  locationName(item: Zone) {
     this.prevLocation=item.locationName;
     let dialogRef: any = this.global.OpenDialog(LocationNameComponent, {
       height: DialogConstants.auto,
@@ -341,7 +423,7 @@ export class SpLocationZonesComponent implements OnInit {
     if (this.newLocationVal != '') {
       this.locationSaveBtn = false;
       let test = this.duplicateLocationZone.find(
-        (x: LocationZone) => x.zone == this.newLocationVal
+        (x: Zone) => x.zone == this.newLocationVal
       );
       if (test) {
         this.global.ShowToastr(

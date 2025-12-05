@@ -28,23 +28,10 @@
 
   <div class="dimensions-section mb-4" *ngIf="showAdditionalFields">
     <div class="d-flex align-items-end gap-3">
-      <mat-form-field class="flex-grow-1" appearance="outline" data-automation-id="position-count-field">
-        <mat-label data-automation-id="position-count-label">Position Count</mat-label>
+      <mat-form-field class="flex-grow-1" appearance="outline" data-automation-id="shelve-count-field">
+        <mat-label data-automation-id="shelve-count-label">No. of Shelves</mat-label>
         <input matInput 
                #positionCountInputRef
-               [(ngModel)]="positionCountInput"
-               type="number"
-               [min]="1"
-               [max]="8"
-               (ngModelChange)="onPositionChange($event, 1, 8)"
-               (keyup.enter)="onBothFieldsEnter()"
-               [ngModelOptions]="{standalone: true}"
-               data-automation-id="position-count-input">
-      </mat-form-field>
-
-      <mat-form-field class="flex-grow-1" appearance="outline" data-automation-id="shelve-count-field">
-        <mat-label data-automation-id="shelve-count-label">Shelf Count</mat-label>
-        <input matInput 
                [(ngModel)]="shelveCountInput"
                type="number"
                [min]="1"
@@ -53,6 +40,19 @@
                (keyup.enter)="onBothFieldsEnter()"
                [ngModelOptions]="{standalone: true}"
                data-automation-id="shelve-count-input">
+      </mat-form-field>
+
+      <mat-form-field class="flex-grow-1" appearance="outline" data-automation-id="position-count-field">
+        <mat-label data-automation-id="position-count-label">Positions per Shelf</mat-label>
+        <input matInput 
+               [(ngModel)]="positionCountInput"
+               type="number"
+               [min]="1"
+               [max]="8"
+               (ngModelChange)="onPositionChange($event, 1, 8)"
+               (keyup.enter)="onBothFieldsEnter()"
+               [ngModelOptions]="{standalone: true}"
+               data-automation-id="position-count-input">
       </mat-form-field>
     </div>
   </div>
@@ -83,7 +83,9 @@
     class="btn-lg flex-grow-1 flex-basis-0"
     color="primary"
     (click)="onAdd()"
-    [disabled]="isLoading || !showAdditionalFields || !areDimensionsValid()"
+    [disabled]="isAddDisabled()"
+    [matTooltip]="permissionMessages.NoPermission"
+    [matTooltipDisabled]="authService.isAuthorized(permissions.AddCart)"
     data-automation-id="add-btn">
     <span *ngIf="!isLoading">Add</span>
     <span *ngIf="isLoading">

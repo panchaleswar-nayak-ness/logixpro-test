@@ -11,7 +11,7 @@
       <button mat-stroked-button
               color="primary" 
               class="btn-regular"
-              [disabled]="!isAdministrator()"
+              [disabled]="isAddDisabled()"
               (click)="onAddNewCart()"
               data-automation-id="add-new-cart-btn">
         Add New Cart
@@ -31,6 +31,16 @@
           data-automation-id="cart-column-filter-component">
         </app-column-filter-component>
     </div>
+    
+    <!-- Applied Filters Display -->
+    <app-applied-filters-display
+      [appliedFilters]="filterationColumns"
+      [columnDisplayMap]="columnDisplayMap"
+      (clearAllFilters)="onClearAllFilters()"
+      (clearFilter)="onClearSingleFilter($event)"
+      data-automation-id="applied-filters-display">
+    </app-applied-filters-display>
+    
       <div class="card br-14 table-responsive my-3">
         <table mat-table 
                [dataSource]="dataSource" 
@@ -94,6 +104,8 @@
                   <button mat-menu-item [disabled]="(selectedRecord.cartStatus === STATUS_COMPLETE) || (selectedRecord.cartStatus === STATUS_IN_PROGRESS && selectedRecord.location !== LOCATION_IN_TRANSIT)" (click)="onEditCart(selectedRecord)">Edit</button>
                   <button mat-menu-item 
                           [disabled]="!canDeleteCart(selectedRecord)"
+                          [matTooltip]="permissionMessages.NoPermission"
+                          [matTooltipDisabled]="hasDeletePermission()"
                           (click)="onDeleteCart(selectedRecord)">Delete Cart</button>          
                 </mat-menu>
               </td>

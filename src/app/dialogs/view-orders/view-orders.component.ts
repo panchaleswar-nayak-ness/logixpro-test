@@ -3,18 +3,22 @@ import { MatTableDataSource } from '@angular/material/table';
 import { AuthService } from '../../common/init/auth.service';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
-import { MatSort } from '@angular/material/sort'; 
+import { MatSort } from '@angular/material/sort';
+import { MatRadioChange } from '@angular/material/radio'; 
 import { IInductionManagerApiService } from 'src/app/common/services/induction-manager-api/induction-manager-api-interface';
 import { InductionManagerApiService } from 'src/app/common/services/induction-manager-api/induction-manager-api.service';
-import { GlobalService } from 'src/app/common/services/global.service';
+import { DateFormats, GlobalService } from 'src/app/common/services/global.service';
 import {  TableConstant ,Column,zoneType,ToasterTitle,ToasterType,ColumnDef,UniqueConstants,OrderActions} from 'src/app/common/constants/strings.constants';
 import { TransactionData } from 'src/app/common/interface/view-orders-dialog/transaction-data.interface';
 import { cleanData, safeCellValue } from 'src/app/common/CommonHelpers/data-utils.helper';
+import { PaginationData } from 'src/app/common/enums/CommonEnums';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-view-orders',
   templateUrl: './view-orders.component.html',
-  styleUrls: ['./view-orders.component.scss']
+  styleUrls: ['./view-orders.component.scss'],
+  providers: [DatePipe]
 })
 export class ViewOrdersComponent implements OnInit {
   fieldMappings = JSON.parse(localStorage.getItem('fieldMappings') ?? '{}');
@@ -35,7 +39,7 @@ export class ViewOrdersComponent implements OnInit {
 
   displayedColumns1: string[] = [UniqueConstants.position, 'toteid', 'orderno', 'other'];
 
-  displayedColumns2: string[] = ['orderno'];
+  displayedColumns2: string[] = ['orderno', 'requireddate', 'transactionsline', 'priority'];
 
   displayedColumns3: string[] = ['orderno', 'itemno', 'transaction', TableConstant.Location, 'completed'];
   public userData: any;
@@ -46,6 +50,8 @@ export class ViewOrdersComponent implements OnInit {
   isDisableSubmit: boolean = true
   transData: TransactionData[];
   isMultiSelectMode: boolean = false;
+  totalTransactionRecords: number = 0;
+  isViewAllOrderLines: boolean = false;
 
   filterTransColumns = [
     { columnDef: 'orderNumber', header: Column.OrderNumber, cell: (element: TransactionData) => `${element.orderNumber}` },
@@ -61,7 +67,7 @@ export class ViewOrdersComponent implements OnInit {
     { columnDef: 'completedBy', header: 'Completed By', cell: (element: TransactionData) => `${element.completedBy}` },
     { columnDef: 'completedDate', header: TableConstant.CompletedDate, cell: (element: TransactionData) => `${element.completedDate}` },
     { columnDef: UniqueConstants.emergency, header: ColumnDef.Emergency, cell: (element: TransactionData) => `${element.emergency}` },
-    { columnDef: ColumnDef.ExpirationDate, header: TableConstant.ExpirationDate, cell: (element: TransactionData) => `${element.expirationDate}` },
+    { columnDef: ColumnDef.ExpirationDate, header: TableConstant.ExpirationDate, cell: (element: TransactionData) => this.datePipe.transform(element.expirationDate, DateFormats.DateTimeWithMilliseconds) || `${element.expirationDate}` },
     { columnDef: 'exportBatchID', header: 'Export Batch ID', cell: (element: TransactionData) => safeCellValue(element.exportBatchId) },
     { columnDef: 'exportDate', header: 'Export Date', cell: (element: TransactionData) => `${element.exportDate}` },
     { columnDef: 'exportedBy', header: 'Exported By', cell: (element: TransactionData) => `${element.exportedBy}` },
@@ -115,7 +121,8 @@ export class ViewOrdersComponent implements OnInit {
     public inductionManagerApi: InductionManagerApiService,
     @Inject(MAT_DIALOG_DATA) public data: any,
     private global: GlobalService,
-    public dialogRef: MatDialogRef<any>
+    public dialogRef: MatDialogRef<ViewOrdersComponent>,
+    private datePipe: DatePipe
   ) { 
     this.iInductionManagerApi = inductionManagerApi;
   }
@@ -132,11 +139,17 @@ export class ViewOrdersComponent implements OnInit {
       "OrderView": this.data.viewType, 
     }
     this.iInductionManagerApi.OrdersInZone(paylaod).subscribe((res) => {
-      if (res.isExecuted && res.data)
+      if (res && res.isSuccess && res.value && Array.isArray(res.value))
       {
-        if (res.data.length > 0) {
-          res.data.map(val => {
-            this.allOrders.push({ 'orderNumber': val, isSelected: false });
+        if (res.value.length > 0) {
+          res.value.forEach(val => {
+            this.allOrders.push({
+              orderNumber: val.orderNumber || '',
+              reqDate: val.requiredDate || '',
+              priority: val.priority || '',
+              otLines: val.totalLine || '',
+              isSelected: false
+            });
           });
           if (this.data.allOrders.length > 0) {
             const selectedArr = this.allOrders.filter(element => this.data.allOrders.includes(element.orderNumber));
@@ -161,7 +174,7 @@ export class ViewOrdersComponent implements OnInit {
       }
       else {
         this.global.ShowToastr(ToasterType.Error, this.global.globalErrorMsg(), ToasterTitle.Error);
-        console.log("OrdersInZone",res.responseMessage);
+        console.log("OrdersInZone - Invalid response", res);
       }
       
       
@@ -174,16 +187,38 @@ export class ViewOrdersComponent implements OnInit {
     }
     if (option === OrderActions.SelectAllOrders) {
       this.isMultiSelectMode = false;
-      this.allOrders.forEach(val => {
-        val.isSelected = true;
+      
+      // Get indices of positions with ToteIDs filled
+      const toteIndices: number[] = [];
+      if (this.data.toteSetup && Array.isArray(this.data.toteSetup)) {
+        this.data.toteSetup.forEach((tote, index) => {
+          if (tote.toteID && tote.toteID !== '') {
+            toteIndices.push(index);
+          }
+        });
+      }
+      
+      // Select orders only at indices where ToteIDs exist
+      this.allOrders.forEach((val, index) => {
+        if (toteIndices.length > 0) {
+          // Only select if this index has a corresponding ToteID
+          val.isSelected = toteIndices.includes(index);
+        } else {
+          // If no tote setup data, select all
+          val.isSelected = true;
+        }
       });
-      this.selectedOrders = this.allOrders.map(val => val.orderNumber);
+      
+      this.selectedOrders = this.allOrders
+        .filter(val => val.isSelected)
+        .map(val => val.orderNumber);
     }
     if (option === OrderActions.UnselectAllOrders) {
       this.isMultiSelectMode = false;
       this.deselectAllOrders();
       this.selectedOrders = [];
       this.orderTransDataSource = new MatTableDataSource<TransactionData>([]);
+      this.totalTransactionRecords = 0;
     }
   }
 
@@ -207,6 +242,7 @@ export class ViewOrdersComponent implements OnInit {
         // Clear transactions if no orders selected
         if (this.selectedOrders.length === 0) {
           this.orderTransDataSource = new MatTableDataSource<TransactionData>([]);
+          this.totalTransactionRecords = 0;
         }
       }
       else {
@@ -230,6 +266,7 @@ export class ViewOrdersComponent implements OnInit {
         });
         this.selectedOrders = [];
         this.orderTransDataSource = new MatTableDataSource<TransactionData>([]);
+        this.totalTransactionRecords = 0;
       }
       else {
         // Deselect all previously selected orders
@@ -243,7 +280,8 @@ export class ViewOrdersComponent implements OnInit {
           }
         });
         
-        // Fetch transactions for the selected order
+        // Fetch transactions for the selected order (single order, not "view all")
+        this.isViewAllOrderLines = false;
         this.fetchOrderTransactions(row.orderNumber);
       }
     }
@@ -259,11 +297,17 @@ export class ViewOrdersComponent implements OnInit {
   }
 
   private fetchOrderTransactions(orderNumber: string): void {
+    if (!orderNumber) {
+      this.orderTransDataSource = new MatTableDataSource<TransactionData>([]);
+      this.totalTransactionRecords = 0;
+      return;
+    }
+
     let paylaod = {
-      "Draw": 0,
+      "Draw": PaginationData.Draw,
       "OrderNumber": orderNumber,
-      "sRow": 1,
-      "eRow": 10,
+      "sRow": PaginationData.StartRow,
+      "eRow": this.isViewAllOrderLines ? PaginationData.Max : PaginationData.EndRow,
       "SortColumnNumber": 0,
       "SortOrder": UniqueConstants.Asc,
       "Filter": "1=1", 
@@ -271,6 +315,7 @@ export class ViewOrdersComponent implements OnInit {
     this.iInductionManagerApi.InZoneTransDT(paylaod).subscribe((res) => {
       if (res.isSuccess && res.value) {
         this.transData = cleanData(res.value.transactions as TransactionData[]);
+        this.totalTransactionRecords = this.transData.length;
         this.orderTransDataSource = new MatTableDataSource<TransactionData>(this.transData);
         this.orderTransDataSource.paginator = this.paginatorTrans;
         this.orderTransDataSource.sort = this.viewTransSort;
@@ -279,6 +324,26 @@ export class ViewOrdersComponent implements OnInit {
         this.global.ShowToastr(ToasterType.Error, this.global.globalErrorMsg(), ToasterTitle.Error);
       }
     });
+  }
+
+  onViewOrderLineFilter(event: MatRadioChange) {
+    if (event.value === 'vAllOrderFilter') {
+      this.fetchOrdersByFilter(true);
+    }
+    else if (event.value === 'vSelectedOrderFilter') {
+      this.fetchOrdersByFilter(false);
+    }
+  }
+
+  private fetchOrdersByFilter(viewAll: boolean): void {
+    this.isViewAllOrderLines = viewAll;
+    let orderNum = '';
+    this.allOrders.forEach((val) => {
+      if (viewAll || val.isSelected) {
+        orderNum += val.orderNumber + ',';
+      }
+    });
+    this.fetchOrderTransactions(orderNum);
   }
 
 }

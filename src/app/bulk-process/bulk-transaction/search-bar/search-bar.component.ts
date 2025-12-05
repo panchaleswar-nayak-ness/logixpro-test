@@ -7,6 +7,7 @@ import { BulkTransactionType, BulkTransactionView } from 'src/app/common/constan
 import { PrintReports } from 'src/app/common/constants/strings.constants';
 import { BatchesResponse, OrderBatchToteQtyResponse, OrderResponse, TotesResponse } from 'src/app/common/Model/bulk-transactions';
 import { GlobalService } from 'src/app/common/services/global.service';
+import { SpinnerService } from 'src/app/common/init/spinner.service';
 
 @Component({
   selector: 'app-search-bar',
@@ -45,6 +46,7 @@ export class SearchBarComponent implements OnDestroy, AfterViewInit {
   private readonly destroy$ = new Subject<void>();
   private readonly SEARCH_DEBOUNCE_TIME = 500;
   private readonly TOOLTIP_DURATION = 10000; // 10 seconds
+  private readonly SEARCH_WAIT_TIME = 600; // Wait slightly longer than debounce time
 
   get showQuickPickLabel(): boolean {
     return this.bulkTransactionType === this.BulkTransactionType.PICK && this.isQuickPick && !this.isEmergencyPick;
@@ -83,7 +85,11 @@ export class SearchBarComponent implements OnDestroy, AfterViewInit {
     return this.bulkTransactionType === this.BulkTransactionType.PICK && (this.allowQuickPick || this.hasEmergencyPick);
   }
 
-  constructor(private readonly ngZone: NgZone, private readonly global: GlobalService) {
+  constructor(
+    private readonly ngZone: NgZone, 
+    private readonly global: GlobalService,
+    private readonly spinnerService: SpinnerService
+  ) {
     // Setup debounced search
     this.searchSubject.pipe(
       debounceTime(this.SEARCH_DEBOUNCE_TIME),
@@ -140,6 +146,20 @@ export class SearchBarComponent implements OnDestroy, AfterViewInit {
     this.searchSubject.next(event);
   }
 
+  // Helper method to extract ID from item based on view
+  private getIdFromItem(item: OrderResponse | TotesResponse | BatchesResponse): string | undefined {
+    switch (this.view) {
+      case BulkTransactionView.BATCH:
+        return (item as BatchesResponse).batchId;
+      case BulkTransactionView.TOTE:
+        return (item as TotesResponse).toteId;
+      case BulkTransactionView.ORDER:
+        return (item as OrderResponse).orderNumber;
+      default:
+        return undefined;
+    }
+  }
+
   // Actual search implementation with debounce
   private performSearch(event: string) {
     if (!event) {
@@ -147,44 +167,45 @@ export class SearchBarComponent implements OnDestroy, AfterViewInit {
       return;
     }
 
-    const getId = (item: any): string | undefined => {
-      switch (this.view) {
-        case BulkTransactionView.BATCH:
-          return (item as BatchesResponse).batchId;
-        case BulkTransactionView.TOTE:
-          return (item as TotesResponse).toteId;
-        case BulkTransactionView.ORDER:
-          return (item as OrderResponse).orderNumber;
-        default:
-          return undefined;
-      }
-    };
-
     this.filteredOrders = this.orders.filter(item => {
-      const id = getId(item);
+      const id = this.getIdFromItem(item);
       return !!id && id.toLowerCase().startsWith(event.toLowerCase());
     });
   }
 
-  addItem() {
-
-    const matchedOrder = this.filteredOrders.find(
-      (o): o is OrderResponse =>
-        'orderNumber' in o && o.orderNumber === this.searchText
-    );
+  async addItem() {
+    // Show loader while waiting for search to complete
+    this.spinnerService.show();
+    
+    // Wait for debounced search to complete
+    await this.waitForSearchCompletion();
+    
+    const matchedOrder = this.filteredOrders.find((o) => {
+      const id = this.getIdFromItem(o);
+      return id === this.searchText;
+    });
 
     if (!this.batchSeleted && matchedOrder) {
       this.addItemEmitter.emit(matchedOrder);
     }
     this.filteredOrders = [];
     this.searchText = "";
+    
+    // Hide loader after processing
+    this.spinnerService.hide();
   }
 
-  dropdownSelect(event: string) {
+  private waitForSearchCompletion(): Promise<void> {
+    return new Promise((resolve) => {
+      setTimeout(() => resolve(), this.SEARCH_WAIT_TIME);
+    });
+  }
+
+  dropdownSelect(event: OrderResponse | TotesResponse | BatchesResponse) {
     if (!this.batchSeleted) {
       this.addItemEmitter.emit(event);
-      this.filteredOrders = [];
     }
+    this.filteredOrders = [];
     this.searchText = "";
   }
 

@@ -1,4 +1,4 @@
-import {Component, Inject, Input, OnInit} from '@angular/core';
+import {Component, Inject, Input, OnInit, AfterViewInit, ViewChildren, QueryList, ElementRef, NgZone} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
 import {AlertConfirmationComponent} from 'src/app/dialogs/alert-confirmation/alert-confirmation.component';
 import {AuthService} from 'src/app/common/init/auth.service';
@@ -19,7 +19,7 @@ import { PartialToteIdResponse } from 'src/app/common/Model/bulk-transactions';
   templateUrl: './bm-toeid-entry.component.html',
   styleUrls: ['./bm-toeid-entry.component.scss'],
 })
-export class BmToteidEntryComponent implements OnInit {
+export class BmToteidEntryComponent implements OnInit, AfterViewInit {
   selectedList: SelectedOrderItem[];
   nextToteID: any;
   preferences: any;
@@ -30,6 +30,7 @@ export class BmToteidEntryComponent implements OnInit {
   batchid: any;
   public iAdminApiService: IAdminApiService;
   public iBulkProcessApiService: IBulkProcessApiService;
+  @ViewChildren('toteIdInput') toteIdInputs!: QueryList<ElementRef>;
   constructor(
     public dialogRef: MatDialogRef<any>,
     public bulkProcessApiService: BulkProcessApiService,
@@ -37,7 +38,8 @@ export class BmToteidEntryComponent implements OnInit {
     private global: GlobalService,
     public adminApiService: AdminApiService,
     private authService: AuthService,
-    private printApiService: PrintApiService
+    private printApiService: PrintApiService,
+    private ngZone: NgZone
   ) {
     this.selectedList = data.selectedOrderList;
     this.iAdminApiService = adminApiService;
@@ -61,6 +63,32 @@ export class BmToteidEntryComponent implements OnInit {
     });
     
     this.companyInfo();
+  }
+
+  ngAfterViewInit(): void {
+    // Auto-focus on the first empty Tote ID field
+    this.focusFirstEmptyToteId();
+  }
+
+  private isToteIdEmpty(toteId: undefined | null | string | number): boolean {
+    return toteId === undefined || toteId === null || toteId.toString().trim() === '';
+  }
+
+  private focusFirstEmptyToteId(): void {
+    // Find the first empty tote ID field
+    const firstEmptyIndex = this.selectedList.findIndex(
+      item => this.isToteIdEmpty(item.toteId)
+    );
+
+    if (firstEmptyIndex !== -1) {
+      // Focus on the first empty field
+      const inputs = this.toteIdInputs.toArray();
+      if (inputs[firstEmptyIndex]) {
+        this.ngZone.run(() => {
+          inputs[firstEmptyIndex].nativeElement.focus();
+        });
+      }
+    }
   }
 
   // TODO: No need to get workstation preferences again.  We can pass them from the parent component.
@@ -197,7 +225,6 @@ export class BmToteidEntryComponent implements OnInit {
       this.global.ShowToastr(ToasterType.Error, 'No valid order data to submit', ToasterTitle.Error);
       return;
     }
-
     
     this.iBulkProcessApiService.SubmitCaseWiseOrders(this.data.rawOrderList)
       .then((result: ApiResult<PartialToteIdResponse[]>) => {
@@ -221,11 +248,7 @@ export class BmToteidEntryComponent implements OnInit {
           });
           const transformedData = Array.from(orderGroups.values());
           this.dialogRef.close(transformedData);
-          // Now, remove order lines from tote
-          const removeSuccess = this.removeOrderLinesFromTote();
-          if (!removeSuccess) {
-            return; // Stop execution if removal failed
-          }
+          
         } else {
           this.global.ShowToastr(ToasterType.Error, result.errorMessage || ToasterMessages.SomethingWentWrong, ToasterTitle.Error);
         }
@@ -276,6 +299,22 @@ export class BmToteidEntryComponent implements OnInit {
         this.selectedList[i].IsError = false;
       } else {
         this.selectedList[i].IsTote = true;
+      }
+    }
+  }
+
+  onToteIdEnter(currentIndex: number) {
+    // Find the next empty tote ID field
+    for (let i = currentIndex + 1; i < this.selectedList.length; i++) {
+      if (this.isToteIdEmpty(this.selectedList[i].toteId)) {
+        // Focus on the next empty field
+        const inputs = this.toteIdInputs.toArray();
+        if (inputs[i]) {
+          this.ngZone.run(() => {
+            inputs[i].nativeElement.focus();
+          });
+        }
+        break;
       }
     }
   }

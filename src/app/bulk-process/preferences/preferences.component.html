@@ -127,6 +127,16 @@
             </mat-form-field>
           </div>
         </div>
+
+        <div class="row g-2 mt-3">
+          <app-icon-heading-component heading="Bulk Pick Preference" icon="unarchive" [automationId]="'bulkpick-setting-heading'"></app-icon-heading-component>
+          <div class="card p-3">
+            <div class="d-flex justify-content-between mb-0" *ngIf="companyInfo">
+              Allow Overpick
+              <mat-slide-toggle [(ngModel)]="companyInfo.allowOverpick" (change)="payload()" color="primary" matTooltip="Turn on to allow picking quantity greater than order quantity in Bulk Pick" matTooltipPosition="above" data-automation-id="toggle-allow-overpick"></mat-slide-toggle>
+            </div>
+          </div>
+        </div>
       </div>
     
     </div>

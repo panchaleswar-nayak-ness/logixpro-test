@@ -131,6 +131,7 @@
                                         (sortActionDescription)="indexOfelement" [attr.data-automation-id]="'table-header-' + col.colDef">{{ col.colTitle }}</th>
                                     <td *matCellDef="let element; let i = index" class="cell-custom-style"
                                         (dblclick)="col.colDef == 'Item Number' && viewInInventoryMaster(element)"
+                                        (contextmenu)="!isHistory && onContextMenu($event, element[col.colHeader] ?? '', col.colHeader)"
                                         #tooltip="matTooltip" [matTooltip]="element[col.colHeader]"
                                         matTooltipPosition="above"
                                         [matTooltipDisabled]="!(cell.scrollWidth > cell.clientWidth)"
@@ -164,6 +165,7 @@
                                 </ng-container>
 
                                 <tr class="mat-row w-100" *matNoDataRow
+                                    (contextmenu)="!isHistory && onContextMenu($event, '', '')"
                                     [attr.colspan]="displayedColumns && displayedColumns.length">
                                     <div class="p-3">
                                         No data available in table.
@@ -345,3 +347,10 @@
 
 
 </ng-template>
+
+<app-direct-filteration-columns-menu
+  *ngIf="isActiveTrigger && !isHistory"
+  [componentName]="'ReprocessTransaction'"
+  (filterationColumnsSelected)="directFilterationColumnsSelected($event)"
+  data-automation-id="reprocess-transaction-context-menu">
+</app-direct-filteration-columns-menu>

@@ -78,7 +78,9 @@
                                             <mat-form-field class="custom-form-field w-100"   [ngClass]="{'mat-form-field-invalid':list.IsError == true}"  appearance="outline" data-automation-id="form-field-tote-id">
                                           
                                                 <input matInput type="text" maxlength="50" 
-                                                (change)="validtote($event,i)"    
+                                                #toteIdInput
+                                                (change)="validtote($event,i)"
+                                                (keydown.enter)="onToteIdEnter(i)"
                                                 [(ngModel)]="list.toteId"
                                                 [value]="list.toteId===undefined?'':list.toteId"
                                                 [disabled]="view == 'batch' || view == 'tote'" [attr.data-automation-id]="'input-tote-id-' + (list.toteId || '')">

@@ -6,6 +6,7 @@ import { GlobalService } from 'src/app/common/services/global.service';
 import { IConsolidationApi } from 'src/app/common/services/consolidation-api/consolidation-api-interface';
 import { ConsolidationApiService } from 'src/app/common/services/consolidation-api/consolidation-api.service';
 import {  StringConditions ,ToasterTitle,ToasterType,DialogConstants,TableConstant,ColumnDef, Placeholders} from 'src/app/common/constants/strings.constants';
+import { ConfPackSelectTransaction, ConfPackTransaction } from 'src/app/common/interface/cm-confirm-and-packaging/conf-pack-select-transaction.interface';
 
 @Component({
   selector: 'app-cm-confirm-and-packing-select-transaction',
@@ -16,13 +17,14 @@ export class CmConfirmAndPackingSelectTransactionComponent implements OnInit {
   placeholders = Placeholders;
   itemNumber: any;
   orderNumber: any;
-  confPackSelectTable: any[] = [];
+  confPackSelectTable: ConfPackSelectTransaction[] = [];
   preferencesData: any; 
   displayedColumns: string[] = ['sT_ID', 'itemNumber', TableConstant.LineNumber, TableConstant.completedQuantity, ColumnDef.TransactionQuantity];
   dataSourceList: any
   confPackTransTable: any;
   contID: any;
   id: any;
+  selectedRow: ConfPackSelectTransaction | null = null;
   public iConsolidationAPI: IConsolidationApi;
 
   constructor(
@@ -59,6 +61,14 @@ export class CmConfirmAndPackingSelectTransactionComponent implements OnInit {
     });
   }
 
+  selectRow(row: ConfPackSelectTransaction) {
+    this.selectedRow = row;
+  }
+
+  isRowSelected(row: ConfPackSelectTransaction): boolean {
+    return this.selectedRow !== null && this.selectedRow.sT_ID === row.sT_ID;
+  }
+
   openScanItem(ItemNumber: any, id: any) {
     let index = this.confPackTransTable.findIndex(x => x.sT_ID == id);
     this.confPackTransTable[index].active = true;
@@ -76,8 +86,11 @@ export class CmConfirmAndPackingSelectTransactionComponent implements OnInit {
     })
   }
   async ConfPackSelectTableClick(id) {
+    if (!this.selectedRow) {
+      return;
+    }
     let obj: any = {
-      id: id,
+      id: this.selectedRow.sT_ID,
       orderNumber: this.orderNumber,
       containerID: this.contID,
       modal: ""
@@ -88,7 +101,9 @@ export class CmConfirmAndPackingSelectTransactionComponent implements OnInit {
           this.global.ShowToastr(ToasterType.Error, 'An error has occurred', ToasterTitle.Error);
           console.log("ConfPackProcModalUpdate", res.responseMessage);
         } else if (res.data == "Modal") {
-          this.openScanItem(this.itemNumber, id);
+          if (this.selectedRow) {
+            this.openScanItem(this.itemNumber, this.selectedRow.sT_ID);
+          }
 
 
         } else {
@@ -105,7 +120,27 @@ export class CmConfirmAndPackingSelectTransactionComponent implements OnInit {
             this.global.Print(`FileName:PrintConfPackPackList|OrderNum:${this.orderNumber}`);
 
           }
-          this.dialogRef.close(StringConditions.True);
+          if (this.selectedRow) {
+            // Get containerID with clear priority: selectedRow > contID
+            let containerID = this.selectedRow.containerID ?? this.contID;
+            
+            // If you need to verify against transTable, do it explicitly
+            if (this.confPackTransTable) {
+              const transData = this.confPackTransTable.filteredData || this.confPackTransTable.data || this.confPackTransTable;
+              if (Array.isArray(transData)) {
+                const found = transData.find((x: ConfPackTransaction) => x.sT_ID === this.selectedRow?.sT_ID);
+                if (found?.containerID) {
+                  containerID = found.containerID;
+                }
+              }
+            }
+            
+            this.dialogRef.close({ 
+              isExecuted: true, 
+              containerID: containerID,
+              selectedId: this.selectedRow.sT_ID
+            });
+          }
         }
 
       }

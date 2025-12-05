@@ -2,6 +2,7 @@ import { Observable } from "rxjs";
 import { AddPickToteInductionFilter } from "src/app/induction-manager/models/PickToteInductionModel";
 import { PickToteTransPayload } from "../../types/pick-tote-manager.types";
 import { ApiResult } from "../../types/CommonTypes";
+import { OrdersInZoneRequest, OrdersInZoneResponse, OrdersInZoneApiResponse } from "../../Model/orders-in-zone";
 
 export interface IInductionManagerApiService {
   getPickBatchTransactionTable(payload: any);
@@ -76,7 +77,7 @@ export interface IInductionManagerApiService {
 
   PickBatchFilterDelete(payload: any);
 
-  OrdersInZone(payload: any);
+  OrdersInZone(payload: OrdersInZoneRequest): Observable<OrdersInZoneApiResponse | null>;
 
   WSPickZoneSelect(payload: any);
 
