@@ -1,0 +1,299 @@
+# ==============================================================================
+# Archive JFrog Artifacts Workflow
+# ==============================================================================
+#
+# DESCRIPTION:
+#   Automatically archives old artifacts from JFrog Artifactory to maintain
+#   storage hygiene. Files beyond the retention threshold are moved to an
+#   archive folder in a flat structure (no subfolder hierarchy).
+#
+# TRIGGERS:
+#   - Scheduled: Runs daily at 10:15 UTC
+#   - Manual: Via workflow_dispatch with customizable parameters
+#
+# PARAMETERS (Manual Runs):
+#   - dryRun:        Preview mode - logs actions without making changes (default: true)
+#   - keepCount:     Number of newest files to retain per target folder
+#   - archiveFolder: Destination path for archived files
+#   - targetFolders: Comma-separated list of source folders to process
+#
+# PROCEDURE:
+#   1. For each target folder:
+#      a. Fetch file list via Artifactory Storage API
+#      b. Sort files by date (newest first)
+#      c. Keep the N newest files (based on keepCount)
+#      d. Move remaining (older) files to archive subfolder
+#
+# REQUIRED (GITHUB) SECRETS:
+#   - ARTIFACTORY_USERNAME: JFrog Artifactory username
+#   - ARTIFACTORY_PASSWORD: JFrog Artifactory password/token
+#
+# REQUIRED (GITHUB) VARIABLES:
+#   - ARTIFACTORY_URL:       Base URL for Artifactory (https://peaklogix.jfrog.io)
+#   - REPOSITORY_NAME:       Name of the Artifactory repository (binaries-generic-prod-local)
+#   - KEEP_COUNT:            Number of newest files to retain per target folder
+#   - ARCHIVE_FOLDER:        Destination path for archived files
+#   - TARGET_FOLDERS:        Comma-separated list of source folders to process
+#   - DRY_RUN:               (Optional) Set to 'true' for preview mode (default: 'true')
+#
+# EXAMPLE MANUAL RUN:
+#   keepCount: 5
+#   archiveFolder: MyProject/archive
+#   targetFolders: MyProject/RC,MyProject/tags
+#   dryRun: false
+#
+#   Result: Keeps 5 newest files in MyProject/RC AND 5 newest files in MyProject/tags
+#           (up to 10 files total). Older files are moved directly to MyProject/archive/.
+#
+# ==============================================================================
+
+name: Archive JFrog Artifacts
+
+on:
+  schedule:
+    # Run daily at 10:15 UTC
+    - cron: '15 10 * * *'
+  workflow_dispatch:
+    inputs:
+      dryRun:
+        description: 'Run in Dry Run mode (no changes)'
+        required: false
+        type: boolean
+        default: true
+      keepCount:
+        description: 'Number of artifacts to keep per target folder'
+        required: true
+        type: number
+      archiveFolder:
+        description: 'Name of the archive folder'
+        required: true
+        type: string
+      targetFolders:
+        description: 'Target folders to archive (comma-separated, e.g., "releases,snapshots")'
+        required: true
+        type: string
+
+jobs:
+  archive-artifacts:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Run Archive Script
+        shell: bash
+        env:
+          # Artifactory connection settings (from repository variables/secrets)
+          ARTIFACTORY_URL: ${{ vars.ARTIFACTORY_URL }}
+          ARTIFACTORY_USERNAME: ${{ secrets.ARTIFACTORY_USERNAME }}
+          ARTIFACTORY_PASSWORD: ${{ secrets.ARTIFACTORY_PASSWORD }}
+          REPOSITORY_NAME: ${{ vars.REPOSITORY_NAME }}
+          # Archive settings: manual inputs override environment variables
+          KEEP_COUNT: ${{ inputs.keepCount || vars.KEEP_COUNT }}
+          ARCHIVE_FOLDER: ${{ inputs.archiveFolder || vars.ARCHIVE_FOLDER }}
+          TARGET_FOLDERS_INPUT: ${{ inputs.targetFolders || vars.TARGET_FOLDERS }}
+          DRY_RUN: ${{ inputs.dryRun || vars.DRY_RUN || 'true' }}
+        run: |
+          set -euo pipefail  # Exit on error, undefined vars, and pipe failures
+
+          # Validate required environment variables
+          if [ -z "$KEEP_COUNT" ]; then
+              echo "ERROR: KEEP_COUNT is not set. Please set the vars.KEEP_COUNT repository variable."
+              exit 1
+          fi
+          if [ -z "$ARCHIVE_FOLDER" ]; then
+              echo "ERROR: ARCHIVE_FOLDER is not set. Please set the vars.ARCHIVE_FOLDER repository variable."
+              exit 1
+          fi
+          if [ -z "$TARGET_FOLDERS_INPUT" ]; then
+              echo "ERROR: TARGET_FOLDERS is not set. Please set the vars.TARGET_FOLDERS repository variable."
+              exit 1
+          fi
+
+          # Map environment variables to script variables
+          REPO="$REPOSITORY_NAME"
+          USERNAME="$ARTIFACTORY_USERNAME"
+          PASSWORD="$ARTIFACTORY_PASSWORD"
+
+          # Convert comma-separated target folders to array
+          IFS=',' read -ra TARGET_FOLDERS <<< "$TARGET_FOLDERS_INPUT"
+
+          echo "Starting Archive Script..."
+          echo "==============="
+          echo "Configuration:"
+          echo "  URL: [REDACTED]"
+          echo "  Repo: $REPO"
+          echo "  Targets: ${TARGET_FOLDERS[*]}"
+          echo "  Keep: $KEEP_COUNT (per target folder)"
+          echo "  Archive To: $ARCHIVE_FOLDER"
+          echo "  Dry Run: $DRY_RUN"
+          echo "==============="
+          echo
+
+          # Construct Auth Header (use -w 0 to prevent line wrapping in base64 output)
+          AUTH_HEADER="Authorization: Basic $(echo -n "$USERNAME:$PASSWORD" | base64 -w 0)"
+
+          # Function to fetch files from a single folder
+          # Returns format: TIMESTAMP|SOURCE_FOLDER|FILENAME
+          fetch_files_from_folder() {
+              local FOLDER="$1"
+              local BASE_PATH="$REPO/$FOLDER"
+              local LIST_URL="$ARTIFACTORY_URL/artifactory/api/storage/$BASE_PATH?list&deep=0&listFolders=0&mdTimestamps=1"
+
+              local RESPONSE=$(curl -s -H "$AUTH_HEADER" "$LIST_URL")
+
+              if echo "$RESPONSE" | grep -q "errors"; then
+                  echo "Error fetching file list from $FOLDER: $RESPONSE" >&2
+                  return 1
+              fi
+
+              # Output format: TIMESTAMP|SOURCE_FOLDER|FILENAME
+              echo "$RESPONSE" | jq -r --arg folder "$FOLDER" \
+                  '.files[] | select(.folder==false) | "\(.lastModified)|\($folder)|\(.uri)"' 2>/dev/null | sed 's/|\([^|]*\)|\/*/|\1|/'
+          }
+
+          # Process each target folder independently
+          ARCHIVE_FAILED=false
+          TOTAL_KEPT=0
+          TOTAL_ARCHIVED=0
+
+          for FOLDER in "${TARGET_FOLDERS[@]}"; do
+              # Trim whitespace from folder name
+              FOLDER=$(echo "$FOLDER" | xargs)
+              echo ""
+              echo "========================================"
+              echo "Processing folder: $FOLDER"
+              echo "========================================"
+
+              # Fetch files from this folder
+              FOLDER_FILES=$(fetch_files_from_folder "$FOLDER")
+
+              if [ $? -ne 0 ]; then
+                  echo "Failed to fetch from $FOLDER. Stopping."
+                  exit 1
+              fi
+
+              if [ -z "$FOLDER_FILES" ]; then
+                  echo "No files found in $FOLDER."
+                  continue
+              fi
+
+              # Sort files by date (newest first)
+              SORTED_FILES=$(echo "$FOLDER_FILES" | sort -r)
+
+              FOLDER_TOTAL=$(echo "$SORTED_FILES" | wc -l | tr -d ' ')
+              echo "Total files in $FOLDER: $FOLDER_TOTAL"
+
+              # Identify files to keep (newest N files in this folder)
+              FILES_TO_KEEP=$(echo "$SORTED_FILES" | head -n "$KEEP_COUNT")
+              KEEP_ACTUAL=$(echo "$FILES_TO_KEEP" | grep -c . || echo "0")
+
+              echo ""
+              echo "Files to Keep (Newest $KEEP_COUNT in $FOLDER):"
+              if [ -z "$FILES_TO_KEEP" ]; then
+                  echo "  (None)"
+              else
+                  echo "$FILES_TO_KEEP" | while IFS='|' read -r CREATED SOURCE_FOLDER FILENAME; do
+                      if [ -n "$FILENAME" ]; then
+                          echo "  [KEEP] $FILENAME ($CREATED)"
+                      fi
+                  done
+              fi
+              TOTAL_KEPT=$((TOTAL_KEPT + KEEP_ACTUAL))
+
+              # Identify files to archive (everything after the newest N)
+              START_LINE=$((KEEP_COUNT + 1))
+              FILES_TO_ARCHIVE=$(echo "$SORTED_FILES" | tail -n +$START_LINE)
+
+              if [ -z "$FILES_TO_ARCHIVE" ]; then
+                  echo ""
+                  echo "No files to archive in $FOLDER (Total files <= Keep Count)."
+                  continue
+              fi
+
+              # Move each file to the archive folder
+              echo ""
+              echo "Files to Archive from $FOLDER:"
+              while IFS='|' read -r CREATED SOURCE_FOLDER FILENAME; do
+                  if [ -z "$FILENAME" ]; then continue; fi
+
+                  SOURCE_PATH="$REPO/$SOURCE_FOLDER/$FILENAME"
+                  DEST_PATH="$REPO/$ARCHIVE_FOLDER/$FILENAME"
+
+                  TOTAL_ARCHIVED=$((TOTAL_ARCHIVED + 1))
+
+                  echo "  [ARCHIVE] $FILENAME ($CREATED)"
+                  echo "    From: $SOURCE_PATH"
+                  echo "    To:   $DEST_PATH"
+
+                  if [ "$DRY_RUN" == "true" ]; then
+                      echo "    Status: [DRY RUN] No changes made"
+                  else
+                      # Use Artifactory Move API to relocate the file
+                      MOVE_URL="$ARTIFACTORY_URL/artifactory/api/move/$SOURCE_PATH?to=/$DEST_PATH"
+
+                      echo "    [DEBUG] Move URL: $MOVE_URL"
+                      echo "    [DEBUG] Executing move request..."
+
+                      # Capture HTTP status code along with response body
+                      HTTP_RESPONSE=$(curl -s -w "\n%{http_code}" -X POST -H "$AUTH_HEADER" "$MOVE_URL")
+                      HTTP_STATUS=$(echo "$HTTP_RESPONSE" | tail -n 1)
+                      MOVE_RESPONSE=$(echo "$HTTP_RESPONSE" | sed '$d')
+
+                      echo "    [DEBUG] HTTP Status Code: $HTTP_STATUS"
+                      echo "    [DEBUG] Response Body: $MOVE_RESPONSE"
+
+                      if [ "$HTTP_STATUS" -lt 200 ] || [ "$HTTP_STATUS" -ge 300 ]; then
+                          echo "    Status: FAILED (HTTP $HTTP_STATUS)"
+                          echo "    Error: $MOVE_RESPONSE"
+                          ARCHIVE_FAILED=true
+                          break
+                      elif echo "$MOVE_RESPONSE" | grep -q "errors"; then
+                          echo "    Status: FAILED"
+                          echo "    Error: $MOVE_RESPONSE"
+                          ARCHIVE_FAILED=true
+                          break
+                      fi
+
+                      # Verify the move by checking if file exists at destination
+                      echo "    [DEBUG] Verifying move operation..."
+                      VERIFY_URL="$ARTIFACTORY_URL/artifactory/api/storage/$DEST_PATH"
+                      VERIFY_RESPONSE=$(curl -s -w "\n%{http_code}" -H "$AUTH_HEADER" "$VERIFY_URL")
+                      VERIFY_STATUS=$(echo "$VERIFY_RESPONSE" | tail -n 1)
+
+                      echo "    [DEBUG] Verification HTTP Status: $VERIFY_STATUS"
+
+                      if [ "$VERIFY_STATUS" -eq 200 ]; then
+                          echo "    Status: Successfully moved (verified at destination)"
+                      else
+                          echo "    Status: Move reported success but file NOT found at destination!"
+                          echo "    [DEBUG] Verification response: $(echo "$VERIFY_RESPONSE" | sed '$d')"
+
+                          # Check if file still exists at source
+                          SOURCE_CHECK_URL="$ARTIFACTORY_URL/artifactory/api/storage/$SOURCE_PATH"
+                          SOURCE_CHECK=$(curl -s -w "\n%{http_code}" -H "$AUTH_HEADER" "$SOURCE_CHECK_URL")
+                          SOURCE_STATUS=$(echo "$SOURCE_CHECK" | tail -n 1)
+                          echo "    [DEBUG] Source file check HTTP Status: $SOURCE_STATUS"
+                          if [ "$SOURCE_STATUS" -eq 200 ]; then
+                              echo "    [DEBUG] Source file still exists - move may have failed silently!"
+                          else
+                              echo "    [DEBUG] Source file no longer exists"
+                          fi
+                      fi
+                  fi
+              done <<< "$FILES_TO_ARCHIVE"
+
+              # Stop processing if an archive operation failed
+              if [ "$ARCHIVE_FAILED" == "true" ]; then
+                  break
+              fi
+          done
+
+          # Check if any archive operation failed
+          if [ "$ARCHIVE_FAILED" == "true" ]; then
+              exit 1
+          fi
+
+          echo ""
+          echo "========================================"
+          echo "Archive process completed."
+          echo "  Total files kept: $TOTAL_KEPT"
+          echo "  Total files archived: $TOTAL_ARCHIVED"
+          echo "========================================"
