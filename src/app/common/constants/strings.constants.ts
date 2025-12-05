@@ -353,6 +353,8 @@ export const ToasterMessages = {
     QtyNewToteZero: 'Quantity Put in New Tote should be greater than 0',
     QuantityCannotExceedOriginalTransactionQuantity: 'Quantity cannot exceed the original transaction quantity of this order.',
     ItemNumberCannotBeRemoved: 'Item number cannot be removed or changed when Item Quantity, Quantity Allocated Pick, or Quantity Allocated Put Away is present in the record.',
+    DialogClosedWithoutSelectedId: 'Dialog closed without selected transaction ID.',
+    TransactionNotFound: (transactionId: number | string) => `Transaction with ID ${transactionId} not found.`,
     RecordCreatedSuccessful: 'Record Created Successfully',
     ItemNotFound: "Item not found"
 }
