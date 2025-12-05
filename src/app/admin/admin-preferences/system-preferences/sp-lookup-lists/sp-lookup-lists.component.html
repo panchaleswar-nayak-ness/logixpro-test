@@ -20,16 +20,22 @@
             <app-lookup-tote-setup></app-lookup-tote-setup>
         </mat-tab>
         <mat-tab label="Hot Pick" data-automation-id="tab-hot-pick">
-            <app-lookup-hot-pick></app-lookup-hot-pick>
+            <app-lookup-list-generic [config]="hotPickConfig"></app-lookup-list-generic>
         </mat-tab>
         <mat-tab label="Hot Put Away" data-automation-id="tab-hot-put-away">
-            <app-lookup-hot-put-away></app-lookup-hot-put-away>
+            <app-lookup-list-generic [config]="hotPutAwayConfig"></app-lookup-list-generic>
+        </mat-tab>
+        <mat-tab label="Pick" data-automation-id="tab-pick">
+            <app-lookup-list-generic [config]="pickConfig"></app-lookup-list-generic>
+        </mat-tab>
+        <mat-tab label="Put Away" data-automation-id="tab-put-away">
+            <app-lookup-list-generic [config]="putAwayConfig"></app-lookup-list-generic>
         </mat-tab>
         <mat-tab label="Hot Move" data-automation-id="tab-hot-move">
-            <app-lookup-hot-move></app-lookup-hot-move>
+            <app-lookup-list-generic [config]="hotMoveConfig"></app-lookup-list-generic>
         </mat-tab>
         <mat-tab label="Blind Induction" data-automation-id="tab-blind-induction">
-            <app-lookup-blind-induction></app-lookup-blind-induction>
+            <app-lookup-list-generic [config]="blindInductionConfig"></app-lookup-list-generic>
         </mat-tab>
     </mat-tab-group>
 </div>

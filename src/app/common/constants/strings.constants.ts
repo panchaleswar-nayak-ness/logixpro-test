@@ -353,6 +353,7 @@ export const ToasterMessages = {
     QtyNewToteZero: 'Quantity Put in New Tote should be greater than 0',
     QuantityCannotExceedOriginalTransactionQuantity: 'Quantity cannot exceed the original transaction quantity of this order.',
     ItemNumberCannotBeRemoved: 'Item number cannot be removed or changed when Item Quantity, Quantity Allocated Pick, or Quantity Allocated Put Away is present in the record.',
+    RecordCreatedSuccessful: 'Record Created Successfully',
     ItemNotFound: "Item not found"
 }
 
@@ -515,7 +516,10 @@ export const ColumnDef = {
   Bin: 'bin',
   Warehouse: 'Warehouse',
   RequiredDate: 'requiredDate',
-  actions: 'actions'
+  actions: 'actions',
+  StatusCode: 'statuscode',
+  DisplaySequence: 'displaySequence',
+  CodeValue: 'codeValue'
 }
 
 export const Case = {
@@ -1016,4 +1020,35 @@ export const OrderActions = {
 export const Icons = {
   Info: 'info',
   Print: 'print'
+}
+
+export const SystemConstants = {
+  Default: 'Default'
+}
+
+export const ListNames = {
+  ShortPick: 'ShortPick',
+  PutAwayChangeQty: 'PutAwayChangeQty',
+  HotPick: 'HotPick',
+  HotPut: 'HotPut',
+  HotMove: 'HotMove',
+  BlindInduct: 'BlindInduct'
+}
+
+export const LookupListDescriptions = {
+  PickLookupInfo: 'The Pick Lookup List controls the reason codes a user can select when performing a pick.',
+  PutAwayLookupInfo: 'The Put Away Lookup List controls the reason codes a user can select when performing a put away.',
+  HotPickLookupInfo: 'The Hot Pick Lookup List controls the reason codes a user can select when performing a hot pick.',
+  HotPutAwayLookupInfo: 'The Hot Put Away Lookup List controls the reason codes a user can select when performing a hot put away.',
+  HotMoveLookupInfo: 'The Hot Move Lookup List controls the reason codes a user can select when performing a hot move.',
+  BlindInductionLookupInfo: 'The Blind Induction Lookup List controls the reason codes a user can select when performing a blind induction.'
+}
+
+export const LookupListDeleteMessages = {
+  Pick: 'Pick list',
+  PutAway: 'Put Away list',
+  HotPick: 'Hot Pick list',
+  HotPutAway: 'Hot Put Away list',
+  HotMove: 'Hot Move list',
+  BlindInduction: 'Blind Induction list'
 }

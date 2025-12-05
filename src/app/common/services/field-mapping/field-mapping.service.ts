@@ -32,7 +32,6 @@ export class FieldMappingService {
         
           localStorage.setItem('fieldMappingsSelect', JSON.stringify(lowercaseData));
 
-          console.log('FieldMappingService: Mappings loaded successfully');
           resolve();
         } else {
           console.error('FieldMappingService: Error fetching mappings', response?.responseMessage);
