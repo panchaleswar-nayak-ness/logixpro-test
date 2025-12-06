@@ -103,8 +103,6 @@ export class CmMarkoutComponent implements OnInit {
   async handlePrinting() {
     if (this.toteDataResponse.data.length > 0) { 
       const allTransactionsComplete = this.toteDataResponse.toteStatus === StringConditions.Complete;
-      //const test= this.toteDataResponse.data.every((data: ToteData) => data.status === StringConditions.Complete);
-      );
 
       if (allTransactionsComplete) {
         try {
