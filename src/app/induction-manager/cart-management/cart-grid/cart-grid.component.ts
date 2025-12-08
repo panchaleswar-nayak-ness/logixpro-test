@@ -95,12 +95,20 @@ export class CartGridComponent implements OnInit, AfterViewInit, OnChanges, OnDe
   public readonly permissionMessages = PermissionMessages;
   public readonly permissions = CartManagementPermissions;
 
-  // Column filter properties
+  // Column definitions - used for both search dropdown and display names
+  readonly columns = {
+    cartId: { colHeader: 'cartId', colTitle: 'Cart ID', colDef: 'Cart ID' },
+    cartStatus: { colHeader: 'cartStatus', colTitle: 'Status', colDef: 'Status' },
+    toteQty: { colHeader: 'toteQty', colTitle: 'Tote Quantity', colDef: 'Tote Quantity' },
+    location: { colHeader: 'location', colTitle: 'Location', colDef: 'Location' }
+  };
+
+  // Column filter properties (array format for search dropdown)
   tableColumns: TableHeaderDefinitions[] = [
-    { colHeader: 'cartId', colTitle: 'Cart ID', colDef: 'Cart ID' },
-    { colHeader: 'cartStatus', colTitle: 'Status', colDef: 'Status' },
-    { colHeader: 'toteQty', colTitle: 'Tote Quantity', colDef: 'Tote Quantity' },
-    { colHeader: 'location', colTitle: 'Location', colDef: 'Location' }
+    this.columns.cartId,
+    this.columns.cartStatus,
+    this.columns.toteQty,
+    this.columns.location
   ];
   searchAutocompleteList: string[] = [];
   searchByInput = new Subject<string>();
@@ -567,21 +575,29 @@ export class CartGridComponent implements OnInit, AfterViewInit, OnChanges, OnDe
     event.preventDefault();
     this.isActiveTrigger = true;
     this.ngZone.run(() => {
-      filterColumnName = this.mapFilterColumn(filterColumnName);
+      // Pass display name to context menu (don't map yet - mapping happens when creating filter)
       this.contextMenuService.updateContextMenuState(event, selectedItem, filterColumnName, filterCondition, filterItemType);
     });
   }
 
   // Handle filteration columns selection from context menu
   directFilterationColumnsSelected(filterationColumns: FilterationColumns[]): void {
+    // Map display column names to API filter names before storing
+    const mappedFilters = filterationColumns.map(filter => ({
+      ...filter,
+      ColumnName: this.mapFilterColumn(filter.ColumnName) || filter.ColumnName
+    }));
+    
     // Service will emit new value via BehaviorSubject, component will update reactively
-    this.directFilterService.setFilters(filterationColumns);
+    this.directFilterService.setFilters(mappedFilters);
     // Reset to first page when filter is applied (filtered data may have fewer pages)
     this.customPagination.pageIndex = CartManagementGridDefaults.DefaultPageIndex;
     this.loadCarts();
     this.isActiveTrigger = false;
   }
   private mapFilterColumn(filterColumnName?: string): string | undefined {
+    if (!filterColumnName) return undefined;
+    
     const columnMapping = {
       cartId: "SortBar.SortBar1",
       cartStatus: "SortBar.Status",
@@ -589,8 +605,12 @@ export class CartGridComponent implements OnInit, AfterViewInit, OnChanges, OnDe
       toteQty: "ToteQty",
       location: "SortBar.SortBarLocation"
     } as const;
-  
-    return filterColumnName ? columnMapping[filterColumnName] ?? filterColumnName : undefined;
+    
+    // If it's a display name, convert to property name first
+    const propertyName = this.columnMapping[filterColumnName] || filterColumnName;
+    
+    // Then map property name to API filter name
+    return columnMapping[propertyName] ?? filterColumnName;
   }
 
     onAddNewCart(): void {
