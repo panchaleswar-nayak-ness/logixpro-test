@@ -1021,7 +1021,11 @@ export const OrderActions = {
 
 export const Icons = {
   Info: 'info',
-  Print: 'print'
+  Print: 'print',
+  InfoOutline: 'info_outline',
+  Close: 'close',
+  Collapse: 'unfold_less',
+  Expand: 'unfold_more'
 }
 
 export const SystemConstants = {

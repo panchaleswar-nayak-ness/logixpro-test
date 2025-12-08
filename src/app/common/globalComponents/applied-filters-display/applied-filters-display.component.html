@@ -1,12 +1,12 @@
 <div class="applied-filters-container" data-automation-id="applied-filters-container">
   <!-- No Filters State -->
   <div *ngIf="!hasFilters && showInfoText" class="d-flex align-items-center gap-1 info-section">
-    <mat-icon class="info-icon tertiary-800 bold">info_outline</mat-icon>
-    <span class="info-text tertiary-800 bold">{{ infoText }}</span>
+    <mat-icon class="info-icon text-tertiary-800 bold">{{ icons.InfoOutline }}</mat-icon>
+    <span class="info-text text-tertiary-800 bold">{{ infoText }}</span>
   </div>
 
   <!-- Filters Applied State -->
-  <div *ngIf="hasFilters" class="card br-14 p-3">
+  <div *ngIf="hasFilters" class="card br-14 p-3 pb-2">
     <div class="filters-row">
       <div class="filters-label">
         <span class="bold" data-automation-id="label-applied-filters">{{ labels.AppliedFilters }}</span>
@@ -14,8 +14,8 @@
     
       <!-- Filters Chips Container -->
       <div class="filters-chips-wrapper" [class.expanded]="isExpanded">
-        <div class="filters-chips-scroll" #chipsContainer>
-          <div class="filters-chips-list">
+        <ng-scrollbar class="filters-chips-scroll" track="all" [autoHeightDisabled]="false" #chipsContainer>
+          <div class="filters-chips-list pb-3" #filtersChipsList>
             <div
               *ngFor="let filter of displayFilters; let i = index"
               [attr.data-automation-id]="'filter-chip-' + i"
@@ -30,11 +30,11 @@
                 (click)="onClearFilter(filter.filter)"
                 [attr.aria-label]="'Remove filter for ' + filter.columnDisplayName"
                 [attr.data-automation-id]="'remove-filter-' + i">
-                <mat-icon>close</mat-icon>
+                <mat-icon>{{ icons.Close }}</mat-icon>
               </button>
             </div>
           </div>
-        </div>
+        </ng-scrollbar>
       
         <!-- Expand/Collapse Button (shown when scrollbar visible OR when expanded) -->
         <button
@@ -43,7 +43,7 @@
           [matTooltip]="getExpandTooltip()"
           (click)="toggleExpand()"
           data-automation-id="expand-collapse-filters-btn">
-          <mat-icon>{{ isExpanded ? 'expand_less' : 'expand_more' }}</mat-icon>
+          <mat-icon class="material-symbols-outlined">{{ getExpandIcon() }}</mat-icon>
         </button>
       </div>
     
@@ -52,7 +52,7 @@
         class="clear-filters-btn"
         (click)="onClearAll()"
         data-automation-id="button-clear-all-filters">
-        <mat-icon class="clear-icon text-danger">close</mat-icon>
+        <mat-icon class="clear-icon text-danger">{{ icons.Close }}</mat-icon>
         <span class="clear-text text-danger bold">{{ labels.ClearFilters }}</span>
       </button>
     </div>
