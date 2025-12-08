@@ -240,7 +240,7 @@ export class SpLocationZonesComponent implements OnInit, OnDestroy {
         );
         zone.zone = oldZone;
         return;
-      } else if (seq < 0) {
+      } else if (seq === null || seq < 0) {
           this.global.ShowToastr(
             ToasterType.Error,
             ToasterMessages.SequenceMustEqualOrGreaterZero,
