@@ -181,11 +181,13 @@ export class EventLogComponent implements OnInit {
 
   eventLogTypeAhead(columnName: any, message: any, loader: boolean = false) {
     this.searchAutoCompleteList = [];
+    let sDate = !this.objIgnoreDateRange?.checked ? this.startDate : new Date(new Date().setFullYear(1990));
+    let eDate = !this.objIgnoreDateRange?.checked ? this.endDate : new Date();
     let payload: any = {
       "message": message,
       "columnName": columnName,
-      "sDate": "2022-06-04T00:00:00.597Z",
-      "eDate": "2023-06-05T00:00:00.597Z",
+      "sDate": typeof sDate === 'string' ? sDate : sDate.toISOString(),
+      "eDate": typeof eDate === 'string' ? eDate : eDate.toISOString(),
     }
     this.eventLogTypeAheadSubscribe = this.iAdminApiService.EventLogTypeAhead(payload).subscribe((res: any) => {
       if(res.isExecuted && res.data){
