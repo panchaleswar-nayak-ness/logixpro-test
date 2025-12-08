@@ -646,11 +646,12 @@ export class SelectionTransactionForToteExtendComponent implements OnInit, OnDes
                   });
 
                   this.findLocation(true, res.data)
-                } else{ 
-                    this.findLocation(false, 0);
+                } else{
+                  this.findLocation(false, 0);
                 }
               });
-            }
+
+            } else this.findLocation(false, 0);
           }
           else {
             this.global.ShowToastr(ToasterType.Error, this.global.globalErrorMsg(), ToasterTitle.Error);
