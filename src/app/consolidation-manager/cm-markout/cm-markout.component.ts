@@ -89,25 +89,27 @@ export class CmMarkoutComponent implements OnInit {
   }
 
   getToteData(print: boolean) {
+    const toteReq = this.MarkoutToteReq.toteId.valueOf();
     this.iMarkoutApiService
       .GetMarkoutData(this.MarkoutToteReq)
       .subscribe((res: ToteDataResponse) => {
         this.toteDataResponse = res;
-        if (print){
-          this.handlePrinting();
+        if (print) {
+          this.handlePrinting(toteReq.valueOf(), this.toteDataResponse.toteStatus.valueOf(), this.toteDataResponse.data.length.valueOf());
         }
       });
   }
 
   // Markout Print Logic
-  async handlePrinting() {
-    if (this.toteDataResponse.data.length > 0) { 
-      const allTransactionsComplete = this.toteDataResponse.toteStatus === StringConditions.Complete;
+  async handlePrinting(toteID: string, toteStatus: string, toteRespLen: number) {
+    if (toteRespLen > 0) {
+
+      const allTransactionsComplete = toteStatus === StringConditions.Complete;
 
       if (allTransactionsComplete) {
         try {
           if (this.preferencesData.autoPrintToteManifest) {
-            await this.print('Print Tote Manifest', this.toteId);
+            await this.print('Print Tote Manifest', toteID);
           }
         } catch (error) {
           console.error("Error printing Tote Manifest:", error);
@@ -115,7 +117,7 @@ export class CmMarkoutComponent implements OnInit {
 
         try {
           if (this.preferencesData.autoPrintToteManifest2) {
-            await this.print('Print Tote Manifest 2', this.toteId);
+            await this.print('Print Tote Manifest 2', toteID);
           }
         } catch (error) {
           console.error("Error printing Tote Manifest 2:", error);
@@ -124,7 +126,7 @@ export class CmMarkoutComponent implements OnInit {
       } else if (this.preferencesData.autoPrintMarkoutReport) {
         //Only ever auto printing exception when tote not complete
         try {
-          await this.print('Print Markout Report', this.toteId);
+          await this.print('Print Markout Report', toteID);
         } catch (error) {
           console.error('Error printing Markout Report:', error);
         }
