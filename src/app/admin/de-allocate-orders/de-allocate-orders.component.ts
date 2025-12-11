@@ -1,4 +1,4 @@
-import { Component, HostListener, OnInit, ViewChild } from '@angular/core';
+import { Component, HostListener, OnInit, ViewChild, AfterViewInit } from '@angular/core';
 import { AuthService } from 'src/app/common/init/auth.service';
 import { Subject, debounceTime, distinctUntilChanged } from 'rxjs';
 import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
@@ -16,13 +16,14 @@ import { TableContextMenuService } from 'src/app/common/globalComponents/table-c
 import {ToasterTitle, ToasterType ,ResponseStrings,Column,DialogConstants,StringConditions,UniqueConstants,Style,TableConstant,ColumnDef, Placeholders} from 'src/app/common/constants/strings.constants';
 import { Toast } from 'ngx-toastr';
 import { ContextMenuFiltersService } from 'src/app/common/init/context-menu-filters.service';
+import { DeAllocateOrdersConstants } from 'src/app/common/constants/admin/de-allocate-orders-constants';
 
 @Component({
   selector: 'app-de-allocate-orders',
   templateUrl: './de-allocate-orders.component.html',
   styleUrls: ['./de-allocate-orders.component.scss']
 })
-export class DeAllocateOrdersComponent implements OnInit {
+export class DeAllocateOrdersComponent implements OnInit, AfterViewInit {
   placeholders = Placeholders;
   fieldMappings = JSON.parse(localStorage.getItem('fieldMappings') ?? '{}');
   UnitOfMeasure: string = this.fieldMappings.unitOfMeasure;
@@ -50,6 +51,7 @@ export class DeAllocateOrdersComponent implements OnInit {
   orderNameList:MatTableDataSource<any> = new MatTableDataSource<any>([]);
   @ViewChild('paginator') paginator: MatPaginator;
   @ViewChild('matSort1') sort1: MatSort;
+  @ViewChild('matSortOrderList') sortOrderList: MatSort;
   @ViewChild('matRefAction') matRefAction: MatSelect;
 
   public userData: any;
@@ -108,6 +110,27 @@ export class DeAllocateOrdersComponent implements OnInit {
     });
     this.getAllOrder();
     this.filterService.filterString = "";
+  }
+
+  ngAfterViewInit(): void {
+    this.setupOrderListSort();
+  }
+
+  setupOrderListSort(): void {
+    this.orderNameList.sort = this.sortOrderList;
+    this.orderNameList.sortingDataAccessor = (item, property) => {
+      switch (property) {
+        case DeAllocateOrdersConstants.OrderNo: 
+          return item.name ? item.name.toString().toLowerCase() : '';
+        default: 
+          const value = item[property];
+          return typeof value === 'string' ? value.toLowerCase() : value;
+      }
+    };
+  }
+
+  get isSearchDisabled(): boolean {
+    return this.step === DeAllocateOrdersConstants.Transaction || !this.chooseSearchType;
   } 
   
   async autoCompleteSearchColumnItem() {
@@ -197,7 +220,8 @@ export class DeAllocateOrdersComponent implements OnInit {
           }
          
         });
-        this.orderNameList.data= orderNamesResponseObj
+        this.orderNameList.data = orderNamesResponseObj;
+        this.orderNameList.sort = this.sortOrderList;
       }))
       
   }
@@ -423,6 +447,7 @@ export class DeAllocateOrdersComponent implements OnInit {
 
     this.orderItemTransactions= new MatTableDataSource<any>(this.orderItemTransactions.data);
     this.orderNameList= new MatTableDataSource<any>(this.orderNameList.data);
+    this.setupOrderListSort();
 
 // for disable seleted btn
     if(this.orderNumbersList.length !=0){
@@ -466,7 +491,9 @@ export class DeAllocateOrdersComponent implements OnInit {
         return;
   
       let index;
-      this.displayedColumns.forEach((x, i) => {
+      // Get sortable columns (exclude 'deallocate' which is frontend-only)
+      const sortableColumns = this.displayedColumns.filter(col => col !== DeAllocateOrdersConstants.Deallocate);
+      sortableColumns.forEach((x, i) => {
         if (x === event.active) {
           index = i;
         }
@@ -487,7 +514,9 @@ export class DeAllocateOrdersComponent implements OnInit {
         return;
   
       let index;
-      this.displayedColumns.forEach((x, i) => {
+      // Get sortable columns (exclude 'deallocate' which is frontend-only)
+      const sortableColumns = this.displayedColumns.filter(col => col !== DeAllocateOrdersConstants.Deallocate);
+      sortableColumns.forEach((x, i) => {
         if (x === event.active) {
           index = i;
         }
