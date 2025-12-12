@@ -29,7 +29,9 @@
                     <mat-label data-automation-id="message-label">Message</mat-label>
 
                     <input type="text" placeholder="Search" aria-label="Search" matInput [matAutocomplete]="auto1"
-                        [(ngModel)]="message" maxlength="255" (keyup)="autocompleteSearchColumn('Message',message)"
+                        #messageTrigger="matAutocompleteTrigger"
+                        [(ngModel)]="message" maxlength="255" (keyup)="handleKeyup($event, 'Message', message, FilterField.Message)"
+                        (keyup.enter)="messageTrigger.closePanel(); searchOnEnter(FilterField.Message, message)"
                         (focus)="eventLogTypeAhead('Message',message,true)"  [attr.data-automation-id]="'message-input' + (message ? '-' + message : '')">
                         <button matSuffix *ngIf="message" class="clear-btn"  (click)=" message = '';clear('Message')" data-automation-id="clear-message-btn"><mat-icon class="text-20 text-chrome-600">cancel</mat-icon></button>
                     <mat-autocomplete #auto1="matAutocomplete" (optionSelected)="search($event,'message')"
@@ -50,8 +52,10 @@
                     <mat-label data-automation-id="event-location-label">Event Location</mat-label>
 
                     <input type="text" placeholder="Search" aria-label="Search" matInput [matAutocomplete]="auto2"
+                        #eventLocationTrigger="matAutocompleteTrigger"
                         [(ngModel)]="eventLocation" maxlength="255"
-                        (keyup)="autocompleteSearchColumn('Event Location',eventLocation)"
+                        (keyup)="handleKeyup($event, 'Event Location', eventLocation, FilterField.EventLocation)"
+                        (keyup.enter)="eventLocationTrigger.closePanel(); searchOnEnter(FilterField.EventLocation, eventLocation)"
                         (focus)="eventLogTypeAhead('Event Location',eventLocation,true)"         [attr.data-automation-id]="'event-location-input' + (eventLocation ? '-' + eventLocation : '')">
                         <button matSuffix *ngIf="eventLocation" class="clear-btn"  (click)=" eventLocation = '';clear('Event Location')" data-automation-id="clear-event-location-btn"><mat-icon class="text-20 text-chrome-600">cancel</mat-icon></button>
                     <mat-autocomplete #auto2="matAutocomplete" (optionSelected)="search($event,'eventLocation')"
@@ -75,8 +79,10 @@
                     <mat-label data-automation-id="event-code-label">Event Code</mat-label>
 
                     <input type="text" placeholder="Search" aria-label="Search" matInput [matAutocomplete]="auto3"
+                        #eventCodeTrigger="matAutocompleteTrigger"
                         [(ngModel)]="eventCode" maxlength="255"
-                        (keyup)="autocompleteSearchColumn('Event Code',eventCode)"
+                        (keyup)="handleKeyup($event, 'Event Code', eventCode, FilterField.EventCode)"
+                        (keyup.enter)="eventCodeTrigger.closePanel(); searchOnEnter(FilterField.EventCode, eventCode)"
                         (focus)="eventLogTypeAhead('Event Code',eventCode,true)"  [attr.data-automation-id]="'event-code-input' + (eventCode ? '-' + eventCode : '')">
                         <button matSuffix *ngIf="eventCode" class="clear-btn"  (click)=" eventCode = '';clear('Event Code')" data-automation-id="clear-event-code-btn"><mat-icon class="text-20 text-chrome-600">cancel</mat-icon></button>
                     <mat-autocomplete #auto3="matAutocomplete" (optionSelected)="search($event,'eventCode')"
@@ -96,8 +102,10 @@
                     <mat-label data-automation-id="event-type-label">Event Type</mat-label>
 
                     <input type="text" placeholder="Search" aria-label="Search" matInput [matAutocomplete]="auto4"
+                        #eventTypeTrigger="matAutocompleteTrigger"
                         [(ngModel)]="eventType" maxlength="255"
-                        (keyup)="autocompleteSearchColumn('Event Type',eventType)"
+                        (keyup)="handleKeyup($event, 'Event Type', eventType, FilterField.EventType)"
+                        (keyup.enter)="eventTypeTrigger.closePanel(); searchOnEnter(FilterField.EventType, eventType)"
                         (focus)="eventLogTypeAhead('Event Type',eventType,true)" [attr.data-automation-id]="'event-type-input' + (eventType ? '-' + eventType : '')">
                         <button matSuffix *ngIf="eventType" class="clear-btn"  (click)=" eventType = '';clear('Event Type')" data-automation-id="clear-event-type-btn"><mat-icon class="text-20 text-chrome-600">cancel</mat-icon></button>
                     <mat-autocomplete #auto4="matAutocomplete" (optionSelected)="search($event,'eventType')"
@@ -117,7 +125,9 @@
                     <mat-label data-automation-id="username-label">Username</mat-label>
 
                     <input type="text" placeholder="Search" aria-label="Search" matInput [matAutocomplete]="auto5"
-                        [(ngModel)]="userName" maxlength="255" (keyup)="autocompleteSearchColumn('Name Stamp',userName)"
+                        #userNameTrigger="matAutocompleteTrigger"
+                        [(ngModel)]="userName" maxlength="255" (keyup)="handleKeyup($event, 'Name Stamp', userName, FilterField.UserName)"
+                        (keyup.enter)="userNameTrigger.closePanel(); searchOnEnter(FilterField.UserName, userName)"
                         (focus)="eventLogTypeAhead('Name Stamp',userName,true)" [attr.data-automation-id]="'username-input' + (userName ? '-' + userName : '')">
 
                         <button matSuffix *ngIf="userName" class="clear-btn"  (click)=" userName = '';clear('Username')"><mat-icon class="text-20 text-chrome-600" data-automation-id="btn-cancel">cancel</mat-icon></button>
