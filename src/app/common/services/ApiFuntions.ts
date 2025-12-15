@@ -492,7 +492,7 @@ export class ApiFuntions {
   }
 
   public OMOTPendDelete(body: any): Observable<any> {
-    return this.ApiBase.Delete('/OrderManager/omotpend', body);
+    return this.ApiBase.Post('/OrderManager/omotpend', body);
   }
 
   public FillOrderManTempData(body: any): Observable<any> {

@@ -347,18 +347,25 @@ export class OmOrderManagerComponent implements OnInit {
         autoFocus: DialogConstants.autoFocus,
         disableClose:true,
         data: {
-          ErrorMessage: 'Are you sure you want to delete all viewed orders?',
+          ErrorMessage: ToasterMessages.DeleteViewedOrdersConfirmation,
           action: UniqueConstants.delete
         },
       });
 
       dialogRef.afterClosed().subscribe((result) => {
         if (result == StringConditions.Yes) {
+          const visibleIds = this.orderTable.data.map((record: any) => record.id);
+          
+          if (!visibleIds || visibleIds.length === 0) {
+            this.global.ShowToastr(ToasterType.Error, ToasterMessages.ItemNotFound, ToasterTitle.Warning);
+            return;
+          }
+          
           let payload = {
             user: this.userData.userName,
-            viewType: this.viewType
+            viewType: this.viewType,
+            recordIds: visibleIds.join(',')
           };
-      
           this.iOrderManagerApi.OMOTPendDelete(payload).subscribe((res: any) => {
             if (res.isExecuted) this.getOrders();
             else {

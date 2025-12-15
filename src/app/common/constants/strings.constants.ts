@@ -248,6 +248,7 @@ export const ToasterMessages = {
     ToteIdAlreadyInBatch: 'This tote id is already in this batch. Enter a new one',
     MissingDataFromPrint: 'Missing data from the desired print row',
     DeletePendingTransaction: 'You can only delete pending transactions.',
+    DeleteViewedOrdersConfirmation: 'Are you sure you want to delete all viewed orders?',
     ItemNumberExists: 'Item Number Already Exists.',
     RecordUpdatedSuccessful: 'Record Updated Successfully',
     DuplicateAdjustmentReason: 'Adjustment Reason is a duplicate. Save other edited fields and ensure it is not a duplicate before saving.',
