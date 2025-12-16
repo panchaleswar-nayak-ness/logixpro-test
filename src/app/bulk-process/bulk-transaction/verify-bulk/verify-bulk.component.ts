@@ -70,6 +70,7 @@ export class VerifyBulkComponent implements OnInit {
   backCount: number = 0;
   workstationPreferences: WorkStationSetupResponse;
   @Input() isBatchIdGenerationEnabled:boolean;
+  @Input() assignToteToOrderCalled: boolean = false;
   public iBulkProcessApiService: IBulkProcessApiService;
   public iAdminApiService: IAdminApiService;
   public commonApiService: CommonApiService;
@@ -110,7 +111,8 @@ export class VerifyBulkComponent implements OnInit {
       // Make sure all order lines have consistent Batch ID assignment
       this.validateOrderLines();
 
-      if (this.isBatchIdGenerationEnabled && !this.orderLines[0].batchId) {
+      // Only generate batch ID if batch ID generation is enabled, no batch ID exists, and AssignToteToOrder has not been called
+      if (this.isBatchIdGenerationEnabled && !this.orderLines[0].batchId && !this.assignToteToOrderCalled) {
         var request = new UpdateOTsNewBatchIdRequest();
         this.orderLines.forEach(orderLine => {
           request.openTransactionIds.push(orderLine.id);
