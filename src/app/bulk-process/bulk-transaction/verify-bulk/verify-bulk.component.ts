@@ -740,7 +740,7 @@ async validateTaskComplete() {
     dialogRef1.afterClosed().subscribe(async (res: string) => {
       if (res) {
         let transIDs = this.isSlapperLabelFlow ?
-          this.orderLines.filteredData.filter(o => !o.isPartialCase).map(o => o.id) :
+          this.orderLines.filteredData.filter(o => o.isPartialCase).map(o => o.id) :
           this.orderLines.filteredData.map(o => o['id']);
 
         if (res == ResponseStrings.Yes) {
@@ -774,7 +774,7 @@ async validateTaskComplete() {
       // All labels
       dlgMessage = ConfirmationMessages.PrintOffCarouselPickItemLabels;
       dlgHeading = ConfirmationHeadings.PrintOffCarouselPickItemLabels;
-      transIDs = this.orderLines.filteredData.filter(o => o.isPartialCase).map(o => o.id);
+      transIDs = this.orderLines.filteredData.filter(o => !o.isPartialCase).map(o => o.id);
     } else {
       // Single label
       dlgMessage = ConfirmationMessages.PrintOffCarouselPickItemSingleLabel;
