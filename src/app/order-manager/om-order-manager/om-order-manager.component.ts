@@ -450,6 +450,7 @@ export class OmOrderManagerComponent implements OnInit {
       
           this.iOrderManagerApi.ReleaseOrders(payload).subscribe((res: any) => {
             if (res.isExecuted) {
+              this.global.ShowToastr(ToasterType.Success, ToasterMessages.RequestReleaseSuccess, ToasterTitle.Success);
               this.getOrders();
               this.clearSearch();
             }
@@ -490,6 +491,7 @@ export class OmOrderManagerComponent implements OnInit {
       
           this.iOrderManagerApi.ReleaseOrders(payload).subscribe((res: any) => {
             if (res.isExecuted) {
+              this.global.ShowToastr(ToasterType.Success, ToasterMessages.RequestReleaseSuccess, ToasterTitle.Success);
               this.getOrders();
               this.clearSearch();
             }
