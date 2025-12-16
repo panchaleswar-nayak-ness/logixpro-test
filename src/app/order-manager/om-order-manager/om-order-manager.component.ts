@@ -19,7 +19,7 @@ import { IOrderManagerAPIService } from 'src/app/common/services/orderManager-ap
 import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.service';
 import { IAdminApiService } from 'src/app/common/services/admin-api/admin-api-interface';
 import { TableContextMenuService } from 'src/app/common/globalComponents/table-context-menu-component/table-context-menu.service';
-import { Case, Column, KeyboardKeys, StringConditions, ToasterMessages, ToasterTitle, ToasterType,DialogConstants,TableConstant,ColumnDef,Style,UniqueConstants,FilterColumnName, Placeholders} from 'src/app/common/constants/strings.constants';
+import { Case, Column, KeyboardKeys, StringConditions, ToasterMessages, ToasterTitle, ToasterType,DialogConstants,TableConstant,ColumnDef,Style,UniqueConstants,FilterColumnName, Placeholders, ConfirmationMessages} from 'src/app/common/constants/strings.constants';
 import { RouteNames, AppPermissions } from 'src/app/common/constants/menu.constants';
 import { DatePipe } from '@angular/common';
 import { ContextMenuFiltersService } from 'src/app/common/init/context-menu-filters.service';
@@ -347,7 +347,7 @@ export class OmOrderManagerComponent implements OnInit {
         autoFocus: DialogConstants.autoFocus,
         disableClose:true,
         data: {
-          ErrorMessage: ToasterMessages.DeleteViewedOrdersConfirmation,
+          ErrorMessage: ConfirmationMessages.DeleteAllViewedOrders,
           action: UniqueConstants.delete
         },
       });
@@ -357,7 +357,7 @@ export class OmOrderManagerComponent implements OnInit {
           const visibleIds = this.orderTable.data.map((record: any) => record.id);
           
           if (!visibleIds || visibleIds.length === 0) {
-            this.global.ShowToastr(ToasterType.Error, ToasterMessages.ItemNotFound, ToasterTitle.Warning);
+            this.global.ShowToastr(ToasterType.Error, ToasterMessages.NoRecordsToDelete, ToasterTitle.Warning);
             return;
           }
           
@@ -367,10 +367,11 @@ export class OmOrderManagerComponent implements OnInit {
             recordIds: visibleIds.join(',')
           };
           this.iOrderManagerApi.OMOTPendDelete(payload).subscribe((res: any) => {
-            if (res.isExecuted) this.getOrders();
-            else {
-              this.global.ShowToastr(ToasterType.Error, this.global.globalErrorMsg(), ToasterTitle.Error);
-              console.log("OMOTPendDelete",res.responseMessage)
+            if (res.isSuccess) {
+              this.global.ShowToastr(ToasterType.Success, ToasterMessages.DeleteAllSuccess, ToasterTitle.Success);
+              this.getOrders();
+            } else {
+              this.global.ShowToastr(ToasterType.Error, res.message, ToasterTitle.Error);
             }
           });
         }
