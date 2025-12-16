@@ -609,6 +609,9 @@ export class SelectionTransactionForToteExtendComponent implements OnInit, OnDes
         // Reset flag synchronously after patchValue completes
         this.isSettingLocationFromDialog = false;
       }
+      else if (res?.responseMessage === ResponseStrings.NewBatch) {
+        this.dialogRef.close(ResponseStrings.NewBatch);
+      }
     });
   }
 

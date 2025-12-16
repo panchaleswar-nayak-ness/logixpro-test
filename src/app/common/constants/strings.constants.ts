@@ -102,7 +102,8 @@ export const ResponseStrings = {
   Fail: 'Fail',
   INVALID: 'INVALID',
   Redirect: 'Redirect',
-  Resolved: 'Resolved'
+  Resolved: 'Resolved',
+  NewBatch: 'New Batch'
 }
 
 export const ToasterType = {
