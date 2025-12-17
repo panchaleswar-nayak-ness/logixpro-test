@@ -324,30 +324,42 @@ export class MoveItemsComponent implements OnInit {
     if (this.tabIndex === 1) this.tabIndex = 0;
   }
   selectedWarehouse(event){
-    this.seletedWarehouse=event;
-    
-    this.getMoveItemList(StringConditions.MoveFrom        );
-    console.log("events",this.seletedWarehouse);
-    
+    this.seletedWarehouse = event;    
+    this.getMoveItemList(StringConditions.MoveFrom);    
   }
   sortChange(event) {
-    if (!this.dataSource._data._value || event.direction == '' || event.direction == this.sortOrder) return;
-    let index;
-    this.displayedColumns.find((x, i) => { if(x === event.active) index = i; });
-    this.sortCol = index;
-    this.sortOrder = event.direction;
-    this.resetFromFilters(this.pageEvent?.pageSize);    
-    this.getMoveItemList(StringConditions.MoveFrom);
+    this.handleSortChange(event, StringConditions.MoveFrom);
   }
 
   sortChangeToItems(event) {
-    if (!this.moveToDatasource._data._value || event.direction == '' || event.direction == this.sortOrderTo) return;
+    this.handleSortChange(event, StringConditions.MoveTo);
+  }
+
+  private handleSortChange(event, tableType: string) {
+    const isMoveFrom = tableType === StringConditions.MoveFrom;
+    const dataSource = isMoveFrom ? this.dataSource : this.moveToDatasource;
+
+    if (!dataSource._data._value) return;
+
     let index;
     this.displayedColumns.find((x, i) => { if (x === event.active) index = i; });
-    this.sortColTo = index;
-    this.sortOrderTo = event.direction;
-    this.resetToFilters(this.pageEventTo?.pageSize);
-    this.getMoveItemList(StringConditions.MoveTo);
+
+    if (event.direction === '') {
+      index = 0;
+      event.direction = UniqueConstants.Asc;
+    }
+
+    if (isMoveFrom) {
+      this.sortCol = index;
+      this.sortOrder = event.direction;
+      this.resetFromFilters(this.pageEvent?.pageSize);
+    } else {
+      this.sortColTo = index;
+      this.sortOrderTo = event.direction;
+      this.resetToFilters(this.pageEventTo?.pageSize);
+    }
+
+    this.getMoveItemList(tableType);
   }
 
   handlePageEvent(e: PageEvent) {
@@ -381,8 +393,6 @@ export class MoveItemsComponent implements OnInit {
 
     
     let isMoveFromSelected = false;
-    console.log('getMoveFromDetails ROW '  + type)
-    console.log(row)
 
     if (type === StringConditions.MoveTo) 
     {
@@ -724,8 +734,6 @@ formatDateTimeToLocal(dateString) {
       unDedicateMoveFrom: this.undedicateMoveFrom,
       
     };
-    console.log("Local DateTime String:", localDateTimeString);
-    console.log("Payload DateTime:", payload.requestedDate);
     
     this.iAdminApiService.MoveNow(payload).subscribe((res: any) => {
 
