@@ -159,7 +159,6 @@ export class ReprocessedTransactionComponent implements OnInit {
           this.detailDataTransHistory = res.data?.transactions;
           this.dataSource = new MatTableDataSource(res.data?.transactions);
           this.customPagination.total = res.data?.recordsFiltered;
-          this.dataSource.sort = this.sort;
         } else {
           this.global.ShowToastr(ToasterType.Error, this.global.globalErrorMsg(), ToasterTitle.Error);
           console.log("ReprocessedTransactionTable",res.responseMessage);
@@ -197,7 +196,7 @@ export class ReprocessedTransactionComponent implements OnInit {
   }
 
   sortChange(event) {
-    if (!this.dataSource._data._value || event.direction == '' || event.direction == this.sortOrder) return;
+    if (!this.dataSource._data._value || event.direction == '') return;
     this.sortCol = Array.isArray(this.columnValues)
       // Ensure columnValues is an array to safely use findIndex and avoid runtime errors
       ? this.columnValues.findIndex(x => x === event.active)
