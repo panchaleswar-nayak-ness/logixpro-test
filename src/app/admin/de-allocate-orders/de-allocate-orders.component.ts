@@ -501,6 +501,8 @@ export class DeAllocateOrdersComponent implements OnInit, AfterViewInit {
   
       this.sortColOrder = index;
       this.sortOrder = event.direction;
+      this.startRowOrder = 0;
+      this.paginator.pageIndex = 0;
       this.orderItemTable()
     }
 
@@ -524,6 +526,8 @@ export class DeAllocateOrdersComponent implements OnInit, AfterViewInit {
   
       this.sortColTransaction = index;
       this.sortTransaction = event.direction;
+      this.startRowTransaction = 0;
+      this.paginator.pageIndex = 0;
       this.orderItemTable()
 
     }
