@@ -321,6 +321,7 @@ export class CartGridComponent implements OnInit, AfterViewInit, OnChanges, OnDe
       const dialogData: CartManagementData = {
         mode: DialogModes.VIEW,
         cartId: viewDetails.cartId,
+        cartStatus: record.cartStatus,
         existingAssignments: assignments,
         rows: rows,
         cols: cols
@@ -382,6 +383,7 @@ export class CartGridComponent implements OnInit, AfterViewInit, OnChanges, OnDe
       const dialogData: CartManagementData = {
         mode: DialogModes.EDIT,
         cartId: viewDetails.cartId,
+        cartStatus: record.cartStatus,
         existingAssignments: assignments,
         rows: rows,
         cols: cols

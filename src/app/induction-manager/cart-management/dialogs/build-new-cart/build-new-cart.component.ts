@@ -84,11 +84,21 @@ export class BuildNewCartComponent implements OnInit {
     return this.data.mode === DialogModes.VIEW; 
   }
 
+  // Helper to determine if dialog should behave as CREATE mode
+  // EDIT mode with "Inducting" status should behave like CREATE mode
+  get shouldBehaveAsCreate(): boolean {
+    return this.isCreateMode || 
+           (this.isEditMode && this.data.cartStatus === CartStatus.Inducting);
+  }
+
   get dialogTitle(): string {
+    // For Inducting status in edit mode, show CREATE title
+    if (this.shouldBehaveAsCreate) {
+      // Show "Induct Cart" when opened from induct cart component (isReadonly = true)
+      return this.data.isReadonly ? DialogTitles.INDUCT : DialogTitles.CREATE;
+    }
+    
     switch (this.data.mode) {
-      case DialogModes.CREATE: 
-        // Show "Induct Cart" when opened from induct cart component (isReadonly = true)
-        return this.data.isReadonly ? DialogTitles.INDUCT : DialogTitles.CREATE;
       case DialogModes.EDIT: return DialogTitles.EDIT;
       case DialogModes.VIEW: return DialogTitles.VIEW;
       default: return DialogTitles.DEFAULT;
@@ -96,8 +106,12 @@ export class BuildNewCartComponent implements OnInit {
   }
 
   get primaryButtonText(): string {
+    // For Inducting status in edit mode, show CREATE button text
+    if (this.shouldBehaveAsCreate) {
+      return PrimaryButtonTexts.CREATE;
+    }
+    
     switch (this.data.mode) {
-      case DialogModes.CREATE: return PrimaryButtonTexts.CREATE;
       case DialogModes.EDIT: return PrimaryButtonTexts.EDIT;
       case DialogModes.VIEW: return PrimaryButtonTexts.VIEW;
       default: return PrimaryButtonTexts.DEFAULT;
@@ -105,8 +119,12 @@ export class BuildNewCartComponent implements OnInit {
   }
 
   get clearButtonText(): string {
+    // For Inducting status in edit mode, show CREATE clear button text
+    if (this.shouldBehaveAsCreate) {
+      return ClearButtonTexts.CREATE;
+    }
+    
     switch (this.data.mode) {
-      case DialogModes.CREATE: return ClearButtonTexts.CREATE;
       case DialogModes.EDIT: return ClearButtonTexts.EDIT;
       default: return ClearButtonTexts.DEFAULT;
     }
@@ -329,11 +347,13 @@ export class BuildNewCartComponent implements OnInit {
       return false;
     }
 
-    if(this.isEditMode) {
+    // Edit mode with Inducting status behaves like CREATE
+    if(this.isEditMode && !this.shouldBehaveAsCreate) {
       return this.toteIdInput ? true : false;
     }
 
-    if(this.isCreateMode) {
+    // CREATE mode or Inducting edit mode
+    if(this.shouldBehaveAsCreate) {
       return !this.cartIdEntered;
     }
 
@@ -415,7 +435,8 @@ export class BuildNewCartComponent implements OnInit {
 
   async onClearToteInput() {
     if(this.selectedTote){
-      const cartContentRemoved = await this.removeCartContent([this.selectedTote], this.isCreateMode ? false : this.getUpdateStatus());
+      // Use shouldBehaveAsCreate instead of just isCreateMode
+      const cartContentRemoved = await this.removeCartContent([this.selectedTote], this.shouldBehaveAsCreate ? false : this.getUpdateStatus());
       if(cartContentRemoved){
         this.existingAssignments = this.existingAssignments.filter(x => x.toteId !== this.selectedTote);
         this.toteIdInput = '';
@@ -566,7 +587,8 @@ export class BuildNewCartComponent implements OnInit {
         const toteIds = this.existingAssignments
           .filter(({ status }) => status !== ToteStatuses.Closed)
           .map(({ toteId }) => toteId);
-        const cartContentRemoved = await this.removeCartContent(toteIds,this.isCreateMode ? false : this.getUpdateStatus(true));
+        // Use shouldBehaveAsCreate instead of just isCreateMode
+        const cartContentRemoved = await this.removeCartContent(toteIds, this.shouldBehaveAsCreate ? false : this.getUpdateStatus(true));
         if(cartContentRemoved){
           this.existingAssignments = this.existingAssignments.filter(({ status }) => status === ToteStatuses.Closed);
           this.clearAllPositions();
@@ -585,11 +607,21 @@ export class BuildNewCartComponent implements OnInit {
   }
 
   onPrimaryAction(): void {
-    if (this.isViewMode || this.isEditMode) {
+    // View mode always just closes
+    if (this.isViewMode) {
       this.dialogRef.close({ action: 'close' } as CartManagementResult);
       return;
     }
 
+    // Edit mode (non-Inducting status) just closes
+    if (this.isEditMode && !this.shouldBehaveAsCreate) {
+      this.dialogRef.close({ action: 'close' } as CartManagementResult);
+      return;
+    }
+
+    // From here on: CREATE mode OR EDIT mode with Inducting status
+    // Both should call completeCart API
+    
     if (this.isEditMode && this.cartForm.disabled) {
       this.cartForm.enable({ emitEvent: false });
     }
@@ -601,7 +633,8 @@ export class BuildNewCartComponent implements OnInit {
 
     const assignments = this.getAssignments();
     
-    if (this.isCreateMode && Object.keys(assignments).length === 0) {
+    // Validate at least one tote for CREATE mode or Inducting edit mode
+    if (this.shouldBehaveAsCreate && Object.keys(assignments).length === 0) {
       this.global.ShowToastr(ToasterType.Error, 'Please assign at least one tote to complete the cart', ToasterTitle.Error);
       return;
     }
@@ -625,18 +658,20 @@ export class BuildNewCartComponent implements OnInit {
           this.cartUpdated.emit(result);
           
           this.dialogRef.close(result);
-          this.global.ShowToastr(ToasterType.Success, this.isCreateMode ? ToasterMessages.CartInducted : 'Cart updated successfully', ToasterTitle.Success);
+          // Show "Cart Inducted" message for CREATE or Inducting edit mode
+          this.global.ShowToastr(ToasterType.Success, this.shouldBehaveAsCreate ? ToasterMessages.CartInducted : 'Cart updated successfully', ToasterTitle.Success);
         } else {
           this.global.ShowToastr(ToasterType.Error, 'Failed to complete cart', ToasterTitle.Error);
         }
       }).catch((error) => {
         this.isLoading = false;
-        this.global.ShowToastr(ToasterType.Error, this.isCreateMode ? 'Failed to complete cart' : 'Failed to update cart', ToasterTitle.Error);
+        this.global.ShowToastr(ToasterType.Error, this.shouldBehaveAsCreate ? 'Failed to complete cart' : 'Failed to update cart', ToasterTitle.Error);
       });
   }
 
    async onClose() {
-    if (this.isCreateMode && this.currentCartIdInput?.trim()) {
+    // For CREATE mode or Inducting edit mode with cart input
+    if (this.shouldBehaveAsCreate && this.currentCartIdInput?.trim()) {
       const dialogRef = this.global.OpenDialog(AlertConfirmationComponent, {
         width: Style.w560px,
         data: {

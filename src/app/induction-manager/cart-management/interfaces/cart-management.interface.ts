@@ -4,6 +4,7 @@ import { FilterationColumns } from 'src/app/common/Model/pick-Tote-Manager';
 export interface CartManagementData {
   mode: 'create' | 'edit' | 'view';
   cartId?: string;
+  cartStatus?: string;  // Cart status - used to determine behavior in edit mode
   existingAssignments?: Record<number, {toteId: string, status?: string}>;
   rows: number;
   cols: number;
