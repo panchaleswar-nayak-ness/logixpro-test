@@ -207,7 +207,7 @@
                                     <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription data-automation-id="table-header-Tote ID"> Tote ID
                                     </th>
                                     <td mat-cell *matCellDef="let element; let i = index"
-                                        (contextmenu)="onContextMenu($event, element.orderNumber, 'Tote ID')" [attr.data-automation-id]="'table-data-Tote ID-' + (element.toteID ? element.toteID : ' ')">
+                                        (contextmenu)="onContextMenu($event, element.toteID, 'Tote ID')" [attr.data-automation-id]="'table-data-Tote ID-' + (element.toteID ? element.toteID : ' ')">
                                         {{element.toteID}} </td>
                                 </ng-container>
 
