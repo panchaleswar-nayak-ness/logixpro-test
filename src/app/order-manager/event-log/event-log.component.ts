@@ -346,7 +346,7 @@ export class EventLogComponent implements OnInit {
 
   announceSortChange(e: any) {
     this.sortColumn = this.sortMapping.filter((item: any) => item.value == e.active)[0].sortValue;
-    this.sortOrder = e.direction;
+    this.sortOrder = e.direction || 'asc';
     this.resetPagination();
     this.eventLogTable(this.objIgnoreDateRange);
   }
