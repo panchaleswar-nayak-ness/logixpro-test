@@ -172,7 +172,7 @@
 
                 <mat-form-field class="custom-form-field w-100" appearance="outline">
                     <mat-label data-automation-id="label-scan-item-number">Scan <span replacePlaceholder [replacePlaceHolder]="placeholders.itemNumber" [fallbackPlaceHolder]="placeholders.itemNumberFallback">Item Number</span></mat-label>
-                    <input matInput type="text" [(ngModel)]="itemNumber"
+                    <input matInput type="text" [(ngModel)]="scannedItemNumber"
                     (keyup)="ItemKeyUp()"
                     (keypress)="ScanItemNum($event)" 
                     [disabled]="(confPackEnable != null && confPackEnable != '') " data-automation-id="input-scan-item-number">

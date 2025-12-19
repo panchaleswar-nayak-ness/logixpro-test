@@ -23,6 +23,7 @@ import {  LiveAnnouncerMessage ,ResponseStrings,KeyboardKeys,StringConditions,To
 export class CmConfirmAndPackingComponent implements OnInit {
   fieldMappings = JSON.parse(localStorage.getItem('fieldMappings') ?? '{}');
   itemNumber: string = this.fieldMappings.itemNumber;
+  scannedItemNumber: string = '';
   placeholders = Placeholders;
   @ViewChild('orderFocus') orderFocus: ElementRef;
   orderNumber:any ;
@@ -313,10 +314,10 @@ announceSortChange2(sortState: Sort) {
  ItemKeyUp(){
   setTimeout(() => {
     if(this.oldtransTable?.filteredData && this.oldtransTable?.filteredData?.length > 0){
-      this.transTable = new MatTableDataSource(this.oldtransTable.filteredData.filter(x=>  x.itemNumber.indexOf(this.itemNumber) > -1));  
+      this.transTable = new MatTableDataSource(this.oldtransTable.filteredData.filter(x=>  x.itemNumber.indexOf(this.scannedItemNumber) > -1));  
     }else{
       this.oldtransTable = this.transTable;
-      this.transTable = new MatTableDataSource(this.transTable.filteredData.filter(x=>  x.itemNumber.indexOf(this.itemNumber) > -1));  
+      this.transTable = new MatTableDataSource(this.transTable.filteredData.filter(x=>  x.itemNumber.indexOf(this.scannedItemNumber) > -1));  
     }
   }, 10);
  }
@@ -328,7 +329,7 @@ let contID;
 for (const item of this.transTable.filteredData) {
     let itemNum = item.itemNumber;
     let complete = item.complete;
-    if (this.itemNumber.toLowerCase() == itemNum.toLowerCase() && !complete) {
+    if (this.scannedItemNumber.toLowerCase() == itemNum.toLowerCase() && !complete) {
         searchCount += 1;
         id = item.sT_ID;
     };
