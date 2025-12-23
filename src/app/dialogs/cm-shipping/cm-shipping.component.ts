@@ -531,6 +531,20 @@ export class CmShippingComponent implements OnInit {
     }
   }
 
+  private isInvalidNumericValue(value: number | string | null): boolean {
+    return value === null || value === undefined || value === '' || isNaN(Number(value));
+  }
+
+  validateNumericField(container: { [key: string]: number | string | null}, fieldName: string): void {
+    const value = container[fieldName];
+    
+    if (this.isInvalidNumericValue(value)) {
+      container[fieldName] = 0;
+    } else if (Number(value) < 0) {
+      container[fieldName] = Math.abs(Number(value));
+    }
+  }
+
   printAll() {
     this.global.Print(`FileName:PrintShipOrderPL|OrderNum:${this.orderNumber}`);
   }

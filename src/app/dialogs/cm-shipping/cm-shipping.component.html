@@ -156,8 +156,10 @@
                                   <mat-label [attr.data-automation-id]="'label-freight-' + index">Freight</mat-label>
                                   <input [disabled]="shippingComp"
                                     type="number"
-                                    oninput="this.value = !!this.value && Math.abs(this.value) > 0 ? Math.abs(this.value) : 0"
+                                    min="0"
+                                    step="any"
                                     [(ngModel)]="i['Freight']"
+                                    (blur)="validateNumericField(i, 'Freight')"
                                     matInput
                                     maxlength="200" [attr.data-automation-id]="'input-freight-' + index"
                                   />
@@ -171,8 +173,10 @@
                                   <mat-label [attr.data-automation-id]="'label-freight1-' + index">Freight1</mat-label>
                                   <input [disabled]="shippingComp"
                                     type="number"
-                                    oninput="this.value = !!this.value && Math.abs(this.value) > 0 ? Math.abs(this.value) : 0"
+                                    min="0"
+                                    step="any"
                                     [(ngModel)]="i['Freight1']"
+                                    (blur)="validateNumericField(i, 'Freight1')"
                                     matInput
                                     maxlength="200"  [attr.data-automation-id]="'input-freight1-' + index"
                                   />
@@ -186,8 +190,10 @@
                                   <mat-label [attr.data-automation-id]="'label-freight2-' + index">Freight2</mat-label>
                                   <input [disabled]="shippingComp"
                                     type="number"
-                                    oninput="this.value = !!this.value && Math.abs(this.value) > 0 ? Math.abs(this.value) : 0"
+                                    min="0"
+                                    step="any"
                                     [(ngModel)]="i['Freight2']"
+                                    (blur)="validateNumericField(i, 'Freight2')"
                                     matInput
                                     maxlength="200"  [attr.data-automation-id]="'input-freight2-' + index"
                                   />
@@ -201,8 +207,10 @@
                                   <mat-label [attr.data-automation-id]="'label-weight-' + index">Weight</mat-label>
                                   <input [disabled]="shippingComp"
                                     type="number"
-                                    oninput="this.value = !!this.value && Math.abs(this.value) > 0 ? Math.abs(this.value) : 0"
+                                    min="0"
+                                    step="any"
                                     [(ngModel)]="i['Weight']"
+                                    (blur)="validateNumericField(i, 'Weight')"
                                     matInput
                                     maxlength="200"  [attr.data-automation-id]="'input-weight-' + index"
                                   />
@@ -218,9 +226,11 @@
                                 <mat-label [attr.data-automation-id]="'label-length-' + index">Length</mat-label>
                                 <input [disabled]="shippingComp"
                                   type="number"
-                                  oninput="this.value = !!this.value && Math.abs(this.value) > 0 ? Math.abs(this.value) : 0"
+                                  min="0"
+                                  step="any"
                                   [(ngModel)]="i['Length']"
                                   matInput (keyup)="calculateCube(i)"
+                                  (blur)="validateNumericField(i, 'Length')"
                                   class="counter-none"
                                   maxlength="200"  [attr.data-automation-id]="'input-length-' + index"
                                   
@@ -235,9 +245,11 @@
                                 <mat-label [attr.data-automation-id]="'label-width-' + index">Width</mat-label>
                                 <input [disabled]="shippingComp"
                                   type="number"
-                                  oninput="this.value = !!this.value && Math.abs(this.value) > 0 ? Math.abs(this.value) : 0"
+                                  min="0"
+                                  step="any"
                                   [(ngModel)]="i['Width']"
                                   matInput (keyup)="calculateCube(i)"
+                                  (blur)="validateNumericField(i, 'Width')"
                                   maxlength="200"
                                   class="counter-none" [attr.data-automation-id]="'input-width-' + index"
                                 />
@@ -250,10 +262,12 @@
                                 >
                                   <mat-label [attr.data-automation-id]="'label-height-' + index">Height</mat-label>
                                   <input [disabled]="shippingComp"
-                                  oninput="this.value = !!this.value && Math.abs(this.value) > 0 ? Math.abs(this.value) : 0"
                                   type="number"
+                                  min="0"
+                                  step="any"
                                     [(ngModel)]="i['Height']"
                                     matInput (keyup)="calculateCube(i)"
+                                    (blur)="validateNumericField(i, 'Height')"
                                     maxlength="200"
                                     class="counter-none"  [attr.data-automation-id]="'input-height-' + index"
                                   />
@@ -267,7 +281,8 @@
                                   <mat-label [attr.data-automation-id]="'label-cube-' + index">Cube</mat-label>
                                   <input disabled
                                     type="number"
-                                    oninput="this.value = !!this.value && Math.abs(this.value) > 0 ? Math.abs(this.value) : 0"
+                                    min="0"
+                                    step="any"
                                     [(ngModel)]="i['Cube']"
                                     matInput
                                     maxlength="200" [attr.data-automation-id]="'input-cube-' + index"
