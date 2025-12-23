@@ -148,7 +148,7 @@
                                 />
                               </mat-form-field>
                             </div>
-                            <div class="col-sm-2">
+                            <div class="col-sm-2" *ngIf="shippingPreferences && shippingPreferences.freight">
                                 <mat-form-field
                                   class="custom-form-field custom-form-field-bg-white w-100 mb-3"
                                   appearance="outline"
@@ -163,7 +163,7 @@
                                   />
                                 </mat-form-field>
                               </div>
-                              <div class="col-sm-2">
+                              <div class="col-sm-2" *ngIf="shippingPreferences && shippingPreferences.freight1">
                                 <mat-form-field
                                   class="custom-form-field custom-form-field-bg-white w-100 mb-3"
                                   appearance="outline"
@@ -178,7 +178,7 @@
                                   />
                                 </mat-form-field>
                               </div>
-                              <div class="col-sm-2">
+                              <div class="col-sm-2" *ngIf="shippingPreferences && shippingPreferences.freight2">
                                 <mat-form-field
                                   class="custom-form-field custom-form-field-bg-white w-100 mb-3"
                                   appearance="outline"
@@ -193,7 +193,7 @@
                                   />
                                 </mat-form-field>
                               </div>
-                              <div class="col-sm-2">
+                              <div class="col-sm-2" *ngIf="shippingPreferences && shippingPreferences.weight">
                                 <mat-form-field
                                   class="custom-form-field custom-form-field-bg-white w-100 mb-3"
                                   appearance="outline"
@@ -210,7 +210,7 @@
                               </div>
                           </div>
                           <div class="row">
-                            <div class="col-sm-2">
+                            <div class="col-sm-2" *ngIf="shippingPreferences && shippingPreferences.length">
                               <mat-form-field
                                 class="custom-form-field custom-form-field-bg-white w-100 mb-3"
                                 appearance="outline"
@@ -227,7 +227,7 @@
                                 />
                               </mat-form-field>
                             </div>
-                            <div class="col-sm-2">
+                            <div class="col-sm-2" *ngIf="shippingPreferences && shippingPreferences.width">
                               <mat-form-field
                                 class="custom-form-field custom-form-field-bg-white w-100 mb-3"
                                 appearance="outline"
@@ -243,7 +243,7 @@
                                 />
                               </mat-form-field>
                             </div>
-                            <div class="col-sm-2">
+                            <div class="col-sm-2" *ngIf="shippingPreferences && shippingPreferences.height">
                                 <mat-form-field
                                   class="custom-form-field custom-form-field-bg-white w-100 mb-3"
                                   appearance="outline"
@@ -259,7 +259,7 @@
                                   />
                                 </mat-form-field>
                               </div>
-                              <div class="col-sm-2">
+                              <div class="col-sm-2" *ngIf="shippingPreferences && shippingPreferences.cube">
                                 <mat-form-field
                                   class="custom-form-field custom-form-field-bg-white w-100 mb-3"
                                   appearance="outline"
