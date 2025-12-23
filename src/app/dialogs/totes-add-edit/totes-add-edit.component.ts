@@ -260,7 +260,7 @@ export class TotesAddEditComponent implements OnInit {
         this.dataSourceManagedTotes.data[index]['isDuplicate'] = true;
         this.global.ShowToastr(
           ToasterType.Error,
-          'Cannot set the selected tote because it is already set in the batch.',
+          ToasterMessages.DuplicateToteIDError,
           ToasterTitle.Error
         );
       }
@@ -268,7 +268,7 @@ export class TotesAddEditComponent implements OnInit {
       this.dataSourceManagedTotes.data[index]['isDuplicate'] = true;
       this.global.ShowToastr(
         ToasterType.Error,
-        'Cannot set the selected tote because it is already set in the batch.',
+        ToasterMessages.DuplicateToteIDError,
         ToasterTitle.Error
       );
     }

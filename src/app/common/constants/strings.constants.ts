@@ -351,6 +351,7 @@ export const ToasterMessages = {
     InventoryMapRecordsDeleteFailed: 'Failed to delete inventory map records',
     ErrorDeletingInventoryMapRecords: 'Error occurred while deleting inventory map records',
     ToteIDAlreadyExists: 'This Tote ID already exists in the table. Please enter a different Tote ID.',
+    DuplicateToteIDError: 'The tote ID is duplicated in another managed tote, so it cannot be saved. Edit the duplicated totes before attempting to save again.',
     NoBatchesWithZone: 'There are no batches with this zone ({{zone}}) assigned.  Click OK to start a new batch or cancel to choose a different location/transaction.',
     BatchChangedSuccessfully: 'Current Batch is now {{batchId}}',
     QtyNewToteZero: 'Quantity Put in New Tote should be greater than 0',
