@@ -836,9 +836,8 @@ export class BulkTransactionComponent implements OnInit {
       }
     });
     dialogRefTote.afterClosed().subscribe((result) => {
-      if (result && result.selectedList && result.selectedList.length > 0) {
-        this.selectedOrders = result.selectedList;
-        this.assignToteToOrderCalled = result.assignToteToOrderCalled || false;
+      if (result && result.length > 0) {
+        this.selectedOrders = result;
         // Clear orderLines and rebuild it from the nested structure
         this.orderLines = [];
         this.selectedOrders.forEach((order) => {
@@ -846,8 +845,7 @@ export class BulkTransactionComponent implements OnInit {
             orderLine.toteId = orderLine.toteId;
           });
           // Add all order lines to the flat orderLines array
-          const filteredOrderLines = this.filterOrderLinesByZone(order.orderLines);
-          this.orderLines = this.orderLines.concat(filteredOrderLines);
+          this.orderLines = this.orderLines.concat(order.orderLines);
         });
         this.iBulkProcessApiService.updateOpenTransactionsZoneCaseQuantity(this.orderLines);
         this.verifyBulks = !this.verifyBulks;
