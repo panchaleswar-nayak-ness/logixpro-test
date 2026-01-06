@@ -560,9 +560,10 @@ onCheckboxToggle(
   }
 
   sortChange(event) {
-    if (!this.dataSource._data._value || event.direction == '' || event.direction == this.sortOrder) return;
-    let index;
-    this.columnValues.find((x, i) => { if(x === event.active) index = i; });
+    if (!this.dataSource._data._value || event.direction == '') return;
+    let index = this.columnValues.findIndex((x) => x === event.active);
+    if (index === -1) return;
+    if (index === this.sortCol && event.direction === this.sortOrder) return;
     this.sortCol = index;
     this.sortOrder = event.direction;
     this.resetPagination();
