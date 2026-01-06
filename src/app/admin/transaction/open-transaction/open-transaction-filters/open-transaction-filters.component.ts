@@ -92,10 +92,10 @@ export class OpenTransactionFiltersComponent implements OnInit {
 
     this.iAdminApiService.NextSuggestedTransactions(searchPayload).subscribe({
       next: (res: any) => {
-        if (res?.isExecuted) this.autoCompleteSearchResult = res.data;
+        if (res?.isSuccess && res.value) this.autoCompleteSearchResult = res.value;
         else {
           this.global.ShowToastr(ToasterType.Error, this.global.globalErrorMsg(), ToasterTitle.Error);
-          console.log("NextSuggestedTransactions",res.responseMessage);   
+          console.log("NextSuggestedTransactions",res.message);   
         }
       },
       error: (error) => {}

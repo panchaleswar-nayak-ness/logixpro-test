@@ -380,12 +380,12 @@ export class ReprocessTransactionComponent implements OnInit, OnDestroy, OnChang
     }
     this.iAdminApiService.NextSuggestedTransactions(searchPayload).subscribe({
       next: (res: any) => {
-        if(res.isExecuted && res.data){
-          if (isSearchByOrder) this.searchAutocompleteList = res.data;
-          else this.searchAutocompleteListByCol = res.data;
+        if(res.isSuccess && res.value){
+          if (isSearchByOrder) this.searchAutocompleteList = res.value;
+          else this.searchAutocompleteListByCol = res.value;
         } else {
           this.global.ShowToastr(ToasterType.Error, this.global.globalErrorMsg(), ToasterTitle.Error);
-          console.log("NextSuggestedTransactions",res.responseMessage);
+          console.log("NextSuggestedTransactions",res.message);
         }
       }
     });

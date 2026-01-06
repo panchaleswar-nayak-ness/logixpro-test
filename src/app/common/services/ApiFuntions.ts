@@ -1463,7 +1463,7 @@ export class ApiFuntions {
   }
 
   public NextSuggestedTransactions(Body: any): Observable<any> {
-    return this.ApiBase.Get(`/Admin/nextsuggestedtransactions`, Body);
+    return this.ApiBase.Get(`/Admin/NextSuggestedTransactionsEntity`, Body);
   }
 
   public ReprocessTypeahead(Body: any): Observable<any> {

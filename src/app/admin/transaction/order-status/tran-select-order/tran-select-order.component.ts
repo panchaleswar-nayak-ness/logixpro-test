@@ -364,15 +364,15 @@ export class TranSelectOrderComponent implements OnInit {
   
     apiCall.subscribe({
       next: (res: any) => {
-        if (res.isExecuted && res.data) {
+        if (res.isSuccess && res.value) {
           if (!this.searchField){
             this.searchAutocompleteList = [];
             return;
           } 
-          this.searchAutocompleteList = res.data;
+          this.searchAutocompleteList = res.value;
         } else {
           this.global.ShowToastr(ToasterType.Error, this.global.globalErrorMsg(), ToasterTitle.Error);
-          console.log(isOrderNumber ? "OrderNumberNext" : "NextSuggestedTransactions", res.responseMessage);
+          console.log(isOrderNumber ? "OrderNumberNext" : "NextSuggestedTransactions", res.message);
         }
       }
     });

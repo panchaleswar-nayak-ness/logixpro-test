@@ -394,12 +394,12 @@ export class OpenTransactionOnHoldComponent implements OnInit, AfterViewInit {
 
     this.iAdminApiService.NextSuggestedTransactions(searchPayload).subscribe({
       next: (res: any) => {
-        if (res.data)
-          if (isSearchByOrder) this.searchAutocompleteList = res.data;
-          else this.searchAutocompleteListByCol = res.data;
-        else {
+        if (res.isSuccess && res.value) {
+          if (isSearchByOrder) this.searchAutocompleteList = res.value;
+          else this.searchAutocompleteListByCol = res.value;
+        } else {
           this.global.ShowToastr(ToasterType.Error, this.global.globalErrorMsg(), ToasterTitle.Error);
-          console.log("NextSuggestedTransactions",res.responseMessage);
+          console.log("NextSuggestedTransactions",res.message);
         }
       },
       error: (error) => {}

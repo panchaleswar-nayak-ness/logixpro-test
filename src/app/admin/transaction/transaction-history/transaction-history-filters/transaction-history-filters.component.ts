@@ -101,10 +101,10 @@ export class TransactionHistoryFiltersComponent implements OnInit {
     };
     this.iAdminApiService.NextSuggestedTransactions(searchPayload).subscribe({
       next: (res: any) => {
-        if(res.isExecuted && res.data) this.searchAutocompleteList = res.data;
+        if(res.isSuccess && res.value) this.searchAutocompleteList = res.value;
         else {
           this.global.ShowToastr(ToasterType.Error, this.global.globalErrorMsg(), ToasterTitle.Error);
-          console.log("NextSuggestedTransactions",res.responseMessage);
+          console.log("NextSuggestedTransactions",res.message);
         }
       }
     });
