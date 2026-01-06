@@ -275,11 +275,6 @@ export class MoveItemsComponent implements OnInit {
         if (tableName === StringConditions.MoveTo) {
           res?.data && res.data['moveMapItems'].map((item: any) => item.isSelected = false);
           const sortedMoveMapItems = (res?.data && res.data['moveMapItems']) || [];
-  
-          // Sort by itemNumber in ascending order
-          sortedMoveMapItems.sort((a, b) => {
-            return (a.itemNumber.trim() === '' ? 1 : 0) - (b.itemNumber.trim() === '' ? 1 : 0);
-          });
           this.moveToDatasource = new MatTableDataSource(sortedMoveMapItems);
           this.totalRecordsTo = res?.data.recordsTotal;
           this.recordsFilteredTo = res?.data.recordsFiltered;
