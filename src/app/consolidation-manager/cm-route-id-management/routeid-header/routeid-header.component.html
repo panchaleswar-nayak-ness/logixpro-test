@@ -41,33 +41,50 @@
 
 <div class="col-xl-7">
     <div class="card px-3 py-2" data-automation-id="auto-release-card">
-        <div class="d-flex title text-tertiary-900" data-automation-id="auto-release-title">
-          <span class="me-2">Auto Release</span>
-          <mat-icon class="material-symbols-outlined text-16 lh-24" matTooltip="Totes start releasing at the upper threshold and 
-          stop at the lower threshold (both set between 1-100)." matTooltipPosition="above" data-automation-id="auto-release-info-icon">info</mat-icon>
+        <div class="d-flex justify-content-between align-items-center mb-3">
+          <div class="d-flex title text-tertiary-900" data-automation-id="auto-release-title">
+            <span class="me-2">Auto Release</span>
+            <mat-icon class="material-symbols-outlined text-16 lh-24" matTooltip="Totes start releasing at the upper threshold and 
+            stop at the lower threshold (both set between 1-100)." matTooltipPosition="above" data-automation-id="auto-release-info-icon">info</mat-icon>
+          </div>
+         <div class="d-flex align-items-center">
+         <mat-slide-toggle
+          [(ngModel)]="autoReleaseEnabled"
+          (ngModelChange)="onAutoReleaseToggle($event)"
+          color="primary"
+          [disabled]="userData.accessLevel?.toLowerCase() !== AccessLevel.Administrator.toLowerCase()"
+          data-automation-id="auto-release-toggle">
+        </mat-slide-toggle>
+        </div>
         </div>
       
         <div class="threshold-container d-flex align-items-center text-tertiary-900" data-automation-id="upper-threshold-container">
-          <label class="w-auto me-3" data-automation-id="upper-threshold-label">Upper Threshold: <strong data-automation-id="upper-threshold-value">{{ upperThreshold }} % </strong></label>
+          <label class="w-auto me-3" 
+                 [ngClass]="!autoReleaseEnabled ? 'text-muted opacity-50' : ''"
+                 data-automation-id="upper-threshold-label">Upper Threshold: <strong data-automation-id="upper-threshold-value">{{ upperThreshold }} % </strong></label>
           <mat-slider
             min="0"
             max="100"
             step="1"
             [(ngModel)]="upperThreshold"
             (ngModelChange)="adjustUpperThreshold($event)"
+            [disabled]="!autoReleaseEnabled"
             color="primary"
             data-automation-id="upper-threshold-slider">
           </mat-slider>
         </div>
         
         <div class="threshold-container d-flex align-items-center text-tertiary-900" data-automation-id="lower-threshold-container">
-          <label class="w-auto me-3" data-automation-id="lower-threshold-label">Lower Threshold: <strong data-automation-id="lower-threshold-value">{{ lowerThreshold }} % </strong></label>
+          <label class="w-auto me-3" 
+                 [ngClass]="!autoReleaseEnabled ? 'text-muted opacity-50' : ''"
+                 data-automation-id="lower-threshold-label">Lower Threshold: <strong data-automation-id="lower-threshold-value">{{ lowerThreshold }} % </strong></label>
           <mat-slider
             min="0"
             max="100"
             step="1"
             [(ngModel)]="lowerThreshold"
             (ngModelChange)="adjustLowerThreshold($event)"
+            [disabled]="!autoReleaseEnabled"
             color="primary"
             data-automation-id="lower-threshold-slider">
           </mat-slider>

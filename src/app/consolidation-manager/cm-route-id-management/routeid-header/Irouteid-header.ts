@@ -9,6 +9,7 @@ export interface IConZoneResource {
   description: string;
   autoReleaseUpperThreshold: number;
   autoReleaseLowerThreshold: number;
+  status: string;
 }
 
 export interface IConZoneResponse {

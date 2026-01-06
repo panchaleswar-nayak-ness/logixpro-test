@@ -8,16 +8,19 @@ import { Subject, Subscription, takeUntil } from 'rxjs';
 import { ConsolidationApiService } from 'src/app/common/services/consolidation-api/consolidation-api.service';
 import { IConsolidationApi } from 'src/app/common/services/consolidation-api/consolidation-api-interface';
 import { GlobalService } from 'src/app/common/services/global.service';
-import { ToasterTitle, ToasterType, ToasterMessages } from 'src/app/common/constants/strings.constants';
+import { ToasterTitle, ToasterType, ToasterMessages, AccessLevel } from 'src/app/common/constants/strings.constants';
+import { UserSession } from 'src/app/common/types/CommonTypes';
 
 // Interfaces for API response
 import { IConZoneResponse } from '../routeid-header/Irouteid-header';
 import { IConsolidationStatus } from '../routeid-header/IConsolidationStatus';
 import { IRouteIdStatusCountResponse } from '../routeid-header/IRouteStatusCount';
+import { IConZoneStatusPayload } from '../routeid-header/IConZoneStatusPayload';
 
 import { HttpResponse } from '@angular/common/http';
 import { FieldMappingService } from 'src/app/common/services/field-mapping/field-mapping.service';
 import { SharedService } from 'src/app/common/services/shared.service';
+import { AuthService } from 'src/app/common/init/auth.service';
 
 // Interface for status card display
 interface Info {
@@ -44,6 +47,7 @@ export class RouteidHeaderComponent implements OnInit, OnDestroy {
   Zone: string = '';
   upperThreshold: number;
   lowerThreshold: number;
+  autoReleaseEnabled: boolean = true;
 
   // Route status counters
   statusConNotStarted: string = '0';
@@ -74,6 +78,8 @@ export class RouteidHeaderComponent implements OnInit, OnDestroy {
   };
 
   onDestroy$: Subject<boolean> = new Subject();
+  userData: UserSession;
+  AccessLevel = AccessLevel;
   // timeout references
   private updateTimeout?: ReturnType<typeof setTimeout>;
   private subscription: Subscription = new Subscription();
@@ -85,11 +91,13 @@ export class RouteidHeaderComponent implements OnInit, OnDestroy {
     private global: GlobalService,
     public consolidationApiService: ConsolidationApiService,
     private fieldNameMappingService: FieldMappingService,
-    private refreshService: SharedService
+    private refreshService: SharedService,
+    public authService: AuthService,
   ) {
     // Assign concrete service to interface property
     this.iConsolidationApi = consolidationApiService;
     this.fieldNameMappingService=fieldNameMappingService;
+    this.userData = authService.userData();
   }
 
   // OnInit lifecycle hook
@@ -164,6 +172,7 @@ export class RouteidHeaderComponent implements OnInit, OnDestroy {
     if (matchedZone) {
       this.upperThreshold = matchedZone.resource.autoReleaseUpperThreshold;
       this.lowerThreshold = matchedZone.resource.autoReleaseLowerThreshold;
+      this.autoReleaseEnabled = matchedZone.resource.status === 'Active';
     }
   }
 
@@ -212,19 +221,56 @@ export class RouteidHeaderComponent implements OnInit, OnDestroy {
   }
 
   // Update thresholds in the backend
-  async updateConZone() {
+  async updateConZone(): Promise<void> {
     const payload = {
       UpperThreshold: this.upperThreshold,
       LowerThreshold: this.lowerThreshold
     };
+
     try {
       const res = await this.iConsolidationApi.updateSelectedConZoneData(this.Zone, payload);
-      if (res) {
-        this.global.ShowToastr(ToasterType.Success, "Threshold updated successfully", ToasterTitle.Success);
-      } else {
+
+      if (!res) {
         this.global.ShowToastr(ToasterType.Error, ToasterMessages.ConsolidationThreshold, ToasterTitle.Error);
+        return;
       }
+
+      this.global.ShowToastr(ToasterType.Success, ToasterMessages.ConsolidationThresholdSuccess, ToasterTitle.Success);
     } catch {
+      this.global.ShowToastr(ToasterType.Error, ToasterMessages.ConsolidationThreshold, ToasterTitle.Error);
+    }
+  }
+
+  // Handle auto release toggle change
+  async onAutoReleaseToggle(checked: boolean): Promise<void> {
+    const previousValue = this.autoReleaseEnabled;
+    this.autoReleaseEnabled = checked;
+
+    const payload: IConZoneStatusPayload = {
+      ConZone: this.Zone,
+      Status: {
+        Key: checked ? 'Active' : 'Paused'
+      }
+    };
+
+    try {
+      const res = await this.iConsolidationApi.ConZoneStatusUpdate(payload);
+
+      if (!res) {
+        // Revert toggle on failure
+        this.autoReleaseEnabled = previousValue;
+        this.global.ShowToastr(ToasterType.Error, ToasterMessages.ConsolidationThreshold, ToasterTitle.Error);
+        return;
+      }
+
+      this.global.ShowToastr(
+        ToasterType.Success,
+        checked ? ToasterMessages.AutoReleaseEnabled : ToasterMessages.AutoReleaseDisabled,
+        ToasterTitle.Success
+      );
+    } catch {
+      // Revert toggle on failure
+      this.autoReleaseEnabled = previousValue;
       this.global.ShowToastr(ToasterType.Error, ToasterMessages.ConsolidationThreshold, ToasterTitle.Error);
     }
   }

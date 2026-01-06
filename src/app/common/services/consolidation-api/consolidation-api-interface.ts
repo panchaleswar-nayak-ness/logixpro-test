@@ -1,5 +1,6 @@
 import {IQueryParams} from '../../../app/../consolidation-manager/cm-route-id-management/routeid-list/routeid-IQueryParams'
 import {IConsolidationThresholdPayload } from '../../../app/../consolidation-manager/cm-route-id-management/routeid-header/Irouteid-ThresholdParams'
+import { IConZoneStatusPayload } from '../../../app/../consolidation-manager/cm-route-id-management/routeid-header/IConZoneStatusPayload'
 
 export interface IConsolidationApi
 {
@@ -50,4 +51,5 @@ export interface IConsolidationApi
 	GetSelectedConZoneConHeadersData(ConZone:string,body:IQueryParams)
 	GetRouteIDDetailsData(RouteID)
 	ConHeadersRequestRelease(RouteId:string)
+	ConZoneStatusUpdate(body: IConZoneStatusPayload)
 }

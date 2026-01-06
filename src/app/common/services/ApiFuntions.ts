@@ -15,6 +15,7 @@ import {
 import { AddPickToteInductionFilter } from 'src/app/induction-manager/models/PickToteInductionModel';
 import { InventoryMap, InventoryMapRecordsDto, UpdateSCReq } from '../Model/storage-container-management';
 import {IQueryParams} from 'src/app/consolidation-manager/cm-route-id-management/routeid-list/routeid-IQueryParams'
+import { IConZoneStatusPayload } from 'src/app/consolidation-manager/cm-route-id-management/routeid-header/IConZoneStatusPayload'
 import { MarkoutAuditResponse, MarkoutPickLinesResponse, MarkoutResponse } from 'src/app/consolidation-manager/cm-markout-new/models/cm-markout-new-models';
 import { ZoneListPayload } from 'src/app/bulk-process/preferences/preference.models';
 import { DevicePreferenceRequest, DevicePreferencesTableRequest } from '../interface/admin/device-preferences';
@@ -2496,6 +2497,10 @@ public storageBinsExit(binId: string, zone: string): Observable<ExitOk> {
 
   public async ConHeadersRequestRelease(routeId: string) {
     return await this.ApiBase.PatchAsync(`/Consolidation/Route/${routeId}/RequestRelease`,null);
+  }
+
+  public async ConZoneStatusUpdate(body: IConZoneStatusPayload) {
+    return await this.ApiBase.PatchAsync(`/Consolidation/ConZone/Status`, body);
   }
 
   public GetCartListWithParams(request: CartSearchRequest): Observable<CartListResponse |  null> {

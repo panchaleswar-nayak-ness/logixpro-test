@@ -4,6 +4,7 @@ import { ApiFuntions } from '../ApiFuntions';
 import { AuthService } from 'src/app/common/init/auth.service';
 import {IQueryParams} from '../../../app/../consolidation-manager/cm-route-id-management/routeid-list/routeid-IQueryParams'
 import {IConsolidationThresholdPayload } from '../../../app/../consolidation-manager/cm-route-id-management/routeid-header/Irouteid-ThresholdParams'
+import { IConZoneStatusPayload } from '../../../app/../consolidation-manager/cm-route-id-management/routeid-header/IConZoneStatusPayload'
 
 @Injectable({
   providedIn: 'root'
@@ -474,5 +475,9 @@ export class ConsolidationApiService implements IConsolidationApi {
 
 	public ConHeadersRequestRelease(RouteID:string) {
 		return this.Api.ConHeadersRequestRelease(RouteID);
+	}
+
+	public ConZoneStatusUpdate(body: IConZoneStatusPayload) {
+		return this.Api.ConZoneStatusUpdate(body);
 	}
 }
