@@ -309,6 +309,8 @@ export class GenerateTransactionComponent implements OnInit {
       },
     });
     dialogRef.afterClosed().subscribe((res) => {
+      // If dialog was cancelled (X button or Escape), preserve existing data
+      if (!res) return;
 
       if(res?.isExecuted){
         this.itemNumber = res.itemNumber;
@@ -693,6 +695,10 @@ export class GenerateTransactionComponent implements OnInit {
   }
 
   getSupplierItemInfo() {
+    // Clear location and unit of measure when supplier item changes
+    this.clearLocationData();
+    this.uom = '';
+    
     let payload = {
       ID: this.supplierID,
     };
@@ -700,20 +706,9 @@ export class GenerateTransactionComponent implements OnInit {
       if (res?.isExecuted) {
         this.itemNumber = res.data[0].itemNumber;
         this.description = res.data[0].description;
-        this.uom  = res.data[0].unitofMeasure;
-        if (res.data[0].unitofMeasure != this.uom) {
-          if (this.uom == '') {
-            this.uom = res.data[0].unitofMeasure;
-            this.transactionQtyInvalid = false;
-          } else {
-            this.transactionQtyInvalid = true;
-            this.message =
-              TransactionNotificationMessage.UnitOfMeasureDoesNotMatchInventoryMaster;
-            return;
-          }
-        } else {
-          this.transactionQtyInvalid = false;
-        }
+        // Keep UOM blank when supplier item changes - don't auto-populate it
+        // this.uom  = res.data[0].unitofMeasure;
+        this.transactionQtyInvalid = false;
       } else {
         this.global.ShowToastr(
           ToasterType.Error,

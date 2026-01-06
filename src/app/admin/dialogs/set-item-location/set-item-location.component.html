@@ -21,8 +21,8 @@
                 [hideRequiredMarker]="hideRequiredControlItem.value">
                 <mat-label replacePlaceholder [replacePlaceHolder]="placeholders.itemNumber" [fallbackPlaceHolder]="placeholders.itemNumberFallback" data-automation-id="label-item-number">{{LabelItemNumber}}</mat-label>
                 <input #itm_nmb type="text" placeholder="Search" aria-label="Number" matInput [(ngModel)]="itemNumber" (focusout)="onFocusOutEvent($event)"
-                    [matAutocomplete]="item" (ngModelChange)="this.searchByItemNumber.next($event)" data-automation-id="input-item-number">
-                    <button matSuffix *ngIf="itemNumber" class="clear-btn"  (click)="itemNumber=''" data-automation-id="clear-button"><mat-icon class="text-20 text-chrome-600">cancel</mat-icon></button>
+                    [matAutocomplete]="item" (ngModelChange)="onInputChange($event)" data-automation-id="input-item-number">
+                    <button matSuffix *ngIf="itemNumber" class="clear-btn"  (click)="clearInput()" data-automation-id="clear-button"><mat-icon class="text-20 text-chrome-600">cancel</mat-icon></button>
                 <mat-autocomplete #item="matAutocomplete" (optionSelected)="searchData()" data-automation-id="autocomplete-item-number">
                     <mat-option *ngFor="let option of searchAutocompleteListItem; let i = index" [value]="option.itemNumber" [attr.data-automation-id]="'option-item-number-' + i">
                         {{option.itemNumber}}
@@ -63,7 +63,7 @@
         </div>
 
         <div class="d-flex justify-content-end pt-3">
-            <button (click)="setLocation()" mat-flat-button color="primary" class="button-primary btn-lg flex-grow-1" cdkFocusInitial data-automation-id="set-item-and-location-button">Set Item and Location</button>
+            <button (click)="setLocation()" mat-flat-button color="primary" class="button-primary btn-lg flex-grow-1" cdkFocusInitial [disabled]="!isValidItemSelected" data-automation-id="set-item-and-location-button">Set Item and Location</button>
         </div>
 
     </div>
