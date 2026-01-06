@@ -10,11 +10,13 @@ import { BuildNewCartComponent } from '../dialogs/build-new-cart/build-new-cart.
 import { AddNewCartComponent } from '../add-new-cart/add-new-cart.component';
 import { CartListRequest, CartManagementData, CartManagementResult, ViewDetailsResponse, DeleteCartResponse } from '../interfaces/cart-management.interface';
 import { CartManagementApiService } from 'src/app/common/services/cart-management-api/cart-management-api.service';
-import { ToasterType, ToasterTitle, ToasterMessages, Style, DialogConstants, StringConditions, Mode, ConfirmationMessages, AccessLevel } from 'src/app/common/constants/strings.constants';
+import { ToasterType, ToasterTitle, ToasterMessages, Style, DialogConstants, StringConditions, Mode, ConfirmationMessages, AccessLevel, ResponseStrings } from 'src/app/common/constants/strings.constants';
+import { AlertConfirmationComponent } from 'src/app/dialogs/alert-confirmation/alert-confirmation.component';
+import { ConfirmationDialogComponent } from 'src/app/admin/dialogs/confirmation-dialog/confirmation-dialog.component';
 import { CartManagementPermissions } from 'src/app/common/constants/cart-management/cart-management-constant';
 import { CartManagementGridDefaults } from 'src/app/common/constants/numbers.constants';
-import { CartStatus, CartStatusClassMap, CartDialogConstants, CartManagementDialogConstants, DialogModes, BuildNewCartActionResults } from '../constants/string.constants';
-import { UniqueConstants, ResponseStrings, PermissionMessages } from 'src/app/common/constants/strings.constants';
+import { CartStatus, CartStatusClassMap, CartDialogConstants, CartManagementDialogConstants, DialogModes, BuildNewCartActionResults, CartActivationDialog, CartActivationToastMessages } from '../constants/string.constants';
+import { UniqueConstants, PermissionMessages } from 'src/app/common/constants/strings.constants';
 import { NgZone } from '@angular/core';
 import { TableContextMenuService } from 'src/app/common/globalComponents/table-context-menu-component/table-context-menu.service';
 import { FilterationColumns } from 'src/app/common/Model/pick-Tote-Manager';
@@ -95,12 +97,20 @@ export class CartGridComponent implements OnInit, AfterViewInit, OnChanges, OnDe
   public readonly permissionMessages = PermissionMessages;
   public readonly permissions = CartManagementPermissions;
 
-  // Column filter properties
+  // Column definitions - used for both search dropdown and display names
+  readonly columns = {
+    cartId: { colHeader: 'cartId', colTitle: 'Cart ID', colDef: 'Cart ID' },
+    cartStatus: { colHeader: 'cartStatus', colTitle: 'Status', colDef: 'Status' },
+    toteQty: { colHeader: 'toteQty', colTitle: 'Tote Quantity', colDef: 'Tote Quantity' },
+    location: { colHeader: 'location', colTitle: 'Location', colDef: 'Location' }
+  };
+
+  // Column filter properties (array format for search dropdown)
   tableColumns: TableHeaderDefinitions[] = [
-    { colHeader: 'cartId', colTitle: 'Cart ID', colDef: 'Cart ID' },
-    { colHeader: 'cartStatus', colTitle: 'Status', colDef: 'Status' },
-    { colHeader: 'toteQty', colTitle: 'Tote Quantity', colDef: 'Tote Quantity' },
-    { colHeader: 'location', colTitle: 'Location', colDef: 'Location' }
+    this.columns.cartId,
+    this.columns.cartStatus,
+    this.columns.toteQty,
+    this.columns.location
   ];
   searchAutocompleteList: string[] = [];
   searchByInput = new Subject<string>();
@@ -207,6 +217,7 @@ export class CartGridComponent implements OnInit, AfterViewInit, OnChanges, OnDe
   readonly STATUS_IN_QUEUE = CartStatus.Inducted;
   readonly STATUS_IN_PROGRESS = CartStatus.InProgress;
   readonly STATUS_COMPLETE = CartStatus.Available;
+  readonly STATUS_INACTIVE = CartStatus.Inactive;
   readonly LOCATION_IN_TRANSIT = 'In Transit';
 
   onPageChange(event: PageEvent): void {
@@ -313,6 +324,7 @@ export class CartGridComponent implements OnInit, AfterViewInit, OnChanges, OnDe
       const dialogData: CartManagementData = {
         mode: DialogModes.VIEW,
         cartId: viewDetails.cartId,
+        cartStatus: record.cartStatus,
         existingAssignments: assignments,
         rows: rows,
         cols: cols
@@ -374,6 +386,7 @@ export class CartGridComponent implements OnInit, AfterViewInit, OnChanges, OnDe
       const dialogData: CartManagementData = {
         mode: DialogModes.EDIT,
         cartId: viewDetails.cartId,
+        cartStatus: record.cartStatus,
         existingAssignments: assignments,
         rows: rows,
         cols: cols
@@ -430,6 +443,90 @@ export class CartGridComponent implements OnInit, AfterViewInit, OnChanges, OnDe
         this.loadCarts();
       }
     });
+  }
+
+  // Deactivate cart - changes status from Available to Inactive
+  onDeactivateCart(record: CartItem): void {
+    const dialogRef = this.global.OpenDialog(AlertConfirmationComponent, {
+      width: Style.w560px,
+      data: {
+        heading: CartActivationDialog.DeactivateHeading,
+        message: CartActivationDialog.DeactivateMessage,
+        buttonField: true
+      }
+    });
+
+    dialogRef.afterClosed().subscribe(async (result: boolean) => {
+      if (result === true) {
+        await this.executeCartStatusUpdate(record.cartId, false, CartActivationToastMessages.DeactivateSuccess, CartActivationToastMessages.DeactivateFailed);
+      }
+    });
+  }
+
+  // Activate cart - changes status from Inactive to Available
+  onActivateCart(record: CartItem): void {
+    const dialogRef = this.global.OpenDialog(ConfirmationDialogComponent, {
+      width: Style.w560px,
+      data: {
+        heading: CartActivationDialog.ActivateHeading,
+        message: CartActivationDialog.ActivateMessage,
+        buttonFields: true,
+        hideCancel: false
+      }
+    });
+
+    dialogRef.afterClosed().subscribe(async (result: string) => {
+      if (result === ResponseStrings.Yes) {
+        await this.executeCartStatusUpdate(record.cartId, true, CartActivationToastMessages.ActivateSuccess, CartActivationToastMessages.ActivateFailed);
+      }
+    });
+  }
+
+  // Common method to execute cart status update API call
+  private async executeCartStatusUpdate(cartId: string, activeFlag: boolean, successMessage: string, failureMessage: string): Promise<void> {
+    try {
+      const response = await this.cartApiService.updateCartStatusActiveInactive(cartId, activeFlag);
+      if (response.isSuccess) {
+        this.global.ShowToastr(ToasterType.Success, successMessage, ToasterTitle.Success);
+        this.loadCarts();
+      } else {
+        this.global.ShowToastr(ToasterType.Error, response.value || failureMessage, ToasterTitle.Error);
+      }
+    } catch (error) {
+      this.global.ShowToastr(ToasterType.Error, failureMessage, ToasterTitle.Error);
+    }
+  }
+
+  // Check if cart can be deactivated (only Available status)
+  canDeactivateCart(record: CartItem): boolean {
+    return record.cartStatus === this.STATUS_COMPLETE;
+  }
+
+  // Check if cart can be activated (only Inactive status)
+  canActivateCart(record: CartItem): boolean {
+    return record.cartStatus === this.STATUS_INACTIVE;
+  }
+
+  // Check if cart is in Inactive status (used to disable other menu options)
+  isCartInactive(record: CartItem): boolean {
+    return record.cartStatus === this.STATUS_INACTIVE;
+  }
+
+  // Check if View Details should be disabled
+  isViewDetailsDisabled(record: CartItem): boolean {
+    return this.isCartInactive(record);
+  }
+
+  // Check if Edit should be disabled
+  isEditDisabled(record: CartItem): boolean {
+    return this.isCartInactive(record) || 
+           record.cartStatus === this.STATUS_COMPLETE || 
+           (record.cartStatus === this.STATUS_IN_PROGRESS && record.location !== this.LOCATION_IN_TRANSIT);
+  }
+
+  // Check if Delete should be disabled
+  isDeleteDisabled(record: CartItem): boolean {
+    return this.isCartInactive(record) || !this.canDeleteCart(record);
   }
 
   
@@ -567,21 +664,29 @@ export class CartGridComponent implements OnInit, AfterViewInit, OnChanges, OnDe
     event.preventDefault();
     this.isActiveTrigger = true;
     this.ngZone.run(() => {
-      filterColumnName = this.mapFilterColumn(filterColumnName);
+      // Pass display name to context menu (don't map yet - mapping happens when creating filter)
       this.contextMenuService.updateContextMenuState(event, selectedItem, filterColumnName, filterCondition, filterItemType);
     });
   }
 
   // Handle filteration columns selection from context menu
   directFilterationColumnsSelected(filterationColumns: FilterationColumns[]): void {
+    // Map display column names to API filter names before storing
+    const mappedFilters = filterationColumns.map(filter => ({
+      ...filter,
+      ColumnName: this.mapFilterColumn(filter.ColumnName) || filter.ColumnName
+    }));
+    
     // Service will emit new value via BehaviorSubject, component will update reactively
-    this.directFilterService.setFilters(filterationColumns);
+    this.directFilterService.setFilters(mappedFilters);
     // Reset to first page when filter is applied (filtered data may have fewer pages)
     this.customPagination.pageIndex = CartManagementGridDefaults.DefaultPageIndex;
     this.loadCarts();
     this.isActiveTrigger = false;
   }
   private mapFilterColumn(filterColumnName?: string): string | undefined {
+    if (!filterColumnName) return undefined;
+    
     const columnMapping = {
       cartId: "SortBar.SortBar1",
       cartStatus: "SortBar.Status",
@@ -589,8 +694,12 @@ export class CartGridComponent implements OnInit, AfterViewInit, OnChanges, OnDe
       toteQty: "ToteQty",
       location: "SortBar.SortBarLocation"
     } as const;
-  
-    return filterColumnName ? columnMapping[filterColumnName] ?? filterColumnName : undefined;
+    
+    // If it's a display name, convert to property name first
+    const propertyName = this.columnMapping[filterColumnName] || filterColumnName;
+    
+    // Then map property name to API filter name
+    return columnMapping[propertyName] ?? filterColumnName;
   }
 
     onAddNewCart(): void {

@@ -59,7 +59,9 @@ export class BulkTransactionComponent implements OnInit {
   isZoneSelected: boolean = false;
   generalSetupInfo: GeneralSetup;
   isBatchIdGenerationEnabled:boolean=false;
+  assignToteToOrderCalled: boolean = false;
   isSlapperLabelFlow: boolean = false; // Track when we're in slapper label flow
+  selectedZones: Set<string> = new Set<string>();
   public iBulkProcessApiService: IBulkProcessApiService;
   public iAdminApiService: IAdminApiService;
   public iPrintApiService: IPrintApiService;
@@ -84,6 +86,7 @@ export class BulkTransactionComponent implements OnInit {
   }
 
   async ngOnInit() {
+    await this.loadSelectedZones();
     await this.loadData();
     await this.onReload();
   }
@@ -330,8 +333,9 @@ export class BulkTransactionComponent implements OnInit {
               },
             });
             dialogRefTote.afterClosed().subscribe((result) => {
-              if (result && result.length > 0) {
-                this.selectedOrders = result;
+              if (result && result.selectedList && result.selectedList.length > 0) {
+                this.selectedOrders = result.selectedList;
+                this.assignToteToOrderCalled = result.assignToteToOrderCalled || false;
                 this.selectedOrders.forEach((order) => {
                   order.orderLines?.forEach((orderLine) => {
                     orderLine.toteId = order.toteId;
@@ -614,6 +618,9 @@ export class BulkTransactionComponent implements OnInit {
         this.bulkOrderBatchToteQty();
       }
       localStorage.removeItem(localStorageKeys.VerifyBulks);
+    } else {
+      // Reset the flag when closing verify-bulk
+      this.assignToteToOrderCalled = false;
       // Reset the slapper label flow flag when closing verify-bulk
       this.isSlapperLabelFlow = false;
     }
@@ -671,8 +678,8 @@ export class BulkTransactionComponent implements OnInit {
           });
         this.displayedColumns = TOTE_DISPLAYED_COLUMNS;
         this.selectedDisplayedColumns = SELECTED_TOTE_DISPLAYED_COLUMNS;
-        // We don't need to create a batch id manually for totes
-        this.isBatchIdGenerationEnabled = false;
+        // We need to create a batch id manually for totes
+        this.isBatchIdGenerationEnabled = true;
         break;
         
       case BulkTransactionView.ORDER:
@@ -705,7 +712,12 @@ export class BulkTransactionComponent implements OnInit {
     }
   }
 
-  selectOrder(event) {
+  async selectOrder(event) {
+    // Ensure zones are loaded before filtering
+    if (this.selectedZones.size === 0) {
+      await this.loadSelectedZones();
+    }
+    
     event.toteNumber = this.selectedOrders.length + 1;
     this.orderLines = [];
     // Reset slapper label flow flag when new orders are selected
@@ -730,8 +742,40 @@ export class BulkTransactionComponent implements OnInit {
       });
     }
     this.status.orderLinesCount = this.status.orderLinesCount + event.lineCount;
-    this.selectedOrders.forEach((element) => { this.orderLines = this.orderLines.concat(element.orderLines) });
+    this.selectedOrders.forEach((element) => { 
+      const filteredOrderLines = this.filterOrderLinesByZone(element.orderLines ?? []);
+      this.orderLines = this.orderLines.concat(filteredOrderLines);
+    });
     this.orderLines = this.sortByLocation(this.orderLines);
+  }
+
+  private async loadSelectedZones(): Promise<void> {
+    try {
+      const res: { body: BulkZone[]; status: number } = await this.iBulkProcessApiService.bulkPickBulkZone();
+      if (res.status === HttpStatusCode.Ok && Array.isArray(res.body)) {
+        this.selectedZones = new Set(res.body.map(zone => zone.zone));
+      } else {
+        this.selectedZones = new Set<string>();
+      }
+    } catch (error) {
+      console.error('Failed to load bulk zones', error);
+      this.selectedZones = new Set<string>();
+    }
+  }
+
+  private filterOrderLinesByZone(orderLines: OrderLineResource[]): OrderLineResource[] {
+    if (!orderLines || orderLines.length === 0) {
+      return orderLines;
+    }
+    
+    if (this.selectedZones.size === 0) {
+      return orderLines;
+    }
+    
+    const filtered = orderLines.filter(orderLine => 
+      orderLine.zone && this.selectedZones.has(orderLine.zone)
+    );
+    return filtered;
   }
 
   sortByLocation(data:OrderLineResource[]) {
@@ -761,8 +805,9 @@ export class BulkTransactionComponent implements OnInit {
       }
     });
     dialogRefTote.afterClosed().subscribe((result) => {
-      if (result.length > 0) {
-        this.selectedOrders = result;
+      if (result && result.selectedList && result.selectedList.length > 0) {
+        this.selectedOrders = result.selectedList;
+        this.assignToteToOrderCalled = result.assignToteToOrderCalled || false;
         this.selectedOrders.forEach((order) => {
           order.orderLines.forEach((orderLine) => {
             orderLine.toteId = order.toteId;
@@ -835,7 +880,8 @@ export class BulkTransactionComponent implements OnInit {
   
     this.selectedOrders.forEach((element, index) => {
       element.toteNumber = index + 1;
-      this.orderLines = this.orderLines.concat(element.orderLines ?? []);
+      const filteredOrderLines = this.filterOrderLinesByZone(element.orderLines ?? []);
+      this.orderLines = this.orderLines.concat(filteredOrderLines);
     });
   
     this.orderLines = this.sortByLocation(this.orderLines);
@@ -849,7 +895,12 @@ export class BulkTransactionComponent implements OnInit {
         (order): order is OrderResponse | TotesResponse => 'toteId' in order
       )
     ];
-    this.selectedOrders.forEach((element, index) => { element.toteNumber = index + 1; this.status.orderLinesCount = this.status.orderLinesCount + element.lineCount; this.orderLines = this.orderLines.concat(element.orderLines); });
+    this.selectedOrders.forEach((element, index) => { 
+      element.toteNumber = index + 1; 
+      this.status.orderLinesCount = this.status.orderLinesCount + element.lineCount; 
+      const filteredOrderLines = this.filterOrderLinesByZone(element.orderLines);
+      this.orderLines = this.orderLines.concat(filteredOrderLines);
+    });
     this.orderLines = this.sortByLocation(this.orderLines);
     this.orders = [];
     // Reset slapper label flow flag when new orders are appended

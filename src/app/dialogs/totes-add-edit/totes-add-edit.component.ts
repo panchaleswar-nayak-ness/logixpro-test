@@ -4,6 +4,7 @@ import {
   ElementRef,
   Inject,
   OnInit,
+  AfterViewInit,
   ViewChild,
   Renderer2,
   ViewChildren,
@@ -14,9 +15,7 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { AuthService } from 'src/app/common/init/auth.service';
 
 import { DeleteConfirmationComponent } from '../../admin/dialogs/delete-confirmation/delete-confirmation.component';
-import { ActivatedRoute } from '@angular/router';
 import { Location } from '@angular/common';
-import { ApiFuntions } from 'src/app/common/services/ApiFuntions';
 import { FormControl } from '@angular/forms';
 import { FloatLabelType } from '@angular/material/form-field';
 import { Subject, catchError, of, takeUntil } from 'rxjs';
@@ -27,34 +26,26 @@ import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.ser
 import { IInductionManagerApiService } from 'src/app/common/services/induction-manager-api/induction-manager-api-interface';
 import { InductionManagerApiService } from 'src/app/common/services/induction-manager-api/induction-manager-api.service';
 import {  ToasterTitle ,ResponseStrings,ToasterType,ToasterMessages,DialogConstants,UniqueConstants,Style,TableConstant,ColumnDef} from 'src/app/common/constants/strings.constants';
+import { ToteSetupMessages } from 'src/app/common/constants/tote-setup.constants';
 import { PrintApiService} from "../../common/services/print-api/print-api.service";
-
-export interface PeriodicElement {
-  name: string;
-  position: number;
-  weight: number;
-  symbol: string;
-}
-
-export interface ToteElement {
-  toteID: string;
-  cells: string;
-  position: number;
-  oldToteID: string;
-  isInserted: number;
-}
-
+import { HttpResponse } from '@angular/common/http';
+import { ApiResponse, UserSession } from 'src/app/common/types/CommonTypes';
+import {
+  ToteElement,
+  ToteSetupPayload,
+  SavedTote,
+  ToteTypeAheadItem,
+  SelectedTote,
+  TotesAddEditDialogData,
+} from './totes-add-edit.types';
 
 @Component({
   selector: 'app-totes-add-edit',
   templateUrl: './totes-add-edit.component.html',
   styleUrls: ['./totes-add-edit.component.scss'],
 })
-export class TotesAddEditComponent implements OnInit {
+export class TotesAddEditComponent implements OnInit, AfterViewInit {
 
-  elementData: PeriodicElement[] = [
-    { position: 1, name: 'Hydrogen', weight: 1.0079, symbol: 'H' },
-  ];
   @ViewChild('fieldFocus') fieldFocus: ElementRef;
   @ViewChildren('category_category', { read: ElementRef })
   category_category: QueryList<ElementRef>;
@@ -73,26 +64,26 @@ export class TotesAddEditComponent implements OnInit {
     },
   ];
   displayedColumns: string[] = [ColumnDef.Actions, TableConstant.zone, 'locationdesc'];
-  alreadySavedTotesList: any;
-  dataSource = new MatTableDataSource<PeriodicElement>(this.elementData);
+  alreadySavedTotesList: SavedTote[] = [];
+  dataSource = new MatTableDataSource<ToteElement>(this.elementDataTote);
   dataSourceManagedTotes = new MatTableDataSource<ToteElement>(
     this.elementDataTote
   );
-  selection = new SelectionModel<PeriodicElement>(true, []);
-  position: any;
+  selection = new SelectionModel<ToteElement>(true, []);
+  position: number = 0;
   isIMPath = false;
   public iAdminApiService: IAdminApiService;
   public iInductionManagerApi: IInductionManagerApiService;
   toteID = '';
   cellID = '';
-  fromTote: any;
-  toTote;
-  userData: any;
-  searchAutocompleteList: any;
-  searchAutocompleteListFiltered1: any;
-  searchAutocompleteListFiltered2: any;
+  fromTote = '';
+  toTote = '';
+  userData: UserSession;
+  searchAutocompleteList: ToteTypeAheadItem[] = [];
+  searchAutocompleteListFiltered1: ToteTypeAheadItem[] = [];
+  searchAutocompleteListFiltered2: ToteTypeAheadItem[] = [];
   hideRequiredControl = new FormControl(false);
-  imPreferences: any;
+  imPreferences: { printDirectly: boolean } = { printDirectly: false };
   onDestroy$: Subject<boolean> = new Subject();
   @ViewChild(MatAutocompleteTrigger)
   autocompleteInventory1: MatAutocompleteTrigger;
@@ -116,7 +107,7 @@ export class TotesAddEditComponent implements OnInit {
       isDuplicate: false,
       isEdit: false,
     });
-    this.dataSourceManagedTotes = new MatTableDataSource<any>(
+    this.dataSourceManagedTotes = new MatTableDataSource<ToteElement>(
       this.elementDataTote
     );
     const lastIndex = this.elementDataTote.length - 1;
@@ -130,18 +121,18 @@ export class TotesAddEditComponent implements OnInit {
       }
     });
   }
-  printTote(type, element) {
+  printTote(type: string, element: ToteElement): void {
     let ident = 0;
     let sTote = '';
     let eTote = '';
     let batch = '';
-    let ToteID = element?.toteID;
-    if (type.toLowerCase() == 'tote') {
+    let ToteID = element?.toteID ?? '';
+    if (type.toLowerCase() === 'tote') {
       //print single tote id
       sTote = ' ';
       eTote = ' ';
       batch = ' ';
-    } else if (type.toLowerCase() == 'batch') {
+    } else if (type.toLowerCase() === 'batch') {
       // print batch
       ToteID = ' ';
       sTote = ' ';
@@ -155,12 +146,12 @@ export class TotesAddEditComponent implements OnInit {
 
     this.printApiService.PrintPrevToteManLabel(ToteID, ident, sTote, eTote, batch);
   }
-  printRange() {
-    let ident = 1;
-    let ToteID = '';
-    let batch = '';
-    let sTote = this.fromTote;
-    let eTote = this.toTote;
+  printRange(): void {
+    const ident = 1;
+    const ToteID = '';
+    const batch = '';
+    const sTote = this.fromTote;
+    const eTote = this.toTote;
 
     if (this.imPreferences.printDirectly) {
       this.printApiService.PrintPrevToteManLabel(ToteID, ident, sTote, eTote, batch);
@@ -192,7 +183,7 @@ export class TotesAddEditComponent implements OnInit {
     return this.floatLabelControl2.value ?? 'auto';
   }
   /** The label for the checkbox on the passed row */
-  checkboxLabel(row?: PeriodicElement): string {
+  checkboxLabel(row?: ToteElement): string {
     if (!row) {
       return `${this.isAllSelected() ? 'deselect' : UniqueConstants.Select} all`;
     }
@@ -200,83 +191,90 @@ export class TotesAddEditComponent implements OnInit {
       row.position + 1
     }`;
   }
-  autocompleteSearchColumn() {
+  autocompleteSearchColumn(): void {
     this.iInductionManagerApi
       .GetFromToteTypeAhead()
       .pipe(takeUntil(this.onDestroy$))
       .pipe(
-        catchError((error) => {
-          // Handle the error here
+        catchError(() => {
           this.global.ShowToastr(
             ToasterType.Error,
-            'An Error occured while retrieving data.',
+            ToteSetupMessages.ErrorRetrievingData,
             ToasterTitle.Error
           );
-          // Return a fallback value or trigger further error handling if needed
-          console.log('GetFromToteTypeAhead');
-          return of({ isExecuted: false });
+          return of({ isExecuted: false, data: null });
         })
       )
-      .subscribe((res: any) => {
-        if (res.isExecuted) {
-          if (res.data) {
-            this.searchAutocompleteList = res.data;
-            this.searchAutocompleteListFiltered1 = res.data;
-            this.searchAutocompleteListFiltered2 = res.data;
-          }
+      .subscribe((res: ApiResponse<ToteTypeAheadItem[]>) => {
+        if (res.isExecuted && res.data) {
+          this.searchAutocompleteList = res.data;
+          this.searchAutocompleteListFiltered1 = res.data;
+          this.searchAutocompleteListFiltered2 = res.data;
         }
       });
   }
 
   async saveTote(
-    toteID: any,
-    cells: any,
-    oldToteID: any,
-    isInserted: any,
-    index: any
-  ) {
-    let oldTote = '';
-    let updateMessage = 'Update Successful';
-    if (isInserted == '1') {
-      oldTote = oldToteID;
+    toteID: string,
+    cells: string,
+    oldToteID: string,
+    isInserted: number,
+    index: number
+  ): Promise<void> {
+    // Frontend validation: Check for duplicate tote ID in existing data
+    const isDuplicateInTable = this.elementDataTote.some(
+      (tote, i) => i !== index && tote.toteID === toteID && tote.isInserted === 1
+    );
+
+    if (isDuplicateInTable) {
+      this.dataSourceManagedTotes.data[index].isDuplicate = true;
+      this.global.ShowToastr(
+        ToasterType.Error,
+        ToasterMessages.ToteIDAlreadyExists,
+        ToasterTitle.Error
+      );
+      return;
     }
-    let searchPayload = {
+
+    const oldTote = isInserted === 1 ? oldToteID : '';
+    const searchPayload: ToteSetupPayload = {
       oldToteID: oldTote,
       toteID: toteID,
       cells: cells,
     };
+
     try {
-      let res: any = await this.iAdminApiService.ToteSetupInsert(searchPayload);
-      if (res.body.data && res.body.isExecuted) {
+      const res: HttpResponse<ApiResponse<boolean>> = await this.iAdminApiService.ToteSetupInsert(searchPayload);
+      if (res.body?.data && res.body?.isExecuted) {
         this.global.ShowToastr(
           ToasterType.Success,
-          isInserted == '1' ? updateMessage : res.body.responseMessage,
+          isInserted === 1 ? ToteSetupMessages.UpdateSuccessful : res.body.responseMessage,
           ToasterTitle.Success
         );
-        this.dataSourceManagedTotes.data[index]['isDuplicate'] = false;
+        this.dataSourceManagedTotes.data[index].isDuplicate = false;
         this.isRowAdded = false;
         this.getTotes();
       } else {
-        this.dataSourceManagedTotes.data[index]['isDuplicate'] = true;
+        this.dataSourceManagedTotes.data[index].isDuplicate = true;
         this.global.ShowToastr(
           ToasterType.Error,
-          'Cannot set the selected tote because it is already set in the batch.',
+          ToasterMessages.DuplicateToteIDError,
           ToasterTitle.Error
         );
       }
     } catch (err) {
-      this.dataSourceManagedTotes.data[index]['isDuplicate'] = true;
+      this.dataSourceManagedTotes.data[index].isDuplicate = true;
       this.global.ShowToastr(
         ToasterType.Error,
-        'Cannot set the selected tote because it is already set in the batch.',
+        ToasterMessages.DuplicateToteIDError,
         ToasterTitle.Error
       );
     }
   }
 
-  deleteTote(toteID: any, index) {
-    const dialogRef: any = this.global.OpenDialog(DeleteConfirmationComponent, {
-      height: 'auto',
+  deleteTote(toteID: string, index: number): void {
+    const dialogRef = this.global.OpenDialog(DeleteConfirmationComponent, {
+      height: Style.auto,
       width: Style.w480px,
       autoFocus: DialogConstants.autoFocus,
       disableClose: true,
@@ -285,126 +283,109 @@ export class TotesAddEditComponent implements OnInit {
         action: UniqueConstants.delete,
       },
     });
-    dialogRef.afterClosed().subscribe((result) => {
-      if (result == ResponseStrings.Yes) {
+    dialogRef.afterClosed().subscribe((result: string) => {
+      if (result === ResponseStrings.Yes) {
         const data = this.dataSourceManagedTotes.data;
-        if (data[index]['isDuplicate'] || data[index]['isInserted'] == 0) {
-          data.splice(index, 1);
-          this.dataSourceManagedTotes.data = data;
-          console.log(this.dataSourceManagedTotes.data);
-          this.isRowAdded = false;
+        if (data[index].isDuplicate || data[index].isInserted === 0) {
+          // Local delete for unsaved/duplicate rows
+          this.elementDataTote.splice(index, 1);
+          this.dataSourceManagedTotes = new MatTableDataSource<ToteElement>(this.elementDataTote);
+          this.isRowAdded = this.elementDataTote.some((obj) => obj.isInserted === 0);
         } else {
-          let deleteTote = {
+          const deleteTotePayload = {
             toteID: toteID,
           };
-          this.iAdminApiService.ToteSetupDelete(deleteTote).subscribe(
-            (res: any) => {
+          this.iAdminApiService.ToteSetupDelete(deleteTotePayload).subscribe(
+            (res: ApiResponse<boolean>) => {
               if (res.data && res.isExecuted) {
                 this.global.ShowToastr(
                   ToasterType.Success,
-                  'Deleted successfuly',
+                  ToteSetupMessages.DeletedSuccessfully,
                   ToasterTitle.Success
                 );
-                this.isRowAdded = false;
-                let isUnsavedItem = false;
-                this.dataSourceManagedTotes.data.forEach((obj) => {
-                  if (obj.isInserted === 0) {
-                    isUnsavedItem = true;
-                  } else {
-                    isUnsavedItem = false;
-                  }
-                });
-                if (isUnsavedItem) {
-                  this.getTotes(this.dataSourceManagedTotes.data);
+                // Find unsaved items to preserve after refresh
+                const unsavedItems = this.elementDataTote.filter((obj) => obj.isInserted === 0);
+                if (unsavedItems.length > 0) {
+                  this.getTotes(unsavedItems);
                 } else {
+                  this.isRowAdded = false;
                   this.getTotes();
                 }
               } else {
-                this.global.ShowToastr(ToasterType.Error, 'Already exists', ToasterTitle.Error);
-                console.log('ToteSetupDelete', res.responseMessage);
+                this.global.ShowToastr(ToasterType.Error, ToteSetupMessages.AlreadyExists, ToasterTitle.Error);
               }
             },
-            (error) => {}
+            () => {}
           );
         }
       }
     });
   }
 
-  getTotes(item?) {
-    let items: any;
-    if (item) {
-      items = JSON.parse(JSON.stringify(item));
-    }
+  getTotes(unsavedItems?: ToteElement[]): void {
+    const itemsToPreserve = unsavedItems ? structuredClone(unsavedItems) : undefined;
     this.elementDataTote.length = 0;
     this.iAdminApiService.ToteSetup().subscribe(
-      (res: any) => {
+      (res: ApiResponse<ToteElement[]>) => {
         if (res.data && res.isExecuted) {
           this.elementDataTote = res.data;
-          for (let value of this.elementDataTote) {
+          for (const value of this.elementDataTote) {
             value.isInserted = 1;
             value.isDuplicate = false;
             value.oldToteID = value.toteID;
             value.isEdit = false;
           }
-          if (items) {
-            this.elementDataTote.push(items[items.length - 1]);
+          // Preserve all unsaved items at the beginning of the list
+          if (itemsToPreserve && itemsToPreserve.length > 0) {
+            this.elementDataTote.unshift(...itemsToPreserve);
             this.isRowAdded = true;
           }
-          this.dataSourceManagedTotes = new MatTableDataSource<any>(
+          this.dataSourceManagedTotes = new MatTableDataSource<ToteElement>(
             this.elementDataTote
           );
         } else {
           this.global.ShowToastr(ToasterType.Error, ToasterMessages.SomethingWentWrong, ToasterTitle.Error);
-          console.log('ToteSetup', res.responseMessage);
         }
       },
-      (error) => {}
+      () => {}
     );
   }
 
-  onToteChange($event, position, cells = '') {
+  onToteChange($event: Event, position: number, cells = ''): void {
+    const target = $event.target as HTMLInputElement;
     this.elementDataTote[position].isEdit = true;
-    if (cells == '') {
-      if (this.elementDataTote[position].toteID != $event.target.value) {
-        this.elementDataTote[position].toteID = $event.target.value;
+    if (cells === '') {
+      if (this.elementDataTote[position].toteID !== target.value) {
+        this.elementDataTote[position].toteID = target.value;
       }
-    } else if (this.elementDataTote[position].cells != $event.target.value) {
-      this.elementDataTote[position].cells = $event.target.value;
+    } else if (this.elementDataTote[position].cells !== target.value) {
+      this.elementDataTote[position].cells = target.value;
     }
   }
 
-  selectTote(toteIDs = null, cells = null, isManagedTote = false) {
+  selectTote(toteIDs: string | null = null, cells: string | null = null, isManagedTote = false): void {
     if (!isManagedTote) {
       if (this.toteID === '') return;
     }
 
-    let exists = false;
-    for (let i = 0; i < this.alreadySavedTotesList?.length; i++) {
-      if (toteIDs == null) {
-        if (this.alreadySavedTotesList[i].toteid == this.toteID) {
-          exists = true;
-          break;
-        }
-      } else if (this.alreadySavedTotesList[i].toteid == toteIDs) {
-        exists = true;
-        break;
-      }
-    }
+    const toteIdToCheck = toteIDs ?? this.toteID;
+    const exists = this.alreadySavedTotesList?.some(
+      (savedTote: SavedTote) => savedTote.toteid === toteIdToCheck
+    ) ?? false;
 
     if (exists) {
       this.global.ShowToastr(
         ToasterType.Error,
-        'Cannot set the selected tote because it is already set in the batch.',
+        ToteSetupMessages.ToteAlreadySetInBatch,
         ToasterTitle.Error
       );
     } else {
-      let selectedTote;
-      if (toteIDs == null && cells == null) {
+      let selectedTote: SelectedTote;
+      if (toteIDs === null && cells === null) {
         if (!this.cellID) {
           this.global.ShowToastr(
             ToasterType.Error,
-            'Cannot set the selected tote because it is cells is empty.',
+            ToteSetupMessages.ToteCellsEmpty,
             ToasterTitle.Error
           );
           return;
@@ -419,13 +400,13 @@ export class TotesAddEditComponent implements OnInit {
         if (!cells) {
           this.global.ShowToastr(
             ToasterType.Error,
-            'Cannot set the selected tote because it is cells is empty.',
+            ToteSetupMessages.ToteCellsEmpty,
             ToasterTitle.Error
           );
           return;
         }
         selectedTote = {
-          toteID: toteIDs,
+          toteID: toteIDs!,
           cellID: cells,
           position: this.position,
         };
@@ -437,23 +418,23 @@ export class TotesAddEditComponent implements OnInit {
 
   displayedColumns1: string[] = [UniqueConstants.Select, TableConstant.zone, 'locationdesc', 'options'];
   displayedColumnsIM: string[] = [TableConstant.zone, TableConstant.locationdesc, TableConstant.options];
-  dataSource1 = new MatTableDataSource<PeriodicElement>(this.elementData);
-  selection1 = new SelectionModel<PeriodicElement>(true, []);
+  dataSource1 = new MatTableDataSource<ToteElement>(this.elementDataTote);
+  selection1 = new SelectionModel<ToteElement>(true, []);
 
   constructor(
     public dialogRef: MatDialogRef<TotesAddEditComponent>,
     public inductionManagerApi: InductionManagerApiService,
     public adminApiService: AdminApiService,
-    private location: Location,
-    private renderer: Renderer2,
-    @Inject(MAT_DIALOG_DATA) public data: any,
-    private authService: AuthService,
-    private global: GlobalService,
+    private readonly location: Location,
+    private readonly renderer: Renderer2,
+    @Inject(MAT_DIALOG_DATA) public data: TotesAddEditDialogData,
+    private readonly authService: AuthService,
+    private readonly global: GlobalService,
     public printApiService: PrintApiService
   ) {
     this.iAdminApiService = adminApiService;
-    let pathArr = this.location.path().split('/');
-    this.isIMPath = pathArr[pathArr.length - 1] === 'ImToteManager';
+    const pathArr = this.location.path().split('/');
+    this.isIMPath = pathArr.at(-1) === 'ImToteManager';
     this.iInductionManagerApi = inductionManagerApi;
   }
 
@@ -461,8 +442,8 @@ export class TotesAddEditComponent implements OnInit {
     this.elementDataTote.length = 0;
     this.position = this.data.position;
     this.userData = this.authService.userData();
-    this.alreadySavedTotesList = this.data.alreadySavedTotes;
-    this.cellID = this.data.defaultCells ? this.data.defaultCells : 0;
+    this.alreadySavedTotesList = this.data.alreadySavedTotes ?? [];
+    this.cellID = this.data.defaultCells ?? '';
     this.getTotes();
     this.autocompleteSearchColumn();
     this.imPreferences = this.global.getImPreferences();
@@ -471,14 +452,15 @@ export class TotesAddEditComponent implements OnInit {
     this.fieldFocus?.nativeElement.focus();
   }
 
-  searchAutocompleteListFilter1() {
+  searchAutocompleteListFilter1(): void {
     this.searchAutocompleteListFiltered1 = this.searchAutocompleteList.filter(
-      (str: any) => str.toteID.startsWith(this.fromTote)
+      (item: ToteTypeAheadItem) => item.toteID.startsWith(this.fromTote)
     );
   }
-  searchAutocompleteListFilter2() {
+
+  searchAutocompleteListFilter2(): void {
     this.searchAutocompleteListFiltered2 = this.searchAutocompleteList.filter(
-      (str: any) => str.toteID.startsWith(this.toTote)
+      (item: ToteTypeAheadItem) => item.toteID.startsWith(this.toTote)
     );
   }
 }

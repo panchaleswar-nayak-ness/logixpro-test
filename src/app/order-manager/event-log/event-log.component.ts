@@ -16,6 +16,7 @@ import { IAdminApiService } from 'src/app/common/services/admin-api/admin-api-in
 import { TableContextMenuService } from 'src/app/common/globalComponents/table-context-menu-component/table-context-menu.service';
 import { ConfirmationMessages, FieldName, StringConditions,KeyboardKeys, ToasterMessages, ToasterTitle, ToasterType ,DialogConstants,Style,UniqueConstants,Column,TableConstant,ColumnDef} from 'src/app/common/constants/strings.constants';
 import { AppRoutes} from 'src/app/common/constants/menu.constants';
+import { EventLogFilterField } from 'src/app/common/enums/admin/event-log-enums';
 
 @Component({
   selector: 'app-event-log',
@@ -46,6 +47,10 @@ export class EventLogComponent implements OnInit {
   eventLogTableSubscribe: any;
   eventLogTypeAheadSubscribe: any;
   searchAutoCompleteList: any;
+  
+  // Debounce timer for API calls to prevent overload
+  private debounceTimer: ReturnType<typeof setTimeout> | null = null;
+  private readonly DEBOUNCE_TIME = 300; // milliseconds
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild('trigger') trigger: MatMenuTrigger;
@@ -96,7 +101,17 @@ export class EventLogComponent implements OnInit {
   }
   
   ngOnDestroy() {
-    this.eventLogTableSubscribe.unsubscribe();
+    // Safely unsubscribe from all subscriptions
+    if(this.eventLogTableSubscribe) {
+      this.eventLogTableSubscribe.unsubscribe();
+    }
+    if(this.eventLogTypeAheadSubscribe) {
+      this.eventLogTypeAheadSubscribe.unsubscribe();
+    }
+    // Clear debounce timer to prevent memory leaks
+    if(this.debounceTimer) {
+      clearTimeout(this.debounceTimer);
+    }
   }
 
   objIgnoreDateRange : any;
@@ -166,26 +181,82 @@ export class EventLogComponent implements OnInit {
     this.eventLogTable(this.objIgnoreDateRange);
   }
 
+  /**
+   * Centralized method to update filter field values based on field name
+   * @param fieldName - The filter field to update (from EventLogFilterField enum)
+   * @param value - The value to set
+   */
+  private updateFilterField(fieldName: string, value: string): void {
+    switch(fieldName) {
+      case EventLogFilterField.Message:
+        this.message = value;
+        break;
+      case EventLogFilterField.EventLocation:
+        this.eventLocation = value;
+        break;
+      case EventLogFilterField.EventCode:
+        this.eventCode = value;
+        break;
+      case EventLogFilterField.EventType:
+        this.eventType = value;
+        break;
+      case EventLogFilterField.UserName:
+        this.userName = value;
+        break;
+    }
+  }
+
+  searchOnEnter(event: {fieldName: string, value: string}) {
+    // Update the parent component's field value using centralized method
+    this.updateFilterField(event.fieldName, event.value);
+    this.resetPagination();
+    this.eventLogTable(this.objIgnoreDateRange);
+  }
+
   resetPagination() {
     this.start = 0;
     this.paginator.pageIndex = 0;
   }
 
-  autoCompleteSearchColumn(columnName: any, message: any) {
-    this.resetPagination();
-    this.eventLogTypeAheadSubscribe.unsubscribe();
-    this.eventLogTypeAhead(columnName, message, true);
-    this.eventLogTableSubscribe.unsubscribe();
-    this.eventLogTable(this.objIgnoreDateRange);
+  autoCompleteSearchColumn(columnName: string, message: string, fieldName?: string) {
+    // Update parent component's field value in real-time using centralized method
+    if(fieldName) {
+      this.updateFilterField(fieldName, message);
+    }
+    
+    // Clear previous debounce timer to prevent multiple API calls
+    if(this.debounceTimer) {
+      clearTimeout(this.debounceTimer);
+    }
+    
+    // Debounce API call to prevent overloading server on every keystroke
+    this.debounceTimer = setTimeout(() => {
+      // Safely unsubscribe if subscription exists
+      if(this.eventLogTypeAheadSubscribe) {
+        this.eventLogTypeAheadSubscribe.unsubscribe();
+      }
+      this.eventLogTypeAhead(columnName, message, true);
+    }, this.DEBOUNCE_TIME);
+    
+    // Only call API if field is empty (to clear filters) - don't call on every keystroke
+    if(message === '' || message === null) {
+      this.resetPagination();
+      if(this.eventLogTableSubscribe) {
+        this.eventLogTableSubscribe.unsubscribe();
+      }
+      this.eventLogTable(this.objIgnoreDateRange);
+    }
   }
 
   eventLogTypeAhead(columnName: any, message: any, loader: boolean = false) {
     this.searchAutoCompleteList = [];
+    let sDate = !this.objIgnoreDateRange?.checked ? this.startDate : new Date(new Date().setFullYear(1990));
+    let eDate = !this.objIgnoreDateRange?.checked ? this.endDate : new Date();
     let payload: any = {
       "message": message,
       "columnName": columnName,
-      "sDate": "2022-06-04T00:00:00.597Z",
-      "eDate": "2023-06-05T00:00:00.597Z",
+      "sDate": typeof sDate === 'string' ? sDate : sDate.toISOString(),
+      "eDate": typeof eDate === 'string' ? eDate : eDate.toISOString(),
     }
     this.eventLogTypeAheadSubscribe = this.iAdminApiService.EventLogTypeAhead(payload).subscribe((res: any) => {
       if(res.isExecuted && res.data){
@@ -275,7 +346,7 @@ export class EventLogComponent implements OnInit {
 
   announceSortChange(e: any) {
     this.sortColumn = this.sortMapping.filter((item: any) => item.value == e.active)[0].sortValue;
-    this.sortOrder = e.direction;
+    this.sortOrder = e.direction || 'asc';
     this.resetPagination();
     this.eventLogTable(this.objIgnoreDateRange);
   }

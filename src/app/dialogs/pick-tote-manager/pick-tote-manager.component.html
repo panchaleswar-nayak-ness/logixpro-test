@@ -181,7 +181,7 @@
                               </mat-form-field>
                               
                               <mat-form-field class="custom-form-field w-160" appearance="outline" [attr.data-automation-id]="'emergency-dropdown-' + i" *ngIf="isEmergencyField(element.field)">
-                                <mat-select [(ngModel)]="element.value" (selectionChange)="onChangeFunctionsFields(element)" [disabled]="isValueDisabled(element.criteria)">
+                                <mat-select [(ngModel)]="element.value" (selectionChange)="onChangeFunctionsFields(element)" [disabled]="isValueDisabled(element.criteria)" [attr.data-automation-id]="'value-select-' + (element.value || '')">
                                   <mat-option value="1" data-automation-id="emergency-true-option">True</mat-option>
                                   <mat-option value="0" data-automation-id="emergency-false-option">False</mat-option>
                                 </mat-select>

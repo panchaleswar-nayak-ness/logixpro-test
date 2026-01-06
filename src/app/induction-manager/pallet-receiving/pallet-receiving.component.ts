@@ -307,7 +307,7 @@ clearToteID() {
 
     savePallet(split: boolean) {
 
-      var expirationDate =this['expirationDate'];
+      var expirationDate = this.processForm.value.expirationDate;
 
       if (expirationDate)
       {

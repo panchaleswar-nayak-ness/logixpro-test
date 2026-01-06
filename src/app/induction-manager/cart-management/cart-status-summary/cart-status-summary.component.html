@@ -9,17 +9,20 @@
             </div>
         </div>
             <div class="row g-2">
-                <div class="col-xl-3 col-lg-6">
+                <div class="col">
                     <app-info-card-component title="Inducting" [value]="getStatusValue('inducting')" colorClass="label-purple"></app-info-card-component>
                 </div>
-                <div class="col-xl-3 col-lg-6">
+                <div class="col">
                     <app-info-card-component title="Inducted" [value]="getStatusValue('inducted')" colorClass="label-yellow"></app-info-card-component>
                 </div>
-                <div class="col-xl-3 col-lg-6">
+                <div class="col">
                     <app-info-card-component title="In Progress" [value]="getStatusValue('inProgress')" colorClass="label-blue2"></app-info-card-component>
                 </div>
-                <div class="col-xl-3 col-lg-6">
+                <div class="col">
                     <app-info-card-component title="Available" [value]="getStatusValue('available')" colorClass="label-green"></app-info-card-component>
+                </div>
+                <div class="col">
+                    <app-info-card-component title="Inactive" [value]="getStatusValue('inactive')" colorClass="label-red"></app-info-card-component>
                 </div>
             </div>
     </mat-card-content>

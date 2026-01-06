@@ -1,5 +1,5 @@
 .applied-filters-container {
-  margin-top: 1rem;
+  margin-top: 16px;
   margin-bottom: 0;
 }
 
@@ -7,25 +7,25 @@
   .info-icon {
     font-size: 17px;
     width: 16px;
-    height: 16px
+    height: 16px;
   }
 
   .info-text {
-    font-size: 16px
+    font-size: 16px;
   }
 }
 
 .filters-row {
   display: flex;
   align-items: flex-start;
-  gap: 0.75rem;
+  gap: 12px;
   flex-wrap: nowrap;
 }
 
 .filters-label {
   flex-shrink: 0;
-  font-size: 0.875rem;
-  padding-top: 0.25rem;
+  font-size: 14px;
+  padding-top: 6px; 
 }
 
 .filters-chips-wrapper {
@@ -33,32 +33,11 @@
   align-items: flex-start;
   flex: 1;
   min-width: 0;
-  gap: 0.5rem;
+  gap: 8px;
 
   // Collapsed state - single line with horizontal scroll
   &:not(.expanded) {
     overflow: hidden;
-
-    .filters-chips-scroll {
-      overflow-x: auto;
-      overflow-y: hidden;
-      scrollbar-width: thin;
-      scrollbar-color: var(--clr-tertiary-50) transparent;
-
-      &::-webkit-scrollbar {
-        height: 4px;
-      }
-
-      &::-webkit-scrollbar-track {
-        background: transparent;
-      }
-
-      &::-webkit-scrollbar-thumb {
-        background: var(--clr-tertiary-50);
-        border-radius: 2px;
-      }
-    }
-
     .filters-chips-list {
       flex-wrap: nowrap;
     }
@@ -67,10 +46,6 @@
   // Expanded state - wrap to multiple lines
   &.expanded {
     overflow: visible;
-
-    .filters-chips-scroll {
-      overflow: visible;
-    }
 
     .filters-chips-list {
       flex-wrap: wrap;
@@ -86,14 +61,14 @@
 .filters-chips-list {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
+  gap: 8px;
   padding: 2px 0;
 }
 
 // Chip styling using existing label classes
 .filter-chip {
   flex-shrink: 0;
-  gap: 0.25rem;
+  gap: 4px;
 
   .chip-column {
     color: var(--clr-tertiary-900);
@@ -101,7 +76,7 @@
 
   .chip-separator {
     color: var(--clr-tertiary-900);
-    margin: 0 0.125rem;
+    margin: 0 2px;
   }
 
   .chip-criteria {
@@ -120,7 +95,7 @@
     width: 18px;
     height: 18px;
     padding: 0;
-    margin-left: 0.25rem;
+    margin-left: 4px;
     border: none;
     background: transparent;
     border-radius: 50%;
@@ -173,11 +148,11 @@
 .clear-filters-btn {
   display: inline-flex;
   align-items: center;
-  gap: 0.25rem;
+  gap: 4px;
   flex-shrink: 0;
   background: none;
   border: none;
-  padding: 0.25rem 0.5rem;
+  padding: 4px 8px;
   cursor: pointer;
   white-space: nowrap;
 
@@ -189,7 +164,7 @@
   }
 
   .clear-text {
-    font-size: 0.875rem;
+    font-size: 14px;
   }
 
   &:hover {

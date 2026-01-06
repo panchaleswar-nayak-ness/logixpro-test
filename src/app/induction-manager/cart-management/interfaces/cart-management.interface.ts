@@ -4,6 +4,7 @@ import { FilterationColumns } from 'src/app/common/Model/pick-Tote-Manager';
 export interface CartManagementData {
   mode: 'create' | 'edit' | 'view';
   cartId?: string;
+  cartStatus?: string;  // Cart status - used to determine behavior in edit mode
   existingAssignments?: Record<number, {toteId: string, status?: string}>;
   rows: number;
   cols: number;
@@ -159,6 +160,7 @@ export interface CartStatusCountsDto {
     Inducted?: number;
     'In Progress'?: number;
     Available?: number;
+    Inactive?: number;
   };
 }
 
@@ -167,6 +169,7 @@ export interface CartStatusSummary {
   inducted: number;
   inProgress: number;
   available: number;
+  inactive: number;
 }
 
 export interface AddCartRequest {
@@ -195,4 +198,16 @@ export interface DeleteCartResponse {
   message: string;
   status: number;
   value: string; // The cartId that was deleted
+}
+
+export interface UpdateCartStatusActiveInactiveRequest {
+  cartId: string;
+  activeFlag: boolean;
+}
+
+export interface UpdateCartStatusActiveInactiveResponse {
+  isSuccess: boolean;
+  status: number;
+  value: string;
+  errors?: string[];
 }

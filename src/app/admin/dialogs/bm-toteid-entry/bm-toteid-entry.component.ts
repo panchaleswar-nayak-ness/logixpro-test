@@ -28,6 +28,7 @@ export class BmToteidEntryComponent implements OnInit, AfterViewInit {
   view: string;
   autoPrintPickToteLabels: boolean;
   batchid: any;
+  assignToteToOrderCalled: boolean = false;
   public iAdminApiService: IAdminApiService;
   public iBulkProcessApiService: IBulkProcessApiService;
   @ViewChildren('toteIdInput') toteIdInputs!: QueryList<ElementRef>;
@@ -190,7 +191,7 @@ export class BmToteidEntryComponent implements OnInit, AfterViewInit {
       dialogRef.afterClosed().subscribe((result) => {
       });
     } else if (this.view == 'batch' || this.view == 'tote') {
-      this.dialogRef.close(this.selectedList);
+      this.dialogRef.close({ selectedList: this.selectedList, assignToteToOrderCalled: false });
     } else {
       this.updateToteID();
     }
@@ -277,11 +278,12 @@ export class BmToteidEntryComponent implements OnInit, AfterViewInit {
     this.iBulkProcessApiService.AssignToteToOrder(orders)
       .then((res: any) => {
         if (res.status == HttpStatusCode.NoContent) {
+          this.assignToteToOrderCalled = true;
           if (this.autoPrintPickToteLabels) {
             this.printAllToteLabels();
           }
           this.global.ShowToastr(ToasterType.Success, ToasterMessages.RecordUpdatedSuccessful, ToasterTitle.Success);
-          this.dialogRef.close(this.selectedList);
+          this.dialogRef.close({ selectedList: this.selectedList, assignToteToOrderCalled: this.assignToteToOrderCalled });
         } else {
           this.global.ShowToastr(ToasterType.Error, ToasterMessages.SomethingWentWrong, ToasterTitle.Error);
         }

@@ -3,6 +3,7 @@ import { FilterationColumns } from 'src/app/common/Model/pick-Tote-Manager';
 import { AppliedFilterDisplay } from 'src/app/common/interface/common-interfaces';
 import { FiltrationDataTypes } from 'src/app/common/enums/CommonEnums';
 import { convertCamelCaseToTitleCase } from 'src/app/common/CommonHelpers/data-utils.helper';
+import { Icons } from 'src/app/common/constants/strings.constants';
 
 type FilterValue = string | number | Date | boolean | null | undefined;
 type FilterColumnType = string | number | Date | boolean;
@@ -55,9 +56,11 @@ export class AppliedFiltersDisplayComponent implements OnChanges, AfterViewInit,
   @Output() viewFilters = new EventEmitter<void>();
 
   @ViewChild('chipsContainer', { static: false }) chipsContainer: ElementRef<HTMLDivElement>;
+  @ViewChild('filtersChipsList', { static: false }) filtersChipsList: ElementRef<HTMLDivElement>;
 
   readonly labels = LABELS;
   readonly tooltips = TOOLTIPS;
+  readonly icons = Icons;
 
   displayFilters: AppliedFilterDisplay[] = [];
   isExpanded: boolean = false;
@@ -91,12 +94,13 @@ export class AppliedFiltersDisplayComponent implements OnChanges, AfterViewInit,
   }
 
   private checkScrollbar(): void {
-    if (!this.chipsContainer?.nativeElement) {
+    if (!this.chipsContainer?.nativeElement || !this.filtersChipsList?.nativeElement) {
       this.showExpandButton = false;
       return;
     }
-    const element = this.chipsContainer.nativeElement;
-    const hasScroll = element.scrollWidth > element.clientWidth;
+    const scrollbarElement = this.chipsContainer.nativeElement;
+    const contentElement = this.filtersChipsList.nativeElement;
+    const hasScroll = contentElement.scrollWidth > scrollbarElement.clientWidth;
     
     // Show button if scrollbar exists OR if expanded (to allow collapse)
     this.showExpandButton = hasScroll || this.isExpanded;
@@ -154,10 +158,11 @@ export class AppliedFiltersDisplayComponent implements OnChanges, AfterViewInit,
 
   // Toggle expand/collapse state
   toggleExpand(): void {
-    if (!this.chipsContainer?.nativeElement) return;
+    if (!this.chipsContainer?.nativeElement || !this.filtersChipsList?.nativeElement) return;
     
-    const element = this.chipsContainer.nativeElement;
-    const hasScroll = element.scrollWidth > element.clientWidth;
+    const scrollbarElement = this.chipsContainer.nativeElement;
+    const contentElement = this.filtersChipsList.nativeElement;
+    const hasScroll = contentElement.scrollWidth > scrollbarElement.clientWidth;
     
     // If no scrollbar exists, auto-collapse
     if (!hasScroll && !this.isExpanded) {
@@ -172,6 +177,10 @@ export class AppliedFiltersDisplayComponent implements OnChanges, AfterViewInit,
 
   getExpandTooltip(): string {
     return this.isExpanded ? this.tooltips.Collapse : this.tooltips.Expand;
+  }
+
+  getExpandIcon(): string {
+    return this.isExpanded ? this.icons.Collapse : this.icons.Expand;
   }
 
   onClearAll(): void {

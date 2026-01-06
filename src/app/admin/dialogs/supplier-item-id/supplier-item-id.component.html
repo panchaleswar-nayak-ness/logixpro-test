@@ -13,8 +13,8 @@
             <mat-form-field class="custom-form-field w-100" appearance="outline" [floatLabel]="getFloatLabelValueItem()"
                 [hideRequiredMarker]="hideRequiredControlItem.value">
                 <mat-label data-automation-id="label-supplier-item-id">Supplier Item ID</mat-label>
-                <input #supplier_id type="text" placeholder="Search" aria-label="Number" matInput [(ngModel)]="supplierID" maxlength="50" [matAutocomplete]="item" (ngModelChange)="this.searchByItem.next($event)" data-automation-id="input-supplier-item-id">
-                <button matSuffix *ngIf="supplierID" class="clear-btn" (click)="supplierID=''" data-automation-id="clear-button"><mat-icon class="text-20 text-chrome-600">cancel</mat-icon></button>
+                <input #supplier_id type="text" placeholder="Search" aria-label="Number" matInput [(ngModel)]="supplierID" maxlength="50" [matAutocomplete]="item" (ngModelChange)="onInputChange($event)" data-automation-id="input-supplier-item-id">
+                <button matSuffix *ngIf="supplierID" class="clear-btn" (click)="clearInput()" data-automation-id="clear-button"><mat-icon class="text-20 text-chrome-600">cancel</mat-icon></button>
                 <mat-autocomplete class="card custom-scroll" #item="matAutocomplete" (optionSelected)="setItem($event)" data-automation-id="autocomplete-supplier-item-id">
                     <h6 class="card-header matAutoCompHeader ">
                         <span class="span-width" data-automation-id="header-supplier-item-id">Supplier Item ID</span>
@@ -22,7 +22,7 @@
                         <span class="span-width" data-automation-id="header-item-number">Item Number</span>
                     </h6>
                     <mat-option *ngFor="let option of searchAutocompleteItemNum; let i = index" [value]="option.supplierItemID" class="matAutoCompTableContent" [attr.data-automation-id]="'option-supplier-item-id-' + i">
-                        <div class="loc_option" (click)="getRow(option)">
+                        <div class="loc_option">
                             <span class="searchColumn" class="span-width" [attr.data-automation-id]="'option-supplier-item-id-value-' + i">{{option.supplierItemID}}</span>
                             <span title="{{option.description}}" class="searchColumn span-searchColumn" [attr.data-automation-id]="'option-description-value-' + i">{{option.description}}</span>
                             <span class="searchColumn" class="span-width" [attr.data-automation-id]="'option-item-number-value-' + i">{{option.itemNumber}}</span>
@@ -32,7 +32,7 @@
             </mat-form-field>
         </div>
         <div class="d-flex justify-content-end pt-3">
-            <button (click)="setSupplierID()" mat-flat-button color="primary" class="button-primary btn-lg flex-grow-1" cdkFocusInitial data-automation-id="set-supplier-item-button">Set Supplier Item</button>
+            <button (click)="setSupplierID()" mat-flat-button color="primary" class="button-primary btn-lg flex-grow-1" cdkFocusInitial [disabled]="!isValidItemSelected" data-automation-id="set-supplier-item-button">Set Supplier Item</button>
         </div>
     </div>
 </div>

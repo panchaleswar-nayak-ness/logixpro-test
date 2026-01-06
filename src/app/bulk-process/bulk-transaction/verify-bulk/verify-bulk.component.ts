@@ -70,6 +70,7 @@ export class VerifyBulkComponent implements OnInit {
   backCount: number = 0;
   workstationPreferences: WorkStationSetupResponse;
   @Input() isBatchIdGenerationEnabled:boolean;
+  @Input() assignToteToOrderCalled: boolean = false;
   public iBulkProcessApiService: IBulkProcessApiService;
   public iAdminApiService: IAdminApiService;
   public commonApiService: CommonApiService;
@@ -110,7 +111,8 @@ export class VerifyBulkComponent implements OnInit {
       // Make sure all order lines have consistent Batch ID assignment
       this.validateOrderLines();
 
-      if (this.isBatchIdGenerationEnabled && !this.orderLines[0].batchId) {
+      // Only generate batch ID if batch ID generation is enabled, no batch ID exists, and AssignToteToOrder has not been called
+      if (this.isBatchIdGenerationEnabled && !this.orderLines[0].batchId && !this.assignToteToOrderCalled) {
         var request = new UpdateOTsNewBatchIdRequest();
         this.orderLines.forEach(orderLine => {
           request.openTransactionIds.push(orderLine.id);
@@ -738,7 +740,7 @@ async validateTaskComplete() {
     dialogRef1.afterClosed().subscribe(async (res: string) => {
       if (res) {
         let transIDs = this.isSlapperLabelFlow ?
-          this.orderLines.filteredData.filter(o => !o.isPartialCase).map(o => o.id) :
+          this.orderLines.filteredData.filter(o => o.isPartialCase).map(o => o.id) :
           this.orderLines.filteredData.map(o => o['id']);
 
         if (res == ResponseStrings.Yes) {
@@ -772,7 +774,7 @@ async validateTaskComplete() {
       // All labels
       dlgMessage = ConfirmationMessages.PrintOffCarouselPickItemLabels;
       dlgHeading = ConfirmationHeadings.PrintOffCarouselPickItemLabels;
-      transIDs = this.orderLines.filteredData.filter(o => o.isPartialCase).map(o => o.id);
+      transIDs = this.orderLines.filteredData.filter(o => !o.isPartialCase).map(o => o.id);
     } else {
       // Single label
       dlgMessage = ConfirmationMessages.PrintOffCarouselPickItemSingleLabel;

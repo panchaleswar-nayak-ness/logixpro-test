@@ -52,7 +52,7 @@
 
                 <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline"
                     [floatLabel]="getFloatLabelValueItem()" [hideRequiredMarker]="hideRequiredControlItem.value">
-                    <mat-label [attr.data-automation-id]="'label-' + Itemnumber">{{ Itemnumber }}</mat-label>
+                    <mat-label [attr.data-automation-id]="'label-Item Number'">{{ Itemnumber }}</mat-label>
                     <input type="text" placeholder="{{Itemnumber}}" aria-label="Number" matInput [(ngModel)]='itemNumber'
                         (focusout)="onFocusOutEvent($event,'item')" maxlength="50" [matAutocomplete]="item"
                         (ngModelChange)="this.searchByItem.next($event)" [attr.data-automation-id]="'input-' + Itemnumber ">

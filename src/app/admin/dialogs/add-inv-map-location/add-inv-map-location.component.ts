@@ -415,10 +415,10 @@ getLocationZones() {
     this.addInvMapLocation.get('userField2')?.setValue('');
 
     // Clear Min Quantity
-    this.addInvMapLocation.get('minQuantity')?.setValue('');
+    this.addInvMapLocation.get('minQuantity')?.setValue('0');
 
     // Clear Max Quantity
-    this.addInvMapLocation.get('maxQuantity')?.setValue('');
+    this.addInvMapLocation.get('maxQuantity')?.setValue('0');
   }
 
   clearWholeLocation() {

@@ -432,10 +432,10 @@ export class TransactionHistoryListComponent implements OnInit, AfterViewInit {
     };
     this.iAdminApiService.NextSuggestedTransactions(searchPayload).subscribe({
       next: (res: any) => {
-        if(res.isExecuted && res.data) this.searchAutocompleteList = res.data;
+        if(res.isSuccess && res.value) this.searchAutocompleteList = res.value;
         else {
           this.global.ShowToastr(ToasterType.Error, this.global.globalErrorMsg(), ToasterTitle.Error);
-          console.log("NextSuggestedTransactions",res.responseMessage);
+          console.log("NextSuggestedTransactions",res.message);
         }
       }
     });
@@ -527,7 +527,6 @@ export class TransactionHistoryListComponent implements OnInit, AfterViewInit {
           this.detailDataTransHistory = res.data?.transactions;
           this.dataSource = new MatTableDataSource(res.data?.transactions);
           this.customPagination.total = res.data?.recordsFiltered;
-          this.dataSource.sort = this.sort;
         } else {
           this.global.ShowToastr(ToasterType.Error, this.global.globalErrorMsg(), ToasterTitle.Error);
           console.log("TransactionHistoryTable",res.responseMessage);
@@ -566,7 +565,7 @@ export class TransactionHistoryListComponent implements OnInit, AfterViewInit {
   sortChange(event) {
     this.resetPagination();
 
-    if (!this.dataSource._data._value || event.direction == '' || event.direction == this.sortOrder) return;
+    if (!this.dataSource._data._value || event.direction == '') return;
 
     let index: number = 0; // Initialize with default value
     this.columnValues.find((x, i) => { 

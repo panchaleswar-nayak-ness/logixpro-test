@@ -22,6 +22,7 @@ export class SupplierItemIdComponent implements OnInit {
   hideRequiredControlItem = new FormControl(false);
   searchByItem: any = new Subject<string>();
   searchAutocompleteItemNum: any = [];
+  isValidItemSelected: boolean = false;
   
   public iCommonAPI : ICommonApi;
 
@@ -56,28 +57,55 @@ export class SupplierItemIdComponent implements OnInit {
       .SupplierItemTypeAhead(searchPayload)
       .subscribe(
         (res: any) => {
-          if (res.data) {
+          if (res.data && res.data.length > 0) {
             this.searchAutocompleteItemNum = res.data;
           }
           else{
-            this.global.ShowToastr(ToasterType.Error, this.global.globalErrorMsg(),ToasterTitle.Error);
-            console.log("SupplierItemTypeAhead",res.responseMessage);
+            // Don't clear input, just disable button and show error
+            this.description = '';
+            this.itemNumber = '';
+            this.isValidItemSelected = false;
+            this.searchAutocompleteItemNum = [];
+            this.global.ShowToastr(ToasterType.Error, res.responseMessage, ToasterTitle.Error);
           }
         },
       );
   }
   setItem(e) {
-    this.supplierID=e.option.value;
- 
+    // Find the selected item from the autocomplete list
+    const selectedItem = this.searchAutocompleteItemNum.find(
+      (item) => item.supplierItemID === e.option.value
+    );
+    
+    if (selectedItem) {
+      this.supplierID = selectedItem.supplierItemID;
+      this.description = selectedItem.description;
+      this.itemNumber = selectedItem.itemNumber;
+      this.isValidItemSelected = true;
+    }
+  }
+
+  onInputChange(value: string) {
+    // Reset validation state when user types
+    this.isValidItemSelected = false;
+    this.searchByItem.next(value);
+  }
+
+  clearInput() {
+    this.supplierID = '';
+    this.description = '';
+    this.itemNumber = '';
+    this.isValidItemSelected = false;
+    this.searchAutocompleteItemNum = [];
   }
 
   setSupplierID(){
-    this.dialogRef.close({ isExecuted: true,supplierID:this.supplierID,itemNumber:this.itemNumber,description:this.description});
-
-  }
-  getRow(row) {
-    this.description=row.description;
-    this.itemNumber=row.itemNumber;
+    this.dialogRef.close({ 
+      isExecuted: true, 
+      supplierID: this.supplierID, 
+      itemNumber: this.itemNumber, 
+      description: this.description
+    });
   }
   ngOnDestroy() {
     this.searchByItem.unsubscribe();

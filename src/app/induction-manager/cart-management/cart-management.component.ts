@@ -36,7 +36,8 @@ export class CartManagementComponent implements OnInit, OnDestroy {
     inducting: 0,
     inducted: 0,
     inProgress: 0,
-    available: 0
+    available: 0,
+    inactive: 0
   };
 
 

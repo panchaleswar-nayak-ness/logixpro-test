@@ -4,6 +4,7 @@ export const CartStatus = {
     Inducted: 'Inducted' as const,
     InProgress: 'In Progress' as const,
     Available: 'Available' as const,
+    Inactive: 'Inactive' as const,
     All: 'All' as const
 }
 
@@ -11,13 +12,15 @@ export const CartStatusClassMap = {
     [CartStatus.Inducting]: 'label-purple',
     [CartStatus.Inducted]: 'label-yellow',
     [CartStatus.InProgress]: 'label-blue2',
-    [CartStatus.Available]: 'label-green'
+    [CartStatus.Available]: 'label-green',
+    [CartStatus.Inactive]: 'label-red'
 }
 
 export const CartStatusTooltipText = `• Inducting: Cart is currently being built.
 • Inducted: Cart is ready to go to a workstation.
 • In-Progress: Totes in the cart are being filled at the workstation.
-• Available: Cart is available to be inducted.`;
+• Available: Cart is available to be inducted.
+• Inactive: Cart is currently inactive.`;
 
 
 export const CartDialogConstants = {
@@ -85,3 +88,17 @@ export const ToteStatuses = {
   Closed: 'Closed',
   Started: 'Started' 
 }
+
+export const CartActivationDialog = {
+  DeactivateHeading: 'Deactivate Cart?',
+  DeactivateMessage: `Are you sure you want to deactivate this cart? It won't appear for induction again unless you activate it.`,
+  ActivateHeading: 'Activate Cart?',
+  ActivateMessage: 'Are you sure you want to activate this cart?'
+} as const;
+
+export const CartActivationToastMessages = {
+  DeactivateSuccess: 'Cart deactivated successfully',
+  DeactivateFailed: 'Failed to deactivate cart',
+  ActivateSuccess: 'Cart activated successfully',
+  ActivateFailed: 'Failed to activate cart'
+} as const;

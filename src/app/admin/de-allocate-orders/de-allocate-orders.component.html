@@ -118,7 +118,7 @@
                                     Search
                                 </span>
 
-                                <input type="text" [disabled]="step == 'transaction'" [(ngModel)]="TypeValue"
+                                <input type="text" [disabled]="isSearchDisabled" [(ngModel)]="TypeValue"
                                     placeholder="Search" aria-label="Search" [matAutocomplete]="item" matInput
                                     (ngModelChange)="this.searchByItem.next($event)" data-automation-id="search-input">
                                 <button matSuffix *ngIf="TypeValue" class="clear-btn" (click)="clear()" data-automation-id="clear-search-btn"><mat-icon
@@ -152,10 +152,10 @@
                         <ng-scrollbar class="mat-table-scrollbar  scrollbar-hover-padding height-550" track="all" data-automation-id="order-list-table">
                             <table mat-table [dataSource]="orderNameList" class="w-100 "
                                 [ngClass]="orderNameList.data.length>0  ? 'custom-action-clickable-table' : ''" matSort
-                                #matSort="matSort">
+                                #matSortOrderList="matSort">
 
                                 <ng-container matColumnDef="select">
-                                    <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription data-automation-id="table-header-Select"> Select
+                                    <th mat-header-cell *matHeaderCellDef data-automation-id="table-header-Select"> Select
                                     </th>
                                     <td mat-cell *matCellDef="let element; let i = index" [class.selected]="element.isRowSelected" [attr.data-automation-id]="'table-data-Select-' + i">
                                         <mat-checkbox (change)="checked($event,element.name)" color="primary"
@@ -207,7 +207,7 @@
                                     <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription data-automation-id="table-header-Tote ID"> Tote ID
                                     </th>
                                     <td mat-cell *matCellDef="let element; let i = index"
-                                        (contextmenu)="onContextMenu($event, element.orderNumber, 'Tote ID')" [attr.data-automation-id]="'table-data-Tote ID-' + (element.toteID ? element.toteID : ' ')">
+                                        (contextmenu)="onContextMenu($event, element.toteID, 'Tote ID')" [attr.data-automation-id]="'table-data-Tote ID-' + (element.toteID ? element.toteID : ' ')">
                                         {{element.toteID}} </td>
                                 </ng-container>
 
@@ -271,7 +271,7 @@
                                 </ng-container>
 
                                 <ng-container matColumnDef="deallocate">
-                                    <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription data-automation-id="table-header-De-Allocate">
+                                    <th mat-header-cell *matHeaderCellDef data-automation-id="table-header-De-Allocate">
                                         De-Allocate
                                     </th>
                                     <td mat-cell *matCellDef="let element; let i = index" [attr.data-automation-id]="'table-data-De-Allocate-' +i">
@@ -293,7 +293,7 @@
                                     </td>
                                 </tr>
 
-                                <tr mat-header-row *matHeaderRowDef="displayedColumns" data-automation-id="table-header-row"></tr>
+                                <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true" data-automation-id="table-header-row"></tr>
                                 <tr mat-row *matRowDef="let row; columns: displayedColumns; index as i" [attr.data-automation-id]="'table-row-' + i"></tr>
 
 

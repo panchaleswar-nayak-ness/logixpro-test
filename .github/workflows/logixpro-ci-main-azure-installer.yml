@@ -1,0 +1,265 @@
+name: Build and Publish LogixPro Installer
+
+on:
+  push:
+    branches:
+     - main
+    tags:
+      - 'v*'
+  workflow_dispatch:
+
+env:
+  SCRIPTS_CHECKOUT_DIR: 'scripts'
+  ARTIFACT_DIR: 'C:/buildArtifacts/LogixPro'
+
+jobs:
+  build:
+    runs-on: windows-latest
+    environment: Production
+    permissions:
+      contents: read
+      id-token: write
+    outputs:
+      full_version: ${{ steps.versioning.outputs.full_version }}
+      clean_version: ${{ steps.versioning.outputs.clean_version }}
+
+    steps:
+      - name: Checkout LogixPro Application Code
+        uses: actions/checkout@v4
+        with:
+          repository: scotttech-enterprise64/LogixProFrontend
+          ref: 'Development'
+          path: ${{ env.APP_CHECKOUT_DIR }}
+          fetch-depth: 0
+
+      - name: Checkout Build Scripts
+        uses: actions/checkout@v4
+        with:
+          repository: scotttechpickpro/JenkinsBuildAgent
+          token: ${{ secrets.PAT_TOKEN }}
+          ref: 'main'
+          path: ${{ env.SCRIPTS_CHECKOUT_DIR }}
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+
+      - name: Install dependencies
+        run: |
+          npm install -g @angular/cli
+          npm install
+
+      - name: Setup .NET SDK
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.414'
+
+      - name: Run Pre-Build Scripts
+        run: |
+          $scriptsDir = "${{ github.workspace }}\${{ env.SCRIPTS_CHECKOUT_DIR }}\buildScripts\"
+          powershell -File "${scriptsDir}PostSCMScript.ps1"
+          powershell -File "${scriptsDir}CheckForDLLs.ps1"
+        shell: pwsh
+
+      - name: Calculate Version Number
+        id: versioning
+        working-directory: ${{ env.APP_CHECKOUT_DIR }}
+        run: |
+          # Get the latest git tag description
+          $lastTagHash = git rev-list --tags --max-count=1
+          $rawVersion = git describe --tags $lastTagHash
+          Write-Host "Raw Version: $rawVersion"
+
+          # Clean the result to get a base version (e.g., "1.2.3")
+          $cleanResult = ($rawVersion -replace "^v", "").Split("-")[0]
+
+          Write-Host "Clean Version: $cleanResult"
+
+          # Construct the full version string by appending the suffix
+          $fullVersion = "$cleanResult"
+          echo "Generated Version: $fullVersion"
+
+          # Set the version as an output for subsequent steps
+          echo "full_version=$fullVersion" >> $env:GITHUB_OUTPUT
+          echo "clean_version=$cleanResult" >> $env:GITHUB_OUTPUT
+
+        shell: pwsh
+
+      - name: Build Application
+        working-directory: ${{ env.APP_CHECKOUT_DIR }}
+        run: |
+          # Get the version calculated in the previous step
+          $fullVersion = "${{ steps.versioning.outputs.full_version }}"
+          Write-Output "Using version $fullVersion for the build."
+
+          # Define paths
+          $workspacePath = $env:GITHUB_WORKSPACE
+          $tempPath = "C:\Temp\LogixProRCTemp"
+
+          # Show directory files
+          Write-Output "Directory"
+          dir
+
+          # Creating a nuget.config file
+          $nugetConfigContent = @"
+          <?xml version="1.0" encoding="utf-8"?>
+          <configuration>
+            <packageSources>
+              <add key="nuget.org" value="https://api.nuget.org/v3/index.json" protocolVersion="3" />
+              <add key="jfrog-private-peaklogix" value="https://peaklogix.jfrog.io/artifactory/api/nuget/peaklogix-nuget-dev-virtual" />
+              <add key="jfrog-private-picklib-core" value="https://peaklogix.jfrog.io/artifactory/api/nuget/picklib-core-nuget-dev-local" />
+            </packageSources>
+            <packageSourceCredentials>
+              <jfrog-private-peaklogix>
+                <add key="Username" value="${{ secrets.JFROG_USERNAME }}" />
+                <add key="ClearTextPassword" value="${{ secrets.JFROG_PASSWORD }}" />
+              </jfrog-private-peaklogix>
+              <jfrog-private-picklib-core>
+                <add key="Username" value="${{ secrets.JFROG_USERNAME }}" />
+                <add key="ClearTextPassword" value="${{ secrets.JFROG_PASSWORD }}" />
+              </jfrog-private-picklib-core>
+            </packageSourceCredentials>
+          </configuration>
+          "@
+          $nugetConfigPath = Join-Path (Get-Location) "nuget.config"
+          Set-Content -Path $nugetConfigPath -Value $nugetConfigContent
+
+          $json = Get-Content -Path package.json | ConvertFrom-Json
+          $json.version = "${{ steps.versioning.outputs.full_version }}"
+          $json | ConvertTo-Json -Depth 20 | Set-Content -Path package.json
+
+          cd build
+          ./build.ps1
+
+          # Find the output tarball and save its path
+          $tarFile = (Get-ChildItem -Path ../output -Filter *.tgz | Select-Object -First 1).FullName
+          Write-Host "Assets Tarball found at: $tarFile"
+          echo "ASSETS_TAR=$tarFile" >> $env:GITHUB_ENV
+        shell: powershell
+
+      - name: Build Installer
+        shell: powershell
+        run: |
+          Write-Host "Creating a nuget.config file"
+          $nugetConfigContent = @"
+          <?xml version="1.0" encoding="utf-8"?>
+          <configuration>
+            <packageSources>
+              <add key="nuget.org" value="https://api.nuget.org/v3/index.json" protocolVersion="3" />
+              <add key="jfrog-private-peaklogix" value="https://peaklogix.jfrog.io/artifactory/api/nuget/peaklogix-nuget-dev-virtual" />
+              <add key="jfrog-private-picklib-core" value="https://peaklogix.jfrog.io/artifactory/api/nuget/picklib-core-nuget-dev-local" />
+            </packageSources>
+            <packageSourceCredentials>
+              <jfrog-private-peaklogix>
+                <add key="Username" value="${{ secrets.JFROG_USERNAME }}" />
+                <add key="ClearTextPassword" value="${{ secrets.JFROG_PASSWORD }}" />
+              </jfrog-private-peaklogix>
+              <jfrog-private-picklib-core>
+                <add key="Username" value="${{ secrets.JFROG_USERNAME }}" />
+                <add key="ClearTextPassword" value="${{ secrets.JFROG_PASSWORD }}" />
+              </jfrog-private-picklib-core>
+            </packageSourceCredentials>
+          </configuration>
+          "@
+          Set-Content -Path "nuget.config" -Value $nugetConfigContent
+
+          $registryUrl = "https://peaklogix.jfrog.io/artifactory/api/npm/peaklogix-npm-dev-virtual/"
+          $authScope   = "peaklogix.jfrog.io/artifactory/api/npm/peaklogix-npm-dev-virtual/"
+          $authBytes = [System.Text.Encoding]::UTF8.GetBytes("${{ secrets.JFROG_USERNAME }}:${{ secrets.JFROG_PASSWORD }}")
+          $base64Auth = [Convert]::ToBase64String($authBytes)
+
+          npm config set "@peak:registry" $registryUrl
+          npm config set "//${authScope}:_auth" $base64Auth
+          npm config set "//${authScope}:email" "build@peaklogix.com"
+
+          $appSettingsPath = Get-ChildItem -Path . -Filter "appsettings.json" -Recurse | Select-Object -ExpandProperty FullName -First 1
+          if ($appSettingsPath) {
+             (Get-Content $appSettingsPath) -replace '0.0.0', '${{ steps.versioning.outputs.full_version }}' | Set-Content $appSettingsPath
+          }
+
+          cd server
+
+          $csprojPath = Get-ChildItem -Path . -Filter "LogixProServer.csproj" -Recurse | Select-Object -ExpandProperty FullName -First 1
+
+          if ($csprojPath) {
+              Write-Host "Patching .csproj to remove 'del' command..."
+              $lines = Get-Content $csprojPath
+              $newLines = $lines | Where-Object { -not ($_ -match "del " -and $_ -match "\$\(AssetsPackageFile\)") }
+
+              if ($lines.Count -ne $newLines.Count) {
+                  Set-Content -Path $csprojPath -Value $newLines
+                  Write-Host "Removed 'del' command."
+              } else {
+                  Write-Warning "Could not find 'del' command. It might already be gone."
+              }
+          }
+
+          $wixprojPath = Get-ChildItem -Path . -Filter "LogixProServerInstaller.wixproj" -Recurse | Select-Object -ExpandProperty FullName -First 1
+
+          if ($wixprojPath) {
+              Write-Host "Patching .wixproj to disable internal publish target..."
+              $content = Get-Content -Path $wixprojPath -Raw
+              $newContent = $content -replace '(?s)(<Target Name="PublishApplication"[^>]*>).*?(</Target>)', '$1$2'
+              Set-Content -Path $wixprojPath -Value $newContent
+              Write-Host "Internal 'PublishApplication' target emptied."
+          }
+
+          $safeAssetsPath = "${{ env.ASSETS_TAR }}" -replace '\\', '/'
+          Write-Host "Using Assets Path: $safeAssetsPath"
+          Write-Host "Running Manual Publish..."
+          dotnet publish LogixProServer\LogixProServer.csproj -c Release -o LogixProServer\publish -r win-x64 --self-contained false /p:AssetsPackageFile="$safeAssetsPath"
+          Write-Host "Checking publish output:"
+          if (Test-Path "LogixProServer\publish\LogixPro.exe") {
+              Write-Host "LogixPro.exe found."
+          } else {
+              Write-Error "LogixPro.exe is missing after publish!"
+          }
+
+          Write-Host "Building WiX Installer..."
+          dotnet restore LogixProInstaller\LogixProServerInstaller.wixproj
+          dotnet build LogixProInstaller\LogixProServerInstaller.wixproj -c Release /p:"Platform=x64;AssetsPackageFile=$safeAssetsPath"
+
+          $installerDir = "LogixProInstaller\bin\x64\Release\en-US"
+          $msiFile = Get-ChildItem -Path $installerDir -Filter "*.msi" | Select-Object -First 1
+
+          if ($null -ne $msiFile) {
+              $newMsiName = "LogixProInstaller_${{ steps.versioning.outputs.full_version }}.msi"
+              Rename-Item -Path $msiFile.FullName -NewName $newMsiName
+              $fullInstallerPath = Join-Path $msiFile.Directory.FullName $newMsiName
+              echo "INSTALLER_PATH=$fullInstallerPath" >> $env:GITHUB_ENV
+          } else {
+              Write-Error "MSI file not generated."
+          }
+
+      - name: Upload Installer Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: LogixPro-Installer-${{ steps.versioning.outputs.full_version }}
+          path: ${{ env.INSTALLER_PATH }}
+
+      - name: Login to Azure
+        uses: azure/login@v1
+        with:
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+
+      - name: Upload to Azure Blob Storage
+        shell: pwsh
+        run: |
+            $filePath = "${{ env.INSTALLER_PATH }}"
+            $fileName = [System.IO.Path]::GetFileName($filePath)
+
+            Write-Host "Found file: $fileName"
+            Write-Host "Uploading to Azure..."
+
+            az storage blob upload `
+              --account-name "storagedeveus" `
+              --container-name "releasedsoftware" `
+              --name "logixpro/$fileName" `
+              --file "$filePath" `
+              --auth-mode login `
+              --overwrite
+
+            echo "Upload completed to storagedeveus/releasedsoftware/logixpro/$fileName"

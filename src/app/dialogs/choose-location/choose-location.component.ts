@@ -157,7 +157,7 @@ export class ChooseLocationComponent implements OnInit, OnDestroy {
       });
 
       dialogRef.afterClosed().subscribe((res) => {
-        if(res == ResponseStrings.Yes) this.dialogRef.close("New Batch");
+        if(res == ResponseStrings.Yes) this.dialogRef.close({responseMessage : ResponseStrings.NewBatch});
       });              
     });
   }

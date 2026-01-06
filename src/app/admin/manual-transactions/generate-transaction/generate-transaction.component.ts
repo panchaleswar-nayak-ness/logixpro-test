@@ -13,7 +13,6 @@ import {PostManualTransactionComponent} from '../../dialogs/post-manual-transact
 import {
   DeleteConfirmationManualTransactionComponent
 } from '../../dialogs/delete-confirmation-manual-transaction/delete-confirmation-manual-transaction.component';
-import {InvalidQuantityComponent} from '../../dialogs/invalid-quantity/invalid-quantity.component';
 import {ErrorDialogComponent} from '../../../dialogs/error-dialog/error-dialog.component';
 import {MatSelect} from '@angular/material/select';
 import {MatOption} from '@angular/material/core';
@@ -35,6 +34,7 @@ import {
   ToasterType,
   TransactionType
 } from 'src/app/common/constants/strings.constants';
+import { TransactionNotificationMessage } from 'src/app/common/constants/admin/transaction-constants';
 import { GtItemDetailsComponent } from './gt-item-details/gt-item-details.component';
 import { format, parse } from 'date-fns';
 @Component({
@@ -59,11 +59,11 @@ export class GenerateTransactionComponent implements OnInit {
   floatLabelControl = new FormControl('auto' as FloatLabelType);
   hideRequiredControl = new FormControl(false);
   searchByInput: any = new Subject<string>();
-  orderNumber: any;
+  orderNumber: string = '';
   searchAutocompleteList: any;
   userData;
   item;
-  itemNumber;
+  itemNumber: string = '';
   supplierID;
   expDate: any = '';
   revision;
@@ -72,23 +72,23 @@ export class GenerateTransactionComponent implements OnInit {
   uom;
   notes;
   serialNumber;
-  transType;
+  transType: string = TransactionType.Pick;
   reqDate: any = '';
   lineNumber;
-  transQuantity;
+  transQuantity: number = 0;
   priority;
   lineSeq;
-  hostTransID;
-  batchPickID;
-  wareHouse;
+  hostTransID: string = '';
+  batchPickID: string = '';
+  wareHouse: string = '';
   toteID;
-  transactionQtyInvalid = false;
+  transactionQtyInvalid : boolean = false;
   warehouseSensitivity;
   totalQuantity: '';
-  zone: '';
-  row: '';
-  shelf: '';
-  carousel: '';
+  zone: string = '';
+  row: string = '';
+  shelf: string = '';
+  carousel: string = '';
   quantityAllocatedPick: '';
   quantityAllocatedPutAway: '';
   invMapID: '';
@@ -103,16 +103,15 @@ export class GenerateTransactionComponent implements OnInit {
 
   constructor(
     public commonAPI: CommonApiService,
-    private authService: AuthService,
-    private Api: ApiFuntions,
-    private global: GlobalService,
+    public authService: AuthService,
+    public Api: ApiFuntions,
+    public global: GlobalService,
     public printApiService: PrintApiService,
-
-    private adminApiService: AdminApiService
+    public adminApiService: AdminApiService
   ) {
-    this.iAdminApiService = adminApiService;
+    this.iAdminApiService = this.adminApiService;	
     this.userData = this.authService.userData();
-    this.iCommonAPI = commonAPI;
+    this.iCommonAPI = this.commonAPI;
   }
 
   ngOnInit(): void {
@@ -134,6 +133,12 @@ export class GenerateTransactionComponent implements OnInit {
     this.openAction?.options.forEach((data: MatOption) => data.deselect());
   }
 
+  private setTransactionError(message: string): void {
+    this.message = message;
+    this.transactionQtyInvalid = true;
+    this.clearMatSelectList();
+  }
+
   generateTranscAction(event: any) {
     this.clearMatSelectList();
   }
@@ -147,7 +152,6 @@ export class GenerateTransactionComponent implements OnInit {
           this.global.globalErrorMsg(),
           ToasterTitle.Error
         );
-        console.log('ColumnAlias', res.responseMessage);
       }
     });
   }
@@ -165,7 +169,7 @@ export class GenerateTransactionComponent implements OnInit {
     this.transType = 'Pick';;
     this.reqDate = '';
     this.lineNumber = '0';
-    this.transQuantity ='0';
+    this.transQuantity = 0;
     this.priority ='0';
     this.lineSeq ='0';
     this.hostTransID = '';
@@ -245,7 +249,6 @@ export class GenerateTransactionComponent implements OnInit {
             this.global.globalErrorMsg(),
             ToasterTitle.Error
           );
-          console.log('TransactionInfo', res.responseMessage);
           this.item = '';
         }
       }
@@ -264,7 +267,7 @@ export class GenerateTransactionComponent implements OnInit {
     this.transType = '';
     this.reqDate = '';
     this.lineNumber = '';
-    this.transQuantity = '';
+    this.transQuantity = 0;  
     this.priority = '';
     this.lineSeq = '';
     this.hostTransID = '';
@@ -289,7 +292,6 @@ export class GenerateTransactionComponent implements OnInit {
             this.global.globalErrorMsg(),
             ToasterTitle.Error
           );
-          console.log('ManualTransactionTypeAhead', res.responseMessage);
         }
       });
   }
@@ -307,6 +309,8 @@ export class GenerateTransactionComponent implements OnInit {
       },
     });
     dialogRef.afterClosed().subscribe((res) => {
+      // If dialog was cancelled (X button or Escape), preserve existing data
+      if (!res) return;
 
       if(res?.isExecuted){
         this.itemNumber = res.itemNumber;
@@ -368,7 +372,7 @@ export class GenerateTransactionComponent implements OnInit {
       return;
     } else if (this.warehouseSensitivity === 'True' && this.wareHouse == '') {
       this.transactionQtyInvalid = true;
-      this.message = 'Specified Item Number must have a Warehouse';
+      this.message = TransactionNotificationMessage.SpecifiedItemNumberMustHaveAWarehouse;
       return;
     } else {
       this.transactionQtyInvalid = false;
@@ -417,7 +421,6 @@ export class GenerateTransactionComponent implements OnInit {
                     res.responseMessage,
                     ToasterTitle.Error
                   );
-                  console.log('PostTransaction', res.responseMessage);
                   if (type != 'save') {
                     // this.clearFields();
                   }
@@ -430,7 +433,27 @@ export class GenerateTransactionComponent implements OnInit {
       });
     }
   }
+
+  validateTransactionQuantity() {
+    // Validate transaction quantity for Pick and Put Away transaction types
+    if (this.transQuantity < 0) {
+      this.setTransactionError(TransactionNotificationMessage.TransactionQuantityMustBePositive(this.transType));
+      return false;
+    } else if (
+      (this.transQuantity === 0) &&
+      this.transType !== TransactionType.Count
+    ) {
+      this.setTransactionError(TransactionNotificationMessage.TransactionQuantityMustBeGreaterThanZero(this.transType));
+      return false;
+    }
+    return true;
+  }
+
   postTransaction(type: string) {
+    if (!this.validateTransactionQuantity()) {
+      return;
+    }
+
     const totalQuantity = Number(this.totalQuantity) || 0;
     const quantityAllocatedPick = Number(this.quantityAllocatedPick) || 0;
     const actualQuantity = totalQuantity - quantityAllocatedPick;
@@ -449,6 +472,7 @@ export class GenerateTransactionComponent implements OnInit {
         this.clearMatSelectList();
       });
     } else {
+      this.transactionQtyInvalid = false;
       this.clearMatSelectList();
       this.updateTransactionFunction();
       this.postTransactionFunction(type);
@@ -551,26 +575,21 @@ export class GenerateTransactionComponent implements OnInit {
           this.global.globalErrorMsg(),
           ToasterTitle.Error
         );
-        console.log('LocationData', res.responseMessage);
       }
     });
   }
 
   updateTransactionFunction() {
     if(this.transQuantity < 0){
-      this.transactionQtyInvalid = true;
-      this.message = `Transaction Quantity must be a positive integer for transaction type ${this.transType} `;
+      this.setTransactionError(TransactionNotificationMessage.TransactionQuantityMustBePositive(this.transType));
     }else if (
-      (this.transQuantity === '0' || this.transQuantity === 0 ) &&
-      this.transType != 'Count'
+      (this.transQuantity === 0 ) &&
+      this.transType !== TransactionType.Count
     ) {
-      this.transactionQtyInvalid = true;
-      this.message = `Transaction Quantity must be greater than zero for transaction type ${this.transType} `;
+      this.setTransactionError(TransactionNotificationMessage.TransactionQuantityMustBeGreaterThanZero(this.transType));
     } else if (this.warehouseSensitivity === 'True' && this.wareHouse == '') {
-      this.transactionQtyInvalid = true;
-      this.message = 'Specified Item Number must have a Warehouse';
+      this.setTransactionError(TransactionNotificationMessage.SpecifiedItemNumberMustHaveAWarehouse);
     } else {
-      console.log(this.expDate);
       this.transactionQtyInvalid = false;
       //following sequence must follow to update
       let updateValsequence: any = [];
@@ -620,7 +639,6 @@ export class GenerateTransactionComponent implements OnInit {
             res.responseMessage,
             ToasterTitle.Error
           );
-          console.log('UpdateTransaction', res.responseMessage);
         }
       });
     }
@@ -672,12 +690,15 @@ export class GenerateTransactionComponent implements OnInit {
           this.global.globalErrorMsg(),
           ToasterTitle.Error
         );
-        console.log('ItemNumberInfo', res.responseMessage);
       }
     })
   }
 
   getSupplierItemInfo() {
+    // Clear location and unit of measure when supplier item changes
+    this.clearLocationData();
+    this.uom = '';
+    
     let payload = {
       ID: this.supplierID,
     };
@@ -685,27 +706,15 @@ export class GenerateTransactionComponent implements OnInit {
       if (res?.isExecuted) {
         this.itemNumber = res.data[0].itemNumber;
         this.description = res.data[0].description;
-        this.uom  = res.data[0].unitofMeasure;
-        if (res.data[0].unitofMeasure != this.uom) {
-          if (this.uom == '') {
-            this.uom = res.data[0].unitofMeasure;
-            this.transactionQtyInvalid = false;
-          } else {
-            this.transactionQtyInvalid = true;
-            this.message =
-              'Unit of Measure does not match Inventory Master. (Expecting)';
-            return;
-          }
-        } else {
-          this.transactionQtyInvalid = false;
-        }
+        // Keep UOM blank when supplier item changes - don't auto-populate it
+        // this.uom  = res.data[0].unitofMeasure;
+        this.transactionQtyInvalid = false;
       } else {
         this.global.ShowToastr(
           ToasterType.Error,
           this.global.globalErrorMsg(),
           ToasterTitle.Error
         );
-        console.log('SupplierItemIDInfo', res.responseMessage);
       }
     });
   }

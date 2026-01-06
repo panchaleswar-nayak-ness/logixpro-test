@@ -102,7 +102,8 @@ export const ResponseStrings = {
   Fail: 'Fail',
   INVALID: 'INVALID',
   Redirect: 'Redirect',
-  Resolved: 'Resolved'
+  Resolved: 'Resolved',
+  NewBatch: 'New Batch'
 }
 
 export const ToasterType = {
@@ -164,6 +165,7 @@ export const ConfirmationMessages = {
     ClickOkToPrintItemLabels: 'Click Ok to print item labels for the selected batch orders?',
     UnverfiedItemsLeft: 'There are still unverfied items. Coninue the preview?',
     EventLogDeleteWithRange: 'Are you sure you want to delete all Event Log entries with specified date, message, event location and name stamp filters?',
+    DeleteAllViewedOrders: 'Are you sure you want to delete all viewed orders?',
     ClickOkToUpdateLocation: 'You will now update both locations to complete the current move',
     ConfirmationToClearAllInventoryMap : "Click OK to clear all Inventory Map records matching Location Number (Zone + Carousal + Row + Shelf + Bin) Criteria!",
     ClearWholeLocationPutAwayQuantity:"Clear Whole Location cannot proceed because the Allocated Pick or Allocated Put Away quantity is greater than zero.",
@@ -248,6 +250,7 @@ export const ToasterMessages = {
     ToteIdAlreadyInBatch: 'This tote id is already in this batch. Enter a new one',
     MissingDataFromPrint: 'Missing data from the desired print row',
     DeletePendingTransaction: 'You can only delete pending transactions.',
+    NoRecordsToDelete: 'No records to delete',
     ItemNumberExists: 'Item Number Already Exists.',
     RecordUpdatedSuccessful: 'Record Updated Successfully',
     DuplicateAdjustmentReason: 'Adjustment Reason is a duplicate. Save other edited fields and ensure it is not a duplicate before saving.',
@@ -274,6 +277,9 @@ export const ToasterMessages = {
     Consolidationstatuscount:"Failed to load consolidation status count.",
     RouteidCount:"Failed to load route id status count.",
     ConsolidationThreshold:"Failed to update threshold.",
+    ConsolidationThresholdSuccess: "Threshold updated successfully.",
+    AutoReleaseEnabled: "Auto Release Enabled",
+    AutoReleaseDisabled: "Auto Release Disabled",
     ConheaderData:"Failed to load con header list data.",
     RequestReleaseFailed:"Request release failed.",
     RequestReleaseSuccess:"Request release successfully.",
@@ -348,6 +354,7 @@ export const ToasterMessages = {
     InventoryMapRecordsDeleteFailed: 'Failed to delete inventory map records',
     ErrorDeletingInventoryMapRecords: 'Error occurred while deleting inventory map records',
     ToteIDAlreadyExists: 'This Tote ID already exists in the table. Please enter a different Tote ID.',
+    DuplicateToteIDError: 'The tote ID is duplicated in another managed tote, so it cannot be saved. Edit the duplicated totes before attempting to save again.',
     NoBatchesWithZone: 'There are no batches with this zone ({{zone}}) assigned.  Click OK to start a new batch or cancel to choose a different location/transaction.',
     BatchChangedSuccessfully: 'Current Batch is now {{batchId}}',
     QtyNewToteZero: 'Quantity Put in New Tote should be greater than 0',
@@ -883,6 +890,7 @@ export class ApiErrorMessages {
   static readonly NoResponseBodyFromAddCartAPI = "No response body received from addCart API"
   static readonly NoResponseBodyFromValidateCartIdAPI = "No response body received from validateCartId API"
   static readonly NoResponseBodyFromDeleteCartAPI = "No response body received from deleteCart API"
+  static readonly NoResponseBodyFromUpdateCartStatusAPI = "No response body received from updateCartStatusActiveInactive API"
 }
 export const PickToteFilterpreferences = {
   preferences: "PickToteFilterPrefs"
@@ -1021,7 +1029,12 @@ export const OrderActions = {
 
 export const Icons = {
   Info: 'info',
-  Print: 'print'
+  Print: 'print',
+  InfoOutline: 'info_outline',
+  Close: 'close',
+  Collapse: 'unfold_less',
+  Expand: 'unfold_more',
+  NotificationsActive: 'notifications_active'
 }
 
 export const SystemConstants = {

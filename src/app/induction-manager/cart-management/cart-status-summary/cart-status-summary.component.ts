@@ -12,7 +12,8 @@ export class CartStatusSummaryComponent {
     inducting: 0,
     inducted: 0,
     inProgress: 0,
-    available: 0
+    available: 0,
+    inactive: 0
   };
 
   readonly statusTooltipText = CartStatusTooltipText;

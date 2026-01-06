@@ -609,6 +609,9 @@ export class SelectionTransactionForToteExtendComponent implements OnInit, OnDes
         // Reset flag synchronously after patchValue completes
         this.isSettingLocationFromDialog = false;
       }
+      else if (res?.responseMessage === ResponseStrings.NewBatch) {
+        this.dialogRef.close(ResponseStrings.NewBatch);
+      }
     });
   }
 
@@ -646,11 +649,12 @@ export class SelectionTransactionForToteExtendComponent implements OnInit, OnDes
                   });
 
                   this.findLocation(true, res.data)
-                } else{ 
-                    this.findLocation(false, 0);
+                } else{
+                  this.findLocation(false, 0);
                 }
               });
-            }
+
+            } else this.findLocation(false, 0);
           }
           else {
             this.global.ShowToastr(ToasterType.Error, this.global.globalErrorMsg(), ToasterTitle.Error);

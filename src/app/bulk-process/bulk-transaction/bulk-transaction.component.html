@@ -39,4 +39,4 @@
 
 <app-verify-bulk *ngIf="verifyBulks" [isBatchIdGenerationEnabled]="isBatchIdGenerationEnabled" [orderLines]="orderLines" [Prefernces]="Prefernces"
     [bulkTransactionType]="this.bulkTransactionTypeAllCaps" [NextToteID]="this.NextToteID" [isSlapperLabelFlow]="isSlapperLabelFlow"
-    (back)="changeVisibiltyVerifyBulk(true)"></app-verify-bulk>
+    [assignToteToOrderCalled]="assignToteToOrderCalled" (back)="changeVisibiltyVerifyBulk(true)"></app-verify-bulk>

@@ -49,15 +49,15 @@
                (matSortChange)="announceSortChange($event)">
       
             <ng-container matColumnDef="cartId">
-              <th mat-header-cell *matHeaderCellDef mat-sort-header>Cart ID</th>
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ columns.cartId.colTitle }}</th>
               <td mat-cell *matCellDef="let element" 
-              (contextmenu)="onContextMenu($event, element.cartId, 'cartId')">{{ element.cartId }}</td>
+              (contextmenu)="onContextMenu($event, element.cartId, columns.cartId.colDef)">{{ element.cartId }}</td>
             </ng-container>
       
             <ng-container matColumnDef="cartStatus">
-              <th mat-header-cell *matHeaderCellDef mat-sort-header>Status</th>
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ columns.cartStatus.colTitle }}</th>
               <td mat-cell *matCellDef="let element" 
-              (contextmenu)="onContextMenu($event, element.cartStatus, 'cartStatus')">
+              (contextmenu)="onContextMenu($event, element.cartStatus, columns.cartStatus.colDef)">
                 <div class="d-flex align-items-center">
                   <span [ngClass]="getStatusClass(element.cartStatus)" class="br-14 label px-3 f-16">
                     {{ element.cartStatus }}
@@ -72,17 +72,17 @@
             </ng-container>
       
             <ng-container matColumnDef="toteQty">
-              <th mat-header-cell *matHeaderCellDef mat-sort-header>Tote Quantity</th>
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ columns.toteQty.colTitle }}</th>
               <td mat-cell *matCellDef="let element" 
-              (contextmenu)="onContextMenu($event, element.toteQty, 'toteQty')">
+              (contextmenu)="onContextMenu($event, element.toteQty, columns.toteQty.colDef)">
                 {{ formatToteQuantity(element.toteQty) }}
               </td>
             </ng-container>
       
             <ng-container matColumnDef="location">
-              <th mat-header-cell *matHeaderCellDef mat-sort-header>Location</th>
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ columns.location.colTitle }}</th>
               <td mat-cell *matCellDef="let element" 
-              (contextmenu)="onContextMenu($event, element.location, 'location')">{{ element.location }}</td>
+              (contextmenu)="onContextMenu($event, element.location, columns.location.colDef)">{{ element.location }}</td>
             </ng-container>
       
             <ng-container matColumnDef="actions" stickyEnd>
@@ -100,13 +100,23 @@
                 </div>
       
                 <mat-menu #appMenu="matMenu">
-                  <button mat-menu-item (click)="onViewDetails(selectedRecord)">View Cart Details</button>
-                  <button mat-menu-item [disabled]="(selectedRecord.cartStatus === STATUS_COMPLETE) || (selectedRecord.cartStatus === STATUS_IN_PROGRESS && selectedRecord.location !== LOCATION_IN_TRANSIT)" (click)="onEditCart(selectedRecord)">Edit</button>
                   <button mat-menu-item 
-                          [disabled]="!canDeleteCart(selectedRecord)"
+                          [disabled]="isViewDetailsDisabled(selectedRecord)"
+                          (click)="onViewDetails(selectedRecord)">View Cart Details</button>
+                  <button mat-menu-item 
+                          [disabled]="isEditDisabled(selectedRecord)" 
+                          (click)="onEditCart(selectedRecord)">Edit</button>
+                  <button mat-menu-item 
+                          [disabled]="isDeleteDisabled(selectedRecord)"
                           [matTooltip]="permissionMessages.NoPermission"
                           [matTooltipDisabled]="hasDeletePermission()"
-                          (click)="onDeleteCart(selectedRecord)">Delete Cart</button>          
+                          (click)="onDeleteCart(selectedRecord)">Delete Cart</button>
+                  <button mat-menu-item 
+                          *ngIf="canDeactivateCart(selectedRecord)"
+                          (click)="onDeactivateCart(selectedRecord)">Deactivate Cart</button>
+                  <button mat-menu-item 
+                          *ngIf="canActivateCart(selectedRecord)"
+                          (click)="onActivateCart(selectedRecord)">Activate Cart</button>
                 </mat-menu>
               </td>
             </ng-container>
