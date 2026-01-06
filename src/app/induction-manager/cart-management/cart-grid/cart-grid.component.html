@@ -100,13 +100,23 @@
                 </div>
       
                 <mat-menu #appMenu="matMenu">
-                  <button mat-menu-item (click)="onViewDetails(selectedRecord)">View Cart Details</button>
-                  <button mat-menu-item [disabled]="(selectedRecord.cartStatus === STATUS_COMPLETE) || (selectedRecord.cartStatus === STATUS_IN_PROGRESS && selectedRecord.location !== LOCATION_IN_TRANSIT)" (click)="onEditCart(selectedRecord)">Edit</button>
                   <button mat-menu-item 
-                          [disabled]="!canDeleteCart(selectedRecord)"
+                          [disabled]="isViewDetailsDisabled(selectedRecord)"
+                          (click)="onViewDetails(selectedRecord)">View Cart Details</button>
+                  <button mat-menu-item 
+                          [disabled]="isEditDisabled(selectedRecord)" 
+                          (click)="onEditCart(selectedRecord)">Edit</button>
+                  <button mat-menu-item 
+                          [disabled]="isDeleteDisabled(selectedRecord)"
                           [matTooltip]="permissionMessages.NoPermission"
                           [matTooltipDisabled]="hasDeletePermission()"
-                          (click)="onDeleteCart(selectedRecord)">Delete Cart</button>          
+                          (click)="onDeleteCart(selectedRecord)">Delete Cart</button>
+                  <button mat-menu-item 
+                          *ngIf="canDeactivateCart(selectedRecord)"
+                          (click)="onDeactivateCart(selectedRecord)">Deactivate Cart</button>
+                  <button mat-menu-item 
+                          *ngIf="canActivateCart(selectedRecord)"
+                          (click)="onActivateCart(selectedRecord)">Activate Cart</button>
                 </mat-menu>
               </td>
             </ng-container>

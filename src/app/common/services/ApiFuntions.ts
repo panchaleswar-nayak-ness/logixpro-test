@@ -19,7 +19,7 @@ import { IConZoneStatusPayload } from 'src/app/consolidation-manager/cm-route-id
 import { MarkoutAuditResponse, MarkoutPickLinesResponse, MarkoutResponse } from 'src/app/consolidation-manager/cm-markout-new/models/cm-markout-new-models';
 import { ZoneListPayload } from 'src/app/bulk-process/preferences/preference.models';
 import { DevicePreferenceRequest, DevicePreferencesTableRequest } from '../interface/admin/device-preferences';
-import { RemoveCartContentRequest, ValidateToteRequest, ValidationRequest, ViewDetailsResponse, CartApiResponse, ValidateToteResponse, CompleteCartResponse, CartListResponse, CartSearchRequest, CartStatusCountsDto, AddCartRequest, AddCartResponse, ValidateCartIdResponse, DeleteCartResponse } from 'src/app/induction-manager/cart-management/interfaces/cart-management.interface';
+import { RemoveCartContentRequest, ValidateToteRequest, ValidationRequest, ViewDetailsResponse, CartApiResponse, ValidateToteResponse, CompleteCartResponse, CartListResponse, CartSearchRequest, CartStatusCountsDto, AddCartRequest, AddCartResponse, ValidateCartIdResponse, DeleteCartResponse, UpdateCartStatusActiveInactiveRequest, UpdateCartStatusActiveInactiveResponse } from 'src/app/induction-manager/cart-management/interfaces/cart-management.interface';
 import { UpdateEmergencyRequest } from '../interface/admin/opentransaction.interfaces';
 import { ApiResponse, ApiResponseData, ApiResult, ExitOk } from '../types/CommonTypes';
 import {PrintOrdersPayload, PrintTransactionPayload} from '../interface/bulk-transactions/bulk-pick';
@@ -2577,6 +2577,14 @@ public storageBinsExit(binId: string, zone: string): Observable<ExitOk> {
       throw new Error(ApiErrorMessages.NoResponseBodyFromDeleteCartAPI);
     }
     return response.body as unknown as DeleteCartResponse;
+  }
+
+  public async updateCartStatusActiveInactive(request: UpdateCartStatusActiveInactiveRequest): Promise<UpdateCartStatusActiveInactiveResponse> {
+    const response = await this.ApiBase.PostAsync<UpdateCartStatusActiveInactiveRequest>('/cart/updateCartStatusActiveInactive', request);
+    if (!response.body) {
+      throw new Error(ApiErrorMessages.NoResponseBodyFromUpdateCartStatusAPI);
+    }
+    return response.body as unknown as UpdateCartStatusActiveInactiveResponse;
   }
   
   public async GetNextToteIdForSlapperLabelAsync(request: PartialToteIdRequest): Promise<PartialToteIdResponse[]> {

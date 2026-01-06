@@ -890,6 +890,7 @@ export class ApiErrorMessages {
   static readonly NoResponseBodyFromAddCartAPI = "No response body received from addCart API"
   static readonly NoResponseBodyFromValidateCartIdAPI = "No response body received from validateCartId API"
   static readonly NoResponseBodyFromDeleteCartAPI = "No response body received from deleteCart API"
+  static readonly NoResponseBodyFromUpdateCartStatusAPI = "No response body received from updateCartStatusActiveInactive API"
 }
 export const PickToteFilterpreferences = {
   preferences: "PickToteFilterPrefs"
@@ -1032,7 +1033,8 @@ export const Icons = {
   InfoOutline: 'info_outline',
   Close: 'close',
   Collapse: 'unfold_less',
-  Expand: 'unfold_more'
+  Expand: 'unfold_more',
+  NotificationsActive: 'notifications_active'
 }
 
 export const SystemConstants = {

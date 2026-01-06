@@ -4,7 +4,7 @@ import { map, take } from 'rxjs/operators';
 import { ICartManagementApiService, CartListResponse } from './cart-management-api.interface';
 import { GlobalService } from '../global.service';
 import { ApiFuntions } from '../ApiFuntions';
-import { RemoveCartContentRequest, ValidateToteRequest, ValidationRequest, ViewDetailsResponse, CompleteCartResponse, ValidateToteResponse, CartSearchRequest, CartStatusCountsDto, CartStatusSummary, CartListRequest, AddCartRequest, AddCartResponse, ValidateCartIdResponse, DeleteCartResponse } from 'src/app/induction-manager/cart-management/interfaces/cart-management.interface';
+import { RemoveCartContentRequest, ValidateToteRequest, ValidationRequest, ViewDetailsResponse, CompleteCartResponse, ValidateToteResponse, CartSearchRequest, CartStatusCountsDto, CartStatusSummary, CartListRequest, AddCartRequest, AddCartResponse, ValidateCartIdResponse, DeleteCartResponse, UpdateCartStatusActiveInactiveRequest, UpdateCartStatusActiveInactiveResponse } from 'src/app/induction-manager/cart-management/interfaces/cart-management.interface';
 
 
 @Injectable({
@@ -69,7 +69,8 @@ export class CartManagementApiService implements ICartManagementApiService {
           inducting: 0,
           inducted: 0,
           inProgress: 0,
-          available: 0
+          available: 0,
+          inactive: 0
         };
 
         // Map the API response to our summary format
@@ -89,6 +90,9 @@ export class CartManagementApiService implements ICartManagementApiService {
           }
           if (statusCounts.Available !== undefined) {
             summary.available = statusCounts.Available;
+          }
+          if (statusCounts.Inactive !== undefined) {
+            summary.inactive = statusCounts.Inactive;
           }
         }
 
@@ -121,6 +125,14 @@ export class CartManagementApiService implements ICartManagementApiService {
 
   deleteCart(cartId: string): Observable<DeleteCartResponse> {
     return from(this.Api.deleteCart(cartId));
+  }
+
+  async updateCartStatusActiveInactive(cartId: string, activeFlag: boolean): Promise<UpdateCartStatusActiveInactiveResponse> {
+    const request: UpdateCartStatusActiveInactiveRequest = {
+      cartId,
+      activeFlag
+    };
+    return await this.Api.updateCartStatusActiveInactive(request);
   }
 
 }

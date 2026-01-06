@@ -160,6 +160,7 @@ export interface CartStatusCountsDto {
     Inducted?: number;
     'In Progress'?: number;
     Available?: number;
+    Inactive?: number;
   };
 }
 
@@ -168,6 +169,7 @@ export interface CartStatusSummary {
   inducted: number;
   inProgress: number;
   available: number;
+  inactive: number;
 }
 
 export interface AddCartRequest {
@@ -196,4 +198,16 @@ export interface DeleteCartResponse {
   message: string;
   status: number;
   value: string; // The cartId that was deleted
+}
+
+export interface UpdateCartStatusActiveInactiveRequest {
+  cartId: string;
+  activeFlag: boolean;
+}
+
+export interface UpdateCartStatusActiveInactiveResponse {
+  isSuccess: boolean;
+  status: number;
+  value: string;
+  errors?: string[];
 }
