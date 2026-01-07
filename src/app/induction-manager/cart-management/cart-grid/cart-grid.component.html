@@ -113,9 +113,15 @@
                           (click)="onDeleteCart(selectedRecord)">Delete Cart</button>
                   <button mat-menu-item 
                           *ngIf="canDeactivateCart(selectedRecord)"
+                          [disabled]="isDeactivateDisabled(selectedRecord)"
+                          [matTooltip]="permissionMessages.NoPermission"
+                          [matTooltipDisabled]="hasActivateDeactivatePermission()"
                           (click)="onDeactivateCart(selectedRecord)">Deactivate Cart</button>
                   <button mat-menu-item 
                           *ngIf="canActivateCart(selectedRecord)"
+                          [disabled]="isActivateDisabled(selectedRecord)"
+                          [matTooltip]="permissionMessages.NoPermission"
+                          [matTooltipDisabled]="hasActivateDeactivatePermission()"
                           (click)="onActivateCart(selectedRecord)">Activate Cart</button>
                 </mat-menu>
               </td>
