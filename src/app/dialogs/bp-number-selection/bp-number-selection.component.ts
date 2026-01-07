@@ -120,7 +120,7 @@ export class BpNumberSelectionComponent implements OnInit {
     if (!this.IsFullTote || (this.newQuantity <= this.toteQuantity && this.newQuantity >= 0)) {
       if (this.from == "completed quantity") {
         // Don't show "Location Empty" popup for Put Away transactions
-        if (this.url === TransactionType.PutAway) {
+        if (this.url === TransactionType.PutAway || this.url === TransactionType.Count) {
           // For Put Away, close without showing location empty popup
           this.dialogRef.close({newQuantity: this.newQuantity.toString(), type: null});
         } 
