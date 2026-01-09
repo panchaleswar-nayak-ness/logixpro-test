@@ -13,7 +13,7 @@
                         <input matInput="matInput" #cartInputRef [(ngModel)]="cartId" placeholder="Enter / Scan Cart ID to induct cart" (keyup.enter)="onInductCart()" data-automation-id="cart-id-input"/>
                     </mat-form-field>
 
-                    <button mat-flat-button="mat-flat-button" color="primary" class="btn-regular" (click)="onInductCart()">
+                    <button mat-flat-button="mat-flat-button" color="primary" class="btn-regular" (click)="onInductCart()" data-automation-id="induct-cart-button">
                         Induct Cart
                     </button>
                 </div>
