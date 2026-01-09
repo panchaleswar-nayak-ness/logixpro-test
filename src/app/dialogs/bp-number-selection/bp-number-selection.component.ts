@@ -3,7 +3,6 @@ import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
 import {ToastrService} from 'ngx-toastr';
 import { take } from 'rxjs';
 import {ConfirmationDialogComponent} from 'src/app/admin/dialogs/confirmation-dialog/confirmation-dialog.component';
-import {BulkPreferences} from 'src/app/common/Model/bulk-transactions';
 import {SetTimeout} from 'src/app/common/constants/numbers.constants';
 import {
   alertMessage,
@@ -15,7 +14,6 @@ import {
   TransactionType
 } from 'src/app/common/constants/strings.constants';
 import {CustomValidatorService} from 'src/app/common/init/custom-validator.service';
-import {IBulkProcessApiService} from 'src/app/common/services/bulk-process-api/bulk-process-api-interface';
 import {BulkProcessApiService} from 'src/app/common/services/bulk-process-api/bulk-process-api.service';
 import {GlobalService} from 'src/app/common/services/global.service';
 
@@ -24,12 +22,10 @@ import {GlobalService} from 'src/app/common/services/global.service';
   templateUrl: './bp-number-selection.component.html',
   styleUrls: ['./bp-number-selection.component.scss']
 })
-export class BpNumberSelectionComponent implements OnInit {
+export class BpNumberSelectionComponent {
   toteQuantity: number;
   newQuantity: number;
   IsFullTote: boolean = false;
-  Prefernces: BulkPreferences;
-  public iBulkProcessApiService: IBulkProcessApiService;
   from: string = "completed quantity";
   @ViewChild('autoFocusField') searchBoxField: ElementRef;
   url: string;
@@ -45,7 +41,6 @@ export class BpNumberSelectionComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data: any,
     private ngZone: NgZone
   ) {
-    this.iBulkProcessApiService = bulkProcessApiService;
     this.from = this.data.from;
     this.toteQuantity = this.data?.toteQuantity;
     this.IsFullTote = this.data?.IsFullTote;
@@ -54,22 +49,11 @@ export class BpNumberSelectionComponent implements OnInit {
     this.maxAllowedQuantity = this.data?.maxAllowedQuantity;
   }
 
-  ngOnInit(): void {
-    this.getworkstationbulkzone();
-  }
-
   ngAfterViewInit() {
     setTimeout(() => {
       this.searchBoxField?.nativeElement.focus();
     }, SetTimeout['500Milliseconds']);
   }
-
-  getworkstationbulkzone() {
-    this.iBulkProcessApiService.bulkPreferences().subscribe((res: any) => {
-      this.Prefernces = res;
-    })
-  }
-
 
   add(string: string) {
     let newQuantity: number;
