@@ -24,12 +24,12 @@
     <mat-dialog-actions class="d-flex flex-column justify-content-center" data-automation-id="alert-confirmation-actions">
 
       <ng-container *ngIf="!isAlert; else primaryBlock">
-      <button  class=" prompt-action-danger-button mb-3 w-100 btn-lg" mat-stroked-button  [mat-dialog-close]="true" data-automation-id="alert-confirmation-ok-btn">{{buttonFields?'YES':'OK'}}</button>
-      <button  class="  prompt-action-basic-button mb-3 w-100 btn-lg" mat-stroked-button  [mat-dialog-close]="false" *ngIf="!disableCancel" data-automation-id="alert-confirmation-cancel-btn">{{buttonFields?'NO':'Cancel'}}</button>
+      <button  class=" prompt-action-danger-button mb-3 w-100 btn-lg" mat-stroked-button  [mat-dialog-close]="true" data-automation-id="alert-confirmation-ok-btn">{{buttonFields ? responseStrings.Yes : responseStrings.OK}}</button>
+      <button  class="  prompt-action-basic-button mb-3 w-100 btn-lg" mat-stroked-button  [mat-dialog-close]="false" *ngIf="!disableCancel" data-automation-id="alert-confirmation-cancel-btn">{{buttonFields ? responseStrings.No : responseStrings.Cancel}}</button>
       </ng-container>
       <ng-template #primaryBlock>
-        <button  class="prompt-action-accent-button mb-3 w-100 btn-lg" mat-stroked-button  [mat-dialog-close]="true" data-automation-id="alert-confirmation-ok-btn">{{buttonFields?'YES':'OK'}}</button>
-        <button  class="  prompt-action-basic-button mb-3 w-100 btn-lg" mat-stroked-button  [mat-dialog-close]="false" *ngIf="!disableCancel" data-automation-id="alert-confirmation-cancel-btn">{{buttonFields?'NO':'Cancel'}}</button>
+        <button  class="prompt-action-accent-button mb-3 w-100 btn-lg" mat-stroked-button  [mat-dialog-close]="true" data-automation-id="alert-confirmation-ok-btn">{{buttonFields ? responseStrings.Yes : responseStrings.OK}}</button>
+        <button  class="  prompt-action-basic-button mb-3 w-100 btn-lg" mat-stroked-button  [mat-dialog-close]="false" *ngIf="!disableCancel" data-automation-id="alert-confirmation-cancel-btn">{{buttonFields ? responseStrings.No : responseStrings.Cancel}}</button>
         </ng-template>
     </mat-dialog-actions>
     
