@@ -1,5 +1,6 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { ResponseStrings } from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-alert-confirmation',
@@ -12,6 +13,7 @@ export class AlertConfirmationComponent implements OnInit {
   buttonFields: any = false;
   disableCancel=false;
   isAlert=false;
+  readonly responseStrings = ResponseStrings;
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
     public dialogRef: MatDialogRef<any>

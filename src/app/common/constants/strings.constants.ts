@@ -90,6 +90,7 @@ export const ResponseStrings = {
   No: 'No',
   Yes: 'Yes',
   Cancel: 'Cancel',
+  OK: 'OK',
   Empty: '',
   Null: null,
   DNE: 'DNE',

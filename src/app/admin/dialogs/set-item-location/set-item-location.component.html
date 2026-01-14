@@ -14,18 +14,24 @@
             <ng-container *ngIf="this.itemInvalid">
                 <div class="label-red p-3 d-flex br-8 mb-3">
                     <mat-icon class="material-symbols-outlined">notification_important</mat-icon>
-                    <span class="ps-2 w-100"><span  replacePlaceholder [replacePlaceHolder]="placeholders.itemNumber" [fallbackPlaceHolder]="placeholders.itemNumberFallback">Item Number</span> Not Found</span>
+                    <span class="ps-2 w-100" data-automation-id="error-item-invalid">{{LabelItemNumber}} Not Found</span>
                 </div>
             </ng-container>
             <mat-form-field class="custom-form-field w-100" appearance="outline" [floatLabel]="getFloatLabelValue()"
                 [hideRequiredMarker]="hideRequiredControlItem.value">
                 <mat-label replacePlaceholder [replacePlaceHolder]="placeholders.itemNumber" [fallbackPlaceHolder]="placeholders.itemNumberFallback" data-automation-id="label-item-number">{{LabelItemNumber}}</mat-label>
                 <input #itm_nmb type="text" placeholder="Search" aria-label="Number" matInput [(ngModel)]="itemNumber" (focusout)="onFocusOutEvent($event)"
-                    [matAutocomplete]="item" (ngModelChange)="onInputChange($event)" data-automation-id="input-item-number">
-                    <button matSuffix *ngIf="itemNumber" class="clear-btn"  (click)="clearInput()" data-automation-id="clear-button"><mat-icon class="text-20 text-chrome-600">cancel</mat-icon></button>
-                <mat-autocomplete #item="matAutocomplete" (optionSelected)="searchData()" data-automation-id="autocomplete-item-number">
-                    <mat-option *ngFor="let option of searchAutocompleteListItem; let i = index" [value]="option.itemNumber" [attr.data-automation-id]="'option-item-number-' + i">
-                        {{option.itemNumber}}
+                    [matAutocomplete]="item" (ngModelChange)="onItemNumberInputChange($event)" (keydown.enter)="onItemNumberEnterKey($event)" data-automation-id="input-item-number">
+                    <button matSuffix *ngIf="itemNumber" class="clear-btn" (click)="clearItemNumber()" data-automation-id="clear-button"><mat-icon class="text-20 text-chrome-600">cancel</mat-icon></button>
+                <mat-autocomplete class="card custom-scroll" #item="matAutocomplete" (optionSelected)="searchData()" data-automation-id="autocomplete-item-number">
+                    <h6 class="card-header matAutoCompHeader"><span class="span-width" data-automation-id="label-item-number-header">{{LabelItemNumber}}</span>
+                        <span class="span-width" data-automation-id="label-description-header">Description</span>
+                    </h6>
+                    <mat-option *ngFor="let option of searchAutocompleteListItem; let i = index" [value]="option.itemNumber" class="matAutoCompTableContent" (click)="$event.stopPropagation()" [attr.data-automation-id]="'option-item-number-' + i">
+                        <div class="loc_option">
+                            <span class="searchColumn span-width">{{option.itemNumber}}</span>
+                            <span class="searchColumn span-searchColumn" #tooltip="matTooltip" matTooltipPosition="above" [matTooltip]="option.description" [matTooltipDisabled]="isTooltipDisabled(option.description)">{{option.description}}</span>
+                        </div>
                     </mat-option>
                 </mat-autocomplete>
             </mat-form-field>
@@ -44,7 +50,7 @@
 
 
                     
-                    <mat-autocomplete #autoLocation="matAutocomplete" class="card custom-scroll" #item="matAutocomplete" (optionSelected)="searchData()" data-automation-id="autocomplete-location">
+                    <mat-autocomplete #autoLocation="matAutocomplete" class="card custom-scroll" (optionSelected)="searchData()" data-automation-id="autocomplete-location">
                             
                         <h6 class ="card-header matAutoCompHeader "><span class="WSize140px" data-automation-id="option-header-inv-map-id">Inv Map ID</span> <span class="WSize140px" data-automation-id="option-header-qty">Qty</span> <span  class="WSize140px" data-automation-id="option-header-location">Location</span> </h6>
                       

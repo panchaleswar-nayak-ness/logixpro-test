@@ -497,14 +497,29 @@ export class CartGridComponent implements OnInit, AfterViewInit, OnChanges, OnDe
     }
   }
 
-  // Check if cart can be deactivated (only Available status)
+  // Check if user has Activate/Deactivate permission
+  hasActivateDeactivatePermission(): boolean {
+    return this.authService.isAuthorized(CartManagementPermissions.ActivateDeactivateCart);
+  }
+
+  // Check if cart can be deactivated (only Available status and has permission)
   canDeactivateCart(record: CartItem): boolean {
     return record.cartStatus === this.STATUS_COMPLETE;
   }
 
-  // Check if cart can be activated (only Inactive status)
+  // Check if cart can be activated (only Inactive status and has permission)
   canActivateCart(record: CartItem): boolean {
     return record.cartStatus === this.STATUS_INACTIVE;
+  }
+
+  // Check if Deactivate should be disabled (no permission)
+  isDeactivateDisabled(record: CartItem): boolean {
+    return !this.hasActivateDeactivatePermission();
+  }
+
+  // Check if Activate should be disabled (no permission)
+  isActivateDisabled(record: CartItem): boolean {
+    return !this.hasActivateDeactivatePermission();
   }
 
   // Check if cart is in Inactive status (used to disable other menu options)
